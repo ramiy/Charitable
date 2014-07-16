@@ -12,7 +12,7 @@ if ( ! class_exists( 'Charitable_Post_Types' ) ) :
  *
  * @class 		Charitable_Post_Types
  * @version		0.0.1
- * @package		WPCharitable/Classes/Core
+ * @package		Charitable/Classes/Core
  * @category	Class
  * @author 		Studio164a
  */
@@ -37,12 +37,12 @@ final class Charitable_Post_Types {
 	 * @since 0.0.1
 	 */
 	private function __construct(Charitable $charitable) {
-		$this->wp_charitable = $charitable;
+		$this->charitable = $charitable;
 	
 		add_action( 'init', array( &$this, 'register_post_types' ), 5 );
 
 		// The main Charitable class will save the one instance of this object.
-		$this->wp_charitable->save_start_object( $this );
+		$this->charitable->register_object( $this );
 	}
 
 	/**
@@ -75,39 +75,87 @@ final class Charitable_Post_Types {
 	 * @return void
 	 */
 	public function register_post_types() {
-		do_action( 'charitable_regiser_post_type' );
-		
-		register_post_type( 'cause', 
-			apply_filters( 'charitable_cause_post_type',
+		/**
+		 * Campaign post type. 
+		 *
+		 * To change any of the arguments used for the post type, other than the name
+		 * of the post type itself, use the 'charitable_campaign_post_type' filter. 
+		 */ 
+		register_post_type( 'campaign', 
+			apply_filters( 'charitable_campaign_post_type',
 				array(
 					'labels' => array(
-						'name' 					=> __( 'Cause', 'charitable' ),
-						'singular_name' 		=> __( 'Cause', 'charitable' ),
-						'menu_name'				=> _x( 'Cause', 'Admin menu name', 'charitable' ),
-						'add_new' 				=> __( 'Add Cause', 'charitable' ),
-						'add_new_item' 			=> __( 'Add New Cause', 'charitable' ),
+						'name' 					=> __( 'Campaign', 'charitable' ),
+						'singular_name' 		=> __( 'Campaign', 'charitable' ),
+						'menu_name'				=> _x( 'Campaign', 'Admin menu name', 'charitable' ),
+						'add_new' 				=> __( 'Add Campaign', 'charitable' ),
+						'add_new_item' 			=> __( 'Add New Campaign', 'charitable' ),
 						'edit' 					=> __( 'Edit', 'charitable' ),
-						'edit_item' 			=> __( 'Edit Cause', 'charitable' ),
-						'new_item' 				=> __( 'New Cause', 'charitable' ),
-						'view' 					=> __( 'View Cause', 'charitable' ),
-						'view_item' 			=> __( 'View Cause', 'charitable' ),
-						'search_items' 			=> __( 'Search Causes', 'charitable' ),
-						'not_found' 			=> __( 'No Causes found', 'charitable' ),
-						'not_found_in_trash' 	=> __( 'No Causes found in trash', 'charitable' ),
-						'parent' 				=> __( 'Parent Cause', 'charitable' )
+						'edit_item' 			=> __( 'Edit Campaign', 'charitable' ),
+						'new_item' 				=> __( 'New Campaign', 'charitable' ),
+						'view' 					=> __( 'View Campaign', 'charitable' ),
+						'view_item' 			=> __( 'View Campaign', 'charitable' ),
+						'search_items' 			=> __( 'Search Campaigns', 'charitable' ),
+						'not_found' 			=> __( 'No Campaigns found', 'charitable' ),
+						'not_found_in_trash' 	=> __( 'No Campaigns found in trash', 'charitable' ),
+						'parent' 				=> __( 'Parent Campaign', 'charitable' )
 					),
-					'description' 			=> __( 'This is where you can create new causes for people to support.', 'charitable' ),
+					'description' 			=> __( 'This is where you can create new campaigns for people to support.', 'charitable' ),
 					'public' 				=> true,
 					'show_ui' 				=> true,
-					'capability_type' 		=> 'cause',
+					'capability_type' 		=> 'campaign',
+					'menu_icon'				=> '',
 					'map_meta_cap'			=> true,
 					'publicly_queryable' 	=> true,
 					'exclude_from_search' 	=> false,
 					'hierarchical' 			=> false, // Hierarchical causes memory issues - WP loads all records!
 					'rewrite' 				=> false,
 					'query_var' 			=> true,
-					'supports' 				=> array( 'title', 'editor', 'excerpt', 'thumbnail', 'comments', 'custom-fields', 'page-attributes' ),
+					'supports' 				=> array( 'title', 'editor', 'excerpt', 'thumbnail', 'comments', 'page-attributes' ),
 					'has_archive' 			=> true,
+					'show_in_nav_menus' 	=> true
+				)
+			) 
+		);
+
+		/**
+		 * Donations post type. 
+		 *
+		 * To change any of the arguments used for the post type, other than the name
+		 * of the post type itself, use the 'charitable_donations_post_type' filter. 
+		 */ 
+		register_post_type( 'donations', 
+			apply_filters( 'charitable_donations_post_type',
+				array(
+					'labels' => array(
+						'name' 					=> __( 'Donation', 'charitable' ),
+						'singular_name' 		=> __( 'Donation', 'charitable' ),
+						'menu_name'				=> _x( 'Donation', 'Admin menu name', 'charitable' ),
+						'add_new' 				=> __( 'Add Donation', 'charitable' ),
+						'add_new_item' 			=> __( 'Add New Donation', 'charitable' ),
+						'edit' 					=> __( 'Edit', 'charitable' ),
+						'edit_item' 			=> __( 'Edit Donation', 'charitable' ),
+						'new_item' 				=> __( 'New Donation', 'charitable' ),
+						'view' 					=> __( 'View Donation', 'charitable' ),
+						'view_item' 			=> __( 'View Donation', 'charitable' ),
+						'search_items' 			=> __( 'Search Donations', 'charitable' ),
+						'not_found' 			=> __( 'No Donations found', 'charitable' ),
+						'not_found_in_trash' 	=> __( 'No Donations found in trash', 'charitable' ),
+						'parent' 				=> __( 'Parent Donation', 'charitable' )
+					),
+					'description' 			=> __( 'This is where you can manually create new donations.', 'charitable' ),
+					'public' 				=> true,
+					'show_ui' 				=> true,
+					'capability_type' 		=> 'donations',
+					'menu_icon'				=> '',
+					'map_meta_cap'			=> true,
+					'publicly_queryable' 	=> true,
+					'exclude_from_search' 	=> false,
+					'hierarchical' 			=> false,
+					'rewrite' 				=> false,
+					'query_var' 			=> true,
+					'supports' 				=> array( 'title' ),
+					'has_archive' 			=> false,
 					'show_in_nav_menus' 	=> true
 				)
 			) 

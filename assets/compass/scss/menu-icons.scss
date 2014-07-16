@@ -1,0 +1,11 @@
+.menu-icon-campaign .dashicons-before:before, 
+#available-widgets [class^="charitable_campaigns_widget-"] .widget-title:before, 
+#available-widgets [class*=" charitable_campaigns_widget-"] .widget-title:before {
+	font-family: charitable !important;
+	content: "\e601";
+} 
+
+.menu-icon-donations .dashicons-before:before {
+	font-family: charitable !important;
+	content: "\e600";
+} 

@@ -1,0 +1,64 @@
+/* 
+ * Clearfix helper class.
+ * Credit: h5bp.com/q
+ */
+.cf {
+	&::before, 
+	&::after {
+		content: "";
+		display: table;	
+	}
+	&::after {
+		clear: both;
+	}
+
+	*zoom: 1;
+}
+
+/*
+ * Metaboxes
+ */
+.charitable-metabox-section {
+	@extend .cf;
+	margin-top: 12px;	
+	border: 1px solid #e5e5e5;
+
+	.charitable-metabox-section-header {
+		margin: 0;
+		padding: 12px 24px;
+		background-color: #f1f1f1;
+	}
+
+	.charitable-metabox-field {
+		@extend .cf;
+		padding: 12px 24px;
+		margin: 0;
+	
+		label {
+			float: left;
+			width: 48%;
+			max-width: 300px;	
+			padding-right: 2%;
+		}
+
+		input, 
+		select, 
+		textarea {
+			float: left;
+		}
+
+		li {
+			width: 100%;
+		}
+
+		&.charitable-checkbox-field {
+
+			label, 
+			input {
+				float: none;
+				display: inline-block;
+				margin-top: 0;
+			}
+		}
+	}
+}
