@@ -9,7 +9,7 @@ if ( ! class_exists( 'Charitable_Donation' ) ) :
  * Donation model
  *
  * @class 		Charitable_Donation
- * @version		0.0.1
+ * @version		0.1
  * @package		Charitable/Classes/Donation
  * @category	Class
  * @author 		Studio164a
@@ -42,7 +42,7 @@ class Charitable_Donation {
 	 * @param $post The post ID or WP_Post object for this this donation.
 	 * @return void
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public function __construct($post) {
 		if ( ! is_a( 'WP_Post', $post ) ) {
@@ -62,7 +62,7 @@ class Charitable_Donation {
 	 * @return mixed This will return an array if single is false. If it's true, 
 	 *  	the value of the meta_value field will be returned.
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public function get( $meta_name, $single = true ) {
 		return get_post_meta( $this->post->ID, $meta_name, $single );
@@ -73,7 +73,7 @@ class Charitable_Donation {
 	 *
 	 * @return string The name of the gateway.
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public function get_gateway() {
 		if ( ! isset( $this->gateway ) ) {

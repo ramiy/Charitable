@@ -9,7 +9,7 @@ if ( ! class_exists( 'Charitable_Campaigns_Widget' ) ) :
  * Recent Campaigns widget
  *
  * @class 		Charitable_Campaigns_Widget
- * @version		0.0.1
+ * @version		0.1
  * @package		Charitable/Widgets/Campaigns Widget
  * @category	Class
  * @author 		Studio164a
@@ -20,7 +20,7 @@ class Charitable_Campaigns_Widget extends WP_Widget {
 	 * Instantiate the widget and set up basic configuration.
 	 * 
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public function __construct() {
 
@@ -37,7 +37,7 @@ class Charitable_Campaigns_Widget extends WP_Widget {
 	 * @param array $args
 	 * @param array $instance
 	 * @access public 
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public function widget( $args, $instance ) {
 
@@ -49,7 +49,7 @@ class Charitable_Campaigns_Widget extends WP_Widget {
 	 * @param array $instance The current settings for the widget options. 
 	 * @return void
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public function form( $instance ) {		 
 		$title = isset( $instance['title'] ) ? esc_attr( $instance['title'] ) : '';
@@ -75,7 +75,7 @@ class Charitable_Campaigns_Widget extends WP_Widget {
 	 * @param array $new_instance The old settings. 
 	 * @return void
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public function update( $new_instance, $old_instance ) {
 

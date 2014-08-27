@@ -10,7 +10,7 @@ if ( ! class_exists( 'Charitable_Donation_Controller' ) ) :
  * Charitable Donation controller.
  *
  * @class 		Charitable_Donation_Controller
- * @version		0.0.1
+ * @version		0.1
  * @package		Charitable/Classes/Charitable_Donation_Controller
  * @category	Class
  * @author 		Studio164a
@@ -33,7 +33,7 @@ final class Charitable_Donation_Controller {
 	 * @param Charitable $charitable
 	 * @return void
 	 * @access private
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	private function __construct(Charitable $charitable) {
 		$this->charitable = $charitable;
@@ -53,7 +53,7 @@ final class Charitable_Donation_Controller {
 	 * @return void
 	 * @static 
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public static function charitable_start(Charitable $charitable) {
 		if ( ! $charitable->is_start() ) {
@@ -73,7 +73,7 @@ final class Charitable_Donation_Controller {
 	 *
 	 * @return void
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public function init() {
 		/**
@@ -91,7 +91,7 @@ final class Charitable_Donation_Controller {
 	 * @global $post WP_Post
 	 * @return void
 	 * @access private
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	private function load_donation_form() {
 		global $post;
@@ -110,7 +110,7 @@ final class Charitable_Donation_Controller {
 	 *
 	 * @return void
 	 * @access private
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	private function save_donation() {
 		global $post;

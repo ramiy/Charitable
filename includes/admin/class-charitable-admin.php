@@ -12,7 +12,7 @@ if ( ! class_exists( 'Charitable_Admin' ) ) :
  * @author 		Studio164a
  * @category 	Admin
  * @package 	Charitable/Admin
- * @version     0.0.1
+ * @version     0.1
  */
 final class Charitable_Admin {
 
@@ -32,7 +32,7 @@ final class Charitable_Admin {
 	 * @param Charitable $charitable
 	 * @return void
 	 * @access private
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	private function __construct(Charitable $charitable) {
 		$this->charitable = $charitable;
@@ -53,7 +53,7 @@ final class Charitable_Admin {
 	 * @return void
 	 * @static 
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public static function start(Charitable $charitable) {
 		if ( $charitable->started() ) {
@@ -68,15 +68,14 @@ final class Charitable_Admin {
 	 * 
 	 * @return void
 	 * @access private
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	private function include_files() {
 		require_once( $this->charitable->get_admin_path() . 'charitable-core-admin-functions.php' );
-		
+			
+		require_once( $this->charitable->get_admin_path() . 'class-charitable-admin-settings.php' );
 		require_once( $this->charitable->get_admin_path() . 'post-types/class-charitable-meta-box-helper.php' );
 		require_once( $this->charitable->get_admin_path() . 'post-types/class-charitable-campaign-post-type.php' );
-		// require_once( $this->charitable->get_admin_path() . 'post-types/class-charitable-admin-meta-boxes-campaign.php' );
-		// require_once( $this->charitable->get_admin_path() . 'post-types/class-charitable-admin-meta-boxes-donation.php' );
 	}
 
 	/**
@@ -84,9 +83,10 @@ final class Charitable_Admin {
 	 * 
 	 * @return void
 	 * @access private
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	private function attach_hooks_and_filters() {
+		add_action('charitable_admin_start', array('Charitable_Admin_Settings', 'charitable_admin_start'));
 		add_action('charitable_admin_start', array('Charitable_Campaign_Post_Type', 'charitable_admin_start'));
 		// add_action('charitable_admin_start', array('Charitable_Admin_Meta_Boxes_Campaign', 'charitable_admin_start'));
 		// add_action('charitable_admin_start', array('Charitable_Admin_Meta_Boxes_Donation', 'charitable_admin_start'));
@@ -99,7 +99,7 @@ final class Charitable_Admin {
 	 *
 	 * @return bool
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public function is_admin_start() {
 		return current_filter() == 'charitable_admin_start';
@@ -110,7 +110,7 @@ final class Charitable_Admin {
 	 *
 	 * @return void
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public function admin_enqueue_scripts() {			
 		/**
@@ -144,12 +144,12 @@ final class Charitable_Admin {
 	 * 
 	 * @return array
 	 * @access private
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	private function get_charitable_screens() {
 		return apply_filters( 'charitable_admin_screens', array(
 			'campaign', 
-			'donations'
+			'donation'
 		) );
 	}
 }

@@ -11,7 +11,7 @@ if ( ! class_exists( 'Charitable_Widgets' ) ) :
  * Registers post types and taxonomies
  *
  * @class 		Charitable_Widgets
- * @version		0.0.1
+ * @version		0.1
  * @package		Charitable/Classes/Core
  * @category	Class
  * @author 		Studio164a
@@ -34,7 +34,7 @@ final class Charitable_Widgets {
 	 * @param Charitable $charitable
 	 * @return void
 	 * @access private
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	private function __construct(Charitable $charitable) {
 		$this->charitable = $charitable;
@@ -56,7 +56,7 @@ final class Charitable_Widgets {
 	 * @return void
 	 * @static 
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public static function charitable_start(Charitable $charitable) {
 		if ( ! $charitable->is_start() ) {
@@ -71,7 +71,7 @@ final class Charitable_Widgets {
 	 *
 	 * @return void
 	 * @access private
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	private function include_widgets() {
 		require_once( $this->charitable->get_includes_path() . 'widgets/class-charitable-campaigns-widget.php' );
@@ -84,7 +84,7 @@ final class Charitable_Widgets {
 	 *
 	 * @return void
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 * @return void
 	 */
 	public function register_widgets() {

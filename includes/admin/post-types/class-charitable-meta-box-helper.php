@@ -9,11 +9,10 @@ if ( ! class_exists( 'Charitable_Meta_Box_Helper' ) ) :
  * Charitable Meta Box Helper
  *
  * @class 		Charitable_Meta_Box_Helper
- * @abstract
  * @author 		Studio164a
  * @category 	Admin
  * @package 	Charitable/Admin/Meta Boxes
- * @version     0.0.1
+ * @version     0.1
  */
 class Charitable_Meta_Box_Helper {
 
@@ -40,7 +39,7 @@ class Charitable_Meta_Box_Helper {
 	 *
 	 * @param string $nonce_action 
 	 * @return void
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public function __construct( $nonce_action = 'charitable' ) {
 		$this->nonce_action = $nonce_action;
@@ -58,7 +57,7 @@ class Charitable_Meta_Box_Helper {
 	 * @param array $args The arguments passed to the meta box, including the view to render. 
 	 * @return void
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public function display(WP_Post $post, array $args) {
 		
@@ -93,7 +92,7 @@ class Charitable_Meta_Box_Helper {
 	 * @param array $fields
 	 * @return void
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public function display_fields( array $fields ) {
 		/**
@@ -118,7 +117,7 @@ class Charitable_Meta_Box_Helper {
 	 * @param integer $post_id The current post being saved.
 	 * @return boolean True if the user can save the information
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public function user_can_save( $post_id ) {
 	    $is_autosave = wp_is_post_autosave( $post_id );

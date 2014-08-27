@@ -11,7 +11,7 @@ if ( ! interface_exists( 'Charitable_Donation_Form_Interface' ) ) :
  * This defines a strict interface that donation forms must implement.
  *
  * @interface Charitable_Donation_Form_Interface
- * @version		0.0.1
+ * @version		0.1
  * @package		Charitable/Interfaces/Charitable_Donation_Form_Interface
  * @category	Interface
  * @author 		Studio164a
@@ -23,7 +23,7 @@ interface Charitable_Donation_Form_Interface {
 	 *
 	 * @return void
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public function render();
 
@@ -32,7 +32,7 @@ interface Charitable_Donation_Form_Interface {
 	 *
 	 * @return void
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public function save_donation();
 }

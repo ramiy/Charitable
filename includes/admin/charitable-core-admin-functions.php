@@ -8,7 +8,7 @@
  * @author 		Studio164a
  * @category 	Core
  * @package 	Charitable/Admin/Functions
- * @version     0.0.1
+ * @version     0.1
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
@@ -23,7 +23,7 @@ if ( ! function_exists( 'charitable_admin_view' ) ) :
  * Example usage: charitable_admin_view('metaboxes/cause-metabox');
  *
  * @return void
- * @since 0.0.1
+ * @since 0.1
  */
 function charitable_admin_view($view) {
 	$filename = get_charitable()->get_admin_path() . 'views/' . $view . '.php';
@@ -51,7 +51,7 @@ if ( ! function_exists('charitable_priority_sort') ) :
  * @param array $a
  * @param array $b
  * @return int
- * @since 0.0.1
+ * @since 0.1
  */
 function charitable_priority_sort($a, $b) {
 	if ( $a['priority'] == $b['priority'] ) {

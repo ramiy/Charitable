@@ -9,7 +9,7 @@ if ( ! class_exists( 'Charitable_Templates' ) ) :
  * Charitable templates
  *
  * @class 		Charitable_Templates
- * @version		0.0.1
+ * @version		0.1
  * @package		Charitable/Classes/Templates
  * @category	Class
  * @author 		Studio164a
@@ -32,7 +32,7 @@ class Charitable_Templates {
 	 * @param Charitable $charitable
 	 * @return void
 	 * @access private
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	private function __construct(Charitable $charitable) {
 		$this->charitable = $charitable;
@@ -53,7 +53,7 @@ class Charitable_Templates {
 	 * @return void
 	 * @static 
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public static function charitable_start(Charitable $charitable) {
 		if ( ! $charitable->is_start() ) {
@@ -72,7 +72,7 @@ class Charitable_Templates {
 	 * @param string $content
 	 * @return string
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public function campaign_content($content) {
 		global $post;
@@ -107,7 +107,7 @@ class Charitable_Templates {
 	 * @param string $content
 	 * @return string
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public function donation_content($content) {
 		global $post;

@@ -3,7 +3,7 @@
  * Plugin Name: Charitable
  * Plugin URI: http://164a.com
  * Description: 
- * Version: 0.0.1
+ * Version: 0.1
  * Author: Studio 164a
  * Author URI: http://164a.com
  * Requires at least: 3.9
@@ -26,7 +26,7 @@ if ( ! class_exists( 'Charitable' ) ) :
  * Main Charitable class
  *
  * @class Charitable
- * @version	0.0.1
+ * @version	0.1
  */
 final class Charitable {
 
@@ -43,7 +43,7 @@ final class Charitable {
     /**
      * @var string
      */
-    private $version = '0.0.1';
+    private $version = '0.1';
 
     /**
      * @var array Registry of the start objects.
@@ -89,7 +89,7 @@ final class Charitable {
      * Create class instance. 
      * 
      * @return void
-     * @since 0.0.1
+     * @since 0.1
      */
 	public function __construct() {
 		$this->directory_path = plugin_dir_path( __FILE__ );
@@ -102,7 +102,7 @@ final class Charitable {
 	 * Returns the original instance of this class. 
 	 * 
 	 * @return Charitable
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public static function get_instance() {
 		return self::$instance;
@@ -113,23 +113,23 @@ final class Charitable {
 	 *
 	 * This class is specifically designed to be instantiated once. You can retrieve the instance using get_charitable()
 	 *
-	 * @since 0.0.1
+	 * @since 0.1
 	 * @access public
 	 * @return void
 	 */
 	public function __clone() {
-		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'charitable' ), '0.0.1' );
+		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'charitable' ), '0.1' );
 	}
 
 	/**
 	 * Disable unserializing of the class. 
 	 *
-	 * @since 0.0.1
+	 * @since 0.1
 	 * @access public
 	 * @return void
 	 */
 	public function __wakeup() {
-		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'charitable' ), '0.0.1' );
+		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'charitable' ), '0.1' );
 	}
 
 	/**
@@ -139,7 +139,7 @@ final class Charitable {
 	 * 
 	 * @return void
 	 * @access private
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	private function start() {
 		// If we've already started (i.e. run this function once before), do not pass go. 
@@ -165,7 +165,7 @@ final class Charitable {
 	 * 
 	 * @return void
 	 * @access private
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	private function include_files() {
 		/**
@@ -193,6 +193,8 @@ final class Charitable {
 		/**
 		 * Helpers.
 		 */
+		require_once( $this->includes_path . 'class-charitable-currency-helper.php' );
+		require_once( $this->includes_path . 'class-charitable-request.php' );
 		require_once( $this->includes_path . 'class-charitable-template.php' );
 		require_once( $this->includes_path . 'class-charitable-template-part.php' );
 		require_once( $this->includes_path . 'class-charitable-location-helper.php' );
@@ -203,14 +205,14 @@ final class Charitable {
 	 * 
 	 * @return void
 	 * @access private
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	private function attach_hooks_and_filters() {				
-		add_action('charitable_start', array( 'Charitable_Donation_Controller', 'charitable_start' ) );
-		add_action('charitable_start', array( 'Charitable_Post_Types', 'charitable_start' ) );
-		add_action('charitable_start', array( 'Charitable_Query', 'charitable_start' ) );
-		add_action('charitable_start', array( 'Charitable_Templates', 'charitable_start' ) );
-		add_action('charitable_start', array( 'Charitable_Widgets', 'charitable_start' ) );
+		add_action('charitable_start', array( 'Charitable_Donation_Controller', 'charitable_start' ), 2 );
+		add_action('charitable_start', array( 'Charitable_Post_Types', 'charitable_start' ), 2 );
+		add_action('charitable_start', array( 'Charitable_Query', 'charitable_start' ), 2 );
+		add_action('charitable_start', array( 'Charitable_Templates', 'charitable_start' ), 2 );
+		add_action('charitable_start', array( 'Charitable_Widgets', 'charitable_start' ), 2 );
 	}
 
 	/**
@@ -218,7 +220,7 @@ final class Charitable {
 	 *
 	 * @return void
 	 * @access private
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	private function maybe_start_admin() {
 		if ( ! is_admin() ) {
@@ -235,7 +237,7 @@ final class Charitable {
 	 *
 	 * @return bool
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public function is_start() {
 		return current_filter() == 'charitable_start';
@@ -246,7 +248,7 @@ final class Charitable {
 	 *
 	 * @return bool
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public function is_admin_start() {
 		$charitable_admin = $this->get_registered_object('Charitable_Admin');
@@ -258,7 +260,7 @@ final class Charitable {
 	 * 
 	 * @return bool
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public function started() {
 		return did_action( 'charitable_start' ) || current_filter() == 'charitable_start';
@@ -270,7 +272,7 @@ final class Charitable {
 	 * @param mixed $object
 	 * @return void
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public function register_object($object) {
 		if ( ! is_object( $object ) ) {
@@ -288,7 +290,7 @@ final class Charitable {
 	 * @param string $class The type of class you want to retrieve.
 	 * @return mixed The object if its registered. Otherwise false.
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public function get_registered_object($class) {
 		return isset( $this->registry[$class] ) ? $this->registry[$class] : false;
@@ -299,7 +301,7 @@ final class Charitable {
 	 *
 	 * @return string
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public function get_directory_path() {
 		return $this->directory_path;
@@ -310,7 +312,7 @@ final class Charitable {
 	 *
 	 * @return string
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public function get_directory_url() {
 		return $this->directory_url;
@@ -321,7 +323,7 @@ final class Charitable {
 	 *
 	 * @return string
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public function get_includes_path() {
 		return $this->includes_path;
@@ -332,7 +334,7 @@ final class Charitable {
 	 *
 	 * @return string
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public function get_admin_path() {
 		if ( ! isset( $this->admin_path ) ) {
@@ -347,7 +349,7 @@ final class Charitable {
 	 *
 	 * @return string
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public function get_assets_path() {
 		if ( ! isset( $this->assets_path ) ) {
@@ -362,7 +364,7 @@ final class Charitable {
 	 *
 	 * @return string
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public function get_theme_template_path() {
 		if ( ! isset( $this->theme_template_path ) ) {
@@ -377,7 +379,7 @@ final class Charitable {
 	 *
 	 * @return string
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public function get_plugin_template_path() {
 		if ( ! isset( $this->plugin_template_path ) ) {
@@ -392,7 +394,7 @@ final class Charitable {
 	 *
 	 * @return string
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public function get_version() {
 		return $this->version;
@@ -403,7 +405,7 @@ final class Charitable {
 	 *
 	 * @return Charitable_Location_Helper
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public function get_location_helper() {
 		$location_helper = $this->get_registered_object('Charitable_Location_Helper');
@@ -415,9 +417,43 @@ final class Charitable {
 
 		return $location_helper;
 	}
-}
 
-endif; // End if class_exists check
+	/**
+	 * Return the current request object. 
+	 *
+	 * @return Charitable_Request
+	 * @access public
+	 * @since 0.1
+	 */
+	public function get_request() {
+		$request = $this->get_registered_object('Charitable_Request');
+
+		if ( $request === false ) {
+			$request = new Charitable_Request();
+			$this->register_object( $request );
+		}
+
+		return $request;
+	}
+
+	/**
+	 * Return an instance of the currency helper. 
+	 *
+	 * @return Charitable_Currency_Helper
+	 * @access public
+	 * @since 0.1
+	 */
+	public function get_currency_helper() {
+		$currency_helper = $this->get_registered_object('Charitable_Currency_Helper');
+
+		if ( $currency_helper === false ) {
+			$currency_helper = new Charitable_Currency_Helper();
+			$this->register_object( $currency_helper );
+		}
+
+		return $currency_helper;
+	}
+}
 
 $charitable = new Charitable();
 
@@ -428,8 +464,10 @@ $charitable = new Charitable();
  * reason to instantiate a new object, though you can do so if you're stubborn :)
  *
  * @return Charitable
- * @since 0.0.1
+ * @since 0.1
  */
 function get_charitable() {
     return Charitable::get_instance();
 }
+
+endif; // End if class_exists check

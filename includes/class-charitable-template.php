@@ -9,7 +9,7 @@ if ( ! class_exists( 'Charitable_Template' ) ) :
  * Charitable template
  *
  * @class 		Charitable_Template
- * @version		0.0.1
+ * @version		0.1
  * @package		Charitable/Classes/Template
  * @category	Class
  * @author 		Studio164a
@@ -49,7 +49,7 @@ class Charitable_Template {
  	 * @param bool $require_once Whether to require_once or require. Default true. Has no effect if $load is false.
 	 * @return void
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public function __construct($template_name, $load = false, $require_once = true) {
 		$this->theme_template_path = trailingslashit( get_charitable()->get_theme_template_path() );
@@ -65,7 +65,7 @@ class Charitable_Template {
 	 *
 	 * @return array
 	 * @access private
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	private function get_theme_template_options() {
 		$options = array();
@@ -83,7 +83,7 @@ class Charitable_Template {
 	 *
 	 * @return void
 	 * @access private
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	private function render() {
 
@@ -93,7 +93,7 @@ class Charitable_Template {
 		$template = $this->locate_template();
 
 		if ( ! file_exists( $template ) ) {
-			_doing_it_wrong( __FUNCTION__, sprintf( '<code>%s</code> does not exist.', $template ), '0.0.1' );
+			_doing_it_wrong( __FUNCTION__, sprintf( '<code>%s</code> does not exist.', $template ), '0.1' );
 			return;
 		}
 
@@ -111,7 +111,7 @@ class Charitable_Template {
 	 *
 	 * @return string 
 	 * @access private
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	private function locate_template() {
 

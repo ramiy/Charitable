@@ -13,7 +13,7 @@ if ( ! class_exists( 'Charitable_Campaign_Post_Type' ) ) :
  * @author 		Studio164a
  * @category 	Admin
  * @package 	Charitable/Admin/Campaign Post Type
- * @version     0.0.1
+ * @version     0.1
  */
 final class Charitable_Campaign_Post_Type {
 
@@ -35,7 +35,7 @@ final class Charitable_Campaign_Post_Type {
 	 * @param Charitable $charitable
 	 * @return void
 	 * @access private
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	private function __construct(Charitable $charitable) {
 		$this->charitable = $charitable;
@@ -59,7 +59,7 @@ final class Charitable_Campaign_Post_Type {
 	 * @param Charitable $charitable
 	 * @return void
 	 * @access private
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public static function charitable_admin_start(Charitable $charitable) {
 		if ( ! $charitable->is_admin_start() ) {
@@ -69,7 +69,6 @@ final class Charitable_Campaign_Post_Type {
 		new Charitable_Campaign_Post_Type($charitable);
 	}
 
-
 	/**
 	 * Add meta boxes.
 	 * 
@@ -77,7 +76,7 @@ final class Charitable_Campaign_Post_Type {
 	 *
 	 * @return void
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public function add_meta_boxes() {
 		add_meta_box(
@@ -106,7 +105,7 @@ final class Charitable_Campaign_Post_Type {
 	 *
 	 * @return void
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public function campaign_general_metabox() {
 
@@ -135,7 +134,7 @@ final class Charitable_Campaign_Post_Type {
 	 *
 	 * @return void
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public function campaign_donations_metabox() {
 		/**
@@ -165,7 +164,7 @@ final class Charitable_Campaign_Post_Type {
 	 * @param WP_Post $post Post object.
 	 * @return void
 	 * @access public 
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public function save_post($post_id, WP_Post $post) {
 		if ( $this->meta_box_helper->user_can_save( $post ) ) {
@@ -173,8 +172,8 @@ final class Charitable_Campaign_Post_Type {
 			$campaign_goal_enabled = isset( $_POST['campaign_goal_enabled'] ) && $_POST['campaign_goal_enabled'] == 'on';
 			$campaign_goal = floatval( $_POST['campaign_goal'] );
 			$campaign_end_time_enabled = isset( $_POST['campaign_end_time_enabled'] ) && $_POST['campaign_end_time_enabled'] == 'on';
-			$campaign_end_time = intval( $_POST['campaign_end_time'] );
-			$campaign_custom_donations_enabled = $_POST['campaign_custom_donations_enabled'];
+			$campaign_end_time = $_POST['campaign_end_time'];
+			$campaign_custom_donations_enabled =isset( $_POST['campaign_custom_donations_enabled'] ) && $_POST['campaign_custom_donations_enabled'] == 'on';
 			$campaign_suggested_donations = $_POST['campaign_suggested_donations'];
 			$campaign_donation_form_fields = (array) $_POST['campaign_donation_form_fields'];
 
@@ -195,7 +194,7 @@ final class Charitable_Campaign_Post_Type {
 	 * 
 	 * @return array
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public function get_donation_form_fields() {
 		return apply_filters( 'charitable_registered_donation_form_fields', 

@@ -9,7 +9,7 @@ if ( ! class_exists( 'Charitable_Campaign' ) ) :
  * Campaign model
  *
  * @class 		Charitable_Campaign
- * @version		0.0.1
+ * @version		0.1
  * @package		Charitable/Classes/Campaign
  * @category	Class
  * @author 		Studio164a
@@ -42,6 +42,11 @@ class Charitable_Campaign {
 	private $donations;
 
 	/**
+	 * @var int The amount donated to the campaign. 
+	 */
+	private $donated_amount;
+
+	/**
 	 * @var Charitable_Donation_Form The form object for this campaign.
 	 */
 	private $donation_form;
@@ -52,10 +57,10 @@ class Charitable_Campaign {
 	 * @param mixed $post The post ID or WP_Post object for this this campaign.
 	 * @return void
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public function __construct($post) {
-		if ( ! is_a( 'WP_Post', $post ) ) {
+		if ( ! is_a( $post, 'WP_Post' ) ) {
 			$post = get_post( $post );
 		}
 
@@ -67,7 +72,7 @@ class Charitable_Campaign {
 	 * 
 	 * @return int
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public function get_campaign_id() {
 		if ( ! isset( $this->ID ) ) {
@@ -87,7 +92,7 @@ class Charitable_Campaign {
 	 * @return mixed This will return an array if single is false. If it's true, 
 	 *  	the value of the meta_value field will be returned.
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public function get( $meta_name, $single = true ) {
 		return get_post_meta( $this->post->ID, $meta_name, $single );
@@ -98,7 +103,7 @@ class Charitable_Campaign {
 	 *
 	 * @return int 
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public function get_end_time() {
 		if ( ! isset( $this->end_time ) ) {
@@ -116,7 +121,7 @@ class Charitable_Campaign {
 	 * @param string $date_format A date format accepted by PHP's date() function.
 	 * @return string 
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public function get_end_date($date_format = '') {
 		if ( ! strlen( $date_format ) ) {
@@ -126,9 +131,9 @@ class Charitable_Campaign {
 		/**
 		 * Filter the end date format using the charitable_campaign_end_date_format hook.
 		 */
-		$format = apply_filters( 'charitable_campaign_end_date_format', $format, $this );
+		$date_format = apply_filters( 'charitable_campaign_end_date_format', $date_format, $this );
 
-		return date( $this->get_end_time(), $format );
+		return date( $date_format, $this->get_end_time() );
 	}
 
 	/**
@@ -136,7 +141,7 @@ class Charitable_Campaign {
 	 * 
 	 * @return decimal
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public function get_goal() {
 		if ( ! isset( $this->goal ) ) {
@@ -151,12 +156,10 @@ class Charitable_Campaign {
 	 *
 	 * @return string
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public function get_monetary_goal() {
-		/**
-		 * TODO: Complete this when we have worked out how to handle multiple currencies.
-		 */	
+		return get_charitable()->get_currency_helper()->get_monetary_amount( $this->get_goal() );
 	}
 
 	/**
@@ -164,7 +167,7 @@ class Charitable_Campaign {
 	 * 
 	 * @return string
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	private function get_donations_cache_key() {
 		return 'charitable_campaign_' . $this->get_campaign_id() . '_donations';
@@ -175,7 +178,7 @@ class Charitable_Campaign {
 	 *
 	 * @return WP_Query
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public function get_donations() {
 		if ( ! isset( $this->donations ) || is_null( $this->donations ) ) {
@@ -198,6 +201,7 @@ class Charitable_Campaign {
 						array(
 							'post_type' => 'donation', 
 							'post_status' => 'publish', 
+							'posts_per_page' => -1,
 							'meta_query' => array(
 								array(
 									'key' => 'campaign_id',
@@ -219,16 +223,58 @@ class Charitable_Campaign {
 	}
 
 	/**
+	 * Return the current amount of donations.
+	 *
+	 * @return int
+	 * @access public
+	 * @since 0.1
+	 */
+	public function get_donated_amount() {
+		if ( ! isset( $this->donated_amount ) || is_null( $this->donated_amount ) ) {
+
+			/**
+			 * Try to fetch from cache first. 
+			 */
+			$cache_key = $this->get_donations_cache_key() . '_amount';
+			$this->donated_amount = get_transient( $cache_key );
+
+			if ( $this->donated_amount === false ) {
+
+				global $wpdb;
+
+				$this->donated_amount = $wpdb->get_var( $wpdb->prepare(
+					"SELECT sum(m2.meta_value) 
+					FROM $wpdb->postmeta m1
+					INNER JOIN $wpdb->postmeta m2 USING post_id
+					WHERE m1.meta_key = 'campaign_id'
+					AND m1.meta_value = %d
+					AND m2.meta_key = 'donation_amount'"
+					, $this->get_campaign_id()
+				) );
+			}
+
+			/**
+			 * Cache the results. 
+			 */
+			set_transient( $cache_key, $this->donated_amount, 0 );
+		}
+
+		return $this->donated_amount;
+	}
+
+	/**
 	 * Flush donations cache.
 	 *
 	 * @return void
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public function flush_donations_cache() {
 		delete_transient( $this->get_donations_cache_key() );
+		delete_transient( $this->get_donations_cache_key() . '_amount' );
 
 		$this->donations = null;
+		$this->donated_amount = null;
 	}
 
 	/**
@@ -236,7 +282,7 @@ class Charitable_Campaign {
 	 * 
 	 * @return Charitable_Donation_Form_Interface
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public function get_donation_form() {
 		if ( ! isset( $this->donation_form ) ) {
@@ -254,10 +300,10 @@ class Charitable_Campaign {
 	 * 
 	 * @return void
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public function donate_button() {
-		charitable_get_template('campaign/donate-button');
+		new Charitable_Template('campaign/donate-button');
 	}
 }
 

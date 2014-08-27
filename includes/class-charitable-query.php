@@ -10,7 +10,7 @@ if ( ! class_exists( 'Charitable_Query' ) ) :
  * Charitable Query. 
  *  
  * @class Charitable_Query
- * @version		0.0.1
+ * @version		0.1
  * @package		Charitable/Classes/Charitable_Query
  * @category	Class
  * @author 		Studio164a
@@ -33,7 +33,7 @@ final class Charitable_Query {
 	 * @param Charitable $charitable
 	 * @return void
 	 * @access private
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	private function __construct(Charitable $charitable) {
 		$this->charitable = $charitable;
@@ -53,7 +53,7 @@ final class Charitable_Query {
 	 * @return void
 	 * @static 
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public static function charitable_start(Charitable $charitable) {
 		if ( ! $charitable->is_start() ) {

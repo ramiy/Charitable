@@ -11,7 +11,7 @@ if ( ! class_exists( 'Charitable_Post_Types' ) ) :
  * Registers post types and taxonomies
  *
  * @class 		Charitable_Post_Types
- * @version		0.0.1
+ * @version		0.1
  * @package		Charitable/Classes/Core
  * @category	Class
  * @author 		Studio164a
@@ -34,7 +34,7 @@ final class Charitable_Post_Types {
 	 * @param Charitable $charitable
 	 * @return void
 	 * @access private
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	private function __construct(Charitable $charitable) {
 		$this->charitable = $charitable;
@@ -54,7 +54,7 @@ final class Charitable_Post_Types {
 	 * @return void
 	 * @static 
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public static function charitable_start(Charitable $charitable) {
 		if ( ! $charitable->is_start() ) {
@@ -71,7 +71,7 @@ final class Charitable_Post_Types {
 	 *
 	 * @return void
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 * @return void
 	 */
 	public function register_post_types() {
@@ -122,9 +122,9 @@ final class Charitable_Post_Types {
 		 * Donations post type. 
 		 *
 		 * To change any of the arguments used for the post type, other than the name
-		 * of the post type itself, use the 'charitable_donations_post_type' filter. 
+		 * of the post type itself, use the 'charitable_donation_post_type' filter. 
 		 */ 
-		register_post_type( 'donations', 
+		register_post_type( 'donation', 
 			apply_filters( 'charitable_donations_post_type',
 				array(
 					'labels' => array(
@@ -146,7 +146,7 @@ final class Charitable_Post_Types {
 					'description' 			=> __( 'This is where you can manually create new donations.', 'charitable' ),
 					'public' 				=> true,
 					'show_ui' 				=> true,
-					'capability_type' 		=> 'donations',
+					'capability_type' 		=> 'donation',
 					'menu_icon'				=> '',
 					'map_meta_cap'			=> true,
 					'publicly_queryable' 	=> true,

@@ -3,7 +3,7 @@
  * Renders the campaign's donation form settings in the metabox for the Campaign post type.
  *
  * @author Studio 164a
- * @since 0.0.1
+ * @since 0.1
  */
 
 global $post;

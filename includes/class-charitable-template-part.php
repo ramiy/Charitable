@@ -9,7 +9,7 @@ if ( ! class_exists( 'Charitable_Template_Part' ) ) :
  * Charitable template part
  *
  * @class 		Charitable_Template_Part
- * @version		0.0.1
+ * @version		0.1
  * @package		Charitable/Classes/Template
  * @category	Class
  * @author 		Studio164a
@@ -33,7 +33,7 @@ class Charitable_Template_Part {
 	 * @param string $name Optional name.
 	 * @return void
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public function __construct($slug, $name = "") {
 		$this->slug = $slug;
@@ -47,7 +47,7 @@ class Charitable_Template_Part {
 	 * 
 	 * @return array
 	 * @access private
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	private function get_template_names() {
 		$names = array(

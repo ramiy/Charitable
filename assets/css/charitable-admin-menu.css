@@ -13,4 +13,4 @@
 .menu-icon-campaign .dashicons-before:before, #available-widgets [class^="charitable_campaigns_widget-"] .widget-title:before, #available-widgets [class*=" charitable_campaigns_widget-"] .widget-title:before { font-family: charitable !important; content: "\e601"; }
 
 /* line 8, ../compass/scss/menu-icons.scss */
-.menu-icon-donations .dashicons-before:before { font-family: charitable !important; content: "\e600"; }
+.menu-icon-donation .dashicons-before:before { font-family: charitable !important; content: "\e600"; }

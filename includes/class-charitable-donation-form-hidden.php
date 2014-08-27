@@ -9,7 +9,7 @@ if ( ! class_exists( 'Charitable_Donation_Form_Hidden' ) ) :
  * Donation Form Hidden model
  *
  * @class 		Charitable_Donation_Form_Hidden
- * @version		0.0.1
+ * @version		0.1
  * @package		Charitable/Classes/Charitable_Donation_Form_Hidden
  * @category	Class
  * @author 		Studio164a
@@ -27,7 +27,7 @@ class Charitable_Donation_Form_Hidden implements Charitable_Donation_Form_Interf
 	 * @param Charitable_Campaign $campaign
 	 * @return void
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public function __construct(Charitable_Campaign $campaign) {
 		$this->campaign = $campaign;
@@ -38,7 +38,7 @@ class Charitable_Donation_Form_Hidden implements Charitable_Donation_Form_Interf
 	 *
 	 * @return void
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public function render() {
 		charitable_get_template( 'campaign/donation-form-hidden' );
@@ -49,7 +49,7 @@ class Charitable_Donation_Form_Hidden implements Charitable_Donation_Form_Interf
 	 *
 	 * @return void
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public function save_donation() {
 		/**
