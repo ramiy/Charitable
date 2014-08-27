@@ -116,6 +116,11 @@ class Test_Charitable_Campaign extends WP_UnitTestCase {
 		$this->assertEquals( date('Y-m-d', $this->end_time), $this->campaign->get_end_date( 'Y-m-d' ) );
 	}
 
+	function test_get_time_left() {
+		$seconds_left = $this->end_time - time();
+		$this->assertEquals( $seconds_left , $this->campaign->get_time_left() );
+	}
+
 	function test_get_goal() {
 		$this->assertEquals( 40000.00, $this->campaign->get_goal() );
 	}

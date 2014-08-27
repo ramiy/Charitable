@@ -45,7 +45,7 @@ class Charitable_Donation {
 	 * @since 0.1
 	 */
 	public function __construct($post) {
-		if ( ! is_a( 'WP_Post', $post ) ) {
+		if ( ! is_a( $post, 'WP_Post' ) ) {
 			$post = get_post( $post );
 		}
 
@@ -83,11 +83,35 @@ class Charitable_Donation {
 		return $this->gateway;
 	}
 
+	/**
+	 * The amount donated on this donation.
+	 */
+	public function get_amount() {
+		return $this->get( 'donation_amount' );
+	}
+
 	/** 
 	 * The status of the payment. 
 	 *
 	 * 
-	 */ 
+	 */
+	public function get_status() {
+		return $this->get( 'donation_status' );
+	} 
+
+	/**
+	 * 
+	 */
+	public function get_donation_id() {
+		return $this->post->ID;
+	}
+
+	/**
+	 * Indicates whether the amount donated was a suggested amount or not
+	 */
+	public function get_is_custom(){
+		return $this->get( 'donation_is_custom' );
+	}
 }
 
 endif; // End class_exists check

@@ -109,7 +109,6 @@ class Charitable_Campaign {
 		if ( ! isset( $this->end_time ) ) {
 			$this->end_time = $this->get('campaign_end_time');
 		}
-
 		return $this->end_time;
 	}
 
@@ -125,7 +124,7 @@ class Charitable_Campaign {
 	 */
 	public function get_end_date($date_format = '') {
 		if ( ! strlen( $date_format ) ) {
-			$date_format = get_option('date_format');
+			$date_format = get_option('date_format', 'd\/m\/Y');
 		}
 
 		/**
@@ -133,7 +132,20 @@ class Charitable_Campaign {
 		 */
 		$date_format = apply_filters( 'charitable_campaign_end_date_format', $date_format, $this );
 
-		return date( $date_format, $this->get_end_time() );
+		$date = explode( "/",  $this->get_end_time() );
+		// return $this->get_end_time();
+		return date( $date_format, mktime( $date[1], $date[0], $date[2] ) );
+	}
+
+	/**
+	 * Returns the amount of time left in the campaign in seconds.
+	 *
+	 * @return int $time_left
+	 * @access public
+	 * @since 0.1
+	 */
+	public function get_time_left() {
+		return $this->get_end_time() - time();
 	}
 
 	/**
