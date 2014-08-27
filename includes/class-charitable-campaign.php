@@ -245,7 +245,8 @@ class Charitable_Campaign {
 				$this->donated_amount = $wpdb->get_var( $wpdb->prepare(
 					"SELECT sum(m2.meta_value) 
 					FROM $wpdb->postmeta m1
-					INNER JOIN $wpdb->postmeta m2 USING post_id
+					INNER JOIN $wpdb->postmeta m2 
+					ON m1.post_id = m2.post_id
 					WHERE m1.meta_key = 'campaign_id'
 					AND m1.meta_value = %d
 					AND m2.meta_key = 'donation_amount'"

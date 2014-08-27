@@ -76,7 +76,7 @@ final class Charitable_Currency_Helper {
 	 * @since 0.1
 	 */
 	public function get_currency_format() {
-		if ( empty( $this->currency_format ) ) {
+		// if ( empty( $this->currency_format ) ) {
 
 			$symbol_position = get_option( 'charitable_currency_symbol_position', 'left' );
 
@@ -96,7 +96,7 @@ final class Charitable_Currency_Helper {
 			}
 
 			$this->currency_format = apply_filters( 'charitable_currency_format', $format, $symbol_position );
-		}
+		// }
 
 		return $this->currency_format;
 	}
@@ -116,7 +116,7 @@ final class Charitable_Currency_Helper {
 	 */
 	private function get_currency_symbol( $currency = "" ) {
 
-		if ( strlen( $currency ) ) {
+		if ( !strlen( $currency ) ) {
 			$currency = get_option( 'charitable_currency', 'AUD' );
 		}		
 
@@ -125,7 +125,7 @@ final class Charitable_Currency_Helper {
 				$currency_symbol = 'د.إ';
 				break;
 			case 'BDT':
-				$currency_symbol = '&#2547;&nbsp;';
+				$currency_symbol = '&#2547;';
 				break;
 			case 'BRL' :
 				$currency_symbol = '&#82;&#36;';
@@ -155,7 +155,7 @@ final class Charitable_Currency_Helper {
 				$currency_symbol = '&#1088;&#1091;&#1073;.';
 				break;
 			case 'KRW' : $currency_symbol = '&#8361;'; break;
-			case 'TRY' : $currency_symbol = '&#84;&#76;'; break;
+			case 'TRY' : $currency_symbol = '&#8378;'; break;
 			case 'NOK' : $currency_symbol = '&#107;&#114;'; break;
 			case 'ZAR' : $currency_symbol = '&#82;'; break;
 			case 'CZK' : $currency_symbol = '&#75;&#269;'; break;

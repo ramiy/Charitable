@@ -19,7 +19,7 @@ class Test_Currency_Helper extends WP_UnitTestCase {
 	}
 
 	function test_get_monetary_amount() {
-		$this->assertEquals( '$60.00', $this->currency_helper->get_monetary_amount('60') );
+		$this->assertEquals( '&#36;60.00', $this->currency_helper->get_monetary_amount('60') );
 	}
 	
 	function test_get_decimals() {
@@ -33,16 +33,57 @@ class Test_Currency_Helper extends WP_UnitTestCase {
 
 		$this->assertEquals( '%2$s&nbsp;%1$s', $this->currency_helper->get_currency_format() );
 
-		$this->assertEquals( '60.00 $', $this->currency_helper->get_monetary_amount('60') );
+		$this->assertEquals( '60.00&nbsp;&#36;', $this->currency_helper->get_monetary_amount('60') );
 
 		update_option( 'charitable_currency_symbol_position', 'left' );
 	}
 
 	function test_currencies() {
-		$this->change_currency( 'AED' );
-		$this->assertEquals( 'د.إ60.00', $this->currency_helper->get_monetary_amount('60') );
 
-		$this->change_currency( 'BDT' );
-		$this->assertEquals( '&#2547;&nbsp;60.00', $this->currency_helper->get_monetary_amount('60') );
+		$assertions = array(
+				array('AED','د.إ'),
+				array('BDT','৳'),
+				array('BRL','R$'),
+				array('BGN','лв.'),
+				array('AUD','$'),
+				array('USD','$'),
+				array('EUR','€'),
+				array('JPY','¥'),
+				array('RUB','руб.'),
+				array('KRW','₩'),
+				array('TRY','₺'),
+				array('NOK','kr'),
+				array('ZAR','R'),
+				array('CZK','Kč'),
+				array('MYR','RM'),
+				array('DKK','kr.'),
+				array('HUF','Ft'),
+				array('IDR','Rp'),
+				array('INR','Rs.'),
+				array('ISK','Kr.'),
+				array('ILS','₪'),
+				array('PHP','₱'),
+				array('PLN','zł'),
+				array('SEK','kr'),
+				array('CHF','CHF'),
+				array('TWD','NT$'),
+				array('THB','฿'),
+				array('GBP','£'),
+				array('RON','lei'),
+				array('VND','₫'),
+				array('NGN','₦'),
+				array('HRK','Kn'),
+				array('',''),
+				array('AN_UNLISTED_VALUE','')
+			);
+
+		foreach($assertions as $pair){
+			$this->change_currency( $pair[0] );
+
+			$amount = $this->currency_helper->get_monetary_amount(60);
+
+			$this->assertEquals( $pair[1].'60.00', html_entity_decode($amount, ENT_QUOTES, 'UTF-8'), 'test_currencies_'.$pair[0]);
+		}
+
 	}
 }

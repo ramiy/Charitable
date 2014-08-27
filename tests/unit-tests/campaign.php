@@ -121,7 +121,7 @@ class Test_Charitable_Campaign extends WP_UnitTestCase {
 	}
 
 	function test_get_monetary_goal() {
-		$this->assertEquals( '$40000.00', $this->campaign->get_monetary_goal(), 'Test monetary goal.' );
+		$this->assertEquals( '&#36;40,000.00', $this->campaign->get_monetary_goal(), 'Test monetary goal.' );
 	}
 
 	function test_get_donations() {
