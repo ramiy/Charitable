@@ -1,12 +1,9 @@
 <?php
 
-class Test_Charitable_Admin_Settings extends WP_UnitTestCase {
-
-	private $charitable;
+class Test_Charitable_Admin_Settings extends Charitable_UnitTestCase {
 
 	function setUp() {
 		parent::setUp();
-		$this->charitable = get_charitable();
 	}
 
 	function test_add_menu() {

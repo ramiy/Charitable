@@ -1,14 +1,12 @@
 <?php
 
-class Test_Currency_Helper extends WP_UnitTestCase {
+class Test_Charitable_Currency_Helper extends Charitable_UnitTestCase {
 	
-	private $charitable;
 	private $currency_helper;
 
 	function setUp() {
 		parent::setUp();
 
-		$this->charitable = get_charitable();
 		$this->currency_helper = $this->charitable->get_currency_helper();
 
 		update_option('charitable_currency_symbol_position', 'left');

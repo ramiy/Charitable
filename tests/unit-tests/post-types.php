@@ -1,12 +1,9 @@
 <?php
 
-class Test_Charitable_Post_Types extends WP_UnitTestCase {
-
-	private $charitable;
+class Test_Charitable_Post_Types extends Charitable_UnitTestCase {
 
 	function setUp() {
 		parent::setUp();
-		$this->charitable = get_charitable();
 	}
 
 	function test_campaign_post_types() {

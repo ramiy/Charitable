@@ -119,9 +119,9 @@ final class Charitable_Campaign_Post_Type {
 					'priority' => 4, 
 					'view' => 'metaboxes/campaign-general/campaign-goal'
 				), 
-				'end_time' => array(
+				'end_date' => array(
 					'priority' => 8, 
-					'view' => 'metaboxes/campaign-general/campaign-end-time'
+					'view' => 'metaboxes/campaign-general/campaign-end-date'
 				)
 			) 
 		);
@@ -168,22 +168,22 @@ final class Charitable_Campaign_Post_Type {
 	 */
 	public function save_post($post_id, WP_Post $post) {
 		if ( $this->meta_box_helper->user_can_save( $post ) ) {
+							
+			$campaign_goal_enabled 				= isset( $_POST['_campaign_goal_enabled'] ) && $_POST['_campaign_goal_enabled'] == 'on';
+			$campaign_goal 						= floatval( $_POST['_campaign_goal'] );
+			$campaign_end_date_enabled 			= isset( $_POST['_campaign_end_date_enabled'] ) && $_POST['_campaign_end_date_enabled'] == 'on';
+			$campaign_end_date 					= date( 'Y-m-d H:i:s', strtotime( $_POST['_campaign_end_date'] ) );
+			$campaign_custom_donations_enabled 	= isset( $_POST['_campaign_custom_donations_enabled'] ) && $_POST['_campaign_custom_donations_enabled'] == 'on';
+			$campaign_suggested_donations 		= $_POST['_campaign_suggested_donations'];
+			$campaign_donation_form_fields 		= (array) $_POST['_campaign_donation_form_fields'];
 
-			$campaign_goal_enabled = isset( $_POST['campaign_goal_enabled'] ) && $_POST['campaign_goal_enabled'] == 'on';
-			$campaign_goal = floatval( $_POST['campaign_goal'] );
-			$campaign_end_time_enabled = isset( $_POST['campaign_end_time_enabled'] ) && $_POST['campaign_end_time_enabled'] == 'on';
-			$campaign_end_time = $_POST['campaign_end_time'];
-			$campaign_custom_donations_enabled =isset( $_POST['campaign_custom_donations_enabled'] ) && $_POST['campaign_custom_donations_enabled'] == 'on';
-			$campaign_suggested_donations = $_POST['campaign_suggested_donations'];
-			$campaign_donation_form_fields = (array) $_POST['campaign_donation_form_fields'];
-
-			update_post_meta( $post_id, 'campaign_goal_enabled', $campaign_goal_enabled );
-			update_post_meta( $post_id, 'campaign_goal', $campaign_goal );
-			update_post_meta( $post_id, 'campaign_end_time_enabled', $campaign_end_time_enabled );
-			update_post_meta( $post_id, 'campaign_end_time', $campaign_end_time );
-			update_post_meta( $post_id, 'campaign_custom_donations_enabled', $campaign_custom_donations_enabled );
-			update_post_meta( $post_id, 'campaign_suggested_donations', $campaign_suggested_donations );
-			update_post_meta( $post_id, 'campaign_donation_form_fields', $campaign_donation_form_fields );
+			update_post_meta( $post_id, '_campaign_goal_enabled', $campaign_goal_enabled );
+			update_post_meta( $post_id, '_campaign_goal', $campaign_goal );
+			update_post_meta( $post_id, '_campaign_end_date_enabled', $campaign_end_date_enabled );
+			update_post_meta( $post_id, '_campaign_end_date', $campaign_end_date );
+			update_post_meta( $post_id, '_campaign_custom_donations_enabled', $campaign_custom_donations_enabled );
+			update_post_meta( $post_id, '_campaign_suggested_donations', $campaign_suggested_donations );
+			update_post_meta( $post_id, '_campaign_donation_form_fields', $campaign_donation_form_fields );
 		}
 	}	
 

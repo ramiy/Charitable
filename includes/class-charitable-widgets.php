@@ -74,7 +74,7 @@ final class Charitable_Widgets {
 	 * @since 0.1
 	 */
 	private function include_widgets() {
-		require_once( $this->charitable->get_includes_path() . 'widgets/class-charitable-campaigns-widget.php' );
+		require_once( $this->charitable->get_path( 'includes' ) . 'widgets/class-charitable-campaigns-widget.php' );
 	}
 
 	/**

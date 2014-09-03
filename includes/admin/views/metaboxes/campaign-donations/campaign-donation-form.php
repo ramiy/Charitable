@@ -10,7 +10,7 @@ global $post;
 
 $form_fields = get_charitable()->get_registered_object('Charitable_Campaign_Post_Type')->get_donation_form_fields();
 
-$selected_fields = (array) get_post_meta( $post->ID, 'campaign_donation_form_fields', true );
+$selected_fields = (array) get_post_meta( $post->ID, '_campaign_donation_form_fields', true );
 ?>
 <section class="charitable-metabox-section">
 	<h4 class="charitable-metabox-section-header"><?php _e( 'Donation Form', 'charitable' ) ?></h4>
@@ -23,7 +23,7 @@ $selected_fields = (array) get_post_meta( $post->ID, 'campaign_donation_form_fie
 			<?php if ( isset( $field['required_in_form'] ) && $field['required_in_form'] ) : ?>
 				<input type="checkbox" 
 					id="campaign_donation_form_fields_<?php echo $field_key ?>" 
-					name="campaign_donation_form_fields[]" 
+					name="_campaign_donation_form_fields[]" 
 					value="<?php echo $field_key ?>" 
 					checked 
 					disabled 
@@ -31,7 +31,7 @@ $selected_fields = (array) get_post_meta( $post->ID, 'campaign_donation_form_fie
 			<?php else : ?>
 				<input type="checkbox" 
 					id="campaign_donation_form_fields_<?php echo $field_key ?>" 
-					name="campaign_donation_form_fields[]" 
+					name="_campaign_donation_form_fields[]" 
 					value="<?php echo $field_key ?>" 
 					<?php checked( in_array($field_key, $selected_fields) ) ?> 
 				/>

@@ -7,7 +7,7 @@
  */
 ?>
 <div class="charitable-metabox">
-
-	<?php do_action( 'campaign_donations_metabox' ) ?>
-
+	<?php 
+	do_action( 'campaign_donations_metabox' ) 
+	?>
 </div>

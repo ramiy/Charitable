@@ -1,16 +1,11 @@
 <?php
 
-class Test_Charitable extends WP_UnitTestCase {
-
-	private $charitable;
+class Test_Charitable extends Charitable_UnitTestCase {
 
 	function setUp() {
 		parent::setUp();
-
-		$this->charitable = get_charitable();
-		$this->directory_path = $this->charitable->get_directory_path();
-		$this->directory_url = $this->charitable->get_directory_url();
-
+		$this->directory_path = $this->charitable->get_path();
+		$this->directory_url = $this->charitable->get_path('', false);
 	}
 
 	function test_static_instance() {
@@ -18,27 +13,26 @@ class Test_Charitable extends WP_UnitTestCase {
 	}
 
 	function test_include_files() {
-		$this->assertFileExists( $this->charitable->get_includes_path() . 'class-charitable-donation-controller.php' );
-		$this->assertFileExists( $this->charitable->get_includes_path() . 'class-charitable-post-types.php' );
-		$this->assertFileExists( $this->charitable->get_includes_path() . 'class-charitable-query.php' );
-		$this->assertFileExists( $this->charitable->get_includes_path() . 'class-charitable-templates.php' );
-		$this->assertFileExists( $this->charitable->get_includes_path() . 'class-charitable-widgets.php' );
-		$this->assertFileExists( $this->charitable->get_includes_path() . 'interface-charitable-donation-form.php' );
-		$this->assertFileExists( $this->charitable->get_includes_path() . 'class-charitable-campaign.php' );
-		$this->assertFileExists( $this->charitable->get_includes_path() . 'class-charitable-donation.php' );
-		$this->assertFileExists( $this->charitable->get_includes_path() . 'class-charitable-donation-form.php' );
-		$this->assertFileExists( $this->charitable->get_includes_path() . 'class-charitable-donation-form-hidden.php' );
-		$this->assertFileExists( $this->charitable->get_includes_path() . 'class-charitable-currency-helper.php' );
-		$this->assertFileExists( $this->charitable->get_includes_path() . 'class-charitable-request.php' );
-		$this->assertFileExists( $this->charitable->get_includes_path() . 'class-charitable-template.php' );
-		$this->assertFileExists( $this->charitable->get_includes_path() . 'class-charitable-template-part.php' );
-		$this->assertFileExists( $this->charitable->get_includes_path() . 'class-charitable-location-helper.php' );
+		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'class-charitable-donation-controller.php' );
+		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'class-charitable-post-types.php' );
+		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'class-charitable-campaign-query.php' );
+		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'class-charitable-templates.php' );
+		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'class-charitable-widgets.php' );
+		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'interface-charitable-donation-form.php' );
+		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'class-charitable-campaign.php' );
+		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'class-charitable-donation.php' );
+		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'class-charitable-donation-form.php' );
+		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'class-charitable-donation-form-hidden.php' );
+		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'class-charitable-currency-helper.php' );
+		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'class-charitable-request.php' );
+		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'class-charitable-template.php' );
+		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'class-charitable-template-part.php' );
+		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'class-charitable-location-helper.php' );
 	}
 
 	function test_attach_hooks_and_filters() {
 		$this->assertEquals( 2, has_action('charitable_start', array( 'Charitable_Donation_Controller', 'charitable_start' ) ) );
 		$this->assertEquals( 2, has_action('charitable_start', array( 'Charitable_Post_Types', 'charitable_start' ) ) );
-		$this->assertEquals( 2, has_action('charitable_start', array( 'Charitable_Query', 'charitable_start' ) ) );
 		$this->assertEquals( 2, has_action('charitable_start', array( 'Charitable_Templates', 'charitable_start' ) ) );
 		$this->assertEquals( 2, has_action('charitable_start', array( 'Charitable_Widgets', 'charitable_start' ) ) );
 	}
@@ -57,24 +51,15 @@ class Test_Charitable extends WP_UnitTestCase {
 		$this->assertEquals( 'Test_Charitable', get_class( $this->charitable->get_registered_object('Test_Charitable') ) );
 	}
 
-	function test_get_includes_path() {
-		$this->assertEquals( $this->directory_path . 'includes/', $this->charitable->get_includes_path() );
-	}
-
-	function test_get_admin_path() {
-		$this->assertEquals( $this->directory_path . 'includes/admin/', $this->charitable->get_admin_path() );
-	}
-
-	function test_get_assets_path() {
-		$this->assertEquals( $this->directory_url . 'assets/', $this->charitable->get_assets_path() );
-	}
-
-	function test_get_theme_template_path() {
-		$this->assertEquals( 'charitable', $this->charitable->get_theme_template_path() );
-	}
-
-	function test_get_plugin_template_path() {
-		$this->assertEquals( $this->directory_path . 'templates/', $this->charitable->get_plugin_template_path() );
+	function test_get_path() {
+		$this->assertEquals( $this->directory_path, 					$this->charitable->get_path() );
+		$this->assertEquals( $this->directory_url, 						$this->charitable->get_path( '', false ) );
+		$this->assertEquals( $this->directory_path . 'includes/', 		$this->charitable->get_path( 'includes' ) );
+		$this->assertEquals( $this->directory_path . 'includes/admin/', $this->charitable->get_path( 'admin' ) );
+		$this->assertEquals( $this->directory_path . 'assets/', 		$this->charitable->get_path( 'assets' ) );
+		$this->assertEquals( $this->directory_url . 'assets/', 			$this->charitable->get_path( 'assets', false ) );
+		$this->assertEquals( 'charitable', 								$this->charitable->get_path( 'theme_templates' ) );
+		$this->assertEquals( $this->directory_path . 'templates/', 		$this->charitable->get_path( 'plugin_templates' ) );
 	}
 
 	function test_get_location_helper() {

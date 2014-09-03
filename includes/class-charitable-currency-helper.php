@@ -76,27 +76,24 @@ final class Charitable_Currency_Helper {
 	 * @since 0.1
 	 */
 	public function get_currency_format() {
-		// if ( empty( $this->currency_format ) ) {
+		$symbol_position = get_option( 'charitable_currency_symbol_position', 'left' );
 
-			$symbol_position = get_option( 'charitable_currency_symbol_position', 'left' );
+		switch ( $symbol_position ) {
+			case 'left': 
+				$format = '%1$s%2$s';
+				break;
+			case 'right':
+				$format = '%2$s%1$s';
+				break;
+			case 'left-with-space':
+				$format = '%1$s&nbsp;%2$s';
+				break;
+			case 'right-with-space':
+				$format = '%2$s&nbsp;%1$s';
+				break; 
+		}
 
-			switch ( $symbol_position ) {
-				case 'left': 
-					$format = '%1$s%2$s';
-					break;
-				case 'right':
-					$format = '%2$s%1$s';
-					break;
-				case 'left-with-space':
-					$format = '%1$s&nbsp;%2$s';
-					break;
-				case 'right-with-space':
-					$format = '%2$s&nbsp;%1$s';
-					break; 
-			}
-
-			$this->currency_format = apply_filters( 'charitable_currency_format', $format, $symbol_position );
-		// }
+		$this->currency_format = apply_filters( 'charitable_currency_format', $format, $symbol_position );
 
 		return $this->currency_format;
 	}
@@ -116,7 +113,7 @@ final class Charitable_Currency_Helper {
 	 */
 	private function get_currency_symbol( $currency = "" ) {
 
-		if ( !strlen( $currency ) ) {
+		if ( ! strlen( $currency ) ) {
 			$currency = get_option( 'charitable_currency', 'AUD' );
 		}		
 

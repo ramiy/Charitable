@@ -71,11 +71,10 @@ final class Charitable_Admin {
 	 * @since 0.1
 	 */
 	private function include_files() {
-		require_once( $this->charitable->get_admin_path() . 'charitable-core-admin-functions.php' );
-			
-		require_once( $this->charitable->get_admin_path() . 'class-charitable-admin-settings.php' );
-		require_once( $this->charitable->get_admin_path() . 'post-types/class-charitable-meta-box-helper.php' );
-		require_once( $this->charitable->get_admin_path() . 'post-types/class-charitable-campaign-post-type.php' );
+		require_once( $this->charitable->get_path( 'admin' ) . 'charitable-core-admin-functions.php' );			
+		require_once( $this->charitable->get_path( 'admin' ) . 'class-charitable-admin-settings.php' );
+		require_once( $this->charitable->get_path( 'admin' ) . 'post-types/class-charitable-meta-box-helper.php' );
+		require_once( $this->charitable->get_path( 'admin' ) . 'post-types/class-charitable-campaign-post-type.php' );
 	}
 
 	/**
@@ -88,9 +87,6 @@ final class Charitable_Admin {
 	private function attach_hooks_and_filters() {
 		add_action('charitable_admin_start', array('Charitable_Admin_Settings', 'charitable_admin_start'));
 		add_action('charitable_admin_start', array('Charitable_Campaign_Post_Type', 'charitable_admin_start'));
-		// add_action('charitable_admin_start', array('Charitable_Admin_Meta_Boxes_Campaign', 'charitable_admin_start'));
-		// add_action('charitable_admin_start', array('Charitable_Admin_Meta_Boxes_Donation', 'charitable_admin_start'));
-
 		add_action('admin_enqueue_scripts', array(&$this, 'admin_enqueue_scripts'));
 	}
 
@@ -112,11 +108,13 @@ final class Charitable_Admin {
 	 * @access public
 	 * @since 0.1
 	 */
-	public function admin_enqueue_scripts() {			
+	public function admin_enqueue_scripts() {		
+		$assets_path = $this->charitable->get_path( 'assets', false );	
+
 		/**
 		 * Menu styles are loaded everywhere in the Wordpress dashboard. 
 		 */
-		wp_register_style( 'charitable-admin-menu', $this->charitable->get_assets_path() . 'css/charitable-admin-menu.css', array(), $this->charitable->get_version() );
+		wp_register_style( 'charitable-admin-menu', $assets_path . 'css/charitable-admin-menu.css', array(), $this->charitable->get_version() );
 		wp_enqueue_style( 'charitable-admin-menu' );
 
 		/**
@@ -129,10 +127,10 @@ final class Charitable_Admin {
 
 			wp_enqueue_style( 'jquery-ui-style', '//ajax.googleapis.com/ajax/libs/jqueryui/' . $jquery_version . '/themes/smoothness/jquery-ui.css', array(), $this->charitable->get_version() );
 
-			wp_register_style( 'charitable-admin', $this->charitable->get_assets_path() . 'css/charitable-admin.css', array(), $this->charitable->get_version() );
+			wp_register_style( 'charitable-admin', $assets_path . 'css/charitable-admin.css', array(), $this->charitable->get_version() );
 			wp_enqueue_style( 'charitable-admin' );
 
-			wp_register_script( 'charitable-admin', $this->charitable->get_assets_path() . 'js/charitable-admin.js', array('jquery-ui-datepicker'), $this->charitable->get_version() );		
+			wp_register_script( 'charitable-admin', $assets_path . 'js/charitable-admin.js', array('jquery-ui-datepicker'), $this->charitable->get_version() );		
 			wp_enqueue_script( 'charitable-admin' );
 		}
 	}

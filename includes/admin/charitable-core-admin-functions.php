@@ -26,7 +26,7 @@ if ( ! function_exists( 'charitable_admin_view' ) ) :
  * @since 0.1
  */
 function charitable_admin_view($view) {
-	$filename = get_charitable()->get_admin_path() . 'views/' . $view . '.php';
+	$filename = get_charitable()->get_path( 'admin' ) . 'views/' . $view . '.php';
 
 	if ( ! is_readable( $filename ) ) {
 		echo '<pre>';

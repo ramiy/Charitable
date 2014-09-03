@@ -1,8 +1,6 @@
 <?php
 
-class Test_Charitable_Campaign extends WP_UnitTestCase {
-
-	private $charitable;
+class Test_Charitable_Campaign extends Charitable_UnitTestCase {
 
 	private $post;
 
@@ -14,31 +12,25 @@ class Test_Charitable_Campaign extends WP_UnitTestCase {
 
 	function setUp() {
 		parent::setUp();
-		$this->charitable = get_charitable();
 
 		/**
 		 * Create a campaign
 		 */
 
-		$post_id = $this->factory->post->create( array(
-			'post_title' => 'Test Campaign', 
-			'post_name' => 'test-campaign', 
-			'post_type' => 'campaign', 
-			'post_status' => 'publish' 
-		) );
+		$post_id = $this->factory->campaign->create();
 
 		$this->end_time = strtotime( '+300 days');
 
 		$meta = array(
-			'campaign_goal_enabled' => 1,
-			'campaign_goal' => 40000.00,
-			'campaign_end_time_enabled' => 1,
-			'campaign_end_time' => $this->end_time,
-			'campaign_custom_donations_enabled' => 1,
-			'campaign_suggested_donations' => array(
+			'_campaign_goal_enabled' 				=> 1,
+			'_campaign_goal' 						=> 40000.00,
+			'_campaign_end_date_enabled' 			=> 1,
+			'_campaign_end_date' 					=> date( 'Y-m-d H:i:s', $this->end_time ),
+			'_campaign_custom_donations_enabled' 	=> 1,
+			'_campaign_suggested_donations' 		=> array(
 				5, 20, 50, 100, 250 
 			),
-			'campaign_donation_form_fields' => array(
+			'_campaign_donation_form_fields' 		=> array(
 				'donor_first_name', 
 				'donor_last_name', 
 				'donor_email', 
@@ -66,18 +58,12 @@ class Test_Charitable_Campaign extends WP_UnitTestCase {
 			2 => $user_id_2,
 			3 => $user_id_3 ) as $donation => $user_id ) {
 
-			$donation_id = $this->factory->post->create( array( 
-				'post_title' => "Donation $donation", 
-				'post_name' => "test-donation-$donation", 
-				'post_type' => 'donation', 
-				'post_status' => 'publish', 
-				'post_author' => $user_id
-			) );
+			$donation_id = $this->factory->donation->create( array( 'post_author' => $user_id ) );
 
 			$meta = array(
-				'donation_amount' => $donation * 10, // 10 + 20 + 30 = $60 donated in total
-				'donation_gateway' => 'paypal',
-				'campaign_id' => $post_id
+				'donation_amount'	=> $donation * 10, // 10 + 20 + 30 = $60 donated in total
+				'donation_gateway' 	=> 'paypal',
+				'campaign_id' 		=> $post_id
 			);
 
 			foreach ( $meta as $key => $value ) {
@@ -95,8 +81,8 @@ class Test_Charitable_Campaign extends WP_UnitTestCase {
 	function test_get() {
 		$this->assertEquals( 1, $this->campaign->get('campaign_goal_enabled') );
 		$this->assertEquals( 40000.00, $this->campaign->get('campaign_goal') );
-		$this->assertEquals( 1, $this->campaign->get('campaign_end_time_enabled') );
-		$this->assertEquals( $this->end_time, $this->campaign->get('campaign_end_time') );
+		$this->assertEquals( 1, $this->campaign->get('campaign_end_date_enabled') );
+		$this->assertEquals( date( 'Y-m-d H:i:s', $this->end_time ), $this->campaign->get('campaign_end_date') );
 		$this->assertEquals( 1, $this->campaign->get('campaign_custom_donations_enabled') );
 
 		foreach ( array( 5, 20, 50, 100, 250 ) as $suggested_donation ) {
@@ -143,14 +129,7 @@ class Test_Charitable_Campaign extends WP_UnitTestCase {
 
 		// Create a new donation
 		$user_id_4 = $this->factory->user->create( array( 'display_name' => 'Abraham Lincoln' ) );
-
-		$donation_id = $this->factory->post->create( array( 
-			'post_title' => "Donation 4", 
-			'post_name' => "test-donation-4", 
-			'post_type' => 'donation', 
-			'post_status' => 'publish', 
-			'post_author' => $user_id_4
-		) );
+		$donation_id = $this->factory->donation->create( array( 'post_author' => $user_id_4 ) );
 
 		update_post_meta( $donation_id, 'campaign_id', $this->campaign->get_campaign_id() );
 		update_post_meta( $donation_id, 'donation_amount', 100 );

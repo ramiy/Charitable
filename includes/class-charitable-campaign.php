@@ -83,33 +83,20 @@ class Charitable_Campaign {
 	}
 
 	/**
-	 * Returns the campaign's post_meta values. 
+	 * Returns the campaign's post_meta values. An underscore is automatically prepended to the meta key.
 	 *
 	 * @see get_post_meta
 	 * 
-	 * @param string $meta_name The meta name to search for.
-	 * @param bool $single Whether to return a single value or an array. 
-	 * @return mixed This will return an array if single is false. If it's true, 
-	 *  	the value of the meta_value field will be returned.
+	 * @param string $meta_name 	The meta name to search for.
+	 * @param bool $single 			Whether to return a single value or an array. 
+	 * @return mixed 				This will return an array if single is false. If it's true, 
+	 *  							the value of the meta_value field will be returned.
 	 * @access public
 	 * @since 0.1
 	 */
 	public function get( $meta_name, $single = true ) {
+		$meta_name = '_' . $meta_name;
 		return get_post_meta( $this->post->ID, $meta_name, $single );
-	}
-
-	/**
-	 * Returns the timetamp of the end date.
-	 *
-	 * @return int 
-	 * @access public
-	 * @since 0.1
-	 */
-	public function get_end_time() {
-		if ( ! isset( $this->end_time ) ) {
-			$this->end_time = $this->get('campaign_end_time');
-		}
-		return $this->end_time;
 	}
 
 	/**
@@ -124,7 +111,7 @@ class Charitable_Campaign {
 	 */
 	public function get_end_date($date_format = '') {
 		if ( ! strlen( $date_format ) ) {
-			$date_format = get_option('date_format', 'd\/m\/Y');
+			$date_format = get_option('date_format', 'd/m/Y');
 		}
 
 		/**
@@ -132,9 +119,34 @@ class Charitable_Campaign {
 		 */
 		$date_format = apply_filters( 'charitable_campaign_end_date_format', $date_format, $this );
 
-		$date = explode( "/",  $this->get_end_time() );
-		// return $this->get_end_time();
-		return date( $date_format, mktime( $date[1], $date[0], $date[2] ) );
+		/**
+		 * This is how the end date is stored in the database, so just return that directly.
+		 */
+		if ( 'Y-m-d H:i:s' == $date_format ) {
+			return $this->get('campaign_end_date');
+		}
+		
+		return date( $date_format, $this->get_end_time() );
+	}
+
+	/**
+	 * Returns the timetamp of the end date.
+	 *
+	 * @return int 
+	 * @access public
+	 * @since 0.1
+	 */
+	public function get_end_time() {
+		if ( ! isset( $this->end_time ) ) {
+			/**
+			 * The date is stored in the format of Y-m-d H:i:s.
+			 */
+			$date_time 	= explode( ' ', $this->get('campaign_end_date') );
+			$date 		= explode( '-', $date_time[0] );
+			$time 		= explode( ':', $date_time[1] );
+			$this->end_time = mktime( $time[0], $time[1], $time[2], $date[1], $date[2], $date[0] );
+		}
+		return $this->end_time;
 	}
 
 	/**

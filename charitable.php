@@ -7,7 +7,7 @@
  * Author: Studio 164a
  * Author URI: http://164a.com
  * Requires at least: 3.9
- * Tested up to: 3.9
+ * Tested up to: 4.0
  *
  * Text Domain: charitable
  * Domain Path: /languages/
@@ -173,7 +173,7 @@ final class Charitable {
 		 */
 		require_once( $this->includes_path . 'class-charitable-donation-controller.php' );
 		require_once( $this->includes_path . 'class-charitable-post-types.php' );
-		require_once( $this->includes_path . 'class-charitable-query.php' );
+		require_once( $this->includes_path . 'class-charitable-campaign-query.php' );
 		require_once( $this->includes_path . 'class-charitable-templates.php' );
 		require_once( $this->includes_path . 'class-charitable-widgets.php' );
 
@@ -210,7 +210,7 @@ final class Charitable {
 	private function attach_hooks_and_filters() {				
 		add_action('charitable_start', array( 'Charitable_Donation_Controller', 'charitable_start' ), 2 );
 		add_action('charitable_start', array( 'Charitable_Post_Types', 'charitable_start' ), 2 );
-		add_action('charitable_start', array( 'Charitable_Query', 'charitable_start' ), 2 );
+		// add_action('charitable_start', array( 'Charitable_Campaign_Query', 'charitable_start' ), 2 );
 		add_action('charitable_start', array( 'Charitable_Templates', 'charitable_start' ), 2 );
 		add_action('charitable_start', array( 'Charitable_Widgets', 'charitable_start' ), 2 );
 	}
@@ -297,97 +297,43 @@ final class Charitable {
 	}
 
 	/**
-	 * Returns the path to the plugin directory. 
+	 * Returns plugin paths. 
 	 *
+	 * @param string $path 			// If empty, returns the path to the plugin.
+	 * @param bool $absolute_path 	// If true, returns the file system path. If false, returns it as a URL.
 	 * @return string
-	 * @access public
 	 * @since 0.1
 	 */
-	public function get_directory_path() {
-		return $this->directory_path;
-	}
+	public function get_path($type = '', $absolute_path = true ) {		
+		$base = $absolute_path ? $this->directory_path : $this->directory_url;
 
-	/**
-	 * Returns the URL for the plugin directory. 
-	 *
-	 * @return string
-	 * @access public
-	 * @since 0.1
-	 */
-	public function get_directory_url() {
-		return $this->directory_url;
-	}	
+		switch( $type ) {
+			case 'includes' : 
+				$path = $base . 'includes/';
+				break;
 
-	/**
-	 * Returns the path to the includes folder. 
-	 *
-	 * @return string
-	 * @access public
-	 * @since 0.1
-	 */
-	public function get_includes_path() {
-		return $this->includes_path;
-	}
+			case 'admin' :
+				$path = $base . 'includes/admin/';
+				break;
 
-	/**
-	 * Returns the path to the admin folder. 
-	 *
-	 * @return string
-	 * @access public
-	 * @since 0.1
-	 */
-	public function get_admin_path() {
-		if ( ! isset( $this->admin_path ) ) {
-			$this->admin_path = $this->includes_path . 'admin/';
+			case 'assets' : 
+				$path = $base . 'assets/';
+				break;
+
+			case 'plugin_templates' : 
+				$path = $base . 'templates/';
+				break;
+
+			case 'theme_templates' : 
+				$path = apply_filters( 'charitable_theme_template_path', 'charitable' );
+				break;
+
+			default :
+				$path = $base;
 		}
 
-		return $this->admin_path;
+		return $path;
 	}
-
-	/**
-	 * Returns the path to the assets folder. 
-	 *
-	 * @return string
-	 * @access public
-	 * @since 0.1
-	 */
-	public function get_assets_path() {
-		if ( ! isset( $this->assets_path ) ) {
-			$this->assets_path = $this->directory_url . 'assets/';
-		}
-
-		return $this->assets_path;
-	}
-
-	/**
-	 * Returns the theme template path. 
-	 *
-	 * @return string
-	 * @access public
-	 * @since 0.1
-	 */
-	public function get_theme_template_path() {
-		if ( ! isset( $this->theme_template_path ) ) {
-			$this->theme_template_path = apply_filters( 'charitable_theme_template_path', 'charitable' );						
-		}
-
-		return $this->theme_template_path;
-	}
-
-	/**
-	 * Returns the plugin template path. 
-	 *
-	 * @return string
-	 * @access public
-	 * @since 0.1
-	 */
-	public function get_plugin_template_path() {
-		if ( ! isset( $this->plugin_template_path ) ) {
-			$this->plugin_template_path = $this->directory_path . 'templates/';
-		}
-
-		return $this->plugin_template_path;
-	}	
 
 	/**
 	 * Returns the plugin's version number. 

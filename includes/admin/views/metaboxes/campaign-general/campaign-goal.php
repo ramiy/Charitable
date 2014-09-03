@@ -17,12 +17,12 @@ $goal = get_post_meta( $post->ID, 'campaign_goal', true );
 		<label for="campaign_goal_enabled">
 			<?php _e( 'Set a goal', 'charitable' ) ?>
 		</label>
-		<input type="checkbox" id="campaign_goal_enabled" name="campaign_goal_enabled" <?php checked($goal_enabled) ?> />
+		<input type="checkbox" id="campaign_goal_enabled" name="_campaign_goal_enabled" <?php checked($goal_enabled) ?> />
 	</p>
 	<p class="charitable-metabox-field">
 		<label for="campaign_goal" class="charitable-metabox-label">
 			<?php _e( 'Goal', 'charitable' ) ?>
 		</label>
-		<input type="text" id="campaign_goal" name="campaign_goal" value="<?php echo $goal ?>" />
+		<input type="text" id="campaign_goal" name="_campaign_goal" value="<?php echo $goal ?>" />
 	</p>
 </section>

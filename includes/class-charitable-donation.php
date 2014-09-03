@@ -65,6 +65,7 @@ class Charitable_Donation {
 	 * @since 0.1
 	 */
 	public function get( $meta_name, $single = true ) {
+		$meta_name = '_' . $meta_name;
 		return get_post_meta( $this->post->ID, $meta_name, $single );
 	}
 
