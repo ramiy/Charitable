@@ -4,7 +4,7 @@
 
 		if ( $.fn.datepicker ) {
 			$('.datepicker').datepicker();
-		}		
+		}
 
 	});
 

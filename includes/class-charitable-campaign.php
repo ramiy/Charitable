@@ -156,9 +156,33 @@ class Charitable_Campaign {
 	 * @access public
 	 * @since 0.1
 	 */
-	public function get_time_left() {
-		return $this->get_end_time() - time();
+	public function get_seconds_left() {
+		$time_left = $this->get_end_time() - time();
+		return $time_left < 0 ? 0 : $time_left;	
 	}
+
+	/**
+	 * Returns the amount of time left in the campaign as a descriptive string. 
+	 *
+	 * @uses charitable_campaign_ended 			Change the text displayed when there is no time left.
+	 * @uses charitable_campaign_time_left 		Change the text displayed when there is time left. 
+	 *
+	 * @return string 
+	 * @access public
+	 * @since 0.1
+	 */
+	public function get_time_left() {
+		$seconds_left = $this->get_seconds_left();
+
+		/**
+		 * Condition 1: The campaign has finished
+		 */ 
+		if ( $seconds_left === 0 ) {
+			$time_left = apply_filters( 'charitable_campaign_ended', __( 'Campaign has ended', 'charitable' ), $this );
+		}
+
+		return apply_filters( 'charitable_campaign_time_left', $time_left );	
+	}	
 
 	/**
 	 * Returns the fundraising goal of the campaign.
@@ -223,12 +247,12 @@ class Charitable_Campaign {
 				$this->donations = new WP_Query( 
 					apply_filters( 'charitable_campaign_donations_query_args', 
 						array(
-							'post_type' => 'donation', 
-							'post_status' => 'publish', 
-							'posts_per_page' => -1,
-							'meta_query' => array(
+							'post_type' 		=> 'donation', 
+							'post_status' 		=> 'publish', 
+							'posts_per_page' 	=> -1,
+							'meta_query' 		=> array(
 								array(
-									'key' => 'campaign_id',
+									'key' 	=> '_campaign_id',
 									'value' => $this->get_campaign_id() 
 								)
 							)
@@ -271,9 +295,9 @@ class Charitable_Campaign {
 					FROM $wpdb->postmeta m1
 					INNER JOIN $wpdb->postmeta m2 
 					ON m1.post_id = m2.post_id
-					WHERE m1.meta_key = 'campaign_id'
+					WHERE m1.meta_key = '_campaign_id'
 					AND m1.meta_value = %d
-					AND m2.meta_key = 'donation_amount'"
+					AND m2.meta_key = '_donation_amount'"
 					, $this->get_campaign_id()
 				) );
 			}

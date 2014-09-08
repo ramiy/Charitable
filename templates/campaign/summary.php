@@ -13,7 +13,6 @@ $campaign = get_charitable()->get_request()->get_current_campaign();
  */
 do_action('charitable_campaign_summary_before');
 ?>
-
 <div class="campaign-summary">
 	<p class="campaign-raised campaign-summary-item">
 		<?php printf(
@@ -30,11 +29,10 @@ do_action('charitable_campaign_summary_before');
 	<p class="campaign-time-left campaign-summary-item">
 		<?php printf(
 			_x( '%s Days Left', 'number of days left', 'charitable' ), 
-			'<span>' . $campaign->get_end_date() . '</span>' 
+			'<span>' . $campaign->get_time_left() . '</span>' 
 		) ?>
 	</p>
 </div>
-
 <?php
 /**
  * @hook charitable_campaign_summary_after

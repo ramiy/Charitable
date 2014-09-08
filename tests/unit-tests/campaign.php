@@ -61,9 +61,9 @@ class Test_Charitable_Campaign extends Charitable_UnitTestCase {
 			$donation_id = $this->factory->donation->create( array( 'post_author' => $user_id ) );
 
 			$meta = array(
-				'donation_amount'	=> $donation * 10, // 10 + 20 + 30 = $60 donated in total
-				'donation_gateway' 	=> 'paypal',
-				'campaign_id' 		=> $post_id
+				'_donation_amount'	=> $donation * 10, // 10 + 20 + 30 = $60 donated in total
+				'_donation_gateway' 	=> 'paypal',
+				'_campaign_id' 		=> $post_id
 			);
 
 			foreach ( $meta as $key => $value ) {
@@ -102,9 +102,13 @@ class Test_Charitable_Campaign extends Charitable_UnitTestCase {
 		$this->assertEquals( date('Y-m-d', $this->end_time), $this->campaign->get_end_date( 'Y-m-d' ) );
 	}
 
-	function test_get_time_left() {
+	function test_get_seconds_left() {
 		$seconds_left = $this->end_time - time();
-		$this->assertEquals( $seconds_left , $this->campaign->get_time_left() );
+		$this->assertEquals( $seconds_left , $this->campaign->get_seconds_left() );
+	}
+
+	function test_get_time_left() {	
+		$this->assertEquals( '300 days', $this->campaign->get_time_left() );
 	}
 
 	function test_get_goal() {
@@ -131,9 +135,9 @@ class Test_Charitable_Campaign extends Charitable_UnitTestCase {
 		$user_id_4 = $this->factory->user->create( array( 'display_name' => 'Abraham Lincoln' ) );
 		$donation_id = $this->factory->donation->create( array( 'post_author' => $user_id_4 ) );
 
-		update_post_meta( $donation_id, 'campaign_id', $this->campaign->get_campaign_id() );
-		update_post_meta( $donation_id, 'donation_amount', 100 );
-		update_post_meta( $donation_id, 'donation_gateway', 'paypal' );
+		update_post_meta( $donation_id, '_campaign_id', $this->campaign->get_campaign_id() );
+		update_post_meta( $donation_id, '_donation_amount', 100 );
+		update_post_meta( $donation_id, '_donation_gateway', 'paypal' );
 		
 		// Test count of donations again, before flush caching
 		$this->assertEquals( 3, $this->campaign->get_donations()->found_posts );

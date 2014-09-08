@@ -40,23 +40,30 @@ class Charitable_Campaigns_Widget extends WP_Widget {
 	 * @since 0.1
 	 */
 	public function widget( $args, $instance ) {
+		
+		$title = apply_filters( "campaigns-widget-title", $instance['title'] );
+
+		echo $args['before_widget'];
+		if ( ! empty( $title ) ) {
+			echo $args['before_title'] . $title . $args['after_title'];
+		}
 		?>
-		<aside class="widget widget-campaigns">
-		<h1 class="widget-title"><?php echo $instance['title'];?></h1>
 		<ul>
 
 			<?php
-				$query = Charitable_Campaign_Query::ordered_by_ending_soon( array('posts_per_page' => $instance['number'] ) );
+				$query = Charitable_Campaign_Query::ordered_by_ending_soon( array('posts_per_page' => $instance['number']) );
 
 				while($query->have_posts() ){
 					$query->the_post();
-					?><li class="cat-item"><a href="index.php?p=<?php echo get_the_id();?>"><?php the_title(); ?></a></li><?php
+					?><li><a href="<?php the_permalink() ?>" ><?php the_title(); ?></a></li><?php
 				}
 
 			?>
 
-		</aside>
+		
+		</ul>
 		<?php
+		echo $args['after_widget'];
 	}
 
 	/**
@@ -85,7 +92,6 @@ class Charitable_Campaigns_Widget extends WP_Widget {
 			<select name="<?php echo $this->get_field_name('order') ?>" id="<?php echo $this->get_field_id('order') ?>">
 				<option value="recent" <?php echo $order=="recent" ? "selected='selected'" : ""?>><?php _e( 'Date published', 'charitable' ) ?></option>
 				<option value="ending" <?php echo $order=="ending" ? "selected='selected'" : ""?>><?php _e( 'Ending soonest', 'charitable' ) ?></option>
-<!-- 				<option value="amount_raised"><?php _e( 'Amount raised', 'charitable' ) ?></option> -->
 			</select>
 		</p>
 		<?php

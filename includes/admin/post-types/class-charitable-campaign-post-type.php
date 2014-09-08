@@ -146,10 +146,6 @@ final class Charitable_Campaign_Post_Type {
 				'donations' => array(
 					'priority' => 4, 
 					'view' => 'metaboxes/campaign-donations/campaign-donation-options'
-				), 
-				'form' => array(
-					'priority' => 8, 
-					'view' => 'metaboxes/campaign-donations/campaign-donation-form'
 				)
 			) 
 		);
@@ -183,87 +179,8 @@ final class Charitable_Campaign_Post_Type {
 			update_post_meta( $post_id, '_campaign_end_date', $campaign_end_date );
 			update_post_meta( $post_id, '_campaign_custom_donations_enabled', $campaign_custom_donations_enabled );
 			update_post_meta( $post_id, '_campaign_suggested_donations', $campaign_suggested_donations );
-			update_post_meta( $post_id, '_campaign_donation_form_fields', $campaign_donation_form_fields );
 		}
 	}	
-
-	/**
-	 * Return the array of all possible donation form fields. 
-	 *
-	 * @uses charitable_registered_donation_form_fields
-	 * 
-	 * @return array
-	 * @access public
-	 * @since 0.1
-	 */
-	public function get_donation_form_fields() {
-		return apply_filters( 'charitable_registered_donation_form_fields', 
-			array(
-				'first_name' => array( 
-					'label' 	=> __( 'First name', 'charitable' ), 
-					'meta_key' 	=> 'donor_first_name', 
-					'type'		=> 'text'
-				),
-				'last_name' => array( 
-					'label' 	=> __( 'Last name', 'charitable' ), 
-					'meta_key' 	=> 'donor_last_name',
-					'type'		=> 'text'
-				),
-				'address' => array( 
-					'label' 	=> __( 'Address', 'charitable' ), 
-					'meta_key' 	=> 'donor_address',
-					'type'		=> 'text'
-				),
-				'address_2' => array( 
-					'label' 	=> __( 'Address 2', 'charitable' ), 
-					'meta_key' 	=> 'donor_address_2',
-					'type'		=> 'text' 
-				),
-				'city' => array( 
-					'label' 	=> __( 'City', 'charitable' ), 
-					'meta_key' 	=> 'donor_city',
-					'type'		=> 'text' 
-				),
-				'state' => array( 
-					'label' 	=> __( 'State', 'charitable' ), 
-					'meta_key' 	=> 'donor_state',
-					'type'		=> 'text' 
-				),
-				'postcode' => array( 
-					'label' 	=> __( 'Postcode', 'charitable' ), 
-					'meta_key' 	=> 'donor_postcode',
-					'type'		=> 'number' 
-				),
-				'country' => array( 
-					'label' 	=> __( 'Country', 'charitable' ), 
-					'meta_key' 	=> 'donor_country',
-					'type'		=> 'select', 
-					'options' 	=> $this->charitable->get_location_helper()->get_countries()
-				),
-				'phone' => array( 
-					'label' 	=> __( 'Phone', 'charitable' ), 
-					'meta_key' 	=> 'donor_phone',
-					'type'		=> 'text' 
-				),
-				'email' => array( 
-					'label' 	=> __( 'Email', 'charitable' ), 
-					'meta_key' 	=> 'donor_email',
-					'type'		=> 'email',
-					'required_in_form' => true
-				),
-				'website' => array( 
-					'label' 	=> __( 'Website', 'charitable' ), 
-					'meta_key' 	=> 'donor_website',
-					'type'		=> 'url' 
-				),
-				'comment' => array( 
-					'label' 	=> __( 'Comment', 'charitable' ), 
-					'meta_key' 	=> 'donor_comment',
-					'type'		=> 'textarea'
-				)
-			) 
-		);
-	}
 }
 
 endif; // End class_exists check
