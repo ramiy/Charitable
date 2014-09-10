@@ -34,26 +34,7 @@ class Charitable_Campaign_Query extends WP_Query {
 
 		parent::__construct( $args );
 	}
-
-
-	/**
-	 * Instantiate the class, but only during the start phase.
-	 *
-	 * @see charitable_start hook
-	 * 
-	 * @param Charitable $charitable 
-	 * @return void
-	 * @static 
-	 * @access public
-	 * @since 0.1
-	 */
-	public static function charitable_start(Charitable $charitable) {
-		//errors happen without this present
-	}
-
-
-
-
+	
 	/**
 	 * Returns a WP_Query that will return active campaigns, ordered by the date they're ending.
 	 *

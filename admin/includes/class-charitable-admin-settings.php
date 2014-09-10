@@ -51,9 +51,9 @@ final class Charitable_Admin_Settings {
 	}
 
 	/**
-	 * Create an object instance. This will only work during the charitable_admin_start event.
+	 * Create an object instance. This will only work during the charitable_start event.
 	 * 
-	 * @see charitable_admin_start hook
+	 * @see charitable_start hook
 	 *
 	 * @param Charitable $charitable
 	 * @return void
@@ -61,11 +61,11 @@ final class Charitable_Admin_Settings {
 	 * @since 0.1
 	 */
 	public static function charitable_admin_start(Charitable $charitable) {
-		if ( ! $charitable->is_admin_start() ) {
+		if ( ! $charitable->is_start() ) {
 			return;
 		}
 
-		new Charitable_Admin_Settings($charitable);
+		new Charitable_Settings($charitable);
 	}
 
 	/**

@@ -4,18 +4,18 @@
  */
 if ( ! defined( 'ABSPATH' ) ) exit; 
 
-if ( ! class_exists( 'Charitable_Donation_Controller' ) ) : 
+if ( ! class_exists( 'Charitable_Donation_Actions' ) ) : 
 
 /**
- * Charitable Donation controller.
+ * Charitable Donation actions.
  *
- * @class 		Charitable_Donation_Controller
+ * @class 		Charitable_Donation_Actions
  * @version		0.1
- * @package		Charitable/Classes/Charitable_Donation_Controller
+ * @package		Charitable/Classes/Charitable_Donation_Actions
  * @category	Class
  * @author 		Studio164a
  */
-final class Charitable_Donation_Controller {
+final class Charitable_Donation_Actions {
 
 	/**
 	 * @var Charitable $charitable
@@ -60,7 +60,7 @@ final class Charitable_Donation_Controller {
 			return;
 		}
 
-		new Charitable_Donation_Controller( $charitable );
+		new Charitable_Donation_Actions( $charitable );
 	}
 
 	/**

@@ -25,7 +25,7 @@ final class Charitable_Admin {
 	/**
 	 * Set up the class. 
 	 * 
-	 * Note that the only way to instantiate an object is with the charitable_admin_start method, 
+	 * Note that the only way to instantiate an object is with the charitable_start method, 
 	 * which can only be called during the start phase. In other words, don't try 
 	 * to instantiate this object. 
 	 *
@@ -42,8 +42,6 @@ final class Charitable_Admin {
 		$this->include_files();
 
 		$this->attach_hooks_and_filters();
-
-		do_action('charitable_admin_start', $this->charitable, $this);
 	}
 
 	/**
@@ -71,10 +69,10 @@ final class Charitable_Admin {
 	 * @since 0.1
 	 */
 	private function include_files() {
-		require_once( $this->charitable->get_path( 'admin' ) . 'charitable-core-admin-functions.php' );			
-		require_once( $this->charitable->get_path( 'admin' ) . 'class-charitable-admin-settings.php' );
-		require_once( $this->charitable->get_path( 'admin' ) . 'post-types/class-charitable-meta-box-helper.php' );
-		require_once( $this->charitable->get_path( 'admin' ) . 'post-types/class-charitable-campaign-post-type.php' );
+		require_once( $this->charitable->get_path( 'admin' ) . 'includes/charitable-core-admin-functions.php' );			
+		require_once( $this->charitable->get_path( 'admin' ) . 'includes/class-charitable-admin-settings.php' );
+		require_once( $this->charitable->get_path( 'admin' ) . 'includes/class-charitable-meta-box-helper.php' );
+		require_once( $this->charitable->get_path( 'admin' ) . 'includes/class-charitable-campaign-post-type.php' );
 	}
 
 	/**
@@ -85,20 +83,9 @@ final class Charitable_Admin {
 	 * @since 0.1
 	 */
 	private function attach_hooks_and_filters() {
-		add_action('charitable_admin_start', array('Charitable_Admin_Settings', 'charitable_admin_start'));
-		add_action('charitable_admin_start', array('Charitable_Campaign_Post_Type', 'charitable_admin_start'));
+		add_action('charitable_start', array('Charitable_Admin_Settings', 'charitable_start'));
+		add_action('charitable_start', array('Charitable_Campaign_Post_Type', 'charitable_start'));
 		add_action('admin_enqueue_scripts', array(&$this, 'admin_enqueue_scripts'));
-	}
-
-	/**
-	 * Returns whether we are currently in the admin start phase of the plugin. 
-	 *
-	 * @return bool
-	 * @access public
-	 * @since 0.1
-	 */
-	public function is_admin_start() {
-		return current_filter() == 'charitable_admin_start';
 	}
 
 	/**

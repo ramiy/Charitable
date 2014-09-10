@@ -3,10 +3,10 @@ add_import_path "assets/compass/scss"
 
 # Set this to the root of your project when deployed:
 http_path = "/"
-css_dir = "assets/css"
-sass_dir = "assets/scss"
-images_dir = "assets/images"
-javascripts_dir = "assets/js"
+css_dir = "compass/css"
+sass_dir = "compass/scss"
+images_dir = "compass/images"
+javascripts_dir = "compass/js"
 
 # You can select your preferred output style here (can be overridden via the command line):
 output_style = :compact

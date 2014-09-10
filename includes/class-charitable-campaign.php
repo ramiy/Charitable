@@ -165,23 +165,63 @@ class Charitable_Campaign {
 	 * Returns the amount of time left in the campaign as a descriptive string. 
 	 *
 	 * @uses charitable_campaign_ended 			Change the text displayed when there is no time left.
-	 * @uses charitable_campaign_time_left 		Change the text displayed when there is time left. 
+	 * @uses charitabile_campaign_minutes_left 	Change the text displayed when there is less than an hour left.
+	 * @uses charitabile_campaign_hours_left 	Change the text displayed when there is less than a day left.
+	 * @uses charitabile_campaign_days_left 	Change the text displayed when there is more than a day left.
+	 * @uses charitable_campaign_time_left 		Change the text displayed when there is time left. This will 
+	 *											override any of the above filters.
 	 *
 	 * @return string 
 	 * @access public
 	 * @since 0.1
 	 */
 	public function get_time_left() {
-		$seconds_left = $this->get_seconds_left();
+		$hour = 3600; 
+		$day = 86400;
+
+
+
+
+		$seconds_left = $this->get_seconds_left();		
 
 		/**
-		 * Condition 1: The campaign has finished
+		 * Condition 1: The campaign has finished.
 		 */ 
 		if ( $seconds_left === 0 ) {
 			$time_left = apply_filters( 'charitable_campaign_ended', __( 'Campaign has ended', 'charitable' ), $this );
 		}
+		/**
+		 * Condition 2: There is less than an hour left.
+		 */
+		elseif ( $seconds_left <= $hour ) {
+			$minutes_remaining = ceil( $seconds_left / 60 );
+			$time_left = apply_filters( 'charitabile_campaign_minutes_left', 
+				sprintf( _n('%s Minute Left', '%s Minutes Left', $minutes_remaining, 'charitable'), '<span class="amount time-left minutes-left">' . $minutes_remaining . '</span>' ), 
+				$this
+			);
+		}
+		/**
+		 * Condition 3: There is less than a day left. 
+		 */
+		elseif ( $seconds_left <= $day ) {
+			$hours_remaining = floor( $seconds_left / 3600 );
+			$time_left = apply_filters( 'charitabile_campaign_hours_left', 
+				sprintf( _n('%s Hour Left', '%s Hours Left', $hours_remaining, 'charitable'), '<span class="amount time-left hours-left">' . $hours_remaining . '</span>' ), 
+				$this
+			);
+		}
+		/**
+		 * Condition 4: There is more than a day left.
+		 */
+		else {
+			$days_remaining = floor( $seconds_left / 86400 );
+			$time_left = apply_filters( 'charitabile_campaign_days_left', 
+				sprintf( _n('%s Day Left', '%s Days Left', $days_remaining, 'charitable'), '<span class="amount time-left days-left">' . $days_remaining . '</span>' ),
+				$this
+			);
+		}
 
-		return apply_filters( 'charitable_campaign_time_left', $time_left );	
+		return apply_filters( 'charitable_campaign_time_left', $time_left, $this );	
 	}	
 
 	/**

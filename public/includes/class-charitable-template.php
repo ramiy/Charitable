@@ -52,7 +52,7 @@ class Charitable_Template {
 	 * @since 0.1
 	 */
 	public function __construct($template_name, $load = false, $require_once = true) {
-		$this->theme_template_path = trailingslashit( get_charitable()->get_path( 'theme_templates' ) );
+		$this->theme_template_path = trailingslashit( get_charitable()->get_public()->get_path( 'theme_templates' ) );
 		$this->template_names = (array) $template_name;
 		$this->load = $load;
 		$this->require_once = $require_once;
@@ -124,7 +124,7 @@ class Charitable_Template {
 		 * No templates found in the theme/child theme, so use the plugin's default template.
 		 */
 		if ( ! $template ) {
-			$template = get_charitable()->get_path( 'plugin_templates' ) . $this->template_names[0];
+			$template = get_charitable()->get_public()->get_path( 'base_templates' ) . $this->template_names[0];
 		}
 
 		return apply_filters( 'charitable_locate_template', $template, $this->template_names );

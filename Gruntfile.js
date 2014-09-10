@@ -13,8 +13,8 @@ module.exports = function(grunt) {
         // watch for changes and trigger compass, jshint, uglify and livereload
         watch: {                        
             compass: {
-                files: ['assets/compass/**/*.{scss,sass}'],
-                tasks: ['compass']
+                files: ['compass/**/*.{scss,sass}'],
+                tasks: ['compass', 'copy']
             },
             js: {
                 files: '<%= jshint.all %>',
@@ -26,18 +26,22 @@ module.exports = function(grunt) {
             },
             sync: {
                 files: [
-                    'assets', 
-                    'assets/**', 
-                    '!assets/compass', 
-                    '!assets/compass/**', 
-                    '!assets/scss', 
-                    '!assets/scss/**',
+                    'admin/', 
+                    'admin/**', 
+                    '!admin/assets/compass', 
+                    '!admin/assets/compass/**', 
+                    '!admin/assets/scss', 
+                    '!admin/assets/scss/**',
                     'includes', 
                     'includes/**', 
                     'languages', 
                     'languages/**', 
-                    'templates', 
-                    'templates/**', 
+                    'public', 
+                    'public/**', 
+                    '!public/assets/compass', 
+                    '!public/assets/compass/**', 
+                    '!public/assets/scss', 
+                    '!public/assets/scss/**', 
                     'charitable.php'                    
                     // '**',
                     // '!.DS_Store',
@@ -72,19 +76,23 @@ module.exports = function(grunt) {
                     // includes files within path
                     {
                         src: [  
-                            'assets', 
-                            'assets/**', 
-                            '!assets/compass', 
-                            '!assets/compass/**', 
-                            '!assets/scss', 
-                            '!assets/scss/**',
+                            'admin/', 
+                            'admin/**', 
+                            '!admin/assets/compass', 
+                            '!admin/assets/compass/**', 
+                            '!admin/assets/scss', 
+                            '!admin/assets/scss/**',
                             'includes', 
                             'includes/**', 
                             'languages', 
                             'languages/**', 
-                            'templates', 
-                            'templates/**', 
-                            'charitable.php'
+                            'public', 
+                            'public/**', 
+                            '!public/assets/compass', 
+                            '!public/assets/compass/**', 
+                            '!public/assets/scss', 
+                            '!public/assets/scss/**', 
+                            'charitable.php'                            
                             // 'assets/css/**', 
                             // ''
                             // '**',
@@ -125,6 +133,26 @@ module.exports = function(grunt) {
                 }
             }
         },
+
+        // copy CSS from compass dir to public/admin dirs
+        copy: {
+            dist: {
+                files: [
+                    {
+                        src: [ 'compass/css/charitable-admin-menu.css' ],
+                        dest: '/Users/ericdaams/Dropbox/Development/Projects/WP/wp-content/src/charitable/admin/assets/css/charitable-admin-menu.css'
+                    },
+                    {
+                        src: [ 'compass/css/charitable-admin.css' ],
+                        dest: '/Users/ericdaams/Dropbox/Development/Projects/WP/wp-content/src/charitable/admin/assets/css/charitable-admin.css'
+                    }, 
+                    {
+                        src: [ 'compass/css/charitable.css' ],
+                        dest: '/Users/ericdaams/Dropbox/Development/Projects/WP/wp-content/src/charitable/public/assets/css/charitable.css'
+                    }
+                ]
+            }
+        },
  
         // javascript linting with jshint
         jshint: {
@@ -141,7 +169,7 @@ module.exports = function(grunt) {
         uglify: {
             dist: {
                 files: {
-                    'assets/js/charitable-admin.min.js': 'assets/js/charitable-admin.js'
+                    'admin/assets/js/charitable-admin.min.js': 'admin/assets/js/charitable-admin.js'
                 }
             }
         },
@@ -150,8 +178,8 @@ module.exports = function(grunt) {
         cssmin: {
             minify: {
                 files: {
-                    'assets/css/main.min.css' : [ 
-                        'assets/css/main.css'
+                    'public/assets/css/charitable.min.css' : [ 
+                        'public/assets/css/charitable.css'
                     ]
                 }
             }
@@ -170,10 +198,11 @@ module.exports = function(grunt) {
                 }
             }
         }
+
     });
 
- 
     // register task
+    // grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.registerTask('default', ['watch']);
     grunt.registerTask('build', ['jshint', 'uglify', 'makepot']);
 };

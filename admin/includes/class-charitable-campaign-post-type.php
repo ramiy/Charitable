@@ -52,17 +52,17 @@ final class Charitable_Campaign_Post_Type {
 	}
 
 	/**
-	 * Create an object instance. This will only work during the charitable_admin_start event.
+	 * Create an object instance. This will only work during the charitable_start event.
 	 * 
-	 * @see charitable_admin_start hook
+	 * @see charitable_start hook
 	 *
 	 * @param Charitable $charitable
 	 * @return void
 	 * @access private
 	 * @since 0.1
 	 */
-	public static function charitable_admin_start(Charitable $charitable) {
-		if ( ! $charitable->is_admin_start() ) {
+	public static function charitable_start(Charitable $charitable) {
+		if ( ! $charitable->is_start() ) {
 			return;
 		}
 

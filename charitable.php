@@ -150,11 +150,13 @@ final class Charitable {
 		// Set static instance
         self::$instance = $this;
 
-        $this->include_files();
+        $this->load_dependencies();
 
         $this->attach_hooks_and_filters();
 
-        $this->maybe_start_admin();        
+        $this->maybe_start_admin();      
+
+        $this->maybe_start_public();
 
 		// Hook in here to do something when the plugin is first loaded.
 		do_action('charitable_start', $this);
@@ -167,14 +169,13 @@ final class Charitable {
 	 * @access private
 	 * @since 0.1
 	 */
-	private function include_files() {
+	private function load_dependencies() {
 		/**
 		 * Start objects.
 		 */
-		require_once( $this->includes_path . 'class-charitable-donation-controller.php' );
+		require_once( $this->includes_path . 'class-charitable-donation-actions.php' );
 		require_once( $this->includes_path . 'class-charitable-post-types.php' );
 		require_once( $this->includes_path . 'class-charitable-campaign-query.php' );
-		require_once( $this->includes_path . 'class-charitable-templates.php' );
 		require_once( $this->includes_path . 'class-charitable-widgets.php' );
 
 		/**
@@ -194,9 +195,7 @@ final class Charitable {
 		 * Helpers.
 		 */
 		require_once( $this->includes_path . 'class-charitable-currency-helper.php' );
-		require_once( $this->includes_path . 'class-charitable-request.php' );
-		require_once( $this->includes_path . 'class-charitable-template.php' );
-		require_once( $this->includes_path . 'class-charitable-template-part.php' );
+		require_once( $this->includes_path . 'class-charitable-request.php' );		
 		require_once( $this->includes_path . 'class-charitable-location-helper.php' );
 	}
 
@@ -208,10 +207,8 @@ final class Charitable {
 	 * @since 0.1
 	 */
 	private function attach_hooks_and_filters() {				
-		add_action('charitable_start', array( 'Charitable_Donation_Controller', 'charitable_start' ), 2 );
-		add_action('charitable_start', array( 'Charitable_Post_Types', 'charitable_start' ), 2 );
-		// add_action('charitable_start', array( 'Charitable_Campaign_Query', 'charitable_start' ), 2 );
-		add_action('charitable_start', array( 'Charitable_Templates', 'charitable_start' ), 2 );
+		add_action('charitable_start', array( 'Charitable_Donation_Actions', 'charitable_start' ), 2 );
+		add_action('charitable_start', array( 'Charitable_Post_Types', 'charitable_start' ), 2 );		
 		add_action('charitable_start', array( 'Charitable_Widgets', 'charitable_start' ), 2 );
 	}
 
@@ -227,11 +224,27 @@ final class Charitable {
 			return;
 		}
 
-		require_once( $this->includes_path . 'admin/class-charitable-admin.php' );
+		require_once( $this->get_path( 'admin' ) . 'class-charitable-admin.php' );
 
 		Charitable_Admin::start($this);
 	}
 
+	/**
+	 * Checks whether we're on the public-facing side and if so, loads the public-facing functionality.
+	 *
+	 * @return void
+	 * @access private
+	 * @since 0.1
+	 */
+	private function maybe_start_public() {
+		if ( is_admin() ) {
+			return;
+		}
+
+		require_once( $this->get_path( 'public' ) . 'class-charitable-public.php' );
+
+		Charitable_Public::start($this);
+	}
 	/**
 	 * Returns whether we are currently in the start phase of the plugin. 
 	 *
@@ -241,18 +254,6 @@ final class Charitable {
 	 */
 	public function is_start() {
 		return current_filter() == 'charitable_start';
-	}
-
-	/**
-	 * Returns whether we are currently in the admin start phase of the plugin. 
-	 *
-	 * @return bool
-	 * @access public
-	 * @since 0.1
-	 */
-	public function is_admin_start() {
-		$charitable_admin = $this->get_registered_object('Charitable_Admin');
-		return ! is_null( $charitable_admin ) && $charitable_admin->is_admin_start();
 	}
 
 	/**
@@ -313,19 +314,11 @@ final class Charitable {
 				break;
 
 			case 'admin' :
-				$path = $base . 'includes/admin/';
+				$path = $base . 'admin/';
 				break;
 
-			case 'assets' : 
-				$path = $base . 'assets/';
-				break;
-
-			case 'plugin_templates' : 
-				$path = $base . 'templates/';
-				break;
-
-			case 'theme_templates' : 
-				$path = apply_filters( 'charitable_theme_template_path', 'charitable' );
+			case 'public' : 
+				$path = $base . 'public/';
 				break;
 
 			default :
@@ -344,6 +337,28 @@ final class Charitable {
 	 */
 	public function get_version() {
 		return $this->version;
+	}
+
+	/**
+	 * Returns the public class. 
+	 *
+	 * @return Charitable_Public
+	 * @access public
+	 * @since 0.1
+	 */
+	public function get_public() {
+		return $this->get_registered_object('Charitable_Public');
+	}
+
+	/**
+	 * Returns the admin class. 
+	 *
+	 * @return Charitable_Admin
+	 * @access public
+	 * @since 0.1
+	 */
+	public function get_admin() {
+		return $this->get_registered_object('Charitable_Admin');
 	}
 
 	/**
