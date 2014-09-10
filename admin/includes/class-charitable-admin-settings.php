@@ -60,12 +60,12 @@ final class Charitable_Admin_Settings {
 	 * @access private
 	 * @since 0.1
 	 */
-	public static function charitable_admin_start(Charitable $charitable) {
+	public static function charitable_start(Charitable $charitable) {
 		if ( ! $charitable->is_start() ) {
 			return;
 		}
 
-		new Charitable_Settings($charitable);
+		new Charitable_Admin_Settings($charitable);
 	}
 
 	/**
