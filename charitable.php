@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Charitable
  * Plugin URI: http://164a.com
- * Description: 
+ * Description: Fundraise with WordPress.
  * Version: 0.1
  * Author: Studio 164a
  * Author URI: http://164a.com
@@ -432,3 +432,13 @@ function get_charitable() {
 }
 
 endif; // End if class_exists check
+
+
+
+
+function ch_admin_init() {
+	global $wp_post_types;
+	echo '<pre>'; print_r( $wp_post_types ); echo '</pre>';
+}
+
+add_action('admin_menu', 'ch_admin_init');

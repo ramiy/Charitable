@@ -3,20 +3,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
-if ( ! class_exists( 'Charitable_Widgets' ) ) : 
+if ( ! class_exists( 'Charitable_Roles' ) ) : 
 
 /**
- * Post types
+ * Roles and Capabilities for Charitable
  *
- * Registers post types and taxonomies
- *
- * @class 		Charitable_Widgets
+ * @class 		Charitable_Roles
  * @version		0.1
  * @package		Charitable/Classes/Core
  * @category	Class
  * @author 		Studio164a
  */
-final class Charitable_Widgets {
+final class Charitable_Roles {
 
 	/**
 	 * @var Charitable $charitable
@@ -39,9 +37,7 @@ final class Charitable_Widgets {
 	private function __construct(Charitable $charitable) {
 		$this->charitable = $charitable;
 	
-		$this->include_widgets();
-
-		add_action( 'widgets_init', array( &$this, 'register_widgets' ) );
+		add_action( 'init', array( &$this, 'register_post_types' ), 5 );
 
 		// The main Charitable class will save the one instance of this object.
 		$this->charitable->register_object( $this );
@@ -63,32 +59,7 @@ final class Charitable_Widgets {
 			return;
 		}
 
-		new Charitable_Widgets( $charitable );
-	}
-
-	/**
-	 * Include widget files. 
-	 *
-	 * @return void
-	 * @access private
-	 * @since 0.1
-	 */
-	private function include_widgets() {
-		require_once( $this->charitable->get_path( 'includes' ) . 'widgets/class-charitable-campaigns-widget.php' );
-	}
-
-	/**
-	 * Register widgets
-	 *
-	 * @see widgets_init hook
-	 *
-	 * @return void
-	 * @access public
-	 * @since 0.1
-	 * @return void
-	 */
-	public function register_widgets() {
-		register_widget( 'Charitable_Campaigns_Widget' );
+		new Charitable_Roles( $charitable );
 	}
 }
 
