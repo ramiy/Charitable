@@ -36,8 +36,6 @@ final class Charitable_Roles {
 	 */
 	private function __construct(Charitable $charitable) {
 		$this->charitable = $charitable;
-	
-		add_action( 'init', array( &$this, 'register_post_types' ), 5 );
 
 		// The main Charitable class will save the one instance of this object.
 		$this->charitable->register_object( $this );
@@ -60,6 +58,36 @@ final class Charitable_Roles {
 		}
 
 		new Charitable_Roles( $charitable );
+	}
+
+	/** 
+	 * Sets up roles for Charitable. This is called by the install script. 
+	 *
+	 * @return void
+	 * @since 0.1
+	 */
+	public function add_roles() {
+
+	}
+
+	/**
+	 * Sets up capabilities for Charitable. This is called by the install script. 
+	 *
+	 * @return void
+	 * @since 0.1
+	 */
+	public function add_caps() {
+		
+	}
+
+	/**
+	 * Removes roles. This is called upon deactivation.
+	 *
+	 * @return void
+	 * @since 0.1
+	 */
+	public function remove_roles() {
+
 	}
 }
 

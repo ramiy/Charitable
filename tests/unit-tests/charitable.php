@@ -13,18 +13,22 @@ class Test_Charitable extends Charitable_UnitTestCase {
 	}
 
 	function test_load_dependencies() {
-		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'class-charitable-donation-actions.php' );
-		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'class-charitable-post-types.php' );
 		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'class-charitable-campaign-query.php' );
+		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'class-charitable-campaign.php' );
+		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'class-charitable-currency-helper.php' );
+		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'class-charitable-donation-actions.php' );
+		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'class-charitable-donation-form-hidden.php' );
+		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'class-charitable-donation-form.php' );	
+		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'class-charitable-donation.php' );		
+		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'class-charitable-install.php' );				
+		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'class-charitable-location-helper.php' );
+		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'class-charitable-post-types.php' );
+		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'class-charitable-request.php' );
+		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'class-charitable-roles.php' );
+		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'class-charitable-uninstall.php' );
+		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'class-charitable-upgrade.php' );
 		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'class-charitable-widgets.php' );
 		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'interface-charitable-donation-form.php' );
-		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'class-charitable-campaign.php' );
-		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'class-charitable-donation.php' );
-		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'class-charitable-donation-form.php' );
-		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'class-charitable-donation-form-hidden.php' );
-		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'class-charitable-currency-helper.php' );
-		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'class-charitable-request.php' );
-		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'class-charitable-location-helper.php' );
 	}
 
 	function test_attach_hooks_and_filters() {
@@ -62,5 +66,4 @@ class Test_Charitable extends Charitable_UnitTestCase {
 	function test_get_request() {
 		$this->assertEquals( 'Charitable_Request', get_class( $this->charitable->get_request() ) );
 	}
-
 }
