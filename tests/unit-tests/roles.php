@@ -7,9 +7,8 @@ class Test_Charitable_Roles extends Charitable_UnitTestCase {
 	function setUp() {
 		parent::setUp();
 
-		$this->roles = new Charitable_Roles();
+		$this->roles = new Charitable_Roles(Charitable::get_instance());
 		$this->roles->add_roles();
-		$this->roles->add_caps();
 	}
 
 	function test_add_roles() {
@@ -26,42 +25,42 @@ class Test_Charitable_Roles extends Charitable_UnitTestCase {
 			}
 		}
 
-		$campaign_manager_caps = $campaign_manager_caps;
+		$campaign_manager_caps = get_role('campaign_manager')->capabilities;
 
-		$this->assertArrayHasKey( 'read', $campaign_manager_caps );
-		$this->assertArrayHasKey( 'delete_posts', $campaign_manager_caps );	
-		$this->assertArrayHasKey( 'edit_posts', $campaign_manager_caps );	
-		$this->assertArrayHasKey( 'delete_published_posts', $campaign_manager_caps );
-		$this->assertArrayHasKey( 'publish_posts', $campaign_manager_caps );
-		$this->assertArrayHasKey( 'upload_files', $campaign_manager_caps );
-		$this->assertArrayHasKey( 'edit_published_posts', $campaign_manager_caps );
+		$this->assertEquals( $campaign_manager_caps['read'], 1 );
+		$this->assertEquals( $campaign_manager_caps['delete_posts'], 1 );	
+		$this->assertEquals( $campaign_manager_caps['edit_posts'], 1 );	
+		$this->assertEquals( $campaign_manager_caps['delete_published_posts'], 1 );
+		$this->assertEquals( $campaign_manager_caps['publish_posts'], 1 );
+		$this->assertEquals( $campaign_manager_caps['upload_files'], 1 );
+		$this->assertEquals( $campaign_manager_caps['edit_published_posts'], 1 );
 		
-		$this->assertArrayHasKey( 'read_private_pages', $campaign_manager_caps );
-		$this->assertArrayHasKey( 'edit_private_pages', $campaign_manager_caps );
-		$this->assertArrayHasKey( 'delete_private_pages', $campaign_manager_caps );
-		$this->assertArrayHasKey( 'read_private_posts', $campaign_manager_caps );
-		$this->assertArrayHasKey( 'edit_private_posts', $campaign_manager_caps );
-		$this->assertArrayHasKey( 'delete_private_posts', $campaign_manager_caps );
-		$this->assertArrayHasKey( 'delete_others_posts', $campaign_manager_caps );
-		$this->assertArrayHasKey( 'delete_published_pages', $campaign_manager_caps );
-		$this->assertArrayHasKey( 'delete_others_pages', $campaign_manager_caps );
-		$this->assertArrayHasKey( 'delete_pages', $campaign_manager_caps );
-		$this->assertArrayHasKey( 'publish_pages', $campaign_manager_caps );
-		$this->assertArrayHasKey( 'edit_published_pages', $campaign_manager_caps );
-		$this->assertArrayHasKey( 'edit_others_pages', $campaign_manager_caps );
-		$this->assertArrayHasKey( 'edit_pages', $campaign_manager_caps );
-		$this->assertArrayHasKey( 'edit_others_posts', $campaign_manager_caps );
-		$this->assertArrayHasKey( 'manage_links', $campaign_manager_caps );
-		$this->assertArrayHasKey( 'manage_categories', $campaign_manager_caps );
-		$this->assertArrayHasKey( 'moderate_comments', $campaign_manager_caps );
+		$this->assertEquals( $campaign_manager_caps['read_private_pages'], 1 );
+		$this->assertEquals( $campaign_manager_caps['edit_private_pages'], 1 );
+		$this->assertEquals( $campaign_manager_caps['delete_private_pages'], 1 );
+		$this->assertEquals( $campaign_manager_caps['read_private_posts'], 1 );
+		$this->assertEquals( $campaign_manager_caps['edit_private_posts'], 1 );
+		$this->assertEquals( $campaign_manager_caps['delete_private_posts'], 1 );
+		$this->assertEquals( $campaign_manager_caps['delete_others_posts'], 1 );
+		$this->assertEquals( $campaign_manager_caps['delete_published_pages'], 1 );
+		$this->assertEquals( $campaign_manager_caps['delete_others_pages'], 1 );
+		$this->assertEquals( $campaign_manager_caps['delete_pages'], 1 );
+		$this->assertEquals( $campaign_manager_caps['publish_pages'], 1 );
+		$this->assertEquals( $campaign_manager_caps['edit_published_pages'], 1 );
+		$this->assertEquals( $campaign_manager_caps['edit_others_pages'], 1 );
+		$this->assertEquals( $campaign_manager_caps['edit_pages'], 1 );
+		$this->assertEquals( $campaign_manager_caps['edit_others_posts'], 1 );
+		$this->assertEquals( $campaign_manager_caps['manage_links'], 1 );
+		$this->assertEquals( $campaign_manager_caps['manage_categories'], 1 );
+		$this->assertEquals( $campaign_manager_caps['moderate_comments'], 1 );
 
-		$this->assertArrayHasKey( 'import', $campaign_manager_caps );	
-		$this->assertArrayHasKey( 'export', $campaign_manager_caps );
-		$this->assertArrayHasKey( 'unfiltered_html', $campaign_manager_caps );
+		$this->assertEquals( $campaign_manager_caps['import'], 1 );	
+		$this->assertEquals( $campaign_manager_caps['export'], 1 );
+		$this->assertEquals( $campaign_manager_caps['unfiltered_html'], 1 );
 
-		$this->assertArrayHasKey( 'view_campaign_sensitive_data', $campaign_manager_caps );
-		$this->assertArrayHasKey( 'export_campaign_reports', $campaign_manager_caps );
-		$this->assertArrayHasKey( 'manage_campaign_settings', $campaign_manager_caps );
+		$this->assertEquals( $campaign_manager_caps['view_campaign_sensitive_data'], 1 );
+		$this->assertEquals( $campaign_manager_caps['export_campaign_reports'], 1 );
+		$this->assertEquals( $campaign_manager_caps['manage_campaign_settings'], 1 );
 	}
 
 	function test_remove_roles() {

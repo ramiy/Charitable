@@ -173,6 +173,9 @@ final class Charitable {
 		/**
 		 * Start objects.
 		 */
+		require_once( $this->includes_path . 'class-charitable-roles.php' );
+		require_once( $this->includes_path . 'class-charitable-install.php' );
+		require_once( $this->includes_path . 'class-charitable-uninstall.php' );
 		require_once( $this->includes_path . 'class-charitable-donation-actions.php' );
 		require_once( $this->includes_path . 'class-charitable-post-types.php' );
 		require_once( $this->includes_path . 'class-charitable-campaign-query.php' );
@@ -207,6 +210,9 @@ final class Charitable {
 	 * @since 0.1
 	 */
 	private function attach_hooks_and_filters() {				
+		register_activation_hook(__FILE__, array( &$this, 'activate'));
+		register_deactivation_hook(__FILE__, array( &$this, 'deactivate'));		
+
 		add_action('charitable_start', array( 'Charitable_Donation_Actions', 'charitable_start' ), 2 );
 		add_action('charitable_start', array( 'Charitable_Post_Types', 'charitable_start' ), 2 );		
 		add_action('charitable_start', array( 'Charitable_Widgets', 'charitable_start' ), 2 );
@@ -413,6 +419,15 @@ final class Charitable {
 		}
 
 		return $currency_helper;
+	}
+
+	public function activate() {
+		require_once( $this->get_path( 'includes' ) . 'class-charitable-install.php' )
+		new Charitable_Install();
+	}
+
+	public function deactivate() {
+
 	}
 }
 

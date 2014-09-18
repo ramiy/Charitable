@@ -108,7 +108,7 @@ class Test_Charitable_Campaign extends Charitable_UnitTestCase {
 	}
 
 	function test_get_time_left() {	
-		$this->assertEquals( '<span class="time-left days-left">300</span> Days Left', $this->campaign->get_time_left() );
+		$this->assertEquals( '<span class="amount time-left days-left">300</span> Days Left', $this->campaign->get_time_left() );
 	}
 
 	function test_get_goal() {

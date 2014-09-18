@@ -34,7 +34,7 @@ final class Charitable_Roles {
 	 * @access private
 	 * @since 0.1
 	 */
-	private function __construct(Charitable $charitable) {
+	public function __construct(Charitable $charitable) {
 		$this->charitable = $charitable;
 
 		// The main Charitable class will save the one instance of this object.
@@ -67,17 +67,45 @@ final class Charitable_Roles {
 	 * @since 0.1
 	 */
 	public function add_roles() {
-		
-	}
+		$capabilities = array(
+			 'read' => true,
+			 'delete_posts' => true,	
+			 'edit_posts' => true,	
+			 'delete_published_posts' => true,
+			 'publish_posts' => true,
+			 'upload_files' => true,
+			 'edit_published_posts' => true,
+			
+			 'read_private_pages' => true,
+			 'edit_private_pages' => true,
+			 'delete_private_pages' => true,
+			 'read_private_posts' => true,
+			 'edit_private_posts' => true,
+			 'delete_private_posts' => true,
+			 'delete_others_posts' => true,
+			 'delete_published_pages' => true,
+			 'delete_others_pages' => true,
+			 'delete_pages' => true,
+			 'publish_pages' => true,
+			 'edit_published_pages' => true,
+			 'edit_others_pages' => true,
+			 'edit_pages' => true,
+			 'edit_others_posts' => true,
+			 'manage_links' => true,
+			 'manage_categories' => true,
+			 'moderate_comments' => true,
 
-	/**
-	 * Sets up capabilities for Charitable. This is called by the install script. 
-	 *
-	 * @return void
-	 * @since 0.1
-	 */
-	public function add_caps() {
-		
+			 'import' => true,	
+			 'export' => true,
+			 'unfiltered_html' => true,
+
+			 'view_campaign_sensitive_data' => true,
+			 'export_campaign_reports' => true,
+			 'manage_campaign_settings' => true
+			);
+
+
+		add_role( "campaign_manager", __( "Campaign Manager" ), $capabilities );
 	}
 
 	/**
@@ -87,7 +115,7 @@ final class Charitable_Roles {
 	 * @since 0.1
 	 */
 	public function remove_roles() {
-
+		remove_role("campaign_manager");
 	}
 }
 

@@ -26,23 +26,23 @@ class Charitable_Install {
 	 * Install the plugin. 
 	 *
 	 * @return 	void
-	 * @access 	private
+	 * @access 	public
 	 * @since 	0.1
 	 */
-	private function __construct() {		
+	public function __construct() {		
 		$this->create_tables();
 	}
 
 	/**
-	 * Static method to instantiate the class.
+	 * Create wp roles and assign capabilities
 	 *
 	 * @return 	void
 	 * @static
 	 * @access 	public
 	 * @since 	0.1
 	 */
-	public static function install() {
-		new Charitable_Install();
+	private function setup_roles(){
+		new Charitable_Roles(Charitable::get_instance());
 	}
 
 	/**
