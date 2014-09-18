@@ -67,7 +67,7 @@ final class Charitable_Roles {
 	 * @since 0.1
 	 */
 	public function add_roles() {
-
+		
 	}
 
 	/**

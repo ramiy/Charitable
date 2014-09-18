@@ -22,7 +22,7 @@ class Test_Charitable_Roles extends Charitable_UnitTestCase {
 
 		if ( class_exists( 'WP_Roles' ) ) {
 			if ( ! isset( $wp_roles ) ) {
-				$wp_roles = new \WP_Roles();
+				$wp_roles = new WP_Roles();
 			}
 		}
 
