@@ -23,14 +23,43 @@ if ( ! class_exists( 'Charitable_Install' ) ) :
 class Charitable_Install {
 
 	/**
+	 * @var 	Charitable_Install 
+	 * @access 	private 
+	 */
+	private $charitable;
+
+	/**
 	 * Install the plugin. 
 	 *
 	 * @return 	void
+	 * @access 	private
+	 * @since 	0.1
+	 */
+	private function __construct( Charitable $charitable ) {
+		$this->charitable = $charitable;
+
+		$this->setup_roles();
+		$this->create_tables();		
+	}
+
+	/**
+	 * Install the plugin.
+	 *
+	 * @return 	void
+	 * @static
 	 * @access 	public
 	 * @since 	0.1
 	 */
-	public function __construct() {		
-		$this->create_tables();
+	public static function install( Charitable $charitable ) {		
+		/** 
+		 * This prevents the class being instantiated at 
+		 * any time other than activation.
+		 */
+		if ( ! $charitable->is_activation() ) {
+			return;
+		}
+
+		new Charitable_Install( $charitable );
 	}
 
 	/**
@@ -42,7 +71,9 @@ class Charitable_Install {
 	 * @since 	0.1
 	 */
 	private function setup_roles(){
-		new Charitable_Roles(Charitable::get_instance());
+		$roles = new Charitable_Roles( $this->charitable );
+		$roles->add_roles();
+		$roles->add_caps();
 	}
 
 	/**
@@ -53,7 +84,7 @@ class Charitable_Install {
 	 * @since 	0.1
 	 */
 	private function create_tables() {
-		get_charitable()->get_db_table('donations')->create_table();
+		 $this->charitable->get_db_table( 'donations' )->create_table();
 	}
 }
 

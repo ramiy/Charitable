@@ -22,8 +22,15 @@ if ( ! class_exists( 'Charitable_Uninstall' ) ) :
  */
 class Charitable_Uninstall {
 
-	public function __construct(){
-		register_deactivation_hook(__FILE__, 'remove_roles');
+	/**
+	 * Uninstall the plugin.
+	 *
+	 * @return 	void
+	 * @static
+	 * @access 	public
+	 * @since 	0.1
+	 */
+	private function __construct(){
 	}
 
 	/**

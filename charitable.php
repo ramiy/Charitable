@@ -174,8 +174,6 @@ final class Charitable {
 		 * Start objects.
 		 */
 		require_once( $this->includes_path . 'class-charitable-roles.php' );
-		require_once( $this->includes_path . 'class-charitable-install.php' );
-		require_once( $this->includes_path . 'class-charitable-uninstall.php' );
 		require_once( $this->includes_path . 'class-charitable-donation-actions.php' );
 		require_once( $this->includes_path . 'class-charitable-post-types.php' );
 		require_once( $this->includes_path . 'class-charitable-campaign-query.php' );
@@ -194,6 +192,9 @@ final class Charitable {
 		require_once( $this->includes_path . 'class-charitable-donation-form.php' );
 		require_once( $this->includes_path . 'class-charitable-donation-form-hidden.php' );
 
+		require_once( $this->includes_path . 'db/abstract-class-charitable-db.php' );
+		require_once( $this->includes_path . 'db/class-charitable-donations-db.php' );
+
 		/**
 		 * Helpers.
 		 */
@@ -210,8 +211,8 @@ final class Charitable {
 	 * @since 0.1
 	 */
 	private function attach_hooks_and_filters() {				
-		register_activation_hook(__FILE__, array( &$this, 'activate'));
-		register_deactivation_hook(__FILE__, array( &$this, 'deactivate'));		
+		register_activation_hook( __FILE__, array( $this, 'activate') );
+		register_deactivation_hook( __FILE__, array( $this, 'deactivate') );
 
 		add_action('charitable_start', array( 'Charitable_Donation_Actions', 'charitable_start' ), 2 );
 		add_action('charitable_start', array( 'Charitable_Post_Types', 'charitable_start' ), 2 );		
@@ -251,6 +252,7 @@ final class Charitable {
 
 		Charitable_Public::start($this);
 	}
+
 	/**
 	 * Returns whether we are currently in the start phase of the plugin. 
 	 *
@@ -271,6 +273,28 @@ final class Charitable {
 	 */
 	public function started() {
 		return did_action( 'charitable_start' ) || current_filter() == 'charitable_start';
+	}
+
+	/**
+	 * Returns whether the plugin is being activated. 
+	 *
+	 * @return 	bool
+	 * @access 	public
+	 * @since 	0.1
+	 */
+	public function is_activation() {
+		return current_filter() == 'activate_charitable/charitable.php';
+	}
+
+	/**
+	 * Returns whether the plugin is being deactivated.
+	 *
+	 * @return 	bool
+	 * @access 	public
+	 * @since 	0.1
+	 */
+	public function is_deactivation() {
+		return current_filter() == 'deactivate_charitable/charitable.php';
 	}
 
 	/**
@@ -413,7 +437,7 @@ final class Charitable {
 	public function get_currency_helper() {
 		$currency_helper = $this->get_registered_object('Charitable_Currency_Helper');
 
-		if ( $currency_helper === false ) {
+		if ( false === $currency_helper ) {
 			$currency_helper = new Charitable_Currency_Helper();
 			$this->register_object( $currency_helper );
 		}
@@ -421,13 +445,61 @@ final class Charitable {
 		return $currency_helper;
 	}
 
-	public function activate() {
-		require_once( $this->get_path( 'includes' ) . 'class-charitable-install.php' )
-		new Charitable_Install();
+	/**
+	 * Returns the model for one of Charitable's database tables. 
+	 *
+	 * @param 	string $table_name
+	 * @return 	Charitable_DB
+	 * @access 	public
+	 * @since 	0.1
+	 */
+	public function get_db_table( $table_name ) {
+
+		switch ( $table_name ) {
+			case 'donations' :
+				$class_name = 'Charitable_Donations_DB';
+				break;
+
+			default: 
+				return;				
+		}
+
+		$db_table = $this->get_registered_object( $class_name );
+
+		if ( false === $db_table ) {
+			$db_table = new $class_name;
+			$this->register_object( $db_table );
+		}
+
+		return $db_table;
 	}
 
-	public function deactivate() {
+	/**
+	 * Runs on plugin activation. 
+	 *
+	 * @see register_activation_hook
+	 *
+	 * @return 	void
+	 * @access 	public
+	 * @since 	0.1
+	 */
+	public function activate() {
+		require_once( $this->get_path( 'includes' ) . 'class-charitable-install.php' );
+		Charitable_Install::install( $this );
+	}
 
+	/**
+	 * Runs on plugin deactivation. 
+	 *
+	 * @see 	register_deactivation_hook
+	 *
+	 * @return 	void
+	 * @access 	public
+	 * @since 	0.1
+	 */
+	public function deactivate() {
+		require_once( $this->get_path( 'includes' ) . 'class-charitable-uninstall.php' );
+		Charitable_Uninstall::uninstall( $this );
 	}
 }
 

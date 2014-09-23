@@ -56,9 +56,7 @@ abstract class Charitable_DB {
 	 * @access  public
 	 * @since   0.1
 	 */
-	abstract public function get_columns() {
-		return array();
-	}
+	abstract public function get_columns();
 
 	/**
 	 * Default column values
@@ -68,9 +66,7 @@ abstract class Charitable_DB {
 	 * @access  public
 	 * @since   0.1
 	 */
-	abstract public function get_column_defaults() {
-		return array();
-	}
+	abstract public function get_column_defaults();
 
 	/**
 	 * Return the format for the given column.
@@ -142,7 +138,7 @@ abstract class Charitable_DB {
 	 */
 	public function get_column_by( $column, $column_where, $column_value ) {
 		global $wpdb;
-		return $wpdb->get_var( $wpdb->prepare( "SELECT $column FROM $this->table_name WHERE $column_where = {$this->get_column_format($column_where)} LIMIT 1;", $column_vaue );
+		return $wpdb->get_var( $wpdb->prepare( "SELECT $column FROM $this->table_name WHERE $column_where = {$this->get_column_format($column_where)} LIMIT 1;", $column_value ) );
 	}
 
 	/**

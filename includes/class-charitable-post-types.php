@@ -124,42 +124,42 @@ final class Charitable_Post_Types {
 		 * To change any of the arguments used for the post type, other than the name
 		 * of the post type itself, use the 'charitable_donation_post_type' filter. 
 		 */ 
-		register_post_type( 'donation', 
-			apply_filters( 'charitable_donations_post_type',
-				array(
-					'labels' => array(
-						'name' 					=> __( 'Donation', 'charitable' ),
-						'singular_name' 		=> __( 'Donation', 'charitable' ),
-						'menu_name'				=> _x( 'Donation', 'Admin menu name', 'charitable' ),
-						'add_new' 				=> __( 'Add Donation', 'charitable' ),
-						'add_new_item' 			=> __( 'Add New Donation', 'charitable' ),
-						'edit' 					=> __( 'Edit', 'charitable' ),
-						'edit_item' 			=> __( 'Edit Donation', 'charitable' ),
-						'new_item' 				=> __( 'New Donation', 'charitable' ),
-						'view' 					=> __( 'View Donation', 'charitable' ),
-						'view_item' 			=> __( 'View Donation', 'charitable' ),
-						'search_items' 			=> __( 'Search Donations', 'charitable' ),
-						'not_found' 			=> __( 'No Donations found', 'charitable' ),
-						'not_found_in_trash' 	=> __( 'No Donations found in trash', 'charitable' ),
-						'parent' 				=> __( 'Parent Donation', 'charitable' )
-					),
-					'description' 			=> __( 'This is where you can manually create new donations.', 'charitable' ),
-					'public' 				=> true,
-					'show_ui' 				=> true,
-					'capability_type' 		=> 'donation',
-					'menu_icon'				=> '',
-					'map_meta_cap'			=> true,
-					'publicly_queryable' 	=> true,
-					'exclude_from_search' 	=> false,
-					'hierarchical' 			=> false,
-					'rewrite' 				=> false,
-					'query_var' 			=> true,
-					'supports' 				=> array( 'title' ),
-					'has_archive' 			=> false,
-					'show_in_nav_menus' 	=> true
-				)
-			) 
-		);
+		// register_post_type( 'donation', 
+		// 	apply_filters( 'charitable_donations_post_type',
+		// 		array(
+		// 			'labels' => array(
+		// 				'name' 					=> __( 'Donation', 'charitable' ),
+		// 				'singular_name' 		=> __( 'Donation', 'charitable' ),
+		// 				'menu_name'				=> _x( 'Donation', 'Admin menu name', 'charitable' ),
+		// 				'add_new' 				=> __( 'Add Donation', 'charitable' ),
+		// 				'add_new_item' 			=> __( 'Add New Donation', 'charitable' ),
+		// 				'edit' 					=> __( 'Edit', 'charitable' ),
+		// 				'edit_item' 			=> __( 'Edit Donation', 'charitable' ),
+		// 				'new_item' 				=> __( 'New Donation', 'charitable' ),
+		// 				'view' 					=> __( 'View Donation', 'charitable' ),
+		// 				'view_item' 			=> __( 'View Donation', 'charitable' ),
+		// 				'search_items' 			=> __( 'Search Donations', 'charitable' ),
+		// 				'not_found' 			=> __( 'No Donations found', 'charitable' ),
+		// 				'not_found_in_trash' 	=> __( 'No Donations found in trash', 'charitable' ),
+		// 				'parent' 				=> __( 'Parent Donation', 'charitable' )
+		// 			),
+		// 			'description' 			=> __( 'This is where you can manually create new donations.', 'charitable' ),
+		// 			'public' 				=> true,
+		// 			'show_ui' 				=> true,
+		// 			'capability_type' 		=> 'donation',
+		// 			'menu_icon'				=> '',
+		// 			'map_meta_cap'			=> true,
+		// 			'publicly_queryable' 	=> true,
+		// 			'exclude_from_search' 	=> false,
+		// 			'hierarchical' 			=> false,
+		// 			'rewrite' 				=> false,
+		// 			'query_var' 			=> true,
+		// 			'supports' 				=> array( 'title' ),
+		// 			'has_archive' 			=> false,
+		// 			'show_in_nav_menus' 	=> true
+		// 		)
+		// 	) 
+		// );
 	}
 }
 

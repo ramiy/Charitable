@@ -16,10 +16,39 @@ if ( ! class_exists( 'Charitable_Donations_DB' ) ) :
  *
  * @since 		0.1 
  */
-class Charitable_Donations_DB extends Charitable_DB {
+class Charitable_Donations_DB extends Charitable_DB {	
 
 	/**
-	 * Whitelist of columns
+	 * The version of our database table
+	 *
+	 * @access  public
+	 * @since   0.1
+	 */
+	public $version = '0.1';
+
+	/**
+	 * The name of the primary column
+	 *
+	 * @access  public
+	 * @since   0.1
+	 */
+	public $primary_key = 'id';
+
+	/**
+	 * Set up the database table name. 
+	 *
+	 * @return 	void
+	 * @access 	public
+	 * @since 	0.1
+	 */
+	public function __construct() {
+		global $wpdb;
+
+		$this->table_name = $wpdb->prefix . 'charitable_donations';
+	}
+
+	/**
+	 * Whitelist of columns.
 	 *
 	 * @return  array 
 	 * @access  public
@@ -39,7 +68,7 @@ class Charitable_Donations_DB extends Charitable_DB {
 	}
 
 	/**
-	 * Default column values
+	 * Default column values.
 	 *
 	 * @return 	array
 	 * @access  public
@@ -67,6 +96,14 @@ class Charitable_Donations_DB extends Charitable_DB {
 	 * @since 	0.1
 	 */
 	public function create_table() {
+		/**
+		 * This prevents this function from running outside of 
+		 * plugin activation. 
+		 */
+		if ( ! get_charitable()->is_activation() ) {
+			return;
+		}
+
 		global $wpdb;
 
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
@@ -77,10 +114,10 @@ class Charitable_Donations_DB extends Charitable_DB {
 		`user_id` bigint(20) NOT NULL,
 		`date_created` datetime NOT NULL,
 		`amount` float NOT NULL,
-		'gateway' varchar(50) NOT NULL,
-		'is_preset_amount' tinyint NOT NULL,
+		`gateway` varchar(50) NOT NULL,
+		`is_preset_amount` tinyint NOT NULL,
 		`notes` longtext NOT NULL,
-		PRIMARY KEY  (id),
+		KEY (id),
 		KEY user (user_id),
 		KEY campaign (campaign_id)
 		) CHARACTER SET utf8 COLLATE utf8_general_ci;";
