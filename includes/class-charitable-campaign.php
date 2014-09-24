@@ -276,26 +276,7 @@ class Charitable_Campaign {
 
 			if ( $this->donations === false ) {
 
-				/**
-				 * Retrieves the donations using a WP_Query object. 
-				 * 
-				 * @uses charitable_campaign_donations_query_args 
-				 */
-				$this->donations = new WP_Query( 
-					apply_filters( 'charitable_campaign_donations_query_args', 
-						array(
-							'post_type' 		=> 'donation', 
-							'post_status' 		=> 'publish', 
-							'posts_per_page' 	=> -1,
-							'meta_query' 		=> array(
-								array(
-									'key' 	=> '_campaign_id',
-									'value' => $this->get_campaign_id() 
-								)
-							)
-						)	
-					) 
-				);
+				$this->donations = $this->db->get_donations();
 
 				/**
 				 * Cache the results.
@@ -324,19 +305,7 @@ class Charitable_Campaign {
 			$this->donated_amount = get_transient( $cache_key );
 
 			if ( $this->donated_amount === false ) {
-
-				global $wpdb;
-
-				$this->donated_amount = $wpdb->get_var( $wpdb->prepare(
-					"SELECT sum(m2.meta_value) 
-					FROM $wpdb->postmeta m1
-					INNER JOIN $wpdb->postmeta m2 
-					ON m1.post_id = m2.post_id
-					WHERE m1.meta_key = '_campaign_id'
-					AND m1.meta_value = %d
-					AND m2.meta_key = '_donation_amount'"
-					, $this->get_campaign_id()
-				) );
+				$this->donated_amount = $this->db->get_donated_amount();
 			}
 
 			/**

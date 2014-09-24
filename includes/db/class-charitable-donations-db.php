@@ -157,6 +157,32 @@ class Charitable_Donations_DB extends Charitable_DB {
 
 		return parent::insert( $data, 'donation' );
 	}
+
+	/**
+	 * Get an object of all donations on a campaign
+	 *
+	 */
+	private function get_donations_on_campaign( $campaign_id ){
+		global $wpdb;
+		$results $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $this->table_name WHERE campaign_id = %d;", $row_id ), OBJECT_K);
+	}
+
+
+	/**
+	 * Get total amount donated to a campaign
+	 *
+	 */
+	public function get_campaign_donated_amount( $campaign_id ){
+		// $donations = get_donations_on_campaign( $campaign_id );
+		// $result = 0;
+		// foreach( $donations => $donation ){
+		// 	$result += $donation->amount;
+		// }
+		global $wpdb;
+		return $wpdb->get_var( $wpdb->prepare( "SELECT SUM(amount) FROM $this->table_name WHERE campaign_id = %d;", $row_id ), OBJECT_K);
+	}
+
+	
 }
 
 endif;

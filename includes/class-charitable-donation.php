@@ -63,7 +63,7 @@ class Charitable_Donation {
 	 * @since 	0.1
 	 */
 	public function get_gateway() {
-		
+		return $this->data->gateway;
 	}
 
 	/**
@@ -74,18 +74,18 @@ class Charitable_Donation {
 	 * @since 	0.1
 	 */
 	public function get_amount() {
-		
+		return $this->data->amount;
 	}
 
 	/**
-	 * The amount donated on this donation.
+	 * The status of this donation.
 	 *
 	 * @return 	string
 	 * @access 	public
 	 * @since 	0.1
 	 */
 	public function get_status() {
-		
+		return $this->data->status;
 	} 
 
 	/**
@@ -96,7 +96,7 @@ class Charitable_Donation {
 	 * @since 	0.1
 	 */
 	public function get_donation_id() {
-		
+		return $this->data->id;
 	}
 
 	/**
@@ -107,7 +107,7 @@ class Charitable_Donation {
 	 * @since 	0.1
 	 */
 	public function get_is_preset_amount() {
-		
+		return $this->data->is_preset_amount;
 	}
 
 	/**
@@ -117,8 +117,8 @@ class Charitable_Donation {
 	 * @access 	public
 	 * @since 	0.1
 	 */
-	public function get_note() {
-		
+	public function get_notes() {
+		return $this->data->notes;
 	}
 	
 	/**
