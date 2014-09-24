@@ -276,7 +276,7 @@ class Charitable_Campaign {
 
 			if ( $this->donations === false ) {
 
-				$this->donations = $this->db->get_donations();
+				$this->donations = get_charitable()->get_db_table('donations')->get_donations_on_campaign( $this->get_campaign_id() );
 
 				/**
 				 * Cache the results.
@@ -305,7 +305,7 @@ class Charitable_Campaign {
 			$this->donated_amount = get_transient( $cache_key );
 
 			if ( $this->donated_amount === false ) {
-				$this->donated_amount = $this->db->get_donated_amount();
+				$this->donated_amount = get_charitable()->get_db_table('donations')->get_campaign_donated_amount( $this->get_campaign_id() );
 			}
 
 			/**

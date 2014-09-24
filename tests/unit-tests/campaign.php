@@ -96,10 +96,6 @@ class Test_Charitable_Campaign extends Charitable_UnitTestCase {
 		foreach ( array( 5, 20, 50, 100, 250 ) as $suggested_donation ) {
 			$this->assertContains( $suggested_donation, $this->campaign->get('campaign_suggested_donations') );
 		}
-		
-		foreach ( array( 'donor_first_name', 'donor_last_name', 'donor_email', 'donor_phone' ) as $form_field ) {
-			$this->assertContains( $form_field, $this->campaign->get('campaign_donation_form_fields') );
-		}
 	}
 
 	function test_get_end_time() {

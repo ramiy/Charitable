@@ -131,6 +131,7 @@ class Charitable_Donations_DB extends Charitable_DB {
 		`gateway` varchar(50) NOT NULL,
 		`is_preset_amount` tinyint NOT NULL,
 		`notes` longtext NOT NULL,
+		`status` varchar(20) NOT NULL,
 		KEY (id),
 		KEY user (user_id),
 		KEY campaign (campaign_id)
@@ -162,9 +163,9 @@ class Charitable_Donations_DB extends Charitable_DB {
 	 * Get an object of all donations on a campaign
 	 *
 	 */
-	private function get_donations_on_campaign( $campaign_id ){
+	public function get_donations_on_campaign( $campaign_id ){
 		global $wpdb;
-		return $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $this->table_name WHERE campaign_id = %d;", $row_id ), OBJECT_K);
+		return $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $this->table_name WHERE campaign_id = %d;", $campaign_id ), OBJECT_K);
 	}
 
 
@@ -173,13 +174,8 @@ class Charitable_Donations_DB extends Charitable_DB {
 	 *
 	 */
 	public function get_campaign_donated_amount( $campaign_id ){
-		// $donations = get_donations_on_campaign( $campaign_id );
-		// $result = 0;
-		// foreach( $donations => $donation ){
-		// 	$result += $donation->amount;
-		// }
 		global $wpdb;
-		return $wpdb->get_var( $wpdb->prepare( "SELECT SUM(amount) FROM $this->table_name WHERE campaign_id = %d;", $row_id ), OBJECT_K);
+		return $wpdb->get_var( $wpdb->prepare( "SELECT SUM(amount) FROM $this->table_name WHERE campaign_id = %d;", $campaign_id ) );
 	}
 
 	

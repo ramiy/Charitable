@@ -50,8 +50,8 @@ class Test_Charitable_Donation extends Charitable_UnitTestCase {
 			'user_id'			=> $user_id, 
 			'amount'			=> 100, 
 			'gateway'			=> 'paypal', 
-			'is_preset_amount' 	=> true, 
-			'note'				=> 'Note', 
+			'is_preset_amount' 	=> 1, 
+			'notes'				=> 'Note', 
 			'status'			=> 'Completed'
 		) );
 		$this->donation_1 = new Charitable_Donation( $this->donation_id_1 ); 
@@ -61,7 +61,7 @@ class Test_Charitable_Donation extends Charitable_UnitTestCase {
 			'user_id'			=> $user_id, 
 			'amount'			=> 75, 
 			'gateway'			=> 'manual', 
-			'is_preset_amount' 	=> false
+			'is_preset_amount' 	=> 0
 		) );			
 		$this->donation_2 = new Charitable_Donation( $this->donation_id_2 );
 	}
@@ -72,8 +72,8 @@ class Test_Charitable_Donation extends Charitable_UnitTestCase {
 	}	
 
 	function test_is_preset_amount() {
-		$this->assertEquals( true, $this->donation_1->get_is_preset_amount() );
-		$this->assertEquals( false, $this->donation_2->get_is_preset_amount() );
+		$this->assertEquals( 1, $this->donation_1->get_is_preset_amount() );
+		$this->assertEquals( 0, $this->donation_2->get_is_preset_amount() );
 	}
 
 	function test_get_gateway() {
@@ -86,9 +86,9 @@ class Test_Charitable_Donation extends Charitable_UnitTestCase {
 		$this->assertEquals( 75, $this->donation_2->get_amount() );
 	}
 
-	function test_get_note() {
-		$this->assertEquals( 'Note', $this->donation_1->get_note() );
-		$this->assertEquals( '', $this->donation_2->get_note() );
+	function test_get_notes() {
+		$this->assertEquals( 'Note', $this->donation_1->get_notes() );
+		$this->assertEquals( '', $this->donation_2->get_notes() );
 	}
 
 	function test_get_status() {
