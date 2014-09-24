@@ -83,7 +83,7 @@ final class Charitable_Public {
 	 */
 	private function attach_hooks_and_filters() {
 		add_action('charitable_start', array( 'Charitable_Templates', 'charitable_start' ), 2 );
-		add_action('wp_enqueue_scripts', array( &$this, 'enqueue_scripts') );
+		add_action('wp_enqueue_scripts', array( $this, 'wp_enqueue_scripts') );
 	}
 
 	/**
@@ -128,7 +128,7 @@ final class Charitable_Public {
 	 * @access public
 	 * @since 0.1
 	 */
-	public function enqueue_scripts() {		
+	public function wp_enqueue_scripts() {		
 		wp_register_style( 'charitable-styles', $this->get_path( 'assets', false ) . 'css/charitable.css', array(), $this->charitable->get_version() );
 		wp_enqueue_style( 'charitable-styles' );
 	}

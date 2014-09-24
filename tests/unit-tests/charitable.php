@@ -66,4 +66,12 @@ class Test_Charitable extends Charitable_UnitTestCase {
 	function test_get_request() {
 		$this->assertEquals( 'Charitable_Request', get_class( $this->charitable->get_request() ) );
 	}
+
+	function test_is_activation() {
+		$this->assertFalse( $this->charitable->is_activation() );
+	}
+
+	function test_is_deactivation() {
+		$this->assertFalse( $this->charitable->is_deactivation() );
+	}
 }

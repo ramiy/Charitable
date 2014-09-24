@@ -28,7 +28,7 @@ if ( ! class_exists( 'Charitable' ) ) :
  * @class Charitable
  * @version	0.1
  */
-final class Charitable {
+class Charitable {
 
 	/**
 	 * @var Charitable

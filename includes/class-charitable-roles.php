@@ -16,23 +16,6 @@ if ( ! class_exists( 'Charitable_Roles' ) ) :
  */
 class Charitable_Roles {
 
-	/**
-	 * @var 	Charitable_Install 
-	 * @access 	private 
-	 */
-	private $charitable;
-
-	/**
-	 * Install the plugin. 
-	 *
-	 * @return 	void
-	 * @access 	private
-	 * @since 	0.1
-	 */
-	public function __construct( Charitable $charitable ) {
-		$this->charitable = $charitable;
-	}
-
 	/** 
 	 * Sets up roles for Charitable. This is called by the install script. 
 	 *
@@ -40,13 +23,6 @@ class Charitable_Roles {
 	 * @since 	0.1
 	 */
 	public function add_roles() {
-		/**
-		 * If this is called outside of the activation hook, it won't run. 
-		 */
-		if ( ! $this->charitable->is_activation() ) {
-			return;
-		}
-
 		add_role( 'campaign_manager', __( 'Campaign Manager', 'charitable' ), array(
 			'read' 						=> true,
 			'delete_posts' 				=> true,	
@@ -87,13 +63,6 @@ class Charitable_Roles {
 	 * @since 	0.1
 	 */
 	public function add_caps() {
-		/**
-		 * If this is called outside of the activation hook, it won't run. 
-		 */
-		if ( ! $this->charitable->is_activation() ) {
-			return;
-		}
-
 		global $wp_roles;
 
 		if ( class_exists('WP_Roles') ) {
@@ -103,17 +72,17 @@ class Charitable_Roles {
 		}
 
 		if ( is_object( $wp_roles ) ) {
-			$wp_roles->add_cap( 'campaign_manager', 'view_campaign_data' );
+
+			$wp_roles->add_cap( 'campaign_manager', 'view_campaign_sensitive_data' );
 			$wp_roles->add_cap( 'campaign_manager', 'export_campaign_reports' );
 			$wp_roles->add_cap( 'campaign_manager', 'manage_campaign_settings' );
 
-			$wp_roles->add_cap( 'administrator', 'view_campaign_data' );
+			$wp_roles->add_cap( 'administrator', 'view_campaign_sensitive_data' );
 			$wp_roles->add_cap( 'administrator', 'export_campaign_reports' );
 			$wp_roles->add_cap( 'administrator', 'manage_campaign_settings' );
 
 			// Add the main post type capabilities
-			$capabilities = $this->get_core_caps();
-			foreach ( $capabilities as $cap ) {
+			foreach ( $this->get_core_caps() as $cap ) {
 				$wp_roles->add_cap( 'campaign_manager', $cap );
 				$wp_roles->add_cap( 'administrator', $cap );
 			}
@@ -123,19 +92,36 @@ class Charitable_Roles {
 	/**
 	 * Removes roles. This is called upon deactivation.
 	 *
+	 * @global 	WP_Roles
 	 * @return 	void
 	 * @access 	public
 	 * @since 	0.1
 	 */
-	public function remove_roles() {
-		/**
-		 * If this is called outside of the deactivation hook, it won't run. 
-		 */
-		if ( ! $this->charitable->is_deactivation() ) {
-			return;
+	public function remove_caps() {
+		global $wp_roles;
+
+		if ( class_exists('WP_Roles') ) {
+			if ( ! isset( $wp_roles ) ) {
+				$wp_roles = new WP_Roles();
+			}
 		}
 
-		remove_role( 'campaign_manager' );
+		if ( is_object( $wp_roles ) ) {
+
+			$wp_roles->remove_cap( 'campaign_manager', 'view_campaign_sensitive_data' );
+			$wp_roles->remove_cap( 'campaign_manager', 'export_campaign_reports' );
+			$wp_roles->remove_cap( 'campaign_manager', 'manage_campaign_settings' );
+
+			$wp_roles->remove_cap( 'administrator', 'view_campaign_sensitive_data' );
+			$wp_roles->remove_cap( 'administrator', 'export_campaign_reports' );
+			$wp_roles->remove_cap( 'administrator', 'manage_campaign_settings' );
+
+			// Remove the main post type capabilities
+			foreach ( $this->get_core_caps() as $cap ) {
+				$wp_roles->remove_cap( 'campaign_manager', $cap );
+				$wp_roles->remove_cap( 'administrator', $cap );
+			}
+		}
 	}
 
 	/**

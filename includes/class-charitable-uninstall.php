@@ -23,26 +23,45 @@ if ( ! class_exists( 'Charitable_Uninstall' ) ) :
 class Charitable_Uninstall {
 
 	/**
+	 * @var 	Charitable
+	 * @access 	private 
+	 */
+	private $charitable;
+
+	/**
 	 * Uninstall the plugin.
 	 *
+	 * @param 	Charitable $charitable
 	 * @return 	void
 	 * @static
 	 * @access 	public
 	 * @since 	0.1
 	 */
-	private function __construct(){
+	private function __construct( Charitable $charitable ){
+		$this->charitable = $charitable;
+
+		$this->remove_caps();
 	}
 
 	/**
 	 * Uninstall the plugin.
 	 *
+	 * @param 	Charitable $charitable
 	 * @return 	void
 	 * @static
 	 * @access 	public
 	 * @since 	0.1
 	 */
-	public static function uninstall() {
-		
+	public static function uninstall( Charitable $charitable ) {
+		/** 
+		 * This prevents the class being instantiated at 
+		 * any time other than deactivation.
+		 */
+		if ( ! $charitable->is_deactivation() ) {
+			return;
+		}
+
+		new Charitable_Uninstall( $charitable );
 	}
 
 	/**
@@ -53,8 +72,9 @@ class Charitable_Uninstall {
 	 * @access 	public
 	 * @since 	0.1
 	 */
-	public static function remove_roles() {
-		new Charitable_Roles();
+	public static function remove_caps() {
+		$roles = new Charitable_Roles();
+		$roles->remove_caps();
 	}
 }
 

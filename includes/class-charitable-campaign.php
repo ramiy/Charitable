@@ -179,9 +179,6 @@ class Charitable_Campaign {
 		$hour = 3600; 
 		$day = 86400;
 
-
-
-
 		$seconds_left = $this->get_seconds_left();		
 
 		/**

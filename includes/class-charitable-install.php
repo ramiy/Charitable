@@ -23,7 +23,7 @@ if ( ! class_exists( 'Charitable_Install' ) ) :
 class Charitable_Install {
 
 	/**
-	 * @var 	Charitable_Install 
+	 * @var 	Charitable
 	 * @access 	private 
 	 */
 	private $charitable;
@@ -31,6 +31,7 @@ class Charitable_Install {
 	/**
 	 * Install the plugin. 
 	 *
+	 * @param 	Charitable $charitable
 	 * @return 	void
 	 * @access 	private
 	 * @since 	0.1
@@ -45,6 +46,7 @@ class Charitable_Install {
 	/**
 	 * Install the plugin.
 	 *
+	 * @param 	Charitable $charitable
 	 * @return 	void
 	 * @static
 	 * @access 	public
@@ -71,7 +73,7 @@ class Charitable_Install {
 	 * @since 	0.1
 	 */
 	private function setup_roles(){
-		$roles = new Charitable_Roles( $this->charitable );
+		$roles = new Charitable_Roles();
 		$roles->add_roles();
 		$roles->add_caps();
 	}
