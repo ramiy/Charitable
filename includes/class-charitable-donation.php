@@ -120,7 +120,7 @@ class Charitable_Donation {
 	public function get_note() {
 		
 	}
-
+	
 	/**
 	 * Inserts a new donation. 
 	 *

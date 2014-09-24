@@ -97,15 +97,16 @@ class Charitable_Donations_DB extends Charitable_DB {
 	 * @since 	0.1
 	 */
 	public function get_statuses() {
-// 		edd_update_payment_status( $id, 'publish' );
-// 419: 				edd_update_payment_status( $id, 'pending' );
-// 423: 				edd_update_payment_status( $id, 'refunded' );
-// 427: 				edd_update_payment_status( $id, 'revoked' );
-// 431: 				edd_update_payment_status( $id, 'failed' );
-// 435: 				edd_update_payment_status( $id, 'abandoned' );
-// 439: 				edd_update_payment_status( $id, 'preapproval' );
-// 443: 				edd_update_payment_status( $id, 'cancelled' );
-
+		return array(
+			'Completed', 
+			'Pending', 
+			'Refunded', 
+			'Revoked', 
+			'Failed', 
+			'Abandoned', 
+			'Preapproval', 
+			'Cancelled'
+		);
 	}
 
 	/**
@@ -149,6 +150,11 @@ class Charitable_Donations_DB extends Charitable_DB {
 	 * @since 	0.1
 	 */
 	public function add( array $data ) {
+		// Validate donation status
+		if ( isset( $data['status'] ) && ! in_array( $data['status'], $this->get_statuses() ) ) {
+			wp_die( __( sprintf( 'Invalid donation status "%s" supplied', $data['status'] ), 'charitable' ) );
+		}
+
 		return parent::insert( $data, 'donation' );
 	}
 }

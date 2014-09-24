@@ -132,7 +132,7 @@ class Test_Charitable_Campaign extends Charitable_UnitTestCase {
 	}
 
 	function test_get_donated_amount() {
-		$this->assertEquals( 60, $this->campaign->get_donated_amount() );
+		$this->assertEquals( 60.00, $this->campaign->get_donated_amount() );
 	}
 
 	function test_flush_donations_cache() {
@@ -146,7 +146,8 @@ class Test_Charitable_Campaign extends Charitable_UnitTestCase {
 			'user_id'			=> $user_id_4, 
 			'amount'			=> 100, 
 			'gateway'			=> 'paypal', 
-			'is_preset_amount' 	=> false
+			'is_preset_amount' 	=> false, 
+			'status'			=> 'Completed'
 		) );
 
 		// Test count of donations again, before flush caching
