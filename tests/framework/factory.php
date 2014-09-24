@@ -47,17 +47,10 @@ class Charitable_UnitTest_Factory_For_Campaign extends WP_UnitTest_Factory_For_T
 class Charitable_UnitTest_Factory_For_Donation extends WP_UnitTest_Factory_For_Thing {
 	public function __construct( $factory = null ) {
 		parent::__construct( $factory );
-		$this->default_generation_definitions = array(
-			'post_status' => 'publish',
-			'post_title' => new \WP_UnitTest_Generator_Sequence( 'Donation title %s' ),
-			'post_content' => new \WP_UnitTest_Generator_Sequence( 'Donation content %s' ),
-			'post_excerpt' => new \WP_UnitTest_Generator_Sequence( 'Donation excerpt %s' ),
-			'post_type' => 'donation'
-		);
 	}
 
 	public function create_object( $args ) {
-		return wp_insert_post( $args );
+		return Charitable_Donation::insert( $args );
 	}
 
 	public function update_object( $post_id, $fields ) {

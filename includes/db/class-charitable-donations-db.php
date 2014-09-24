@@ -63,7 +63,8 @@ class Charitable_Donations_DB extends Charitable_DB {
 			'amount'			=> '%f',
 			'gateway'			=> '%s', 
 			'is_preset_amount'	=> '%d', 
-			'notes'				=> '%s'	
+			'notes'				=> '%s', 
+			'status'			=> '%s'
 		);
 	}
 
@@ -83,8 +84,28 @@ class Charitable_Donations_DB extends Charitable_DB {
 			'amount'			=> '',
 			'gateway'			=> '', 
 			'is_preset_amount'	=> 0, 
-			'notes'				=> ''	
+			'notes'				=> '', 
+			'status'			=> 'Pending'
 		);
+	}
+
+	/**
+	 * Valid donation statuses.
+	 *
+	 * @return 	array
+	 * @access 	public
+	 * @since 	0.1
+	 */
+	public function get_statuses() {
+// 		edd_update_payment_status( $id, 'publish' );
+// 419: 				edd_update_payment_status( $id, 'pending' );
+// 423: 				edd_update_payment_status( $id, 'refunded' );
+// 427: 				edd_update_payment_status( $id, 'revoked' );
+// 431: 				edd_update_payment_status( $id, 'failed' );
+// 435: 				edd_update_payment_status( $id, 'abandoned' );
+// 439: 				edd_update_payment_status( $id, 'preapproval' );
+// 443: 				edd_update_payment_status( $id, 'cancelled' );
+
 	}
 
 	/**
@@ -96,14 +117,6 @@ class Charitable_Donations_DB extends Charitable_DB {
 	 * @since 	0.1
 	 */
 	public function create_table() {
-		/**
-		 * This prevents this function from running outside of 
-		 * plugin activation. 
-		 */
-		if ( ! get_charitable()->is_activation() ) {
-			return;
-		}
-
 		global $wpdb;
 
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
@@ -125,6 +138,18 @@ class Charitable_Donations_DB extends Charitable_DB {
 		dbDelta( $sql );
 
 		update_option( $this->table_name . '_db_version', $this->version );
+	}
+
+	/** 
+	 * Add a new donation.
+	 * 
+	 * @param 	array $data
+	 * @return 	int 
+	 * @access 	public
+	 * @since 	0.1
+	 */
+	public function add( array $data ) {
+		return parent::insert( $data, 'donation' );
 	}
 }
 

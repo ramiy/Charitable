@@ -17,101 +17,122 @@ if ( ! class_exists( 'Charitable_Donation' ) ) :
 class Charitable_Donation {
 	
 	/**
-	 * @var Charitable_Gateway_Interface The payment gateway used to process the donation.
+	 * @var 	Charitable_Donations_DB 
+	 * @access 	private
+	 */
+	private $db;
+
+	/**
+	 * @var 	Object The database record for this donation.
+	 */
+	private $data;
+
+	/**
+	 * @var 	Charitable_Gateway_Interface The payment gateway used to process the donation.
 	 */
 	private $gateway;
 
 	/**
-	 * @var array The campaign that was donated to.
+	 * @var 	Charitable_Campaign The campaign that was donated to.
 	 */
 	private $campaign;
 
 	/**
-	 * @var WP_Post The WP_Post object associated with this donation.
-	 */
-	private $post;
-
-	/**
-	 * @var WP_User The WP_user object of the person who donated.
+	 * @var 	WP_User The WP_user object of the person who donated.
 	 */
 	private $user;
 
 	/**
-	 * Class constructor. 
+	 * Instantiate a new donation object based off the ID.
 	 * 
-	 * @param $post The post ID or WP_Post object for this this donation.
-	 * @return void
-	 * @access public
-	 * @since 0.1
+	 * @param 	int $donation_id The donation ID.
+	 * @return 	void
+	 * @access 	public
+	 * @since 	0.1
 	 */
-	public function __construct($post) {
-		if ( ! is_a( $post, 'WP_Post' ) ) {
-			$post = get_post( $post );
-		}
-
-		$this->post = $post;
+	public function __construct( $donation_id ) {
+		$this->db = new Charitable_Donations_DB();
+		$this->data = $this->db->get( $donation_id );
 	}
 
 	/**
-	 * Returns the campaign's post_meta values. 
+	 * The name of the gateway used to process the donation.
 	 *
-	 * @see get_post_meta
-	 * 
-	 * @param string $meta_name The meta name to search for.
-	 * @param bool $single Whether to return a single value or an array. 
-	 * @return mixed This will return an array if single is false. If it's true, 
-	 *  	the value of the meta_value field will be returned.
-	 * @access public
-	 * @since 0.1
-	 */
-	public function get( $meta_name, $single = true ) {
-		$meta_name = '_' . $meta_name;
-		return get_post_meta( $this->post->ID, $meta_name, $single );
-	}
-
-	/**
-	 * Returns the name of the gateway used to process the donation.
-	 *
-	 * @return string The name of the gateway.
-	 * @access public
-	 * @since 0.1
+	 * @return 	string The name of the gateway.
+	 * @access 	public
+	 * @since 	0.1
 	 */
 	public function get_gateway() {
-		if ( ! isset( $this->gateway ) ) {
-			$this->gateway = $this->get( 'donation_gateway' );
-		}
-
-		return $this->gateway;
+		
 	}
 
 	/**
 	 * The amount donated on this donation.
+	 *
+	 * @return 	float
+	 * @access 	public
+	 * @since 	0.1
 	 */
 	public function get_amount() {
-		return $this->get( 'donation_amount' );
+		
 	}
 
-	/** 
-	 * The status of the payment. 
+	/**
+	 * The amount donated on this donation.
 	 *
-	 * 
+	 * @return 	string
+	 * @access 	public
+	 * @since 	0.1
 	 */
 	public function get_status() {
-		return $this->get( 'donation_status' );
+		
 	} 
 
 	/**
+	 * Returns the donation ID. 
 	 * 
+	 * @return 	int
+	 * @access 	public
+	 * @since 	0.1
 	 */
 	public function get_donation_id() {
-		return $this->post->ID;
+		
 	}
 
 	/**
-	 * Indicates whether the amount donated was a suggested amount or not
+	 * Indicates whether the amount donated was a suggested amount or not.
+	 *
+	 * @return 	bool
+	 * @access 	public
+	 * @since 	0.1
 	 */
-	public function get_is_custom(){
-		return $this->get( 'donation_is_custom' );
+	public function get_is_preset_amount() {
+		
+	}
+
+	/**
+	 * Returns the customer note attached to the donation.
+	 *
+	 * @return 	string
+	 * @access 	public
+	 * @since 	0.1
+	 */
+	public function get_note() {
+		
+	}
+
+	/**
+	 * Inserts a new donation. 
+	 *
+	 * @param 	array $args
+	 * @return 	int $donation_id
+	 * @access 	public
+	 * @static
+	 * @since 	0.1
+	 */
+	public static function insert( array $args ) {
+		$db = new Charitable_Donations_DB();
+		return $db->add( $args );
 	}
 }
 

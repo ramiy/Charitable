@@ -485,7 +485,7 @@ class Charitable {
 	 */
 	public function activate() {
 		require_once( $this->get_path( 'includes' ) . 'class-charitable-install.php' );
-		Charitable_Install::install( $this );
+		new Charitable_Install( $this );
 	}
 
 	/**
@@ -499,7 +499,7 @@ class Charitable {
 	 */
 	public function deactivate() {
 		require_once( $this->get_path( 'includes' ) . 'class-charitable-uninstall.php' );
-		Charitable_Uninstall::uninstall( $this );
+		new Charitable_Uninstall( $this );
 	}
 }
 

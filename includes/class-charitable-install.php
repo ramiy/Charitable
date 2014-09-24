@@ -33,35 +33,14 @@ class Charitable_Install {
 	 *
 	 * @param 	Charitable $charitable
 	 * @return 	void
-	 * @access 	private
+	 * @access 	public
 	 * @since 	0.1
 	 */
-	private function __construct( Charitable $charitable ) {
+	public function __construct( Charitable $charitable ) {
 		$this->charitable = $charitable;
 
 		$this->setup_roles();
 		$this->create_tables();		
-	}
-
-	/**
-	 * Install the plugin.
-	 *
-	 * @param 	Charitable $charitable
-	 * @return 	void
-	 * @static
-	 * @access 	public
-	 * @since 	0.1
-	 */
-	public static function install( Charitable $charitable ) {		
-		/** 
-		 * This prevents the class being instantiated at 
-		 * any time other than activation.
-		 */
-		if ( ! $charitable->is_activation() ) {
-			return;
-		}
-
-		new Charitable_Install( $charitable );
 	}
 
 	/**

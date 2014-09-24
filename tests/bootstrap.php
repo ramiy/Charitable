@@ -15,5 +15,16 @@ require $_tests_dir . '/includes/bootstrap.php';
 
 // deactivate_plugins('charitable/charitable.php');
 // activate_plugin('charitable/charitable.php');
+activate_plugin( 'charitable/charitable.php' );
+
+echo "Installing Charitable...\n";
+
+// Install Charitable
+get_charitable()->activate();
+
+global $current_user;
+
+$current_user = new WP_User(1);
+$current_user->set_role('administrator');
 
 require 'framework/testcase.php';

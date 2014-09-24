@@ -17,7 +17,7 @@ class Test_Charitable_Campaign extends Charitable_UnitTestCase {
 		 * Create a campaign
 		 */
 
-		$post_id = $this->factory->campaign->create();
+		$campaign_id = $this->factory->campaign->create();
 
 		$this->end_time = strtotime( '+300 days');
 
@@ -29,20 +29,14 @@ class Test_Charitable_Campaign extends Charitable_UnitTestCase {
 			'_campaign_custom_donations_enabled' 	=> 1,
 			'_campaign_suggested_donations' 		=> array(
 				5, 20, 50, 100, 250 
-			),
-			'_campaign_donation_form_fields' 		=> array(
-				'donor_first_name', 
-				'donor_last_name', 
-				'donor_email', 
-				'donor_phone'
 			)
 		);
 
 		foreach( $meta as $key => $value ) {
-			update_post_meta( $post_id, $key, $value );
+			update_post_meta( $campaign_id, $key, $value );
 		}
 
-		$this->post = get_post( $post_id );
+		$this->post = get_post( $campaign_id );
 
 		$this->campaign = new Charitable_Campaign( $this->post );
 
@@ -53,24 +47,38 @@ class Test_Charitable_Campaign extends Charitable_UnitTestCase {
 		$user_id_2 = $this->factory->user->create( array( 'display_name' => 'Mike Myers' ) );
 		$user_id_3 = $this->factory->user->create( array( 'display_name' => 'Fritz Bolton' ) );
 
-		foreach ( array(
-			1 => $user_id_1,
-			2 => $user_id_2,
-			3 => $user_id_3 ) as $donation => $user_id ) {
+		$donations_data = array(
+			array( 
+				'user_id' => $user_id_1, 
+				'amount' => 10, 
+				'gateway' => 'paypal', 
+				'is_preset_amount' => false, 
+			),
+			array( 
+				'user_id' => $user_id_2, 
+				'amount' => 20, 
+				'gateway' => 'paypal', 
+				'is_preset_amount' => true,
+			),
+			array( 
+				'user_id' => $user_id_3, 
+				'amount' => 30, 
+				'gateway' => 'manual', 
+				'is_preset_amount' => false
+			)
+		);
 
-			$donation_id = $this->factory->donation->create( array( 'post_author' => $user_id ) );
+		foreach ( $donations_data as $donation ) {
 
-			$meta = array(
-				'_donation_amount'	=> $donation * 10, // 10 + 20 + 30 = $60 donated in total
-				'_donation_gateway' 	=> 'paypal',
-				'_campaign_id' 		=> $post_id
-			);
+			$donation_id = $this->factory->donation->create( array( 
+				'campaign_id' 		=> $campaign_id, 
+				'user_id'			=> $donation['user_id'], 
+				'amount'			=> $donation['amount'], 
+				'gateway'			=> $donation['gateway'], 
+				'is_preset_amount' 	=> $donation['is_preset_amount']
+			) );
 
-			foreach ( $meta as $key => $value ) {
-				update_post_meta( $donation_id, $key, $value );
-			}
-
-			$this->donations[$donation] = get_post( $donation_id );
+			$this->donations[$donation_id] = new Charitable_Donation( $donation_id );
 		}
 	}
 
@@ -120,7 +128,7 @@ class Test_Charitable_Campaign extends Charitable_UnitTestCase {
 	}
 
 	function test_get_donations() {
-		$this->assertEquals( 3, $this->campaign->get_donations()->found_posts );
+		$this->assertCount( 3, $this->campaign->get_donations() );
 	}
 
 	function test_get_donated_amount() {
@@ -129,24 +137,26 @@ class Test_Charitable_Campaign extends Charitable_UnitTestCase {
 
 	function test_flush_donations_cache() {
 		// Test count of donations pre-cache
-		$this->assertEquals( 3, $this->campaign->get_donations()->found_posts );
+		$this->assertCount( 3, $this->campaign->get_donations() );
 
 		// Create a new donation
 		$user_id_4 = $this->factory->user->create( array( 'display_name' => 'Abraham Lincoln' ) );
-		$donation_id = $this->factory->donation->create( array( 'post_author' => $user_id_4 ) );
+		$donation_id = $this->factory->donation->create( array( 
+			'campaign_id' 		=> $this->campaign->get_campaign_id(), 
+			'user_id'			=> $user_id_4, 
+			'amount'			=> 100, 
+			'gateway'			=> 'paypal', 
+			'is_preset_amount' 	=> false
+		) );
 
-		update_post_meta( $donation_id, '_campaign_id', $this->campaign->get_campaign_id() );
-		update_post_meta( $donation_id, '_donation_amount', 100 );
-		update_post_meta( $donation_id, '_donation_gateway', 'paypal' );
-		
 		// Test count of donations again, before flush caching
-		$this->assertEquals( 3, $this->campaign->get_donations()->found_posts );
+		$this->assertCount( 3, $this->campaign->get_donations() );
 
 		// Flush cache
 		$this->campaign->flush_donations_cache();	
 
 		// Test count of donations again, should be +1
-		$this->assertEquals( 4, $this->campaign->get_donations()->found_posts );
+		$this->assertCount( 4, $this->campaign->get_donations() );
 	}
 
 	function test_get_donation_form() {
