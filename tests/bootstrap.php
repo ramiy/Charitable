@@ -2,7 +2,9 @@
 $_tests_dir = getenv('WP_TESTS_DIR');
 
 // Look for a wordpress-tests-lib directory on the same level as the WordPress installation.
-if ( !$_tests_dir ) $_tests_dir = dirname(__FILE__) . '/../../../../../wordpress-tests-lib';
+if ( ! $_tests_dir ) {
+	$_tests_dir = '/tmp/wordpress-tests-lib';
+}
 
 require_once $_tests_dir . '/includes/functions.php';
 
