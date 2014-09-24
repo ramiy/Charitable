@@ -164,7 +164,7 @@ class Charitable_Donations_DB extends Charitable_DB {
 	 */
 	private function get_donations_on_campaign( $campaign_id ){
 		global $wpdb;
-		$results $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $this->table_name WHERE campaign_id = %d;", $row_id ), OBJECT_K);
+		return $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $this->table_name WHERE campaign_id = %d;", $row_id ), OBJECT_K);
 	}
 
 

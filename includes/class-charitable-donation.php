@@ -120,6 +120,34 @@ class Charitable_Donation {
 	public function get_notes() {
 		return $this->data->notes;
 	}
+
+	/**
+	 * Returns the user object of the owner of this donation
+	 *
+	 * @return 	string
+	 * @access 	public
+	 * @since 	0.1
+	 */
+	public function get_user() {
+		if ( ! isset( $this->user ) ) {
+			$this->user = new WP_User( $this->data->user_id );
+		}
+
+		return $this->user;
+	}
+
+	/**
+	 * Returns the campaign that this donation belongs to
+	 *
+	 * @return 	string
+	 * @access 	public
+	 * @since 	0.1
+	 */
+	public function get_campaign(){
+		if ( ! isset( $this->campaign ) ) {
+			$this->campaign = new Charitable_Campaign( $this->data->campaign_id );
+		}
+	}
 	
 	/**
 	 * Inserts a new donation. 
