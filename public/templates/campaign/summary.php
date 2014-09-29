@@ -8,10 +8,12 @@
 
 $campaign = get_charitable()->get_request()->get_current_campaign();
 $currency_helper = get_charitable()->get_currency_helper();
+
 /**
  * @hook charitable_campaign_summary_before
  */
 do_action('charitable_campaign_summary_before');
+
 ?>
 <div class="campaign-summary">
 	<p class="campaign-raised campaign-summary-item"><?php 
@@ -29,16 +31,12 @@ do_action('charitable_campaign_summary_before');
 	<p class="campaign-time-left campaign-summary-item"><?php 
 		echo $campaign->get_time_left();
 	?></p>
-	<a class="campaign-donate-link" href="<?php
-		echo "link goes here";
-	?>"><div class="campaign-donate-button"><?php
-		echo __( "Donate", "charitable" );
-	?></div></a>
-	<div class="campaign-social-buttons">
-		social buttons
-	</div>
+	<?php 
+		new Charitable_Template_Part( 'campaign/donation-button' );
+	?>
 </div>
 <?php
+
 /**
  * @hook charitable_campaign_summary_after
  */

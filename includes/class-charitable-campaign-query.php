@@ -46,17 +46,17 @@ class Charitable_Campaign_Query extends WP_Query {
 	public static function ordered_by_ending_soon( $args = array() ) {
 
 		$defaults = array(
-				'meta_query' => array(
+				'meta_query' 	=> array(
 					array(
-						'key' => '_campaign_end_date',
-						'value' => date( 'Y-m-d H:i:s' ),
-						'compare' => '>=',
-						'type' => 'datetime'
+						'key' 		=> '_campaign_end_date',
+						'value' 	=> date( 'Y-m-d H:i:s' ),
+						'compare' 	=> '>=',
+						'type' 		=> 'datetime'
 					)
 				),
-				'meta_key' => '_campaign_end_date',
-				'orderby' => 'meta_value',
-				'order' => 'ASC'
+				'meta_key' 		=> '_campaign_end_date',
+				'orderby' 		=> 'meta_value',
+				'order' 		=> 'ASC'
 			);
 		$args = wp_parse_args( $args, $defaults );
 

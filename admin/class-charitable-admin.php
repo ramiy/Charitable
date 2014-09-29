@@ -96,7 +96,7 @@ final class Charitable_Admin {
 	 * @since 0.1
 	 */
 	public function admin_enqueue_scripts() {		
-		$assets_path = $this->charitable->get_path( 'assets', false );	
+		$assets_path = $this->charitable->get_path( 'admin', false ) . 'assets/';	
 
 		/**
 		 * Menu styles are loaded everywhere in the Wordpress dashboard. 

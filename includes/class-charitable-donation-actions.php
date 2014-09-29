@@ -37,8 +37,7 @@ final class Charitable_Donation_Actions {
 	 */
 	private function __construct(Charitable $charitable) {
 		$this->charitable = $charitable;
-	
-		add_action('init', array(&$this, 'init'));
+			
 
 		// The main Charitable class will save the one instance of this object.
 		$this->charitable->register_object( $this );
@@ -76,9 +75,18 @@ final class Charitable_Donation_Actions {
 	 * @since 0.1
 	 */
 	public function init() {
+		// global $wp_query;
+		// echo '<pre>'; print_r( $wp_query );
+		// die; 
+			// echo '<pre>'; print_r( query_vars() );
+			// 	die; 
+
 		/**
 		 *  
 		 */
+		if ( get_query_var( 'donate', false ) ) {
+
+		}
 
 		/**
 		 * 

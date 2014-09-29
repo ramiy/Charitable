@@ -16,7 +16,7 @@ do_action( 'charitable_campaign_content_before', $campaign );
 	/**
 	 * Display the summary of the campaign. 
 	 */
-	new Charitable_Template( 'campaign/summary.php' );
+	new Charitable_Template_Part( 'campaign/summary' );
 
 	the_content();
 

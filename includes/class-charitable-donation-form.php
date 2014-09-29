@@ -34,7 +34,7 @@ class Charitable_Donation_Form implements Charitable_Donation_Form_Interface {
 	 * @access public
 	 * @since 0.1
 	 */
-	public function __construct(Charitable_Campaign $campaign) {
+	public function __construct() {
 		$this->campaign = $campaign;
 	}
 

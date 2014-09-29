@@ -9,7 +9,7 @@ if ( ! class_exists( 'Charitable_Request' ) ) :
 /** 
  * Charitable Request. 
  *  
- * @class Charitable_Request
+ * @class 		Charitable_Request
  * @version		0.1
  * @package		Charitable/Classes/Charitable_Request
  * @category	Class
@@ -18,37 +18,37 @@ if ( ! class_exists( 'Charitable_Request' ) ) :
 final class Charitable_Request {
 
 	/**
-	 * @var post $post
-	 * @access private
+	 * @var 	post $post
+	 * @access 	private
 	 */
 	private $post;
 
 	/**
-	 * @var Charitable_Campaign
-	 * @access private
+	 * @var 	Charitable_Campaign
+	 * @access 	private
 	 */
 	private $campaign;
 
 	/**
-	 * @var Charitable_Donor
-	 * @access private
+	 * @var 	Charitable_Donor
+	 * @access 	private
 	 */
 	private $donor;
 
 	/**
-	 * @var Charitable_Donation
-	 * @access private
+	 * @var 	Charitable_Donation
+	 * @access 	private
 	 */
 	private $donation; 
 
 	/**
 	 * Set up the class. 
 	 * 
-	 * @global $post
+	 * @global 	$post
 	 *
-	 * @return void
-	 * @access public
-	 * @since 0.1
+	 * @return 	void
+	 * @access 	public
+	 * @since 	0.1
 	 */
 	public function __construct() {
 		global $post;
@@ -59,9 +59,9 @@ final class Charitable_Request {
 	/** 
 	 * Returns the current campaign. If there is no current campaign, return false. 
 	 *
-	 * @return Charitable_Campaign if we're viewing a single campaign page. False otherwise. 
-	 * @access public
-	 * @since 0.1
+	 * @return 	Charitable_Campaign if we're viewing a single campaign page. False otherwise. 
+	 * @access 	public
+	 * @since 	0.1
 	 */
 	public function get_current_campaign() {
 		if ( ! isset( $this->campaign ) ) {
@@ -74,7 +74,7 @@ final class Charitable_Request {
 		}
 
 		return $this->campaign;
-	}	 
+	}
 }
 
 endif; // End class_exists check 
