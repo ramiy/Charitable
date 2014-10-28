@@ -43,27 +43,6 @@ module.exports = function(grunt) {
                     '!public/assets/scss', 
                     '!public/assets/scss/**', 
                     'charitable.php'                    
-                    // '**',
-                    // '!.DS_Store',
-                    // '!**/.DS_Store',
-                    // '!.git*', 
-                    // '!.jshintrc',
-                    // '!.sass-cache',
-                    // '!.sass-cache/**',
-                    // '!node_modules', 
-                    // '!node_modules/**', 
-                    // '!Gruntfile.js', 
-                    // '!package.json',                     
-                    // '!README.md', 
-                    // '!config.rb',                     
-                    // '!assets/compass', 
-                    // '!assets/compass/**', 
-                    // '!assets/scss', 
-                    // '!assets/scss/**',
-                    // '!tests', 
-                    // '!tests/**', 
-                    // '!bin', 
-                    // '!bin/**'
                 ],
                 tasks: ['sync:dist']
             }        
@@ -92,32 +71,9 @@ module.exports = function(grunt) {
                             '!public/assets/compass/**', 
                             '!public/assets/scss', 
                             '!public/assets/scss/**', 
-                            'charitable.php'                            
-                            // 'assets/css/**', 
-                            // ''
-                            // '**',
-                            // '!.DS_Store',
-                            // '!**/.DS_Store',
-                            // '!.git*', 
-                            // '!.jshintrc',
-                            // '!.sass-cache',
-                            // '!.sass-cache/**',                  
-                            // '!node_modules', 
-                            // '!node_modules/**', 
-                            // '!Gruntfile.js', 
-                            // '!package.json',                     
-                            // '!README.md', 
-                            // '!config.rb',                     
-                            // '!assets/compass', 
-                            // '!assets/compass/**', 
-                            // '!assets/scss', 
-                            // '!assets/scss/**',
-                            // '!tests', 
-                            // '!tests/**', 
-                            // '!vendor', 
-                            // '!vendor/**'                            
+                            'charitable.php'                                
                         ], 
-                        dest: '/Users/ericdaams/Dropbox/Development/Projects/WP/wp-content/plugins/charitable'
+                        dest: '../../plugins/charitable'
                     }
                 ], 
                 verbose: true
@@ -193,7 +149,7 @@ module.exports = function(grunt) {
                     domainPath: '/languages',       // Where to save the POT file.                    
                     mainFile: 'charitable.php',     // Main project file.
                     potFilename: 'charitable.pot',  // Name of the POT file.
-                    type: 'wp-theme',               // Type of project (wp-plugin or wp-theme).
+                    type: 'wp-plugin',              // Type of project (wp-plugin or wp-theme).
                     updateTimestamp: true           // Whether the POT-Creation-Date should be updated without other changes.
                 }
             }
