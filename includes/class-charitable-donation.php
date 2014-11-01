@@ -1,18 +1,21 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly
-}
+/**
+ * Donation model
+ *
+ * @version		1.0.0
+ * @package		Charitable/Classes/Donation
+ * @category	Class
+ * @author 		Studio164a
+ */
+
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 if ( ! class_exists( 'Charitable_Donation' ) ) : 
 
 /**
- * Donation model
+ * Charitable_Donation class. 
  *
- * @class 		Charitable_Donation
- * @version		0.1
- * @package		Charitable/Classes/Donation
- * @category	Class
- * @author 		Studio164a
+ * @since		1.0.0
  */
 class Charitable_Donation {
 	
@@ -45,10 +48,10 @@ class Charitable_Donation {
 	/**
 	 * Instantiate a new donation object based off the ID.
 	 * 
-	 * @param 	int $donation_id The donation ID.
+	 * @param 	int $donation_id 	The donation ID.
 	 * @return 	void
 	 * @access 	public
-	 * @since 	0.1
+	 * @since 	1.0.0
 	 */
 	public function __construct( $donation_id ) {
 		$this->db = new Charitable_Donations_DB();
@@ -58,9 +61,9 @@ class Charitable_Donation {
 	/**
 	 * The name of the gateway used to process the donation.
 	 *
-	 * @return 	string The name of the gateway.
+	 * @return 	string 				The name of the gateway.
 	 * @access 	public
-	 * @since 	0.1
+	 * @since 	1.0.0
 	 */
 	public function get_gateway() {
 		return $this->data->gateway;
@@ -71,7 +74,7 @@ class Charitable_Donation {
 	 *
 	 * @return 	float
 	 * @access 	public
-	 * @since 	0.1
+	 * @since 	1.0.0
 	 */
 	public function get_amount() {
 		return $this->data->amount;
@@ -82,7 +85,7 @@ class Charitable_Donation {
 	 *
 	 * @return 	string
 	 * @access 	public
-	 * @since 	0.1
+	 * @since 	1.0.0
 	 */
 	public function get_status() {
 		return $this->data->status;
@@ -93,7 +96,7 @@ class Charitable_Donation {
 	 * 
 	 * @return 	int
 	 * @access 	public
-	 * @since 	0.1
+	 * @since 	1.0.0
 	 */
 	public function get_donation_id() {
 		return $this->data->id;
@@ -104,7 +107,7 @@ class Charitable_Donation {
 	 *
 	 * @return 	bool
 	 * @access 	public
-	 * @since 	0.1
+	 * @since 	1.0.0
 	 */
 	public function get_is_preset_amount() {
 		return $this->data->is_preset_amount;
@@ -115,7 +118,7 @@ class Charitable_Donation {
 	 *
 	 * @return 	string
 	 * @access 	public
-	 * @since 	0.1
+	 * @since 	1.0.0
 	 */
 	public function get_notes() {
 		return $this->data->notes;
@@ -126,7 +129,7 @@ class Charitable_Donation {
 	 *
 	 * @return 	string
 	 * @access 	public
-	 * @since 	0.1
+	 * @since 	1.0.0
 	 */
 	public function get_user() {
 		if ( ! isset( $this->user ) ) {
@@ -141,7 +144,7 @@ class Charitable_Donation {
 	 *
 	 * @return 	string
 	 * @access 	public
-	 * @since 	0.1
+	 * @since 	1.0.0
 	 */
 	public function get_campaign(){
 		if ( ! isset( $this->campaign ) ) {
@@ -156,7 +159,7 @@ class Charitable_Donation {
 	 * @return 	int $donation_id
 	 * @access 	public
 	 * @static
-	 * @since 	0.1
+	 * @since 	1.0.0
 	 */
 	public static function insert( array $args ) {
 		$db = new Charitable_Donations_DB();

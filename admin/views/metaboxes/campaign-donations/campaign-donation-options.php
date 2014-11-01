@@ -2,8 +2,8 @@
 /**
  * Renders the campaign's donation options in the settings metabox for the Campaign post type.
  *
- * @author Studio 164a
- * @since 0.1
+ * @author 	Studio 164a
+ * @since 	1.0.0
  */
 
 global $post;

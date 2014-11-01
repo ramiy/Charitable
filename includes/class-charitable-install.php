@@ -9,7 +9,7 @@
  * @subpackage	Charitable/Charitable Install
  * @copyright 	Copyright (c) 2014, Eric Daams	
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
- * @since 		0.1
+ * @since 		1.0.0
  */
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -18,7 +18,7 @@ if ( ! class_exists( 'Charitable_Install' ) ) :
 /**
  * Charitable_Install
  *
- * @since 		0.1
+ * @since 		1.0.0
  */
 class Charitable_Install {
 
@@ -34,7 +34,7 @@ class Charitable_Install {
 	 * @param 	Charitable $charitable
 	 * @return 	void
 	 * @access 	public
-	 * @since 	0.1
+	 * @since 	1.0.0
 	 */
 	public function __construct( Charitable $charitable ) {
 		$this->charitable = $charitable;
@@ -49,7 +49,7 @@ class Charitable_Install {
 	 * @return 	void
 	 * @static
 	 * @access 	public
-	 * @since 	0.1
+	 * @since 	1.0.0
 	 */
 	private function setup_roles(){
 		$roles = new Charitable_Roles();
@@ -62,7 +62,7 @@ class Charitable_Install {
 	 *
 	 * @return 	void
 	 * @access 	private
-	 * @since 	0.1
+	 * @since 	1.0.0
 	 */
 	private function create_tables() {
 		 $this->charitable->get_db_table( 'donations' )->create_table();

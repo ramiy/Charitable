@@ -5,7 +5,7 @@
  * @package     Charitable
  * @subpackage  Classes/Charitable Donations DB
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
- * @since       0.1
+ * @since       1.0.0
 */
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -14,7 +14,7 @@ if ( ! class_exists( 'Charitable_Donations_DB' ) ) :
 /**
  * Charitable_Donations_DB
  *
- * @since 		0.1 
+ * @since 		1.0.0 
  */
 class Charitable_Donations_DB extends Charitable_DB {	
 
@@ -22,15 +22,15 @@ class Charitable_Donations_DB extends Charitable_DB {
 	 * The version of our database table
 	 *
 	 * @access  public
-	 * @since   0.1
+	 * @since   1.0.0
 	 */
-	public $version = '0.1';
+	public $version = '1.0.0';
 
 	/**
 	 * The name of the primary column
 	 *
 	 * @access  public
-	 * @since   0.1
+	 * @since   1.0.0
 	 */
 	public $primary_key = 'id';
 
@@ -39,7 +39,7 @@ class Charitable_Donations_DB extends Charitable_DB {
 	 *
 	 * @return 	void
 	 * @access 	public
-	 * @since 	0.1
+	 * @since 	1.0.0
 	 */
 	public function __construct() {
 		global $wpdb;
@@ -52,7 +52,7 @@ class Charitable_Donations_DB extends Charitable_DB {
 	 *
 	 * @return  array 
 	 * @access  public
-	 * @since   0.1
+	 * @since   1.0.0
 	 */
 	public function get_columns() {
 		return array(
@@ -73,7 +73,7 @@ class Charitable_Donations_DB extends Charitable_DB {
 	 *
 	 * @return 	array
 	 * @access  public
-	 * @since   0.1
+	 * @since   1.0.0
 	 */
 	public function get_column_defaults() {
 		return array(
@@ -94,7 +94,7 @@ class Charitable_Donations_DB extends Charitable_DB {
 	 *
 	 * @return 	array
 	 * @access 	public
-	 * @since 	0.1
+	 * @since 	1.0.0
 	 */
 	public function get_statuses() {
 		return array(
@@ -115,7 +115,7 @@ class Charitable_Donations_DB extends Charitable_DB {
 	 * @global 	$wpdb
 	 *
 	 * @access 	public
-	 * @since 	0.1
+	 * @since 	1.0.0
 	 */
 	public function create_table() {
 		global $wpdb;
@@ -148,7 +148,7 @@ class Charitable_Donations_DB extends Charitable_DB {
 	 * @param 	array $data
 	 * @return 	int 
 	 * @access 	public
-	 * @since 	0.1
+	 * @since 	1.0.0
 	 */
 	public function add( array $data ) {
 		// Validate donation status

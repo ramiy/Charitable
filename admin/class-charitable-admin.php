@@ -12,7 +12,7 @@ if ( ! class_exists( 'Charitable_Admin' ) ) :
  * @author 		Studio164a
  * @category 	Admin
  * @package 	Charitable/Admin
- * @version     0.1
+ * @version     1.0.0
  */
 final class Charitable_Admin {
 
@@ -29,10 +29,10 @@ final class Charitable_Admin {
 	 * which can only be called during the start phase. In other words, don't try 
 	 * to instantiate this object. 
 	 *
-	 * @param Charitable $charitable
-	 * @return void
-	 * @access private
-	 * @since 0.1
+	 * @param 	Charitable $charitable
+	 * @return 	void
+	 * @access 	private
+	 * @since 	1.0.0
 	 */
 	private function __construct(Charitable $charitable) {
 		$this->charitable = $charitable;
@@ -47,11 +47,11 @@ final class Charitable_Admin {
 	/**
 	 * Instantiate the class, but only during the start phase.
 	 * 
-	 * @param Charitable $charitable 
-	 * @return void
+	 * @param 	Charitable $charitable 
+	 * @return 	void
 	 * @static 
-	 * @access public
-	 * @since 0.1
+	 * @access 	public
+	 * @since 	1.0.0
 	 */
 	public static function start(Charitable $charitable) {
 		if ( $charitable->started() ) {
@@ -64,9 +64,9 @@ final class Charitable_Admin {
 	/**
 	 * Include admin-only files.
 	 * 
-	 * @return void
-	 * @access private
-	 * @since 0.1
+	 * @return 	void
+	 * @access 	private
+	 * @since 	1.0.0
 	 */
 	private function include_files() {
 		require_once( $this->charitable->get_path( 'admin' ) . 'includes/charitable-core-admin-functions.php' );			
@@ -78,9 +78,9 @@ final class Charitable_Admin {
 	/**
 	 * Sets up hook and filter callback functions for admin-only functionality.
 	 * 
-	 * @return void
-	 * @access private
-	 * @since 0.1
+	 * @return 	void
+	 * @access 	private
+	 * @since 	1.0.0
 	 */
 	private function attach_hooks_and_filters() {
 		add_action('charitable_start', array('Charitable_Admin_Settings', 'charitable_start'));
@@ -91,9 +91,9 @@ final class Charitable_Admin {
 	/**
 	 * Loads admin-only scripts and stylesheets. 
 	 *
-	 * @return void
-	 * @access public
-	 * @since 0.1
+	 * @return 	void
+	 * @access 	public
+	 * @since 	1.0.0
 	 */
 	public function admin_enqueue_scripts() {		
 		$assets_path = $this->charitable->get_path( 'admin', false ) . 'assets/';	
@@ -127,9 +127,9 @@ final class Charitable_Admin {
 	 *
 	 * @uses charitable_admin_screens
 	 * 
-	 * @return array
-	 * @access private
-	 * @since 0.1
+	 * @return 	array
+	 * @access 	private
+	 * @since 	1.0.0
 	 */
 	private function get_charitable_screens() {
 		return apply_filters( 'charitable_admin_screens', array(

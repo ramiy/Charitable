@@ -3,7 +3,7 @@
  * Plugin Name: 		Charitable
  * Plugin URI: 			http://164a.com
  * Description: 		Fundraise with WordPress.
- * Version: 			0.1.0
+ * Version: 			1.0.0
  * Author: 				Studio 164a
  * Author URI: 			http://164a.com
  * Requires at least: 	3.9
@@ -27,14 +27,14 @@ if ( ! class_exists( 'Charitable' ) ) :
  * Main Charitable class
  *
  * @class 		Charitable
- * @version		0.1.0
+ * @version		1.0.0
  */
 class Charitable {
 
 	/**
      * @var string
      */
-	const VERSION = '0.1.0';
+	const VERSION = '1.0.0';
 
 	/**
      * @var string 	A date in the format: YYYYMMDD
@@ -90,7 +90,7 @@ class Charitable {
      * Create class instance. 
      * 
      * @return 	void
-     * @since 	0.1.0
+     * @since 	1.0.0
      */
 	public function __construct() {
 		$this->directory_path = plugin_dir_path( __FILE__ );
@@ -103,7 +103,7 @@ class Charitable {
 	 * Returns the original instance of this class. 
 	 * 
 	 * @return 	Charitable
-	 * @since 	0.1.0
+	 * @since 	1.0.0
 	 */
 	public static function get_instance() {
 		return self::$instance;
@@ -114,23 +114,23 @@ class Charitable {
 	 *
 	 * This class is specifically designed to be instantiated once. You can retrieve the instance using get_charitable()
 	 *
-	 * @since 	0.1.0
+	 * @since 	1.0.0
 	 * @access 	public
 	 * @return 	void
 	 */
 	public function __clone() {
-		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'charitable' ), '0.1.0' );
+		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'charitable' ), '1.0.0' );
 	}
 
 	/**
 	 * Disable unserializing of the class. 
 	 *
-	 * @since 	0.1.0
+	 * @since 	1.0.0
 	 * @access 	public
 	 * @return 	void
 	 */
 	public function __wakeup() {
-		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'charitable' ), '0.1.0' );
+		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'charitable' ), '1.0.0' );
 	}
 
 	/**
@@ -140,7 +140,7 @@ class Charitable {
 	 * 
 	 * @return 	void
 	 * @access 	private
-	 * @since 	0.1.0
+	 * @since 	1.0.0
 	 */
 	private function start() {
 		// If we've already started (i.e. run this function once before), do not pass go. 
@@ -170,7 +170,7 @@ class Charitable {
 	 * 
 	 * @return 	void
 	 * @access 	private
-	 * @since 	0.1.0
+	 * @since 	1.0.0
 	 */
 	private function load_dependencies() {
 		/**
@@ -194,6 +194,7 @@ class Charitable {
 		require_once( $this->includes_path . 'class-charitable-donation.php' );
 		require_once( $this->includes_path . 'class-charitable-donation-form.php' );
 		require_once( $this->includes_path . 'class-charitable-donation-form-hidden.php' );
+		require_once( $this->includes_path . 'class-charitable-session-donation.php' );
 
 		require_once( $this->includes_path . 'db/abstract-class-charitable-db.php' );
 		require_once( $this->includes_path . 'db/class-charitable-donations-db.php' );
@@ -216,7 +217,7 @@ class Charitable {
 	 * 
 	 * @return 	void
 	 * @access 	private
-	 * @since 	0.1.0
+	 * @since 	1.0.0
 	 */
 	private function attach_hooks_and_filters() {				
 		register_activation_hook( __FILE__, array( $this, 'activate') );
@@ -232,7 +233,7 @@ class Charitable {
 	 *
 	 * @return 	void
 	 * @access 	private
-	 * @since 	0.1.0
+	 * @since 	1.0.0
 	 */
 	private function maybe_start_admin() {
 		if ( ! is_admin() ) {
@@ -249,7 +250,7 @@ class Charitable {
 	 *
 	 * @return 	void
 	 * @access 	private
-	 * @since 	0.1.0
+	 * @since 	1.0.0
 	 */
 	private function maybe_start_public() {
 		if ( is_admin() ) {
@@ -266,7 +267,7 @@ class Charitable {
 	 *
 	 * @return 	bool
 	 * @access 	public
-	 * @since 	0.1.0
+	 * @since 	1.0.0
 	 */
 	public function is_start() {
 		return current_filter() == 'charitable_start';
@@ -277,7 +278,7 @@ class Charitable {
 	 * 
 	 * @return 	bool
 	 * @access 	public
-	 * @since 	0.1.0
+	 * @since 	1.0.0
 	 */
 	public function started() {
 		return did_action( 'charitable_start' ) || current_filter() == 'charitable_start';
@@ -288,7 +289,7 @@ class Charitable {
 	 *
 	 * @return 	bool
 	 * @access 	public
-	 * @since 	0.1.0
+	 * @since 	1.0.0
 	 */
 	public function is_activation() {
 		return current_filter() == 'activate_charitable/charitable.php';
@@ -299,7 +300,7 @@ class Charitable {
 	 *
 	 * @return 	bool
 	 * @access 	public
-	 * @since 	0.1.0
+	 * @since 	1.0.0
 	 */
 	public function is_deactivation() {
 		return current_filter() == 'deactivate_charitable/charitable.php';
@@ -311,7 +312,7 @@ class Charitable {
 	 * @param 	mixed $object
 	 * @return 	void
 	 * @access 	public
-	 * @since 	0.1.0
+	 * @since 	1.0.0
 	 */
 	public function register_object($object) {
 		if ( ! is_object( $object ) ) {
@@ -329,7 +330,7 @@ class Charitable {
 	 * @param 	string $class The type of class you want to retrieve.
 	 * @return 	mixed The object if its registered. Otherwise false.
 	 * @access 	public
-	 * @since 	0.1.0
+	 * @since 	1.0.0
 	 */
 	public function get_registered_object($class) {
 		return isset( $this->registry[$class] ) ? $this->registry[$class] : false;
@@ -341,7 +342,7 @@ class Charitable {
 	 * @param 	string $path 			// If empty, returns the path to the plugin.
 	 * @param 	bool $absolute_path 	// If true, returns the file system path. If false, returns it as a URL.
 	 * @return 	string
-	 * @since 	0.1.0
+	 * @since 	1.0.0
 	 */
 	public function get_path($type = '', $absolute_path = true ) {		
 		$base = $absolute_path ? $this->directory_path : $this->directory_url;
@@ -371,10 +372,10 @@ class Charitable {
 	 *
 	 * @return 	string
 	 * @access 	public
-	 * @since 	0.1.0
+	 * @since 	1.0.0
 	 */
 	public function get_version() {
-		return $this->version;
+		return self::VERSION;
 	}
 
 	/**
@@ -382,7 +383,7 @@ class Charitable {
 	 *
 	 * @return 	Charitable_Public
 	 * @access 	public
-	 * @since 	0.1.0
+	 * @since 	1.0.0
 	 */
 	public function get_public() {
 		return $this->get_registered_object('Charitable_Public');
@@ -393,7 +394,7 @@ class Charitable {
 	 *
 	 * @return 	Charitable_Admin
 	 * @access 	public
-	 * @since 	0.1.0
+	 * @since 	1.0.0
 	 */
 	public function get_admin() {
 		return $this->get_registered_object('Charitable_Admin');
@@ -404,7 +405,7 @@ class Charitable {
 	 *
 	 * @return 	Charitable_Location_Helper
 	 * @access 	public
-	 * @since 	0.1.0
+	 * @since 	1.0.0
 	 */
 	public function get_location_helper() {
 		$location_helper = $this->get_registered_object('Charitable_Location_Helper');
@@ -422,7 +423,7 @@ class Charitable {
 	 *
 	 * @return 	Charitable_Request
 	 * @access 	public
-	 * @since 	0.1.0
+	 * @since 	1.0.0
 	 */
 	public function get_request() {
 		$request = $this->get_registered_object('Charitable_Request');
@@ -436,22 +437,11 @@ class Charitable {
 	}
 
 	/**
-	 * Returns the current session object.
-	 *
-	 * @return 	Charitable_Session
-	 * @access 	public
-	 * @since 	0.1.0
-	 */
-	public function get_session() {
-		return $this->get_registered_object( 'Charitable_Session' );
-	}
-
-	/**
 	 * Return an instance of the currency helper. 
 	 *
 	 * @return 	Charitable_Currency_Helper
 	 * @access 	public
-	 * @since 	0.1.0
+	 * @since 	1.0.0
 	 */
 	public function get_currency_helper() {
 		$currency_helper = $this->get_registered_object('Charitable_Currency_Helper');
@@ -470,7 +460,7 @@ class Charitable {
 	 * @param 	string $table_name
 	 * @return 	Charitable_DB
 	 * @access 	public
-	 * @since 	0.1.0
+	 * @since 	1.0.0
 	 */
 	public function get_db_table( $table_name ) {
 
@@ -500,7 +490,7 @@ class Charitable {
 	 *
 	 * @return 	void
 	 * @access 	public
-	 * @since	0.1.0
+	 * @since	1.0.0
 	 */
 	public function activate() {
 		require_once( $this->get_path( 'includes' ) . 'class-charitable-install.php' );
@@ -514,7 +504,7 @@ class Charitable {
 	 *
 	 * @return 	void
 	 * @access 	public
-	 * @since 	0.1.0
+	 * @since 	1.0.0
 	 */
 	public function deactivate() {
 		require_once( $this->get_path( 'includes' ) . 'class-charitable-uninstall.php' );
@@ -526,16 +516,16 @@ class Charitable {
 	 *
 	 * @return 	void
 	 * @access 	private
-	 * @since 	0.1.0
+	 * @since 	1.0.0
 	 */
 	private function maybe_upgrade() {
 		$db_version = get_option( 'charitable_version' );
 
-		if ( $db_version !== $this->version ) {		
+		if ( $db_version !== self::VERSION ) {		
 
 			require_once( $this->get_path( 'includes' ) . 'class-charitable-upgrade.php' );
 
-			Charitable_Upgrade::upgrade_from( $db_version, $this->version );
+			Charitable_Upgrade::upgrade_from( $db_version, self::VERSION );
 		}
 	}
 }

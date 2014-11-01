@@ -9,7 +9,7 @@
  * @subpackage	Charitable/Charitable Upgrade
  * @copyright 	Copyright (c) 2014, Eric Daams	
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
- * @since 		0.1
+ * @since 		1.0.0
  */
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -18,7 +18,7 @@ if ( ! class_exists( 'Charitable_Uninstall' ) ) :
 /**
  * Charitable_Uninstall
  * 
- * @since 		0.1
+ * @since 		1.0.0
  */
 class Charitable_Uninstall {
 
@@ -35,7 +35,7 @@ class Charitable_Uninstall {
 	 * @return 	void
 	 * @static
 	 * @access 	public
-	 * @since 	0.1
+	 * @since 	1.0.0
 	 */
 	public function __construct( Charitable $charitable ){
 		$this->charitable = $charitable;
@@ -49,7 +49,7 @@ class Charitable_Uninstall {
 	 * @return 	void
 	 * @static
 	 * @access 	public
-	 * @since 	0.1
+	 * @since 	1.0.0
 	 */
 	public static function remove_caps() {
 		$roles = new Charitable_Roles();

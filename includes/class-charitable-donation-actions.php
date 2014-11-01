@@ -10,7 +10,7 @@ if ( ! class_exists( 'Charitable_Donation_Actions' ) ) :
  * Charitable Donation actions.
  *
  * @class 		Charitable_Donation_Actions
- * @version		0.1
+ * @version		1.0.0
  * @package		Charitable/Classes/Charitable_Donation_Actions
  * @category	Class
  * @author 		Studio164a
@@ -33,7 +33,7 @@ final class Charitable_Donation_Actions {
 	 * @param Charitable $charitable
 	 * @return void
 	 * @access private
-	 * @since 0.1
+	 * @since 1.0.0
 	 */
 	private function __construct(Charitable $charitable) {
 		$this->charitable = $charitable;
@@ -52,7 +52,7 @@ final class Charitable_Donation_Actions {
 	 * @return void
 	 * @static 
 	 * @access public
-	 * @since 0.1
+	 * @since 1.0.0
 	 */
 	public static function charitable_start(Charitable $charitable) {
 		if ( ! $charitable->is_start() ) {
@@ -72,7 +72,7 @@ final class Charitable_Donation_Actions {
 	 *
 	 * @return void
 	 * @access public
-	 * @since 0.1
+	 * @since 1.0.0
 	 */
 	public function init() {
 		// global $wp_query;
@@ -99,7 +99,7 @@ final class Charitable_Donation_Actions {
 	 * @global $post WP_Post
 	 * @return void
 	 * @access private
-	 * @since 0.1
+	 * @since 1.0.0
 	 */
 	private function load_donation_form() {
 		global $post;
@@ -118,7 +118,7 @@ final class Charitable_Donation_Actions {
 	 *
 	 * @return void
 	 * @access private
-	 * @since 0.1
+	 * @since 1.0.0
 	 */
 	private function save_donation() {
 		global $post;

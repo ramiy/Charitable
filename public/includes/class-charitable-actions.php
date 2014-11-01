@@ -1,19 +1,23 @@
 <?php
 /**
- * Exit if accessed directly.
+ * Handle form submissions in the Charitable front-end interface. 
+ *
+ * @class 		Charitable_Actions
+ * @version		1.0.0
+ * @package		Charitable/Classes/Charitable_Actions
+ * @category	Class
+ * @author 		Studio164a
  */
+
 if ( ! defined( 'ABSPATH' ) ) exit; 
 
 if ( ! class_exists( 'Charitable_Actions' ) ) : 
 
 /**
- * Charitable actions.
+ * Charitable_Actions class.
  *
- * @class 		Charitable_Actions
- * @version		0.1
- * @package		Charitable/Classes/Charitable_Actions
- * @category	Class
- * @author 		Studio164a
+ * @since		1.0.0
+ * @final
  */
 final class Charitable_Actions {
 
@@ -33,7 +37,7 @@ final class Charitable_Actions {
 	 * @param 	Charitable $charitable
 	 * @return 	void
 	 * @access 	private
-	 * @since 	0.1
+	 * @since 	1.0.0
 	 */
 	private function __construct(Charitable $charitable) {
 		$this->charitable = $charitable;
@@ -53,7 +57,7 @@ final class Charitable_Actions {
 	 * @return 	void
 	 * @static 
 	 * @access 	public
-	 * @since 	0.1
+	 * @since 	1.0.0
 	 */
 	public static function charitable_start(Charitable $charitable) {
 		if ( ! $charitable->is_start() ) {
@@ -73,7 +77,7 @@ final class Charitable_Actions {
 	 *
 	 * @return 	void
 	 * @access 	public
-	 * @since 	0.1
+	 * @since 	1.0.0
 	 */
 	public function init() {
 		if ( isset( $_POST['charitable-action'] ) ) {
@@ -84,11 +88,51 @@ final class Charitable_Actions {
 				 * Fired on donation.
 				 */
 				case 'donate-now' :
-					$donations_url = charitable_get_helper( 'pages' )->get_page_url( 'donation-form' );
-					wp_redirect( $donations_url );
+					$this->donation_handler();
 					break;
 			}
 		}
+	}
+
+	/**
+	 * Executed when a user first clicks the Donate button on a campaign. 
+	 *
+	 * @return 	void
+	 * @access  private
+	 * @since 	1.0.0
+	 */
+	private function donation_handler() {
+		/**
+		 * A campaign ID must be set. 
+		 */
+		if ( ! isset( $_POST['campaign-id'] ) ) {
+			return;
+		}
+
+		$campaign_id = absint( $_POST['campaign-id'] );
+
+		/**
+		 * The ID must be for a campaign. 
+		 */
+		if ( 'campaign' !== get_post_type( $campaign_id ) ) {
+			return;
+		} 
+
+		/**
+		 * Create or update the donation object in the session, with the current campaign ID.
+		 */
+		$session = charitable_get_session();
+		$donation = $session->get( 'donation' );
+		
+		if ( false === $donation ) {
+			$donation = new Charitable_Session_Donation();			
+		}
+
+		$donation->set( 'campaign_id', $campaign_id ); 
+		$session->set( 'donation', $donation );
+
+		$donations_url = charitable_get_helper( 'pages' )->get_page_url( 'donation-form' );
+		wp_redirect( $donations_url );
 	}
 
 	/**
@@ -97,7 +141,7 @@ final class Charitable_Actions {
 	 * @global 	$post WP_Post
 	 * @return 	void
 	 * @access 	private
-	 * @since 	0.1
+	 * @since 	1.0.0
 	 */
 	private function load_donation_form() {
 		global $post;
@@ -116,7 +160,7 @@ final class Charitable_Actions {
 	 *
 	 * @return 	void
 	 * @access 	private
-	 * @since 	0.1
+	 * @since 	1.0.0
 	 */
 	private function save_donation() {
 		global $post;

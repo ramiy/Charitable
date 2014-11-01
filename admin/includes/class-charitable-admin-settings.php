@@ -13,29 +13,29 @@ if ( ! class_exists( 'Charitable_Admin_Settings' ) ) :
  * @author 		Studio164a
  * @category 	Admin
  * @package 	Charitable/Admin/Settings
- * @version     0.1
+ * @version     1.0.0
  */
 final class Charitable_Admin_Settings {
 
 	/**
-	 * @var Charitable $charitable
-	 * @access private
+	 * @var 	Charitable $charitable
+	 * @access 	private
 	 */
 	private $charitable;
 
 	/**
-	 * @var string $page The page to use when registering sections and fields.
-	 * @access private
+	 * @var 	string $page The page to use when registering sections and fields.
+	 * @access 	private
 	 */
 	private $page;
 
 	/**
 	 * Create object instance. 
 	 *
-	 * @param Charitable $charitable
-	 * @return void
-	 * @access private
-	 * @since 0.1
+	 * @param 	Charitable $charitable
+	 * @return 	void
+	 * @access 	private
+	 * @since 	1.0.0
 	 */
 	private function __construct(Charitable $charitable) {
 		$this->charitable = $charitable;
@@ -55,10 +55,10 @@ final class Charitable_Admin_Settings {
 	 * 
 	 * @see charitable_start hook
 	 *
-	 * @param Charitable $charitable
-	 * @return void
-	 * @access private
-	 * @since 0.1
+	 * @param 	Charitable $charitable
+	 * @return 	void
+	 * @access 	private
+	 * @since 	1.0.0
 	 */
 	public static function charitable_start(Charitable $charitable) {
 		if ( ! $charitable->is_start() ) {
@@ -71,9 +71,9 @@ final class Charitable_Admin_Settings {
 	/**
 	 * Add Settings menu item under the Campaign menu tab.
 	 * 
-	 * @return void
-	 * @access public
-	 * @since 0.1
+	 * @return 	void
+	 * @access 	public
+	 * @since 	1.0.0
 	 */
 	public function add_menu() {
 		//add_submenu_page();
@@ -84,9 +84,9 @@ final class Charitable_Admin_Settings {
 	 *
 	 * @uses charitable_settings_fields
 	 *
-	 * @return array
-	 * @access public
-	 * @since 0.1
+	 * @return 	array
+	 * @access 	public
+	 * @since 	1.0.0
 	 */
 	public function get_fields() {
 		return apply_filters( 'charitable_settings_fields', array(
@@ -97,9 +97,9 @@ final class Charitable_Admin_Settings {
 	/**
 	 * Add sections to the settings page.
 	 *
-	 * @return void
-	 * @access public
-	 * @since 0.1
+	 * @return 	void
+	 * @access 	public
+	 * @since 	1.0.0
 	 */
 	public function add_sections() {
 
@@ -108,9 +108,9 @@ final class Charitable_Admin_Settings {
 	/**
 	 * Add fields to the settings page.
 	 *
-	 * @return void
-	 * @access public
-	 * @since 0.1
+	 * @return 	void
+	 * @access 	public
+	 * @since 	1.0.0
 	 */
 	public function add_fields() {
 
@@ -119,9 +119,9 @@ final class Charitable_Admin_Settings {
 	/**
 	 * Register setting.
 	 *
-	 * @return void
-	 * @access public
-	 * @since 0.1
+	 * @return 	void
+	 * @access 	public
+	 * @since 	1.0.0
 	 */
 	public function register_setting() {
 
@@ -130,9 +130,9 @@ final class Charitable_Admin_Settings {
 	/**
 	 * Render field. 
 	 *
-	 * @return void
-	 * @access public
-	 * @since 0.1
+	 * @return 	void
+	 * @access 	public
+	 * @since 	1.0.0
 	 */
 	public function render() {
 		

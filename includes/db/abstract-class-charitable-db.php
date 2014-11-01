@@ -8,7 +8,7 @@
  * @package     Charitable
  * @subpackage  Classes/Charitable DB
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
- * @since       0.1
+ * @since       1.0.0
 */
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -20,7 +20,7 @@ abstract class Charitable_DB {
 	 * The name of our database table
 	 *
 	 * @access  public
-	 * @since   0.1
+	 * @since   1.0.0
 	 */
 	public $table_name;
 
@@ -28,7 +28,7 @@ abstract class Charitable_DB {
 	 * The version of our database table
 	 *
 	 * @access  public
-	 * @since   0.1
+	 * @since   1.0.0
 	 */
 	public $version;
 
@@ -36,7 +36,7 @@ abstract class Charitable_DB {
 	 * The name of the primary column
 	 *
 	 * @access  public
-	 * @since   0.1
+	 * @since   1.0.0
 	 */
 	public $primary_key;
 
@@ -44,7 +44,7 @@ abstract class Charitable_DB {
 	 * Get things started
 	 *
 	 * @access  public
-	 * @since   0.1
+	 * @since   1.0.0
 	 */
 	public function __construct() {}
 
@@ -54,7 +54,7 @@ abstract class Charitable_DB {
 	 * @return  array
 	 * @abstract	 
 	 * @access  public
-	 * @since   0.1
+	 * @since   1.0.0
 	 */
 	abstract public function get_columns();
 
@@ -64,7 +64,7 @@ abstract class Charitable_DB {
 	 * @return 	array
 	 * @abstract
 	 * @access  public
-	 * @since   0.1
+	 * @since   1.0.0
 	 */
 	abstract public function get_column_defaults();
 
@@ -74,7 +74,7 @@ abstract class Charitable_DB {
 	 * @param 	string $column
 	 * @return 	%s, %d or %f
 	 * @access 	public
-	 * @since 	0.1
+	 * @since 	1.0.0
 	 */
 	public function get_column_format($column) {
 		$columns = $this->get_columns();
@@ -97,7 +97,7 @@ abstract class Charitable_DB {
 	 * Retrieve a row by the primary key
 	 *
 	 * @access  public
-	 * @since   0.1
+	 * @since   1.0.0
 	 * @return  object
 	 */
 	public function get( $row_id ) {
@@ -109,7 +109,7 @@ abstract class Charitable_DB {
 	 * Retrieve a row by a specific column / value
 	 *
 	 * @access  public
-	 * @since   0.1
+	 * @since   1.0.0
 	 * @return  object
 	 */
 	public function get_by( $column, $row_id ) {
@@ -121,7 +121,7 @@ abstract class Charitable_DB {
 	 * Retrieve a specific column's value by the primary key
 	 *
 	 * @access  public
-	 * @since   0.1
+	 * @since   1.0.0
 	 * @return  string
 	 */
 	public function get_column( $column, $row_id ) {
@@ -133,7 +133,7 @@ abstract class Charitable_DB {
 	 * Retrieve a specific column's value by the the specified column / value
 	 *
 	 * @access  public
-	 * @since   0.1
+	 * @since   1.0.0
 	 * @return  string
 	 */
 	public function get_column_by( $column, $column_where, $column_value ) {
@@ -145,7 +145,7 @@ abstract class Charitable_DB {
 	 * Insert a new row
 	 *
 	 * @access  public
-	 * @since   0.1
+	 * @since   1.0.0
 	 * @return  int
 	 */
 	public function insert( $data, $type = '' ) {
@@ -180,7 +180,7 @@ abstract class Charitable_DB {
 	 * Update a row
 	 *
 	 * @access  public
-	 * @since   0.1
+	 * @since   1.0.0
 	 * @return  bool
 	 */
 	public function update( $row_id, $data = array(), $where = '' ) {
@@ -222,7 +222,7 @@ abstract class Charitable_DB {
 	 * Delete a row identified by the primary key
 	 *
 	 * @access  public
-	 * @since   0.1
+	 * @since   1.0.0
 	 * @return  bool
 	 */
 	public function delete( $row_id = 0 ) {

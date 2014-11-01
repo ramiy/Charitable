@@ -5,37 +5,34 @@
  * This is based on the IT_Exchange_Casper class in iThemes Exchange. 
  *
  * @class 		Charitable_Ghost_Page
- * @version		0.1
+ * @version		1.0.0
  * @package		Charitable/Classes/Charitable Ghost Page
  * @category	Class
  * @author 		Studio164a
  */
 
-/**
- * Exit if accessed directly.
- */
 if ( ! defined( 'ABSPATH' ) ) exit; 
 
 if ( ! class_exists( 'Charitable_Ghost_Page' ) ) : 
 
 /**
- * Charitable_Ghost_Page
+ * Charitable_Ghost_Page class.
  * 
  * It is used when viewing a frontend Charitable view other than a campaign.
  *
- * @since 0.1
+ * @since 1.0.0
  */
 class Charitable_Ghost_Page {
 
 	/**
-	 * @var 	string $current_view The current Charitable frontend view. Should not ever be campaign.
-	 * @since 	0.1
+	 * @var 	string $current_view 		The current Charitable frontend view. Should never be campaign.
+	 * @since 	1.0.0
   	 */
 	private $current_view;
 
 	/**
 	 * @var 	WP_Query $wp_query
-	 * @since 	0.1
+	 * @since 	1.0.0
 	 */
 	private $wp_query;
 
@@ -46,7 +43,7 @@ class Charitable_Ghost_Page {
 	 * @param 	WP_Query $wp_query
 	 * @return 	void
 	 * @access 	public
-	 * @since 	0.1
+	 * @since 	1.0.0
 	 */
 	public function __construct( $current_view ) {
 		if ( 'campaign' == $current_view )
@@ -61,7 +58,7 @@ class Charitable_Ghost_Page {
 	 *
 	 * @return  void
 	 * @access 	private
-	 * @since 	0.1
+	 * @since 	1.0.0
 	 */
 	private function modify_wp_query() {
 		$wp_query = $GLOBALS['wp_query'];
@@ -135,7 +132,7 @@ class Charitable_Ghost_Page {
 	 * Generates content for the current view. 
 	 *
 	 * @return 	string HTML
-	 * @since 	0.1	
+	 * @since 	1.0.0	
 	 */
 	private function get_content() {
 		$template = 'content-' . $this->current_view . '.php';
@@ -149,7 +146,7 @@ class Charitable_Ghost_Page {
 	 * Generates a title for the ghost page.
 	 *
 	 * @return 	string
-	 * @since 	0.1
+	 * @since 	1.0.0
 	 */
 	private function get_title() {
 		return 'Donation Form';
@@ -159,7 +156,7 @@ class Charitable_Ghost_Page {
 	 * Creates a guid based on the current view.
 	 *
 	 * @return 	string
-	 * @since 	0.1
+	 * @since 	1.0.0
 	 */
 	private function get_guid() {
 	}

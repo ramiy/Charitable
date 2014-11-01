@@ -8,7 +8,7 @@
  * @subpackage	Charitable/Charitable Session
  * @copyright 	Copyright (c) 2014, Eric Daams	
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
- * @since 		0.1
+ * @since 		1.0.0
  */
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -17,7 +17,7 @@ if ( ! class_exists( 'Charitable_Session' ) ) :
 /**
  * Charitable_Session
  *
- * @since 		0.1
+ * @since 		1.0.0
  */
 class Charitable_Session {
 
@@ -26,7 +26,7 @@ class Charitable_Session {
 	 *
 	 * @var 	array
 	 * @access 	private
-	 * @since 	0.1
+	 * @since 	1.0.0
 	 */
 	private $session;
 
@@ -36,7 +36,7 @@ class Charitable_Session {
 	 * @param 	Charitable $charitable
 	 * @return 	void
 	 * @access 	private
-	 * @since 	0.1
+	 * @since 	1.0.0
 	 */
 	private function __construct( Charitable $charitable ) {
 		
@@ -64,7 +64,7 @@ class Charitable_Session {
 	 * @return 	Charitable_Session
 	 * @access 	public
 	 * @static
-	 * @since 	0.1
+	 * @since 	1.0.0
 	 */
 	public static function charitable_start( Charitable $charitable ) {
 		if ( ! $charitable->is_start() ) {
@@ -79,10 +79,44 @@ class Charitable_Session {
 	 *
 	 * @return 	string Session ID
 	 * @access 	public
-	 * @since 	0.1
+	 * @since 	1.0.0
 	 */
 	public function get_session_id() {
 		return $this->session->get_session_id();
+	}
+
+	/**
+	 * Return a session variable. 
+	 *
+	 * @param 	string $key
+	 * @return 	mixed Session variable
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function get( $key ) {
+		$key = sanitize_key( $key );
+		return isset( $this->session[ $key ] ) ? maybe_unserialize( $this->session[ $key ] ) : false;
+	}
+
+	/**
+	 * Set a session variable.  
+	 *
+	 * @param 	string $key
+	 * @param 	mixed $value
+	 * @return 	mixed The session variable value. 
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function set( $key, $value ) {
+		$key = sanitize_key( $key );
+
+		if ( is_array( $value ) ) {
+			$this->session[ $key ] = serialize( $value );
+		} else {
+			$this->session[ $key ] = $value;
+		}
+
+		return $this->session[ $key ];
 	}
 }
 

@@ -12,59 +12,68 @@ if ( ! class_exists( 'Charitable_Meta_Box_Helper' ) ) :
  * @author 		Studio164a
  * @category 	Admin
  * @package 	Charitable/Admin/Meta Boxes
- * @version     0.1
+ * @version     1.0.0
  */
 class Charitable_Meta_Box_Helper {
 
 	/**
-	 * @var string Nonce action.
-	 * @access protected
+	 * @var 	string 		Nonce action.
+	 * @access 	protected
 	 */
 	protected $nonce_action;
 
 	/**
-	 * @var string Nonce name. 
-	 * @access protected
+	 * @var 	string 		Nonce name. 
+	 * @access 	protected
 	 */
 	protected $nonce_name = '_charitable_nonce';
 
 	/**
-	 * @var boolean Whether nonce has been added. 
-	 * @access protected
+	 * @var 	boolean		Whether nonce has been added. 
+	 * @access 	protected
 	 */
 	protected $nonce_added = false;
 
 	/**
 	 * Create a helper instance. 
 	 *
-	 * @param string $nonce_action 
-	 * @return void
-	 * @since 0.1
+	 * @param 	string $nonce_action 
+	 * @return 	void
+	 * @since 	1.0.0
 	 */
 	public function __construct( $nonce_action = 'charitable' ) {
 		$this->nonce_action = $nonce_action;
 	} 
 
-	/**
-	 * Meta box callback wrapper. 
+/**
+	 * Metabox callback wrapper. 
 	 *
 	 * Every meta box is registered with this method as its callback, 
 	 * and then delegates to the appropriate view. 
-	 *
-	 * @see Charitable_Meta_Box_Helper::add_meta_boxes()
 	 * 
-	 * @param WP_Post $post The post object.
-	 * @param array $args The arguments passed to the meta box, including the view to render. 
-	 * @return void
-	 * @access public
-	 * @since 0.1
+	 * @param 	WP_Post $post 		The post object.
+	 * @param 	array $args 		The arguments passed to the meta box, including the view to render. 
+	 * @return 	void
+	 * @access 	public
+	 * @since 	1.0.0
 	 */
-	public function display(WP_Post $post, array $args) {
-		
+	public function metabox_display( WP_Post $post, array $args ) {	
 		if ( ! isset( $args['args']['view'] ) ) {
 			return;
-		}
+		}	
 
+		$this->display( $args['args']['view'] );
+	}
+
+	/**
+	 * Display a metabox with the given view.
+	 *
+	 * @param 	string $view 		The view to render.
+	 * @return 	void
+	 * @access 	public
+	 * @since 	1.0.0
+	 */
+	public function display( $view ) {		
 		/**
 		 * Set the nonce.
 		 */
@@ -75,11 +84,11 @@ class Charitable_Meta_Box_Helper {
 			$this->nonce_added = true;
 		}
 
-		do_action('charitable_meta_box_before');
+		do_action( 'charitable_metabox_before', $view );
 
-		charitable_admin_view( $args['args']['view'] );
+		charitable_admin_view( $view );
 
-		do_action('charitable_meta_box_after');
+		do_action( 'charitable_metabox_after', $view );
 	}
 
 	/**
@@ -89,10 +98,10 @@ class Charitable_Meta_Box_Helper {
 	 * all of which are arrays with a 'priority' key and a 'view' 
 	 * key.
 	 *
-	 * @param array $fields
-	 * @return void
-	 * @access public
-	 * @since 0.1
+	 * @param 	array $fields
+	 * @return 	void
+	 * @access 	public
+	 * @since 	1.0.0
 	 */
 	public function display_fields( array $fields ) {
 		/**
@@ -114,10 +123,10 @@ class Charitable_Meta_Box_Helper {
 	 *
 	 * Hat tip Tom McFarlin: http://tommcfarlin.com/wordpress-meta-boxes-each-component/
 	 *
-	 * @param integer $post_id The current post being saved.
-	 * @return boolean True if the user can save the information
-	 * @access public
-	 * @since 0.1
+	 * @param 	integer $post_id 	The current post being saved.
+	 * @return 	boolean 			True if the user can save the information
+	 * @access 	public
+	 * @since 	1.0.0
 	 */
 	public function user_can_save( $post_id ) {
 	    $is_autosave = wp_is_post_autosave( $post_id );

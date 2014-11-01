@@ -9,7 +9,7 @@ if ( ! class_exists( 'Charitable_Roles' ) ) :
  * Roles and Capabilities for Charitable
  *
  * @class 		Charitable_Roles
- * @version		0.1
+ * @version		1.0.0
  * @package		Charitable/Classes/Core
  * @category	Class
  * @author 		Studio164a
@@ -20,7 +20,7 @@ class Charitable_Roles {
 	 * Sets up roles for Charitable. This is called by the install script. 
 	 *
 	 * @return 	void
-	 * @since 	0.1
+	 * @since 	1.0.0
 	 */
 	public function add_roles() {
 		add_role( 'campaign_manager', __( 'Campaign Manager', 'charitable' ), array(
@@ -60,7 +60,7 @@ class Charitable_Roles {
 	 *
 	 * @global 	WP_Roles
 	 * @return 	void
-	 * @since 	0.1
+	 * @since 	1.0.0
 	 */
 	public function add_caps() {
 		global $wp_roles;
@@ -95,7 +95,7 @@ class Charitable_Roles {
 	 * @global 	WP_Roles
 	 * @return 	void
 	 * @access 	public
-	 * @since 	0.1
+	 * @since 	1.0.0
 	 */
 	public function remove_caps() {
 		global $wp_roles;
@@ -129,7 +129,7 @@ class Charitable_Roles {
 	 *
 	 * @return 	array
 	 * @access 	private
-	 * @since 	0.1
+	 * @since 	1.0.0
 	 */
 	private function get_core_caps() {
 		return array(

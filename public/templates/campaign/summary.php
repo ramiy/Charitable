@@ -2,8 +2,8 @@
 /**
  * Displays the campaign summary. 
  *
- * @author Studio 164a
- * @since 0.1
+ * @author 	Studio 164a
+ * @since 	1.0.0
  */
 
 $campaign = get_charitable()->get_request()->get_current_campaign();

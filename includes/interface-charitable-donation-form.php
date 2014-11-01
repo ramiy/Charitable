@@ -1,38 +1,41 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly
-}
-
-if ( ! interface_exists( 'Charitable_Donation_Form_Interface' ) ) : 
-
 /**
  * Donation form interface. 
  *
  * This defines a strict interface that donation forms must implement.
  *
- * @interface Charitable_Donation_Form_Interface
- * @version		0.1
+ * @version		1.0.0
  * @package		Charitable/Interfaces/Charitable_Donation_Form_Interface
  * @category	Interface
  * @author 		Studio164a
+ */
+
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
+if ( ! interface_exists( 'Charitable_Donation_Form_Interface' ) ) : 
+
+/**
+ * Charitable_Donation_Form_Interface interface. 
+ *
+ * @since		1.0.0
  */
 interface Charitable_Donation_Form_Interface {
 
 	/**
 	 * Render the donation form. 
 	 *
-	 * @return void
-	 * @access public
-	 * @since 0.1
+	 * @return 	void
+	 * @access 	public
+	 * @since 	1.0.0
 	 */
 	public function render();
 
 	/**
 	 * Save the submitted donation.
 	 *
-	 * @return void
-	 * @access public
-	 * @since 0.1
+	 * @return 	void
+	 * @access 	public
+	 * @since 	1.0.0
 	 */
 	public function save_donation();
 }

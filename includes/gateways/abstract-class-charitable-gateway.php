@@ -10,7 +10,7 @@ if ( ! class_exists( 'Charitable_Gateway' ) ) :
  *
  * @class 		Charitable_Gateway
  * @abstract
- * @version		0.1
+ * @version		1.0.0
  * @package		Charitable/Classes/Gateway
  * @category	Class
  * @author 		Studio164a
@@ -25,9 +25,9 @@ abstract class Abstract_Charitable_Gateway {
 	/**
 	 * Returns the name of the gateway.
 	 *
-	 * @return string
-	 * @access public
-	 * @since 0.1
+	 * @return 	string
+	 * @access 	public
+	 * @since 	1.0.0
 	 */	
 	public function get_name() {
 		if ( $this->name === false ) {

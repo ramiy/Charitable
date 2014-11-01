@@ -24,6 +24,18 @@ module.exports = function(grunt) {
                 files: ['assets/css/*.css'],
                 tasks: ['cssmin']
             },
+            sync_admin_css: {
+                files: [
+                    'compass/css/admin/**'
+                ], 
+                tasks: ['sync:sync_admin_css']
+            }, 
+            sync_public_css: {
+                files: [
+                    'compass/css/public/**'
+                ], 
+                tasks: ['sync:sync_public_css']
+            },
             sync: {
                 files: [
                     'admin/', 
@@ -42,14 +54,32 @@ module.exports = function(grunt) {
                     '!public/assets/compass/**', 
                     '!public/assets/scss', 
                     '!public/assets/scss/**', 
-                    'charitable.php'                    
+                    'charitable.php'
                 ],
                 tasks: ['sync:dist']
-            }        
+            }     
         },
 
         // Sync
-        sync: {          
+        sync: {    
+            sync_admin_css: {
+                files: [
+                    {
+                        cwd: 'compass/css/admin',
+                        src: [ '**' ], 
+                        dest: 'admin/assets/css'
+                    }
+                ]
+            },   
+            sync_public_css: {
+                files: [
+                    {
+                        cwd: 'compass/css/public',
+                        src: [ '**' ], 
+                        dest: 'public/assets/css'
+                    }
+                ]
+            },
             dist: {
                 files: [
                     // includes files within path
@@ -76,7 +106,8 @@ module.exports = function(grunt) {
                         dest: '../../plugins/charitable'
                     }
                 ], 
-                verbose: true
+                verbose: true, 
+                updateAndDelete: true
             }
         },
  

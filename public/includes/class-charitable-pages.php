@@ -6,7 +6,7 @@
  * the frontend of the Charitable experience. 
  *
  * @class 		Charitable_Pages
- * @version		0.1
+ * @version		1.0.0
  * @package		Charitable/Classes/Charitable Pages
  * @category	Class
  * @author 		Studio164a
@@ -22,7 +22,7 @@ if ( ! class_exists( 'Charitable_Pages' ) ) :
 /**
  * Charitable_Pages
  *
- * @since 		0.1
+ * @since 		1.0.0
  */
 final class Charitable_Pages {
 
@@ -48,7 +48,7 @@ final class Charitable_Pages {
 	 * @param 	Charitable $charitable
 	 * @return 	void
 	 * @access 	private
-	 * @since 	0.1
+	 * @since 	1.0.0
 	 */
 	private function __construct(Charitable $charitable) {
 		$this->charitable = $charitable;
@@ -70,7 +70,7 @@ final class Charitable_Pages {
 	 * @return 	void
 	 * @static 
 	 * @access 	public
-	 * @since 	0.1
+	 * @since 	1.0.0
 	 */
 	public static function charitable_start(Charitable $charitable) {
 		if ( ! $charitable->is_start() ) {
@@ -88,7 +88,7 @@ final class Charitable_Pages {
 	 * @param 	array $vars
 	 * @return 	array
 	 * @access 	public
-	 * @since 	0.1
+	 * @since 	1.0.0
 	 */
 	public function register_query_vars( $vars ) {
 		$vars[] = 'donate';
@@ -103,7 +103,7 @@ final class Charitable_Pages {
 	 * @param 	WP_Query $wp_query
 	 * @return 	void
 	 * @access 	public
-	 * @since 	0.1
+	 * @since 	1.0.0
 	 */
 	public function parse_query( WP_Query $wp_query ) {
 		if ( get_query_var( 'donate', false ) ) {
@@ -120,7 +120,7 @@ final class Charitable_Pages {
 	 * @param 	string $template
 	 * @return 	void
 	 * @access 	private
-	 * @since 	0.1 
+	 * @since 	1.0.0 
 	 */
 	public function maybe_load_ghost_page( $template ) {
 
@@ -143,7 +143,7 @@ final class Charitable_Pages {
 	 * @param 	string $page
 	 * @return 	string
 	 * @access 	public
-	 * @since 	0.1
+	 * @since 	1.0.0
 	 */
 	public function get_page_url( $page ) {
 		switch ( $page ) {

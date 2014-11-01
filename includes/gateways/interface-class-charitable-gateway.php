@@ -10,7 +10,7 @@ if ( ! interface_exists( 'Charitable_Gateway_Interface' ) ) :
  *
  * @interface 	Charitable_Gateway_Interface
  * @abstract
- * @version		0.1
+ * @version		1.0.0
  * @package		Charitable/Classes/Gateway
  * @category	Class
  * @author 		Studio164a

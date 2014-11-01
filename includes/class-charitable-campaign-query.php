@@ -10,7 +10,7 @@ if ( ! class_exists( 'Charitable_Campaign_Query' ) ) :
  * Charitable Query. 
  *  
  * @class Charitable_Campaign_Query
- * @version		0.1
+ * @version		1.0.0
  * @package		Charitable/Classes/Charitable_Campaign_Query
  * @category	Class
  * @author 		Studio164a
@@ -22,7 +22,7 @@ class Charitable_Campaign_Query extends WP_Query {
 	 *
 	 * @param array $args
 	 * @return void
-	 * @since 0.1
+	 * @since 1.0.0
 	 */
 	public function __construct( $args = array() ) {
 		$defaults = array(
@@ -41,7 +41,7 @@ class Charitable_Campaign_Query extends WP_Query {
 	 * @param array $args 		Additional arguments to pass to WP_Query 
 	 * @return WP_Query
 	 * @static
-	 * @since 0.1
+	 * @since 1.0.0
 	 */
 	public static function ordered_by_ending_soon( $args = array() ) {
 
@@ -73,7 +73,7 @@ class Charitable_Campaign_Query extends WP_Query {
 	 * @param array $args 		Additional arguments to pass to WP_Query 
 	 * @return WP_Query
 	 * @static
-	 * @since 0.1
+	 * @since 1.0.0
 	 */
 	public static function ordered_by_amount( $args = array() ) {
 		global $wpdb;

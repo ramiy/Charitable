@@ -7,8 +7,8 @@
  * @package		Charitable
  * @subpackage	Charitable/Charitable Upgrade
  * @copyright 	Copyright (c) 2014, Eric Daams	
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
- * @since 		0.1
+ * @license     http://opensource.org/licenses/gpl-1.0.0.php GNU Public License
+ * @since 		1.0.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
@@ -18,7 +18,7 @@ if ( ! class_exists( 'Charitable_Upgrade' ) ) :
 /**
  * Charitable_EDD_Upgrade
  *
- * @since 		0.1
+ * @since 		1.0.0
  */
 class Charitable_Upgrade {
 
@@ -65,7 +65,7 @@ class Charitable_Upgrade {
  	 * @return 	void
 	 * @static
 	 * @access 	public
-	 * @since 	2.0
+	 * @since 	1.0.0
 	 */
 	public static function upgrade_from( $db_version, $edge_version ) {
 		if ( self::requires_upgrade( $db_version, $edge_version ) ) {
@@ -80,7 +80,7 @@ class Charitable_Upgrade {
 	 * @param 	string $edge_version
 	 * @return 	void
 	 * @access 	private
-	 * @since 	2.0
+	 * @since 	1.0.0
 	 */
 	private function __construct( $db_version, $edge_version ) {
 		$this->db_version = $db_version;
@@ -103,7 +103,7 @@ class Charitable_Upgrade {
 	 *
 	 * @return 	void
 	 * @access 	private
-	 * @since 	2.0
+	 * @since 	1.0.0
 	 */
 	private function do_upgrades() {
 		if ( empty( $this->upgrade_actions ) || ! is_array( $this->upgrade_actions ) ) {
@@ -126,7 +126,7 @@ class Charitable_Upgrade {
 	 * @return 	bool
 	 * @static
 	 * @access 	public
-	 * @since 	2.0
+	 * @since 	1.0.0
 	 */
 	public static function requires_upgrade( $version_a, $version_b ) {
 		return $version_a === false || version_compare( $version_a, $version_b, '<' );
@@ -137,7 +137,7 @@ class Charitable_Upgrade {
 	 *
 	 * @return 	void
 	 * @access 	private
-	 * @since 	2.0
+	 * @since 	1.0.0
 	 */
 	private function save_upgrade_log() {
 		$log = get_option( $this->upgrade_log_key );
@@ -160,7 +160,7 @@ class Charitable_Upgrade {
 	 *
 	 * @return 	void
 	 * @access 	private
-	 * @since 	2.0
+	 * @since 	1.0.0
 	 */
 	private function update_db_version() {
 		update_option( $this->version_key, $this->edge_version );

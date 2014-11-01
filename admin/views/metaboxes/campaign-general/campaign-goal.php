@@ -2,8 +2,8 @@
 /**
  * Renders the campaign goal block in the settings metabox for the Campaign post type.
  *
- * @author Studio 164a
- * @since 0.1
+ * @author 	Studio 164a
+ * @since 	1.0.0
  */
 
 global $post;
@@ -17,7 +17,7 @@ $goal = get_post_meta( $post->ID, 'campaign_goal', true );
 		<label for="campaign_goal_enabled">
 			<?php _e( 'Set a goal', 'charitable' ) ?>
 		</label>
-		<input type="checkbox" id="campaign_goal_enabled" name="_campaign_goal_enabled" <?php checked($goal_enabled) ?> />
+		<input type="checkbox" id="campaign_goal_enabled" name="_campaign_goal_enabled" <?php checked( $goal_enabled ) ?> />
 	</p>
 	<p class="charitable-metabox-field">
 		<label for="campaign_goal" class="charitable-metabox-label">

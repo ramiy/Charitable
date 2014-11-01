@@ -9,7 +9,7 @@ if ( ! class_exists( 'Charitable_Donation_Form' ) ) :
  * Donation_Form model
  *
  * @class 		Charitable_Donation_Form
- * @version		0.1
+ * @version		1.0.0
  * @package		Charitable/Classes/Donation_Form
  * @category	Class
  * @author 		Studio164a
@@ -32,7 +32,7 @@ class Charitable_Donation_Form implements Charitable_Donation_Form_Interface {
 	 * @param Charitable_Campaign $campaign
 	 * @return void
 	 * @access public
-	 * @since 0.1
+	 * @since 1.0.0
 	 */
 	public function __construct() {
 		$this->campaign = $campaign;
@@ -45,7 +45,7 @@ class Charitable_Donation_Form implements Charitable_Donation_Form_Interface {
 	 * 
 	 * @return void
 	 * @access public
-	 * @since 0.1
+	 * @since 1.0.0
 	 */
 	public function get_fields() {
 		return apply_filters( 'charitable_donation_form_fields', 
@@ -116,7 +116,7 @@ class Charitable_Donation_Form implements Charitable_Donation_Form_Interface {
 	 *
 	 * @return void
 	 * @access public
-	 * @since 0.1
+	 * @since 1.0.0
 	 */
 	public function render() {
 		new Charitable_Template( 'campaign/donation-form' );
@@ -127,7 +127,7 @@ class Charitable_Donation_Form implements Charitable_Donation_Form_Interface {
 	 *
 	 * @return void
 	 * @access public
-	 * @since 0.1
+	 * @since 1.0.0
 	 */
 	public function save_donation() {
 

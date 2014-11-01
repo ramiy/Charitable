@@ -10,7 +10,7 @@ if ( ! class_exists( 'Charitable_Currency_Helper' ) ) :
  * Charitable Currency helper.
  *
  * @class 		Charitable_Currency_Helper
- * @version		0.1
+ * @version		1.0.0
  * @package		Charitable/Classes/Charitable_Currency_Helper
  * @category	Class
  * @author 		Studio164a
@@ -41,7 +41,7 @@ final class Charitable_Currency_Helper {
 	 * @param float $amount
  	 * @return string
  	 * @access public
- 	 * @since 0.1
+ 	 * @since 1.0.0
  	 */
 	public function get_monetary_amount( $amount ) {
 		/**
@@ -60,7 +60,7 @@ final class Charitable_Currency_Helper {
 	 * @param float $amount 
 	 * @return int
 	 * @access public
-	 * @since 0.1
+	 * @since 1.0.0
 	 */
 	public function get_decimals( $amount = "" ) {
 		return apply_filters( 'charitable_currency_decimal_count', 2, $amount );
@@ -73,7 +73,7 @@ final class Charitable_Currency_Helper {
 	 *
 	 * @return string
 	 * @access public
-	 * @since 0.1
+	 * @since 1.0.0
 	 */
 	public function get_currency_format() {
 		$symbol_position = get_option( 'charitable_currency_symbol_position', 'left' );
@@ -109,7 +109,7 @@ final class Charitable_Currency_Helper {
 	 *	 								currently selected currency.
 	 * @return string
 	 * @access private
-	 * @since 0.1
+	 * @since 1.0.0
 	 */
 	private function get_currency_symbol( $currency = "" ) {
 

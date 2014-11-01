@@ -10,7 +10,7 @@ if ( ! class_exists( 'Charitable_Request' ) ) :
  * Charitable Request. 
  *  
  * @class 		Charitable_Request
- * @version		0.1
+ * @version		1.0.0
  * @package		Charitable/Classes/Charitable_Request
  * @category	Class
  * @author 		Studio164a
@@ -48,7 +48,7 @@ final class Charitable_Request {
 	 *
 	 * @return 	void
 	 * @access 	public
-	 * @since 	0.1
+	 * @since 	1.0.0
 	 */
 	public function __construct() {
 		global $post;
@@ -61,7 +61,7 @@ final class Charitable_Request {
 	 *
 	 * @return 	Charitable_Campaign if we're viewing a single campaign page. False otherwise. 
 	 * @access 	public
-	 * @since 	0.1
+	 * @since 	1.0.0
 	 */
 	public function get_current_campaign() {
 		if ( ! isset( $this->campaign ) ) {

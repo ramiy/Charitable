@@ -2,8 +2,8 @@
 /**
  * Displays the content of the campaign.
  *
- * @author Studio 164a
- * @since 0.1
+ * @author 	Studio 164a
+ * @since 	1.0.0
  */
 
 $campaign = get_charitable()->get_request()->get_current_campaign();
@@ -18,7 +18,7 @@ do_action( 'charitable_campaign_content_before', $campaign );
 	 */
 	new Charitable_Template_Part( 'campaign/summary' );
 
-	the_content();
+	echo get_the_content();
 
 /**
  * @hook charitable_campaign_content_after

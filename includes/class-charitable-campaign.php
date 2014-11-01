@@ -9,7 +9,7 @@ if ( ! class_exists( 'Charitable_Campaign' ) ) :
  * Campaign model
  *
  * @class 		Charitable_Campaign
- * @version		0.1
+ * @version		1.0.0
  * @package		Charitable/Classes/Campaign
  * @category	Class
  * @author 		Studio164a
@@ -57,7 +57,7 @@ class Charitable_Campaign {
 	 * @param mixed $post The post ID or WP_Post object for this this campaign.
 	 * @return void
 	 * @access public
-	 * @since 0.1
+	 * @since 1.0.0
 	 */
 	public function __construct($post) {
 		if ( ! is_a( $post, 'WP_Post' ) ) {
@@ -72,7 +72,7 @@ class Charitable_Campaign {
 	 * 
 	 * @return int
 	 * @access public
-	 * @since 0.1
+	 * @since 1.0.0
 	 */
 	public function get_campaign_id() {
 		if ( ! isset( $this->ID ) ) {
@@ -92,7 +92,7 @@ class Charitable_Campaign {
 	 * @return mixed 				This will return an array if single is false. If it's true, 
 	 *  							the value of the meta_value field will be returned.
 	 * @access public
-	 * @since 0.1
+	 * @since 1.0.0
 	 */
 	public function get( $meta_name, $single = true ) {
 		$meta_name = '_' . $meta_name;
@@ -107,7 +107,7 @@ class Charitable_Campaign {
 	 * @param string $date_format A date format accepted by PHP's date() function.
 	 * @return string 
 	 * @access public
-	 * @since 0.1
+	 * @since 1.0.0
 	 */
 	public function get_end_date($date_format = '') {
 		if ( ! strlen( $date_format ) ) {
@@ -134,7 +134,7 @@ class Charitable_Campaign {
 	 *
 	 * @return int 
 	 * @access public
-	 * @since 0.1
+	 * @since 1.0.0
 	 */
 	public function get_end_time() {
 		if ( ! isset( $this->end_time ) ) {
@@ -154,7 +154,7 @@ class Charitable_Campaign {
 	 *
 	 * @return int $time_left
 	 * @access public
-	 * @since 0.1
+	 * @since 1.0.0
 	 */
 	public function get_seconds_left() {
 		$time_left = $this->get_end_time() - time();
@@ -173,7 +173,7 @@ class Charitable_Campaign {
 	 *
 	 * @return string 
 	 * @access public
-	 * @since 0.1
+	 * @since 1.0.0
 	 */
 	public function get_time_left() {
 		$hour = 3600; 
@@ -226,7 +226,7 @@ class Charitable_Campaign {
 	 * 
 	 * @return decimal
 	 * @access public
-	 * @since 0.1
+	 * @since 1.0.0
 	 */
 	public function get_goal() {
 		if ( ! isset( $this->goal ) ) {
@@ -241,7 +241,7 @@ class Charitable_Campaign {
 	 *
 	 * @return string
 	 * @access public
-	 * @since 0.1
+	 * @since 1.0.0
 	 */
 	public function get_monetary_goal() {
 		return get_charitable()->get_currency_helper()->get_monetary_amount( $this->get_goal() );
@@ -252,7 +252,7 @@ class Charitable_Campaign {
 	 * 
 	 * @return string
 	 * @access public
-	 * @since 0.1
+	 * @since 1.0.0
 	 */
 	private function get_donations_cache_key() {
 		return 'charitable_campaign_' . $this->get_campaign_id() . '_donations';
@@ -263,7 +263,7 @@ class Charitable_Campaign {
 	 *
 	 * @return WP_Query
 	 * @access public
-	 * @since 0.1
+	 * @since 1.0.0
 	 */
 	public function get_donations() {
 		if ( ! isset( $this->donations ) || is_null( $this->donations ) ) {
@@ -293,7 +293,7 @@ class Charitable_Campaign {
 	 *
 	 * @return int
 	 * @access public
-	 * @since 0.1
+	 * @since 1.0.0
 	 */
 	public function get_donated_amount() {
 		if ( ! isset( $this->donated_amount ) || is_null( $this->donated_amount ) ) {
@@ -322,7 +322,7 @@ class Charitable_Campaign {
 	 *
 	 * @return void
 	 * @access public
-	 * @since 0.1
+	 * @since 1.0.0
 	 */
 	public function flush_donations_cache() {
 		delete_transient( $this->get_donations_cache_key() );
@@ -337,7 +337,7 @@ class Charitable_Campaign {
 	 * 
 	 * @return Charitable_Donation_Form_Interface
 	 * @access public
-	 * @since 0.1
+	 * @since 1.0.0
 	 */
 	public function get_donation_form() {
 		if ( ! isset( $this->donation_form ) ) {
@@ -355,7 +355,7 @@ class Charitable_Campaign {
 	 * 
 	 * @return void
 	 * @access public
-	 * @since 0.1
+	 * @since 1.0.0
 	 */
 	public function donate_button() {
 		new Charitable_Template('campaign/donate-button');
