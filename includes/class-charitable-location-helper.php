@@ -1,16 +1,25 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly. 
-}
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly. 
 
 if ( ! class_exists( 'Charitable_Location_Helper' ) ) : 
 
+/**
+ * Charitable_Location_Helper
+ *
+ * @since 	1.0.0
+ */
 class Charitable_Location_Helper {
 
-	public function __construct() {
-		
+	public function __construct() {	
 	}
 
+	/** 
+	 * Return an array with all the countries supported by Charitable. 
+	 *
+	 * @return 	array
+	 * @access 	public 
+	 * @since 	1.0.0
+	 */
 	public function get_countries() {
 		if ( ! isset( $this->countries ) ) {
 			$this->countries = apply_filters( 'charitable_countries', array(
@@ -260,6 +269,8 @@ class Charitable_Location_Helper {
 				'ZW' => __( 'Zimbabwe', 'charitable' )
 			) );	
 		}	
+
+		return $this->countries;
 	}
 }
 

@@ -210,6 +210,7 @@ class Charitable {
 		 * Functions.
 		 */
 		require_once( $this->includes_path . 'charitable-core-functions.php' );
+		require_once( $this->includes_path . 'charitable-utility-functions.php' );
 	}
 
 	/**

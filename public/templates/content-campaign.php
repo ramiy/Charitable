@@ -6,19 +6,19 @@
  * @since 	1.0.0
  */
 
-$campaign = get_charitable()->get_request()->get_current_campaign();
+$campaign = charitable_get_current_campaign();
 
 /**
  * @hook charitable_campaign_content_before
  */
 do_action( 'charitable_campaign_content_before', $campaign ); 
 
-	/**
-	 * Display the summary of the campaign. 
-	 */
-	new Charitable_Template_Part( 'campaign/summary' );
+/**
+ * Display the summary of the campaign. 
+ */
+new Charitable_Template_Part( 'campaign/summary' );
 
-	echo get_the_content();
+echo get_the_content();
 
 /**
  * @hook charitable_campaign_content_after

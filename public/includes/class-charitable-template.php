@@ -1,55 +1,58 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly
-}
-
-if ( ! class_exists( 'Charitable_Template' ) ) : 
-
 /**
  * Charitable template
  *
- * @class 		Charitable_Template
- * @version		0.1
+ * @version		1.0.0
  * @package		Charitable/Classes/Template
  * @category	Class
  * @author 		Studio164a
  */
+
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
+if ( ! class_exists( 'Charitable_Template' ) ) : 
+
+/**
+ * Charitable_Template
+ *
+ * @since 		1.0.0
+ */
 class Charitable_Template {	
 
 	/**
-	 * @var string Theme template path. 
+	 * @var 	string Theme template path. 
 	 */
 	private $theme_template_path;
 
 	/**
-	 * @var array Template names to be loaded. 
+	 * @var 	array Template names to be loaded. 
 	 */
 	private $template_names;
 
 	/**
-	 * @var array Template name options. 
+	 * @var 	array Template name options. 
 	 */
 	private $theme_template_options;
 
 	/**
-	 * @var bool Whether to load template file if it is found. 
+	 * @var 	bool Whether to load template file if it is found. 
 	 */
 	private $load;
 
 	/** 
-	 * @var bool Whether to use require_once or require. 
+	 * @var 	bool Whether to use require_once or require. 
 	 */
 	private $require_once;
 
 	/**
 	 * Class constructor. 
 	 *
-	 * @param string|array $template_name A single template name or an ordered array of template
-	 * @param bool $load If true the template file will be loaded if it is found.
- 	 * @param bool $require_once Whether to require_once or require. Default true. Has no effect if $load is false.
-	 * @return void
-	 * @access public
-	 * @since 0.1
+	 * @param 	string|array $template_name 	A single template name or an ordered array of template
+	 * @param 	bool $load 						If true the template file will be loaded if it is found.
+ 	 * @param 	bool $require_once 				Whether to require_once or require. Default true. Has no effect if $load is false.
+	 * @return 	void
+	 * @access 	public
+	 * @since 	1.0.0
 	 */
 	public function __construct($template_name, $load = false, $require_once = true) {
 		$this->theme_template_path = trailingslashit( get_charitable()->get_public()->get_path( 'theme_templates' ) );
@@ -57,15 +60,16 @@ class Charitable_Template {
 		$this->load = $load;
 		$this->require_once = $require_once;
 		$this->theme_template_options = $this->get_theme_template_options();
+
 		$this->render();
 	}
 
 	/**
 	 * Return the theme template options. 
 	 *
-	 * @return array
-	 * @access private
-	 * @since 0.1
+	 * @return 	array
+	 * @access 	private
+	 * @since 	1.0.0
 	 */
 	private function get_theme_template_options() {
 		$options = array();
@@ -81,9 +85,9 @@ class Charitable_Template {
 	/**
 	 * Renders the template. 
 	 *
-	 * @return void
-	 * @access private
-	 * @since 0.1
+	 * @return 	void
+	 * @access 	private
+	 * @since 	1.0.0
 	 */
 	private function render() {
 
@@ -93,7 +97,7 @@ class Charitable_Template {
 		$template = $this->locate_template();
 
 		if ( ! file_exists( $template ) ) {
-			_doing_it_wrong( __FUNCTION__, sprintf( '<code>%s</code> does not exist.', $template ), '0.1' );
+			_doing_it_wrong( __FUNCTION__, sprintf( '<code>%s</code> does not exist.', $template ), '1.0.0' );
 			return;
 		}
 
@@ -107,11 +111,11 @@ class Charitable_Template {
 	/**
 	 * Locate the template file of the highest priority.
 	 *
-	 * @uses locate_template()
+	 * @uses 	locate_template()
 	 *
-	 * @return string 
-	 * @access private
-	 * @since 0.1
+	 * @return 	string 
+	 * @access 	private
+	 * @since 	1.0.0
 	 */
 	private function locate_template() {
 

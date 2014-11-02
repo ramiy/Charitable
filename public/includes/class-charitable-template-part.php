@@ -1,53 +1,56 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly
-}
-
-if ( ! class_exists( 'Charitable_Template_Part' ) ) : 
-
 /**
  * Charitable template part
  *
- * @class 		Charitable_Template_Part
- * @version		0.1
+ * @version		1.0.0
  * @package		Charitable/Classes/Template
  * @category	Class
  * @author 		Studio164a
  */
+
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
+if ( ! class_exists( 'Charitable_Template_Part' ) ) : 
+
+/**
+ * Charitable_Template_Part
+ *
+ * @since		1.0.0
+ */
 class Charitable_Template_Part {	
 
 	/**
-	 * @var string The template's slug.
+	 * @var 	string 			The template's slug.
 	 */
 	private $slug;
 
 	/**
-	 * @var string An optional name to be appended to the slug.
+	 * @var 	string 			An optional name to be appended to the slug.
 	 */
 	private $name;
 
 	/**
 	 * Class constructor. 
 	 *
-	 * @param string $slug
-	 * @param string $name Optional name.
-	 * @return void
-	 * @access public
-	 * @since 0.1
+	 * @param 	string $slug
+	 * @param 	string $name 	Optional name.
+	 * @return 	void
+	 * @access 	public
+	 * @since 	1.0.0
 	 */
-	public function __construct($slug, $name = "") {
+	public function __construct($slug, $name = "" ) {
 		$this->slug = $slug;
 		$this->name = $name;
 
-		new Charitable_Template( $this->get_template_names() );
+		new Charitable_Template( $this->get_template_names(), true, false );
 	}
 
 	/**
 	 * Returns the array of template names. 
 	 * 
-	 * @return array
-	 * @access private
-	 * @since 0.1
+	 * @return 	array
+	 * @access 	private
+	 * @since 	1.0.0
 	 */
 	private function get_template_names() {
 		$names = array(

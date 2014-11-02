@@ -132,6 +132,7 @@ final class Charitable_Actions {
 		$session->set( 'donation', $donation );
 
 		$donations_url = charitable_get_helper( 'pages' )->get_page_url( 'donation-form' );
+		
 		wp_redirect( $donations_url );
 	}
 

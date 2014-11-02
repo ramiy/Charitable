@@ -61,3 +61,24 @@ function charitable_get_helper( $class_key ) {
 function charitable_get_session() {
 	return get_charitable()->get_registered_object( 'Charitable_Session' );
 }
+
+/**
+ * Returns the current campaign. 
+ *
+ * @return 	Charitable_Campaign
+ * @since 	1.0.0
+ */
+function charitable_get_current_campaign() {
+	return get_charitable()->get_request()->get_current_campaign();
+}
+
+/**
+ * Returns the current donation form.
+ *
+ * @return 	Charitable_Donation_Form_Interface|false
+ * @since 	1.0.0
+ */
+function charitable_get_current_donation_form() {
+	$campaign = charitable_get_current_campaign();
+	return false === $campaign ? false : $campaign->get_donation_form();
+}

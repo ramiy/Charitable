@@ -1,19 +1,22 @@
 <?php
-/**
- * Exit if accessed directly.
+/** 
+ * Class used to provide information about the current request.
+ *  
+ * @version		1.0.0
+ * @package		Charitable/Classes/Charitable_Request
+ * @category	Class
+ * @author 		Studio164a
  */
+
 if ( ! defined( 'ABSPATH' ) ) exit; 
 
 if ( ! class_exists( 'Charitable_Request' ) ) :
 
 /** 
- * Charitable Request. 
+ * Charitable_Request. 
  *  
- * @class 		Charitable_Request
- * @version		1.0.0
- * @package		Charitable/Classes/Charitable_Request
- * @category	Class
- * @author 		Studio164a
+ * @since		1.0.0
+ * @final
  */
 final class Charitable_Request {
 
@@ -65,11 +68,19 @@ final class Charitable_Request {
 	 */
 	public function get_current_campaign() {
 		if ( ! isset( $this->campaign ) ) {
+			
+			$this->campaign = false;
+
 			if ( is_single() && get_post_type() == 'campaign' ) {
 				$this->campaign = new Charitable_Campaign( $this->post );
 			}
-			else {
-				$this->campaign = false;
+			elseif ( get_query_var( 'donate', false ) ) {
+				$session_donation = charitable_get_session()->get( 'donation' );
+
+				if ( false !== $session_donation ) {
+					$campaign_id = $session_donation->get( 'campaign_id' );
+					$this->campaign = new Charitable_Campaign( $campaign_id );
+				}
 			}
 		}
 

@@ -16,14 +16,14 @@ module.exports = function(grunt) {
                 files: ['compass/**/*.{scss,sass}'],
                 tasks: ['compass', 'copy']
             },
-            js: {
-                files: '<%= jshint.all %>',
-                tasks: ['jshint', 'uglify']
-            },
-            css: {
-                files: ['assets/css/*.css'],
-                tasks: ['cssmin']
-            },
+            // js: {
+            //     files: '<%= jshint.all %>',
+            //     tasks: ['jshint', 'uglify']
+            // },
+            // css: {
+            //     files: ['assets/css/*.css'],
+            //     tasks: ['cssmin']
+            // },
             sync_admin_css: {
                 files: [
                     'compass/css/admin/**'

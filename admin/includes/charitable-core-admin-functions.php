@@ -42,23 +42,3 @@ if ( ! function_exists( 'charitable_admin_view' ) ) :
 	}
 
 endif; // End function_exists check
-
-if ( ! function_exists('charitable_priority_sort') ) :
-
-	/**
-	 * Orders an array by the priority key.
-	 *
-	 * @param 	array $a
-	 * @param 	array $b
-	 * @return 	int
-	 * @since 	1.0.0
-	 */
-	function charitable_priority_sort($a, $b) {
-		if ( $a['priority'] == $b['priority'] ) {
-			return 0;
-		}
-
-		return $a['priority'] < $b['priority'] ? -1 : 1;
-	}
-
-endif; // End function_exists check
