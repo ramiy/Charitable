@@ -54,6 +54,12 @@ class Charitable_Session {
 			require_once( $charitable->get_path( 'includes' ) . 'libraries/wp-session/wp-session.php' );			
 		}
 
+		/**
+		 * Set the expiration length & variant of the sessions.
+		 */
+		add_filter( 'wp_session_expiration', array( $this, 'set_session_length' ), 99999 );
+		add_filter( 'wp_session_expiration_variant', array( $this, 'set_session_expiration_variant_length' ), 99999 );		
+
 		$this->session = WP_Session::get_instance();		
 	}
 
@@ -117,6 +123,28 @@ class Charitable_Session {
 		}
 
 		return $this->session[ $key ];
+	}
+
+	/**
+	 * Set the length of the cookie session to 24 hours. 
+	 *
+	 * @return 	void
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function set_session_length() {
+		return ( 30 * 60 * 24 );
+	}
+
+	/**
+	 * Set the cookie expiration variant time to 23 hours. 
+	 *	
+	 * @return 	void
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function set_session_expiration_variant_length() {
+		return ( 30 * 60 * 23 );
 	}
 }
 

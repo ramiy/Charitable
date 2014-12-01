@@ -1,5 +1,10 @@
+/* Campaign summary widget */
 .campaign-summary { width: 480px; max-width: 100%; margin-bottom: 1em; background-color: #ebebeb; }
 .campaign-summary .campaign-summary-item, .campaign-summary .campaign-donate-button { display: block; margin: 0em 1.5em; padding: 1em 0em; font-size: 1.5em; border-bottom-width: 2px; border-bottom-style: solid; border-bottom-color: #ddd; line-height: 1.2em; text-align: center; }
 .campaign-summary .campaign-summary-item .amount { display: block; font-size: 2em; line-height: 1.2; text-align: center; }
 .campaign-summary .campaign-donation { padding: 1em 0; text-align: center; }
 .campaign-summary .campaign-donation input[type=submit] { margin: 1em 1.5em; font-size: 1.5em; }
+
+/* Donation form */
+.charitable-form-field { margin-bottom: 1em; }
+.charitable-form-field label { font-weight: bolder; }

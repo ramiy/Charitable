@@ -1,0 +1,1235 @@
+# Copyright (C) 2014 Studio 164a
+# This file is distributed under the same license as the Charitable package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Charitable 1.0.0\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/charitable\n"
+"POT-Creation-Date: 2014-11-04 08:52:42+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2014-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"X-Generator: grunt-wp-i18n 0.4.9\n"
+
+#: admin/includes/charitable-core-admin-functions.php:34
+msgid "Error"
+msgstr ""
+
+#: admin/includes/charitable-core-admin-functions.php:35
+msgid "View not found or is not readable."
+msgstr ""
+
+#: admin/includes/class-charitable-campaign-post-type.php:90
+msgid "Campaign General Settings"
+msgstr ""
+
+#: admin/includes/class-charitable-campaign-post-type.php:100
+msgid "Campaign Donation Settings"
+msgstr ""
+
+#: admin/includes/class-charitable-campaign-post-type.php:202
+msgid "Enter campaign title"
+msgstr ""
+
+#: admin/views/metaboxes/campaign-donations/campaign-donation-form.php:16
+msgid "Donation Form"
+msgstr ""
+
+#: admin/views/metaboxes/campaign-donations/campaign-donation-options.php:15
+msgid "Donation Options"
+msgstr ""
+
+#: admin/views/metaboxes/campaign-donations/campaign-donation-options.php:18
+msgid "Allow donors to donate any amount?"
+msgstr ""
+
+#: admin/views/metaboxes/campaign-donations/campaign-donation-options.php:24
+msgid "Suggested donations"
+msgstr ""
+
+#: admin/views/metaboxes/campaign-general/campaign-end-date.php:15
+#: admin/views/metaboxes/campaign-general/campaign-end-date.php:24
+msgid "End date"
+msgstr ""
+
+#: admin/views/metaboxes/campaign-general/campaign-end-date.php:18
+msgid "Does this campaign have an end date?"
+msgstr ""
+
+#: admin/views/metaboxes/campaign-general/campaign-goal.php:15
+#: admin/views/metaboxes/campaign-general/campaign-goal.php:24
+msgid "Goal"
+msgstr ""
+
+#: admin/views/metaboxes/campaign-general/campaign-goal.php:18
+msgid "Set a goal"
+msgstr ""
+
+#: charitable.php:122 charitable.php:133
+msgid "Cheatin&#8217; huh?"
+msgstr ""
+
+#: includes/class-charitable-campaign.php:188
+msgid "Campaign has ended"
+msgstr ""
+
+#: includes/class-charitable-campaign.php:196
+msgid "%s Minute Left"
+msgid_plural "%s Minutes Left"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/class-charitable-campaign.php:206
+msgid "%s Hour Left"
+msgid_plural "%s Hours Left"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/class-charitable-campaign.php:216
+msgid "%s Day Left"
+msgid_plural "%s Days Left"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/class-charitable-donation-form.php:73
+msgid "First name"
+msgstr ""
+
+#: includes/class-charitable-donation-form.php:79
+msgid "Last name"
+msgstr ""
+
+#: includes/class-charitable-donation-form.php:85
+msgid "Address"
+msgstr ""
+
+#: includes/class-charitable-donation-form.php:91
+msgid "Address 2"
+msgstr ""
+
+#: includes/class-charitable-donation-form.php:97
+msgid "City"
+msgstr ""
+
+#: includes/class-charitable-donation-form.php:103
+msgid "State"
+msgstr ""
+
+#: includes/class-charitable-donation-form.php:109
+msgid "Postcode / ZIP code"
+msgstr ""
+
+#: includes/class-charitable-donation-form.php:115
+msgid "Country"
+msgstr ""
+
+#: includes/class-charitable-donation-form.php:122
+msgid "Phone"
+msgstr ""
+
+#: includes/class-charitable-donation-form.php:128
+msgid "Comment"
+msgstr ""
+
+#: includes/class-charitable-donation-form.php:145
+msgid "Email"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:26
+msgid "Afghanistan"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:27
+msgid "&#197;land Islands"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:28
+msgid "Albania"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:29
+msgid "Algeria"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:30
+msgid "Andorra"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:31
+msgid "Angola"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:32
+msgid "Anguilla"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:33
+msgid "Antarctica"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:34
+msgid "Antigua and Barbuda"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:35
+msgid "Argentina"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:36
+msgid "Armenia"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:37
+msgid "Aruba"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:38
+msgid "Australia"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:39
+msgid "Austria"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:40
+msgid "Azerbaijan"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:41
+msgid "Bahamas"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:42
+msgid "Bahrain"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:43
+msgid "Bangladesh"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:44
+msgid "Barbados"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:45
+msgid "Belarus"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:46
+msgid "Belgium"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:47
+msgid "Belau"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:48
+msgid "Belize"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:49
+msgid "Benin"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:50
+msgid "Bermuda"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:51
+msgid "Bhutan"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:52
+msgid "Bolivia"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:53
+msgid "Bonaire, Saint Eustatius and Saba"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:54
+msgid "Bosnia and Herzegovina"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:55
+msgid "Botswana"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:56
+msgid "Bouvet Island"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:57
+msgid "Brazil"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:58
+msgid "British Indian Ocean Territory"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:59
+msgid "British Virgin Islands"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:60
+msgid "Brunei"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:61
+msgid "Bulgaria"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:62
+msgid "Burkina Faso"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:63
+msgid "Burundi"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:64
+msgid "Cambodia"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:65
+msgid "Cameroon"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:66
+msgid "Canada"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:67
+msgid "Cape Verde"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:68
+msgid "Cayman Islands"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:69
+msgid "Central African Republic"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:70
+msgid "Chad"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:71
+msgid "Chile"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:72
+msgid "China"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:73
+msgid "Christmas Island"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:74
+msgid "Cocos (Keeling) Islands"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:75
+msgid "Colombia"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:76
+msgid "Comoros"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:77
+msgid "Congo (Brazzaville)"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:78
+msgid "Congo (Kinshasa)"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:79
+msgid "Cook Islands"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:80
+msgid "Costa Rica"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:81
+msgid "Croatia"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:82
+msgid "Cuba"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:83
+msgid "Cura&Ccedil;ao"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:84
+msgid "Cyprus"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:85
+msgid "Czech Republic"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:86
+msgid "Denmark"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:87
+msgid "Djibouti"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:88
+msgid "Dominica"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:89
+msgid "Dominican Republic"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:90
+msgid "Ecuador"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:91
+msgid "Egypt"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:92
+msgid "El Salvador"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:93
+msgid "Equatorial Guinea"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:94
+msgid "Eritrea"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:95
+msgid "Estonia"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:96
+msgid "Ethiopia"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:97
+msgid "Falkland Islands"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:98
+msgid "Faroe Islands"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:99
+msgid "Fiji"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:100
+msgid "Finland"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:101
+msgid "France"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:102
+msgid "French Guiana"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:103
+msgid "French Polynesia"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:104
+msgid "French Southern Territories"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:105
+msgid "Gabon"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:106
+msgid "Gambia"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:107
+msgid "Georgia"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:108
+msgid "Germany"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:109
+msgid "Ghana"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:110
+msgid "Gibraltar"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:111
+msgid "Greece"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:112
+msgid "Greenland"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:113
+msgid "Grenada"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:114
+msgid "Guadeloupe"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:115
+msgid "Guatemala"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:116
+msgid "Guernsey"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:117
+msgid "Guinea"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:118
+msgid "Guinea-Bissau"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:119
+msgid "Guyana"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:120
+msgid "Haiti"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:121
+msgid "Heard Island and McDonald Islands"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:122
+msgid "Honduras"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:123
+msgid "Hong Kong"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:124
+msgid "Hungary"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:125
+msgid "Iceland"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:126
+msgid "India"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:127
+msgid "Indonesia"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:128
+msgid "Iran"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:129
+msgid "Iraq"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:130
+msgid "Republic of Ireland"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:131
+msgid "Isle of Man"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:132
+msgid "Israel"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:133
+msgid "Italy"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:134
+msgid "Ivory Coast"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:135
+msgid "Jamaica"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:136
+msgid "Japan"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:137
+msgid "Jersey"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:138
+msgid "Jordan"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:139
+msgid "Kazakhstan"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:140
+msgid "Kenya"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:141
+msgid "Kiribati"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:142
+msgid "Kuwait"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:143
+msgid "Kyrgyzstan"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:144
+msgid "Laos"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:145
+msgid "Latvia"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:146
+msgid "Lebanon"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:147
+msgid "Lesotho"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:148
+msgid "Liberia"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:149
+msgid "Libya"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:150
+msgid "Liechtenstein"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:151
+msgid "Lithuania"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:152
+msgid "Luxembourg"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:153
+msgid "Macao S.A.R., China"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:154
+msgid "Macedonia"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:155
+msgid "Madagascar"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:156
+msgid "Malawi"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:157
+msgid "Malaysia"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:158
+msgid "Maldives"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:159
+msgid "Mali"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:160
+msgid "Malta"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:161
+msgid "Marshall Islands"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:162
+msgid "Martinique"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:163
+msgid "Mauritania"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:164
+msgid "Mauritius"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:165
+msgid "Mayotte"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:166
+msgid "Mexico"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:167
+msgid "Micronesia"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:168
+msgid "Moldova"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:169
+msgid "Monaco"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:170
+msgid "Mongolia"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:171
+msgid "Montenegro"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:172
+msgid "Montserrat"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:173
+msgid "Morocco"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:174
+msgid "Mozambique"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:175
+msgid "Myanmar"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:176
+msgid "Namibia"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:177
+msgid "Nauru"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:178
+msgid "Nepal"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:179
+msgid "Netherlands"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:180
+msgid "Netherlands Antilles"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:181
+msgid "New Caledonia"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:182
+msgid "New Zealand"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:183
+msgid "Nicaragua"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:184
+msgid "Niger"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:185
+msgid "Nigeria"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:186
+msgid "Niue"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:187
+msgid "Norfolk Island"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:188
+msgid "North Korea"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:189
+msgid "Norway"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:190
+msgid "Oman"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:191
+msgid "Pakistan"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:192
+msgid "Palestinian Territory"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:193
+msgid "Panama"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:194
+msgid "Papua New Guinea"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:195
+msgid "Paraguay"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:196
+msgid "Peru"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:197
+msgid "Philippines"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:198
+msgid "Pitcairn"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:199
+msgid "Poland"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:200
+msgid "Portugal"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:201
+msgid "Qatar"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:202
+msgid "Reunion"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:203
+msgid "Romania"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:204
+msgid "Russia"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:205
+msgid "Rwanda"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:206
+msgid "Saint Barth&eacute;lemy"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:207
+msgid "Saint Helena"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:208
+msgid "Saint Kitts and Nevis"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:209
+msgid "Saint Lucia"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:210
+msgid "Saint Martin (French part)"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:211
+msgid "Saint Martin (Dutch part)"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:212
+msgid "Saint Pierre and Miquelon"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:213
+msgid "Saint Vincent and the Grenadines"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:214
+msgid "San Marino"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:215
+msgid "S&atilde;o Tom&eacute; and Pr&iacute;ncipe"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:216
+msgid "Saudi Arabia"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:217
+msgid "Senegal"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:218
+msgid "Serbia"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:219
+msgid "Seychelles"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:220
+msgid "Sierra Leone"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:221
+msgid "Singapore"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:222
+msgid "Slovakia"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:223
+msgid "Slovenia"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:224
+msgid "Solomon Islands"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:225
+msgid "Somalia"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:226
+msgid "South Africa"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:227
+msgid "South Georgia/Sandwich Islands"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:228
+msgid "South Korea"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:229
+msgid "South Sudan"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:230
+msgid "Spain"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:231
+msgid "Sri Lanka"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:232
+msgid "Sudan"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:233
+msgid "Suriname"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:234
+msgid "Svalbard and Jan Mayen"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:235
+msgid "Swaziland"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:236
+msgid "Sweden"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:237
+msgid "Switzerland"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:238
+msgid "Syria"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:239
+msgid "Taiwan"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:240
+msgid "Tajikistan"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:241
+msgid "Tanzania"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:242
+msgid "Thailand"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:243
+msgid "Timor-Leste"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:244
+msgid "Togo"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:245
+msgid "Tokelau"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:246
+msgid "Tonga"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:247
+msgid "Trinidad and Tobago"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:248
+msgid "Tunisia"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:249
+msgid "Turkey"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:250
+msgid "Turkmenistan"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:251
+msgid "Turks and Caicos Islands"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:252
+msgid "Tuvalu"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:253
+msgid "Uganda"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:254
+msgid "Ukraine"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:255
+msgid "United Arab Emirates"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:256
+msgid "United Kingdom (UK)"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:257
+msgid "United States (US)"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:258
+msgid "Uruguay"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:259
+msgid "Uzbekistan"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:260
+msgid "Vanuatu"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:261
+msgid "Vatican"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:262
+msgid "Venezuela"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:263
+msgid "Vietnam"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:264
+msgid "Wallis and Futuna"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:265
+msgid "Western Sahara"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:266
+msgid "Western Samoa"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:267
+msgid "Yemen"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:268
+msgid "Zambia"
+msgstr ""
+
+#: includes/class-charitable-location-helper.php:269
+msgid "Zimbabwe"
+msgstr ""
+
+#: includes/class-charitable-post-types.php:88
+#: includes/class-charitable-post-types.php:89
+msgid "Campaign"
+msgstr ""
+
+#: includes/class-charitable-post-types.php:91
+msgid "Add Campaign"
+msgstr ""
+
+#: includes/class-charitable-post-types.php:92
+msgid "Add New Campaign"
+msgstr ""
+
+#: includes/class-charitable-post-types.php:93
+msgid "Edit"
+msgstr ""
+
+#: includes/class-charitable-post-types.php:94
+msgid "Edit Campaign"
+msgstr ""
+
+#: includes/class-charitable-post-types.php:95
+msgid "New Campaign"
+msgstr ""
+
+#: includes/class-charitable-post-types.php:96
+#: includes/class-charitable-post-types.php:97
+msgid "View Campaign"
+msgstr ""
+
+#: includes/class-charitable-post-types.php:98
+msgid "Search Campaigns"
+msgstr ""
+
+#: includes/class-charitable-post-types.php:99
+msgid "No Campaigns found"
+msgstr ""
+
+#: includes/class-charitable-post-types.php:100
+msgid "No Campaigns found in trash"
+msgstr ""
+
+#: includes/class-charitable-post-types.php:101
+msgid "Parent Campaign"
+msgstr ""
+
+#: includes/class-charitable-post-types.php:103
+msgid "This is where you can create new campaigns for people to support."
+msgstr ""
+
+#: includes/class-charitable-roles.php:26
+msgid "Campaign Manager"
+msgstr ""
+
+#: includes/gateways/abstract-class-charitable-gateway.php:35
+msgid "Gateway does not declare its name"
+msgstr ""
+
+#: includes/widgets/class-charitable-campaigns-widget.php:32
+msgid "Campaigns"
+msgstr ""
+
+#: includes/widgets/class-charitable-campaigns-widget.php:33
+msgid "Displays your Charitable campaigns."
+msgstr ""
+
+#: includes/widgets/class-charitable-campaigns-widget.php:86
+msgid "Title"
+msgstr ""
+
+#: includes/widgets/class-charitable-campaigns-widget.php:90
+msgid "Number of campaigns to display"
+msgstr ""
+
+#: includes/widgets/class-charitable-campaigns-widget.php:94
+msgid "Order"
+msgstr ""
+
+#: includes/widgets/class-charitable-campaigns-widget.php:96
+msgid "Date published"
+msgstr ""
+
+#: includes/widgets/class-charitable-campaigns-widget.php:97
+msgid "Ending soonest"
+msgstr ""
+
+#: public/templates/campaign/donation-button.php:18
+msgid "Donate"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "Charitable"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "http://164a.com"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid "Fundraise with WordPress."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Studio 164a"
+msgstr ""
+
+#: includes/class-charitable-post-types.php:90
+msgctxt "Admin menu name"
+msgid "Campaigns"
+msgstr ""
+
+#: public/templates/campaign/summary.php:21
+msgctxt "amount raised"
+msgid "%s Raised"
+msgstr ""
+
+#: public/templates/campaign/summary.php:27
+msgctxt "amount goal"
+msgid "%s Goal"
+msgstr ""
