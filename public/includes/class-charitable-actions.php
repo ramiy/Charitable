@@ -80,18 +80,56 @@ final class Charitable_Actions {
 	 * @since 	1.0.0
 	 */
 	public function init() {
-		if ( isset( $_POST['charitable-action'] ) ) {
-			$action = $_POST['charitable-action'];
+
+		if ( isset( $_POST['charitable_action'] ) ) {
+			$action = $_POST['charitable_action'];
 
 			switch ( $action ) {
 				/**
-				 * Fired on donation.
+				 * Fired when a donation is started.
 				 */
-				case 'donate-now' :
-					$this->donation_handler();
+				case 'start-donation' :
+					$this->start_donation();
 					break;
+
+				/**
+				 * Fired when the donation is actually made.
+				 */
+				case 'make-donation' :
+					$this->make_donation();
+					break; 
 			}
 		}
+	}
+
+	/**
+	 * Returns the campaign ID in the current request. 
+	 *
+	 * This also validates that a campaign ID was passed, and 
+	 * that the ID passed belonged to a campaign.
+	 *
+	 * @return 	false if invalid. int if valid. 
+	 * @access 	private
+	 * @since 	1.0.0
+	 */ 
+	private function get_campaign_from_request() {
+		/**
+		 * A campaign ID must be set. 
+		 */
+		if ( ! isset( $_POST['campaign_id'] ) ) {
+			return false;
+		}
+
+		$campaign_id = absint( $_POST['campaign_id'] );
+
+		/**
+		 * The ID must be for a campaign. 
+		 */
+		if ( 'campaign' !== get_post_type( $campaign_id ) ) {
+			return false;
+		} 
+
+		return $campaign_id;
 	}
 
 	/**
@@ -101,22 +139,12 @@ final class Charitable_Actions {
 	 * @access  private
 	 * @since 	1.0.0
 	 */
-	private function donation_handler() {
-		/**
-		 * A campaign ID must be set. 
-		 */
-		if ( ! isset( $_POST['campaign-id'] ) ) {
+	private function start_donation() {
+		$campaign_id = $this->get_campaign_from_request();
+
+		if ( false === $campaign_id ) {
 			return;
 		}
-
-		$campaign_id = absint( $_POST['campaign-id'] );
-
-		/**
-		 * The ID must be for a campaign. 
-		 */
-		if ( 'campaign' !== get_post_type( $campaign_id ) ) {
-			return;
-		} 
 
 		/**
 		 * Create or update the donation object in the session, with the current campaign ID.
@@ -137,42 +165,25 @@ final class Charitable_Actions {
 	}
 
 	/**
-	 * Load a campaign's donation form.
-	 *
-	 * @global 	$post WP_Post
-	 * @return 	void
-	 * @access 	private
-	 * @since 	1.0.0
-	 */
-	private function load_donation_form() {
-		global $post;
-
-		$campaign = new Charitable_Campaign( $post );
-
-		/**
-		 * Render the donation form.
-		 */
-		$donation_form = $campaign->get_donation_form();
-		$donation_form->render();
-	}
-
-	/**
 	 * Save a donation.
 	 *
 	 * @return 	void
 	 * @access 	private
 	 * @since 	1.0.0
 	 */
-	private function save_donation() {
-		global $post;
+	private function make_donation() {
+		$campaign_id = $this->get_campaign_from_request();
 
-		$campaign = new Charitable_Campaign( $post );
+		if ( false === $campaign_id ) {
+			return;
+		}
+
+		$campaign = new Charitable_Campaign( $campaign_id );
 
 		/**
-		 * Load the donation form object and ask it to save the donation. 
+		 * Save the donation using the campaign's donation form object.
 		 */
-		$donation_form = $campaign->get_donation_form();
-		$donation_form->save_donation();
+		$campaign->get_donation_form()->save_donation();
 	}
 }
 

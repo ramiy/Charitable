@@ -13,7 +13,7 @@ $campaign = get_charitable()->get_request()->get_current_campaign();
 </script>
 <form class="campaign-donation" method="post">
 	<?php wp_nonce_field( 'charitable-donate-' . charitable_get_session()->get_session_id(), 'charitable-donate-now' ) ?>
-	<input type="hidden" name="charitable-action" value="donate-now" />
-	<input type="hidden" name="campaign-id" value="<?php echo $campaign->get_campaign_id() ?>" />
-	<input type="submit" name="charitable-submit" value="<?php esc_attr_e( 'Donate', 'charitable' ) ?>" />
+	<input type="hidden" name="charitable_action" value="start-donation" />
+	<input type="hidden" name="campaign_id" value="<?php echo $campaign->get_campaign_id() ?>" />
+	<input type="submit" name="charitable_submit" value="<?php esc_attr_e( 'Donate', 'charitable' ) ?>" />
 </form>

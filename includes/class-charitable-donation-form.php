@@ -138,7 +138,7 @@ class Charitable_Donation_Form implements Charitable_Donation_Form_Interface {
 		$form_fields = apply_filters( 'charitable_donation_form_fields', $form_fields, $this );
 
 		/**
-		 * Add two required fields, which we don't want people to remove through the filter above.
+		 * The email field is the only field that is absolutely required.
 		 */
 		$email_field_priority = apply_filters( 'charitable_donation_form_email_field_priority', 8, $this );
 		$form_fields['email'] = array(
@@ -148,13 +148,7 @@ class Charitable_Donation_Form implements Charitable_Donation_Form_Interface {
 			'priority'	=> $email_field_priority
 		);
 
-		$form_fields['campaign_id'] = array(
-			'type'		=> 'hidden', 
-			'priority'	=> 1, 
-			'value'		=> $this->campaign->get_campaign_id()
-		);
-
-		usort( $form_fields, 'charitable_priority_sort' );
+		uasort( $form_fields, 'charitable_priority_sort' );
 
 		return $form_fields;
 	}
@@ -173,16 +167,16 @@ class Charitable_Donation_Form implements Charitable_Donation_Form_Interface {
 	/**
 	 * Whether the given field type can use the default field template. 
 	 *
-	 * @param 	string $field_type
+	 * @param 	string 		$field_type
 	 * @return 	boolean
 	 * @access 	protected
 	 * @since 	1.0.0
 	 */
 	protected function use_default_field_template( $field_type ) {
-		$non_default_field_types = apply_filters( 'charitable_non_default_template_field_types', array( 
-			'select', 'textarea', 'radio', 'hidden' 
+		$default_field_types = apply_filters( 'charitable_default_template_field_types', array( 
+			'text', 'url', 'email', 'password' 
 		) );
-		return ! in_array( $field_type, $non_default_field_types );
+		return in_array( $field_type, $default_field_types );
 	}
 
 	/**
@@ -193,33 +187,39 @@ class Charitable_Donation_Form implements Charitable_Donation_Form_Interface {
 	 * @since 	1.0.0
 	 */
 	public function render() {
-		new Charitable_Template_Part( 'donation-form/wrapper-start' );
+		?>
+		<form method="post" class="charitable-donation-form">
+			<?php $this->nonce_field() ?>
+			<input type="hidden" name="campaign_id" value="<?php echo $this->campaign->get_campaign_id() ?>" />
+			<input type="hidden" name="charitable_action" value="make-donation" />
+			<?php foreach ( $this->get_fields() as $key => $field ) :
 
-		foreach ( $this->get_fields() as $key => $field ) {
+				if ( ! isset( $field['type'] ) ) {
+					continue;
+				}
 
-			if ( ! isset( $field['type'] ) ) {
-				continue;
-			}
+				$this->current_field = $field;
+				$this->current_field['key'] = $key;
 
-			$this->current_field = $field;
-			$this->current_field['key'] = $key;
+				/**
+				 * Many field types, like text, email, url, etc fall 
+				 * back to the default-field template. 
+				 */
+				$field_type = $field['type'];			
+				if ( $this->use_default_field_template( $field_type ) ) {
+					$this->current_field['type'] = $field_type;
+					$field_type = 'default';
+				}
 
-			/**
-			 * Many field types, like text, email, url, etc fall 
-			 * back to the default-field template. 
-			 */
-			$field_type = $field['type'];			
-			if ( $this->use_default_field_template( $field_type ) ) {
-				$this->current_field['type'] = $field_type;
-				$field_type = 'default';
-			}
+				$template_name = 'donation-form/' . $field_type . '-field';
 
-			$template_name = 'donation-form/' . $field_type . '-field';
+				new Charitable_Template_Part( $template_name );
 
-			new Charitable_Template_Part( $template_name );
-		}
-
-		new Charitable_Template_Part( 'donation-form/wrapper-end' );
+			endforeach 
+			?>
+			<input type="submit" name="charitable_submit" value="<?php esc_attr_e( 'Donate', 'charitable' ) ?>" class="button button-primary" />
+		</form>
+		<?php
 	}
 
 	/**
@@ -247,16 +247,18 @@ class Charitable_Donation_Form implements Charitable_Donation_Form_Interface {
 	/**
 	 * Save the submitted donation.
 	 *
-	 * @return void
-	 * @access public
-	 * @since 1.0.0
+	 * @return 	void
+	 * @access 	public
+	 * @since 	1.0.0
 	 */
 	public function save_donation() {
 		if ( ! $this->validate_nonce() ) {
-
+			return;
 		}
 
 		echo '<pre>'; 
+
+		echo 'hello';
 		print_r( $_POST ); 
 		die;
 	}

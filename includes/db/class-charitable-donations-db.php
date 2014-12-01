@@ -113,7 +113,6 @@ class Charitable_Donations_DB extends Charitable_DB {
 	 * Create the table.
 	 *
 	 * @global 	$wpdb
-	 *
 	 * @access 	public
 	 * @since 	1.0.0
 	 */
@@ -145,7 +144,7 @@ class Charitable_Donations_DB extends Charitable_DB {
 	/** 
 	 * Add a new donation.
 	 * 
-	 * @param 	array $data
+	 * @param 	array 	$data
 	 * @return 	int 
 	 * @access 	public
 	 * @since 	1.0.0
@@ -162,23 +161,54 @@ class Charitable_Donations_DB extends Charitable_DB {
 	/**
 	 * Get an object of all donations on a campaign
 	 *
+	 * @global 	wpdb 	$wpdb
+	 * @param 	int 	$campaign_id
+	 * @return 	object
+	 * @since 	1.0.0
 	 */
 	public function get_donations_on_campaign( $campaign_id ){
 		global $wpdb;
 		return $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $this->table_name WHERE campaign_id = %d;", $campaign_id ), OBJECT_K);
 	}
 
-
 	/**
 	 * Get total amount donated to a campaign
 	 *
+	 * @global 	wpdb 	$wpdb
+	 * @param 	int 	$campaign_id
+	 * @return 	int 					
+	 * @since 	1.0.0
 	 */
 	public function get_campaign_donated_amount( $campaign_id ){
 		global $wpdb;
 		return $wpdb->get_var( $wpdb->prepare( "SELECT SUM(amount) FROM $this->table_name WHERE campaign_id = %d;", $campaign_id ) );
 	}
 
-	
-}
+	/**
+	 * The users who have donated to the given campaign.
+	 *
+	 * @global 	wpdb	$wpdb
+	 * @param 	int 	$campaign_id
+	 * @return 	object
+	 * @since 	1.0.0
+	 */
+	 public function get_campaign_donors( $campaign_id ) {
+	 	global $wpdb;
+	 	return $wpdb->get_results( $wpdb->prepare( "SELECT DISTINCT user_id FROM $this->table_name WHERE campaign_id = %d;", $campaign_id ), OBJECT_K );
+	 } 	 
+
+	 /**
+	  * Return the number of users who have donated to the given campaign. 
+	  *
+	  * @global wpdb	$wpdb
+	  * @param 	int 	$campaign_id
+	  * @return int
+	  * @since 	1.0.0
+	  */
+	 public function count_campaign_donors( $campaign_id ) {
+	 	global $wpdb;
+	 	return $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(user_id) FROM $this->table_name WHERE campaign_id = %D;", $campaign_id ) );
+	 }
+}	
 
 endif;

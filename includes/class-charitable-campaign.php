@@ -54,10 +54,10 @@ class Charitable_Campaign {
 	/**
 	 * Class constructor. 
 	 * 
-	 * @param mixed $post The post ID or WP_Post object for this this campaign.
-	 * @return void
-	 * @access public
-	 * @since 1.0.0
+	 * @param 	mixed 	$post 		The post ID or WP_Post object for this this campaign.
+	 * @return 	void
+	 * @access 	public
+	 * @since 	1.0.0
 	 */
 	public function __construct($post) {
 		if ( ! is_a( $post, 'WP_Post' ) ) {
@@ -70,9 +70,9 @@ class Charitable_Campaign {
 	/**
 	 * Returns the campaign's ID. 
 	 * 
-	 * @return int
-	 * @access public
-	 * @since 1.0.0
+	 * @return 	int
+	 * @access 	public
+	 * @since 	1.0.0
 	 */
 	public function get_campaign_id() {
 		if ( ! isset( $this->ID ) ) {
@@ -85,14 +85,14 @@ class Charitable_Campaign {
 	/**
 	 * Returns the campaign's post_meta values. An underscore is automatically prepended to the meta key.
 	 *
-	 * @see get_post_meta
+	 * @see 	get_post_meta
 	 * 
-	 * @param string $meta_name 	The meta name to search for.
-	 * @param bool $single 			Whether to return a single value or an array. 
-	 * @return mixed 				This will return an array if single is false. If it's true, 
-	 *  							the value of the meta_value field will be returned.
-	 * @access public
-	 * @since 1.0.0
+	 * @param 	string 	$meta_name 		The meta name to search for.
+	 * @param 	bool 	$single 		Whether to return a single value or an array. 
+	 * @return 	mixed 					This will return an array if single is false. If it's true, 
+	 *  								the value of the meta_value field will be returned.
+	 * @access 	public
+	 * @since 	1.0.0
 	 */
 	public function get( $meta_name, $single = true ) {
 		$meta_name = '_' . $meta_name;
@@ -104,10 +104,10 @@ class Charitable_Campaign {
 	 *
 	 * If a format is not provided, the user-defined date_format in Wordpress settings is used.
 	 * 
-	 * @param string $date_format A date format accepted by PHP's date() function.
-	 * @return string 
-	 * @access public
-	 * @since 1.0.0
+	 * @param 	string 	$date_format 	A date format accepted by PHP's date() function.
+	 * @return 	string 
+	 * @access 	public
+	 * @since 	1.0.0
 	 */
 	public function get_end_date($date_format = '') {
 		if ( ! strlen( $date_format ) ) {
@@ -132,9 +132,9 @@ class Charitable_Campaign {
 	/**
 	 * Returns the timetamp of the end date.
 	 *
-	 * @return int 
-	 * @access public
-	 * @since 1.0.0
+	 * @return 	int 
+	 * @access 	public
+	 * @since 	1.0.0
 	 */
 	public function get_end_time() {
 		if ( ! isset( $this->end_time ) ) {
@@ -152,9 +152,9 @@ class Charitable_Campaign {
 	/**
 	 * Returns the amount of time left in the campaign in seconds.
 	 *
-	 * @return int $time_left
-	 * @access public
-	 * @since 1.0.0
+	 * @return 	int $time_left
+	 * @access 	public
+	 * @since 	1.0.0
 	 */
 	public function get_seconds_left() {
 		$time_left = $this->get_end_time() - time();
@@ -171,9 +171,9 @@ class Charitable_Campaign {
 	 * @uses charitable_campaign_time_left 		Change the text displayed when there is time left. This will 
 	 *											override any of the above filters.
 	 *
-	 * @return string 
-	 * @access public
-	 * @since 1.0.0
+	 * @return 	string 
+	 * @access 	public
+	 * @since 	1.0.0
 	 */
 	public function get_time_left() {
 		$hour = 3600; 
@@ -224,9 +224,9 @@ class Charitable_Campaign {
 	/**
 	 * Returns the fundraising goal of the campaign.
 	 * 
-	 * @return decimal
-	 * @access public
-	 * @since 1.0.0
+	 * @return 	decimal
+	 * @access 	public
+	 * @since 	1.0.0
 	 */
 	public function get_goal() {
 		if ( ! isset( $this->goal ) ) {
@@ -239,9 +239,9 @@ class Charitable_Campaign {
 	/**
 	 * Returns the fundraising goal formatted as a monetary amount. 
 	 *
-	 * @return string
-	 * @access public
-	 * @since 1.0.0
+	 * @return 	string
+	 * @access 	public
+	 * @since 	1.0.0
 	 */
 	public function get_monetary_goal() {
 		return get_charitable()->get_currency_helper()->get_monetary_amount( $this->get_goal() );
@@ -250,9 +250,9 @@ class Charitable_Campaign {
 	/**
 	 * Returns the key used for caching all donations made to this campaign.
 	 * 
-	 * @return string
-	 * @access public
-	 * @since 1.0.0
+	 * @return 	string
+	 * @access 	public
+	 * @since 	1.0.0
 	 */
 	private function get_donations_cache_key() {
 		return 'charitable_campaign_' . $this->get_campaign_id() . '_donations';
@@ -261,9 +261,9 @@ class Charitable_Campaign {
 	/**
 	 * Returns the donations made to this campaign. 
 	 *
-	 * @return WP_Query
-	 * @access public
-	 * @since 1.0.0
+	 * @return 	WP_Query
+	 * @access 	public
+	 * @since 	1.0.0
 	 */
 	public function get_donations() {
 		if ( ! isset( $this->donations ) || is_null( $this->donations ) ) {
@@ -291,9 +291,9 @@ class Charitable_Campaign {
 	/**
 	 * Return the current amount of donations.
 	 *
-	 * @return int
-	 * @access public
-	 * @since 1.0.0
+	 * @return 	int
+	 * @access 	public
+	 * @since 	1.0.0
 	 */
 	public function get_donated_amount() {
 		if ( ! isset( $this->donated_amount ) || is_null( $this->donated_amount ) ) {
@@ -318,11 +318,36 @@ class Charitable_Campaign {
 	}
 
 	/**
+	 * Return the percentage donated. 
+	 *
+	 * @return 	string
+	 * @access 	public
+	 * @since 	1.0.0
+	 */
+	public function get_percent_donated() {
+		if ( 0 == $this->get_goal() ) {
+			return '';
+		}
+
+		return $this->get_donated_amount() / $this->get_goal() . '%';
+	}
+
+	/**
+	 * Return the number of people who have donated to the campaign. 
+	 *
+	 * @return 	int
+	 * @since 	1.0.0
+	 */
+	public function get_donor_count() {
+		return get_charitable()->get_db_table('donations')->count_campaign_donors( $this->get_campaign_id() );
+	}
+
+	/**
 	 * Flush donations cache.
 	 *
-	 * @return void
-	 * @access public
-	 * @since 1.0.0
+	 * @return 	void
+	 * @access 	public
+	 * @since 	1.0.0
 	 */
 	public function flush_donations_cache() {
 		delete_transient( $this->get_donations_cache_key() );
@@ -335,9 +360,9 @@ class Charitable_Campaign {
 	/**
 	 * Returns the donation form object. 
 	 * 
-	 * @return Charitable_Donation_Form_Interface
-	 * @access public
-	 * @since 1.0.0
+	 * @return 	Charitable_Donation_Form_Interface
+	 * @access 	public
+	 * @since 	1.0.0
 	 */
 	public function get_donation_form() {
 		if ( ! isset( $this->donation_form ) ) {
@@ -353,9 +378,9 @@ class Charitable_Campaign {
 	/**
 	 * Renders the button to donate. 
 	 * 
-	 * @return void
-	 * @access public
-	 * @since 1.0.0
+	 * @return 	void
+	 * @access 	public
+	 * @since 	1.0.0
 	 */
 	public function donate_button() {
 		new Charitable_Template('campaign/donate-button');
