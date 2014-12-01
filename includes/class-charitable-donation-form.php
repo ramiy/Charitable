@@ -217,70 +217,38 @@ class Charitable_Donation_Form implements Charitable_Donation_Form_Interface {
 		 */
 		$form_fields = apply_filters( 'charitable_donation_form_fields', $form_fields, $this );
 
+
 		/**
-		 * Add required fields, which we don't want people to remove through the filter above.
+		 * Add the email field, which is required in the form.
 		 */
-		// $required_fields = $this->get_required_fields();
+		if ( ! isset( $form_fields['email'] ) ) {
+			$email_field_priority = apply_filters( 'charitable_donation_form_user_email_field_priority', 8, $this );
+			$form_fields['email'] = array(
+				'label' 	=> __( 'Email', 'charitable' ), 
+				'type'		=> 'email',
+				'required' 	=> true, 
+				'priority'	=> $email_field_priority
+			);
+		}
 
-		$form_fields = array_merge( $form_fields, $required_fields );
-
-		usort( $form_fields, 'charitable_priority_sort' );
+		uasort( $form_fields, 'charitable_priority_sort' );
 
 		return $form_fields;
 	}
 
 	/**
-	 * Returns an array of fields that must be included in the donation form. 
-	 *
-	 * @return 	array
-	 * @access  protected
-	 * @since 	version
-	 */
-	protected function get_required_fields() {
-		/**
-		 * Campaign ID 
-		 */
-		$required_fields['campaign_id'] = array(
-			'type'		=> 'hidden', 
-			'priority'	=> 1, 
-			'value'		=> $this->campaign->get_campaign_id()
-		);
-
-		/**
-		 * Email field 
-		 */
-		$email_field_priority = apply_filters( 'charitable_donation_form_email_field_priority', 8, $this );
-		$required_fields['email'] = array(
-			'label' 	=> __( 'Email', 'charitable' ), 
-			'type'		=> 'email',
-			'required' 	=> true, 
-			'priority'	=> $email_field_priority
-		);
-
-		/**
-		 * Submit
-		 */
-		$required_fields['submit'] = array(
-			'label'		=> __( 'Donate', 'charitable' ), 
-			'type'		=> ''
-		);
-
-		return $required_fields;
-	}
-
-	/**
 	 * Whether the given field type can use the default field template. 
 	 *
-	 * @param 	string $field_type
+	 * @param 	string 		$field_type
 	 * @return 	boolean
 	 * @access 	protected
 	 * @since 	1.0.0
 	 */
 	protected function use_default_field_template( $field_type ) {
-		$non_default_field_types = apply_filters( 'charitable_non_default_template_field_types', array( 
-			'select', 'textarea', 'radio', 'hidden' 
+		$default_field_types = apply_filters( 'charitable_default_template_field_types', array( 
+			'text', 'url', 'email', 'password' 
 		) );
-		return ! in_array( $field_type, $non_default_field_types );
+		return in_array( $field_type, $default_field_types );
 	}
 
 	/**
@@ -293,13 +261,14 @@ class Charitable_Donation_Form implements Charitable_Donation_Form_Interface {
 	public function render() {
 		$user = wp_get_current_user();
 
-		echo '<pre>'; 
-		print_r( $user ); 
-		echo '</pre>';
+		// echo '<pre>'; 
+		// print_r( $user ); 
+		// echo '</pre>';
 		?>
 		<form method="post" class="charitable-donation-form">
 			<?php $this->nonce_field() ?>				
 			<input type="hidden" name="campaign_id" value="<?php echo $this->campaign->get_campaign_id() ?>" />
+			<input type="hidden" name="charitable_action" value="make-donation" />
 			<?php
 			/**
 			 * Allow the donor to choose how much they would like to donate.
@@ -313,17 +282,40 @@ class Charitable_Donation_Form implements Charitable_Donation_Form_Interface {
 			 * If they are not logged in and they have no account, they will see the full list of user fields.
 			 */
 
-
 			/**
 			 * If the user is not logged in, display a login prompt. 
 			 */
-			if ( 0 === $user->ID ) : 
-			?>
+			if ( 0 === $user->ID ) :	
 
-			<?php
+				wp_login_form();
+
+				foreach ( $this->get_fields() as $key => $field ) :
+
+					if ( ! isset( $field['type'] ) ) {
+						continue;
+					}
+
+					$this->current_field = $field;
+					$this->current_field['key'] = $key;
+
+					/**
+					 * Many field types, like text, email, url, etc fall 
+					 * back to the default-field template. 
+					 */
+					$field_type = $field['type'];			
+					if ( $this->use_default_field_template( $field_type ) ) {
+						$this->current_field['type'] = $field_type;
+						$field_type = 'default';
+					}
+
+					$template_name = 'donation-form/' . $field_type . '-field';
+
+					new Charitable_Template_Part( $template_name );
+
+				endforeach;
+			
 			else : 
-				// Prompt the user to log in first.
-				?>
+			?>
 			
 			<?php endif ?>
 
@@ -335,46 +327,9 @@ class Charitable_Donation_Form implements Charitable_Donation_Form_Interface {
 			<div class="charitable-form-field charitable-submit-field">
 				<input class="button-primary" type="submit" name="donate" value="<?php esc_attr_e( 'Donate', 'charitable' ) ?>" />
 			</div>
-		<?php
-		// foreach ( $this->get_fields() as $key => $field ) {
-
-		// 	if ( ! isset( $field['type'] ) ) {
-		// 		continue;
-		// 	}
-
-		// 	$this->current_field = $field;
-		// 	$this->current_field['key'] = $key;
-
-			/**
-			 * Many field types, like text, email, url, etc fall 
-			 * back to the default-field template. 
-			 */
-		// 	$field_type = $field['type'];			
-		// 	if ( $this->use_default_field_template( $field_type ) ) {
-		// 		$this->current_field['type'] = $field_type;
-		// 		$field_type = 'default';
-		// 	}
-
-		// 	$template_name = 'donation-form/' . $field_type . '-field';
-
-		// 	new Charitable_Template_Part( $template_name );
-		// }
-
-		?>
 		</form>
 		<?php
 	}	
-
-	/**
-	 * description 
-	 *
-	 * @return 	string
-	 * @access  public
-	 * @since 	1.0.0
-	 */
-	public function render_field( $field ) {
-		
-	}
 
 	/**
 	 * Output the nonce. 
@@ -401,16 +356,18 @@ class Charitable_Donation_Form implements Charitable_Donation_Form_Interface {
 	/**
 	 * Save the submitted donation.
 	 *
-	 * @return void
-	 * @access public
-	 * @since 1.0.0
+	 * @return 	void
+	 * @access 	public
+	 * @since 	1.0.0
 	 */
 	public function save_donation() {
 		if ( ! $this->validate_nonce() ) {
-
+			return;
 		}
 
 		echo '<pre>'; 
+
+		echo 'hello';
 		print_r( $_POST ); 
 		die;
 	}

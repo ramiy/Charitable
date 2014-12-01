@@ -85,11 +85,11 @@ final class Charitable_Public {
 	 * @since 0.1
 	 */
 	private function attach_hooks_and_filters() {
-		add_action('charitable_start', array( 'Charitable_Session', 'charitable_start' ), 1 );
-		add_action('charitable_start', array( 'Charitable_Actions', 'charitable_start' ), 2 );		
-		add_action('charitable_start', array( 'Charitable_Templates', 'charitable_start' ), 2 );
-		add_action('charitable_start', array( 'Charitable_Pages', 'charitable_start' ), 2 );		
-		add_action('wp_enqueue_scripts', array( $this, 'wp_enqueue_scripts') );
+		add_action('charitable_start', 		array( 'Charitable_Session', 'charitable_start' ), 1 );
+		add_action('charitable_start', 		array( 'Charitable_Actions', 'charitable_start' ), 2 );		
+		add_action('charitable_start', 		array( 'Charitable_Templates', 'charitable_start' ), 2 );
+		add_action('charitable_start', 		array( 'Charitable_Pages', 'charitable_start' ), 2 );		
+		add_action('wp_enqueue_scripts', 	array( $this, 'wp_enqueue_scripts') );
 	}
 
 	/**
