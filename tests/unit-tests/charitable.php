@@ -32,9 +32,9 @@ class Test_Charitable extends Charitable_UnitTestCase {
 	}
 
 	function test_attach_hooks_and_filters() {
-		$this->assertEquals( 2, has_action('charitable_start', array( 'Charitable_Donation_Actions', 'charitable_start' ) ) );
-		$this->assertEquals( 2, has_action('charitable_start', array( 'Charitable_Post_Types', 'charitable_start' ) ) );		
-		$this->assertEquals( 2, has_action('charitable_start', array( 'Charitable_Widgets', 'charitable_start' ) ) );
+		$this->assertEquals( 3, has_action('charitable_start', array( 'Charitable_Donation_Actions', 'charitable_start' ) ) );
+		$this->assertEquals( 3, has_action('charitable_start', array( 'Charitable_Post_Types', 'charitable_start' ) ) );		
+		$this->assertEquals( 3, has_action('charitable_start', array( 'Charitable_Widgets', 'charitable_start' ) ) );
 	}
 
 	function test_is_start() {

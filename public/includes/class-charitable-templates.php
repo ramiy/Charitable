@@ -9,7 +9,7 @@ if ( ! class_exists( 'Charitable_Templates' ) ) :
  * Charitable templates
  *
  * @class 		Charitable_Templates
- * @version		0.1
+ * @version		1.0.0
  * @package		Charitable/Classes/Templates
  * @category	Class
  * @author 		Studio164a
@@ -17,8 +17,8 @@ if ( ! class_exists( 'Charitable_Templates' ) ) :
 class Charitable_Templates {
 	
 	/**
-	 * @var Charitable $charitable
-	 * @access private
+	 * @var 	Charitable 	$charitable
+	 * @access 	private
 	 */
 	private $charitable;
 
@@ -29,15 +29,15 @@ class Charitable_Templates {
 	 * which can only be called during the start phase. In other words, don't try 
 	 * to instantiate this object. 
 	 *
-	 * @param Charitable $charitable
-	 * @return void
-	 * @access private
-	 * @since 0.1
+	 * @param 	Charitable 	$charitable
+	 * @return 	void
+	 * @access 	private
+	 * @since 	1.0.0
 	 */
 	private function __construct(Charitable $charitable) {
 		$this->charitable = $charitable;
 	
-		add_filter('the_content', array(&$this, 'campaign_content'));
+		add_filter( 'the_content', array( $this, 'campaign_content' ) );
 	
 		// The main Charitable class will save the one instance of this object.
 		$this->charitable->register_object( $this );
@@ -46,13 +46,12 @@ class Charitable_Templates {
 	/**
 	 * Instantiate the class, but only during the start phase.
 	 *
-	 * @see charitable_start hook
-	 * 
-	 * @param Charitable $charitable 
-	 * @return void
+	 * @uses 	charitable_start
+	 * @param 	Charitable 	$charitable 
+	 * @return 	void
 	 * @static 
-	 * @access public
-	 * @since 0.1
+	 * @access 	public
+	 * @since 	1.0.0
 	 */
 	public static function charitable_start(Charitable $charitable) {
 		if ( ! $charitable->is_start() ) {
@@ -65,13 +64,12 @@ class Charitable_Templates {
 	/** 
 	 * Use our template for the campaign content.
 	 * 
-	 * @see the_content filter
-	 *
-	 * @global WP_Post $post
-	 * @param string $content
-	 * @return string
-	 * @access public
-	 * @since 0.1
+	 * @uses 	the_content
+	 * @global 	WP_Post 	$post
+	 * @param 	string 		$content
+	 * @return 	string
+	 * @access 	public
+	 * @since 	1.0.0
 	 */
 	public function campaign_content($content) {
 		global $post;
@@ -81,7 +79,7 @@ class Charitable_Templates {
 			/**
 			 * If you do not want to use the default campaign template, use this filter and return false. 
 			 *
-			 * @uses charitable_use_campaign_template filter
+			 * @uses 	charitable_use_campaign_template
 			 */
 			if ( apply_filters('charitable_use_campaign_template', true ) === false ) {
 				return $content;
@@ -89,7 +87,7 @@ class Charitable_Templates {
 
 			ob_start();
 
-			new Charitable_Template( 'content-campaign.php' );
+			charitable_template( 'content-campaign.php' );
 			
 			$content = ob_get_clean();
 		}

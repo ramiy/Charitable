@@ -1,7 +1,63 @@
-.charitable-form-field {
+.login-prompt {
+	margin-bottom: 4px;
+}
+
+.charitable-login-form {
+	padding: 1em;
 	margin-bottom: 1em;
+	border: 1px solid #ebebeb;
 	
 	label {
-		font-weight: bolder;
+		display: block;
+		margin-bottom: 4px;
 	}
+
+	> p,
+	.login-username,
+	.login-password, 
+	.login-remember {	
+		margin-bottom: 1em;
+		padding-bottom: 0;
+	}
+
+	.login-submit {
+		margin-bottom: 0;
+		padding-bottom: 0;
+	}
+}
+
+.charitable-form-field {
+	margin-bottom: 1em;
+
+	label {
+		display: block;
+		margin-bottom: 4px;
+	}
+}
+
+.donation-amounts {
+	margin: 0 0 1em;
+	padding: 0;
+	list-style: none;
+
+	.donation-amount {
+		display: inline-block;
+		margin: 0 2px 4px 0;
+		padding: 1em;
+		border: 1px solid #ddd;
+		background-color: #ebebeb;		
+		cursor: pointer;
+	}
+
+	.donation-amount.selected {
+		background-color: #fff;
+	}
+}
+
+#charitable-donation-form {
+	padding-top: 1em;
+}
+
+.charitable-hidden {
+	@include hidden();
 }

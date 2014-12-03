@@ -48,13 +48,11 @@ final class Charitable_Campaign_Post_Type {
 
 		$this->meta_box_helper = new Charitable_Meta_Box_Helper( 'charitable-campaign' );
 
-		add_action('add_meta_boxes', array( $this, 'add_meta_boxes' ), 10);
-		add_action('save_post', array( $this, 'save_post' ), 10, 2);
-
-		add_action('campaign_general_metabox', array( $this, 'campaign_general_metabox' ));
-		add_action('campaign_donations_metabox', array( $this, 'campaign_donations_metabox' ));
-
-		add_filter('enter_title_here', array( $this, 'campaign_enter_title' ), 10, 2 );
+		add_action( 'add_meta_boxes', 				array( $this, 'add_meta_boxes' ), 10);
+		add_action( 'save_post', 					array( $this, 'save_post' ), 10, 2);
+		add_action( 'campaign_general_metabox', 	array( $this, 'campaign_general_metabox' ));
+		add_action( 'campaign_donations_metabox', 	array( $this, 'campaign_donations_metabox' ));
+		add_filter( 'enter_title_here', 			array( $this, 'campaign_enter_title' ), 10, 2 );
 	}
 
 	/**
@@ -175,7 +173,6 @@ final class Charitable_Campaign_Post_Type {
 			$campaign_goal 						= floatval( $_POST['_campaign_goal'] );
 			$campaign_end_date_enabled 			= isset( $_POST['_campaign_end_date_enabled'] ) && $_POST['_campaign_end_date_enabled'] == 'on';
 			$campaign_end_date 					= date( 'Y-m-d H:i:s', strtotime( $_POST['_campaign_end_date'] ) );
-			$campaign_custom_donations_enabled 	= isset( $_POST['_campaign_custom_donations_enabled'] ) && $_POST['_campaign_custom_donations_enabled'] == 'on';
 			$campaign_suggested_donations 		= $_POST['_campaign_suggested_donations'];
 			$campaign_donation_form_fields 		= (array) $_POST['_campaign_donation_form_fields'];
 
@@ -183,7 +180,6 @@ final class Charitable_Campaign_Post_Type {
 			update_post_meta( $post_id, '_campaign_goal', $campaign_goal );
 			update_post_meta( $post_id, '_campaign_end_date_enabled', $campaign_end_date_enabled );
 			update_post_meta( $post_id, '_campaign_end_date', $campaign_end_date );
-			update_post_meta( $post_id, '_campaign_custom_donations_enabled', $campaign_custom_donations_enabled );
 			update_post_meta( $post_id, '_campaign_suggested_donations', $campaign_suggested_donations );
 		}
 	}	

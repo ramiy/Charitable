@@ -15,7 +15,7 @@ class Test_Charitable_Post_Types extends Charitable_UnitTestCase {
 		global $wp_post_types;
 		$this->assertEquals( 'Campaign', $wp_post_types['campaign']->labels->name );
 		$this->assertEquals( 'Campaign', $wp_post_types['campaign']->labels->singular_name );
-		$this->assertEquals( 'Campaign', $wp_post_types['campaign']->labels->menu_name );
+		$this->assertEquals( 'Campaigns', $wp_post_types['campaign']->labels->menu_name );
 		$this->assertEquals( 'Add Campaign', $wp_post_types['campaign']->labels->add_new );
 		$this->assertEquals( 'Add New Campaign', $wp_post_types['campaign']->labels->add_new_item );
 		$this->assertEquals( 'Edit', $wp_post_types['campaign']->labels->edit );

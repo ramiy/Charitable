@@ -65,7 +65,7 @@ class Charitable_Install {
 	 * @since 	1.0.0
 	 */
 	private function create_tables() {
-		 $this->charitable->get_db_table( 'donations' )->create_table();
+		@$this->charitable->get_db_table( 'donations' )->create_table();
 	}
 }
 

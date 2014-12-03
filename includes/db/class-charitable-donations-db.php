@@ -107,39 +107,7 @@ class Charitable_Donations_DB extends Charitable_DB {
 			'Preapproval', 
 			'Cancelled'
 		);
-	}
-
-	/**
-	 * Create the table.
-	 *
-	 * @global 	$wpdb
-	 * @access 	public
-	 * @since 	1.0.0
-	 */
-	public function create_table() {
-		global $wpdb;
-
-		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-
-		$sql = "CREATE TABLE " . $this->table_name . " (
-		`id` bigint(20) NOT NULL AUTO_INCREMENT,
-		`campaign_id` bigint(20) NOT NULL,
-		`user_id` bigint(20) NOT NULL,
-		`date_created` datetime NOT NULL,
-		`amount` float NOT NULL,
-		`gateway` varchar(50) NOT NULL,
-		`is_preset_amount` tinyint NOT NULL,
-		`notes` longtext NOT NULL,
-		`status` varchar(20) NOT NULL,
-		KEY (id),
-		KEY user (user_id),
-		KEY campaign (campaign_id)
-		) CHARACTER SET utf8 COLLATE utf8_general_ci;";
-
-		dbDelta( $sql );
-
-		update_option( $this->table_name . '_db_version', $this->version );
-	}
+	}	
 
 	/** 
 	 * Add a new donation.
@@ -192,10 +160,10 @@ class Charitable_Donations_DB extends Charitable_DB {
 	 * @return 	object
 	 * @since 	1.0.0
 	 */
-	 public function get_campaign_donors( $campaign_id ) {
-	 	global $wpdb;
-	 	return $wpdb->get_results( $wpdb->prepare( "SELECT DISTINCT user_id FROM $this->table_name WHERE campaign_id = %d;", $campaign_id ), OBJECT_K );
-	 } 	 
+	public function get_campaign_donors( $campaign_id ) {
+		global $wpdb;
+		return $wpdb->get_results( $wpdb->prepare( "SELECT DISTINCT user_id FROM $this->table_name WHERE campaign_id = %d;", $campaign_id ), OBJECT_K );
+	} 	 
 
 	 /**
 	  * Return the number of users who have donated to the given campaign. 
@@ -205,10 +173,44 @@ class Charitable_Donations_DB extends Charitable_DB {
 	  * @return int
 	  * @since 	1.0.0
 	  */
-	 public function count_campaign_donors( $campaign_id ) {
-	 	global $wpdb;
-	 	return $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(user_id) FROM $this->table_name WHERE campaign_id = %D;", $campaign_id ) );
-	 }
+	public function count_campaign_donors( $campaign_id ) {
+		global $wpdb;
+		return $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(user_id) FROM $this->table_name WHERE campaign_id = %d;", $campaign_id ) );
+	}
+
+	/**
+	 * Create the table.
+	 *
+	 * @global 	$wpdb
+	 * @access 	public
+	 * @since 	1.0.0
+	 */
+	public function create_table() {
+		global $wpdb;
+
+		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+
+		$sql = <<<EOD
+CREATE TABLE {$this->table_name} (
+`id` bigint(20) NOT NULL AUTO_INCREMENT,
+`campaign_id` bigint(20) NOT NULL,
+`user_id` bigint(20) NOT NULL,
+`date_created` datetime NOT NULL,
+`amount` float NOT NULL,
+`gateway` varchar(50) NOT NULL,
+`is_preset_amount` tinyint NOT NULL,
+`notes` longtext NOT NULL,
+`status` varchar(20) NOT NULL,
+KEY (id),
+KEY user (user_id),
+KEY campaign (campaign_id)
+) CHARACTER SET utf8 COLLATE utf8_general_ci;
+EOD;
+
+		dbDelta( $sql );
+
+		update_option( $this->table_name . '_db_version', $this->version );
+	}	 
 }	
 
 endif;

@@ -45,28 +45,34 @@ final class Charitable_Pages {
 	 * which can only be called during the start phase. In other words, don't try 
 	 * to instantiate this object. 
 	 *
-	 * @param 	Charitable $charitable
+	 * @param 	Charitable 	$charitable
 	 * @return 	void
 	 * @access 	private
 	 * @since 	1.0.0
 	 */
-	private function __construct(Charitable $charitable) {
+	private function __construct( Charitable $charitable ) {
 		$this->charitable = $charitable;
 
-		add_filter('query_vars', 		array( $this, 'register_query_vars' ) );
-		add_action('parse_query', 		array( $this, 'parse_query') );
-		add_action('template_include',	array( $this, 'maybe_load_ghost_page'), 11 );
-		
-		// The main Charitable class will save the one instance of this object.
 		$this->charitable->register_object( $this );
+
+		add_filter( 'query_vars', 		array( $this, 'register_query_vars' ) );
+		add_action( 'parse_query', 		array( $this, 'parse_query') );
+		add_action( 'template_include',	array( $this, 'maybe_load_ghost_page'), 11 );
+		
+		/**
+		 * Allow plugins / themes to do something at this point. This
+		 * hook can be used to unset any of the callbacks attached above.
+		 *
+		 * @hook 	charitable_pages_start
+		 */
+		do_action( 'charitable_pages_start', $this );
 	}
 
 	/**
 	 * Instantiate the class, but only during the start phase.
 	 *
-	 * @see 	charitable_start hook
-	 * 
-	 * @param 	Charitable $charitable 
+	 * @see 	charitable_start
+	 * @param 	Charitable 	$charitable 
 	 * @return 	void
 	 * @static 
 	 * @access 	public

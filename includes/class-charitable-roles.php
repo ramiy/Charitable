@@ -53,6 +53,12 @@ class Charitable_Roles {
 			'export' 					=> true,
 			'unfiltered_html'		 	=> true			
 		) );
+
+		add_role( 'donor', __( 'Donor', 'charitable' ), array(
+			'read' 						=> true,
+			'edit_posts' 				=> false,
+			'delete_posts' 				=> false
+		) );
 	}
 
 	/** 
@@ -121,6 +127,9 @@ class Charitable_Roles {
 				$wp_roles->remove_cap( 'campaign_manager', $cap );
 				$wp_roles->remove_cap( 'administrator', $cap );
 			}
+
+			remove_role( 'donor' );
+			remove_role( 'campaign_manager' );
 		}
 	}
 

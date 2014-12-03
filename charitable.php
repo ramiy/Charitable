@@ -110,30 +110,6 @@ class Charitable {
 	}
 
 	/**
-	 * Throw error on object clone. 
-	 *
-	 * This class is specifically designed to be instantiated once. You can retrieve the instance using get_charitable()
-	 *
-	 * @since 	1.0.0
-	 * @access 	public
-	 * @return 	void
-	 */
-	public function __clone() {
-		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'charitable' ), '1.0.0' );
-	}
-
-	/**
-	 * Disable unserializing of the class. 
-	 *
-	 * @since 	1.0.0
-	 * @access 	public
-	 * @return 	void
-	 */
-	public function __wakeup() {
-		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'charitable' ), '1.0.0' );
-	}
-
-	/**
 	 * Run the startup sequence. 
 	 *
 	 * This is only ever executed once.  
@@ -194,6 +170,7 @@ class Charitable {
 		require_once( $this->includes_path . 'class-charitable-donation.php' );
 		require_once( $this->includes_path . 'class-charitable-donation-form.php' );
 		require_once( $this->includes_path . 'class-charitable-donation-form-hidden.php' );
+		require_once( $this->includes_path . 'class-charitable-donor.php' );
 		require_once( $this->includes_path . 'class-charitable-session-donation.php' );
 
 		require_once( $this->includes_path . 'db/abstract-class-charitable-db.php' );
@@ -221,7 +198,7 @@ class Charitable {
 	 * @since 	1.0.0
 	 */
 	private function attach_hooks_and_filters() {				
-		register_activation_hook( __FILE__, array( $this, 'activate') );
+		register_activation_hook( 	__FILE__, array( $this, 'activate') );
 		register_deactivation_hook( __FILE__, array( $this, 'deactivate') );
 
 		add_action('charitable_start', array( 'Charitable_Donation_Actions', 'charitable_start' ), 3 );
@@ -387,7 +364,7 @@ class Charitable {
 	 * @since 	1.0.0
 	 */
 	public function get_public() {
-		return $this->get_registered_object('Charitable_Public');
+		return $this->get_registered_object( 'Charitable_Public' );
 	}
 
 	/**
@@ -398,7 +375,7 @@ class Charitable {
 	 * @since 	1.0.0
 	 */
 	public function get_admin() {
-		return $this->get_registered_object('Charitable_Admin');
+		return $this->get_registered_object( 'Charitable_Admin' );
 	}
 
 	/**
@@ -529,6 +506,30 @@ class Charitable {
 			Charitable_Upgrade::upgrade_from( $db_version, self::VERSION );
 		}
 	}
+
+	/**
+	 * Throw error on object clone. 
+	 *
+	 * This class is specifically designed to be instantiated once. You can retrieve the instance using get_charitable()
+	 *
+	 * @since 	1.0.0
+	 * @access 	public
+	 * @return 	void
+	 */
+	public function __clone() {
+		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'charitable' ), '1.0.0' );
+	}
+
+	/**
+	 * Disable unserializing of the class. 
+	 *
+	 * @since 	1.0.0
+	 * @access 	public
+	 * @return 	void
+	 */
+	public function __wakeup() {
+		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'charitable' ), '1.0.0' );
+	}	
 }
 
 $charitable = new Charitable();

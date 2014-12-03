@@ -51,6 +51,11 @@ class Charitable_Ghost_Page {
 		
 		$this->current_view = $current_view;
 		$this->modify_wp_query();
+
+		/**
+		 * Remove wpautop filter on Ghost pages.
+		 */
+		remove_filter( 'the_content', 'wpautop' );
 	}
 
 	/**
@@ -134,11 +139,13 @@ class Charitable_Ghost_Page {
 	 * @return 	string HTML
 	 * @since 	1.0.0	
 	 */
-	private function get_content() {
-		$template = 'content-' . $this->current_view . '.php';
+	private function get_content() {		
 		ob_start();			
-		new Charitable_Template( $template );			
-		$content = ob_get_clean();
+		
+		charitable_template( 'content-' . $this->current_view . '.php' );			
+		
+		$content = ob_get_clean();		
+
 		return $content;
 	}
 
@@ -149,7 +156,7 @@ class Charitable_Ghost_Page {
 	 * @since 	1.0.0
 	 */
 	private function get_title() {
-		return 'Donation Form';
+		return apply_filters( 'charitable_ghost_page_title', __( 'Donation Form', 'charitable' ), $this->current_view );
 	}
 
 	/**

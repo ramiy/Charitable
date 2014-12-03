@@ -22,14 +22,11 @@ class Test_Charitable_Campaign extends Charitable_UnitTestCase {
 		$this->end_time = strtotime( '+300 days');
 
 		$meta = array(
-			'_campaign_goal_enabled' 				=> 1,
 			'_campaign_goal' 						=> 40000.00,
 			'_campaign_end_date_enabled' 			=> 1,
 			'_campaign_end_date' 					=> date( 'Y-m-d H:i:s', $this->end_time ),
 			'_campaign_custom_donations_enabled' 	=> 1,
-			'_campaign_suggested_donations' 		=> array(
-				5, 20, 50, 100, 250 
-			)
+			'_campaign_suggested_donations' 		=> '5|20|50|100|250'
 		);
 
 		foreach( $meta as $key => $value ) {
@@ -87,15 +84,10 @@ class Test_Charitable_Campaign extends Charitable_UnitTestCase {
 	}	
 
 	function test_get() {
-		$this->assertEquals( 1, $this->campaign->get('campaign_goal_enabled') );
 		$this->assertEquals( 40000.00, $this->campaign->get('campaign_goal') );
 		$this->assertEquals( 1, $this->campaign->get('campaign_end_date_enabled') );
 		$this->assertEquals( date( 'Y-m-d H:i:s', $this->end_time ), $this->campaign->get('campaign_end_date') );
-		$this->assertEquals( 1, $this->campaign->get('campaign_custom_donations_enabled') );
-
-		foreach ( array( 5, 20, 50, 100, 250 ) as $suggested_donation ) {
-			$this->assertContains( $suggested_donation, $this->campaign->get('campaign_suggested_donations') );
-		}
+		$this->assertEquals( 1, $this->campaign->get('campaign_custom_donations_enabled') );		
 	}
 
 	function test_get_end_time() {
@@ -161,4 +153,53 @@ class Test_Charitable_Campaign extends Charitable_UnitTestCase {
 
 		$this->assertEquals( 'Charitable_Donation_Form', get_class( $form ) );
 	}	
+
+	function test_get_donor_count() {
+		$this->assertEquals( 3, $this->campaign->get_donor_count() );
+	}
+
+	function test_get_suggested_amounts() {
+		foreach ( array( 5, 20, 50, 100, 250 ) as $suggested_donation ) {
+			$this->assertContains( $suggested_donation, $this->campaign->get_suggested_amounts() );
+		}
+	}
+
+	function test_add_donation() {
+		$values = array(
+			'amount'			=> '500', 
+			'is_preset_amount'	=> 0, 
+			'gateway'			=> 'manual',
+			'user'				=> array(
+				'first_name'	=> 'Helen', 
+				'last_name'		=> 'Hunt', 
+				'email'			=> 'hhunt@example.com',
+				'address'		=> '23 Hunt Avenue', 
+				'address_2'		=> '', 
+				'city'			=> 'Helenton', 
+				'state'			=> 'Indiana', 
+				'postcode'		=> '92323', 
+				'country'		=> 'US', 
+				'phone'			=> '2323232323'
+			)
+		);
+
+    // [donation-amount] => custom
+    // [custom-donation-amount] => 500
+    // [_charitable_donation_nonce] => 26fdb2d868
+    // [_wp_http_referer] => /?donate=1
+    // [campaign_id] => 25
+    // [charitable_action] => make-donation
+    // [first_name] => Helen
+    // [last_name] => Hunt
+    // [email] => hhunt@example.com
+    // [address] => 23 Hunt Avenue
+    // [address_2] => 
+    // [city] => Helenton
+    // [state] => Indiana
+    // [postcode] => 92932
+    // [country] => US
+    // [phone] => 232323332
+
+		$this->assertEquals( 1, $this->campaign->add_donation( $values ) );
+	}
 }

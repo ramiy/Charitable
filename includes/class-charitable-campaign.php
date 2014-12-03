@@ -237,6 +237,17 @@ class Charitable_Campaign {
 	}
 
 	/**
+	 * Returns whether a goal has been set (anything greater than $0 is a goal).
+	 * 
+	 * @return 	boolean
+	 * @access 	public
+	 * @since 	1.0.0
+	 */
+	public function has_goal() {
+		return ( 0 < $this->get_goal() );
+	}	
+
+	/**
 	 * Returns the fundraising goal formatted as a monetary amount. 
 	 *
 	 * @return 	string
@@ -383,7 +394,102 @@ class Charitable_Campaign {
 	 * @since 	1.0.0
 	 */
 	public function donate_button() {
-		new Charitable_Template('campaign/donate-button');
+		charitable_template( 'campaign/donate-button.php' );
+	}
+
+	/**
+	 * Returns any suggested amounts, or an empty array if none have been set. 
+	 *
+	 * @return 	array
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function get_suggested_amounts() {
+		$amounts = $this->get( 'campaign_suggested_donations' );
+
+		if ( false === strpos( $amounts, '|' ) ) {
+			return array();
+		}
+
+		return explode( '|', $amounts );
+	}
+
+	/**
+	 * Add a donation to this campaign. 
+	 *
+	 * @param 	array 	$values
+	 * @return 	int
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function add_donation( $values ) {
+
+		if ( ! isset( $values['amount'] ) ) {
+			/**
+			 * @todo	Add error message.
+			 */
+			return;
+		}
+
+		/**
+		 * If a user ID hasn't been set, we need to get a
+		 * user ID based on the email address supplied. 
+		 */
+		if ( ! isset( $values['user_id'] ) ) {
+
+			/** 
+			 * No user details have been supplied. 
+			 */
+			if ( ! isset( $values['user'] ) ) {
+				/**
+				 * @todo	Add error message.
+				 */
+				return;
+			}
+
+			$user_data = $values['user'];
+
+			/**
+			 * No email has been supplied either, so 
+			 * we return with an error message. 
+			 */
+			if ( ! isset( $user_data['email'] ) ) {
+				/**
+				 * @todo	Add error message.
+				 */
+				return; 
+			}
+
+			$user = get_user_by( 'email', $user_data['email'] );
+
+			/** 
+			 * This is a new user, so create their account for them. 
+			 */
+			if ( false === $user ) {
+				$user_id = Charitable_Donor::create( $user_data );
+
+				/**
+				 * Something went wrong while creating the user. 
+				 */
+				if ( false === $user_id ) {
+					/**
+					 * @todo	Add error message.
+					 */
+					return; 
+				}
+			}
+			else {
+				$user_id = $user->ID;
+			}			
+
+			unset( $values['user'] ); 
+
+			$values['user_id'] = $user_id;
+		}
+
+		$values['campaign_id'] = $this->get_campaign_id();
+
+		return get_charitable()->get_db_table('donations')->add( $values );
 	}
 }
 
