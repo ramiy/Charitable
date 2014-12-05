@@ -3,7 +3,7 @@
  * Contains the class that models a Donor in Charitable.
  *
  * @class 		Charitable_Donor
- * @version		1.0
+ * @version		1.0.0
  * @package		Charitable/Classes/Charitable_Donor
  * @copyright 	Copyright (c) 2014, Eric Daams	
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
@@ -21,26 +21,84 @@ if ( ! class_exists( 'Charitable_Donor' ) ) :
  *
  * @since 		1.0.0
  */
-class Charitable_Donor {
-
-	/**
-	 * WP_User object. 
-	 *
-	 * @var 	WP_User
-	 * @access  private
-	 */
- 	private $user;
+class Charitable_Donor extends WP_User {
 
 	/**
 	 * Create class object.
 	 * 
-	 * @param 	int 	$user_id
+	 * @param 	int|string|stdClass|WP_User $id 		User's ID, a WP_User object, or a user object from the DB.
+	 * @param 	string 						$name 		Optional. User's username
+	 * @param 	int 						$blog_id 	Optional Blog ID, defaults to current blog.
 	 * @return 	void
 	 * @access 	public
 	 * @since	1.0.0
 	 */
-	public function __construct( $user_id ) {
-		$this->user = new WP_User( $user_id );
+	public function __construct( $id = 0, $name = '', $blog_id = '' ) {
+		parent::__construct( $id, $name, $blog_id );
+	}
+
+	/**
+	 * Returns whether the user is logged in. 
+	 *
+	 * @return 	boolean
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function is_logged_in() {
+		return 0 !== $this->ID;
+	}
+
+	/**
+	 * Returns the display name of the user.
+	 *
+	 * @return 	string
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function get_name() {
+		return $this->display_name;
+	}
+
+	/**
+	 * Return an array of fields used for the address. 
+	 *
+	 * @return 	array
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function get_address_fields() {
+		return apply_filters( 'charitable_donor_address_fields', array(
+			'donor_address', 
+			'donor_address_2', 
+			'donor_city', 
+			'donor_state', 
+			'donor_postcode', 
+			'donor_country'
+		) );
+	}
+
+	/**
+	 * Returns printable address of donor. 
+	 *
+	 * @return 	string
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function get_address() {
+	
+		$address_fields = apply_filters( 'charitable_donor_address_fields', array(
+			'first_name'    => $this->get( 'first_name' ),
+			'last_name'     => $this->get( 'last_name' ),
+			'company'       => $this->get( 'donor_company' ),
+			'address'    	=> $this->get( 'donor_address' ),
+			'address_2'     => $this->get( 'donor_address_2' ),
+			'city'          => $this->get( 'donor_city' ),
+			'state'         => $this->get( 'donor_state' ),
+			'postcode'      => $this->get( 'donor_postcode' ),
+			'country'       => $this->get( 'donor_country' )
+		), $this );
+
+		return charitable_get_location_helper()->get_formatted_address( $address_fields );
 	}
 
 	/**
@@ -76,9 +134,9 @@ class Charitable_Donor {
 		/**
 		 * Set their password, if provided. 
 		 */
-		if ( isset( $submitted['password'] ) ) {
-			$user_data['user_pass'] = $submitted['password'];
-			unset( $user_data['password'] );
+		if ( isset( $submitted['user_pass'] ) ) {
+			$user_data['user_pass'] = $submitted['user_pass'];
+			unset( $user_data['user_pass'] );
 		}
 		else {
 			$user_data['user_pass'] = NULL;
@@ -87,8 +145,8 @@ class Charitable_Donor {
 		/**
 		 * Set their username, if provided. Otherwise it's set to their email address.
 		 */
-		if ( isset( $submitted['username'] ) ) {
-			$user_data['user_login'] = $submitted['username'];
+		if ( isset( $submitted['user_login'] ) ) {
+			$user_data['user_login'] = $submitted['user_login'];
 			unset( $user_data['username'] );		
 		}
 		else {

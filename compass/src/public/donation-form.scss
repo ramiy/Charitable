@@ -1,4 +1,4 @@
-.login-prompt {
+#login-prompt {
 	margin-bottom: 4px;
 }
 
@@ -10,6 +10,15 @@
 	label {
 		display: block;
 		margin-bottom: 4px;
+	}
+
+	input, select, textarea, button {
+		width: 100%;
+	}
+
+	input[type=radio], 
+	input[type=checkbox] {
+		width: auto;
 	}
 
 	> p,
@@ -32,6 +41,15 @@
 	label {
 		display: block;
 		margin-bottom: 4px;
+	}
+
+	input, select, textarea, button {
+		width: 100%;
+	}
+
+	input[type=radio], 
+	input[type=checkbox] {
+		width: auto;
 	}
 }
 
@@ -60,4 +78,30 @@
 
 .charitable-hidden {
 	@include hidden();
+}
+
+.charitable-user-details {
+    padding: 1em;
+    margin-bottom: 2em;
+    border: 1px solid #ddd;
+
+    .donor-address, 
+    .donor-contact-details {
+    	margin-bottom: 4px;
+    }
+
+    .charitable-login-details {
+    	padding-top: 1em;
+    }
+}
+
+.charitable-change-user-details {
+	margin-bottom: 0;
+	padding-bottom: 0;
+}
+
+#charitable-user-fields {
+	padding-top: 1em;
+	margin-top: 1em;
+	border-top: 1px solid #ddd;
 }

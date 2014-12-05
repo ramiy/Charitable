@@ -80,7 +80,7 @@ class Charitable_Donations_DB extends Charitable_DB {
 			'id'				=> '', 
 			'campaign_id'		=> '',
 			'user_id'			=> 0,
-			'date_created'		=> date('Y-m-d h:i:s'),
+			'date_created'		=> gmdate('Y-m-d h:i:s'),
 			'amount'			=> '',
 			'gateway'			=> '', 
 			'is_preset_amount'	=> 0, 

@@ -181,7 +181,7 @@ class Charitable {
 		 */
 		require_once( $this->includes_path . 'class-charitable-currency-helper.php' );
 		require_once( $this->includes_path . 'class-charitable-request.php' );		
-		require_once( $this->includes_path . 'class-charitable-location-helper.php' );
+		require_once( $this->includes_path . 'class-charitable-locations.php' );
 
 		/**
 		 * Functions.
@@ -381,15 +381,15 @@ class Charitable {
 	/**
 	 * Returns the location helper. 
 	 *
-	 * @return 	Charitable_Location_Helper
+	 * @return 	Charitable_Locations
 	 * @access 	public
 	 * @since 	1.0.0
 	 */
 	public function get_location_helper() {
-		$location_helper = $this->get_registered_object('Charitable_Location_Helper');
+		$location_helper = $this->get_registered_object('Charitable_Locations');
 
 		if ( $location_helper === false ) {
-			$location_helper = new Charitable_Location_Helper();
+			$location_helper = new Charitable_Locations();
 			$this->register_object( $location_helper );
 		}
 

@@ -69,6 +69,16 @@ function charitable_get_helper( $class_key ) {
 }
 
 /**
+ * Return Charitable_Locations helper class. 
+ *
+ * @return 	Charitable_Locations
+ * @since 	1.0.0
+ */
+function charitable_get_location_helper() {
+	return get_charitable()->get_location_helper();
+}
+
+/**
  * Returns the current user's session object. 
  *
  * @return 	Charitable_Session

@@ -453,14 +453,14 @@ class Charitable_Campaign {
 			 * No email has been supplied either, so 
 			 * we return with an error message. 
 			 */
-			if ( ! isset( $user_data['email'] ) ) {
+			if ( ! isset( $user_data['user_email'] ) ) {
 				/**
 				 * @todo	Add error message.
 				 */
 				return; 
 			}
 
-			$user = get_user_by( 'email', $user_data['email'] );
+			$user = get_user_by( 'email', $user_data['user_email'] );
 
 			/** 
 			 * This is a new user, so create their account for them. 
@@ -479,6 +479,13 @@ class Charitable_Campaign {
 				}
 			}
 			else {
+				/**
+				 * Save this user as a donor. 
+				 */
+				if ( ! $user->has_cap( 'donor' ) ) {
+					$user->add_role( 'donor' );
+				}
+				
 				$user_id = $user->ID;
 			}			
 

@@ -18,5 +18,9 @@ if ( 0 !== $user->ID ) {
 </p>
 <div id="charitable-donation-login-form" class="charitable-login-form charitable-form">
 	<p><?php _e( 'If you have donated before, please enter your details below to login. If this is your first time, proceed to the donation form.', 'charitable' ) ?></p>
-	<?php wp_login_form() ?>
+	<?php wp_login_form(
+		array( 
+			'label_username' 	=> apply_filters( 'charitable_donor_usernames', false ) ? __( 'Username', 'charitable' ) : __( 'Email', 'charitable' )
+		) 
+	) ?>
 </div>
