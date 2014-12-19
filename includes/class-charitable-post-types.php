@@ -85,7 +85,7 @@ final class Charitable_Post_Types {
 			apply_filters( 'charitable_campaign_post_type',
 				array(
 					'labels' => array(
-						'name' 					=> __( 'Campaign', 'charitable' ),
+						'name' 					=> __( 'Campaigns', 'charitable' ),
 						'singular_name' 		=> __( 'Campaign', 'charitable' ),
 						'menu_name'				=> _x( 'Campaigns', 'Admin menu name', 'charitable' ),
 						'add_new' 				=> __( 'Add Campaign', 'charitable' ),
@@ -113,7 +113,51 @@ final class Charitable_Post_Types {
 					'query_var' 			=> true,
 					'supports' 				=> array( 'title', 'editor', 'excerpt', 'thumbnail', 'comments', 'page-attributes' ),
 					'has_archive' 			=> true,
-					'show_in_nav_menus' 	=> true
+					'show_in_nav_menus' 	=> true, 
+					'show_in_menu'			=> false
+				)
+			) 
+		);
+
+		/**
+		 * Donation post type. 
+		 *
+		 * To change any of the arguments used for the post type, other than the name
+		 * of the post type itself, use the 'charitable_donation_post_type' filter. 
+		 */ 
+		register_post_type( 'donation', 
+			apply_filters( 'charitable_donation_post_type',
+				array(
+					'labels' => array(
+						'name' 					=> __( 'Donations', 'charitable' ),
+						'singular_name' 		=> __( 'Donation', 'charitable' ),
+						'menu_name'				=> _x( 'Donations', 'Admin menu name', 'charitable' ),
+						'add_new' 				=> __( 'Add Donation', 'charitable' ),
+						'add_new_item' 			=> __( 'Add New Donation', 'charitable' ),
+						'edit' 					=> __( 'Edit', 'charitable' ),
+						'edit_item' 			=> __( 'Edit Donation', 'charitable' ),
+						'new_item' 				=> __( 'New Donation', 'charitable' ),
+						'view' 					=> __( 'View Donation', 'charitable' ),
+						'view_item' 			=> __( 'View Donation', 'charitable' ),
+						'search_items' 			=> __( 'Search Donations', 'charitable' ),
+						'not_found' 			=> __( 'No Donations found', 'charitable' ),
+						'not_found_in_trash' 	=> __( 'No Donations found in trash', 'charitable' ),
+						'parent' 				=> __( 'Parent Donation', 'charitable' )
+					),
+					'public' 				=> false,
+					'show_ui' 				=> true,
+					'capability_type' 		=> 'donation',
+					'menu_icon'				=> '',
+					'map_meta_cap'			=> true,
+					'publicly_queryable' 	=> false,
+					'exclude_from_search' 	=> false,
+					'hierarchical' 			=> false, // Hierarchical causes memory issues - WP loads all records!
+					'rewrite' 				=> false,
+					'query_var' 			=> false,
+					'supports' 				=> array( 'page-attributes' ),
+					'has_archive' 			=> false,
+					'show_in_nav_menus' 	=> false, 
+					'show_in_menu'			=> false
 				)
 			) 
 		);

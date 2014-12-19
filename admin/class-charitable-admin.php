@@ -73,6 +73,7 @@ final class Charitable_Admin {
 		require_once( $this->charitable->get_path( 'admin' ) . 'includes/class-charitable-admin-settings.php' );
 		require_once( $this->charitable->get_path( 'admin' ) . 'includes/class-charitable-meta-box-helper.php' );
 		require_once( $this->charitable->get_path( 'admin' ) . 'includes/class-charitable-campaign-post-type.php' );
+		require_once( $this->charitable->get_path( 'admin' ) . 'includes/class-charitable-donation-post-type.php' );
 	}
 
 	/**
@@ -83,9 +84,10 @@ final class Charitable_Admin {
 	 * @since 	1.0.0
 	 */
 	private function attach_hooks_and_filters() {
-		add_action('charitable_start', array('Charitable_Admin_Settings', 'charitable_start'));
-		add_action('charitable_start', array('Charitable_Campaign_Post_Type', 'charitable_start'));
-		add_action('admin_enqueue_scripts', array(&$this, 'admin_enqueue_scripts'));
+		add_action('charitable_start', 		array( 'Charitable_Admin_Settings', 'charitable_start' ) );
+		add_action('charitable_start', 		array( 'Charitable_Campaign_Post_Type', 'charitable_start' ) );
+		add_action('charitable_start', 		array( 'Charitable_Donation_Post_Type', 'charitable_start' ) );
+		add_action('admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 	}
 
 	/**
@@ -134,7 +136,8 @@ final class Charitable_Admin {
 	private function get_charitable_screens() {
 		return apply_filters( 'charitable_admin_screens', array(
 			'campaign', 
-			'donation'
+			'donation', 
+			'charitable_page_charitable-settings'
 		) );
 	}
 }

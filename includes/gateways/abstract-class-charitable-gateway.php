@@ -1,10 +1,4 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly
-}
-
-if ( ! class_exists( 'Charitable_Gateway' ) ) : 
-
 /**
  * Gateway abstract model 
  *
@@ -14,6 +8,16 @@ if ( ! class_exists( 'Charitable_Gateway' ) ) :
  * @package		Charitable/Classes/Gateway
  * @category	Class
  * @author 		Studio164a
+ */
+
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
+if ( ! class_exists( 'Abstract_Charitable_Gateway' ) ) : 
+
+/**
+ * Charitable_Gateway
+ *
+ * @since		1.0.0
  */
 abstract class Abstract_Charitable_Gateway {
 	

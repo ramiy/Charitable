@@ -15,7 +15,6 @@ if ( ! class_exists( 'Charitable_Campaign_Post_Type' ) ) :
 /**
  * Charitable_Campaign_Post_Type class.
  *
- * @abstract
  * @final
  * @since 	    1.0.0
  */

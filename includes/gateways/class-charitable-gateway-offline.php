@@ -1,29 +1,29 @@
 <?php
 /**
- * Paypal Payment Gateway class
+ * Offline Payment Gateway 
  *
- * @class 		Charitable_Gateway_Paypal
+ * @class 		Charitable_Gateway_Offline
  * @version		1.0.0
  * @package		Charitable/Classes/Gateway
  * @category	Class
  * @author 		Studio164a
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
 
-if ( ! class_exists( 'Charitable_Gateway_Paypal' ) ) : 
+if ( ! class_exists( 'Charitable_Gateway_Offline' ) ) : 
 
 /**
- * Paypal Payment Gateway 
+ * Offline Payment Gateway 
  *
  * @since		1.0.0
  */
-class Charitable_Gateway_Paypal extends Abstract_Charitable_Gateway {
+class Charitable_Gateway_Offline extends Abstract_Charitable_Gateway {
 	
 	/**
 	 * @var 	string 		The gateway name.
 	 */
-	const NAME = 'Paypal';
+	const NAME = 'Offline Payment';
 
 	/**
 	 * Send the donation/donor off to the gateway.  

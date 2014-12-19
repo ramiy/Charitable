@@ -157,6 +157,7 @@ class Charitable {
 		require_once( $this->includes_path . 'class-charitable-post-types.php' );
 		require_once( $this->includes_path . 'class-charitable-campaign-query.php' );
 		require_once( $this->includes_path . 'class-charitable-widgets.php' );
+		require_once( $this->includes_path . 'class-charitable-gateway.php' );
 
 		/**
 		 * Interfaces.
@@ -204,6 +205,7 @@ class Charitable {
 		add_action('charitable_start', array( 'Charitable_Donation_Actions', 'charitable_start' ), 3 );
 		add_action('charitable_start', array( 'Charitable_Post_Types', 'charitable_start' ), 3 );		
 		add_action('charitable_start', array( 'Charitable_Widgets', 'charitable_start' ), 3 );
+		add_action('charitable_start', array( 'Charitable_Gateway', 'charitable_start' ), 3 ); 
 	}
 
 	/**

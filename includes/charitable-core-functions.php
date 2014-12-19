@@ -69,6 +69,16 @@ function charitable_get_helper( $class_key ) {
 }
 
 /**
+ * Returns the Charitable_Notices class instance.  
+ *
+ * @return 	Charitable_Notices
+ * @since 	1.0.0
+ */
+function charitable_get_notices() {
+		
+}
+
+/**
  * Return Charitable_Locations helper class. 
  *
  * @return 	Charitable_Locations

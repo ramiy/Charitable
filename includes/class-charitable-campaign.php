@@ -418,11 +418,11 @@ class Charitable_Campaign {
 	 * Add a donation to this campaign. 
 	 *
 	 * @param 	array 	$values
-	 * @return 	int
+	 * @return 	int 	ID of the donation created.
 	 * @access  public
 	 * @since 	1.0.0
 	 */
-	public function add_donation( $values ) {
+	public function  add_donation( $values ) {
 
 		if ( ! isset( $values['amount'] ) ) {
 			/**

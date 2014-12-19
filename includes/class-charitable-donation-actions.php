@@ -45,7 +45,10 @@ final class Charitable_Donation_Actions {
 	private function __construct(Charitable $charitable) {
 		$this->charitable = $charitable;
 			
-		add_action( 'init', array( $this, 'handle_form_submissions' ) );
+		add_action( 'init', 						array( $this, 'handle_form_submissions' ) );
+		add_action( 'charitable_start_donation', 	array( $this, 'start_donation' ), 1 );
+		add_action( 'charitable_make_donation', 	array( $this, 'save_pending_donation' ), 1 );
+		add_action( 'charitable_make_donation', 	array( $this, 'send_to_gateway' ), 2 );
 
 		do_action( 'charitable_donation_actions_start', $this );
 	}
@@ -87,17 +90,21 @@ final class Charitable_Donation_Actions {
 
 			switch ( $action ) {
 				/**
-				 * Fired when a donation is started.
+				 * Fired when a donation is started (i.e. the donations page is reached).
 				 */
 				case 'start-donation' :
+
 					$this->start_donation();
+
 					break;
 
 				/**
 				 * Fired when the donation is actually made.
 				 */
 				case 'make-donation' :
+
 					$this->make_donation();
+					
 					break; 
 			}
 		}
@@ -110,10 +117,10 @@ final class Charitable_Donation_Actions {
 	 * that the ID passed belonged to a campaign.
 	 *
 	 * @return 	false if invalid. int if valid. 
-	 * @access 	private
+	 * @access 	public
 	 * @since 	1.0.0
 	 */ 
-	private function get_campaign_from_request() {
+	public function get_campaign_from_request() {
 		/**
 		 * A campaign ID must be set. 
 		 */
@@ -182,9 +189,19 @@ final class Charitable_Donation_Actions {
 		$campaign = new Charitable_Campaign( $campaign_id );
 
 		/**
+		 * @hook 	charitable_before_save_donation
+		 */
+		do_action( 'charitable_before_save_donation', $campaign );
+
+		/**
 		 * Save the donation using the campaign's donation form object.
 		 */
-		$campaign->get_donation_form()->save_donation();
+		$donation_id = $campaign->get_donation_form()->save_donation();
+
+		/**
+		 * @hook 	charitable_after_save_donation
+		 */
+		do_action( 'charitable_after_save_donation', $campaign, $donation_id );
 	}
 }
 

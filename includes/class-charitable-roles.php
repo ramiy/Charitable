@@ -1,10 +1,4 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly
-}
-
-if ( ! class_exists( 'Charitable_Roles' ) ) : 
-
 /**
  * Roles and Capabilities for Charitable
  *
@@ -13,6 +7,16 @@ if ( ! class_exists( 'Charitable_Roles' ) ) :
  * @package		Charitable/Classes/Core
  * @category	Class
  * @author 		Studio164a
+ */
+
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
+if ( ! class_exists( 'Charitable_Roles' ) ) : 
+
+/**
+ * Charitable_Roles class.
+ *
+ * @since		1.0.0
  */
 class Charitable_Roles {
 
@@ -142,7 +146,7 @@ class Charitable_Roles {
 	 */
 	private function get_core_caps() {
 		return array(
-			// Post type
+			// Campaign post type
 			'edit_campaign',
 			'read_campaign',
 			'delete_campaign',
@@ -156,6 +160,21 @@ class Charitable_Roles {
 			'delete_others_campaigns',
 			'edit_private_campaigns',
 			'edit_published_campaigns',
+
+			// Donation post type
+			'edit_donation',
+			'read_donation',
+			'delete_donation',
+			'edit_donations',
+			'edit_others_donations',
+			'publish_donations',
+			'read_private_donations',
+			'delete_donations',
+			'delete_private_donations',
+			'delete_published_donations',
+			'delete_others_donations',
+			'edit_private_donations',
+			'edit_published_donations',
 
 			// Terms
 			'manage_campaign_terms',

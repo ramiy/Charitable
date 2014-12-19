@@ -422,7 +422,7 @@ class Charitable_Donation_Form implements Charitable_Donation_Form_Interface {
 	/**
 	 * Save the submitted donation.
 	 *
-	 * @return 	void
+	 * @return 	int|false 		If successful, this returns the donation ID. If unsuccessful, returns false.
 	 * @access 	public
 	 * @since 	1.0.0
 	 */
@@ -492,11 +492,11 @@ class Charitable_Donation_Form implements Charitable_Donation_Form_Interface {
 		 */
 		$values['gateway'] = 'manual';
 
-		$this->campaign->add_donation( $values );
+		$values = apply_filters( 'charitable_donation_values', $values ); 
 
-		// echo '<pre>'; 
-		// print_r( $_POST ); 
-		// die;
+		$donation_id = $this->campaign->add_donation( $values );
+
+		return $donation_id;
 	}
 }
 

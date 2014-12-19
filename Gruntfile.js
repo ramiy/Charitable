@@ -12,74 +12,51 @@ module.exports = function(grunt) {
  
         // watch for changes and trigger compass, jshint, uglify and livereload
         watch: {                        
-            compass: {
-                files: ['compass/**/*.{scss,sass}'],
-                tasks: ['compass', 'copy']
+            sass_admin: {
+                files: [ 'admin/assets/css/scss/*.{scss,sass}' ],
+                tasks: ['sass:dist_admin']
             },
-            // js: {
-            //     files: '<%= jshint.all %>',
-            //     tasks: ['jshint', 'uglify']
-            // },
-            // css: {
-            //     files: ['assets/css/*.css'],
-            //     tasks: ['cssmin']
-            // },
-            sync_admin_css: {
-                files: [
-                    'compass/css/admin/**'
-                ], 
-                tasks: ['sync:sync_admin_css']
-            }, 
-            sync_public_css: {
-                files: [
-                    'compass/css/public/**'
-                ], 
-                tasks: ['sync:sync_public_css']
+            sass_public: {
+                files: [ 'public/assets/css/scss/*.{scss,sass}' ],
+                tasks: ['sass:dist_public']
             },
             sync: {
                 files: [
                     'admin/', 
                     'admin/**', 
-                    '!admin/assets/compass', 
-                    '!admin/assets/compass/**', 
-                    '!admin/assets/scss', 
-                    '!admin/assets/scss/**',
+                    '!admin/assets/css/scss', 
+                    '!admin/assets/css/scss/**',
                     'includes', 
                     'includes/**', 
                     'languages', 
                     'languages/**', 
                     'public', 
                     'public/**', 
-                    '!public/assets/compass', 
-                    '!public/assets/compass/**', 
-                    '!public/assets/scss', 
-                    '!public/assets/scss/**', 
+                    '!public/assets/css/scss', 
+                    '!public/assets/css/scss/**', 
                     'charitable.php'
                 ],
                 tasks: ['sync:dist']
             }     
         },
 
+        // Sass
+        sass: {
+            dist_admin: {
+                files: {
+                    'admin/assets/css/charitable-admin-menu.css' : 'admin/assets/css/scss/charitable-admin-menu.scss', 
+                    'admin/assets/css/charitable-admin.css' : 'admin/assets/css/scss/charitable-admin.scss'
+                }
+            }, 
+            dist_public: {
+                files: {
+                    'public/assets/css/charitable.css' : 'public/assets/css/scss/charitable.scss'
+                }
+            }
+        },
+
         // Sync
-        sync: {    
-            sync_admin_css: {
-                files: [
-                    {
-                        cwd: 'compass/css/admin',
-                        src: [ '**' ], 
-                        dest: 'admin/assets/css'
-                    }
-                ]
-            },   
-            sync_public_css: {
-                files: [
-                    {
-                        cwd: 'compass/css/public',
-                        src: [ '**' ], 
-                        dest: 'public/assets/css'
-                    }
-                ]
-            },
+        sync: {                
             dist: {
                 files: [
                     // includes files within path
@@ -87,8 +64,6 @@ module.exports = function(grunt) {
                         src: [  
                             'admin/', 
                             'admin/**', 
-                            '!admin/assets/compass', 
-                            '!admin/assets/compass/**', 
                             '!admin/assets/scss', 
                             '!admin/assets/scss/**',
                             'includes', 
@@ -99,8 +74,6 @@ module.exports = function(grunt) {
                             'public/**', 
                             '!public/assets/compass', 
                             '!public/assets/compass/**', 
-                            '!public/assets/scss', 
-                            '!public/assets/scss/**', 
                             'charitable.php'                                
                         ], 
                         dest: '../../plugins/charitable'
@@ -111,41 +84,11 @@ module.exports = function(grunt) {
             }
         },
  
-        // compass and scss
-        compass: {
-            dist: {
-                options: {
-                    config: 'config.rb',
-                    force: true
-                }
-            }
-        },
-
-        // copy CSS from compass dir to public/admin dirs
-        copy: {
-            dist: {
-                files: [
-                    {
-                        src: [ 'compass/css/charitable-admin-menu.css' ],
-                        dest: '/Users/ericdaams/Dropbox/Development/Projects/WP/wp-content/src/charitable/admin/assets/css/charitable-admin-menu.css'
-                    },
-                    {
-                        src: [ 'compass/css/charitable-admin.css' ],
-                        dest: '/Users/ericdaams/Dropbox/Development/Projects/WP/wp-content/src/charitable/admin/assets/css/charitable-admin.css'
-                    }, 
-                    {
-                        src: [ 'compass/css/charitable.css' ],
-                        dest: '/Users/ericdaams/Dropbox/Development/Projects/WP/wp-content/src/charitable/public/assets/css/charitable.css'
-                    }
-                ]
-            }
-        },
- 
         // javascript linting with jshint
         jshint: {
             options: {
                 jshintrc: '.jshintrc',
-                "force": true
+                force: true
             },
             all: [
                 'Gruntfile.js'
