@@ -133,11 +133,25 @@ final class Charitable_Admin_Settings {
 	 */
 	private function get_fields() {
 		return apply_filters( 'charitable_settings_fields', array(
-			'gateways'		=> array(
-				'gateway'	=> array(
-					'description'		=> __( 'Available Payment Gateways', 'charitable' ),
+			'general'					=> array(
+				'section_dangerous'		=> array(
+					'title'				=> __( 'Dangerous Settings', 'charitable' ), 
+					'type'				=> 'heading', 
+					'priority'			=> 100
+				),
+				'delete_data_on_uninstall'	=> array(
+					'label_for'			=> __( 'Reset Data', 'charitable' ), 
+					'type'				=> 'checkbox', 
+					'help'				=> __( 'DELETE ALL DATA when uninstalling the plugin.', 'charitable' ), 
+					'priority'			=> 105
+				)
+			),
+			'gateways'					=> array(
+				'gateway'				=> array(
+					'label_for'			=> __( 'Available Payment Gateways', 'charitable' ),
 					'type'				=> 'text', 
-					'callback'			=> array( $this, 'render_gateways_table' )
+					'callback'			=> array( $this, 'render_gateways_table' ), 
+					'priority'			=> 5
 				)
 			)
 		) );
@@ -177,28 +191,43 @@ final class Charitable_Admin_Settings {
 			$section_id = 'charitable_settings_' . $section_key;
 			
 			add_settings_section(
-				$section_id, 
+				$section_id,
 				__return_null(), 
 				'__return_false', 
 				$section_id
-			);
-
+			);			
 
 			if ( ! isset( $fields[ $section_key ] ) || empty( $fields[ $section_key ] ) ) {
 				continue;
 			}
 
 			/**
+			 * Sort by priority
+			 */
+			$section_fields = $fields[ $section_key ];
+			uasort( $section_fields, 'charitable_priority_sort' );
+
+			/**
 			 * Add the individual fields within the section.
 			 */
-			foreach ( $fields[ $section_key ] as $key => $field ) {				
-				$callback 		= isset( $field[ 'callback' ] ) 	? $field[ 'callback' ] 		: array( $this, 'render_field' );
-				$description 	= isset( $field[ 'description' ] ) 	? $field[ 'description' ]	: ucfirst( $key );
+			foreach ( $section_fields as $key => $field ) {				
+
+				$callback 		= isset( $field[ 'callback' ] ) ? $field[ 'callback' ] : array( $this, 'render_field' );
 				$field[ 'key' ] = $key;
 
+				if ( isset( $field[ 'label_for' ] ) ) {
+					$label = $field[ 'label_for' ];
+				}
+				elseif ( isset( $field[ 'title' ] ) ) {
+					$label = $field[ 'title' ];
+				}
+				else {
+					$label = ucfirst( $key );
+				}			
+
 				add_settings_field( 
-					'charitable_settings[' . $key . ']', 
-					$description, 
+					'charitable_settings['. $key .']', 
+					$label, 
 					$callback, 
 					$section_id, 
 					$section_id, 
@@ -211,12 +240,24 @@ final class Charitable_Admin_Settings {
 	/**
 	 * Sanitize submitted settings before saving to the database. 
 	 *
+	 * @param 	array 	$values
 	 * @return 	string
 	 * @access  public
 	 * @since 	1.0.0
 	 */
-	public function sanitize_settings() {
-	
+	public function sanitize_settings( $values ) {
+		foreach ( $this->get_fields() as $section ) {
+			foreach ( $section as $key => $field ) {
+				/**
+				 * Checkboxes are either 1 or 0
+				 */
+				if ( 'checkbox' == $field[ 'type' ] ) {
+					$values[$key] = intval( isset( $values[ $key ] ) && 'on' == $values[ $key ] );
+				}
+			}
+		}
+
+		return $values;
 	}
 
 	/**

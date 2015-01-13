@@ -20,7 +20,7 @@ if ( ! class_exists( 'Charitable_Donation' ) ) :
 class Charitable_Donation {
 	
 	/**
-	 * @var 	Charitable_Donations_DB 
+	 * @var 	Charitable_Campaign_Donations_DB 
 	 * @access 	private
 	 */
 	private $db;
@@ -54,7 +54,7 @@ class Charitable_Donation {
 	 * @since 	1.0.0
 	 */
 	public function __construct( $donation_id ) {
-		$this->db = new Charitable_Donations_DB();
+		$this->db = new Charitable_Campaign_Donations_DB();
 		$this->data = $this->db->get( $donation_id );
 	}
 
@@ -162,8 +162,7 @@ class Charitable_Donation {
 	 * @since 	1.0.0
 	 */
 	public static function insert( array $args ) {
-		$db = new Charitable_Donations_DB();
-		return $db->add( $args );
+		return $this->db->add( $args );
 	}
 }
 

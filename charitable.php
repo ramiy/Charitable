@@ -175,7 +175,7 @@ class Charitable {
 		require_once( $this->includes_path . 'class-charitable-session-donation.php' );
 
 		require_once( $this->includes_path . 'db/abstract-class-charitable-db.php' );
-		require_once( $this->includes_path . 'db/class-charitable-donations-db.php' );
+		require_once( $this->includes_path . 'db/class-charitable-campaign-donations-db.php' );
 
 		/**
 		 * Helpers.
@@ -445,8 +445,8 @@ class Charitable {
 	public function get_db_table( $table_name ) {
 
 		switch ( $table_name ) {
-			case 'donations' :
-				$class_name = 'Charitable_Donations_DB';
+			case 'campaign_donations' :
+				$class_name = 'Charitable_Campaign_Donations_DB';
 				break;
 
 			default: 

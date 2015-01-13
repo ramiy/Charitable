@@ -1,22 +1,22 @@
 <?php 
 /**
- * Charitable Donations DB class. 
+ * Charitable Campaign Donations DB class. 
  *
  * @package     Charitable
- * @subpackage  Classes/Charitable Donations DB
+ * @subpackage  Classes/Charitable Campaign Donations DB
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0.0
 */
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-if ( ! class_exists( 'Charitable_Donations_DB' ) ) : 
+if ( ! class_exists( 'Charitable_Campaign_Donations_DB' ) ) : 
 
 /**
- * Charitable_Donations_DB
+ * Charitable_Campaign_Donations_DB
  *
  * @since 		1.0.0 
  */
-class Charitable_Donations_DB extends Charitable_DB {	
+class Charitable_Campaign_Donations_DB extends Charitable_DB {	
 
 	/**
 	 * The version of our database table
@@ -32,7 +32,7 @@ class Charitable_Donations_DB extends Charitable_DB {
 	 * @access  public
 	 * @since   1.0.0
 	 */
-	public $primary_key = 'id';
+	public $primary_key = 'campaign_donation_id';
 
 	/**
 	 * Set up the database table name. 
@@ -44,7 +44,7 @@ class Charitable_Donations_DB extends Charitable_DB {
 	public function __construct() {
 		global $wpdb;
 
-		$this->table_name = $wpdb->prefix . 'charitable_donations';
+		$this->table_name = $wpdb->prefix . 'charitable_campaign_donations';
 	}
 
 	/**
@@ -56,15 +56,11 @@ class Charitable_Donations_DB extends Charitable_DB {
 	 */
 	public function get_columns() {
 		return array(
-			'id'				=> '%d', 
-			'campaign_id'		=> '%d',
-			'user_id'			=> '%d',
-			'date_created'		=> '%s',
-			'amount'			=> '%f',
-			'gateway'			=> '%s', 
-			'is_preset_amount'	=> '%d', 
-			'notes'				=> '%s', 
-			'status'			=> '%s'
+			'campaign_donation_id'	=> '%d', 
+			'donation_id'			=> '%d',
+			'campaign_id'			=> '%d',
+			'campaign_name'			=> '%s',
+			'amount'				=> '%f'
 		);
 	}
 
@@ -77,37 +73,13 @@ class Charitable_Donations_DB extends Charitable_DB {
 	 */
 	public function get_column_defaults() {
 		return array(
-			'id'				=> '', 
-			'campaign_id'		=> '',
-			'user_id'			=> 0,
-			'date_created'		=> gmdate('Y-m-d h:i:s'),
-			'amount'			=> '',
-			'gateway'			=> '', 
-			'is_preset_amount'	=> 0, 
-			'notes'				=> '', 
-			'status'			=> 'Pending'
+			'campaign_donation_id'	=> '', 
+			'donation_id'			=> '',
+			'campaign_id'			=> '',
+			'campaign_name'			=> '',
+			'amount'				=> '',			
 		);
 	}
-
-	/**
-	 * Valid donation statuses.
-	 *
-	 * @return 	array
-	 * @access 	public
-	 * @since 	1.0.0
-	 */
-	public function get_statuses() {
-		return array(
-			'Completed', 
-			'Pending', 
-			'Refunded', 
-			'Revoked', 
-			'Failed', 
-			'Abandoned', 
-			'Preapproval', 
-			'Cancelled'
-		);
-	}	
 
 	/** 
 	 * Add a new donation.
@@ -118,12 +90,7 @@ class Charitable_Donations_DB extends Charitable_DB {
 	 * @since 	1.0.0
 	 */
 	public function add( array $data ) {
-		// Validate donation status
-		if ( isset( $data['status'] ) && ! in_array( $data['status'], $this->get_statuses() ) ) {
-			wp_die( __( sprintf( 'Invalid donation status "%s" supplied', $data['status'] ), 'charitable' ) );
-		}
-
-		return parent::insert( $data, 'donation' );
+		return parent::insert( $data, 'campaign_donation' );
 	}
 
 	/**
@@ -136,7 +103,13 @@ class Charitable_Donations_DB extends Charitable_DB {
 	 */
 	public function get_donations_on_campaign( $campaign_id ){
 		global $wpdb;
-		return $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $this->table_name WHERE campaign_id = %d;", $campaign_id ), OBJECT_K);
+		return $wpdb->get_results( 
+			$wpdb->prepare( 
+				"SELECT * 
+				FROM $this->table_name 
+				WHERE campaign_id = %d;", 
+				$campaign_id 
+			), OBJECT_K);
 	}
 
 	/**
@@ -149,7 +122,13 @@ class Charitable_Donations_DB extends Charitable_DB {
 	 */
 	public function get_campaign_donated_amount( $campaign_id ){
 		global $wpdb;
-		return $wpdb->get_var( $wpdb->prepare( "SELECT SUM(amount) FROM $this->table_name WHERE campaign_id = %d;", $campaign_id ) );
+		return $wpdb->get_var( 
+			$wpdb->prepare( 
+				"SELECT SUM(amount) 
+				FROM $this->table_name 
+				WHERE campaign_id = %d;", 
+				$campaign_id 
+			) );
 	}
 
 	/**
@@ -162,7 +141,13 @@ class Charitable_Donations_DB extends Charitable_DB {
 	 */
 	public function get_campaign_donors( $campaign_id ) {
 		global $wpdb;
-		return $wpdb->get_results( $wpdb->prepare( "SELECT DISTINCT user_id FROM $this->table_name WHERE campaign_id = %d;", $campaign_id ), OBJECT_K );
+		return $wpdb->get_results( 
+			$wpdb->prepare( 
+				"SELECT DISTINCT user_id 
+				FROM $this->table_name 
+				WHERE campaign_id = %d;", 
+				$campaign_id
+			), OBJECT_K );
 	} 	 
 
 	 /**
@@ -175,7 +160,13 @@ class Charitable_Donations_DB extends Charitable_DB {
 	  */
 	public function count_campaign_donors( $campaign_id ) {
 		global $wpdb;
-		return $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(user_id) FROM $this->table_name WHERE campaign_id = %d;", $campaign_id ) );
+		return $wpdb->get_var( 
+			$wpdb->prepare( 
+				"SELECT COUNT(user_id) 
+				FROM $this->table_name 
+				WHERE campaign_id = %d;", 
+				$campaign_id 
+			) );
 	}
 
 	/**
@@ -192,17 +183,13 @@ class Charitable_Donations_DB extends Charitable_DB {
 
 		$sql = <<<EOD
 CREATE TABLE {$this->table_name} (
-`id` bigint(20) NOT NULL AUTO_INCREMENT,
+`campaign_donation_id` bigint(20) NOT NULL AUTO_INCREMENT,
+`donation_id` bigint(20) NOT NULL,
 `campaign_id` bigint(20) NOT NULL,
-`user_id` bigint(20) NOT NULL,
-`date_created` datetime NOT NULL,
+`campaign_name` text NOT NULL,
 `amount` float NOT NULL,
-`gateway` varchar(50) NOT NULL,
-`is_preset_amount` tinyint NOT NULL,
-`notes` longtext NOT NULL,
-`status` varchar(20) NOT NULL,
-KEY (id),
-KEY user (user_id),
+KEY (campaign_donation_id),
+KEY donation (donation_id),
 KEY campaign (campaign_id)
 ) CHARACTER SET utf8 COLLATE utf8_general_ci;
 EOD;
