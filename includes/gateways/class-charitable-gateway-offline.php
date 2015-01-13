@@ -23,7 +23,12 @@ class Charitable_Gateway_Offline extends Abstract_Charitable_Gateway {
 	/**
 	 * @var 	string 		The gateway name.
 	 */
-	const NAME = 'Offline Payment';
+	const GATEWAY_NAME = 'Offline Payments';
+
+	/**
+	 * @var 	string 		The gateway ID.
+	 */
+	const GATEWAY_ID = 'offline';
 
 	/**
 	 * Send the donation/donor off to the gateway.  

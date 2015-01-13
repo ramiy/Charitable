@@ -147,9 +147,8 @@ final class Charitable_Admin_Settings {
 				)
 			),
 			'gateways'					=> array(
-				'gateway'				=> array(
+				'gateways'				=> array(
 					'label_for'			=> __( 'Available Payment Gateways', 'charitable' ),
-					'type'				=> 'text', 
 					'callback'			=> array( $this, 'render_gateways_table' ), 
 					'priority'			=> 5
 				)

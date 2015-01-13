@@ -8,27 +8,34 @@
 
 $field 		= charitable_get_admin_settings()->get_current_field();
 $helper		= charitable_get_helper( 'gateway' );
-$gateway 	= charitable_get_option( 'gateway' );
+$gateway 	= charitable_get_option( 'defaultgateway' );
 
-echo 'hi';
-echo count( $helper->get_available_gateways() );
+if ( count( $helper->get_available_gateways() ) ) : 
 ?>
 <table class="charitable-table charitable-gateways-table widefat" cellspacing="0">
 	<thead>
 		<tr>
-			<th><?php _e( 'Default', 'charitable' ) ?></th>
 			<th><?php _e( 'Gateway', 'charitable' ) ?></th>
 			<th><?php _e( 'Gateway ID', 'charitable' ) ?></th>
-			<th colspan="2"><?php _e( 'Status', 'charitable' ) ?></th>
+			<th colspan="2"><?php _e( 'Actions', 'charitable' ) ?></th>
 		</tr>
 	</thead>
 	<tbody>		
-		<?php if ( count( $helper->get_available_gateways() ) > 4 ) : ?>
-
-		<?php else : ?>
+		<?php foreach ( $helper->get_available_gateways() as $gateway ) : ?>
 			<tr>
-				<td colspan="5"><?php _e( 'There are no gateways available', 'charitable' ) ?></td>
+				<td><?php echo $gateway::GATEWAY_NAME ?></td>
+				<td><?php echo $gateway::GATEWAY_ID ?></td>
+				<td>
+					<?php if ( $gateway::is_enabled() ) : ?>
+						<a class="button"><?php _e( 'Disable Gateway', 'charitable' ) ?></a>
+					<?php else : ?>
+						<a class="button"><?php _e( 'Enable Gateway', 'charitable' ) ?></a>
+					<?php endif ?>
+				</td>
 			</tr>
-		<?php endif ?>
+		<?php endforeach ?>
 	</tbody>
 </table>
+<?php else : ?>
+	<?php _e( 'There are no gateways available in your system.', 'charitable' ) ?>
+<?php endif ?>

@@ -148,7 +148,19 @@ class Charitable_Gateway {
 	 * @since 	1.0.0
 	 */
 	public function get_active_gateways() {
-	
+		return charitable_get_option( 'active_gateways' ) ? charitable_get_option( 'active_gateways' ) : array();
+	}
+
+	/**
+	 * Returns whether the passed gateway is active. 
+	 *
+	 * @param 	string 		$gateway_id
+	 * @return 	boolean
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function is_active_gateway( $gateway_id ) {		
+		return array_key_exists( $gateway_id, $this->get_active_gateways() );
 	}
 
 	/**

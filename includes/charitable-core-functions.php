@@ -35,7 +35,7 @@ function get_charitable() {
  */
 function charitable_get_option( $key ) {
 	$settings = get_option( 'charitable_settings' );
-	return isset( $settings[ $key ] ) ? $settings[ $key ] : '';
+	return isset( $settings[ $key ] ) ? $settings[ $key ] : false;
 }
 
 /**
