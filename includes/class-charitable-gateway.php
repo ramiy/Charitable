@@ -30,6 +30,14 @@ class Charitable_Gateway {
 	private $charitable;
 
 	/**
+	 * All available payment gateways. 
+	 *
+	 * @var 	array
+	 * @access  private
+	 */
+	private $gateways;
+
+	/**
 	 * Instantiate the class, but only during the start phase.
 	 *
 	 * @see 	charitable_start hook
@@ -61,16 +69,38 @@ class Charitable_Gateway {
 	 * @since 	1.0.0
 	 */
 	private function __construct( Charitable $charitable ) {
-		$this->charitable = $charitable;
-		
+		$this->charitable = $charitable;	
+
+		$this->attach_hooks_and_filters();
+
 		$this->include_default_gateways();
 
-		$this->attach_hooks_and_filters();		
+		/**
+		 * To register a new gateway, you need to hook into this filter and 
+		 * give Charitable the name of your gateway class.
+		 */
+		$this->gateways = apply_filters( 'charitable_payment_gateways', array(
+			'Charitable_Gateway_Offline', 
+			'Charitable_Gateway_Paypal'
+		) );
 
 		/**
 		 * The main Charitable class will save the one instance of this object.
 		 */
 		$this->charitable->register_object( $this );
+	}
+
+	/**
+	 * Attach callbacks to hooks and filters.  
+	 *
+	 * @return 	void
+	 * @access  private
+	 * @since 	1.0.0
+	 */
+	private function attach_hooks_and_filters() {
+		add_action( 'charitable_after_save_donation', 	array( $this, 'send_donation_to_gateway' ), 10, 2 );
+
+		do_action( 'charitable_gateway_start', $this );		
 	}
 
 	/**
@@ -84,19 +114,6 @@ class Charitable_Gateway {
 		include_once( $this->charitable->get_path( 'includes' ) . 'gateways/abstract-class-charitable-gateway.php' );
 		include_once( $this->charitable->get_path( 'includes' ) . 'gateways/class-charitable-gateway-offline.php' );
 		include_once( $this->charitable->get_path( 'includes' ) . 'gateways/class-charitable-gateway-paypal.php' );
-	}
-
-	/**
-	 * Attach callbacks to hooks and filters.  
-	 *
-	 * @return 	void
-	 * @access  private
-	 * @since 	1.0.0
-	 */
-	private function attach_hooks_and_filters() {
-		add_action( 'charitable_after_save_donation', array( $this, 'send_donation_to_gateway' ), 10, 2 );
-
-		do_action( 'charitable_gateway_start', $this );
 	}
 
 	/**
@@ -120,7 +137,7 @@ class Charitable_Gateway {
 	 * @since 	1.0.0
 	 */
 	public function get_available_gateways() {
-		
+		return $this->gateways;
 	}
 
 	/**
