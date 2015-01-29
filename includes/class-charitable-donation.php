@@ -20,28 +20,58 @@ if ( ! class_exists( 'Charitable_Donation' ) ) :
 class Charitable_Donation {
 	
 	/**
-	 * @var 	Charitable_Campaign_Donations_DB 
+	 * The donation ID. 
+	 *
+	 * @var 	int 
 	 * @access 	private
 	 */
-	private $db;
+	private $donation_id;
 
 	/**
-	 * @var 	Object The database record for this donation.
+	 * The database record for this donation from the Posts table.
+	 * 
+	 * @var 	Object 
+	 * @access  private 
 	 */
-	private $data;
+	private $donation_data;
 
 	/**
-	 * @var 	Charitable_Gateway_Interface The payment gateway used to process the donation.
+	 * The Campaign Donations table.
+	 *
+	 * @var 	Charitable_Campaign_Donations
+	 * @access  private
+	 */
+	private $campaign_donations_db;	
+
+	/**
+	 * The payment gateway used to process the donation.
+	 *
+	 * @var 	Charitable_Gateway_Interface
+	 * @access 	private
 	 */
 	private $gateway;
 
 	/**
-	 * @var 	Charitable_Campaign The campaign that was donated to.
+	 * The campaign donations made as part of this donation. 
+	 *
+	 * @var 	Object
+	 * @access 	private
 	 */
-	private $campaign;
+	private $campaign_donations;
 
 	/**
-	 * @var 	WP_User The WP_user object of the person who donated.
+	 * The campaign that was donated to.
+	 * 
+	 * @var 	Charitable_Campaign 
+	 * @access 	private
+	 */
+	// private $campaign;
+
+	/**
+	 * The WP_user object of the person who donated. 
+	 * 
+	 * @var 	WP_User 
+	 * @access 	private
 	 */
 	private $user;
 
@@ -54,8 +84,49 @@ class Charitable_Donation {
 	 * @since 	1.0.0
 	 */
 	public function __construct( $donation_id ) {
-		$this->db = new Charitable_Campaign_Donations_DB();
-		$this->data = $this->db->get( $donation_id );
+		$this->donation_id 				= $donation_id;
+		$this->donation_data 			= get_post( $donation_id );
+	}
+
+	/**
+	 * Get the donation data.
+	 *
+	 * @return 	array
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function get_campaign_donations_db() {
+		if ( ! isset( $this->campaign_donations_db ) ) {
+			$this->campaign_donations_db = new Charitable_Campaign_Donations_DB();
+		}
+
+		return $this->campaign_donations_db;
+	}
+
+	/**
+	 * The amount donated on this donation.
+	 *
+	 * @return 	float
+	 * @access 	public
+	 * @since 	1.0.0
+	 */
+	public function get_total_donation_amount() {
+		return $this->get_campaign_donations_db()->get_donation_total_amount( $this->donation_id );
+	}
+
+	/**
+	 * Return the campaigns donated to in this donation. 
+	 *
+	 * @return 	array
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function get_campaign_donations() {
+		if ( ! isset( $this->campaign_donations ) ) {
+			$this->campaign_donations = $this->get_campaign_donations_db()->get_donation_records( $this->donation_id );
+		}
+
+		return $this->campaign_donations;
 	}
 
 	/**
@@ -66,18 +137,7 @@ class Charitable_Donation {
 	 * @since 	1.0.0
 	 */
 	public function get_gateway() {
-		return $this->data->gateway;
-	}
-
-	/**
-	 * The amount donated on this donation.
-	 *
-	 * @return 	float
-	 * @access 	public
-	 * @since 	1.0.0
-	 */
-	public function get_amount() {
-		return $this->data->amount;
+		return get_post_meta( $this->donation_id, 'donation_gateway', true );
 	}
 
 	/**
@@ -88,7 +148,7 @@ class Charitable_Donation {
 	 * @since 	1.0.0
 	 */
 	public function get_status() {
-		return $this->data->status;
+		return $this->donation_data->post_status;
 	} 
 
 	/**
@@ -99,18 +159,7 @@ class Charitable_Donation {
 	 * @since 	1.0.0
 	 */
 	public function get_donation_id() {
-		return $this->data->id;
-	}
-
-	/**
-	 * Indicates whether the amount donated was a suggested amount or not.
-	 *
-	 * @return 	bool
-	 * @access 	public
-	 * @since 	1.0.0
-	 */
-	public function get_is_preset_amount() {
-		return $this->data->is_preset_amount;
+		return $this->donation_id;
 	}
 
 	/**
@@ -121,48 +170,226 @@ class Charitable_Donation {
 	 * @since 	1.0.0
 	 */
 	public function get_notes() {
-		return $this->data->notes;
+		return $this->donation_data->post_content;
 	}
 
 	/**
-	 * Returns the user object of the owner of this donation
+	 * Returns the donor who made this donation.
 	 *
-	 * @return 	string
+	 * @return 	WP_User
 	 * @access 	public
 	 * @since 	1.0.0
 	 */
-	public function get_user() {
-		if ( ! isset( $this->user ) ) {
-			$this->user = new WP_User( $this->data->user_id );
+	public function get_donor() {
+		if ( ! isset( $this->donor ) ) {
+			$this->donor = new WP_User( $this->donation_data->post_author );
 		}
 
-		return $this->user;
-	}
-
-	/**
-	 * Returns the campaign that this donation belongs to
-	 *
-	 * @return 	string
-	 * @access 	public
-	 * @since 	1.0.0
-	 */
-	public function get_campaign(){
-		if ( ! isset( $this->campaign ) ) {
-			$this->campaign = new Charitable_Campaign( $this->data->campaign_id );
-		}
+		return $this->donor;
 	}
 	
 	/**
+	 * Return array of valid donations statuses. 
+	 *
+	 * @return 	array
+	 * @access  public
+	 * @static
+	 * @since 	1.0.0
+	 */
+	public static function get_valid_donation_statuses() {
+		return apply_filters( 'charitable_donation_statuses', array( 
+			'charitable-pending' 	=> __( 'Pending', 'charitable' ),
+			'charitable-completed' 	=> __( 'Completed', 'charitable' ),
+			'charitable-failed' 	=> __( 'Failed', 'charitable' ),
+			'charitable-cancelled' 	=> __( 'Cancelled', 'charitable' ),
+			'charitable-refunded' 	=> __( 'Refunded', 'charitable' ),
+		) );
+	}
+
+	/**
+	 * Add a message to the donation log. 
+	 *
+	 * @param 	string 		$message
+	 * @return 	void
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function update_donation_log( $message ) {
+		$log = $this->get_donation_log();
+
+		$log[] = array( 
+			'time'		=> time(), 
+			'message'	=> $message
+		);
+
+		update_post_meta( $this->donation_id, '_donation_log', $log );
+	}
+
+	/**
+	 * Get a donation's log.  
+	 *
+	 * @return 	array
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function get_donation_log() {
+		$log = get_post_meta( $this->donation_id, '_donation_log', true );;
+
+		return is_array( $log ) ? $log : array();
+	}
+
+	/**
 	 * Inserts a new donation. 
 	 *
-	 * @param 	array $args
-	 * @return 	int $donation_id
+	 * @param 	array 	$args
+	 * @return 	int 	$donation_id
 	 * @access 	public
 	 * @static
 	 * @since 	1.0.0
 	 */
 	public static function insert( array $args ) {
-		return $this->db->add( $args );
+		$args = apply_filters( 'charitable_donation_args', $args );
+
+		/**
+		 * Validate the donate data.
+		 */
+		if ( ! isset( $args['campaigns'] ) || ! is_array( $args['campaigns'] ) ) {
+			_doing_it_wrong( 'Charitable_Donation::insert()', 'A donation cannot be inserted without an array of campaigns being donated to.', '1.0.0' );
+			return;
+		}
+
+		if ( ! isset( $args['user_id'] ) && ! isset( $args['user'] ) ) {
+			_doing_it_wrong( 'Charitable_Donation::insert()', 'A donation cannot be inserted without a user id.', '1.0.0' );
+			return;
+		}
+
+		do_action( 'charitable_before_add_donation', $args );
+
+		/**
+		 * If a user ID hasn't been set, we need to get a
+		 * user ID based on the email address supplied. 
+		 */
+		if ( ! isset( $args['user_id'] ) ) {
+
+			$user_data = $args['user'];
+
+			/**
+			 * No email has been supplied either, so 
+			 * we return with an error message. 
+			 */
+			if ( ! isset( $user_data['user_email'] ) ) {
+				/**
+				 * @todo	Add error message.
+				 */
+				return; 
+			}
+
+			/**
+			 * Create the donor and return the user ID.
+			 */			
+			$args['user_id'] = Charitable_Donor::create( $user_data );
+			
+			unset( $args['user'] ); 
+		}
+
+		/**
+		 * Save core donation object in Posts table.
+		 */
+		$donation_args = array(
+			'post_type'		=> 'donation', 
+			'post_author'	=> $args['user_id'], 
+			'post_content'	=> isset( $args['note'] ) 			? $args['note'] 			: '', 
+			'post_status'	=> isset( $args['status'] ) 		? $args['status']			: 'charitable-pending', 
+			'post_parent'	=> isset( $args['donation_plan'] )	? $args['donation_plan']	: 0, 
+			'post_title'	=> sprintf( '% &ndash; %s', __( 'Donation', 'charitable' ), date( 'j F Y H:i a' ) )
+		);
+
+		if ( ! array_key_exists( $donation_args['post_status'], self::get_valid_donation_statuses() ) ) {
+			$donation_args['post_status'] = 'charitable-pending';
+		}
+
+		$donation_id = wp_insert_post( $donation_args );
+
+		if ( ! $donation_id || is_wp_error( $donation_id ) ) {
+			return;
+		}
+
+		do_action( 'charitable_after_add_donation', $donation_id, $args );
+
+		/**
+		 * Save donation meta.
+		 */
+		$gateway = isset( $args['gateway'] ) ? $args['gateway'] : 'manual';
+		add_post_meta( $donation_id, 'donation_gateway', $gateway );
+
+		$donation = new Charitable_Donation( $donation_id );
+		$donation->update_donation_log( __( 'Donation created.', 'charitable' ) );				
+
+		/**
+		 * Save each campaign donation as a separate object. 
+		 */		
+		$campaign_donations_db = new Charitable_Campaign_Donations_DB();
+
+		foreach ( $args['campaigns'] as $campaign_args ) {
+			$campaign_args['donation_id'] = $donation_id;
+			$campaign_donations_db->add( $campaign_args );
+		}		
+
+		/**
+		 * Finally, return the donation ID. 
+		 */
+		return $donation_id;
+	}
+
+	/**
+	 * Update the status of the donation. 
+	 *	
+	 * @uses 	wp_update_post()
+	 * @uses 	wp_transition_post_status()		// Use this for hooks that tap into status transitions.
+	 * @param 	string 		$new_status
+	 * @return 	void
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function update_status( $new_status ) {
+		/**
+		 * Validate new status.
+		 */
+		$valid_statuses = self::get_valid_donation_statuses();
+
+		if ( ! array_key_exists( $new_status, $valid_statuses ) ) {
+			$status = array_search( $new_status, $valid_statuses );
+
+			if ( false === $status ) {
+				_doing_it_wrong( 'Charitable_Donation::update_status()', sprintf( '%s is not a valid donation status.', $new_status ), '1.0.0' );
+				return;
+			}
+
+			$new_status = $status;
+		}
+
+		$old_status = $this->get_status();		
+
+		if ( $old_status == $new_status ) {
+			return;
+		}		
+
+		/**
+		 * This actually updates the post status.
+		 */
+		$this->donation_data->post_status = $new_status;
+		wp_update_post( $this->donation_data );
+
+		/**
+		 * Log the status transition.
+		 */
+		$log_message = sprintf( __( 'Donation status updated from %s to %s', 'charitable' ), $valid_statuses[$old_status], $valid_statuses[$new_status] );
+		$this->update_donation_log( $log_message );
+
+		/**
+		 * Fires off action hooks that you can use to tap into this event.
+		 */
+		wp_transition_post_status( $new_status, $old_status, $this->donation_data );
 	}
 }
 

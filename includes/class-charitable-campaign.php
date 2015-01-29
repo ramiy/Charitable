@@ -31,7 +31,7 @@ class Charitable_Campaign {
 	 */
 	private $end_time;
 
-	/**
+	/**	 
 	 * @var decimal The fundraising goal for the campaign.
 	 */
 	private $goal;
@@ -282,17 +282,13 @@ class Charitable_Campaign {
 			/**
 			 * Try to fetch from cache first.
 			 */
-			$cache_key = $this->get_donations_cache_key();
-			$this->donations = get_transient( $cache_key );
+			$this->donations = get_transient( $this->get_donations_cache_key() );
 
-			if ( $this->donations === false ) {
+			if ( false === $this->donations ) {
 
-				$this->donations = get_charitable()->get_db_table('donations')->get_donations_on_campaign( $this->get_campaign_id() );
-
-				/**
-				 * Cache the results.
-				 */
-				set_transient( $cache_key, $this->donations, 0 ); 
+				$this->donations = get_charitable()->get_db_table('campaign_donations')->get_donations_on_campaign( $this->get_campaign_id() );
+	
+				set_transient( $this->get_donations_cache_key(), $this->donations, 0 ); 
 			}
 		}
 
@@ -312,17 +308,13 @@ class Charitable_Campaign {
 			/**
 			 * Try to fetch from cache first. 
 			 */
-			$cache_key = $this->get_donations_cache_key() . '_amount';
-			$this->donated_amount = get_transient( $cache_key );
+			$this->donated_amount = get_transient( $this->get_donations_cache_key() . '_amount' );
 
 			if ( $this->donated_amount === false ) {
-				$this->donated_amount = get_charitable()->get_db_table('donations')->get_campaign_donated_amount( $this->get_campaign_id() );
-			}
+				$this->donated_amount = get_charitable()->get_db_table('campaign_donations')->get_campaign_donated_amount( $this->get_campaign_id() );
 
-			/**
-			 * Cache the results. 
-			 */
-			set_transient( $cache_key, $this->donated_amount, 0 );
+				set_transient( $this->get_donations_cache_key() . '_amount', $this->donated_amount, 0 );
+			}			
 		}
 
 		return $this->donated_amount;
@@ -340,7 +332,9 @@ class Charitable_Campaign {
 			return '';
 		}
 
-		return $this->get_donated_amount() / $this->get_goal() . '%';
+		$percent = ( $this->get_donated_amount() / $this->get_goal() ) * 100;
+
+		return apply_filters( 'charitable_percent_donated', $percent.'%', $percent, $this );
 	}
 
 	/**
@@ -350,7 +344,7 @@ class Charitable_Campaign {
 	 * @since 	1.0.0
 	 */
 	public function get_donor_count() {
-		return get_charitable()->get_db_table('donations')->count_campaign_donors( $this->get_campaign_id() );
+		return get_charitable()->get_db_table('campaign_donations')->count_campaign_donors( $this->get_campaign_id() );
 	}
 
 	/**
@@ -387,17 +381,6 @@ class Charitable_Campaign {
 	}
 
 	/**
-	 * Renders the button to donate. 
-	 * 
-	 * @return 	void
-	 * @access 	public
-	 * @since 	1.0.0
-	 */
-	public function donate_button() {
-		charitable_template( 'campaign/donate-button.php' );
-	}
-
-	/**
 	 * Returns any suggested amounts, or an empty array if none have been set. 
 	 *
 	 * @return 	array
@@ -412,91 +395,6 @@ class Charitable_Campaign {
 		}
 
 		return explode( '|', $amounts );
-	}
-
-	/**
-	 * Add a donation to this campaign. 
-	 *
-	 * @param 	array 	$values
-	 * @return 	int 	ID of the donation created.
-	 * @access  public
-	 * @since 	1.0.0
-	 */
-	public function  add_donation( $values ) {
-
-		if ( ! isset( $values['amount'] ) ) {
-			/**
-			 * @todo	Add error message.
-			 */
-			return;
-		}
-
-		/**
-		 * If a user ID hasn't been set, we need to get a
-		 * user ID based on the email address supplied. 
-		 */
-		if ( ! isset( $values['user_id'] ) ) {
-
-			/** 
-			 * No user details have been supplied. 
-			 */
-			if ( ! isset( $values['user'] ) ) {
-				/**
-				 * @todo	Add error message.
-				 */
-				return;
-			}
-
-			$user_data = $values['user'];
-
-			/**
-			 * No email has been supplied either, so 
-			 * we return with an error message. 
-			 */
-			if ( ! isset( $user_data['user_email'] ) ) {
-				/**
-				 * @todo	Add error message.
-				 */
-				return; 
-			}
-
-			$user = get_user_by( 'email', $user_data['user_email'] );
-
-			/** 
-			 * This is a new user, so create their account for them. 
-			 */
-			if ( false === $user ) {
-				$user_id = Charitable_Donor::create( $user_data );
-
-				/**
-				 * Something went wrong while creating the user. 
-				 */
-				if ( false === $user_id ) {
-					/**
-					 * @todo	Add error message.
-					 */
-					return; 
-				}
-			}
-			else {
-				/**
-				 * Save this user as a donor. 
-				 */
-				if ( ! $user->has_cap( 'donor' ) ) {
-					$user->add_role( 'donor' );
-				}
-				
-				$user_id = $user->ID;
-			}			
-
-			unset( $values['user'] ); 
-
-			$values['user_id'] = $user_id;
-		}
-
-		$values['campaign_id'] = $this->get_campaign_id();
-
-		return get_charitable()->get_db_table('donations')->add( $values );
 	}
 }
 

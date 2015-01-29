@@ -22,11 +22,11 @@ class Charitable_UnitTest_Factory_For_Campaign extends WP_UnitTest_Factory_For_T
 	public function __construct( $factory = null ) {
 		parent::__construct( $factory );
 		$this->default_generation_definitions = array(
-			'post_status' => 'publish',
-			'post_title' => new \WP_UnitTest_Generator_Sequence( 'Campaign title %s' ),
-			'post_content' => new \WP_UnitTest_Generator_Sequence( 'Campaign content %s' ),
-			'post_excerpt' => new \WP_UnitTest_Generator_Sequence( 'Campaign excerpt %s' ),
-			'post_type' => 'campaign'
+			'post_status' 	=> 'publish',
+			'post_title' 	=> new \WP_UnitTest_Generator_Sequence( 'Campaign title %s' ),
+			'post_content' 	=> new \WP_UnitTest_Generator_Sequence( 'Campaign content %s' ),
+			'post_excerpt' 	=> new \WP_UnitTest_Generator_Sequence( 'Campaign excerpt %s' ),
+			'post_type' 	=> 'campaign'
 		);
 	}
 
@@ -47,6 +47,12 @@ class Charitable_UnitTest_Factory_For_Campaign extends WP_UnitTest_Factory_For_T
 class Charitable_UnitTest_Factory_For_Donation extends WP_UnitTest_Factory_For_Thing {
 	public function __construct( $factory = null ) {
 		parent::__construct( $factory );
+		$this->default_generation_definitions = array(
+			'post_status' 	=> 'charitable-pending',
+			'post_title'	=> sprintf( 'Donation &ndash; %s', date( 'j F Y H:i a' ) ), 
+			'post_content'	=> '',
+			'post_type' 	=> 'donation'
+		);
 	}
 
 	public function create_object( $args ) {
@@ -59,6 +65,6 @@ class Charitable_UnitTest_Factory_For_Donation extends WP_UnitTest_Factory_For_T
 	}
 
 	public function get_object_by_id( $post_id ) {
-		return get_post( $post_id );
+		return new Charitable_Donation( $post_id );
 	}		
 }

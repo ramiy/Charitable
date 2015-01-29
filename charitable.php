@@ -340,8 +340,12 @@ class Charitable {
 				$path = $base . 'public/';
 				break;
 
-			default :
+			case 'directory' : 
 				$path = $base;
+				break;
+
+			default :
+				$path = __FILE__;
 		}
 
 		return $path;
@@ -487,8 +491,10 @@ class Charitable {
 	 * @since 	1.0.0
 	 */
 	public function deactivate() {
-		require_once( $this->get_path( 'includes' ) . 'class-charitable-uninstall.php' );
-		new Charitable_Uninstall( $this );
+		if ( charitable_get_option( 'delete_data_on_uninstall' ) ) {
+			require_once( $this->get_path( 'includes' ) . 'class-charitable-uninstall.php' );
+			new Charitable_Uninstall( $this );
+		}		
 	}
 
 	/**

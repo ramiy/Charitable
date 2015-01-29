@@ -49,6 +49,17 @@ class Charitable_Donor extends WP_User {
 	}
 
 	/**
+	 * Returns whether the user has ever made a donation. 
+	 *
+	 * @return 	boolean
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function is_donor() {
+		return $this->has_cap( 'donor' );
+	}
+
+	/**
 	 * Returns the display name of the user.
 	 *
 	 * @return 	string
@@ -131,46 +142,60 @@ class Charitable_Donor extends WP_User {
 			return false;
 		}
 
+		$user = get_user_by( 'email', $user_data['user_email'] );
+
 		/**
-		 * Set their password, if provided. 
+		 * This is a completely new user. 
 		 */
-		if ( isset( $submitted['user_pass'] ) ) {
-			$user_data['user_pass'] = $submitted['user_pass'];
-			unset( $user_data['user_pass'] );
+		if ( false === $user ) {
+			/**
+			 * Set their password, if provided. 
+			 */
+			if ( isset( $submitted['user_pass'] ) ) {
+				$user_data['user_pass'] = $submitted['user_pass'];
+				unset( $user_data['user_pass'] );
+			}
+			else {
+				$user_data['user_pass'] = NULL;
+			}		
+
+			/**
+			 * Set their username, if provided. Otherwise it's set to their email address.
+			 */
+			if ( isset( $submitted['user_login'] ) ) {
+				$user_data['user_login'] = $submitted['user_login'];
+				unset( $user_data['username'] );		
+			}
+			else {
+				$user_data['user_login'] = $user_data['user_email'];
+			}
+
+			/**
+			 * Set their first name and last name, if provided.
+			 */
+			if ( isset( $submitted['first_name'] ) ) {
+				$user_data['first_name'] = $submitted['first_name'];
+				unset( $submitted['first_name'] );
+			}
+
+			if ( isset( $submitted['last_name'] ) ) {
+				$user_data['last_name'] = $submitted['last_name'];
+				unset( $submitted['last_name'] );
+			}
+
+			$user_id = wp_insert_user( $user_data );
+
+			if ( is_wp_error( $user_id ) ) {
+
+			}
 		}
+		/**
+		 * The user already exists, so just make them a donor.
+		 */
 		else {
-			$user_data['user_pass'] = NULL;
-		}
-
-		/**
-		 * Set their username, if provided. Otherwise it's set to their email address.
-		 */
-		if ( isset( $submitted['user_login'] ) ) {
-			$user_data['user_login'] = $submitted['user_login'];
-			unset( $user_data['username'] );		
-		}
-		else {
-			$user_data['user_login'] = $user_data['user_email'];
-		}
-
-		/**
-		 * Set their first name and last name, if provided.
-		 */
-		if ( isset( $submitted['first_name'] ) ) {
-			$user_data['first_name'] = $submitted['first_name'];
-			unset( $submitted['first_name'] );
-		}
-
-		if ( isset( $submitted['last_name'] ) ) {
-			$user_data['last_name'] = $submitted['last_name'];
-			unset( $submitted['last_name'] );
-		}
-
-		$user_id = wp_insert_user( $user_data );
-
-		if ( is_wp_error( $user_id ) ) {
-
-		}
+			self::create_from_user( $user );
+			$user_id = $user->ID;
+		}		
 
 		/**
 		 * Finally, loop over all the other provided values and save them as user meta fields. 
@@ -180,6 +205,21 @@ class Charitable_Donor extends WP_User {
 		}
 
 		return $user_id;
+	}
+
+	/**
+	 * Make an existing user a donor. 
+	 *
+	 * @param 	WP_User 			$user
+	 * @return 	void
+	 * @static
+	 * @access  public	 
+	 * @since 	1.0.0
+	 */
+	public static function create_from_user( WP_User $user ) {				
+		if ( ! $user->has_cap( 'donor' ) ) {
+			$user->add_role( 'donor' );
+		}
 	}
 }
 

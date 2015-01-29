@@ -364,10 +364,6 @@ class Charitable_Locations {
 
 		$address_fields = array_map( 'trim', $address_fields );
 
-		// echo '<pre>'; print_r( $address_fields );
-
-		// die;
-
 		// Get all formats
 		$formats 		= $this->get_address_formats();
 

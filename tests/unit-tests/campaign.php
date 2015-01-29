@@ -17,7 +17,9 @@ class Test_Charitable_Campaign extends Charitable_UnitTestCase {
 		 * Create a campaign
 		 */
 
-		$campaign_id = $this->factory->campaign->create();
+		$campaign_id = $this->factory->campaign->create( array(
+			'post_title'	=> 'Test Campaign'
+		) );
 
 		$this->end_time = strtotime( '+300 days');
 
@@ -25,7 +27,6 @@ class Test_Charitable_Campaign extends Charitable_UnitTestCase {
 			'_campaign_goal' 						=> 40000.00,
 			'_campaign_end_date_enabled' 			=> 1,
 			'_campaign_end_date' 					=> date( 'Y-m-d H:i:s', $this->end_time ),
-			'_campaign_custom_donations_enabled' 	=> 1,
 			'_campaign_suggested_donations' 		=> '5|20|50|100|250'
 		);
 
@@ -46,34 +47,42 @@ class Test_Charitable_Campaign extends Charitable_UnitTestCase {
 
 		$donations_data = array(
 			array( 
-				'user_id' => $user_id_1, 
-				'amount' => 10, 
-				'gateway' => 'paypal', 
-				'is_preset_amount' => false, 
+				'user_id' 			=> $user_id_1, 
+				'amount' 			=> 10, 
+				'gateway' 			=> 'paypal', 
+				'note'				=> 'This is a note'
 			),
 			array( 
-				'user_id' => $user_id_2, 
-				'amount' => 20, 
-				'gateway' => 'paypal', 
-				'is_preset_amount' => true,
+				'user_id' 			=> $user_id_2, 
+				'amount' 			=> 20, 
+				'gateway' 			=> 'paypal', 
+				'note'				=> ''
 			),
 			array( 
-				'user_id' => $user_id_3, 
-				'amount' => 30, 
-				'gateway' => 'manual', 
-				'is_preset_amount' => false
+				'user_id' 			=> $user_id_3, 
+				'amount' 			=> 30, 
+				'gateway' 			=> 'manual', 
+				'note'				=> ''
 			)
 		);
 
 		foreach ( $donations_data as $donation ) {
 
-			$donation_id = $this->factory->donation->create( array( 
-				'campaign_id' 		=> $campaign_id, 
-				'user_id'			=> $donation['user_id'], 
-				'amount'			=> $donation['amount'], 
-				'gateway'			=> $donation['gateway'], 
-				'is_preset_amount' 	=> $donation['is_preset_amount']
-			) );
+			$donation_id = $this->factory->donation->create(
+				 array( 
+					'user_id'			=> $donation['user_id'], 
+					'campaigns'			=> array(
+						array( 
+							'campaign_id' 	=> $campaign_id,
+							'campaign_name'	=> 'Test Campaign', 
+							'amount'		=> $donation['amount']
+						)
+					), 
+					'status'			=> 'charitable-completed', 
+					'gateway'			=> $donation['gateway'],
+					'note'				=> $donation['note']
+				) 
+			);
 
 			$this->donations[$donation_id] = new Charitable_Donation( $donation_id );
 		}
@@ -86,8 +95,7 @@ class Test_Charitable_Campaign extends Charitable_UnitTestCase {
 	function test_get() {
 		$this->assertEquals( 40000.00, $this->campaign->get('campaign_goal') );
 		$this->assertEquals( 1, $this->campaign->get('campaign_end_date_enabled') );
-		$this->assertEquals( date( 'Y-m-d H:i:s', $this->end_time ), $this->campaign->get('campaign_end_date') );
-		$this->assertEquals( 1, $this->campaign->get('campaign_custom_donations_enabled') );		
+		$this->assertEquals( date( 'Y-m-d H:i:s', $this->end_time ), $this->campaign->get('campaign_end_date') );		
 	}
 
 	function test_get_end_time() {
@@ -111,6 +119,10 @@ class Test_Charitable_Campaign extends Charitable_UnitTestCase {
 		$this->assertEquals( 40000.00, $this->campaign->get_goal() );
 	}
 
+	function test_has_goal() {
+		$this->assertTrue( $this->campaign->has_goal() );
+	}
+
 	function test_get_monetary_goal() {
 		$this->assertEquals( '&#36;40,000.00', $this->campaign->get_monetary_goal(), 'Test monetary goal.' );
 	}
@@ -123,6 +135,10 @@ class Test_Charitable_Campaign extends Charitable_UnitTestCase {
 		$this->assertEquals( 60.00, $this->campaign->get_donated_amount() );
 	}
 
+	function test_get_percent_donated() {
+		$this->assertEquals( '0.15%', $this->campaign->get_percent_donated() );
+	}
+
 	function test_flush_donations_cache() {
 		// Test count of donations pre-cache
 		$this->assertCount( 3, $this->campaign->get_donations() );
@@ -130,12 +146,17 @@ class Test_Charitable_Campaign extends Charitable_UnitTestCase {
 		// Create a new donation
 		$user_id_4 = $this->factory->user->create( array( 'display_name' => 'Abraham Lincoln' ) );
 		$donation_id = $this->factory->donation->create( array( 
-			'campaign_id' 		=> $this->campaign->get_campaign_id(), 
+
 			'user_id'			=> $user_id_4, 
-			'amount'			=> 100, 
+			'campaigns'			=> array(
+				array(
+					'campaign_id' 		=> $this->campaign->get_campaign_id(), 
+					'campaign_name'		=> 'Test Campaign',
+					'amount'			=> 100
+				)				
+			),		
 			'gateway'			=> 'paypal', 
-			'is_preset_amount' 	=> false, 
-			'status'			=> 'Completed'
+			'status'			=> 'charitable-completed'
 		) );
 
 		// Test count of donations again, before flush caching
@@ -162,44 +183,5 @@ class Test_Charitable_Campaign extends Charitable_UnitTestCase {
 		foreach ( array( 5, 20, 50, 100, 250 ) as $suggested_donation ) {
 			$this->assertContains( $suggested_donation, $this->campaign->get_suggested_amounts() );
 		}
-	}
-
-	function test_add_donation() {
-		$values = array(
-			'amount'			=> '500', 
-			'is_preset_amount'	=> 0, 
-			'gateway'			=> 'manual',
-			'user'				=> array(
-				'first_name'	=> 'Helen', 
-				'last_name'		=> 'Hunt', 
-				'email'			=> 'hhunt@example.com',
-				'address'		=> '23 Hunt Avenue', 
-				'address_2'		=> '', 
-				'city'			=> 'Helenton', 
-				'state'			=> 'Indiana', 
-				'postcode'		=> '92323', 
-				'country'		=> 'US', 
-				'phone'			=> '2323232323'
-			)
-		);
-
-    // [donation-amount] => custom
-    // [custom-donation-amount] => 500
-    // [_charitable_donation_nonce] => 26fdb2d868
-    // [_wp_http_referer] => /?donate=1
-    // [campaign_id] => 25
-    // [charitable_action] => make-donation
-    // [first_name] => Helen
-    // [last_name] => Hunt
-    // [email] => hhunt@example.com
-    // [address] => 23 Hunt Avenue
-    // [address_2] => 
-    // [city] => Helenton
-    // [state] => Indiana
-    // [postcode] => 92932
-    // [country] => US
-    // [phone] => 232323332
-
-		$this->assertEquals( 1, $this->campaign->add_donation( $values ) );
 	}
 }

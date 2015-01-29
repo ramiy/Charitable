@@ -81,10 +81,9 @@ final class Charitable_Admin_Settings {
 		$this->admin_menu_capability 	= apply_filters( 'charitable_admin_menu_capability', 'manage_options' );
 		$this->admin_menu_parent_page 	= 'charitable';
 
-		add_action( 'admin_menu', 	array( $this, 'add_menu' ) );
-		add_action( 'admin_init', 	array( $this, 'register_settings' ) );
-
-		do_action( 'charitable_admin_settings_start', $this );
+		add_action( 'admin_menu', 							array( $this, 'add_menu' ) );
+		add_action( 'admin_init', 							array( $this, 'register_settings' ) );		
+		do_action( 'charitable_admin_settings_start', 		$this );
 	}
 
 	/**

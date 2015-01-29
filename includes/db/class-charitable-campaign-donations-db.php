@@ -82,7 +82,7 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 	}
 
 	/** 
-	 * Add a new donation.
+	 * Add a new campaign donation.
 	 * 
 	 * @param 	array 	$data
 	 * @return 	int 
@@ -94,7 +94,46 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 	}
 
 	/**
-	 * Get an object of all donations on a campaign
+	 * Get an object of all campaign donations associated with a single donation. 
+	 *
+	 * @global 	wpdb		$wpdb
+	 * @return 	Object
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function get_donation_records( $donation_id ) {
+		global $wpdb;
+		return $wpdb->get_results( 
+			$wpdb->prepare( 
+				"SELECT * 
+				FROM $this->table_name 
+				WHERE donation_id = %d;", 
+				$donation_id 
+			), OBJECT_K);
+	}
+
+	/**
+	 * Get the total amount donated in a single donation. 
+	 *
+	 * @global 	$wpdb
+	 * @param 	int 		$donation_id
+	 * @return 	float
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function get_donation_total_amount( $donation_id ) {
+		global $wpdb;
+		return $wpdb->get_var( 
+			$wpdb->prepare( 
+				"SELECT SUM(amount) 
+				FROM $this->table_name 
+				WHERE donation_id = %d;", 
+				$donation_id 
+			) );
+	}
+
+	/**
+	 * Get an object of all donations on a campaign.
 	 *
 	 * @global 	wpdb 	$wpdb
 	 * @param 	int 	$campaign_id
@@ -113,7 +152,7 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 	}
 
 	/**
-	 * Get total amount donated to a campaign
+	 * Get total amount donated to a campaign.
 	 *
 	 * @global 	wpdb 	$wpdb
 	 * @param 	int 	$campaign_id
@@ -143,9 +182,11 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 		global $wpdb;
 		return $wpdb->get_results( 
 			$wpdb->prepare( 
-				"SELECT DISTINCT user_id 
-				FROM $this->table_name 
-				WHERE campaign_id = %d;", 
+				"SELECT DISTINCT p.post_author as donor_id
+				FROM $this->table_name c
+				INNER JOIN {$wpdb->prefix}posts p
+				ON c.donation_id = p.ID
+				WHERE c.campaign_id = %d;", 
 				$campaign_id
 			), OBJECT_K );
 	} 	 
@@ -162,9 +203,11 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 		global $wpdb;
 		return $wpdb->get_var( 
 			$wpdb->prepare( 
-				"SELECT COUNT(user_id) 
-				FROM $this->table_name 
-				WHERE campaign_id = %d;", 
+				"SELECT COUNT(DISTINCT p.post_author) 
+				FROM $this->table_name c
+				INNER JOIN {$wpdb->prefix}posts p
+				ON c.donation_id = p.ID
+				WHERE c.campaign_id = %d;", 
 				$campaign_id 
 			) );
 	}
@@ -182,13 +225,13 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 
 		$sql = <<<EOD
-CREATE TABLE {$this->table_name} (
+CREATE TABLE IF NOT EXISTS {$this->table_name} (
 `campaign_donation_id` bigint(20) NOT NULL AUTO_INCREMENT,
 `donation_id` bigint(20) NOT NULL,
 `campaign_id` bigint(20) NOT NULL,
 `campaign_name` text NOT NULL,
 `amount` float NOT NULL,
-KEY (campaign_donation_id),
+PRIMARY KEY (campaign_donation_id),
 KEY donation (donation_id),
 KEY campaign (campaign_id)
 ) CHARACTER SET utf8 COLLATE utf8_general_ci;
@@ -197,7 +240,7 @@ EOD;
 		dbDelta( $sql );
 
 		update_option( $this->table_name . '_db_version', $this->version );
-	}	 
+	}
 }	
 
 endif;
