@@ -213,6 +213,50 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 	}
 
 	/**
+	 * Return all donations made by a donor. 
+	 *
+	 * @global	wpdb	$wpdb
+	 * @param 	int 	$donor_id
+	 * @return 	object
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function get_donations_by_donor( $donor_id ) {
+		global $wpdb;
+		return $wpdb->get_results(
+			$wpdb->prepare( 
+				"SELECT c.campaign_donation_id, c.donation_id, c.campaign_id, c.campaign_name, c.amount
+				FROM $this->table_name c
+				INNER JOIN {$wpdb->prefix}posts p
+				ON c.donation_id = p.ID
+				AND p.post_author = %d;",
+				$donor_id
+			), OBJECT_K );
+	}
+
+	/**
+	 * Return total amount donated by a donor. 
+	 *
+	 * @global	wpdb	$wpdb
+	 * @param 	int 	$donor_id
+	 * @return 	int
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function get_total_donated_by_donor( $donor_id ) {
+		global $wpdb;
+		return $wpdb->get_var(
+			$wpdb->prepare( 
+				"SELECT SUM(c.amount)
+				FROM $this->table_name c
+				INNER JOIN {$wpdb->prefix}posts p
+				ON c.donation_id = p.ID
+				AND p.post_author = %d;",
+				$donor_id
+			) );
+	}
+
+	/**
 	 * Create the table.
 	 *
 	 * @global 	$wpdb

@@ -293,8 +293,7 @@ class Charitable_Locations {
 	 * @since 	1.0.0
 	 */
 	public function get_base_country() {
-		$default = esc_attr( get_option( 'charitable_default_country' ) );
-		$country = ( ( $pos = strrpos( $default, ':' ) ) === false ) ? $default : substr( $default, 0, $pos );
+		$country = esc_attr( get_option( 'charitable_default_country' ) );
 
 		return apply_filters( 'charitable_countries_base_country', $country );
 	}
@@ -366,12 +365,13 @@ class Charitable_Locations {
 
 		// Get all formats
 		$formats 		= $this->get_address_formats();
+		$countries 		= $this->get_countries();
 
 		// Get format for the address' country
 		$format			= ( $address_fields['country'] && isset( $formats[ $address_fields['country'] ] ) ) ? $formats[ $address_fields['country'] ] : $formats['default'];
 
 		// Handle full country name
-		$full_country 	= ( isset( $this->countries[ $address_fields['country'] ] ) ) ? $this->countries[ $address_fields['country'] ] : $address_fields['country'];
+		$full_country 	= ( isset( $countries[ $address_fields['country'] ] ) ) ? $countries[ $address_fields['country'] ] : $address_fields['country'];
 
 		// Country is not needed if the same as base
 		if ( $address_fields['country'] == $this->get_base_country() && ! apply_filters( 'charitable_formatted_address_force_country_display', false ) ) {
@@ -406,32 +406,19 @@ class Charitable_Locations {
 			'{country_upper}'    => strtoupper( $full_country ),
 		), $address_fields ) );
 
-		// echo '<pre>'; 
-		// print_r( $replace );
-
-		// echo $format;
-
 		$formatted_address = str_replace( array_keys( $replace ), $replace, $format );
-
-		// echo '1: ' . $formatted_address . PHP_EOL;
 
 		// Clean up white space
 		$formatted_address = preg_replace( '/  +/', ' ', trim( $formatted_address ) );
-		// echo '2: ' . $formatted_address . PHP_EOL;
 		$formatted_address = preg_replace( '/\n\n+/', "\n", $formatted_address );
-		// echo '3: ' . $formatted_address . PHP_EOL;
-
+		
 		// Break newlines apart and remove empty lines/trim commas and white space
-		$formatted_address = array_filter( array_map( array( $this, 'trim_formatted_address_line' ), explode( "\n", $formatted_address ) ) );
-
-		// print_r( $formatted_address );
+		$formatted_address = explode( "\n", $formatted_address );
+		$formatted_address = array_map( array( $this, 'trim_formatted_address_line' ), $formatted_address );
+		$formatted_address = array_filter( $formatted_address );
 
 		// Add html breaks
 		$formatted_address = implode( '<br/>', $formatted_address );
-
-		// echo $formatted_address . PHP_EOL;
-
-		// die;
 
 		// We're done!
 		return $formatted_address;
@@ -449,7 +436,5 @@ class Charitable_Locations {
 		return trim( $line, ", " );
 	}
 }
-
-
 
 endif; // End class_exists check

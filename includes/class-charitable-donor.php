@@ -221,6 +221,28 @@ class Charitable_Donor extends WP_User {
 			$user->add_role( 'donor' );
 		}
 	}
+
+	/**
+	 * Return all donations made by donor. 
+	 *
+	 * @return 	Object
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function get_donations() {
+		return get_charitable()->get_db_table( 'campaign_donations' )->get_donations_by_donor( $this->ID );
+	}
+
+	/**
+	 * Return the total amount donated by the donor.
+	 *
+	 * @return 	float
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function get_total_donated() {
+		return (float) get_charitable()->get_db_table( 'campaign_donations' )->get_total_donated_by_donor( $this->ID );
+	}
 }
 
 endif; // End class_exists check

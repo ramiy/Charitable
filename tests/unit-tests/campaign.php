@@ -21,7 +21,7 @@ class Test_Charitable_Campaign extends Charitable_UnitTestCase {
 			'post_title'	=> 'Test Campaign'
 		) );
 
-		$this->end_time = strtotime( '+300 days');
+		$this->end_time = strtotime( '+7201 hours'); // 300 days and 1 hour
 
 		$meta = array(
 			'_campaign_goal' 						=> 40000.00,
@@ -145,8 +145,7 @@ class Test_Charitable_Campaign extends Charitable_UnitTestCase {
 
 		// Create a new donation
 		$user_id_4 = $this->factory->user->create( array( 'display_name' => 'Abraham Lincoln' ) );
-		$donation_id = $this->factory->donation->create( array( 
-
+		$donation_id = $this->factory->donation->create( array(
 			'user_id'			=> $user_id_4, 
 			'campaigns'			=> array(
 				array(
