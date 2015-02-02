@@ -14,20 +14,6 @@ $user 			= wp_get_current_user();
 if ( ! $form ) {
 	return;
 }
-
-/**
- * If the user is not logged in, show a login form at the top of the page. 
- */
-if ( 0 === $user->ID ) :
-
-	/**
-	 * Add a login form to the top of the page.
-	 *
-	 * @hook 	charitable_login_form
-	 */
-	do_action( 'charitable_login_form', $form ); 
-
-endif 
 ?>
 <form method="post" id="charitable-donation-form" class="charitable-form">
 	<?php 

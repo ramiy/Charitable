@@ -16,7 +16,21 @@ if ( empty( $user_fields ) ) {
 }
 ?>
 <h3 class="charitable-form-header"><?php _e( 'Your Details', 'charitable' ) ?></h3>
+<?php
+/**
+ * If the user is not logged in, show a login form at the top of the page. 
+ */
+if ( 0 === $user->ID ) :
 
+	/**
+	 * Add a login form to the top of the page.
+	 *
+	 * @hook 	charitable_login_form
+	 */
+	do_action( 'charitable_login_form', $form ); 
+
+endif 
+?>
 <div class="charitable-user-details">
 
 	<?php if ( $user->ID ) : 

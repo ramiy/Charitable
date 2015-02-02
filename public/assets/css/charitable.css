@@ -1,43 +1,118 @@
 /* Campaign summary widget */
-.campaign-summary { *zoom: 1; padding: 0 1em; margin-bottom: 1em; font-size: 1.1em; background-color: #e6e6e6; }
-.campaign-summary:before, .campaign-summary:after { content: " "; display: table; }
-.campaign-summary:after { clear: both; }
-.campaign-summary .campaign-summary-item { float: left; width: 50%; padding: 1em 0; border-bottom: 1px solid #fff; }
-.campaign-summary .campaign-raised .amount, .campaign-summary .campaign-figures .amount { display: block; font-size: 1.5em; font-weight: bolder; }
-.campaign-summary .campaign-donors { clear: left; }
-.campaign-summary .donors-count, .campaign-summary .time-left { font-weight: bolder; }
-.campaign-summary .campaign-donation { float: left; width: 100%; padding: 1em 0; text-align: center; }
-.campaign-summary .campaign-donation .button { display: inline-block; }
+.campaign-summary {
+  *zoom: 1;
+  padding: 0 1em;
+  margin-bottom: 1em;
+  font-size: 1.1em;
+  background-color: #e6e6e6; }
+  .campaign-summary:before, .campaign-summary:after {
+    content: " ";
+    display: table; }
+  .campaign-summary:after {
+    clear: both; }
+  .campaign-summary .campaign-summary-item {
+    float: left;
+    width: 50%;
+    padding: 1em 0;
+    border-bottom: 1px solid #fff; }
+  .campaign-summary .campaign-raised .amount,
+  .campaign-summary .campaign-figures .amount {
+    display: block;
+    font-size: 1.5em;
+    font-weight: bolder; }
+  .campaign-summary .campaign-donors {
+    clear: left; }
+  .campaign-summary .donors-count,
+  .campaign-summary .time-left {
+    font-weight: bolder; }
+  .campaign-summary .campaign-donation {
+    float: left;
+    width: 100%;
+    padding: 1em 0;
+    text-align: center; }
+    .campaign-summary .campaign-donation .button {
+      display: inline-block; }
 
-.campaign-summary.campaign-has-no-goal .campaign-summary-item { width: 100%; text-align: center; }
+.campaign-summary.campaign-is-endless .campaign-summary-item,
+.campaign-summary.campaign-has-no-goal .campaign-summary-item {
+  width: 100%;
+  text-align: center; }
 
 /* Donation form */
-#login-prompt { margin-bottom: 4px; }
+#login-prompt {
+  margin-bottom: 4px; }
 
-.charitable-login-form { padding: 1em; margin-bottom: 1em; border: 1px solid #ebebeb; }
-.charitable-login-form label { display: block; margin-bottom: 4px; }
-.charitable-login-form input, .charitable-login-form select, .charitable-login-form textarea, .charitable-login-form button { width: 100%; }
-.charitable-login-form input[type=radio], .charitable-login-form input[type=checkbox] { width: auto; }
-.charitable-login-form > p, .charitable-login-form .login-username, .charitable-login-form .login-password, .charitable-login-form .login-remember { margin-bottom: 1em; padding-bottom: 0; }
-.charitable-login-form .login-submit { margin-bottom: 0; padding-bottom: 0; }
+.charitable-login-form {
+  padding: 1em;
+  margin-bottom: 1em;
+  border: 1px solid #ebebeb; }
+  .charitable-login-form label {
+    display: block;
+    margin-bottom: 4px; }
+  .charitable-login-form input, .charitable-login-form select, .charitable-login-form textarea, .charitable-login-form button {
+    width: 100%; }
+  .charitable-login-form input[type=radio],
+  .charitable-login-form input[type=checkbox] {
+    width: auto; }
+  .charitable-login-form > p,
+  .charitable-login-form .login-username,
+  .charitable-login-form .login-password,
+  .charitable-login-form .login-remember {
+    margin-bottom: 1em;
+    padding-bottom: 0; }
+  .charitable-login-form .login-submit {
+    margin-bottom: 0;
+    padding-bottom: 0; }
 
-.charitable-form-field { margin-bottom: 1em; }
-.charitable-form-field label { display: block; margin-bottom: 4px; }
-.charitable-form-field input, .charitable-form-field select, .charitable-form-field textarea, .charitable-form-field button { width: 100%; }
-.charitable-form-field input[type=radio], .charitable-form-field input[type=checkbox] { width: auto; }
+.charitable-form-field {
+  margin-bottom: 1em; }
+  .charitable-form-field label {
+    display: block;
+    margin-bottom: 4px; }
+  .charitable-form-field input, .charitable-form-field select, .charitable-form-field textarea, .charitable-form-field button {
+    width: 100%; }
+  .charitable-form-field input[type=radio],
+  .charitable-form-field input[type=checkbox] {
+    width: auto; }
 
-.donation-amounts { margin: 0 0 1em; padding: 0; list-style: none; }
-.donation-amounts .donation-amount { display: inline-block; margin: 0 2px 4px 0; padding: 1em; border: 1px solid #ddd; background-color: #ebebeb; cursor: pointer; }
-.donation-amounts .donation-amount.selected { background-color: #fff; }
+.donation-amounts {
+  margin: 0 0 1em;
+  padding: 0;
+  list-style: none; }
+  .donation-amounts .donation-amount {
+    display: inline-block;
+    margin: 0 2px 4px 0;
+    padding: 1em;
+    border: 1px solid #ddd;
+    background-color: #ebebeb;
+    cursor: pointer; }
+  .donation-amounts .donation-amount.selected {
+    background-color: #fff; }
 
-#charitable-donation-form { padding-top: 1em; }
+#charitable-donation-form {
+  padding-top: 1em; }
 
-.charitable-hidden { display: none !important; visibility: hidden; }
+.charitable-hidden {
+  display: none !important;
+  visibility: hidden; }
 
-.charitable-user-details { padding: 1em; margin-bottom: 2em; border: 1px solid #ddd; }
-.charitable-user-details .donor-address, .charitable-user-details .donor-contact-details { margin-bottom: 4px; }
-.charitable-user-details .charitable-login-details { padding-top: 1em; }
+.charitable-user-details {
+  padding: 1em;
+  margin-bottom: 2em;
+  border: 1px solid #ddd; }
+  .charitable-user-details .donor-address,
+  .charitable-user-details .donor-contact-details {
+    margin-bottom: 4px; }
+  .charitable-user-details .charitable-login-details {
+    padding-top: 1em; }
 
-.charitable-change-user-details { margin-bottom: 0; padding-bottom: 0; }
+.charitable-change-user-details {
+  margin-bottom: 0;
+  padding-bottom: 0; }
 
-#charitable-user-fields { padding-top: 1em; margin-top: 1em; border-top: 1px solid #ddd; }
+#charitable-user-fields {
+  padding-top: 1em;
+  margin-top: 1em;
+  border-top: 1px solid #ddd; }
+
+/*# sourceMappingURL=charitable.css.map */

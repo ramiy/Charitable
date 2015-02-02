@@ -8,7 +8,14 @@
 
 $campaign 			= get_charitable()->get_request()->get_current_campaign();
 $currency_helper 	= get_charitable()->get_currency_helper();
-$has_goal 			= $campaign->has_goal();
+$classes 			= array( 'campaign-summary' ); 
+$classes[]			= $campaign->has_goal() 	? 'campaign-has-goal' 	: 'campaign-has-no-goal';
+$classes[] 			= $campaign->is_endless() 	? 'campaign-is-endless' : 'campaign-has-end-date';
+
+/**
+ * @hook charitable_campaign_summary_class
+ */
+apply_filters( 'charitable_campaign_summary_class', $classes, $campaign );
 
 /**
  * @hook charitable_campaign_summary_before
@@ -16,7 +23,7 @@ $has_goal 			= $campaign->has_goal();
 do_action('charitable_campaign_summary_before');
 
 ?>
-<div class="campaign-summary <?php echo $has_goal ? 'campaign-has-goal' : 'campaign-has-no-goal' ?>">
+<div class="<?php echo implode( ' ', $classes ) ?>">
 	<?php if ( $campaign->has_goal() ) : ?>
 		<div class="campaign-raised campaign-summary-item"><?php 
 			printf(
@@ -45,11 +52,14 @@ do_action('charitable_campaign_summary_before');
 			'<span class="donors-count">' . $campaign->get_donor_count() . '</span>'
 		)
 	?></div>
-	<div class="campaign-time-left campaign-summary-item"><?php 
-		echo $campaign->get_time_left();
-	?></div>
+	<?php if ( ! $campaign->is_endless() ) : ?>
+		<div class="campaign-time-left campaign-summary-item"><?php 
+			echo $campaign->get_time_left();
+		?></div>
 	<?php 
-		charitable_template_part( 'campaign/donation-button' );
+	endif;
+	
+	charitable_template_part( 'campaign/donation-button' );
 	?>
 </div>
 <?php

@@ -109,7 +109,7 @@ final class Charitable_Public {
 				break;
 
 			case 'includes' : 
-				$path = $base . 'includes/';
+				$path = $this->charitable->get_path( 'includes' );
 				break;
 
 			case 'base_templates' : 

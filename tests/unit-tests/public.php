@@ -25,7 +25,7 @@ class Test_Charitable_Public extends Charitable_UnitTestCase {
 	function test_get_path() {
 		$this->assertEquals( $this->directory_path, $this->charitable_public->get_path() );
 		$this->assertEquals( $this->directory_url, $this->charitable_public->get_path( '', false ) );
-		$this->assertEquals( $this->directory_path . 'includes/', $this->charitable_public->get_path( 'includes' ) );
+		$this->assertEquals( $this->charitable->get_path( 'includes' ), $this->charitable_public->get_path( 'includes' ) );
 		$this->assertEquals( $this->directory_path . 'assets/', $this->charitable_public->get_path( 'assets' ) );
 		$this->assertEquals( $this->directory_url . 'assets/', $this->charitable_public->get_path( 'assets', false ) );
 		$this->assertEquals( 'charitable', $this->charitable_public->get_path( 'theme_templates' ) );
