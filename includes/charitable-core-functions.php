@@ -87,7 +87,7 @@ function charitable_get_helper( $class_key ) {
  * @since 	1.0.0
  */
 function charitable_get_notices() {
-		
+	return Charitable_Notices::get_instance();	
 }
 
 /**

@@ -3,7 +3,7 @@
  * Plugin Name: 		Charitable
  * Plugin URI: 			http://164a.com
  * Description: 		Fundraise with WordPress.
- * Version: 			1.0.0
+ * Version: 			1.0.0~alpha-1.0
  * Author: 				Studio 164a
  * Author URI: 			http://164a.com
  * Requires at least: 	3.9
@@ -183,6 +183,7 @@ class Charitable {
 		require_once( $this->includes_path . 'class-charitable-currency-helper.php' );
 		require_once( $this->includes_path . 'class-charitable-request.php' );		
 		require_once( $this->includes_path . 'class-charitable-locations.php' );
+		require_once( $this->includes_path . 'class-charitable-notices.php' );
 
 		/**
 		 * Functions.
@@ -394,7 +395,7 @@ class Charitable {
 	public function get_location_helper() {
 		$location_helper = $this->get_registered_object('Charitable_Locations');
 
-		if ( $location_helper === false ) {
+		if ( false === $location_helper ) {
 			$location_helper = new Charitable_Locations();
 			$this->register_object( $location_helper );
 		}

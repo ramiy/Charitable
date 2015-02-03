@@ -1,18 +1,22 @@
 <?php 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly
-}
-
-if ( ! class_exists( 'Charitable_Admin' ) ) : 
-
 /**
- * Charitable Admin.
+ * Class that sets up the Charitable Admin functionality.
  *
  * @class 		Charitable_Admin 
  * @author 		Studio164a
  * @category 	Admin
  * @package 	Charitable/Admin
  * @version     1.0.0
+ */
+
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
+if ( ! class_exists( 'Charitable_Admin' ) ) : 
+
+/**
+ * Charitable_Admin 
+ *
+ * @since     	1.0.0
  */
 final class Charitable_Admin {
 

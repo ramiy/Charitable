@@ -9,61 +9,110 @@
 /*
  * Metaboxes
  */
-.charitable-metabox-section {
-	// @extend .cf;
-	margin-top: 12px;	
-	border: 1px solid #e5e5e5;
+#campaign-top-sortables {
+	@include clearfix;
 
-	.charitable-metabox-section-header {
+	.postbox {
+		min-width: 0;
+		padding: 0 0 20px 0;
 		margin: 0;
-		padding: 12px 24px;
-		background-color: #f1f1f1;
+		background-color: transparent;
+		border: none;
+		box-shadow: none;
+
+		.inside {
+			padding: 0;
+		}
 	}
 
-	.charitable-metabox-field {
-		@include clearfix;
-		padding: 12px 24px;
-		margin: 0;
+	.handlediv, 
+	.hndle {
+		display: none;
+	}
+
+	input, 
+	select, 
+	textarea {
+	    padding: 14px 10px;
+		width: 100%;	    
+	}
+
+	.charitable-metabox-title {
+		margin-top: 0;
+		margin-bottom: 6px;
+	}
+
+	#campaign-title {
+		float: left;
+		width: 73%;
+		padding-right: 4%;	
+	}
+
+	#campaign-goal {
+		float: left;
+		width: 23%;
+	}
+
+	#campaign-description {
+		clear: both;
+	}
+}
+
+// .charitable-metabox-section {
+// 	// @extend .cf;
+// 	margin-top: 12px;	
+// 	border: 1px solid #e5e5e5;
+
+// 	.charitable-metabox-section-header {
+// 		margin: 0;
+// 		padding: 12px 24px;
+// 		background-color: #f1f1f1;
+// 	}
+
+// 	.charitable-metabox-field {
+// 		@include clearfix;
+// 		padding: 12px 24px;
+// 		margin: 0;
 	
-		label {
-			float: left;
-			width: 48%;
-			max-width: 300px;	
-			padding-right: 2%;
-		}
+// 		label {
+// 			float: left;
+// 			width: 48%;
+// 			max-width: 300px;	
+// 			padding-right: 2%;
+// 		}
 
-		input, 
-		select, 
-		textarea {
-			float: left;
-		}
+// 		input, 
+// 		select, 
+// 		textarea {
+// 			float: left;
+// 		}
 
-		li {
-			width: 100%;
-		}
+// 		li {
+// 			width: 100%;
+// 		}
 
-		&.charitable-checkbox-field {
+// 		&.charitable-checkbox-field {
 
-			label, 
-			input {
-				float: none;
-				display: inline-block;
-				margin-top: 0;
-			}
-		}
-	}
-}
-.charitable-metabox-outside {	
-	.charitable-metabox-field {
-		// Matches title div 
-		input {
-			padding: 3px 8px; 
-			font-size: 1.7em;
-			line-height: 100%;
-			height: 1.7em;
-		}
-	}
-}
+// 			label, 
+// 			input {
+// 				float: none;
+// 				display: inline-block;
+// 				margin-top: 0;
+// 			}
+// 		}
+// 	}
+// }
+// .charitable-metabox-outside {	
+// 	.charitable-metabox-field {
+// 		// Matches title div 
+// 		input {
+// 			padding: 3px 8px; 
+// 			font-size: 1.7em;
+// 			line-height: 100%;
+// 			height: 1.7em;
+// 		}
+// 	}
+// }
 
 /*
  * Settings pages

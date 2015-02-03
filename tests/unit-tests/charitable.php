@@ -31,6 +31,7 @@ class Test_Charitable extends Charitable_UnitTestCase {
 		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'class-charitable-currency-helper.php' );
 		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'class-charitable-request.php' );		
 		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'class-charitable-locations.php' );
+		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'class-charitable-notices.php' );
 		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'charitable-core-functions.php' );
 		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'charitable-utility-functions.php' );
 	}

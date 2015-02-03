@@ -47,6 +47,7 @@ final class Charitable_Campaign_Post_Type {
 
 		$this->meta_box_helper = new Charitable_Meta_Box_Helper( 'charitable-campaign' );
 
+		add_action( 'edit_form_after_title', 		array( $this, 'campaign_form_top' ) );
 		add_action( 'add_meta_boxes', 				array( $this, 'add_meta_boxes' ), 10);
 		add_action( 'save_post', 					array( $this, 'save_post' ), 10, 2);
 		add_action( 'campaign_general_metabox', 	array( $this, 'campaign_general_metabox' ));
@@ -82,25 +83,69 @@ final class Charitable_Campaign_Post_Type {
 	 * @since 	1.0.0
 	 */
 	public function add_meta_boxes() {
-		add_meta_box(
-			'campaign-general', 
-			__( 'Campaign General Settings', 'charitable' ), 
-			array( $this->meta_box_helper, 'metabox_display' ), 
-			'campaign', 
-			'normal', 
-			'high', 
-			array( 'view' => 'metaboxes/campaign-general-metabox' )
+		$meta_boxes = array(
+			array(
+				'id'		=> 'campaign-title', 
+				'title'		=> __( 'Campaign Title', 'charitable' ), 
+				'context'	=> 'campaign-top', 
+				'priority'	=> 'high', 
+				'view'		=> 'metaboxes/campaign-title'
+			),
+			array( 
+				'id' 		=> 'campaign-goal', 
+				'title' 	=> __( 'Campaign Goal ($)', 'charitable' ), 
+				'context'	=> 'campaign-top', 
+				'priority'	=> 'high', 
+				'view' 		=> 'metaboxes/campaign-goal'
+			), 
+			array( 
+				'id' 		=> 'campaign-description', 
+				'title' 	=> __( 'Campaign Description', 'charitable' ), 
+				'context'	=> 'campaign-top', 
+				'priority'	=> 'high', 
+				'view' 		=> 'metaboxes/campaign-description'
+			),
+			array(
+				'id' 		=> 'campaign-donation-form',
+				'title' 	=> __( 'Campaign Donation Settings', 'charitable' ), 
+				'context'	=> 'normal', 
+				'priority'	=> 'high', 
+				'view' 		=> 'metaboxes/campaign-donations-metabox'
+			)
 		);
 
-		add_meta_box(
-			'campaign-donation-form',
-			__( 'Campaign Donation Settings', 'charitable' ), 
-			array( $this->meta_box_helper, 'metabox_display' ), 
-			'campaign',
-			'normal',
-			'high', 
-			array( 'view' => 'metaboxes/campaign-donations-metabox' )
-		);
+		apply_filters( 'charitable_campaign_meta_boxes', $meta_boxes );
+
+		foreach ( $meta_boxes as $meta_box ) {
+			add_meta_box( 
+				$meta_box['id'], 
+				$meta_box['title'], 
+				array( $this->meta_box_helper, 'metabox_display' ), 
+				'campaign', 
+				$meta_box['context'], 
+				$meta_box['priority'], 
+				array( 
+					'view' 	=> $meta_box['view'], 
+					'title'	=> $meta_box['title']
+				) 
+			);
+		}
+	}
+
+	/**
+	 * Display fields at the very top of the page. 
+	 *
+	 * @return 	void
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function campaign_form_top( $post ) {
+		// global $wp_meta_boxes;
+		// echo '<pre>'; print_r( $wp_meta_boxes['campaign']['top'] );
+		// die;
+		if ( 'campaign' == $post->post_type ) {
+			do_meta_boxes( 'campaign', 'campaign-top', $post );
+		}		
 	}
 
 	/**
