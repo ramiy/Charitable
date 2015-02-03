@@ -13,42 +13,66 @@
 /*
  * Metaboxes
  */
-#campaign-top-sortables {
+.post-type-campaign {
   *zoom: 1; }
-  #campaign-top-sortables:before, #campaign-top-sortables:after {
+  .post-type-campaign:before, .post-type-campaign:after {
     content: " ";
     display: table; }
-  #campaign-top-sortables:after {
+  .post-type-campaign:after {
     clear: both; }
-  #campaign-top-sortables .postbox {
+  .post-type-campaign .postbox {
     min-width: 0;
     padding: 0 0 20px 0;
     margin: 0;
     background-color: transparent;
     border: none;
     box-shadow: none; }
-    #campaign-top-sortables .postbox .inside {
-      padding: 0; }
-  #campaign-top-sortables .handlediv,
-  #campaign-top-sortables .hndle {
+  .post-type-campaign #poststuff .inside {
+    padding: 0; }
+  .post-type-campaign .handlediv,
+  .post-type-campaign .hndle {
     display: none; }
-  #campaign-top-sortables input,
-  #campaign-top-sortables select,
-  #campaign-top-sortables textarea {
+  .post-type-campaign input,
+  .post-type-campaign select,
+  .post-type-campaign textarea {
     padding: 14px 10px;
     width: 100%; }
-  #campaign-top-sortables .charitable-metabox-title {
+  .post-type-campaign .charitable-metabox-title {
+    font-size: 14px;
     margin-top: 0;
     margin-bottom: 6px; }
-  #campaign-top-sortables #campaign-title {
-    float: left;
-    width: 73%;
-    padding-right: 4%; }
-  #campaign-top-sortables #campaign-goal {
-    float: left;
-    width: 23%; }
-  #campaign-top-sortables #campaign-description {
-    clear: both; }
+  .post-type-campaign .charitable-helper {
+    display: block;
+    padding-top: 6px;
+    font-style: italic; }
+  .post-type-campaign .charitable-metabox {
+    padding: 10px 10px 20px;
+    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+    border: 1px solid #e5e5e5;
+    background-color: #fff; }
+    .post-type-campaign .charitable-metabox .charitable-metabox-title {
+      margin-bottom: 10px;
+      padding: 4px 0 10px 0;
+      border-bottom: 1px solid #e5e5e5; }
+    .post-type-campaign .charitable-metabox label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold; }
+
+#campaign-top-sortables #campaign-goal,
+#campaign-top-sortables #campaign-end-date {
+  float: left;
+  width: 48%; }
+#campaign-top-sortables #campaign-goal {
+  padding-right: 4%; }
+#campaign-top-sortables #campaign-description {
+  clear: both; }
+@media (max-width: 37.5em) {
+  #campaign-top-sortables #campaign-goal,
+  #campaign-top-sortables #campaign-end-date {
+    width: 100%;
+    padding: 0 0 20px; } }
 
 /*
  * Settings pages
