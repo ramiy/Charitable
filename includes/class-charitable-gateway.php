@@ -30,6 +30,12 @@ class Charitable_Gateway {
 	private $charitable;
 
 	/**
+	 * @var 	array
+	 * @access 	private
+	 */
+	private $registered_gateways;
+
+	/**
 	 * Instantiate the class, but only during the start phase.
 	 *
 	 * @see 	charitable_start hook
@@ -67,6 +73,8 @@ class Charitable_Gateway {
 
 		$this->attach_hooks_and_filters();		
 
+		$this->registered_gateways = apply_filters( 'charitable_registered_gateways', array() );
+
 		/**
 		 * The main Charitable class will save the one instance of this object.
 		 */
@@ -96,7 +104,21 @@ class Charitable_Gateway {
 	private function attach_hooks_and_filters() {
 		add_action( 'charitable_after_save_donation', array( $this, 'send_donation_to_gateway' ), 10, 2 );
 
+		add_filter( 'charitable_registered_gateways', array( $this, 'register_default_gateways' ), 2 );
+
 		do_action( 'charitable_gateway_start', $this );
+	}
+
+	/**
+	 * Register default gateways. 
+	 * 
+	 * @param 	array
+	 * @return 	array
+	 * @access 	public
+	 * @since 	1.0.0
+	 */
+	public function register_default_gateways( $gateways ) {
+		
 	}
 
 	/**
