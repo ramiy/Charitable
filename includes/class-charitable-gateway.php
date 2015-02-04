@@ -30,10 +30,19 @@ class Charitable_Gateway {
 	private $charitable;
 
 	/**
+<<<<<<< HEAD
 	 * @var 	array
 	 * @access 	private
 	 */
 	private $registered_gateways;
+=======
+	 * All available payment gateways. 
+	 *
+	 * @var 	array
+	 * @access  private
+	 */
+	private $gateways;
+>>>>>>> 575bf41b90fd97abf42a7199f6d6bac4f22508ed
 
 	/**
 	 * Instantiate the class, but only during the start phase.
@@ -67,11 +76,20 @@ class Charitable_Gateway {
 	 * @since 	1.0.0
 	 */
 	private function __construct( Charitable $charitable ) {
-		$this->charitable = $charitable;
-		
+		$this->charitable = $charitable;	
+
+		$this->attach_hooks_and_filters();
+
 		$this->include_default_gateways();
 
-		$this->attach_hooks_and_filters();		
+		/**
+		 * To register a new gateway, you need to hook into this filter and 
+		 * give Charitable the name of your gateway class.
+		 */
+		$this->gateways = apply_filters( 'charitable_payment_gateways', array(
+			'Charitable_Gateway_Offline', 
+			'Charitable_Gateway_Paypal'
+		) );
 
 		$this->registered_gateways = apply_filters( 'charitable_registered_gateways', array() );
 
@@ -79,6 +97,19 @@ class Charitable_Gateway {
 		 * The main Charitable class will save the one instance of this object.
 		 */
 		$this->charitable->register_object( $this );
+	}
+
+	/**
+	 * Attach callbacks to hooks and filters.  
+	 *
+	 * @return 	void
+	 * @access  private
+	 * @since 	1.0.0
+	 */
+	private function attach_hooks_and_filters() {
+		add_action( 'charitable_after_save_donation', 	array( $this, 'send_donation_to_gateway' ), 10, 2 );
+
+		do_action( 'charitable_gateway_start', $this );		
 	}
 
 	/**
@@ -92,21 +123,6 @@ class Charitable_Gateway {
 		include_once( $this->charitable->get_path( 'includes' ) . 'gateways/abstract-class-charitable-gateway.php' );
 		include_once( $this->charitable->get_path( 'includes' ) . 'gateways/class-charitable-gateway-offline.php' );
 		include_once( $this->charitable->get_path( 'includes' ) . 'gateways/class-charitable-gateway-paypal.php' );
-	}
-
-	/**
-	 * Attach callbacks to hooks and filters.  
-	 *
-	 * @return 	void
-	 * @access  private
-	 * @since 	1.0.0
-	 */
-	private function attach_hooks_and_filters() {
-		add_action( 'charitable_after_save_donation', array( $this, 'send_donation_to_gateway' ), 10, 2 );
-
-		add_filter( 'charitable_registered_gateways', array( $this, 'register_default_gateways' ), 2 );
-
-		do_action( 'charitable_gateway_start', $this );
 	}
 
 	/**
@@ -142,7 +158,7 @@ class Charitable_Gateway {
 	 * @since 	1.0.0
 	 */
 	public function get_available_gateways() {
-		
+		return $this->gateways;
 	}
 
 	/**
@@ -153,7 +169,19 @@ class Charitable_Gateway {
 	 * @since 	1.0.0
 	 */
 	public function get_active_gateways() {
-	
+		return charitable_get_option( 'active_gateways' ) ? charitable_get_option( 'active_gateways' ) : array();
+	}
+
+	/**
+	 * Returns whether the passed gateway is active. 
+	 *
+	 * @param 	string 		$gateway_id
+	 * @return 	boolean
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function is_active_gateway( $gateway_id ) {		
+		return array_key_exists( $gateway_id, $this->get_active_gateways() );
 	}
 
 	/**

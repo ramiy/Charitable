@@ -164,6 +164,7 @@ final class Charitable_Donation_Actions {
 			$donation = new Charitable_Session_Donation();			
 		}
 
+		
 		$donation->set( 'campaign_id', $campaign_id ); 
 		$session->set( 'donation', $donation );
 

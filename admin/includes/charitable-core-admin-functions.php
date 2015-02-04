@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  * @return 	void
  * @since 	1.0.0
  */
-function charitable_admin_view($view) {
+function charitable_admin_view( $view, $args ) {
 	$filename = get_charitable()->get_path( 'admin' ) . 'views/' . $view . '.php';
 
 	if ( ! is_readable( $filename ) ) {
@@ -36,7 +36,13 @@ function charitable_admin_view($view) {
 		echo '</pre>';
 	}
 
+	ob_start();
+
+	$charitable_view_args = $args;
+
 	include_once( $filename );
+
+	ob_end_flush();
 }
 
 /**

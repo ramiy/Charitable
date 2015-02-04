@@ -1,25 +1,26 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly
-}
-
-if ( ! class_exists( 'Charitable_Post_Types' ) ) : 
-
 /**
- * Post types
+ * The class that defines Charitable's custom post types, taxonomies and post statuses.
  *
- * Registers post types and taxonomies
- *
- * @class 		Charitable_Post_Types
  * @version		1.0.0
  * @package		Charitable/Classes/Core
  * @category	Class
  * @author 		Studio164a
  */
+
+if ( ! defined( 'ABSPATH' ) ) exit; 
+
+if ( ! class_exists( 'Charitable_Post_Types' ) ) : 
+
+/**
+ * Charitable_Post_Types
+ *
+ * @since		1.0.0
+ */
 final class Charitable_Post_Types {
 
 	/**
-	 * @var 	Charitable $charitable
+	 * @var 	Charitable 		$charitable
 	 * @access 	private
 	 */
 	private $charitable;
@@ -31,7 +32,7 @@ final class Charitable_Post_Types {
 	 * which can only be called during the start phase. In other words, don't try 
 	 * to instantiate this object. 
 	 *
-	 * @param 	Charitable $charitable
+	 * @param 	Charitable 		$charitable
 	 * @return 	void
 	 * @access 	private
 	 * @since 	1.0.0
@@ -40,17 +41,14 @@ final class Charitable_Post_Types {
 		$this->charitable = $charitable;
 	
 		add_action( 'init', array( $this, 'register_post_types' ), 5 );
-
-		// The main Charitable class will save the one instance of this object.
-		$this->charitable->register_object( $this );
+		add_action( 'init', array( $this, 'register_post_statuses' ), 5 );
 	}
 
 	/**
 	 * Instantiate the class, but only during the start phase.
 	 *
-	 * @see charitable_start hook
-	 * 
-	 * @param 	Charitable 	$charitable 
+	 * @hook 	charitable_start
+	 * @param 	Charitable 		$charitable 
 	 * @return 	void
 	 * @static 
 	 * @access 	public
@@ -67,12 +65,10 @@ final class Charitable_Post_Types {
 	/**
 	 * Register plugin post types. 
 	 *
-	 * @see init hook
-	 *
+	 * @hook 	init
 	 * @return 	void
 	 * @access 	public
 	 * @since 	1.0.0
-	 * @return 	void
 	 */
 	public function register_post_types() {
 		/**
@@ -111,7 +107,7 @@ final class Charitable_Post_Types {
 					'hierarchical' 			=> false, // Hierarchical causes memory issues - WP loads all records!
 					'rewrite' 				=> false,
 					'query_var' 			=> true,
-					'supports' 				=> array( 'title', 'editor', 'excerpt', 'thumbnail', 'comments', 'page-attributes' ),
+					'supports' 				=> array( 'excerpt' ),
 					'has_archive' 			=> true,
 					'show_in_nav_menus' 	=> true, 
 					'show_in_menu'			=> false
@@ -161,6 +157,64 @@ final class Charitable_Post_Types {
 				)
 			) 
 		);
+	}
+
+	/**
+	 * Register custom post statuses. 
+	 *
+	 * @hook 	init
+	 * @return 	void
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function register_post_statuses() {
+		/**
+		 * Post statuses for donations.
+		 */
+		register_post_status( 'charitable-pending', array(
+			'label'                     => _x( 'charitable-pending', 'Status General Name', 'charitable' ),
+			'label_count'               => _n_noop( 'Pending (%s)',  'Pending (%s)', 'charitable' ), 
+			'public'                    => false,
+			'show_in_admin_all_list'    => true,
+			'show_in_admin_status_list' => true,
+			'exclude_from_search'       => true,
+		) );
+
+		register_post_status( 'charitable-completed', array(
+			'label'                     => _x( 'charitable-completed', 'Status General Name', 'charitable' ),
+			'label_count'               => _n_noop( 'Completed (%s)',  'Completed (%s)', 'charitable' ), 
+			'public'                    => false,
+			'show_in_admin_all_list'    => true,
+			'show_in_admin_status_list' => true,
+			'exclude_from_search'       => true,
+		) );
+
+		register_post_status( 'charitable-failed', array(
+			'label'                     => _x( 'charitable-failed', 'Status General Name', 'charitable' ),
+			'label_count'               => _n_noop( 'Failed (%s)',  'Failed (%s)', 'charitable' ), 
+			'public'                    => false,
+			'show_in_admin_all_list'    => true,
+			'show_in_admin_status_list' => true,
+			'exclude_from_search'       => true,
+		) );
+
+		register_post_status( 'charitable-cancelled', array(
+			'label'                     => _x( 'charitable-cancelled', 'Status General Name', 'charitable' ),
+			'label_count'               => _n_noop( 'Cancelled (%s)',  'Cancelled (%s)', 'charitable' ), 
+			'public'                    => false,
+			'show_in_admin_all_list'    => true,
+			'show_in_admin_status_list' => true,
+			'exclude_from_search'       => true,
+		) );
+
+		register_post_status( 'charitable-refunded', array(
+			'label'                     => _x( 'charitable-refunded', 'Status General Name', 'charitable' ),
+			'label_count'               => _n_noop( 'Refunded (%s)',  'Refunded (%s)', 'charitable' ), 
+			'public'                    => false,
+			'show_in_admin_all_list'    => true,
+			'show_in_admin_status_list' => true,
+			'exclude_from_search'       => true,
+		) );
 	}
 }
 

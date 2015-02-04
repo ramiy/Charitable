@@ -27,6 +27,18 @@ function get_charitable() {
 }
 
 /**
+ * This returns the value for a particular Charitable setting. 
+ *
+ * @param 	key 	$key
+ * @return 	mixed
+ * @since 	1.0.0
+ */
+function charitable_get_option( $key ) {
+	$settings = get_option( 'charitable_settings' );
+	return isset( $settings[ $key ] ) ? $settings[ $key ] : false;
+}
+
+/**
  * Displays a template. 
  *
  * @param 	string|array 	$template_name 		A single template name or an ordered array of template
@@ -75,7 +87,7 @@ function charitable_get_helper( $class_key ) {
  * @since 	1.0.0
  */
 function charitable_get_notices() {
-		
+	return Charitable_Notices::get_instance();	
 }
 
 /**

@@ -39,21 +39,56 @@ class Charitable_Uninstall {
 	 */
 	public function __construct( Charitable $charitable ){
 		$this->charitable = $charitable;
-
 		$this->remove_caps();
+		$this->remove_post_data();
+		$this->remove_tables();
 	}
 
 	/**
-	 * Remove plugin-specific roles
+	 * Remove plugin-specific roles. 
 	 *
 	 * @return 	void
-	 * @static
-	 * @access 	public
+	 * @access 	private
 	 * @since 	1.0.0
 	 */
-	public static function remove_caps() {
+	private function remove_caps() {
 		$roles = new Charitable_Roles();
 		$roles->remove_caps();
+	}
+
+	/**
+	 * Remove post objects created by Charitable. 
+	 *
+	 * @return 	void
+	 * @access  private
+	 * @since 	1.0.0
+	 */
+	private function remove_post_data() {
+		foreach ( array( 'campaign', 'donation' ) as $post_type ) {
+			$posts = get_posts( array(
+				'posts_per_page' 	=> -1, 
+				'post_type'			=> $post_type
+			) );
+
+			foreach ( $posts as $post ) {
+				wp_delete_post( $post->ID, true );
+			}
+		}
+	}
+
+	/**
+	 * Remove the custom tables added by Charitable.  
+	 *
+	 * @return 	void
+	 * @access  private
+	 * @since 	1.0.0
+	 */
+	private function remove_tables() {
+		global $wpdb;
+
+		$wpdb->query( "DROP TABLE IF EXISTS " . $wpdb->prefix . "charitable_campaign_donations" );
+
+		delete_option( $wpdb->prefix . 'charitable_campaign_donations_db_version' );
 	}
 }
 

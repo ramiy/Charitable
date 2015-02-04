@@ -42,7 +42,7 @@ class Charitable_Session_Donation {
 	 * @since 	1.0.0
 	 */
 	public function __construct() {
-		$db = new Charitable_Donations_DB();
+		$db = new Charitable_Campaign_Donations_DB();
 		$this->db_columns = $db->get_columns();
 	}
 

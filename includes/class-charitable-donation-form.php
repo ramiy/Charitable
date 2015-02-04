@@ -459,11 +459,9 @@ class Charitable_Donation_Form implements Charitable_Donation_Form_Interface {
 			}
 
 			$values['amount'] = $_POST['custom-donation-amount'];
-			$values['is_preset_amount'] = 0;
 		}
 		else {
 			$values['amount'] = $donation_amount;
-			$values['is_preset_amount'] = 1;
 		}
 
 		/**
@@ -494,7 +492,7 @@ class Charitable_Donation_Form implements Charitable_Donation_Form_Interface {
 
 		$values = apply_filters( 'charitable_donation_values', $values ); 
 
-		$donation_id = $this->campaign->add_donation( $values );
+		$donation_id = Charitable_Donation::insert( $values );
 
 		return $donation_id;
 	}

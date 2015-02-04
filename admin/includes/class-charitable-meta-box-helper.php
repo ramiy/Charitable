@@ -62,7 +62,11 @@ class Charitable_Meta_Box_Helper {
 			return;
 		}	
 
-		$this->display( $args['args']['view'] );
+		$view = $args['args']['view'];
+		$view_args = $args['args'];
+		unset( $view_args['view'] );
+
+		$this->display( $args['args']['view'], $view_args );
 	}
 
 	/**
@@ -73,7 +77,7 @@ class Charitable_Meta_Box_Helper {
 	 * @access 	public
 	 * @since 	1.0.0
 	 */
-	public function display( $view ) {		
+	public function display( $view, $view_args ) {		
 		/**
 		 * Set the nonce.
 		 */
@@ -84,11 +88,11 @@ class Charitable_Meta_Box_Helper {
 			$this->nonce_added = true;
 		}
 
-		do_action( 'charitable_metabox_before', $view );
+		do_action( 'charitable_metabox_before', $view, $view_args );
 
-		charitable_admin_view( $view );
+		charitable_admin_view( $view, $view_args );
 
-		do_action( 'charitable_metabox_after', $view );
+		do_action( 'charitable_metabox_after', $view, $view_args );
 	}
 
 	/**
@@ -113,7 +117,7 @@ class Charitable_Meta_Box_Helper {
 		 * Loop over the fields and display each one using the view provided.
 		 */
 		foreach( $fields as $field ) {
-			charitable_admin_view( $field['view'] );
+			charitable_admin_view( $field['view'], $field );
 		}
 	}
 

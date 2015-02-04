@@ -1,18 +1,22 @@
 <?php 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly
-}
-
-if ( ! class_exists( 'Charitable_Admin' ) ) : 
-
 /**
- * Charitable Admin.
+ * Class that sets up the Charitable Admin functionality.
  *
  * @class 		Charitable_Admin 
  * @author 		Studio164a
  * @category 	Admin
  * @package 	Charitable/Admin
  * @version     1.0.0
+ */
+
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
+if ( ! class_exists( 'Charitable_Admin' ) ) : 
+
+/**
+ * Charitable_Admin 
+ *
+ * @since     	1.0.0
  */
 final class Charitable_Admin {
 
@@ -84,10 +88,11 @@ final class Charitable_Admin {
 	 * @since 	1.0.0
 	 */
 	private function attach_hooks_and_filters() {
-		add_action('charitable_start', 		array( 'Charitable_Admin_Settings', 'charitable_start' ) );
-		add_action('charitable_start', 		array( 'Charitable_Campaign_Post_Type', 'charitable_start' ) );
-		add_action('charitable_start', 		array( 'Charitable_Donation_Post_Type', 'charitable_start' ) );
-		add_action('admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+		add_action( 'charitable_start', 		array( 'Charitable_Admin_Settings', 'charitable_start' ) );
+		add_action( 'charitable_start', 		array( 'Charitable_Campaign_Post_Type', 'charitable_start' ) );
+		add_action( 'charitable_start', 		array( 'Charitable_Donation_Post_Type', 'charitable_start' ) );
+		add_action( 'admin_enqueue_scripts', 	array( $this, 'admin_enqueue_scripts' ) );
+		add_filter( 'plugin_action_links_' . plugin_basename( $this->charitable->get_path() ), 	array( $this, 'add_plugin_action_links' ) );
 	}
 
 	/**
@@ -122,6 +127,19 @@ final class Charitable_Admin {
 			wp_register_script( 'charitable-admin', $assets_path . 'js/charitable-admin.js', array('jquery-ui-datepicker'), $this->charitable->get_version() );		
 			wp_enqueue_script( 'charitable-admin' );
 		}
+	}
+
+	/**
+	 * Add custom links to the plugin actions. 
+	 *
+	 * @param 	array 		$links
+	 * @return 	array
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function add_plugin_action_links( $links ) {
+		$links[] = '<a href="' . admin_url( 'admin.php?page=charitable-settings' ) . '">' . __( 'Settings', 'charitable' ) . '</a>';
+		return $links;
 	}
 
 	/**

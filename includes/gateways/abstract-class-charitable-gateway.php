@@ -19,30 +19,16 @@ if ( ! class_exists( 'Abstract_Charitable_Gateway' ) ) :
  *
  * @since		1.0.0
  */
-abstract class Abstract_Charitable_Gateway {
+abstract class Abstract_Charitable_Gateway {	
 	
 	/**
-	 * @var string Name of the gateway
-	 */
-	private $name = false;
-
-	/**
-	 * Returns the name of the gateway.
+	 * Send a donation to the gateway. 
 	 *
-	 * @return 	string
-	 * @access 	public
-	 * @since 	1.0.0
-	 */	
-	public function get_name() {
-		if ( $this->name === false ) {
-			throw new Exception( sprintf('%: %s'), 
-				__( 'Gateway does not declare its name', 'charitable' ), 
-				get_class( $this ) 
-			);
-		}
+	 * @param 	Charitable_Campaign 	$campaign
+	 * @param 	int 					$donation_id
+	 */
+	abstract public function send_donation_to_gateway( $campaign, $donation_id );
 
-		return $this->name;
-	}
 }
 
 endif; // End class_exists check

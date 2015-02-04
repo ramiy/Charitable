@@ -43,15 +43,18 @@ class Test_Charitable_Campaign_Query extends Charitable_UnitTestCase {
 			update_post_meta( $campaign_1_id, $key, $value );
 		}
 
-		$donation_1_id = $this->factory->donation->create( array( 'post_author' => $user_id ) );
-		$meta = array(
-			'_donation_amount'	=> 1000,
-			'_donation_gateway' => 'paypal',
-			'_campaign_id' 		=> $campaign_1_id
-		);
-		foreach ( $meta as $key => $value ) {
-			update_post_meta( $donation_1_id, $key, $value );
-		}
+		$donation_1_id = $this->factory->donation->create( array( 
+			'user_id'			=> $user_id, 
+			'campaigns'			=> array(
+				array( 
+					'campaign_id' 	=> $campaign_1_id,
+					'campaign_name'	=> 'Campaign 1', 
+					'amount'		=> 1000
+				)
+			), 
+			'status'			=> 'charitable-completed', 
+			'gateway'			=> 'paypal', 
+		) );
 
 		/**
 		 * Campaign 2: 
@@ -80,15 +83,18 @@ class Test_Charitable_Campaign_Query extends Charitable_UnitTestCase {
 			update_post_meta( $campaign_2_id, $key, $value );
 		}
 
-		$donation_2_id = $this->factory->donation->create( array( 'post_author' => $user_id ) );
-		$meta = array(
-			'_donation_amount'	=> 50,
-			'_donation_gateway' => 'paypal',
-			'_campaign_id' 		=> $campaign_2_id
-		);
-		foreach ( $meta as $key => $value ) {
-			update_post_meta( $donation_2_id, $key, $value );
-		}
+		$donation_2_id = $this->factory->donation->create( array( 
+			'user_id'			=> $user_id, 
+			'campaigns'			=> array(
+				array( 
+					'campaign_id' 	=> $campaign_2_id,
+					'campaign_name'	=> 'Campaign 2', 
+					'amount'		=> 50
+				)
+			), 
+			'status'			=> 'charitable-completed', 
+			'gateway'			=> 'paypal', 
+		) );
 
 		/**
 		 * Campaign 3: 
@@ -117,21 +123,18 @@ class Test_Charitable_Campaign_Query extends Charitable_UnitTestCase {
 			update_post_meta( $campaign_3_id, $key, $value );
 		}
 
-		$donation_3_id = $this->factory->donation->create( array( 'post_author' => $user_id ) );
-		$meta = array(
-			'_donation_amount'	=> 200,
-			'_donation_gateway' => 'paypal',
-			'_campaign_id' 		=> $campaign_3_id
-		);
-		foreach ( $meta as $key => $value ) {
-			update_post_meta( $donation_3_id, $key, $value );
-		}
-
-		$this->campaigns = array( 
-			$campaign_1_id, 
-			$campaign_2_id, 
-			$campaign_3_id 
-		);
+		$donation_3_id = $this->factory->donation->create( array( 
+			'user_id'			=> $user_id, 
+			'campaigns'			=> array(
+				array( 
+					'campaign_id' 	=> $campaign_3_id,
+					'campaign_name'	=> 'Campaign 3', 
+					'amount'		=> 200
+				)
+			), 
+			'status'			=> 'charitable-completed', 
+			'gateway'			=> 'paypal', 
+		) );
 
 		/**
 		 * Campaign 4: 
@@ -160,16 +163,20 @@ class Test_Charitable_Campaign_Query extends Charitable_UnitTestCase {
 			update_post_meta( $campaign_4_id, $key, $value );
 		}
 
-		$donation_4_id = $this->factory->donation->create( array( 'post_author' => $user_id ) );
-		$meta = array(
-			'_donation_amount'	=> 40,
-			'_donation_gateway' => 'paypal',
-			'_campaign_id' 		=> $campaign_4_id
-		);
-		foreach ( $meta as $key => $value ) {
-			update_post_meta( $donation_4_id, $key, $value );
-		}
+		$donation_4_id = $this->factory->donation->create( array( 
+			'user_id'			=> $user_id, 
+			'campaigns'			=> array(
+				array( 
+					'campaign_id' 	=> $campaign_4_id,
+					'campaign_name'	=> 'Campaign 4', 
+					'amount'		=> 40
+				)
+			), 
+			'status'			=> 'charitable-completed', 
+			'gateway'			=> 'paypal', 
+		) );
 
+		// The array of campaign IDs
 		$this->campaigns = array( 
 			$campaign_1_id, 
 			$campaign_2_id, 
@@ -177,22 +184,24 @@ class Test_Charitable_Campaign_Query extends Charitable_UnitTestCase {
 			$campaign_4_id
 		);
 
+		// The array of campaign IDs, ordered by ending soon
 		$this->campaigns_ordered_by_ending_soon = array(
 			$campaign_3_id, 
 			$campaign_2_id,
 			$campaign_1_id
 		);
 
+		// The array of campaign IDs, ordered by amount raised
 		$this->campaigns_ordered_by_amount = array(
 			$campaign_1_id, 
 			$campaign_3_id,
-			$campaign_2_id
+			$campaign_2_id,
+			$campaign_4_id
 		);
 	}
 
-	function test___construct() {
+	function test_construct() {
 		$query = new Charitable_Campaign_Query();
-
 		$this->assertEquals( 4, $query->found_posts );
 	}
 

@@ -24,6 +24,7 @@ class Test_Charitable_Roles extends WP_UnitTestCase {
 		}
 
 		$this->assertArrayHasKey( 'campaign_manager', (array) $wp_roles->role_names );
+		$this->assertArrayHasKey( 'donor', (array) $wp_roles->role_names );
 	}
 
 	function test_manager_caps() {
@@ -125,47 +126,8 @@ class Test_Charitable_Roles extends WP_UnitTestCase {
 		global $wp_roles;
 
 		$this->roles->remove_caps();
-	
-		$this->assertFalse( array_key_exists( 'view_campaign_sensitive_data', (array) $wp_roles->roles['campaign_manager']['capabilities'] ) );
-		$this->assertFalse( array_key_exists( 'export_campaign_reports', (array) $wp_roles->roles['campaign_manager']['capabilities'] ) );
-		$this->assertFalse( array_key_exists( 'manage_campaign_settings', (array) $wp_roles->roles['campaign_manager']['capabilities'] ) );
-		$this->assertFalse( array_key_exists( 'edit_campaign', (array) $wp_roles->roles['campaign_manager']['capabilities'] ) );
-		$this->assertFalse( array_key_exists( 'read_campaign', (array) $wp_roles->roles['campaign_manager']['capabilities'] ) );
-		$this->assertFalse( array_key_exists( 'delete_campaign', (array) $wp_roles->roles['campaign_manager']['capabilities'] ) );
-		$this->assertFalse( array_key_exists( 'edit_campaigns', (array) $wp_roles->roles['campaign_manager']['capabilities'] ) );
-		$this->assertFalse( array_key_exists( 'edit_others_campaigns', (array) $wp_roles->roles['campaign_manager']['capabilities'] ) );
-		$this->assertFalse( array_key_exists( 'publish_campaigns', (array) $wp_roles->roles['campaign_manager']['capabilities'] ) );
-		$this->assertFalse( array_key_exists( 'read_private_campaigns', (array) $wp_roles->roles['campaign_manager']['capabilities'] ) );
-		$this->assertFalse( array_key_exists( 'delete_campaigns', (array) $wp_roles->roles['campaign_manager']['capabilities'] ) );
-		$this->assertFalse( array_key_exists( 'delete_private_campaigns', (array) $wp_roles->roles['campaign_manager']['capabilities'] ) );
-		$this->assertFalse( array_key_exists( 'delete_published_campaigns', (array) $wp_roles->roles['campaign_manager']['capabilities'] ) );
-		$this->assertFalse( array_key_exists( 'delete_others_campaigns', (array) $wp_roles->roles['campaign_manager']['capabilities'] ) );
-		$this->assertFalse( array_key_exists( 'edit_private_campaigns', (array) $wp_roles->roles['campaign_manager']['capabilities'] ) );
-		$this->assertFalse( array_key_exists( 'edit_published_campaigns', (array) $wp_roles->roles['campaign_manager']['capabilities'] ) );
-		$this->assertFalse( array_key_exists( 'manage_campaign_terms', (array) $wp_roles->roles['campaign_manager']['capabilities'] ) );
-		$this->assertFalse( array_key_exists( 'edit_campaign_terms', (array) $wp_roles->roles['campaign_manager']['capabilities'] ) );
-		$this->assertFalse( array_key_exists( 'delete_campaign_terms', (array) $wp_roles->roles['campaign_manager']['capabilities'] ) );
-		$this->assertFalse( array_key_exists( 'assign_campaign_terms', (array) $wp_roles->roles['campaign_manager']['capabilities'] ) );
 
-		$this->assertFalse( array_key_exists( 'view_campaign_sensitive_data', (array) $wp_roles->roles['administrator']['capabilities'] ) );
-		$this->assertFalse( array_key_exists( 'export_campaign_reports', (array) $wp_roles->roles['administrator']['capabilities'] ) );
-		$this->assertFalse( array_key_exists( 'manage_campaign_settings', (array) $wp_roles->roles['administrator']['capabilities'] ) );
-		$this->assertFalse( array_key_exists( 'edit_campaign', (array) $wp_roles->roles['administrator']['capabilities'] ) );
-		$this->assertFalse( array_key_exists( 'read_campaign', (array) $wp_roles->roles['administrator']['capabilities'] ) );
-		$this->assertFalse( array_key_exists( 'delete_campaign', (array) $wp_roles->roles['administrator']['capabilities'] ) );
-		$this->assertFalse( array_key_exists( 'edit_campaigns', (array) $wp_roles->roles['administrator']['capabilities'] ) );
-		$this->assertFalse( array_key_exists( 'edit_others_campaigns', (array) $wp_roles->roles['administrator']['capabilities'] ) );
-		$this->assertFalse( array_key_exists( 'publish_campaigns', (array) $wp_roles->roles['administrator']['capabilities'] ) );
-		$this->assertFalse( array_key_exists( 'read_private_campaigns', (array) $wp_roles->roles['administrator']['capabilities'] ) );
-		$this->assertFalse( array_key_exists( 'delete_campaigns', (array) $wp_roles->roles['administrator']['capabilities'] ) );
-		$this->assertFalse( array_key_exists( 'delete_private_campaigns', (array) $wp_roles->roles['administrator']['capabilities'] ) );
-		$this->assertFalse( array_key_exists( 'delete_published_campaigns', (array) $wp_roles->roles['administrator']['capabilities'] ) );
-		$this->assertFalse( array_key_exists( 'delete_others_campaigns', (array) $wp_roles->roles['administrator']['capabilities'] ) );
-		$this->assertFalse( array_key_exists( 'edit_private_campaigns', (array) $wp_roles->roles['administrator']['capabilities'] ) );
-		$this->assertFalse( array_key_exists( 'edit_published_campaigns', (array) $wp_roles->roles['administrator']['capabilities'] ) );
-		$this->assertFalse( array_key_exists( 'manage_campaign_terms', (array) $wp_roles->roles['administrator']['capabilities'] ) );
-		$this->assertFalse( array_key_exists( 'edit_campaign_terms', (array) $wp_roles->roles['administrator']['capabilities'] ) );
-		$this->assertFalse( array_key_exists( 'delete_campaign_terms', (array) $wp_roles->roles['administrator']['capabilities'] ) );
-		$this->assertFalse( array_key_exists( 'assign_campaign_terms', (array) $wp_roles->roles['administrator']['capabilities'] ) );
+		$this->assertFalse( array_key_exists( 'campaign_manager', (array) $wp_roles->roles() ) );
+		$this->assertFalse( array_key_exists( 'donor', (array) $wp_roles->roles() ) );
 	}
 }

@@ -31,7 +31,7 @@ class Charitable_Campaign {
 	 */
 	private $end_time;
 
-	/**
+	/**	 
 	 * @var decimal The fundraising goal for the campaign.
 	 */
 	private $goal;
@@ -100,16 +100,31 @@ class Charitable_Campaign {
 	}
 
 	/**
+	 * Returns whether the campaign is endless (i.e. no end date has been set). 
+	 *
+	 * @return 	boolean
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function is_endless() {
+		return false == $this->get('campaign_end_date_enabled');
+	}
+
+	/**
 	 * Returns the end date in your preferred format.
 	 *
 	 * If a format is not provided, the user-defined date_format in Wordpress settings is used.
 	 * 
 	 * @param 	string 	$date_format 	A date format accepted by PHP's date() function.
-	 * @return 	string 
+	 * @return 	string|false 		String if an end date is set. False if campaign has no end date. 
 	 * @access 	public
 	 * @since 	1.0.0
 	 */
 	public function get_end_date($date_format = '') {
+		if ( $this->is_endless() ) {
+			return false;
+		}
+
 		if ( ! strlen( $date_format ) ) {
 			$date_format = get_option('date_format', 'd/m/Y');
 		}
@@ -132,12 +147,17 @@ class Charitable_Campaign {
 	/**
 	 * Returns the timetamp of the end date.
 	 *
-	 * @return 	int 
+	 * @return 	int|false  			Int if campaign has an end date. False if campaign has no end date.
 	 * @access 	public
 	 * @since 	1.0.0
 	 */
 	public function get_end_time() {
 		if ( ! isset( $this->end_time ) ) {
+
+			if ( $this->is_endless() ) {
+				return false;
+			}
+
 			/**
 			 * The date is stored in the format of Y-m-d H:i:s.
 			 */
@@ -152,11 +172,15 @@ class Charitable_Campaign {
 	/**
 	 * Returns the amount of time left in the campaign in seconds.
 	 *
-	 * @return 	int $time_left
+	 * @return 	int $time_left 		Int if campaign has an end date. False if campaign has no end date.
 	 * @access 	public
 	 * @since 	1.0.0
 	 */
 	public function get_seconds_left() {
+		if ( $this->is_endless() ) {
+			return false;
+		}
+
 		$time_left = $this->get_end_time() - time();
 		return $time_left < 0 ? 0 : $time_left;	
 	}
@@ -169,13 +193,16 @@ class Charitable_Campaign {
 	 * @uses charitabile_campaign_hours_left 	Change the text displayed when there is less than a day left.
 	 * @uses charitabile_campaign_days_left 	Change the text displayed when there is more than a day left.
 	 * @uses charitable_campaign_time_left 		Change the text displayed when there is time left. This will 
-	 *											override any of the above filters.
 	 *
-	 * @return 	string 
+	 * @return 	string 		
 	 * @access 	public
 	 * @since 	1.0.0
 	 */
 	public function get_time_left() {
+		if ( $this->is_endless() ) {
+			return '';
+		}
+
 		$hour = 3600; 
 		$day = 86400;
 
@@ -224,13 +251,13 @@ class Charitable_Campaign {
 	/**
 	 * Returns the fundraising goal of the campaign.
 	 * 
-	 * @return 	decimal
+	 * @return 	decimal|false 		Decimal if goal is set. False if no goal has been set. 
 	 * @access 	public
 	 * @since 	1.0.0
 	 */
 	public function get_goal() {
 		if ( ! isset( $this->goal ) ) {
-			$this->goal = $this->get('campaign_goal');
+			$this->goal = $this->has_goal() ? $this->get('campaign_goal') : false;
 		}
 
 		return $this->goal;
@@ -244,7 +271,7 @@ class Charitable_Campaign {
 	 * @since 	1.0.0
 	 */
 	public function has_goal() {
-		return ( 0 < $this->get_goal() );
+		return 0 < $this->get('campaign_goal');
 	}	
 
 	/**
@@ -255,6 +282,10 @@ class Charitable_Campaign {
 	 * @since 	1.0.0
 	 */
 	public function get_monetary_goal() {
+		if ( ! $this->has_goal() ) {
+			return '';
+		}
+
 		return get_charitable()->get_currency_helper()->get_monetary_amount( $this->get_goal() );
 	}
 
@@ -282,17 +313,13 @@ class Charitable_Campaign {
 			/**
 			 * Try to fetch from cache first.
 			 */
-			$cache_key = $this->get_donations_cache_key();
-			$this->donations = get_transient( $cache_key );
+			$this->donations = get_transient( $this->get_donations_cache_key() );
 
-			if ( $this->donations === false ) {
+			if ( false === $this->donations ) {
 
-				$this->donations = get_charitable()->get_db_table('donations')->get_donations_on_campaign( $this->get_campaign_id() );
-
-				/**
-				 * Cache the results.
-				 */
-				set_transient( $cache_key, $this->donations, 0 ); 
+				$this->donations = get_charitable()->get_db_table('campaign_donations')->get_donations_on_campaign( $this->get_campaign_id() );
+	
+				set_transient( $this->get_donations_cache_key(), $this->donations, 0 ); 
 			}
 		}
 
@@ -312,17 +339,13 @@ class Charitable_Campaign {
 			/**
 			 * Try to fetch from cache first. 
 			 */
-			$cache_key = $this->get_donations_cache_key() . '_amount';
-			$this->donated_amount = get_transient( $cache_key );
+			$this->donated_amount = get_transient( $this->get_donations_cache_key() . '_amount' );
 
 			if ( $this->donated_amount === false ) {
-				$this->donated_amount = get_charitable()->get_db_table('donations')->get_campaign_donated_amount( $this->get_campaign_id() );
-			}
+				$this->donated_amount = get_charitable()->get_db_table('campaign_donations')->get_campaign_donated_amount( $this->get_campaign_id() );
 
-			/**
-			 * Cache the results. 
-			 */
-			set_transient( $cache_key, $this->donated_amount, 0 );
+				set_transient( $this->get_donations_cache_key() . '_amount', $this->donated_amount, 0 );
+			}			
 		}
 
 		return $this->donated_amount;
@@ -331,16 +354,18 @@ class Charitable_Campaign {
 	/**
 	 * Return the percentage donated. 
 	 *
-	 * @return 	string
+	 * @return 	string|false 		String if campaign has a goal. False if no goal is set.
 	 * @access 	public
 	 * @since 	1.0.0
 	 */
 	public function get_percent_donated() {
-		if ( 0 == $this->get_goal() ) {
-			return '';
+		if ( ! $this->has_goal() ) {
+			return false;
 		}
 
-		return $this->get_donated_amount() / $this->get_goal() . '%';
+		$percent = ( $this->get_donated_amount() / $this->get_goal() ) * 100;
+
+		return apply_filters( 'charitable_percent_donated', $percent.'%', $percent, $this );
 	}
 
 	/**
@@ -350,7 +375,7 @@ class Charitable_Campaign {
 	 * @since 	1.0.0
 	 */
 	public function get_donor_count() {
-		return get_charitable()->get_db_table('donations')->count_campaign_donors( $this->get_campaign_id() );
+		return get_charitable()->get_db_table('campaign_donations')->count_campaign_donors( $this->get_campaign_id() );
 	}
 
 	/**
@@ -387,17 +412,6 @@ class Charitable_Campaign {
 	}
 
 	/**
-	 * Renders the button to donate. 
-	 * 
-	 * @return 	void
-	 * @access 	public
-	 * @since 	1.0.0
-	 */
-	public function donate_button() {
-		charitable_template( 'campaign/donate-button.php' );
-	}
-
-	/**
 	 * Returns any suggested amounts, or an empty array if none have been set. 
 	 *
 	 * @return 	array
@@ -412,91 +426,6 @@ class Charitable_Campaign {
 		}
 
 		return explode( '|', $amounts );
-	}
-
-	/**
-	 * Add a donation to this campaign. 
-	 *
-	 * @param 	array 	$values
-	 * @return 	int 	ID of the donation created.
-	 * @access  public
-	 * @since 	1.0.0
-	 */
-	public function  add_donation( $values ) {
-
-		if ( ! isset( $values['amount'] ) ) {
-			/**
-			 * @todo	Add error message.
-			 */
-			return;
-		}
-
-		/**
-		 * If a user ID hasn't been set, we need to get a
-		 * user ID based on the email address supplied. 
-		 */
-		if ( ! isset( $values['user_id'] ) ) {
-
-			/** 
-			 * No user details have been supplied. 
-			 */
-			if ( ! isset( $values['user'] ) ) {
-				/**
-				 * @todo	Add error message.
-				 */
-				return;
-			}
-
-			$user_data = $values['user'];
-
-			/**
-			 * No email has been supplied either, so 
-			 * we return with an error message. 
-			 */
-			if ( ! isset( $user_data['user_email'] ) ) {
-				/**
-				 * @todo	Add error message.
-				 */
-				return; 
-			}
-
-			$user = get_user_by( 'email', $user_data['user_email'] );
-
-			/** 
-			 * This is a new user, so create their account for them. 
-			 */
-			if ( false === $user ) {
-				$user_id = Charitable_Donor::create( $user_data );
-
-				/**
-				 * Something went wrong while creating the user. 
-				 */
-				if ( false === $user_id ) {
-					/**
-					 * @todo	Add error message.
-					 */
-					return; 
-				}
-			}
-			else {
-				/**
-				 * Save this user as a donor. 
-				 */
-				if ( ! $user->has_cap( 'donor' ) ) {
-					$user->add_role( 'donor' );
-				}
-				
-				$user_id = $user->ID;
-			}			
-
-			unset( $values['user'] ); 
-
-			$values['user_id'] = $user_id;
-		}
-
-		$values['campaign_id'] = $this->get_campaign_id();
-
-		return get_charitable()->get_db_table('donations')->add( $values );
 	}
 }
 

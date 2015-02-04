@@ -47,11 +47,11 @@ final class Charitable_Campaign_Post_Type {
 
 		$this->meta_box_helper = new Charitable_Meta_Box_Helper( 'charitable-campaign' );
 
-		add_action( 'add_meta_boxes', 				array( $this, 'add_meta_boxes' ), 10);
-		add_action( 'save_post', 					array( $this, 'save_post' ), 10, 2);
-		add_action( 'campaign_general_metabox', 	array( $this, 'campaign_general_metabox' ));
-		add_action( 'campaign_donations_metabox', 	array( $this, 'campaign_donations_metabox' ));
-		add_filter( 'enter_title_here', 			array( $this, 'campaign_enter_title' ), 10, 2 );
+		add_action( 'edit_form_after_title', 						array( $this, 'campaign_form_top' ) );
+		add_action( 'add_meta_boxes', 								array( $this, 'add_meta_boxes' ), 10);
+		add_action( 'save_post', 									array( $this, 'save_post' ), 10, 2);
+		add_action( 'charitable_campaign_donation_options_metabox', array( $this, 'campaign_donation_options_metabox' ));
+		add_filter( 'enter_title_here', 							array( $this, 'campaign_enter_title' ), 10, 2 );
 	}
 
 	/**
@@ -82,73 +82,92 @@ final class Charitable_Campaign_Post_Type {
 	 * @since 	1.0.0
 	 */
 	public function add_meta_boxes() {
-		add_meta_box(
-			'campaign-general', 
-			__( 'Campaign General Settings', 'charitable' ), 
-			array( $this->meta_box_helper, 'metabox_display' ), 
-			'campaign', 
-			'normal', 
-			'high', 
-			array( 'view' => 'metaboxes/campaign-general-metabox' )
-		);
-
-		add_meta_box(
-			'campaign-donation-form',
-			__( 'Campaign Donation Settings', 'charitable' ), 
-			array( $this->meta_box_helper, 'metabox_display' ), 
-			'campaign',
-			'normal',
-			'high', 
-			array( 'view' => 'metaboxes/campaign-donations-metabox' )
-		);
-	}
-
-	/**
-	 * Adds fields to the campaign general settings metabox. 
-	 *
-	 * @return 	void
-	 * @access 	public
-	 * @since 	1.0.0
-	 */
-	public function campaign_general_metabox() {
-
-		/**
-		 * Get the array of fields to be displayed within the 
-		 * campaign settings metabox. 
-		 */
-		$fields = apply_filters( 'campaign_general_metabox_fields', 
+		$meta_boxes = array(
 			array(
-				'goal' => array(
-					'priority' => 4, 
-					'view' => 'metaboxes/campaign-general/campaign-goal'
-				), 
-				'end_date' => array(
-					'priority' => 8, 
-					'view' => 'metaboxes/campaign-general/campaign-end-date'
-				)
-			) 
+				'id'			=> 'campaign-title', 
+				'title'			=> __( 'Campaign Title', 'charitable' ), 
+				'context'		=> 'campaign-top', 
+				'priority'		=> 'high', 
+				'view'			=> 'metaboxes/campaign-title'
+			),
+			array( 
+				'id' 			=> 'campaign-goal', 
+				'title' 		=> __( 'Fundraising Goal ($)', 'charitable' ), 
+				'context'		=> 'campaign-top', 
+				'priority'		=> 'high', 
+				'view' 			=> 'metaboxes/campaign-goal', 
+				'description'	=> __( 'Leave empty for campaigns without a fundraising goal.', 'charitable' )
+			), 			
+			array( 
+				'id'			=> 'campaign-end-date', 
+				'title'			=> __( 'End Date', 'charitable' ), 
+				'context'		=> 'campaign-top', 
+				'priority'		=> 'high', 
+				'view'			=> 'metaboxes/campaign-end-date', 
+				'description'	=> __( 'Leave empty for ongoing campaigns.', 'charitable' )
+			),
+			array( 
+				'id' 			=> 'campaign-description', 
+				'title' 		=> __( 'Campaign Description', 'charitable' ), 
+				'context'		=> 'campaign-top', 
+				'priority'		=> 'high', 
+				'view' 			=> 'metaboxes/campaign-description'
+			),
+			array(
+				'id'			=> 'campaign-donation-options', 
+				'title'			=> __( 'Donation Options', 'charitable' ), 
+				'context'		=> 'campaign-top', 
+				'priority'		=> 'high', 
+				'view' 			=> 'metaboxes/campaign-donation-options'
+			)
 		);
 
-		$this->meta_box_helper->display_fields( $fields );
+		apply_filters( 'charitable_campaign_meta_boxes', $meta_boxes );
+
+		foreach ( $meta_boxes as $meta_box ) {
+			add_meta_box( 
+				$meta_box['id'], 
+				$meta_box['title'], 
+				array( $this->meta_box_helper, 'metabox_display' ), 
+				'campaign', 
+				$meta_box['context'], 
+				$meta_box['priority'], 
+				$meta_box
+			);
+		}
 	}
 
 	/**
-	 * Adds fields to the campaign donations metabox. 
+	 * Display fields at the very top of the page. 
+	 *
+	 * @return 	void
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function campaign_form_top( $post ) {
+		if ( 'campaign' == $post->post_type ) {
+			do_meta_boxes( 'campaign', 'campaign-top', $post );
+		}		
+	}
+
+	/**
+	 * Adds fields to the campaign donation options metabox. 
 	 *
 	 * @return 	void
 	 * @access 	public
 	 * @since 	1.0.0
 	 */
-	public function campaign_donations_metabox() {
+	public function campaign_donation_options_metabox() {
 		/**
 		 * Get the array of fields to be displayed within the 
 		 * campaign donations metabox. 
 		 */
-		$fields = apply_filters( 'campaign_donations_metabox_fields', 
+		$fields = apply_filters( 'charitable_campaign_donation_options_fields', 
 			array(
-				'donations' => array(
-					'priority' => 4, 
-					'view' => 'metaboxes/campaign-donations/campaign-donation-options'
+				'donations' 	=> array(
+					'priority' 	=> 4, 
+					'view' 		=> 'metaboxes/campaign-donation-options/suggested-amounts', 
+					'label'		=> __( 'Suggested Donation Amounts', 'charitable' )
 				)
 			) 
 		);

@@ -3,7 +3,7 @@
  * Plugin Name: 		Charitable
  * Plugin URI: 			http://164a.com
  * Description: 		Fundraise with WordPress.
- * Version: 			1.0.0
+ * Version: 			1.0.0~alpha-1.0
  * Author: 				Studio 164a
  * Author URI: 			http://164a.com
  * Requires at least: 	3.9
@@ -175,7 +175,7 @@ class Charitable {
 		require_once( $this->includes_path . 'class-charitable-session-donation.php' );
 
 		require_once( $this->includes_path . 'db/abstract-class-charitable-db.php' );
-		require_once( $this->includes_path . 'db/class-charitable-donations-db.php' );
+		require_once( $this->includes_path . 'db/class-charitable-campaign-donations-db.php' );
 
 		/**
 		 * Helpers.
@@ -183,6 +183,7 @@ class Charitable {
 		require_once( $this->includes_path . 'class-charitable-currency-helper.php' );
 		require_once( $this->includes_path . 'class-charitable-request.php' );		
 		require_once( $this->includes_path . 'class-charitable-locations.php' );
+		require_once( $this->includes_path . 'class-charitable-notices.php' );
 
 		/**
 		 * Functions.
@@ -340,8 +341,12 @@ class Charitable {
 				$path = $base . 'public/';
 				break;
 
-			default :
+			case 'directory' : 
 				$path = $base;
+				break;
+
+			default :
+				$path = __FILE__;
 		}
 
 		return $path;
@@ -390,7 +395,7 @@ class Charitable {
 	public function get_location_helper() {
 		$location_helper = $this->get_registered_object('Charitable_Locations');
 
-		if ( $location_helper === false ) {
+		if ( false === $location_helper ) {
 			$location_helper = new Charitable_Locations();
 			$this->register_object( $location_helper );
 		}
@@ -445,8 +450,8 @@ class Charitable {
 	public function get_db_table( $table_name ) {
 
 		switch ( $table_name ) {
-			case 'donations' :
-				$class_name = 'Charitable_Donations_DB';
+			case 'campaign_donations' :
+				$class_name = 'Charitable_Campaign_Donations_DB';
 				break;
 
 			default: 
@@ -487,8 +492,10 @@ class Charitable {
 	 * @since 	1.0.0
 	 */
 	public function deactivate() {
-		require_once( $this->get_path( 'includes' ) . 'class-charitable-uninstall.php' );
-		new Charitable_Uninstall( $this );
+		if ( charitable_get_option( 'delete_data_on_uninstall' ) ) {
+			require_once( $this->get_path( 'includes' ) . 'class-charitable-uninstall.php' );
+			new Charitable_Uninstall( $this );
+		}		
 	}
 
 	/**

@@ -23,7 +23,12 @@ class Charitable_Gateway_Paypal extends Abstract_Charitable_Gateway {
 	/**
 	 * @var 	string 		The gateway name.
 	 */
-	const NAME = 'Paypal';
+	const GATEWAY_NAME = 'Paypal';
+
+	/**
+	 * @var 	string 		The gateway ID.
+	 */
+	const GATEWAY_ID = 'paypal';
 
 	/**
 	 * Send the donation/donor off to the gateway.  
