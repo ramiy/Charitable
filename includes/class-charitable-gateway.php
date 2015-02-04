@@ -30,19 +30,12 @@ class Charitable_Gateway {
 	private $charitable;
 
 	/**
-<<<<<<< HEAD
-	 * @var 	array
-	 * @access 	private
-	 */
-	private $registered_gateways;
-=======
 	 * All available payment gateways. 
 	 *
 	 * @var 	array
 	 * @access  private
 	 */
 	private $gateways;
->>>>>>> 575bf41b90fd97abf42a7199f6d6bac4f22508ed
 
 	/**
 	 * Instantiate the class, but only during the start phase.
