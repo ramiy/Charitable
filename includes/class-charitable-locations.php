@@ -25,7 +25,7 @@ class Charitable_Locations {
 	/**
 	 * Array of countries. 
 	 *
-	 * @var 	array 		$countries
+	 * @var 	string[]	$countries
 	 * @access 	private
 	 * @since 	1.0.0
 	 */
@@ -34,7 +34,7 @@ class Charitable_Locations {
 	/**
 	 * Array of states. 
 	 *
-	 * @var 	array 		$states
+	 * @var 	string[] 	$states
 	 * @access 	private
 	 * @since 	1.0.0
 	 */
@@ -43,7 +43,7 @@ class Charitable_Locations {
 	/** 
 	 * Return an array with all the countries supported by Charitable. 
 	 *
-	 * @return 	array
+	 * @return 	string[]
 	 * @access 	public 
 	 * @since 	1.0.0
 	 */
@@ -58,7 +58,7 @@ class Charitable_Locations {
 	/**
 	 * Return the country codes of countries with states.  
 	 *
-	 * @return 	array
+	 * @return 	string[]
 	 * @access  public
 	 * @since 	1.0.0
 	 */
@@ -94,16 +94,13 @@ class Charitable_Locations {
 	/** 
 	 * Return an array with all the states supported by Charitable. 
 	 *
-	 * @return 	array
+	 * @return 	string[]
 	 * @access 	public 
 	 * @since 	1.0.0
 	 */
 	public function get_all_states() {
 		foreach ( $this->get_countries_with_states() as $country_code ) {
-
-			if ( ! isset( $this->states[$country_code] ) ) {				
-				$this->states[$country_code] = apply_filters( 'charitable_country_states', include( charitable()->get_path('directory') . '/i18n/states/' . $country_code . '.php' ), $country_code );					
-			}
+			$this->get_states_for_country( $country_code );
 		}
 		
 		return $this->states;
@@ -112,7 +109,8 @@ class Charitable_Locations {
 	/**
 	 * Return the states in this country. 
 	 *
-	 * @return 	array
+	 * @param 	string 		$country_code
+	 * @return 	string[]
 	 * @access  public
 	 * @since 	1.0.0
 	 */
@@ -144,7 +142,7 @@ class Charitable_Locations {
 	/**
 	 * Get country address formats.
 	 *
-	 * @return 	array
+	 * @return 	string[]
  	 * @access 	public
  	 * @since 	1.0.0
 	 */
@@ -226,8 +224,8 @@ class Charitable_Locations {
 	/**
 	 * Process an array of address fields, trimming whitespace and adding full country and full state names.
 	 *
-	 * @param 	array 		$address_fields
-	 * @return 	array
+	 * @param 	string[]	$address_fields
+	 * @return 	string[]
 	 * @access  private
 	 * @since 	1.0.0
 	 */
@@ -292,7 +290,7 @@ class Charitable_Locations {
 	/**
 	* Get formatted address based on country of address.
 	*
-	* @param 	array 		$address_fields
+	* @param 	string[]	$address_fields
 	* @return 	string
 	* @access 	public
 	* @since 	1.0.0	
