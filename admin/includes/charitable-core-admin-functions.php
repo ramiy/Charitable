@@ -20,20 +20,16 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  *
  * Example usage: charitable_admin_view('metaboxes/cause-metabox');
  *
+ * @param 	string 		$view 		The view to display. 
+ * @param 	array 		$args 		Optional. Arguments to pass through to the view itself (available in view as $charitable_view_args);
  * @return 	void
  * @since 	1.0.0
  */
-function charitable_admin_view( $view, $args ) {
+function charitable_admin_view( $view, $args = array() ) {
 	$filename = charitable()->get_path( 'admin' ) . 'views/' . $view . '.php';
 
 	if ( ! is_readable( $filename ) ) {
-		echo '<pre>';
-		throw new Exception( sprintf( '<strong>%s</strong>: %s (%s)', 
-			__( 'Error', 'charitable' ), 
-			__( 'View not found or is not readable.', 'charitable' ), 
-			$filename
-		) );
-		echo '</pre>';
+		_doing_it_wrong( 'charitable_admin_view', __( 'Passed view (' . $filename . ') not found or is not readable.', 'charitable' ), '1.0.0' );
 	}
 
 	ob_start();

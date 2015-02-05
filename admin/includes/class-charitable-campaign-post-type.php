@@ -36,7 +36,6 @@ final class Charitable_Campaign_Post_Type {
 	 * Create object instance. 
 	 *
 	 * @param 	Charitable 		$charitable
-	 * @return 	void
 	 * @access 	private
 	 * @since 	1.0.0
 	 */
@@ -178,7 +177,7 @@ final class Charitable_Campaign_Post_Type {
 	/**
 	 * Save meta for the campaign. 
 	 * 
-	 * @param 	int 		$post_ID 	Post ID.
+	 * @param 	int 		$post_id 	Post ID.
 	 * @param 	WP_Post 	$post 		Post object.
 	 * @return 	void
 	 * @access 	public 
@@ -192,8 +191,7 @@ final class Charitable_Campaign_Post_Type {
 			$campaign_end_date_enabled 			= isset( $_POST['_campaign_end_date_enabled'] ) && $_POST['_campaign_end_date_enabled'] == 'on';
 			$campaign_end_date 					= date( 'Y-m-d H:i:s', strtotime( $_POST['_campaign_end_date'] ) );
 			$campaign_suggested_donations 		= $_POST['_campaign_suggested_donations'];
-			$campaign_donation_form_fields 		= (array) $_POST['_campaign_donation_form_fields'];
-
+			
 			update_post_meta( $post_id, '_campaign_goal_enabled', $campaign_goal_enabled );
 			update_post_meta( $post_id, '_campaign_goal', $campaign_goal );
 			update_post_meta( $post_id, '_campaign_end_date_enabled', $campaign_end_date_enabled );

@@ -34,7 +34,6 @@ final class Charitable_Admin {
 	 * to instantiate this object. 
 	 *
 	 * @param 	Charitable $charitable
-	 * @return 	void
 	 * @access 	private
 	 * @since 	1.0.0
 	 */
@@ -98,11 +97,14 @@ final class Charitable_Admin {
 	/**
 	 * Loads admin-only scripts and stylesheets. 
 	 *
+	 * @global 	WP_Scripts 		$wp_scripts
 	 * @return 	void
 	 * @access 	public
 	 * @since 	1.0.0
 	 */
 	public function admin_enqueue_scripts() {		
+		global $wp_scripts;
+
 		$assets_path = $this->charitable->get_path( 'admin', false ) . 'assets/';	
 
 		/**
