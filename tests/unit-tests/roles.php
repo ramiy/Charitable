@@ -127,7 +127,7 @@ class Test_Charitable_Roles extends WP_UnitTestCase {
 
 		$this->roles->remove_caps();
 
-		$this->assertFalse( array_key_exists( 'campaign_manager', (array) $wp_roles->roles() ) );
-		$this->assertFalse( array_key_exists( 'donor', (array) $wp_roles->roles() ) );
+		$this->assertFalse( array_key_exists( 'campaign_manager', (array) $wp_roles->role_names ) );
+		$this->assertFalse( array_key_exists( 'donor', (array) $wp_roles->role_names ) );
 	}
 }
