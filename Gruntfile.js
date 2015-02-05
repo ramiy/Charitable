@@ -120,7 +120,7 @@ module.exports = function(grunt) {
             target: {
                 options: {
                     cwd: '',                        // Directory of files to internationalize.
-                    domainPath: '/languages',       // Where to save the POT file.                    
+                    domainPath: '/i18n/languages',  // Where to save the POT file.                    
                     mainFile: 'charitable.php',     // Main project file.
                     potFilename: 'charitable.pot',  // Name of the POT file.
                     type: 'wp-plugin',              // Type of project (wp-plugin or wp-theme).

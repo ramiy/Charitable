@@ -8,7 +8,7 @@
 
 global $post;
 
-$form_fields = get_charitable()->get_registered_object('Charitable_Campaign_Post_Type')->get_donation_form_fields();
+$form_fields = charitable()->get_registered_object('Charitable_Campaign_Post_Type')->get_donation_form_fields();
 
 $selected_fields = (array) get_post_meta( $post->ID, '_campaign_donation_form_fields', true );
 ?>

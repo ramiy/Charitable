@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  * @return 	Charitable
  * @since 	1.0.0
  */
-function get_charitable() {
+function charitable() {
     return Charitable::get_instance();
 }
 
@@ -77,7 +77,7 @@ function charitable_get_helper( $class_key ) {
 		return false;
 	}
 
-	return get_charitable()->get_registered_object( $class_name );
+	return charitable()->get_registered_object( $class_name );
 }
 
 /**
@@ -97,7 +97,7 @@ function charitable_get_notices() {
  * @since 	1.0.0
  */
 function charitable_get_location_helper() {
-	return get_charitable()->get_location_helper();
+	return charitable()->get_location_helper();
 }
 
 /**
@@ -107,7 +107,7 @@ function charitable_get_location_helper() {
  * @since 	1.0.0
  */
 function charitable_get_session() {
-	return get_charitable()->get_registered_object( 'Charitable_Session' );
+	return charitable()->get_registered_object( 'Charitable_Session' );
 }
 
 /**
@@ -117,7 +117,7 @@ function charitable_get_session() {
  * @since 	1.0.0
  */
 function charitable_get_current_campaign() {
-	return get_charitable()->get_request()->get_current_campaign();
+	return charitable()->get_request()->get_current_campaign();
 }
 
 /**

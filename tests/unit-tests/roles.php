@@ -7,7 +7,7 @@ class Test_Charitable_Roles extends WP_UnitTestCase {
 	function setUp() {
 		parent::setUp();
 
-		$this->charitable = get_charitable();
+		$this->charitable = charitable();
 		
 		$this->roles = new Charitable_Roles( $this->charitable );
 		$this->roles->add_roles();

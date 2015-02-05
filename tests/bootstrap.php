@@ -31,7 +31,7 @@ activate_plugin( 'charitable/charitable.php' );
 echo "Installing Charitable...\n";
 
 // Install Charitable
-get_charitable()->activate();
+charitable()->activate();
 
 global $current_user;
 

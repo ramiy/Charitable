@@ -519,7 +519,7 @@ class Charitable {
 	/**
 	 * Throw error on object clone. 
 	 *
-	 * This class is specifically designed to be instantiated once. You can retrieve the instance using get_charitable()
+	 * This class is specifically designed to be instantiated once. You can retrieve the instance using charitable()
 	 *
 	 * @since 	1.0.0
 	 * @access 	public

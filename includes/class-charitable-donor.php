@@ -230,7 +230,7 @@ class Charitable_Donor extends WP_User {
 	 * @since 	1.0.0
 	 */
 	public function get_donations() {
-		return get_charitable()->get_db_table( 'campaign_donations' )->get_donations_by_donor( $this->ID );
+		return charitable()->get_db_table( 'campaign_donations' )->get_donations_by_donor( $this->ID );
 	}
 
 	/**
@@ -241,7 +241,7 @@ class Charitable_Donor extends WP_User {
 	 * @since 	1.0.0
 	 */
 	public function get_total_donated() {
-		return (float) get_charitable()->get_db_table( 'campaign_donations' )->get_total_donated_by_donor( $this->ID );
+		return (float) charitable()->get_db_table( 'campaign_donations' )->get_total_donated_by_donor( $this->ID );
 	}
 }
 

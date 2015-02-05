@@ -286,7 +286,7 @@ class Charitable_Campaign {
 			return '';
 		}
 
-		return get_charitable()->get_currency_helper()->get_monetary_amount( $this->get_goal() );
+		return charitable()->get_currency_helper()->get_monetary_amount( $this->get_goal() );
 	}
 
 	/**
@@ -317,7 +317,7 @@ class Charitable_Campaign {
 
 			if ( false === $this->donations ) {
 
-				$this->donations = get_charitable()->get_db_table('campaign_donations')->get_donations_on_campaign( $this->get_campaign_id() );
+				$this->donations = charitable()->get_db_table('campaign_donations')->get_donations_on_campaign( $this->get_campaign_id() );
 	
 				set_transient( $this->get_donations_cache_key(), $this->donations, 0 ); 
 			}
@@ -342,7 +342,7 @@ class Charitable_Campaign {
 			$this->donated_amount = get_transient( $this->get_donations_cache_key() . '_amount' );
 
 			if ( $this->donated_amount === false ) {
-				$this->donated_amount = get_charitable()->get_db_table('campaign_donations')->get_campaign_donated_amount( $this->get_campaign_id() );
+				$this->donated_amount = charitable()->get_db_table('campaign_donations')->get_campaign_donated_amount( $this->get_campaign_id() );
 
 				set_transient( $this->get_donations_cache_key() . '_amount', $this->donated_amount, 0 );
 			}			
@@ -375,7 +375,7 @@ class Charitable_Campaign {
 	 * @since 	1.0.0
 	 */
 	public function get_donor_count() {
-		return get_charitable()->get_db_table('campaign_donations')->count_campaign_donors( $this->get_campaign_id() );
+		return charitable()->get_db_table('campaign_donations')->count_campaign_donors( $this->get_campaign_id() );
 	}
 
 	/**

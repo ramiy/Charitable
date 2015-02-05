@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  * @since 	1.0.0
  */
 function charitable_admin_view( $view, $args ) {
-	$filename = get_charitable()->get_path( 'admin' ) . 'views/' . $view . '.php';
+	$filename = charitable()->get_path( 'admin' ) . 'views/' . $view . '.php';
 
 	if ( ! is_readable( $filename ) ) {
 		echo '<pre>';

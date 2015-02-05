@@ -6,8 +6,8 @@
  * @since 	1.0.0
  */
 
-$campaign 			= get_charitable()->get_request()->get_current_campaign();
-$currency_helper 	= get_charitable()->get_currency_helper();
+$campaign 			= charitable()->get_request()->get_current_campaign();
+$currency_helper 	= charitable()->get_currency_helper();
 $classes 			= array( 'campaign-summary' ); 
 $classes[]			= $campaign->has_goal() 	? 'campaign-has-goal' 	: 'campaign-has-no-goal';
 $classes[] 			= $campaign->is_endless() 	? 'campaign-is-endless' : 'campaign-has-end-date';

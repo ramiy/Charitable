@@ -9,7 +9,7 @@
 
 $form 				= charitable_get_current_donation_form();
 $suggested_amounts 	= $form->get_campaign()->get_suggested_amounts();
-$currency_helper 	= get_charitable()->get_currency_helper();
+$currency_helper 	= charitable()->get_currency_helper();
 
 /**
  * @hook 	charitable_donation_form_before_donation_amount

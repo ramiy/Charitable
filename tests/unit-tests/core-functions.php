@@ -6,8 +6,8 @@ class Test_Charitable_Core_Functions extends Charitable_UnitTestCase {
 		parent::setUp();
 	}
 
-	function test_get_charitable() {
-		$this->assertInstanceOf( 'Charitable', get_charitable() );
+	function test_charitable() {
+		$this->assertInstanceOf( 'Charitable', charitable() );
 	}
 	
 	function test_charitable_get_option() {
