@@ -31,7 +31,6 @@ class Test_Charitable_Campaign extends Charitable_UnitTestCase {
 
 		$meta = array(
 			'_campaign_goal' 						=> 40000.00,
-			'_campaign_end_date_enabled' 			=> 1,
 			'_campaign_end_date' 					=> date( 'Y-m-d H:i:s', $this->end_time_1 ),
 			'_campaign_suggested_donations' 		=> '5|20|50|100|250'
 		);
@@ -102,7 +101,7 @@ class Test_Charitable_Campaign extends Charitable_UnitTestCase {
 
 		$meta = array(
 			'_campaign_goal' 					=> 0,
-			'_campaign_end_date_enabled' 		=> 0,
+			'_campaign_end_date'		 		=> 0,
 			'_campaign_suggested_donations' 	=> '5|50|150|500'
 		);
 
@@ -139,12 +138,10 @@ class Test_Charitable_Campaign extends Charitable_UnitTestCase {
 
 	function test_get() {
 		$this->assertEquals( 40000.00, $this->campaign_1->get('campaign_goal') );
-		$this->assertEquals( 1, $this->campaign_1->get('campaign_end_date_enabled') );
 		$this->assertEquals( date( 'Y-m-d H:i:s', $this->end_time_1 ), $this->campaign_1->get('campaign_end_date') );		
 
 		$this->assertEquals( 0, $this->campaign_2->get('campaign_goal') );
-		$this->assertEquals( 0, $this->campaign_2->get('campaign_end_date_enabled') );
-		$this->assertEquals( '', $this->campaign_2->get('campaign_end_date') );
+		$this->assertEquals( 0, $this->campaign_2->get('campaign_end_date') );
 	}
 
 	function test_get_end_time() {

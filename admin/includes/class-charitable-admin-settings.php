@@ -130,8 +130,67 @@ final class Charitable_Admin_Settings {
 	 * @since 	1.0.0
 	 */
 	private function get_fields() {
+		$currency_helper = charitable()->get_currency_helper();
+
 		return apply_filters( 'charitable_settings_fields', array(
 			'general'					=> array(
+				'section_locale'		=> array(
+					'title'				=> __( 'Currency & Location', 'charitable' ), 
+					'type'				=> 'heading', 
+					'priority'			=> 5
+				),
+				'country'				=> array(
+					'title'				=> __( 'Base Country', 'charitable' ), 
+					'type'				=> 'select', 
+					'priority'			=> 10, 
+					'default'			=> 'AU', 
+					'options'			=> charitable()->get_location_helper()->get_countries()
+				), 
+				'currency'				=> array(
+					'title'				=> __( 'Currency', 'charitable' ), 
+					'type'				=> 'select', 
+					'priority'			=> 15, 
+					'default'			=> 'AUD',
+					'options'			=> charitable()->get_currency_helper()->get_all_currencies()						
+				), 
+				'currency_format'		=> array(
+					'title'				=> __( 'Currency Format', 'charitable' ), 
+					'type'				=> 'select', 
+					'priority'			=> 20, 
+					'default'			=> 'left',
+					'options'			=> array(
+						'left' 				=> '$23.00', 
+						'right' 			=> '23.00$',
+						'left-with-space' 	=> '$ 23.00',
+						'right-with-space' 	=> '23.00 $'
+					)
+				),
+				'decimal_separator'		=> array(
+					'title'				=> __( 'Decimal Separator', 'charitable' ), 
+					'type'				=> 'select', 
+					'priority'			=> 25, 
+					'default'			=> '.',
+					'options'			=> array(
+						'.' => 'Period (12.50)',
+						',' => 'Comma (12,50)'						
+					)
+				), 
+				'thousands_separator'	=> array(
+					'title'				=> __( 'Thousands Separator', 'charitable' ), 
+					'type'				=> 'select', 
+					'priority'			=> 30, 
+					'default'			=> ',',
+					'options'			=> array(
+						',' => 'Comma (10,000)', 
+						'.' => 'Period (10.000)' 
+					)
+				),
+				'decimal_count'			=> array(
+					'title'				=> __( 'Number of Decimals', 'charitable' ), 
+					'type'				=> 'number', 
+					'priority'			=> 35, 
+					'default'			=> 2		
+				),
 				'section_dangerous'		=> array(
 					'title'				=> __( 'Dangerous Settings', 'charitable' ), 
 					'type'				=> 'heading', 
@@ -152,17 +211,6 @@ final class Charitable_Admin_Settings {
 				)
 			)
 		) );
-	}
-
-	/**
-	 * Return the currently displayed field.  
-	 *
-	 * @return 	array
-	 * @access  public
-	 * @since 	1.0.0
-	 */
-	public function get_current_field() {
-		return $this->current_field;
 	}
 
 	/**
@@ -277,11 +325,9 @@ final class Charitable_Admin_Settings {
 	 * @since 	1.0.0
 	 */
 	public function render_field( $args ) {		
-		$this->current_field = $args;
-
 		$field_type = isset( $args[ 'type' ] ) ? $args[ 'type' ] : 'text';
 
-		charitable_admin_view( 'settings/' . $field_type . '-field' );
+		charitable_admin_view( 'settings/' . $field_type . '-field', $args );
 	}
 
 	/**
@@ -292,9 +338,7 @@ final class Charitable_Admin_Settings {
 	 * @since 	1.0.0
 	 */
 	public function render_gateways_table( $args ) {
-		$this->current_field = $args;
-
-		charitable_admin_view( 'settings/gateways-table' );
+		charitable_admin_view( 'settings/gateways-table', $args );
 	}
 }
 

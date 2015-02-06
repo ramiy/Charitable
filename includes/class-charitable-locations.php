@@ -29,7 +29,7 @@ class Charitable_Locations {
 	 * @access 	private
 	 * @since 	1.0.0
 	 */
-	private $countries; 
+	private $countries = array(); 
 
 	/**
 	 * Array of states. 
@@ -48,8 +48,8 @@ class Charitable_Locations {
 	 * @since 	1.0.0
 	 */
 	public function get_countries() {
-		if ( ! isset( $this->countries ) ) {
-			$this->countries = apply_filters( 'charitable_countries', include( charitable()->get_path('directory') . '/i18n/countries.php' ) );	
+		if ( empty( $this->countries ) ) {
+			$this->countries = apply_filters( 'charitable_countries', include( charitable()->get_path('directory') . 'i18n/countries.php' ) );	
 		}	
 
 		return $this->countries;

@@ -139,6 +139,7 @@ final class Charitable_Campaign_Post_Type {
 	/**
 	 * Display fields at the very top of the page. 
 	 *
+	 * @param 	WP_Post 	$post
 	 * @return 	void
 	 * @access  public
 	 * @since 	1.0.0
@@ -167,6 +168,11 @@ final class Charitable_Campaign_Post_Type {
 					'priority' 	=> 4, 
 					'view' 		=> 'metaboxes/campaign-donation-options/suggested-amounts', 
 					'label'		=> __( 'Suggested Donation Amounts', 'charitable' )
+				), 
+				'permit_custom'	=> array(
+					'priority'	=> 6, 
+					'view'		=> 'metaboxes/campaign-donation-options/permit-custom', 
+					'label'		=> __( 'Allow Custom Donations', 'charitable' ) 
 				)
 			) 
 		);
@@ -186,17 +192,51 @@ final class Charitable_Campaign_Post_Type {
 	public function save_post($post_id, WP_Post $post) {
 		if ( $this->meta_box_helper->user_can_save( $post ) ) {
 					
-			$campaign_goal_enabled 				= isset( $_POST['_campaign_goal_enabled'] ) && $_POST['_campaign_goal_enabled'] == 'on';
-			$campaign_goal 						= floatval( $_POST['_campaign_goal'] );
-			$campaign_end_date_enabled 			= isset( $_POST['_campaign_end_date_enabled'] ) && $_POST['_campaign_end_date_enabled'] == 'on';
-			$campaign_end_date 					= date( 'Y-m-d H:i:s', strtotime( $_POST['_campaign_end_date'] ) );
-			$campaign_suggested_donations 		= $_POST['_campaign_suggested_donations'];
+			$values = array();
+
+			/* Set up sane defaults for every field. */
+			$defaults = apply_filters( 'charitable_campaign_field_defaults', array(
+				'_campaign_goal' 					=> 0, 
+				'_campaign_end_date' 				=> 0, 
+				'_campaign_suggested_donations'		=> '', 
+				'_campaign_allow_custom_donations'	=> 1, 
+				'_campaign_description'				=> ''
+			), $post );
+
+			/* Sanitize campaign goal. */
+			if ( isset( $_POST['_campaign_goal'] ) && ! empty( $_POST['_campaign_goal'] ) ) {
+				$values['_campaign_goal'] = charitable()->get_currency_helper()->sanitize_monetary_amount( $_POST['_campaign_goal'] );
+			}
 			
-			update_post_meta( $post_id, '_campaign_goal_enabled', $campaign_goal_enabled );
-			update_post_meta( $post_id, '_campaign_goal', $campaign_goal );
-			update_post_meta( $post_id, '_campaign_end_date_enabled', $campaign_end_date_enabled );
-			update_post_meta( $post_id, '_campaign_end_date', $campaign_end_date );
-			update_post_meta( $post_id, '_campaign_suggested_donations', $campaign_suggested_donations );
+			/* Sanitize end date. */
+			if ( isset( $_POST['_campaign_end_date'] ) && ! empty( $_POST['_end_date'] ) ) {				
+				$values['_campaign_end_date'] = date( 'Y-m-d H:i:s', strtotime( $_POST['_campaign_end_date'] ) );
+			}
+
+			/* @todo This needs work */
+			if ( isset( $_POST['_campaign_suggested_donations'] ) ) {
+				$values['_campaign_suggested_donations'] = $_POST['_campaign_suggested_donations'];
+			}			
+
+			/* Sanitize custom donation field. */
+			if ( isset( $_POST['_campaign_allow_custom_donations'] ) ) {
+				$values['_campaign_allow_custom_donations'] = intval( $_POST['_campaign_allow_custom_donations'] == 'on' ); 
+			}
+			
+			/* Sanitize description. */
+			if ( isset( $_POST['_campaign_description'] ) )  {
+				$values['_campaign_description'] = sanitize_text_field( $_POST['_campaign_description'] );	
+			}
+			
+			/* Hook for plugins to save custom meta. */
+			$values = apply_filters( 'charitable_campaign_field_values', $values, $post );
+
+			/* Merge defaults with passed values. */
+			$values = array_merge( $defaults, $values );
+
+			foreach ( $values as $key => $value ) {
+				update_post_meta( $post_id, $key, $value );
+			}
 		}
 	}	
 

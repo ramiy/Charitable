@@ -9,21 +9,24 @@
 /*
  * Metaboxes
  */
-.post-type-campaign {
-	@include clearfix;
-
-	.postbox {
+@mixin charitable_metabox() {
+	&.postbox {
 		min-width: 0;
-		padding: 0 0 20px 0;
+		padding: 0 0 24px 0;
 		margin: 0;
 		background-color: transparent;
 		border: none;
 		box-shadow: none;
+
+		.inside {
+			margin-top: 0;
+			padding: 0;
+		}
 	}
 
-	#poststuff .inside {
-		padding: 0;
-	}
+ 	.postbox-title {
+ 		padding: 0 0 6px 0;
+ 	}	
 
 	.handlediv, 
 	.hndle {
@@ -35,6 +38,11 @@
 	textarea {
 	    padding: 14px 10px;
 		width: 100%;	    
+	}
+
+	input[type=checkbox], 
+	input[type=radio] {
+		width: auto;
 	}
 
 	.charitable-metabox-title {
@@ -50,15 +58,19 @@
 	}
 
 	.charitable-metabox {
-		padding: 10px 10px 20px; 
+		padding: 10px 10px 24px; 
 		-webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
 		box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
 		border: 1px solid #e5e5e5;
 		background-color: #fff;
 
+		.charitable-metabox-wrap {
+			margin-bottom: 12px;	
+		}
+
 		.charitable-metabox-title {
-			margin-bottom: 10px;
-			padding: 4px 0 10px 0; 
+			margin-bottom: 12px;
+			padding: 4px 0 12px 0; 
 			border-bottom: 1px solid #e5e5e5;
 		}
 
@@ -68,6 +80,38 @@
 			font-weight: bold;			
 		}
 	}
+
+	.charitable-checkbox-wrap {
+		label {
+			display: inline-block;
+		}
+	}
+}
+
+.post-type-campaign .postbox-title {
+	border-bottom: 1px solid #eee;
+}
+
+#campaign-title, 
+#campaign-goal, 
+#campaign-end-date, 
+#campaign-description, 
+#campaign-donation-options {
+	@include charitable_metabox();
+}
+
+// .post-type-campaign {
+// 	.postbox {
+// 		.handlediv {
+// 			display: none;
+// 		}
+// 	}
+// }
+
+#campaign-top-sortables {
+	// @include clearfix;
+
+	
 }
 
 #campaign-top-sortables {
@@ -89,7 +133,7 @@
 		#campaign-goal, 
 		#campaign-end-date {
 			width: 100%;
-			padding: 0 0 20px;
+			padding: 0 0 24px;
 		}
 	}
 }

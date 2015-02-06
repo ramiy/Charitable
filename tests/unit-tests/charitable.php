@@ -28,7 +28,7 @@ class Test_Charitable extends Charitable_UnitTestCase {
 		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'class-charitable-session-donation.php' );
 		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'db/abstract-class-charitable-db.php' );
 		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'db/class-charitable-campaign-donations-db.php' );
-		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'class-charitable-currency-helper.php' );
+		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'class-charitable-currency.php' );
 		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'class-charitable-request.php' );		
 		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'class-charitable-locations.php' );
 		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'class-charitable-notices.php' );
@@ -67,7 +67,11 @@ class Test_Charitable extends Charitable_UnitTestCase {
 	}
 
 	function test_get_location_helper() {
-		$this->assertEquals( 'Charitable_Locations', get_class( $this->charitable->get_location_helper() ) );
+		$this->assertInstanceOf( 'Charitable_Locations', $this->charitable->get_location_helper() );
+	}
+
+	function test_get_currency_helper() {
+		$this->assertInstanceOf( 'Charitable_Currency', $this->charitable->get_currency_helper() );
 	}
 
 	function test_get_request() {

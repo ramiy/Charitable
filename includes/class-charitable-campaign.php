@@ -107,7 +107,7 @@ class Charitable_Campaign {
 	 * @since 	1.0.0
 	 */
 	public function is_endless() {
-		return false == $this->get('campaign_end_date_enabled');
+		return 0 == $this->get('campaign_end_date');
 	}
 
 	/**

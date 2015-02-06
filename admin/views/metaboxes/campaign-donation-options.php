@@ -6,12 +6,11 @@
  * @since 	1.0.0
  */
 
-$title 					= isset( $charitable_view_args['title'] ) 		? $charitable_view_args['title'] 	: '';
-$tooltip 				= isset( $charitable_view_args['tooltip'] )		? '<span class="tooltip"> '. $charitable_view_args['tooltip'] . '</span>'	: '';
-$description			= isset( $charitable_view_args['description'] )	? '<span class="charitable-helper">' . $charitable_view_args['description'] . '</span>' 	: '';
+$title 					= isset( $view_args['title'] ) 			? $view_args['title'] 	: '';
+$tooltip 				= isset( $view_args['tooltip'] )		? '<span class="tooltip"> '. $view_args['tooltip'] . '</span>'	: '';
+$description			= isset( $view_args['description'] )	? '<span class="charitable-helper">' . $view_args['description'] . '</span>' 	: '';
 ?>
 <div class="charitable-metabox">
-	<h4 class="charitable-metabox-title"><?php printf( '%s %s', $title, $tooltip ) ?></h4>
 	<?php 
 	do_action( 'charitable_campaign_donation_options_metabox' );
 	?>

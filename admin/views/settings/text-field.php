@@ -6,10 +6,13 @@
  * @since 	1.0.0
  */
 
-$field 		= charitable_get_admin_settings()->get_current_field();
-$value 		= charitable_get_option( $field[ 'key' ] );
+$value = charitable_get_option( $view_args[ 'key' ] );
+
+if ( empty( $value ) ) {
+	$value = isset( $view_args['default'] ) ? $view_args['default'] : '';
+}
 ?>
-<input type="text" name="charitable_settings[ <?php echo $field['key'] ?> ]" value="<?php echo $value ?>">
-<?php if ( isset( $field['help'] ) ) : ?>
-	<span class="charitable-help"><?php echo $field['help']  ?></span>
+<input type="text" name="charitable_settings[<?php echo $view_args['key'] ?>]" value="<?php echo $value ?>">
+<?php if ( isset( $view_args['help'] ) ) : ?>
+	<span class="charitable-help"><?php echo $view_args['help']  ?></span>
 <?php endif;

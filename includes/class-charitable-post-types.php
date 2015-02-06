@@ -107,7 +107,7 @@ final class Charitable_Post_Types {
 					'hierarchical' 			=> false, // Hierarchical causes memory issues - WP loads all records!
 					'rewrite' 				=> false,
 					'query_var' 			=> true,
-					'supports' 				=> array( 'excerpt' ),
+					'supports' 				=> array( 'thumbnail' ),
 					'has_archive' 			=> true,
 					'show_in_nav_menus' 	=> true, 
 					'show_in_menu'			=> false

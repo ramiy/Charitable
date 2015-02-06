@@ -6,9 +6,8 @@
  * @since 	1.0.0
  */
 
-$field 		= charitable_get_admin_settings()->get_current_field();
-$helper		= charitable_get_helper( 'gateway' );
-$gateway 	= charitable_get_option( 'defaultgateway' );
+$helper	= charitable_get_helper( 'gateway' );
+$gateway = charitable_get_option( 'defaultgateway' );
 
 if ( count( $helper->get_available_gateways() ) ) : 
 ?>

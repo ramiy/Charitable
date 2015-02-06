@@ -180,7 +180,7 @@ class Charitable {
 		/**
 		 * Helpers.
 		 */
-		require_once( $this->includes_path . 'class-charitable-currency-helper.php' );
+		require_once( $this->includes_path . 'class-charitable-currency.php' );
 		require_once( $this->includes_path . 'class-charitable-request.php' );		
 		require_once( $this->includes_path . 'class-charitable-locations.php' );
 		require_once( $this->includes_path . 'class-charitable-notices.php' );
@@ -424,15 +424,15 @@ class Charitable {
 	/**
 	 * Return an instance of the currency helper. 
 	 *
-	 * @return 	Charitable_Currency_Helper
+	 * @return 	Charitable_Currency
 	 * @access 	public
 	 * @since 	1.0.0
 	 */
 	public function get_currency_helper() {
-		$currency_helper = $this->get_registered_object('Charitable_Currency_Helper');
+		$currency_helper = $this->get_registered_object('Charitable_Currency');
 
 		if ( false === $currency_helper ) {
-			$currency_helper = new Charitable_Currency_Helper();
+			$currency_helper = new Charitable_Currency();
 			$this->register_object( $currency_helper );
 		}
 

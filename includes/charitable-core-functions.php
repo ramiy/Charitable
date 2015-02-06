@@ -29,13 +29,14 @@ function charitable() {
 /**
  * This returns the value for a particular Charitable setting. 
  *
- * @param 	key 	$key
+ * @param 	key 		$key
+ * @param 	mixed 		$default 		The value to return if key is not set.
  * @return 	mixed
  * @since 	1.0.0
  */
-function charitable_get_option( $key ) {
+function charitable_get_option( $key, $default = false ) {
 	$settings = get_option( 'charitable_settings' );
-	return isset( $settings[ $key ] ) ? $settings[ $key ] : false;
+	return isset( $settings[ $key ] ) ? $settings[ $key ] : $default;
 }
 
 /**
