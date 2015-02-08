@@ -43,12 +43,18 @@ final class Charitable_Currency {
 	 *
 	 * 50.00 -> $50.00 
 	 *
-	 * @param 	float 		$amount
- 	 * @return 	string
+	 * @param 	string 		$amount
+ 	 * @return 	string|WP_Error
  	 * @access 	public
  	 * @since 	1.0.0
  	 */
 	public function get_monetary_amount( $amount ) {
+		/* Sending anything other than a string can cause unexpected returns, so we require floats. */
+		if ( ! is_string( $amount ) ) {
+			_doing_it_wrong( __METHOD__, 'Amount must be passed as a string.', '1.0.0' );
+			return new WP_Error( 'invalid_parameter_type', 'Amount must be passed as a string.' );
+		}
+
 		$amount = $this->sanitize_monetary_amount( $amount );
 		$amount = number_format( 
 			$amount, 
@@ -57,6 +63,45 @@ final class Charitable_Currency {
 			charitable_get_option( 'thousands_separator', ',' ) 
 		);
 		return sprintf( $this->get_currency_format(), $this->get_currency_symbol(), $amount );
+	}
+
+	/**
+	 * Receives unfiltered monetary amount and sanitizes it, returning it as a float.  
+	 *
+	 * @param 	string 		$amount
+	 * @return 	float
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function sanitize_monetary_amount( $amount ) {
+		/* Sending anything other than a string can cause unexpected returns, so we require floats. */
+		if ( ! is_string( $amount ) ) {
+			_doing_it_wrong( __METHOD__, 'Amount must be passed as a string.', '1.0.0' );			
+			return new WP_Error( 'invalid_parameter_type', 'Amount must be passed as a string.' );
+		}
+
+		/** If we're using commas for decimals, we need to turn any commas into points, 
+			and we need to replace existing points with blank spaces. Example:
+			12.500,50 -> 12500.50
+		*/		
+		if ( $this->is_comma_decimal() ) {
+			$amount = str_replace( ',', '_', $amount );
+			$amount = str_replace( '.', '', $amount );
+			$amount = str_replace( '_', '.', $amount );
+		}
+
+		return filter_var( $amount, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
+	}
+
+	/**
+	 * Checks whether the comma is being used as the separator.
+	 *
+	 * @return 	boolean
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function is_comma_decimal() {
+		return ( ',' == charitable_get_option( 'decimal_separator', '.' ) );
 	}
 
 	/**
@@ -237,28 +282,6 @@ final class Charitable_Currency {
 		}
 
 		return apply_filters( 'charitable_currency_symbol', $currency_symbol, $currency );
-	}
-
-	/**
-	 * Receives unfiltered monetary amount and sanitizes it, returning it as a float.  
-	 *
-	 * @param 	mixed 		$amount
-	 * @return 	float
-	 * @access  public
-	 * @since 	1.0.0
-	 */
-	public function sanitize_monetary_amount( $amount ) {
-		/* If there is a comma and commas are the decimal separator, replace with a decimal */
-		if ( strpos( $amount, ',' ) && ( ',' == charitable_get_option( 'decimal_separator', '.' ) ) ) {
-			$amount = str_replace( ',', '.', $amount );
-		}
-
-		/* If there is a period and periods are the thousands separator, remove period */
-		if ( strpos( $amount, '.' ) && ( '.' == charitable_get_option( 'thousands_separator', ',' ) ) ) {
-			$amount = str_replace( '', '.', $amount );
-		}
-
-		return filter_var( $amount, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
 	}
 }
 

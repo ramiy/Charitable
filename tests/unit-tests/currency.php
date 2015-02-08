@@ -16,10 +16,35 @@ class Test_Charitable_Currency_Helper extends Charitable_UnitTestCase {
 	}
 
 	function test_get_monetary_amount() {		
-		$this->assertEquals( '&#36;60.00', $this->currency_helper->get_monetary_amount( 60 ) );
+		$this->assertEquals( '&#36;60.00', $this->currency_helper->get_monetary_amount( '60' ) );
+	}
 
-		// Update to different currency format
+	/**
+	 * @expectedIncorrectUsage	Charitable_Currency::get_monetary_amount
+	 */
+	function test_get_monetary_amount_exception() {		
+		$this->assertInstanceOf( 'WP_Error', $this->currency_helper->get_monetary_amount( 60 ) );		
+	}
 
+	function test_sanitize_monetary_amount() {		
+		$this->assertEquals( 60.00, $this->currency_helper->sanitize_monetary_amount( '60' ) );		
+		$this->assertEquals( 10.50, $this->currency_helper->sanitize_monetary_amount( '10.50' ) );
+		$this->assertEquals( 10000.00, $this->currency_helper->sanitize_monetary_amount( '10,000' ) );
+
+		/* Switch separators */
+		$this->set_decimal_separator( ',' );
+		$this->set_thousands_separator( '.' );
+
+		$this->assertEquals( 600.00, $this->currency_helper->sanitize_monetary_amount( '600,00' ) );
+		$this->assertEquals( 6000.00, $this->currency_helper->sanitize_monetary_amount( '6.000' ) );
+		$this->assertEquals( 12500.50, $this->currency_helper->sanitize_monetary_amount( '12.500,50' ) );
+	}
+
+	/**
+	 * @expectedIncorrectUsage	Charitable_Currency::sanitize_monetary_amount
+	 */
+	function test_sanitize_monetary_amount_exception() {		
+		$this->assertInstanceOf( 'WP_Error', $this->currency_helper->sanitize_monetary_amount( 10.50 ) );
 	}
 	
 	function test_get_decimals() {
@@ -82,23 +107,8 @@ class Test_Charitable_Currency_Helper extends Charitable_UnitTestCase {
 			$this->set_currency( $currency_code );	
 
 			$expected = sprintf( '%1$s%2$s', $symbol, '60.00');
-			$this->assertEquals( $expected, $this->currency_helper->get_monetary_amount(60) );
+			$this->assertEquals( $expected, $this->currency_helper->get_monetary_amount( '60' ) );
 		}
-	}
-
-	function test_sanitize_monetary_amount() {
-		$this->assertEquals( 60.00, $this->currency_helper->sanitize_monetary_amount( 60 ) );
-		$this->assertEquals( 60.00, $this->currency_helper->sanitize_monetary_amount( '60' ) );
-		$this->assertEquals( 10.50, $this->currency_helper->sanitize_monetary_amount( 10.50 ) );
-		$this->assertEquals( 10.50, $this->currency_helper->sanitize_monetary_amount( '10.50' ) );
-		$this->assertEquals( 10000.00, $this->currency_helper->sanitize_monetary_amount( '10,000' ) );
-
-		/* Switch separators */
-		$this->set_decimal_separator( ',' );
-		$this->set_thousands_separator( '.' );
-
-		$this->assertEquals( 600.00, $this->currency_helper->sanitize_monetary_amount( '600,00' ) );
-		$this->assertEquals( 6000.00, $this->currency_helper->sanitize_monetary_amount( 6.000 ) );
 	}
 
 	/* --- Series of helper functions --- */
