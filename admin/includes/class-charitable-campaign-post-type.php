@@ -46,8 +46,9 @@ final class Charitable_Campaign_Post_Type {
 
 		$this->meta_box_helper = new Charitable_Meta_Box_Helper( 'charitable-campaign' );
 
-		add_action( 'edit_form_after_title', 						array( $this, 'campaign_form_top' ) );
 		add_action( 'add_meta_boxes', 								array( $this, 'add_meta_boxes' ), 10);
+		add_action( 'add_meta_boxes_campaign', 						array( $this, 'wrap_editor' ) );
+		add_action( 'edit_form_after_title', 						array( $this, 'campaign_form_top' ) );			
 		add_action( 'save_post', 									array( $this, 'save_post' ), 10, 2);
 		add_action( 'charitable_campaign_donation_options_metabox', array( $this, 'campaign_donation_options_metabox' ));
 		add_filter( 'enter_title_here', 							array( $this, 'campaign_enter_title' ), 10, 2 );
@@ -82,12 +83,19 @@ final class Charitable_Campaign_Post_Type {
 	 */
 	public function add_meta_boxes() {
 		$meta_boxes = array(
-			array(
-				'id'			=> 'campaign-title', 
-				'title'			=> __( 'Campaign Title', 'charitable' ), 
+			// array(
+			// 	'id'			=> 'campaign-title', 
+			// 	'title'			=> __( 'Campaign Title', 'charitable' ), 
+			// 	'context'		=> 'campaign-top', 
+			// 	'priority'		=> 'high', 
+			// 	'view'			=> 'metaboxes/campaign-title'
+			// ),			
+			array( 
+				'id' 			=> 'campaign-description', 
+				'title' 		=> __( 'Campaign Description', 'charitable' ), 
 				'context'		=> 'campaign-top', 
 				'priority'		=> 'high', 
-				'view'			=> 'metaboxes/campaign-title'
+				'view' 			=> 'metaboxes/campaign-description'
 			),
 			array( 
 				'id' 			=> 'campaign-goal', 
@@ -96,7 +104,7 @@ final class Charitable_Campaign_Post_Type {
 				'priority'		=> 'high', 
 				'view' 			=> 'metaboxes/campaign-goal', 
 				'description'	=> __( 'Leave empty for campaigns without a fundraising goal.', 'charitable' )
-			), 			
+			), 	
 			array( 
 				'id'			=> 'campaign-end-date', 
 				'title'			=> __( 'End Date', 'charitable' ), 
@@ -105,20 +113,21 @@ final class Charitable_Campaign_Post_Type {
 				'view'			=> 'metaboxes/campaign-end-date', 
 				'description'	=> __( 'Leave empty for ongoing campaigns.', 'charitable' )
 			),
-			array( 
-				'id' 			=> 'campaign-description', 
-				'title' 		=> __( 'Campaign Description', 'charitable' ), 
-				'context'		=> 'campaign-top', 
-				'priority'		=> 'high', 
-				'view' 			=> 'metaboxes/campaign-description'
-			),
 			array(
 				'id'			=> 'campaign-donation-options', 
 				'title'			=> __( 'Donation Options', 'charitable' ), 
-				'context'		=> 'campaign-top', 
+				'context'		=> 'campaign-advanced', 
 				'priority'		=> 'high', 
 				'view' 			=> 'metaboxes/campaign-donation-options'
-			)
+			), 
+			array(
+				'id'			=> 'campaign-extended-description', 
+				'title'			=> __( 'Extended Description', 'charitable' ), 
+				'context'		=> 'campaign-advanced', 
+				'priority'		=> 'high', 
+				'view'			=> 'metaboxes/campaign-extended-description'
+			),	
+			
 		);
 
 		apply_filters( 'charitable_campaign_meta_boxes', $meta_boxes );
@@ -148,6 +157,81 @@ final class Charitable_Campaign_Post_Type {
 		if ( 'campaign' == $post->post_type ) {
 			do_meta_boxes( 'campaign', 'campaign-top', $post );
 		}		
+	}
+
+	/**
+	 * Wrap elements around the main editor.
+	 *
+	 * @return 	void
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function wrap_editor() {
+		add_filter( 'edit_form_after_title', array( $this, 'advanced_campaign_settings' ), 20 );
+		// add_filter( 'edit_form_after_editor', array( $this, 'advanced_campaign_settings' ), 10 );
+		// add_filter( 'edit_form_after_editor', array( $this, 'editor_wrap_after' ), 20 );
+	}
+
+	/**
+	 * Wrap editor (and other advanced settings). 
+	 *
+	 * @return 	string
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function editor_wrap_before() {
+		charitable_admin_view( 'metaboxes/campaign-advanced-wrap-before', array( 'meta_boxes' => $this->get_advanced_meta_boxes() ) );
+	}
+
+	/**
+	 * End wrapper around editor and other advanced settings. 
+	 *
+	 * @return 	void
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function editor_wrap_after() {
+		charitable_admin_view( 'metaboxes/campaign-advanced-wrap-after' );
+	}
+
+	/**
+	 * Display advanced campaign fields. 
+	 *
+	 * @param 	WP_Post 		$post
+	 * @return 	void
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function advanced_campaign_settings( $post ) {
+		charitable_admin_view( 'metaboxes/campaign-advanced-settings', array( 'meta_boxes' => $this->get_advanced_meta_boxes() ) );
+	}
+
+	/**
+	 * Return flat array of meta boxes, ordered by priority.  
+	 *
+	 * @global 	array		$wp_meta_boxes
+	 * @return 	array
+	 * @access  private
+	 * @since 	1.0.0
+	 */
+	private function get_advanced_meta_boxes() {
+		global $wp_meta_boxes;
+
+		$meta_boxes = array();
+
+		if ( ! isset( $wp_meta_boxes['campaign']['campaign-advanced'] ) ) {
+			return $meta_boxes;
+		}
+
+		foreach ( array( 'high', 'sorted', 'core', 'default', 'low' ) as $priority ) {
+			if ( isset( $wp_meta_boxes['campaign']['campaign-advanced'][$priority] ) ) {
+				foreach ( (array) $wp_meta_boxes['campaign']['campaign-advanced'][$priority] as $box ) {
+					$meta_boxes[] = $box;
+				}
+			}
+		}
+
+		return $meta_boxes;
 	}
 
 	/**

@@ -134,19 +134,102 @@
 #campaign-donation-options .charitable-checkbox-wrap label {
   display: inline-block; }
 
-#campaign-top-sortables #campaign-goal,
-#campaign-top-sortables #campaign-end-date {
-  float: left;
-  width: 48%; }
-#campaign-top-sortables #campaign-goal {
-  padding-right: 4%; }
-#campaign-top-sortables #campaign-description {
-  clear: both; }
-@media (max-width: 37.5em) {
+#charitable-campaign-advanced-metabox {
+  *zoom: 1;
+  clear: both;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+  border: 1px solid #dedede; }
+  #charitable-campaign-advanced-metabox:before, #charitable-campaign-advanced-metabox:after {
+    content: " ";
+    display: table; }
+  #charitable-campaign-advanced-metabox:after {
+    clear: both; }
+  #charitable-campaign-advanced-metabox .wp-editor-expand #wp-content-editor-tools {
+    background-color: transparent; }
+  #charitable-campaign-advanced-metabox .charitable-tabs {
+    float: left;
+    width: 20%;
+    margin: 0; }
+    #charitable-campaign-advanced-metabox .charitable-tabs li {
+      position: relative;
+      display: block;
+      float: none; }
+    #charitable-campaign-advanced-metabox .charitable-tabs a {
+      display: block;
+      padding: 10px;
+      color: #747474;
+      text-decoration: none; }
+    #charitable-campaign-advanced-metabox .charitable-tabs li.ui-tabs-active {
+      z-index: 2;
+      margin-right: -2px;
+      border-top: 1px solid #dedede;
+      border-bottom: 1px solid #dedede;
+      background-color: #fff; }
+    #charitable-campaign-advanced-metabox .charitable-tabs li:first-child {
+      border-radius: 4px 0 0 0;
+      border-top-color: transparent; }
+  #charitable-campaign-advanced-metabox .ui-tabs-panel {
+    box-sizing: border-box;
+    float: right;
+    width: 80%;
+    padding: 20px;
+    border-left: 1px solid #dedede;
+    border-top: 0;
+    border-radius: 0 4px 4px 0;
+    background-color: #fff; }
+    #charitable-campaign-advanced-metabox .ui-tabs-panel .inside {
+      padding: 0;
+      margin: 0; }
+  #charitable-campaign-advanced-metabox #wp-content-editor-tools {
+    padding-top: 0; }
+
+#campaign-top-sortables {
+  padding-top: 20px; }
   #campaign-top-sortables #campaign-goal,
   #campaign-top-sortables #campaign-end-date {
+    float: left;
+    width: 48%; }
+  #campaign-top-sortables #campaign-goal {
+    padding-right: 4%; }
+  #campaign-top-sortables #campaign-description {
+    clear: both; }
+  @media (max-width: 37.5em) {
+    #campaign-top-sortables #campaign-goal,
+    #campaign-top-sortables #campaign-end-date {
+      width: 100%;
+      padding: 0 0 24px; } }
+
+/* --- Charitable Datepicker Styling --- */
+.charitable-datepicker-table.ui-datepicker {
+  background-color: #fff;
+  padding: 0;
+  border: 1px solid #dedede; }
+  .charitable-datepicker-table.ui-datepicker .ui-datepicker-header {
+    padding: 10px 20px;
+    background: #f5f5f5;
+    text-align: center;
+    border-bottom: 1px solid #dfdfdf; }
+  .charitable-datepicker-table.ui-datepicker .ui-datepicker-prev {
+    position: absolute;
+    left: 10px; }
+  .charitable-datepicker-table.ui-datepicker .ui-datepicker-next {
+    position: absolute;
+    right: 10px; }
+  .charitable-datepicker-table.ui-datepicker .ui-datepicker-calendar {
     width: 100%;
-    padding: 0 0 24px; } }
+    padding: 10px;
+    text-align: center; }
+    .charitable-datepicker-table.ui-datepicker .ui-datepicker-calendar td {
+      border: 1px solid #dedede; }
+    .charitable-datepicker-table.ui-datepicker .ui-datepicker-calendar a {
+      display: block;
+      padding: 6px;
+      color: #747474;
+      text-decoration: none; }
+    .charitable-datepicker-table.ui-datepicker .ui-datepicker-calendar td:hover,
+    .charitable-datepicker-table.ui-datepicker .ui-datepicker-calendar .ui-datepicker-unselectable {
+      background-color: #f5f5f5; }
 
 /*
  * Settings pages

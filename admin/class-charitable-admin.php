@@ -121,12 +121,12 @@ final class Charitable_Admin {
 		if ( in_array( $screen->id, $this->get_charitable_screens() ) ) {		
 			$jquery_version = isset( $wp_scripts->registered['jquery-ui-core']->ver ) ? $wp_scripts->registered['jquery-ui-core']->ver : '1.9.2';
 
-			wp_enqueue_style( 'jquery-ui-style', '//ajax.googleapis.com/ajax/libs/jqueryui/' . $jquery_version . '/themes/smoothness/jquery-ui.css', array(), $this->charitable->get_version() );
+			// wp_enqueue_style( 'jquery-ui-style', '//ajax.googleapis.com/ajax/libs/jqueryui/' . $jquery_version . '/themes/smoothness/jquery-ui.css', array(), $this->charitable->get_version() );
 
 			wp_register_style( 'charitable-admin', $assets_path . 'css/charitable-admin.css', array(), $this->charitable->get_version() );
 			wp_enqueue_style( 'charitable-admin' );
 
-			wp_register_script( 'charitable-admin', $assets_path . 'js/charitable-admin.js', array('jquery-ui-datepicker'), $this->charitable->get_version() );		
+			wp_register_script( 'charitable-admin', $assets_path . 'js/charitable-admin.js', array('jquery-ui-datepicker', 'jquery-ui-tabs'), $this->charitable->get_version() );		
 			wp_enqueue_script( 'charitable-admin' );
 		}
 	}

@@ -100,21 +100,73 @@
 	@include charitable_metabox();
 }
 
-// .post-type-campaign {
-// 	.postbox {
-// 		.handlediv {
-// 			display: none;
-// 		}
-// 	}
-// }
+#charitable-campaign-advanced-metabox {
+	@include clearfix;
+	clear: both;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    border: 1px solid #dedede;
 
-#campaign-top-sortables {
-	// @include clearfix;
+    .wp-editor-expand #wp-content-editor-tools {
+    	background-color: transparent;
+    }
 
-	
+    .charitable-tabs {
+    	float: left;
+    	width: 20%;
+    	margin: 0;
+
+    	li {
+    		position: relative;
+    		display: block;
+    		float: none;
+    	}
+
+    	a {
+    		display: block;
+    		padding: 10px;
+    		color: #747474;
+    		text-decoration: none;
+    	}
+
+    	li.ui-tabs-active {
+    		z-index: 2;
+    		margin-right: -2px;
+    		border-top: 1px solid #dedede;
+    		border-bottom: 1px solid #dedede;
+    		background-color: #fff;
+    	}    	
+
+    	li:first-child {
+    		border-radius: 4px 0 0 0;
+    		border-top-color: transparent;
+    	}
+    }
+
+    .ui-tabs-panel {
+    	box-sizing: border-box;    
+    	float: right;
+    	width: 80%;    	
+    	padding: 20px;
+    	border-left: 1px solid #dedede;
+    	border-top: 0;
+    	border-radius: 0 4px 4px 0;
+    	background-color: #fff;
+
+    	.inside {
+    		padding: 0;
+    		margin: 0;
+    	}
+    }
+
+    #wp-content-editor-tools {
+    	padding-top: 0;
+    }
 }
 
 #campaign-top-sortables {
+	padding-top: 20px;
+	
 	#campaign-goal, 
 	#campaign-end-date {
 		float: left;
@@ -134,6 +186,52 @@
 		#campaign-end-date {
 			width: 100%;
 			padding: 0 0 24px;
+		}
+	}
+}
+
+/* --- Charitable Datepicker Styling --- */
+.charitable-datepicker-table.ui-datepicker {
+    background-color: #fff;
+    padding: 0;
+    border: 1px solid #dedede;
+
+	.ui-datepicker-header {
+	    padding: 10px 20px;
+	    background: #f5f5f5;
+	    text-align: center;
+	    border-bottom: 1px solid #dfdfdf;
+	}
+
+	.ui-datepicker-prev {
+	    position: absolute;
+	    left: 10px;
+	}
+
+	.ui-datepicker-next {
+	    position: absolute;
+	    right: 10px;
+	}
+
+	.ui-datepicker-calendar {
+	    width: 100%;
+	    padding: 10px;
+	    text-align: center;
+	
+		td {
+		    border: 1px solid #dedede;
+		}
+		
+		a {		    
+		    display: block;
+		    padding: 6px;
+		    color: #747474;
+		    text-decoration: none;
+		}
+
+		td:hover, 
+		.ui-datepicker-unselectable {
+		    background-color: #f5f5f5;
 		}
 	}
 }
