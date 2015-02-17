@@ -2,17 +2,14 @@
 /**
  * Contains the class that models a Donor in Charitable.
  *
- * @class 		Charitable_Donor
  * @version		1.0.0
  * @package		Charitable/Classes/Charitable_Donor
- * @copyright 	Copyright (c) 2014, Eric Daams	
+ * @author 		Eric Daams
+ * @copyright 	Copyright (c) 2014, Studio 164a
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
- * @category	Class
- * @author 		Studio164a
  */
 
-// Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 if ( ! class_exists( 'Charitable_Donor' ) ) : 
 

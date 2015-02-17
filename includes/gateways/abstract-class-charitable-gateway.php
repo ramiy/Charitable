@@ -2,12 +2,11 @@
 /**
  * Gateway abstract model 
  *
- * @class 		Charitable_Gateway
- * @abstract
  * @version		1.0.0
- * @package		Charitable/Classes/Gateway
- * @category	Class
- * @author 		Studio164a
+ * @package		Charitable/Classes/Abstract_Charitable_Gateway
+ * @author 		Eric Daams
+ * @copyright 	Copyright (c) 2014, Studio 164a
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License  
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
@@ -17,6 +16,7 @@ if ( ! class_exists( 'Abstract_Charitable_Gateway' ) ) :
 /**
  * Charitable_Gateway
  *
+ * @abstract
  * @since		1.0.0
  */
 abstract class Abstract_Charitable_Gateway {	

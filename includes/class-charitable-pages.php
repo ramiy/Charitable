@@ -2,26 +2,23 @@
 /**
  * Manage Charitable's pages. 
  *
- * The responsibility of this is to manage the pages on 
- * the frontend of the Charitable experience. 
+ * The responsibility of this is to manage the pages on the frontend of the Charitable experience. 
  *
- * @class 		Charitable_Pages
  * @version		1.0.0
- * @package		Charitable/Classes/Charitable Pages
- * @category	Class
- * @author 		Studio164a
+ * @package		Charitable/Classes/Charitable_Pages
+ * @author 		Eric Daams
+ * @copyright 	Copyright (c) 2014, Studio 164a
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License  
  */
 
-/**
- * Exit if accessed directly.
- */
-if ( ! defined( 'ABSPATH' ) ) exit; 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 if ( ! class_exists( 'Charitable_Pages' ) ) : 
 
 /**
  * Charitable_Pages
  *
+ * @final
  * @since 		1.0.0
  */
 final class Charitable_Pages {

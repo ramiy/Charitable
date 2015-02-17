@@ -1,20 +1,25 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly
-}
+/**
+ * Charitable widgets class. 
+ *
+ * Registers custom widgets for Charitable.
+ *
+ * @version		1.0.0
+ * @package		Charitable/Classes/Charitable_Widgets
+ * @author 		Eric Daams
+ * @copyright 	Copyright (c) 2014, Studio 164a
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License  
+ */
+
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 if ( ! class_exists( 'Charitable_Widgets' ) ) : 
 
 /**
- * Post types
+ * Charitable_Widgets
  *
- * Registers post types and taxonomies
- *
- * @class 		Charitable_Widgets
- * @version		1.0.0
- * @package		Charitable/Classes/Core
- * @category	Class
- * @author 		Studio164a
+ * @final
+ * @since 		1.0.0
  */
 final class Charitable_Widgets {
 
@@ -31,17 +36,16 @@ final class Charitable_Widgets {
 	 * which can only be called during the start phase. In other words, don't try 
 	 * to instantiate this object. 
 	 *
-	 * @param Charitable $charitable
-	 * @return void
-	 * @access private
-	 * @since 1.0.0
+	 * @param 	Charitable 	$charitable
+	 * @access 	private
+	 * @since 	1.0.0
 	 */
 	private function __construct(Charitable $charitable) {
 		$this->charitable = $charitable;
 	
 		$this->include_widgets();
 
-		add_action( 'widgets_init', array( &$this, 'register_widgets' ) );
+		add_action( 'widgets_init', array( $this, 'register_widgets' ) );
 
 		// The main Charitable class will save the one instance of this object.
 		$this->charitable->register_object( $this );
@@ -50,13 +54,13 @@ final class Charitable_Widgets {
 	/**
 	 * Instantiate the class, but only during the start phase.
 	 *
-	 * @see charitable_start hook
+	 * @see 	charitable_start hook
 	 * 
-	 * @param Charitable $charitable 
-	 * @return void
+	 * @param 	Charitable 	$charitable 
+	 * @return 	void
 	 * @static 
-	 * @access public
-	 * @since 1.0.0
+	 * @access 	public
+	 * @since 	1.0.0
 	 */
 	public static function charitable_start(Charitable $charitable) {
 		if ( ! $charitable->is_start() ) {

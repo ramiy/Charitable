@@ -1,18 +1,22 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly
-}
+/**
+ * Charitable Meta Box Helper
+ * 
+ * @package 	Charitable/Classes/Charitable_Meta_Box_Helper
+ * @version     1.0.0
+ * @author 		Eric Daams
+ * @copyright 	Copyright (c) 2014, Studio 164a
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License  
+ */
+
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 if ( ! class_exists( 'Charitable_Meta_Box_Helper' ) ) : 
 
 /**
  * Charitable Meta Box Helper
  *
- * @class 		Charitable_Meta_Box_Helper
- * @author 		Studio164a
- * @category 	Admin
- * @package 	Charitable/Admin/Meta Boxes
- * @version     1.0.0
+ * @since 	    1.0.0
  */
 class Charitable_Meta_Box_Helper {
 

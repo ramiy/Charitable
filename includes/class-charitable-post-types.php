@@ -3,9 +3,10 @@
  * The class that defines Charitable's custom post types, taxonomies and post statuses.
  *
  * @version		1.0.0
- * @package		Charitable/Classes/Core
- * @category	Class
- * @author 		Studio164a
+ * @package		Charitable/Classes/Charitable_Post_Types
+ * @author 		Eric Daams
+ * @copyright 	Copyright (c) 2014, Studio 164a
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License  
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit; 

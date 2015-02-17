@@ -2,11 +2,11 @@
 /**
  * Roles and Capabilities for Charitable
  *
- * @class 		Charitable_Roles
  * @version		1.0.0
- * @package		Charitable/Classes/Core
- * @category	Class
- * @author 		Studio164a
+ * @package		Charitable/Classes/Charitable_Roles
+ * @author 		Eric Daams
+ * @copyright 	Copyright (c) 2014, Studio 164a
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License  
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly

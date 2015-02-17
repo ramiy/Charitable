@@ -2,11 +2,11 @@
 /**
  * Paypal Payment Gateway class
  *
- * @class 		Charitable_Gateway_Paypal
  * @version		1.0.0
- * @package		Charitable/Classes/Gateway
- * @category	Class
- * @author 		Studio164a
+ * @package		Charitable/Classes/Charitable_Gateway_Paypal
+ * @author 		Eric Daams
+ * @copyright 	Copyright (c) 2014, Studio 164a
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License  
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly

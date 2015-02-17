@@ -6,7 +6,7 @@
  * @version		1.0.0
  * @package		Charitable/Widgets/Campaigns Widget
  * @category	Class
- * @author 		Studio164a
+ * @author 		Eric Daams
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly

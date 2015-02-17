@@ -6,20 +6,19 @@
  * Version: 			1.0.0~alpha-1.0
  * Author: 				Studio 164a
  * Author URI: 			http://164a.com
- * Requires at least: 	3.9
- * Tested up to: 		4.0
+ * Requires at least: 	4.0
+ * Tested up to: 		4.1
  *
  * Text Domain: 		charitable
- * Domain Path: 		/languages/
+ * Domain Path: 		/i18n/languages/
  *
- * @package 	Charitable
- * @category 	Core
- * @author 		Studio164a
+ * @package 			Charitable
+ * @author 				Eric Daams
+ * @copyright 			Copyright (c) 2014, Studio 164a
+ * @license    			http://opensource.org/licenses/gpl-2.0.php GNU Public License  
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly
-}
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 if ( ! class_exists( 'Charitable' ) ) :
 
@@ -129,6 +128,8 @@ class Charitable {
 
         $this->load_dependencies();
 
+        $this->load_addons();
+
         $this->maybe_upgrade();
 
         $this->attach_hooks_and_filters();
@@ -203,10 +204,11 @@ class Charitable {
 		register_activation_hook( 	__FILE__, array( $this, 'activate') );
 		register_deactivation_hook( __FILE__, array( $this, 'deactivate') );
 
-		add_action('charitable_start', array( 'Charitable_Donation_Actions', 'charitable_start' ), 3 );
-		add_action('charitable_start', array( 'Charitable_Post_Types', 'charitable_start' ), 3 );		
-		add_action('charitable_start', array( 'Charitable_Widgets', 'charitable_start' ), 3 );
-		add_action('charitable_start', array( 'Charitable_Gateway', 'charitable_start' ), 3 ); 
+		add_action('charitable_start',			array( 'Charitable_Donation_Actions', 'charitable_start' ), 3 );
+		add_action('charitable_start',			array( 'Charitable_Post_Types', 'charitable_start' ), 3 );		
+		add_action('charitable_start',			array( 'Charitable_Widgets', 'charitable_start' ), 3 );
+		add_action('charitable_start',			array( 'Charitable_Gateway', 'charitable_start' ), 3 ); 
+		add_action('charitable_activate_addon', array( $this, 'activate_addon' ) );
 	}
 
 	/**
@@ -514,6 +516,69 @@ class Charitable {
 
 			Charitable_Upgrade::upgrade_from( $db_version, self::VERSION );
 		}
+	}
+
+	/**
+	 * Activate an addon. 
+	 *
+	 * This is programatically called on the charitable_activate_addon hook, 
+	 * triggered by a plugin. 
+	 *
+	 * @return 	void
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function activate_addon( $addon ) {
+		/* This method should only be called on the charitable_activate_addon hook */
+		if ( 'charitable_activate_addon' !== current_filter() ) {
+			return false;
+		}
+
+		$filepath = sprintf( '%1$s/addons/%2$s/class-%2$s.php', $this->get_path( 'directory' ), $addon );
+
+		/* If we cannot read the file, bounce back with an error. */
+		if ( ! file_exists( $filepath ) || ! is_readable( $filepath ) ) {
+			_doing_it_wrong( __METHOD__, sprintf( 'File %s does not exist or is not readable', $filepath ), '1.0.0' );
+			return false;
+		}
+
+		require_once( $this->get_path( 'directory' ) . '/addons/abstract-class-charitable-addon.php' );
+		require_once( $filepath );
+
+		$class = str_replace( ' ', '-', $addon );
+		$class = ucfirst( $addon );
+		$class = str_replace( '_', ' ', $addon );
+
+		/* Call the Addon's activate method */
+		call_user_func( array( $class, 'activate' ) );
+	}
+
+	/**
+	 * Load activated addons. 
+	 *
+	 * @return 	void
+	 * @access  private
+	 * @since 	1.0.0
+	 */
+	private function load_addons() {
+		$active_addons = get_option( 'charitable_active_addons', array() );
+
+		if ( empty( $active_addons ) ) {
+			return;
+		}
+
+		require_once( $this->get_path( 'directory' ) . '/addons/abstract-class-charitable-addon.php' );		
+
+		foreach ( $active_addons as $addon ) {
+			$file = strtolower( $addon );
+			$file = str_replace( '-', '_', $file );
+			$filepath = sprintf( '%1$s/addons/%2$s/class-%2$s.php', $this->get_path( 'directory' ), $file );
+			
+			require_once( $filepath );
+
+			/* Call the Addon's load method */
+			call_user_func( array( $addon, 'load' ) );
+		}	
 	}
 
 	/**

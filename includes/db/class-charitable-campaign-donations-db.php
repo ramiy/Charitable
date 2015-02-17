@@ -2,11 +2,13 @@
 /**
  * Charitable Campaign Donations DB class. 
  *
- * @package     Charitable
- * @subpackage  Classes/Charitable Campaign Donations DB
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
- * @since       1.0.0
-*/
+ * @package     Charitable/Classes/Charitable_Campaign_Donations_DB
+ * @version    	1.0.0
+ * @author 		Eric Daams
+ * @copyright 	Copyright (c) 2014, Studio 164a
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License   
+ */
+
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 if ( ! class_exists( 'Charitable_Campaign_Donations_DB' ) ) : 

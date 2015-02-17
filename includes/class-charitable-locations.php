@@ -2,13 +2,11 @@
 /**
  * Contains the class that provides a utility functions relating to locales.
  *
- * @class 		Charitable_Locations
  * @version		1.0.0
  * @package		Charitable/Classes/Charitable_Locations
- * @copyright 	Copyright (c) 2014, Eric Daams	
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
- * @category	Class
- * @author 		Studio164a
+ * @author 		Eric Daams
+ * @copyright 	Copyright (c) 2014, Studio 164a
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License  
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly. 

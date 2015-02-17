@@ -1,18 +1,23 @@
 <?php 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly
-}
+/**
+ * Charitable Public class. 
+ *
+ * @package 	Charitable/Classes/Charitable_Public
+ * @version     1.0.0
+ * @author 		Eric Daams
+ * @copyright 	Copyright (c) 2014, Studio 164a
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License  
+ */
+
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 if ( ! class_exists( 'Charitable_Public' ) ) : 
 
 /**
  * Charitable Public class. 
  *
- * @class 		Charitable_Public 
- * @author 		Studio164a
- * @category 	Public
- * @package 	Charitable/Public
- * @version     0.1
+ * @final
+ * @since 	    1.0.0
  */
 final class Charitable_Public {
 

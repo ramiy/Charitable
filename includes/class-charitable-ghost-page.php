@@ -4,14 +4,14 @@
  *
  * This is based on the IT_Exchange_Casper class in iThemes Exchange. 
  *
- * @class 		Charitable_Ghost_Page
  * @version		1.0.0
- * @package		Charitable/Classes/Charitable Ghost Page
- * @category	Class
- * @author 		Studio164a
+ * @package		Charitable/Classes/Charitable_Ghost_Page
+ * @author 		Eric Daams
+ * @copyright 	Copyright (c) 2014, Studio 164a
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License  
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit; 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 if ( ! class_exists( 'Charitable_Ghost_Page' ) ) : 
 

@@ -2,17 +2,14 @@
 /**
  * Handle donation actions.
  *
- * @class 		Charitable_Donation_Actions
  * @version		1.0.0
  * @package		Charitable/Classes/Charitable_Donation_Actions
- * @category	Class
- * @author 		Studio164a
+ * @author 		Eric Daams
+ * @copyright 	Copyright (c) 2014, Studio 164a
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License  
  */
 
- /**
- * Exit if accessed directly.
- */
-if ( ! defined( 'ABSPATH' ) ) exit; 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 if ( ! class_exists( 'Charitable_Donation_Actions' ) ) : 
 

@@ -2,18 +2,23 @@
 /**
  * Charitable DB base class. 
  *
- * @credit 		https://github.com/easydigitaldownloads/Easy-Digital-Downloads/blob/master/includes/class-edd-db.php
- * 				This is based on Easy Digital Downloads' EDD_DB class. Major props to Pippin Williamson.
+ * Credit: This is based on Easy Digital Downloads' EDD_DB class. Major props to Pippin Williamson.
+ * https://github.com/easydigitaldownloads/Easy-Digital-Downloads/blob/master/includes/class-edd-db.php
  *
- * @package     Charitable
- * @subpackage  Classes/Charitable DB
+ * @package     Charitable/Classes/Charitable_DB
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
- * @since       1.0.0
+ * @version 	1.0.0
 */
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 if ( ! class_exists( 'Charitable_DB' ) ) :
 
+/**
+ * Charitable_DB
+ *
+ * @abstract
+ * @since 		1.0.0
+ */
 abstract class Charitable_DB {
 
 	/**

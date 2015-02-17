@@ -38,4 +38,6 @@ global $current_user;
 $current_user = new WP_User(1);
 $current_user->set_role('administrator');
 
-require 'framework/testcase.php';
+// require 'framework/testcase.php';
+
+require 'helpers/charitable-campaign-helper.php';

@@ -1,18 +1,22 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly
-}
+/**
+ * Donation Form Hidden model
+ *
+ * @version		1.0.0
+ * @package		Charitable/Classes/Charitable_Donation_Form_Hidden
+ * @author 		Eric Daams
+ * @copyright 	Copyright (c) 2014, Studio 164a
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License  
+ */
+
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 if ( ! class_exists( 'Charitable_Donation_Form_Hidden' ) ) : 
 
 /**
  * Donation Form Hidden model
  *
- * @class 		Charitable_Donation_Form_Hidden
- * @version		1.0.0
- * @package		Charitable/Classes/Charitable_Donation_Form_Hidden
- * @category	Class
- * @author 		Studio164a
+ * @since		1.0.0
  */
 class Charitable_Donation_Form_Hidden implements Charitable_Donation_Form_Interface {
 

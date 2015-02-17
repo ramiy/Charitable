@@ -1,18 +1,22 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly
-}
+/**
+ * Campaign model
+ *
+ * @version		1.0.0
+ * @package		Charitable/Classes/Charitable_Campaign
+ * @author 		Eric Daams
+ * @copyright 	Copyright (c) 2014, Studio 164a
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License  
+ */
+
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 if ( ! class_exists( 'Charitable_Campaign' ) ) : 
 
 /**
- * Campaign model
+ * Campaign Model
  *
- * @class 		Charitable_Campaign
- * @version		1.0.0
- * @package		Charitable/Classes/Campaign
- * @category	Class
- * @author 		Studio164a
+ * @since		1.0.0
  */
 class Charitable_Campaign {
 

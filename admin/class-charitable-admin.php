@@ -1,12 +1,12 @@
 <?php 
 /**
  * Class that sets up the Charitable Admin functionality.
- *
- * @class 		Charitable_Admin 
- * @author 		Studio164a
- * @category 	Admin
- * @package 	Charitable/Admin
+ * 
+ * @package 	Charitable/Classes/Charitable_Admin
  * @version     1.0.0
+ * @author 		Eric Daams
+ * @copyright 	Copyright (c) 2014, Studio 164a
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License   
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
@@ -16,6 +16,7 @@ if ( ! class_exists( 'Charitable_Admin' ) ) :
 /**
  * Charitable_Admin 
  *
+ * @final
  * @since     	1.0.0
  */
 final class Charitable_Admin {
@@ -33,7 +34,7 @@ final class Charitable_Admin {
 	 * which can only be called during the start phase. In other words, don't try 
 	 * to instantiate this object. 
 	 *
-	 * @param 	Charitable $charitable
+	 * @param 	Charitable 		$charitable 
 	 * @access 	private
 	 * @since 	1.0.0
 	 */
@@ -50,7 +51,7 @@ final class Charitable_Admin {
 	/**
 	 * Instantiate the class, but only during the start phase.
 	 * 
-	 * @param 	Charitable $charitable 
+	 * @param 	Charitable 		$charitable
 	 * @return 	void
 	 * @static 
 	 * @access 	public
@@ -107,27 +108,21 @@ final class Charitable_Admin {
 
 		$assets_path = $this->charitable->get_path( 'admin', false ) . 'assets/';	
 
-		/**
-		 * Menu styles are loaded everywhere in the Wordpress dashboard. 
-		 */
+		/* Menu styles are loaded everywhere in the Wordpress dashboard. */
 		wp_register_style( 'charitable-admin-menu', $assets_path . 'css/charitable-admin-menu.css', array(), $this->charitable->get_version() );
 		wp_enqueue_style( 'charitable-admin-menu' );
 
-		/**
-		 * The following styles are only loaded on Charitable screens.
-		 */
+		/* The following styles are only loaded on Charitable screens. */
 		$screen = get_current_screen();
 
 		if ( in_array( $screen->id, $this->get_charitable_screens() ) ) {		
-			$jquery_version = isset( $wp_scripts->registered['jquery-ui-core']->ver ) ? $wp_scripts->registered['jquery-ui-core']->ver : '1.9.2';
-
-			// wp_enqueue_style( 'jquery-ui-style', '//ajax.googleapis.com/ajax/libs/jqueryui/' . $jquery_version . '/themes/smoothness/jquery-ui.css', array(), $this->charitable->get_version() );
-
+		
 			wp_register_style( 'charitable-admin', $assets_path . 'css/charitable-admin.css', array(), $this->charitable->get_version() );
 			wp_enqueue_style( 'charitable-admin' );
 
 			wp_register_script( 'charitable-admin', $assets_path . 'js/charitable-admin.js', array('jquery-ui-datepicker', 'jquery-ui-tabs'), $this->charitable->get_version() );		
 			wp_enqueue_script( 'charitable-admin' );
+
 		}
 	}
 

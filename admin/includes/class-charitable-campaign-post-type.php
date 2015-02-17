@@ -1,11 +1,12 @@
 <?php
 /**
  * The class that defines how campaigns are managed on the admin side.
- *
- * @author 		Studio164a
- * @category 	Admin
- * @package 	Charitable/Admin/Campaign Post Type
+ * 
+ * @package 	Charitable/Admin/Charitable_Campaign_Post_Type
  * @version     1.0.0
+ * @author 		Eric Daams
+ * @copyright 	Copyright (c) 2014, Studio 164a
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License  
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit; 

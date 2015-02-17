@@ -2,17 +2,14 @@
 /**
  * Class that sets up the gateways. 
  *
- * @class 		Charitable_Gateway
  * @version		1.0.0
  * @package		Charitable/Classes/Charitable_Gateway
- * @copyright 	Copyright (c) 2014, Eric Daams	
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
- * @category	Class
- * @author 		Studio164a
+ * @author 		Eric Daams
+ * @copyright 	Copyright (c) 2014, Studio 164a
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License   
  */
 
-// Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 if ( ! class_exists( 'Charitable_Gateway' ) ) : 
 

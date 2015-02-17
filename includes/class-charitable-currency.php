@@ -1,19 +1,23 @@
 <?php
 /**
- * Exit if accessed directly.
+ * Charitable Currency helper.
+ *
+ * @package		Charitable/Classes/Charitable_Currency
+ * @version		1.0.0
+ * @author 		Eric Daams
+ * @copyright 	Copyright (c) 2014, Studio 164a
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License  
  */
-if ( ! defined( 'ABSPATH' ) ) exit; 
+
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly.
 
 if ( ! class_exists( 'Charitable_Currency' ) ) : 
 
 /**
- * Charitable Currency helper.
+ * Charitable_Currency
  *
- * @class 		Charitable_Currency
- * @version		1.0.0
- * @package		Charitable/Classes/Charitable_Currency
- * @category	Class
- * @author 		Studio164a
+ * @final
+ * @since		1.0.0
  */
 final class Charitable_Currency {
 
