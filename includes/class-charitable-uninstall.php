@@ -5,11 +5,11 @@
  * The responsibility of this class is to manage the events that need to happen 
  * when the plugin is deactivated.
  *
- * @package		Charitable
- * @subpackage	Charitable/Charitable Upgrade
- * @copyright 	Copyright (c) 2014, Eric Daams	
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
- * @since 		1.0.0
+ * @package		Charitable/Charitable_Uninstall
+ * @version		1.0.0
+ * @author 		Eric Daams
+ * @copyright 	Copyright (c) 2014, Studio 164a
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License 
  */
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 

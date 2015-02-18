@@ -93,6 +93,7 @@ class Charitable_Benefactors_DB extends Charitable_DB {
 	 * @since 	1.0.0
 	 */
 	public function insert( $data, $type = 'campaign_benefactor' ) {
+		
 		/* Allow plugins to filter the data before inserting to database */
 		$data = apply_filters( 'charitable_benefactor_data', $data );
 
@@ -124,6 +125,47 @@ class Charitable_Benefactors_DB extends Charitable_DB {
 		do_action( 'charitable_benefactor_added', $campaign_benefactor_id, $benefactor_details, $data );
 
 		return $campaign_benefactor_id;
+	}
+
+	/**
+	 * Update a benefactor object.  
+	 *
+	 * @param 	int 		$row_id
+	 * @param 	array 		$data
+	 * @param 	string 		$where 			Column used in where argument.
+	 * @return 	boolean
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function update( $row_id, $data = array(), $where = '' ) {
+		
+		if ( isset( $data['benefactor'] ) ) {
+
+			$benefactor_details = $data['benefactor'];
+
+			unset( $data['benefactor'] );
+
+			/* Allow plugins to hook into this event */ 
+			do_action( 'charitable_benefactor_updated', $row_id, $benefactor_details, $where );
+		}
+
+		return parent::update( $row_id, $data, $where );
+	}
+
+	/**
+	 * Delete a row identified by the primary key. 
+	 *
+	 * @param 	int 		$row_id
+	 * @access  public
+	 * @since   1.0.0
+	 * @return  bool
+	 */
+	public function delete( $row_id = 0 ) {
+
+		/* Allow plugins to hook into this event */ 
+		do_action( 'charitable_benefactor_deleted', $row_id );
+
+		return parent::delete( $row_id );
 	}
 
 	/**

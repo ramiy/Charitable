@@ -184,6 +184,9 @@ abstract class Charitable_DB {
 	/**
 	 * Update a row
 	 *
+	 * @param 	int 		$row_id
+	 * @param 	array 		$data
+	 * @param 	string 		$where 			Column used in where argument.
 	 * @access  public
 	 * @since   1.0.0
 	 * @return  bool
@@ -226,6 +229,7 @@ abstract class Charitable_DB {
 	/**
 	 * Delete a row identified by the primary key
 	 *
+	 * @param 	int 		$row_id
 	 * @access  public
 	 * @since   1.0.0
 	 * @return  bool

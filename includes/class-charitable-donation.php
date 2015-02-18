@@ -244,7 +244,7 @@ class Charitable_Donation {
 	 * Inserts a new donation. 
 	 *
 	 * @param 	array 	$args
-	 * @return 	int 	$donation_id
+	 * @return 	int 	$donation_id 		Returns 0 in case of failure. Positive donation ID otherwise.
 	 * @access 	public
 	 * @static
 	 * @since 	1.0.0
@@ -257,12 +257,12 @@ class Charitable_Donation {
 		 */
 		if ( ! isset( $args['campaigns'] ) || ! is_array( $args['campaigns'] ) ) {
 			_doing_it_wrong( 'Charitable_Donation::insert()', 'A donation cannot be inserted without an array of campaigns being donated to.', '1.0.0' );
-			return false;
+			return 0;
 		}
 
 		if ( ! isset( $args['user_id'] ) && ! isset( $args['user'] ) ) {
 			_doing_it_wrong( 'Charitable_Donation::insert()', 'A donation cannot be inserted without a user id.', '1.0.0' );
-			return false;
+			return 0;
 		}
 
 		do_action( 'charitable_before_add_donation', $args );
@@ -283,7 +283,7 @@ class Charitable_Donation {
 				/**
 				 * @todo	Add error message.
 				 */
-				return; 
+				return 0; 
 			}
 
 			/**
@@ -313,7 +313,7 @@ class Charitable_Donation {
 		$donation_id = wp_insert_post( $donation_args );
 
 		if ( ! $donation_id || is_wp_error( $donation_id ) ) {
-			return;
+			return 0;
 		}
 
 		do_action( 'charitable_after_add_donation', $donation_id, $args );

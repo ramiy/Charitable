@@ -141,9 +141,7 @@ class Charitable {
 		// Set static instance
         self::$instance = $this;
 
-        $this->load_dependencies();
-
-        $this->load_addons();
+        $this->load_dependencies();        
 
         $this->maybe_upgrade();
 
@@ -168,6 +166,7 @@ class Charitable {
 		/**
 		 * Start objects.
 		 */
+		require_once( $this->includes_path . 'class-charitable-addons.php' );
 		require_once( $this->includes_path . 'class-charitable-roles.php' );
 		require_once( $this->includes_path . 'class-charitable-donation-actions.php' );
 		require_once( $this->includes_path . 'class-charitable-post-types.php' );
@@ -223,7 +222,7 @@ class Charitable {
 		add_action('charitable_start',			array( 'Charitable_Post_Types', 'charitable_start' ), 3 );		
 		add_action('charitable_start',			array( 'Charitable_Widgets', 'charitable_start' ), 3 );
 		add_action('charitable_start',			array( 'Charitable_Gateway', 'charitable_start' ), 3 ); 
-		add_action('charitable_activate_addon', array( $this, 'activate_addon' ) );
+		add_action('charitable_start', 			array( 'Charitable_Addons', 'charitable_start' ), 3 );		
 	}
 
 	/**
@@ -531,69 +530,6 @@ class Charitable {
 
 			Charitable_Upgrade::upgrade_from( $db_version, self::VERSION );
 		}
-	}
-
-	/**
-	 * Activate an addon. 
-	 *
-	 * This is programatically called on the charitable_activate_addon hook, 
-	 * triggered by a plugin. 
-	 *
-	 * @return 	void
-	 * @access  public
-	 * @since 	1.0.0
-	 */
-	public function activate_addon( $addon ) {
-		/* This method should only be called on the charitable_activate_addon hook */
-		if ( 'charitable_activate_addon' !== current_filter() ) {
-			return false;
-		}
-
-		$filepath = sprintf( '%1$s/addons/%2$s/class-%2$s.php', $this->get_path( 'directory' ), $addon );
-
-		/* If we cannot read the file, bounce back with an error. */
-		if ( ! file_exists( $filepath ) || ! is_readable( $filepath ) ) {
-			_doing_it_wrong( __METHOD__, sprintf( 'File %s does not exist or is not readable', $filepath ), '1.0.0' );
-			return false;
-		}
-
-		require_once( $this->get_path( 'directory' ) . '/addons/abstract-class-charitable-addon.php' );
-		require_once( $filepath );
-
-		$class = str_replace( ' ', '-', $addon );
-		$class = ucfirst( $class );
-		$class = str_replace( '_', ' ', $class );
-
-		/* Call the Addon's activate method */
-		call_user_func( array( $class, 'activate' ) );
-	}
-
-	/**
-	 * Load activated addons. 
-	 *
-	 * @return 	void
-	 * @access  private
-	 * @since 	1.0.0
-	 */
-	private function load_addons() {
-		$active_addons = get_option( 'charitable_active_addons', array() );
-
-		if ( empty( $active_addons ) ) {
-			return;
-		}
-
-		require_once( $this->get_path( 'directory' ) . '/addons/abstract-class-charitable-addon.php' );		
-
-		foreach ( $active_addons as $addon ) {
-			$file = strtolower( $addon );
-			$file = str_replace( '-', '_', $file );
-			$filepath = sprintf( '%1$s/addons/%2$s/class-%2$s.php', $this->get_path( 'directory' ), $file );
-			
-			require_once( $filepath );
-
-			/* Call the Addon's load method */
-			call_user_func( array( $addon, 'load' ) );
-		}	
 	}
 
 	/**

@@ -19,7 +19,7 @@ if ( ! class_exists( 'Charitable_Benefactors' ) ) :
  *
  * @since 		1.0.0
  */
-class Charitable_Benefactors extends Abstract_Charitable_Addon {
+class Charitable_Benefactors implements Charitable_Addon_Interface {
 
 	/**
 	 * Activate the addon. 
@@ -30,9 +30,15 @@ class Charitable_Benefactors extends Abstract_Charitable_Addon {
 	 * @since 	1.0.0
 	 */
 	public static function activate() {		
-		parent::activate();
+		
+		/* This method should only be called on the charitable_activate_addon hook */
+		if ( 'charitable_activate_addon' !== current_filter() ) {
+			return false;
+		}
 
 		new Charitable_Benefactors();
+
+		self::load();
 
 		$table = new Charitable_Benefactors_DB();
 		@$table->create_table();
