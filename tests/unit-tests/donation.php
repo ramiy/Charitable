@@ -1,6 +1,6 @@
 <?php
 
-class Test_Charitable_Donation extends Charitable_UnitTestCase {
+class Test_Charitable_Donation extends WP_UnitTestCase {
 
 	private $donation_1;
 	private $donation_2;
@@ -13,79 +13,48 @@ class Test_Charitable_Donation extends Charitable_UnitTestCase {
 	function setUp() {
 		parent::setUp();
 
-		/**
-		 * Create a campaign
-		 */
-		$campaign_1_id = $this->factory->campaign->create( array(
-			'post_title' 	=> 'Test Campaign', 
-			'post_name' 	=> 'test-campaign', 
-			'post_type' 	=> 'campaign', 
-			'post_status' 	=> 'publish' 
+		/* Campaign 1: $40,000 goal, 300 days till end */
+		$campaign_1_id 	= Charitable_Campaign_Helper::create_campaign( array( 
+			'post_title'					=> 'Test Campaign 1',
+			'_campaign_goal' 				=> 40000.00,
+			'_campaign_end_date' 			=> date( 'Y-m-d H:i:s', strtotime( '+300 days' ) )
 		) );
-
-		$meta = array(
-			'_campaign_goal_enabled' 				=> 1,
-			'_campaign_goal' 						=> 40000.00,
-			'_campaign_end_time_enabled' 			=> 1,
-			'_campaign_end_time' 					=> date( 'Y-m-d H:i:s', strtotime( '+300 days') ),
-			'_campaign_suggested_donations' 		=> array( 5, 20, 50, 100, 250 )
-		);
-
-		foreach( $meta as $key => $value ) {
-			update_post_meta( $campaign_1_id, $key, $value );
-		}
 
 		$this->campaign_1 = new Charitable_Campaign( get_post( $campaign_1_id ) );
 
-		/**
-		 * Create a second campaign
-		 */
-		$campaign_2_id = $this->factory->campaign->create( array(
-			'post_title' 	=> 'Test Campaign 2', 
-			'post_name' 	=> 'test-campaign-2', 
-			'post_type' 	=> 'campaign', 
-			'post_status' 	=> 'publish' 
+		/* Campaign 2: $40,000 goal, 300 days till end */
+		$campaign_2_id 	= Charitable_Campaign_Helper::create_campaign( array( 
+			'post_title'					=> 'Test Campaign 2',
+			'_campaign_goal' 				=> 10000.00
 		) );
-
-		$meta = array(
-			'_campaign_goal_enabled' 				=> 1,
-			'_campaign_goal' 						=> 10000.00,
-			'_campaign_end_time_enabled' 			=> 0,
-			'_campaign_suggested_donations' 		=> array( 5, 20, 50, 100, 250 )
-		);
-
-		foreach( $meta as $key => $value ) {
-			update_post_meta( $campaign_2_id, $key, $value );
-		}
 
 		$this->campaign_2 = new Charitable_Campaign( get_post( $campaign_2_id ) );
 
-		/**
-		 * Create a couple donations
-		 */
+		/* Create a couple donations */
 		$this->donor_id = $this->factory->user->create( array( 'display_name' => 'John Henry' ) );		
 
-		$this->donation_id_1 = $this->factory->donation->create( array( 
+		$this->donation_id_1 = Charitable_Donation_Helper::create_donation( array(
 			'user_id'			=> $this->donor_id, 
 			'campaigns'			=> array(
 				array( 
 					'campaign_id' 	=> $campaign_1_id,
-					'campaign_name'	=> 'Test Campaign', 
+					'campaign_name'	=> 'Test Campaign 1', 
 					'amount'		=> 100
 				)
 			), 
 			'status'			=> 'charitable-pending', 
 			'gateway'			=> 'paypal',
-			'note'				=> 'This is a note'			
+			'note'				=> 'This is a note'
 		) );
+
 		$this->donation_1 = new Charitable_Donation( $this->donation_id_1 ); 
 
-		$this->donation_id_2 = $this->factory->donation->create( array( 
+		$this->donation_id_2 = Charitable_Donation_Helper::create_donation( array(
 			'user_id'			=> $this->donor_id, 
 			'campaigns'			=> array(
 				array( 
 					'campaign_id' 	=> $campaign_1_id,
-					'campaign_name'	=> 'Test Campaign', 
+					'campaign_name'	=> 'Test Campaign 1', 
 					'amount'		=> 75
 				), 
 				array( 
@@ -97,6 +66,7 @@ class Test_Charitable_Donation extends Charitable_UnitTestCase {
 			'status'			=> 'charitable-completed', 
 			'gateway'			=> 'manual', 
 		) );			
+		
 		$this->donation_2 = new Charitable_Donation( $this->donation_id_2 );
 	}
 

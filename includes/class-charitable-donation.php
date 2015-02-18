@@ -257,12 +257,12 @@ class Charitable_Donation {
 		 */
 		if ( ! isset( $args['campaigns'] ) || ! is_array( $args['campaigns'] ) ) {
 			_doing_it_wrong( 'Charitable_Donation::insert()', 'A donation cannot be inserted without an array of campaigns being donated to.', '1.0.0' );
-			return;
+			return false;
 		}
 
 		if ( ! isset( $args['user_id'] ) && ! isset( $args['user'] ) ) {
 			_doing_it_wrong( 'Charitable_Donation::insert()', 'A donation cannot be inserted without a user id.', '1.0.0' );
-			return;
+			return false;
 		}
 
 		do_action( 'charitable_before_add_donation', $args );
@@ -330,11 +330,11 @@ class Charitable_Donation {
 		/**
 		 * Save each campaign donation as a separate object. 
 		 */		
-		$campaign_donations_db = new Charitable_Campaign_Donations_DB();
+		$campaign_donations_db = charitable()->get_db_table( 'campaign_donations' );
 
 		foreach ( $args['campaigns'] as $campaign_args ) {
 			$campaign_args['donation_id'] = $donation_id;
-			$campaign_donations_db->add( $campaign_args );
+			$campaign_donations_db->insert( $campaign_args );
 		}		
 
 		/**

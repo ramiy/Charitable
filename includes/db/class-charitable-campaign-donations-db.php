@@ -91,8 +91,14 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 	 * @access 	public
 	 * @since 	1.0.0
 	 */
-	public function add( array $data ) {
-		return parent::insert( $data, 'campaign_donation' );
+	public function insert( $data, $type = 'campaign_donation' ) {
+		/* Ensure the campaign name is set */
+		if ( ! isset( $data['campaign_name'] ) ) {
+			$campaign = get_post( $data['campaign_id'] );
+			$data['campaign_name'] = $campaign->post_title;
+		}
+
+		return parent::insert( $data, $type );
 	}
 
 	/**

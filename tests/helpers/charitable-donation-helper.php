@@ -1,0 +1,75 @@
+<?php
+/**
+ * Class Charitable_Donation_Helper
+ *
+ * Helper class to create and delete a donation easily.
+ */
+class Charitable_Donation_Helper extends WP_UnitTestCase {
+
+	/**
+	 * Delete a donation 
+	 *
+	 * @return 	void
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function delete_donation( $donation_id ) {
+		// wp_delete_post( $donation_id, true );
+	}
+
+	/**
+	 * Create a donation. 
+	 *
+	 * @param 	array 		$args 				Optional arguments.
+	 * @return 	int 		$donation_id
+	 * @access  public
+	 * @static
+	 * @since 	1.0.0	 
+	 */
+	public static function create_donation( $args = array() ) {
+		$defaults = array(
+			'user_id'		=> false, 
+			'campaigns'		=> array(), 
+			'status'		=> 'charitable-pending', 
+			'gateway'		=> 'manual', 
+			'note'			=> ''
+		);
+
+		$args = array_merge( $defaults, $args );
+
+		if ( false == $args['user_id'] ) {
+			return false;
+		}
+
+		if ( empty( $args['campaigns'] ) || ! is_array( $args['campaigns'] ) ) {
+			return false;
+		}
+
+		return Charitable_Donation::insert( $args );
+	}
+
+	/**
+	 * Create a donation for a user. 
+	 *
+	 * @param 	int 		$user_id
+	 * @param 	int 		$campaign_id
+	 * @param 	float 		$amount
+	 * @return 	int 		$donation_id
+	 * @access  public
+	 * @static
+	 * @since 	1.0.0
+	 */
+	public static function create_campaign_donation_for_user( $user_id, $campaign_id, $amount ) {
+	 	$args = array(
+	 		'user_id'			=> $user_id, 
+	 		'campaigns'			=> array(
+	 			array(	 		
+		 			'campaign_id' 	=> $campaign_id, 
+		 			'amount'		=> $amount
+		 		)
+	 		)
+	 	);
+
+	 	return self::create_donation( $args );
+	}
+}

@@ -1,6 +1,6 @@
 <?php
 
-class Test_Charitable_Campaign_Query extends Charitable_UnitTestCase {
+class Test_Charitable_Campaign_Query extends WP_UnitTestCase {
 
 	private $post;
 
@@ -11,9 +11,7 @@ class Test_Charitable_Campaign_Query extends Charitable_UnitTestCase {
 	function setUp() {
 		parent::setUp();
 
-		/**
-		 * User
-		 */
+		/* User */
 		$user_id = $this->factory->user->create( array( 'display_name' => 'John Henry' ) );
 
 		/**
@@ -22,39 +20,11 @@ class Test_Charitable_Campaign_Query extends Charitable_UnitTestCase {
 		 * End date: 			300 days from now
 		 * Donations received: 	$1000
 		 */
-		$campaign_1_id = $this->factory->campaign->create();
-		$meta = array(
-			'_campaign_goal_enabled' 				=> 1,
-			'_campaign_goal' 						=> 40000.00,
-			'_campaign_end_date_enabled' 			=> 1,
-			'_campaign_end_date' 					=> date( 'Y-m-d H:i:s', strtotime( '+300 days') ),
-			'_campaign_custom_donations_enabled' 	=> 1,
-			'_campaign_suggested_donations' 		=> array(
-				5, 20, 50, 100, 250 
-			),
-			'_campaign_donation_form_fields' 		=> array(
-				'donor_first_name', 
-				'donor_last_name', 
-				'donor_email', 
-				'donor_phone'
-			)
-		);
-		foreach( $meta as $key => $value ) {
-			update_post_meta( $campaign_1_id, $key, $value );
-		}
-
-		$donation_1_id = $this->factory->donation->create( array( 
-			'user_id'			=> $user_id, 
-			'campaigns'			=> array(
-				array( 
-					'campaign_id' 	=> $campaign_1_id,
-					'campaign_name'	=> 'Campaign 1', 
-					'amount'		=> 1000
-				)
-			), 
-			'status'			=> 'charitable-completed', 
-			'gateway'			=> 'paypal', 
+		$campaign_1_id = Charitable_Campaign_Helper::create_campaign( array( 
+			'_campaign_end_date' 	=> date( 'Y-m-d H:i:s', strtotime( '+300 days') )
 		) );
+
+		Charitable_Donation_Helper::create_campaign_donation_for_user( $user_id, $campaign_1_id, 1000 );
 
 		/**
 		 * Campaign 2: 
@@ -62,39 +32,11 @@ class Test_Charitable_Campaign_Query extends Charitable_UnitTestCase {
 		 * End date: 			100 days from now
 		 * Donations received: 	$50
 		 */
-		$campaign_2_id = $this->factory->campaign->create();
-		$meta = array(
-			'_campaign_goal_enabled' 				=> 1,
-			'_campaign_goal' 						=> 40000.00,
-			'_campaign_end_date_enabled' 			=> 1,
-			'_campaign_end_date' 					=> date( 'Y-m-d H:i:s', strtotime( '+100 days') ),
-			'_campaign_custom_donations_enabled' 	=> 1,
-			'_campaign_suggested_donations' 		=> array(
-				5, 20, 50, 100, 250 
-			),
-			'_campaign_donation_form_fields' 		=> array(
-				'donor_first_name', 
-				'donor_last_name', 
-				'donor_email', 
-				'donor_phone'
-			)
-		);
-		foreach( $meta as $key => $value ) {
-			update_post_meta( $campaign_2_id, $key, $value );
-		}
-
-		$donation_2_id = $this->factory->donation->create( array( 
-			'user_id'			=> $user_id, 
-			'campaigns'			=> array(
-				array( 
-					'campaign_id' 	=> $campaign_2_id,
-					'campaign_name'	=> 'Campaign 2', 
-					'amount'		=> 50
-				)
-			), 
-			'status'			=> 'charitable-completed', 
-			'gateway'			=> 'paypal', 
+		$campaign_2_id = Charitable_Campaign_Helper::create_campaign( array( 
+			'_campaign_end_date' 	=> date( 'Y-m-d H:i:s', strtotime( '+100 days') )
 		) );
+
+		Charitable_Donation_Helper::create_campaign_donation_for_user( $user_id, $campaign_2_id, 50 );
 
 		/**
 		 * Campaign 3: 
@@ -102,39 +44,11 @@ class Test_Charitable_Campaign_Query extends Charitable_UnitTestCase {
 		 * End date: 			2 days from now
 		 * Donations received: 	$200
 		 */
-		$campaign_3_id = $this->factory->campaign->create();
-		$meta = array(
-			'_campaign_goal_enabled' 				=> 1,
-			'_campaign_goal' 						=> 40000.00,
-			'_campaign_end_date_enabled' 			=> 1,
-			'_campaign_end_date' 					=> date( 'Y-m-d H:i:s', strtotime( '+2 days') ),
-			'_campaign_custom_donations_enabled' 	=> 1,
-			'_campaign_suggested_donations' 		=> array(
-				5, 20, 50, 100, 250 
-			),
-			'_campaign_donation_form_fields' 		=> array(
-				'donor_first_name', 
-				'donor_last_name', 
-				'donor_email', 
-				'donor_phone'
-			)
-		);
-		foreach( $meta as $key => $value ) {
-			update_post_meta( $campaign_3_id, $key, $value );
-		}
-
-		$donation_3_id = $this->factory->donation->create( array( 
-			'user_id'			=> $user_id, 
-			'campaigns'			=> array(
-				array( 
-					'campaign_id' 	=> $campaign_3_id,
-					'campaign_name'	=> 'Campaign 3', 
-					'amount'		=> 200
-				)
-			), 
-			'status'			=> 'charitable-completed', 
-			'gateway'			=> 'paypal', 
+		$campaign_3_id = Charitable_Campaign_Helper::create_campaign( array( 
+			'_campaign_end_date' 	=> date( 'Y-m-d H:i:s', strtotime( '+2 days') )
 		) );
+
+		Charitable_Donation_Helper::create_campaign_donation_for_user( $user_id, $campaign_3_id, 200 );
 
 		/**
 		 * Campaign 4: 
@@ -142,41 +56,13 @@ class Test_Charitable_Campaign_Query extends Charitable_UnitTestCase {
 		 * End date: 			2 days ago
 		 * Donations received: 	$40
 		 */
-		$campaign_4_id = $this->factory->campaign->create();
-		$meta = array(
-			'_campaign_goal_enabled' 				=> 1,
-			'_campaign_goal' 						=> 40000.00,
-			'_campaign_end_date_enabled' 			=> 1,
-			'_campaign_end_date' 					=> date( 'Y-m-d H:i:s', strtotime( '-2 days') ),
-			'_campaign_custom_donations_enabled' 	=> 1,
-			'_campaign_suggested_donations' 		=> array(
-				5, 20, 50, 100, 250 
-			),
-			'_campaign_donation_form_fields' 		=> array(
-				'donor_first_name', 
-				'donor_last_name', 
-				'donor_email', 
-				'donor_phone'
-			)
-		);
-		foreach( $meta as $key => $value ) {
-			update_post_meta( $campaign_4_id, $key, $value );
-		}
-
-		$donation_4_id = $this->factory->donation->create( array( 
-			'user_id'			=> $user_id, 
-			'campaigns'			=> array(
-				array( 
-					'campaign_id' 	=> $campaign_4_id,
-					'campaign_name'	=> 'Campaign 4', 
-					'amount'		=> 40
-				)
-			), 
-			'status'			=> 'charitable-completed', 
-			'gateway'			=> 'paypal', 
+		$campaign_4_id = Charitable_Campaign_Helper::create_campaign( array( 
+			'_campaign_end_date' 	=> date( 'Y-m-d H:i:s', strtotime( '-2 days') )
 		) );
 
-		// The array of campaign IDs
+		Charitable_Donation_Helper::create_campaign_donation_for_user( $user_id, $campaign_4_id, 40 );
+
+		/* The array of campaign IDs */
 		$this->campaigns = array( 
 			$campaign_1_id, 
 			$campaign_2_id, 
@@ -184,14 +70,14 @@ class Test_Charitable_Campaign_Query extends Charitable_UnitTestCase {
 			$campaign_4_id
 		);
 
-		// The array of campaign IDs, ordered by ending soon
+		/* The array of campaign IDs, ordered by ending soon */
 		$this->campaigns_ordered_by_ending_soon = array(
 			$campaign_3_id, 
 			$campaign_2_id,
 			$campaign_1_id
 		);
 
-		// The array of campaign IDs, ordered by amount raised
+		/* The array of campaign IDs, ordered by amount raised */
 		$this->campaigns_ordered_by_amount = array(
 			$campaign_1_id, 
 			$campaign_3_id,

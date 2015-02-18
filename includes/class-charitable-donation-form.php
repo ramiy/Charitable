@@ -465,18 +465,17 @@ class Charitable_Donation_Form implements Charitable_Donation_Form_Interface {
 			$values['amount'] = $donation_amount;
 		}
 
-		/**
-		 * Set all the user fields. 
-		 */
-		foreach ( $this->get_user_fields() as $key => $field ) {
+		/* Set all the user fields. */
+		$user_fields = array_merge( $this->get_user_fields(), $this->get_user_account_fields() );
+
+		foreach ( $user_fields as $key => $field ) {
 
 			if ( isset( $_POST[$key] ) ) {
 				$values['user'][$key] = $_POST[$key];
 			}
 			else {
-				/**
-				 * If this was a required field, return an error message.
-				 */
+				
+				/* If this was a required field, return an error message. */
 				if ( true === $field['required'] ) {
 					/**
 					 * @todo 	Set error message.

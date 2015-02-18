@@ -1,6 +1,6 @@
 <?php
 
-class Test_Charitable_Session_Donation extends Charitable_UnitTestCase {
+class Test_Charitable_Session_Donation extends WP_UnitTestCase {
 
 	private $session_donation;
 

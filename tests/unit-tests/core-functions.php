@@ -1,6 +1,6 @@
 <?php
 
-class Test_Charitable_Core_Functions extends Charitable_UnitTestCase {
+class Test_Charitable_Core_Functions extends WP_UnitTestCase {
 
 	function setUp() {
 		parent::setUp();

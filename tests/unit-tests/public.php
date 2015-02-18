@@ -1,11 +1,12 @@
 <?php
 
-class Test_Charitable_Public extends Charitable_UnitTestCase {
+class Test_Charitable_Public extends WP_UnitTestCase {
 
 	private $charitable_public;
 
 	function setUp() {
 		parent::setUp();
+		$this->charitable = charitable();
 		$this->charitable_public = $this->charitable->get_registered_object( 'Charitable_Public' );
 		$this->directory_path = $this->charitable->get_path( 'public' );
 		$this->directory_url = $this->charitable->get_path( 'public', false );

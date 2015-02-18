@@ -1,6 +1,6 @@
 <?php
 
-class Test_Charitable_Post_Types extends Charitable_UnitTestCase {
+class Test_Charitable_Post_Types extends WP_UnitTestCase {
 
 	function setUp() {
 		parent::setUp();

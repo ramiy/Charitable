@@ -21,11 +21,8 @@ function _manually_load_plugin() {
 }
 tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
 
-
 require $_tests_dir . '/includes/bootstrap.php';
 
-// deactivate_plugins('charitable/charitable.php');
-// activate_plugin('charitable/charitable.php');
 activate_plugin( 'charitable/charitable.php' );
 
 echo "Installing Charitable...\n";
@@ -38,6 +35,7 @@ global $current_user;
 $current_user = new WP_User(1);
 $current_user->set_role('administrator');
 
-// require 'framework/testcase.php';
 
 require 'helpers/charitable-campaign-helper.php';
+require 'helpers/charitable-donation-helper.php';
+require 'helpers/charitable-donor-helper.php';

@@ -1,9 +1,10 @@
 <?php
 
-class Test_Charitable extends Charitable_UnitTestCase {
+class Test_Charitable extends WP_UnitTestCase {
 
 	function setUp() {
 		parent::setUp();
+		$this->charitable = charitable();
 		$this->directory_path = $this->charitable->get_path( 'directory' );
 		$this->directory_url = $this->charitable->get_path( 'directory', false );
 	}

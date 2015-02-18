@@ -1,6 +1,6 @@
 <?php
 
-class Test_Charitable_Donor extends Charitable_UnitTestCase {
+class Test_Charitable_Donor extends WP_UnitTestCase {
 
 	/**
 	 * We have three different users to test several different 
@@ -17,14 +17,13 @@ class Test_Charitable_Donor extends Charitable_UnitTestCase {
 	function setUp() {
 		parent::setUp();
 
-		// Fish Mooney is created as a user.
+		/* Fish Mooney is created as a user, then made a donor later after making a donation. */
 		$fish = $this->factory->user->create( array( 
 			'user_email'		=> 'fish@gotham.com',
 			'first_name'		=> 'Fish', 
-			'last_name'			=> 'Mooney' 
+			'last_name'			=> 'Mooney'
 		) );
 
-		// Later, Fish makes a donation.
 		Charitable_Donor::create( array(
 			'user_email'		=> 'fish@gotham.com',
 			'address' 			=> '102 Bad Lane',
@@ -35,14 +34,14 @@ class Test_Charitable_Donor extends Charitable_UnitTestCase {
 			'country' 			=> 'US'
 		) );
 
-		// Carmine Falcone is created as a user.
+		/* Carmine Falcone is created as a user (NOT a donor). */
 		$carmine = $this->factory->user->create( array( 
 			'user_email'		=> 'carmine@gotham.com',
 			'first_name'		=> 'Carmine', 
 			'last_name'			=> 'Falcone' 
 		) );
 
-		// James Gordon makes a donation. 
+		/* James Gordon makes a donation and becomes a donor/user in the process. */
 		$james = Charitable_Donor::create( array(
 			'user_email'		=> 'james@gotham.com',
 			'first_name'		=> 'James',
@@ -55,41 +54,25 @@ class Test_Charitable_Donor extends Charitable_UnitTestCase {
 			'country' 			=> 'US'
 		) );
 
-		$campaign_id = $this->factory->campaign->create( array(
-			'post_title' 	=> 'Test Campaign 1', 
-			'post_name' 	=> 'test-campaign-1', 
-			'post_type' 	=> 'campaign', 
-			'post_status' 	=> 'publish' 
-		) );
-
-		$meta = array(
-			'_campaign_goal_enabled' 				=> 1,
-			'_campaign_goal' 						=> 10000.00,
-			'_campaign_end_time_enabled' 			=> 0,
-			'_campaign_suggested_donations' 		=> array( 5, 20, 50, 100, 250 )
-		);
-
-		foreach( $meta as $key => $value ) {
-			update_post_meta( $campaign_id, $key, $value );
-		}
-
-		$this->factory->donation->create( array( 
+		/* Create a campaign wth a donation from James Gordon */
+		$campaign_id = Charitable_Campaign_Helper::create_campaign();
+		
+		Charitable_Donation_Helper::create_donation( array(
 			'user_id'			=> $james, 
 			'campaigns'			=> array(
 				array( 
 					'campaign_id' 	=> $campaign_id,
-					'campaign_name'	=> 'Test Campaign 1', 
 					'amount'		=> 100
 				)
 			), 
 			'status'			=> 'charitable-completed', 
 			'gateway'			=> 'paypal',
-			'note'				=> 'This is a note'			
+			'note'				=> 'This is a note'	
 		) );
-
-		$this->james_gordon = new Charitable_Donor( $james );
-		$this->fish_mooney = new Charitable_Donor( $fish );
-		$this->carmine_falcone = new Charitable_Donor( $carmine );
+		
+		$this->james_gordon 	= new Charitable_Donor( $james );
+		$this->fish_mooney 		= new Charitable_Donor( $fish );
+		$this->carmine_falcone 	= new Charitable_Donor( $carmine );
 	}
 
 	function test_is_donor() {

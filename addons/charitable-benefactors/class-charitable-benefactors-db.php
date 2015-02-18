@@ -92,7 +92,7 @@ class Charitable_Benefactors_DB extends Charitable_DB {
 	 * @access 	public
 	 * @since 	1.0.0
 	 */
-	public function add( array $data ) {
+	public function insert( $data, $type = 'campaign_benefactor' ) {
 		/* Allow plugins to filter the data before inserting to database */
 		$data = apply_filters( 'charitable_benefactor_data', $data );
 
@@ -118,7 +118,7 @@ class Charitable_Benefactors_DB extends Charitable_DB {
 		unset( $data['benefactor'] );
 
 		/* Create the record */
-		$campaign_benefactor_id = parent::insert( $data, 'campaign_benefactor' );
+		$campaign_benefactor_id = parent::insert( $data, $type );
 
 		/* Allow plugins to hook into this event */ 
 		do_action( 'charitable_benefactor_added', $campaign_benefactor_id, $benefactor_details, $data );
