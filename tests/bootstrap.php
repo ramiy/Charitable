@@ -35,7 +35,6 @@ global $current_user;
 $current_user = new WP_User(1);
 $current_user->set_role('administrator');
 
-
 require 'helpers/charitable-campaign-helper.php';
 require 'helpers/charitable-donation-helper.php';
 require 'helpers/charitable-donor-helper.php';

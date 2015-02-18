@@ -134,8 +134,6 @@ final class Charitable_Admin_Settings {
 	 * @since 	1.0.0
 	 */
 	private function get_fields() {
-		$currency_helper = charitable()->get_currency_helper();
-
 		return apply_filters( 'charitable_settings_fields', array(
 			'general'					=> array(
 				'section_locale'		=> array(

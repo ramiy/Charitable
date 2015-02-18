@@ -46,7 +46,7 @@ abstract class Abstract_Charitable_Addon {
 		update_option( 'charitable_active_addons', $active_addons );
 
 		/* Load the addon */
-		$this->load();
+		self::load();
 	}
 
 	/**

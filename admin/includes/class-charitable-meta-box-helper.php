@@ -49,7 +49,7 @@ class Charitable_Meta_Box_Helper {
 		$this->nonce_action = $nonce_action;
 	} 
 
-/**
+	/**
 	 * Metabox callback wrapper. 
 	 *
 	 * Every meta box is registered with this method as its callback, 
@@ -66,7 +66,6 @@ class Charitable_Meta_Box_Helper {
 			return;
 		}	
 
-		$view = $args['args']['view'];
 		$view_args = $args['args'];
 		unset( $view_args['view'] );
 

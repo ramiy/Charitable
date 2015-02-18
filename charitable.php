@@ -31,59 +31,74 @@ if ( ! class_exists( 'Charitable' ) ) :
 class Charitable {
 
 	/**
-     * @var string
+     * @var 	string
      */
 	const VERSION = '1.0.0';
 
 	/**
-     * @var string 	A date in the format: YYYYMMDD
+     * @var 	string 			A date in the format: YYYYMMDD
      */
     const DB_VERSION = '20141024';	
 
 	/**
-	 * @var Charitable
+	 * @var 	Charitable
+	 * @access  private
 	 */
 	private static $instance = null;
 
 	/**
-     * @var string
+     * @var 	string
+     * @access  private
      */
     private $textdomain = 'charitable';    
 
     /**
-     * @var string Directory path for the plugin.
+     * @var 	string 		Directory path for the plugin.
+     * @access  private
      */
     private $directory_path;
 
     /**
-     * @var string Directory url for the plugin.
+     * @var 	string 		Directory url for the plugin.
+     * @access  private
      */
     private $directory_url;
 
     /**
-     * @var string Directory path for the includes folder of the plugin.
+     * @var 	string 		Directory path for the includes folder of the plugin.
+     * @access  private
      */
     private $includes_path;    
 
     /**
-     * @var string Directory path for the admin folder of the plugin. 
+     * @var 	string 		Directory path for the admin folder of the plugin. 
+     * @access  private
      */
     private $admin_path;
 
     /**
-     * @var string Directory path for the assets folder. 
+     * @var 	string 		Directory path for the assets folder. 
+     * @access  private
      */
     private $assets_path;
 
 	/**
-     * @var string Directory path for the templates folder in themes.
+     * @var 	string 		Directory path for the templates folder in themes.
+     * @access  private
      */
     private $theme_template_path;    
 
 	/**
-     * @var string Directory path for the templates folder the plugin.
+     * @var 	string 		Directory path for the templates folder the plugin.
+     * @access  private
      */
     private $plugin_template_path;        
+
+    /**
+     * @var 	array 		Store of registered objects.  
+     * @access  private
+     */
+    private $registry;
 
     /**
      * Create class instance. 
@@ -546,8 +561,8 @@ class Charitable {
 		require_once( $filepath );
 
 		$class = str_replace( ' ', '-', $addon );
-		$class = ucfirst( $addon );
-		$class = str_replace( '_', ' ', $addon );
+		$class = ucfirst( $class );
+		$class = str_replace( '_', ' ', $class );
 
 		/* Call the Addon's activate method */
 		call_user_func( array( $class, 'activate' ) );

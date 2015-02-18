@@ -75,15 +75,16 @@ class Charitable_Campaign_Query extends WP_Query {
 	 * @return 	WP_Query
 	 * @static
 	 * @since 	1.0.0
+	 * @todo
 	 */
 	public static function ordered_by_amount( $args = array() ) {
 		global $wpdb;
 
+		$defaults = array(
+		);
 
-		$ordered_campaign_ids = array();
+		$args = wp_parse_args( $args, $defaults );
 
-		// todo -- set up the array of args
-		
 		return new Charitable_Campaign_Query( $args );
 	}
 }

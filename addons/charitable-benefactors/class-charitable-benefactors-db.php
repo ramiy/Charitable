@@ -88,7 +88,7 @@ class Charitable_Benefactors_DB extends Charitable_DB {
 	 * Add a new benefactor object.
 	 * 
 	 * @param 	array 	$data
-	 * @return 	int|false
+	 * @return 	int 				Positive ID if successful. 0 if failed.
 	 * @access 	public
 	 * @since 	1.0.0
 	 */
@@ -100,7 +100,7 @@ class Charitable_Benefactors_DB extends Charitable_DB {
 		if ( ! isset( $data['benefactor'] ) || ! is_array( $data['benefactor'] ) || empty( $data['benefactor'] ) ) {
 
 			_doing_it_wrong( __METHOD__, 'Campaign benefactors cannot be created without benefactor details.', '1.0.0' );		
-			return false;
+			return 0;
 
 		}
 
@@ -108,7 +108,7 @@ class Charitable_Benefactors_DB extends Charitable_DB {
 		if ( empty( $data['contribution_amount'] ) || ! is_numeric ( $data['contribution_amount'] ) ) {
 
 			_doing_it_wrong( __METHOD__, 'Campaign benefactors cannot be created without a contribution amount.', '1.0.0' );			
-			return false;
+			return 0;
 
 		}		
 
@@ -155,7 +155,7 @@ class Charitable_Benefactors_DB extends Charitable_DB {
 	 * @access 	public
 	 * @since 	1.0.0
 	 */
-	public function create_tables() {
+	public function create_table() {
 		global $wpdb;
 
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
