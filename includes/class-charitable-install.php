@@ -40,7 +40,9 @@ class Charitable_Install {
 		$this->charitable = $charitable;
 
 		$this->setup_roles();
-		$this->create_tables();		
+		$this->create_tables();	
+
+		do_action( 'charitable_install' );	
 	}
 
 	/**

@@ -62,9 +62,9 @@ class Charitable_Benefactors_DB extends Charitable_DB {
 			'campaign_id'						=> '%d',
 			'contribution_amount'				=> '%f', 
 			'contribution_amount_is_percentage'	=> '%d', 
+			'contribution_amount_is_per_item'	=> '%d',
 			'date_created'						=> '%s', 
-			'date_modified'						=> '%s', 
-			'is_active'							=> '%d'
+			'date_deactivated'					=> '%s'
 		);
 	}
 
@@ -78,9 +78,9 @@ class Charitable_Benefactors_DB extends Charitable_DB {
 	public function get_column_defaults() {
 		return array(
 			'contribution_amount_is_percentage'	=> 1,
-			'date_created'						=> '0000-00-00 00:00:00', 
-			'date_modified'						=> '0000-00-00 00:00:00', 
-			'is_active'							=> 1		
+			'contribution_amount_is_per_item'	=> 0,
+			'date_created'						=> date( 'Y-m-d H:i:s' ), 
+			'date_deactivated'					=> '0000-00-00 00:00:00'
 		);
 	}
 
@@ -185,7 +185,11 @@ class Charitable_Benefactors_DB extends Charitable_DB {
 				"SELECT * 
 				FROM $this->table_name 
 				WHERE campaign_id = %d
-				AND is_active = 1;", 
+				AND date_created < NOW()
+				AND (
+					date_modified = '0000-00-00 00:00:00'
+					OR date_modified > NOW()
+				);", 
 				$campaign_id 
 			), OBJECT_K);
 	}
@@ -208,12 +212,12 @@ CREATE TABLE IF NOT EXISTS {$this->table_name} (
 `campaign_id` bigint(20) NOT NULL,				
 `contribution_amount` float NOT NULL,
 `contribution_amount_is_percentage` tinyint(1) NOT NULL DEFAULT 0,
+`contribution_amount_is_per_item` tinyint(1) NOT NULL DEFAULT 0,
 `date_created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-`date_modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-`is_active` tinyint(1) NOT NULL DEFAULT 1,
+`date_deactivated` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
 PRIMARY KEY (`campaign_benefactor_id`),
 KEY `campaign` (`campaign_id`), 
-KEY `active` (`is_active`)
+KEY `active_dates` (`date_created`, `date_deactivated`)
 ) CHARACTER SET utf8 COLLATE utf8_general_ci;
 EOD;
 

@@ -458,21 +458,29 @@ class Charitable {
 	/**
 	 * Returns the model for one of Charitable's database tables. 
 	 *
-	 * @param 	string $table_name
+	 * @param 	string 			$table_name
 	 * @return 	Charitable_DB
 	 * @access 	public
 	 * @since 	1.0.0
 	 */
-	public function get_db_table( $table_name ) {
+	public function get_db_table( $table ) {
+		$default_tables = array(
+			'campaign_donations'	=> 'Charitable_Campaign_Donations_DB'
+		);
+		
+		$tables = apply_filters( 'charitable_db_tables', $default_tables );
 
-		switch ( $table_name ) {
-			case 'campaign_donations' :
-				$class_name = 'Charitable_Campaign_Donations_DB';
-				break;
-
-			default: 
-				return;				
+		if ( isset( $tables[ $table ] ) ) {
+			$class_name = $tables[ $table ];
 		}
+		elseif ( in_array( $table, $tables ) ) {
+			$class_name = $table;
+		}
+		else {
+			_doing_it_wrong( __METHOD__, sprintf( 'Invalid table %s passed', $table ), '1.0.0' );
+			return null;
+		}
+
 
 		$db_table = $this->get_registered_object( $class_name );
 
@@ -508,10 +516,8 @@ class Charitable {
 	 * @since 	1.0.0
 	 */
 	public function deactivate() {
-		if ( charitable_get_option( 'delete_data_on_uninstall' ) ) {
-			require_once( $this->get_path( 'includes' ) . 'class-charitable-uninstall.php' );
-			new Charitable_Uninstall( $this );
-		}		
+		require_once( $this->get_path( 'includes' ) . 'class-charitable-uninstall.php' );
+		new Charitable_Uninstall( $this );
 	}
 
 	/**

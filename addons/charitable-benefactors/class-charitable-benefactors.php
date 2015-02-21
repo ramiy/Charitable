@@ -54,6 +54,43 @@ class Charitable_Benefactors implements Charitable_Addon_Interface {
 	 */
 	public static function load() {
 		require_once( 'class-charitable-benefactors-db.php' );
+
+		add_filter( 'charitable_db_tables', array( 'Charitable_Benefactors', 'register_table' ) );
+		add_action( 'charitable_uninstall', array( 'Charitable_Benefactors', 'uninstall' ) );
+	}
+
+	/**
+	 * Register table. 
+	 *
+	 * @param 	array 		$tables
+	 * @return 	array
+	 * @access  public
+	 * @static
+	 * @since 	1.0.0
+	 */
+	public static function register_table( $tables ) {
+		$tables['benefactors'] = 'Charitable_Benefactors_DB';
+		return $tables;
+	}
+
+	/**
+	 * Called when Charitable is uninstalled and data removal is set to true.  
+	 *
+	 * @return 	void
+	 * @access  public
+	 * @static
+	 * @since 	1.0.0
+	 */
+	public static function uninstall() {
+		if ( 'charitable_uninstall' != current_filter() ) {
+			return;
+		}
+		
+		global $wpdb;		
+
+		$wpdb->query( "DROP TABLE IF EXISTS " . $wpdb->prefix . "charitable_benefactors" );
+
+		delete_option( $wpdb->prefix . 'charitable_benefactors_db_version' );
 	}
 }
 
