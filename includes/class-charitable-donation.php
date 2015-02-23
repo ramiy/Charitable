@@ -80,14 +80,19 @@ class Charitable_Donation {
 	/**
 	 * Instantiate a new donation object based off the ID.
 	 * 
-	 * @param 	int $donation_id 	The donation ID.
-	 * @return 	void
+	 * @param 	mixed 		$donation 		The donation ID or WP_Post object.
 	 * @access 	public
 	 * @since 	1.0.0
 	 */
-	public function __construct( $donation_id ) {
-		$this->donation_id 				= $donation_id;
-		$this->donation_data 			= get_post( $donation_id );
+	public function __construct( $donation ) {
+		if ( is_a( $donation, 'WP_Post' ) ) {
+			$this->donation_id 			= $donation->ID;
+			$this->donation_data 		= $donation;	
+		}
+		else {
+			$this->donation_id 			= $donation;
+			$this->donation_data 		= get_post( $donation );		
+		}		
 	}
 
 	/**
@@ -241,6 +246,26 @@ class Charitable_Donation {
 	}
 
 	/**
+	 * Checks whether the user data passed when inserting the donation is valid. 
+	 *
+	 * @return 	boolean
+	 * @access  private
+	 * @static
+	 * @since 	1.0.0
+	 */
+	private static function is_valid_user_data( $args ) {
+		if ( isset( $args['user_id'] ) && $args['user_id'] ) {
+			return true;
+		}
+
+		if ( false == apply_filters( 'charitable_require_user_account', true ) ) {
+			return true;
+		}
+
+		return isset( $args['user']['user_email'] );
+	}
+
+	/**
 	 * Inserts a new donation. 
 	 *
 	 * @param 	array 	$args
@@ -260,11 +285,11 @@ class Charitable_Donation {
 			return 0;
 		}
 
-		if ( ! isset( $args['user_id'] ) && ! isset( $args['user'] ) ) {
-			_doing_it_wrong( 'Charitable_Donation::insert()', 'A donation cannot be inserted without a user id.', '1.0.0' );
+		if ( ! self::is_valid_user_data( $args ) ) {
+			_doing_it_wrong( 'Charitable_Donation::insert()', 'A donation cannot be inserted without a valid user id or email address.', '1.0.0' );
 			return 0;
 		}
-
+		
 		do_action( 'charitable_before_add_donation', $args );
 
 		/**
@@ -363,7 +388,7 @@ class Charitable_Donation {
 			$status = array_search( $new_status, $valid_statuses );
 
 			if ( false === $status ) {
-				_doing_it_wrong( 'Charitable_Donation::update_status()', sprintf( '%s is not a valid donation status.', $new_status ), '1.0.0' );
+				_doing_it_wrong( __METHOD__, sprintf( '%s is not a valid donation status.', $new_status ), '1.0.0' );
 				return;
 			}
 

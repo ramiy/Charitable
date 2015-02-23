@@ -216,6 +216,15 @@ final class Charitable_Post_Types {
 			'show_in_admin_status_list' => true,
 			'exclude_from_search'       => true,
 		) );
+
+		register_post_status( 'charitable-preapproved', array(
+			'label'                     => _x( 'charitable-preapproved', 'Status General Name', 'charitable' ),
+			'label_count'               => _n_noop( 'Pre Approved (%s)',  'Pre Approved (%s)', 'charitable' ), 
+			'public'                    => false,
+			'show_in_admin_all_list'    => true,
+			'show_in_admin_status_list' => true,
+			'exclude_from_search'       => true,
+		) );
 	}
 }
 

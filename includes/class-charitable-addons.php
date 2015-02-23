@@ -125,7 +125,7 @@ class Charitable_Addons {
 	 * @since 	1.0.0
 	 */
 	private function load_addon_dependencies() {
-		require_once( $this->charitable->get_path( 'directory' ) . '/addons/interface-charitable-addon.php' );
+		require_once( $this->charitable->get_path( 'includes' ) . 'addons/interface-charitable-addon.php' );
 	}
 
 	/**
@@ -137,7 +137,7 @@ class Charitable_Addons {
 	 * @since 	1.0.0
 	 */
 	private function get_addon_filepath( $addon ) {
-		return sprintf( '%1$saddons/%2$s/class-%2$s.php', $this->charitable->get_path( 'directory' ), $addon );
+		return $this->charitable->get_path( 'includes' ) . "addons/{$addon}/class-{$addon}.php";
 	}
 
 	/**

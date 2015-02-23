@@ -458,7 +458,7 @@ class Charitable {
 	/**
 	 * Returns the model for one of Charitable's database tables. 
 	 *
-	 * @param 	string 			$table_name
+	 * @param 	string 			$table
 	 * @return 	Charitable_DB
 	 * @access 	public
 	 * @since 	1.0.0

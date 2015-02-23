@@ -72,7 +72,6 @@ final class Charitable_Admin_Settings {
 	 * Create object instance. 
 	 *
 	 * @param 	Charitable $charitable
-	 * @return 	void
 	 * @access 	private
 	 * @since 	1.0.0
 	 */

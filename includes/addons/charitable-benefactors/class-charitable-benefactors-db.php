@@ -39,7 +39,6 @@ class Charitable_Benefactors_DB extends Charitable_DB {
 	/**
 	 * Set up the database table name. 
 	 *
-	 * @return 	void
 	 * @access 	public
 	 * @since 	1.0.0
 	 */
