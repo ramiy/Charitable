@@ -132,3 +132,14 @@ function charitable_get_current_donation_form() {
 	$campaign = charitable_get_current_campaign();
 	return false === $campaign ? false : $campaign->get_donation_form();
 }
+
+/**
+ * Returns the provided array as a HTML element attribute. 
+ *
+ * @param 	array 		$args
+ * @return 	string
+ * @since 	1.0.0
+ */
+function charitable_get_action_args( $args ) {
+	return sprintf( "data-charitable-args='%s'", json_encode( $args ) );
+}

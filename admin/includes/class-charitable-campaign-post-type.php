@@ -127,11 +127,10 @@ final class Charitable_Campaign_Post_Type {
 				'context'		=> 'campaign-advanced', 
 				'priority'		=> 'high', 
 				'view'			=> 'metaboxes/campaign-extended-description'
-			),	
-			
+			)
 		);
 
-		apply_filters( 'charitable_campaign_meta_boxes', $meta_boxes );
+		$meta_boxes = apply_filters( 'charitable_campaign_meta_boxes', $meta_boxes );
 
 		foreach ( $meta_boxes as $meta_box ) {
 			add_meta_box( 
@@ -243,10 +242,8 @@ final class Charitable_Campaign_Post_Type {
 	 * @since 	1.0.0
 	 */
 	public function campaign_donation_options_metabox() {
-		/**
-		 * Get the array of fields to be displayed within the 
-		 * campaign donations metabox. 
-		 */
+		/** Get the array of fields to be displayed within the 
+		 	campaign donations metabox. **/
 		$fields = apply_filters( 'charitable_campaign_donation_options_fields', 
 			array(
 				'donations' 	=> array(

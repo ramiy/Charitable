@@ -185,12 +185,22 @@ class Charitable_Benefactors_DB extends Charitable_DB {
 				FROM $this->table_name 
 				WHERE campaign_id = %d
 				AND date_created < NOW()
-				AND (
-					date_modified = '0000-00-00 00:00:00'
-					OR date_modified > NOW()
-				);", 
+				AND ( date_deactivated = '0000-00-00 00:00:00' OR date_deactivated > NOW() );", 
 				$campaign_id 
 			), OBJECT_K);
+	}
+
+	/**
+	 * Get active benefactors for a campaign created through a specific extension. 
+	 *
+	 * @param 	int 			$campaign_id
+	 * @param 	string 			$extension
+	 * @return 	Object|false 	False if extensions return nothing. Object otherwise.
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function get_campaign_benefactors_by_extension( $campaign_id, $extension ) {
+		return apply_filters( 'charitable_get_campaign_benefactors', false, $campaign_id, $extension );
 	}
 
 	/**
