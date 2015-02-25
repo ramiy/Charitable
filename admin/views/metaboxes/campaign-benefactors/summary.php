@@ -8,11 +8,8 @@
  */
 
 $benefactor 	= $view_args[ 'benefactor' ]; 
-$action_args 	= charitable_get_action_args( array(
-	'campaign_benefactor_id' => $benefactor->get_benefactor()->campaign_benefactor_id 
-) );
 ?>
 <div class="charitable-benefactor-summary">
 	<span class="summary"><?php echo $benefactor ?></span>
-	<a href="#" class="alignright" data-charitable-action="open-benefactor-form" <?php echo $action_args ?>><?php _e( 'Edit', 'charitable' ) ?></a>
+	<a href="#" class="alignright" data-charitable-toggle="campaign_benefactor_<?php echo $benefactor->campaign_benefactor_id  ?>"><?php _e( 'Edit', 'charitable' ) ?></a>
 </div>

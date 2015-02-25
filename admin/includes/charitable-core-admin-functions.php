@@ -30,7 +30,7 @@ function charitable_admin_view( $view, $view_args = array() ) {
 	$filename = charitable()->get_path( 'admin' ) . 'views/' . $view . '.php';
 
 	if ( ! is_readable( $filename ) ) {
-		_doing_it_wrong( 'charitable_admin_view', __( 'Passed view (' . $filename . ') not found or is not readable.', 'charitable' ), '1.0.0' );
+		_doing_it_wrong( __FUNCTION__, __( 'Passed view (' . $filename . ') not found or is not readable.', 'charitable' ), '1.0.0' );
 	}
 
 	ob_start();

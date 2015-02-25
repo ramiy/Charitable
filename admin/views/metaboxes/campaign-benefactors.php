@@ -18,9 +18,9 @@ $benefactors 	= charitable()->get_db_table( 'benefactors' )->get_campaign_benefa
 ?>
 <div class="charitable-metabox">
 	<?php 
-	if ( false == $benefactors || empty( $benefactors ) ) : ?>
+	if ( empty( $benefactors ) ) : ?>
 		
-		<p><?php __( 'No benefactor relationships have been set up yet.', 'charitable' ) ?></p>
+		<p><?php _e( 'No benefactor relationships have been set up yet.', 'charitable' ) ?></p>
 
 	<?php else :
 		foreach ( $benefactors as $benefactor ) :
@@ -31,6 +31,8 @@ $benefactors 	= charitable()->get_db_table( 'benefactors' )->get_campaign_benefa
 		<?php
 		endforeach;
 	endif;
+	
+	charitable_admin_view( 'metaboxes/campaign-benefactors/form', array( 'benefactor' => null, 'extension' => $extension ) ); 
 	?>
-	<p><a href="#" class="button" data-charitable-action="open-benefactor-form"><?php _e( '+ Create Relationship', 'charitable' ) ?></a></p>
+	<p><a href="#" class="button" data-charitable-toggle="campaign_benefactor_0"><?php _e( '+ Create Relationship', 'charitable' ) ?></a></p>	
 </div>

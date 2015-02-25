@@ -271,7 +271,7 @@ final class Charitable_Campaign_Post_Type {
 	 * @access 	public 
 	 * @since 	1.0.0
 	 */
-	public function save_post($post_id, WP_Post $post) {
+	public function save_post( $post_id, WP_Post $post ) {
 		if ( $this->meta_box_helper->user_can_save( $post ) ) {
 					
 			$values = array();
@@ -308,17 +308,20 @@ final class Charitable_Campaign_Post_Type {
 			/* Sanitize description. */
 			if ( isset( $_POST['_campaign_description'] ) )  {
 				$values['_campaign_description'] = sanitize_text_field( $_POST['_campaign_description'] );	
-			}
-			
+			}				
+
 			/* Hook for plugins to save custom meta. */
 			$values = apply_filters( 'charitable_campaign_field_values', $values, $post );
 
 			/* Merge defaults with passed values. */
 			$values = array_merge( $defaults, $values );
-
+			
 			foreach ( $values as $key => $value ) {
 				update_post_meta( $post_id, $key, $value );
 			}
+
+			/* Hook for plugins to do something else with the posted data */
+			do_action( 'charitable_campaign_save', $post );
 		}
 	}	
 

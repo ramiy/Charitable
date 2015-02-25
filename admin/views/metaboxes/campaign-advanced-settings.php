@@ -18,7 +18,7 @@ if ( ! isset( $view_args['meta_boxes'] ) || empty( $view_args['meta_boxes'] ) ) 
 		<?php endforeach ?>
 	</ul>
 	<?php foreach ( $view_args['meta_boxes'] as $meta_box ) : ?>
-		<div id="<?php echo $meta_box['id'] ?>" class="postbox <?php echo postbox_classes( $meta_box['id'], 'campaign' ) ?>>">
+		<div id="<?php echo $meta_box['id'] ?>" class="postbox <?php echo postbox_classes( $meta_box['id'], 'campaign' ) ?>">
 			<div class="inside">
 				<?php call_user_func( $meta_box['callback'], $post, $meta_box ) ?>
 			</div>

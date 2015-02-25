@@ -65,8 +65,9 @@ class Charitable_Benefactors implements Charitable_Addon_Interface {
 	 */
 	private function attach_hooks_and_filters() {
 		add_filter( 'charitable_db_tables', 					array( $this, 'register_table' ) );
-		add_action( 'charitable_campaign_benefactor_meta_box', 	array( $this, 'benefactor_meta_box' ) );
-		add_action( 'wp_ajax_charitable-open-benefactor-form', 	array( $this, 'benefactor_form' ) );
+		add_filter( 'charitable_campaign_save',			 		array( $this, 'save_benefactors' ) );
+		add_action( 'charitable_campaign_benefactor_meta_box', 	array( $this, 'benefactor_meta_box' ), 5, 2);
+		add_action( 'charitable_campaign_benefactor_meta_box', 	array( $this, 'benefactor_form' ), 10, 2 );
 		add_action( 'charitable_uninstall', 					array( $this, 'uninstall' ) );
 	}
 
@@ -86,28 +87,46 @@ class Charitable_Benefactors implements Charitable_Addon_Interface {
 	/**
 	 * Display a benefactor relationship block inside of a meta box on campaign pages. 
 	 *
-	 * @param 	Object 		$benefactor
+	 * @param 	Charitable_Benefactor 	$benefactor
+	 * @param 	string 					$extension
 	 * @return 	void
 	 * @access  public
 	 * @since 	1.0.0
 	 */
-	public function benefactor_meta_box( $benefactor ) {	
-		charitable_admin_view( 'metaboxes/campaign-benefactors/summary', array( 'benefactor' => $benefactor ) );		
+	public function benefactor_meta_box( $benefactor, $extension ) {	
+		charitable_admin_view( 'metaboxes/campaign-benefactors/summary', array( 'benefactor' => $benefactor, 'extension' => $extension ) );		
 	}
 
 	/**
 	 * Display benefactor relationship form.  
 	 *
+	 * @param 	Charitable_Benefactor 	$benefactor
+	 * @param 	string 					$extension
 	 * @return 	void
 	 * @access  public
 	 * @since 	1.0.0
 	 */
-	public function benefactor_form() {
-		$data = isset( $_POST['data'] ) ? $_POST['data'] : array();
+	public function benefactor_form( $benefactor, $extension ) {
+		charitable_admin_view( 'metaboxes/campaign-benefactors/form', array( 'benefactor' => $benefactor, 'extension' => $extension ) );
+	}
 
-		charitable_admin_view( 'metaboxes/campaign-benefactors/form', $data );
+	/**
+	 * Save benefactors when saving campaign.
+	 *
+	 * @param 	WP_Post 	$post 		Post object.
+	 * @return 	void
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function save_benefactors( WP_Post $post ) {
+		if ( ! isset( $_POST['_campaign_benefactor'] ) ) {
+			return;
+		}
 
-		wp_die();
+		$benefactors = $_POST['_campaign_benefactor'];
+		echo '<pre>'; 
+		print_r( $_POST );
+		die;
 	}
 
 	/**

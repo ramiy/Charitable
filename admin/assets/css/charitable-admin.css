@@ -20,7 +20,7 @@
 #campaign-goal.postbox,
 #campaign-end-date.postbox,
 #campaign-description.postbox,
-#campaign-donation-options.postbox {
+.charitable-metabox.postbox {
   min-width: 0;
   padding: 0 0 24px 0;
   margin: 0;
@@ -31,14 +31,14 @@
   #campaign-goal.postbox .inside,
   #campaign-end-date.postbox .inside,
   #campaign-description.postbox .inside,
-  #campaign-donation-options.postbox .inside {
+  .charitable-metabox.postbox .inside {
     margin-top: 0;
     padding: 0; }
 #campaign-title .postbox-title,
 #campaign-goal .postbox-title,
 #campaign-end-date .postbox-title,
 #campaign-description .postbox-title,
-#campaign-donation-options .postbox-title {
+.charitable-metabox .postbox-title {
   padding: 0 0 6px 0; }
 #campaign-title .handlediv,
 #campaign-title .hndle,
@@ -48,42 +48,42 @@
 #campaign-end-date .hndle,
 #campaign-description .handlediv,
 #campaign-description .hndle,
-#campaign-donation-options .handlediv,
-#campaign-donation-options .hndle {
+.charitable-metabox .handlediv,
+.charitable-metabox .hndle {
   display: none; }
 #campaign-title input,
-#campaign-title select,
 #campaign-title textarea,
 #campaign-goal input,
-#campaign-goal select,
 #campaign-goal textarea,
 #campaign-end-date input,
-#campaign-end-date select,
 #campaign-end-date textarea,
 #campaign-description input,
-#campaign-description select,
 #campaign-description textarea,
-#campaign-donation-options input,
-#campaign-donation-options select,
-#campaign-donation-options textarea {
+.charitable-metabox input,
+.charitable-metabox textarea {
   padding: 14px 10px;
   width: 100%; }
 #campaign-title input[type=checkbox],
 #campaign-title input[type=radio],
+#campaign-title input[type=button],
 #campaign-goal input[type=checkbox],
 #campaign-goal input[type=radio],
+#campaign-goal input[type=button],
 #campaign-end-date input[type=checkbox],
 #campaign-end-date input[type=radio],
+#campaign-end-date input[type=button],
 #campaign-description input[type=checkbox],
 #campaign-description input[type=radio],
-#campaign-donation-options input[type=checkbox],
-#campaign-donation-options input[type=radio] {
+#campaign-description input[type=button],
+.charitable-metabox input[type=checkbox],
+.charitable-metabox input[type=radio],
+.charitable-metabox input[type=button] {
   width: auto; }
 #campaign-title .charitable-metabox-title,
 #campaign-goal .charitable-metabox-title,
 #campaign-end-date .charitable-metabox-title,
 #campaign-description .charitable-metabox-title,
-#campaign-donation-options .charitable-metabox-title {
+.charitable-metabox .charitable-metabox-title {
   font-size: 14px;
   margin-top: 0;
   margin-bottom: 6px; }
@@ -91,7 +91,7 @@
 #campaign-goal .charitable-helper,
 #campaign-end-date .charitable-helper,
 #campaign-description .charitable-helper,
-#campaign-donation-options .charitable-helper {
+.charitable-metabox .charitable-helper {
   display: block;
   padding-top: 6px;
   font-style: italic; }
@@ -99,13 +99,13 @@
 #campaign-goal .charitable-metabox .charitable-metabox-wrap,
 #campaign-end-date .charitable-metabox .charitable-metabox-wrap,
 #campaign-description .charitable-metabox .charitable-metabox-wrap,
-#campaign-donation-options .charitable-metabox .charitable-metabox-wrap {
+.charitable-metabox .charitable-metabox .charitable-metabox-wrap {
   margin-bottom: 12px; }
 #campaign-title .charitable-metabox .charitable-metabox-title,
 #campaign-goal .charitable-metabox .charitable-metabox-title,
 #campaign-end-date .charitable-metabox .charitable-metabox-title,
 #campaign-description .charitable-metabox .charitable-metabox-title,
-#campaign-donation-options .charitable-metabox .charitable-metabox-title {
+.charitable-metabox .charitable-metabox .charitable-metabox-title {
   margin-bottom: 12px;
   padding: 4px 0 12px 0;
   border-bottom: 1px solid #e5e5e5; }
@@ -113,7 +113,7 @@
 #campaign-goal .charitable-metabox label,
 #campaign-end-date .charitable-metabox label,
 #campaign-description .charitable-metabox label,
-#campaign-donation-options .charitable-metabox label {
+.charitable-metabox .charitable-metabox label {
   display: block;
   margin-bottom: 6px;
   font-weight: bold; }
@@ -121,7 +121,7 @@
 #campaign-goal .charitable-checkbox-wrap label,
 #campaign-end-date .charitable-checkbox-wrap label,
 #campaign-description .charitable-checkbox-wrap label,
-#campaign-donation-options .charitable-checkbox-wrap label {
+.charitable-metabox .charitable-checkbox-wrap label {
   display: inline-block; }
 
 #charitable-campaign-advanced-metabox.ui-tabs {
@@ -157,7 +157,8 @@
       float: none;
       background: none;
       margin: 0;
-      border: 0; }
+      border: 0;
+      white-space: normal; }
     #charitable-campaign-advanced-metabox.ui-tabs .charitable-tabs.ui-tabs-nav a {
       display: block;
       float: none;
@@ -173,6 +174,9 @@
     #charitable-campaign-advanced-metabox.ui-tabs .charitable-tabs.ui-tabs-nav li:first-child {
       border-radius: 4px 0 0 0;
       border-top-color: transparent; }
+    #charitable-campaign-advanced-metabox.ui-tabs .charitable-tabs.ui-tabs-nav li:last-child {
+      margin-bottom: 10px;
+      border-bottom-color: transparent; }
   #charitable-campaign-advanced-metabox.ui-tabs .ui-tabs-panel {
     box-sizing: border-box;
     float: right;
@@ -188,6 +192,49 @@
       margin: 0; }
   #charitable-campaign-advanced-metabox.ui-tabs #wp-content-editor-tools {
     padding-top: 0; }
+
+/* --- Benefactors --- */
+.charitable-benefactor-wrap {
+  padding: 0 10px 10px;
+  margin-top: 10px;
+  border: 1px solid #ddd;
+  background: #f5f5f5; }
+  .charitable-benefactor-wrap select {
+    width: 100%; }
+
+.charitable-benefactor-contribution-amount {
+  margin-bottom: 10px; }
+  .charitable-benefactor-contribution-amount .contribution-amount {
+    margin-bottom: 10px;
+    font-size: 16px; }
+  @media (min-width: 42.5em) {
+    .charitable-benefactor-contribution-amount {
+      border: 1px solid #ddd;
+      background-color: #fff; }
+      .charitable-benefactor-contribution-amount .contribution-amount {
+        width: auto;
+        min-width: 220px;
+        margin: 1px;
+        border: none;
+        box-shadow: none; }
+      .charitable-benefactor-contribution-amount .contribution-type {
+        float: right;
+        margin: 10px;
+        width: auto; }
+      .charitable-benefactor-contribution-amount input:focus,
+      .charitable-benefactor-contribution-amount select:focus {
+        box-shadow: none; } }
+
+.charitable-benefactor-date-wrap {
+  margin-top: 10px; }
+  .charitable-benefactor-date-wrap label {
+    float: left;
+    width: 49%; }
+  .charitable-benefactor-date-wrap label:nth-child(2n+2) {
+    margin-left: 2%; }
+  .charitable-benefactor-date-wrap input {
+    margin: 1em 0;
+    font-weight: normal; }
 
 /* --- Top campaign meta boxes --- */
 #campaign-top-sortables {
