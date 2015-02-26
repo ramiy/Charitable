@@ -98,7 +98,11 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 			$data['campaign_name'] = $campaign->post_title;
 		}
 
-		return parent::insert( $data, $type );
+		$campaign_donation_id = parent::insert( $data, $type );
+
+		Charitable_Campaign::flush_donations_cache( $data['campaign_id'] );
+
+		return $campaign_donation_id;
 	}
 
 	/**

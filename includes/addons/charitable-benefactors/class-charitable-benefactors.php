@@ -123,10 +123,44 @@ class Charitable_Benefactors implements Charitable_Addon_Interface {
 			return;
 		}
 
+		$currency_helper = charitable()->get_currency_helper();
 		$benefactors = $_POST['_campaign_benefactor'];
-		echo '<pre>'; 
-		print_r( $_POST );
-		die;
+
+		foreach ( $benefactors as $campaign_benefactor_id => $data ) {
+
+			/* If the contribution amount is set to zero, we won't create a benefactor object. */
+			if ( 0 == $data['contribution_amount'] ) {
+				continue;
+			}
+
+			$data['campaign_id'] = $post->ID;
+			$data['contribution_amount_is_percentage'] = intval( false !== strpos( $data['contribution_amount'], '%' ) );
+			$data['contribution_amount'] = $currency_helper->sanitize_monetary_amount( $data['contribution_amount'] );
+
+			if ( isset( $data['date_created'] ) && strlen( $data['date_created'] ) ) {
+				$data['date_created'] = date( 'Y-m-d 00:00:00', strtotime( $data['date_created'] ) );
+			}
+
+			/** Sanitize end date of benefactor relationship. If the campaign has an end date, then the benefactor 
+				relationship should end then or before then (not after) **/ 
+			$campaign_end_date = get_post_meta( $post->ID, '_campaign_end_date', true );
+
+			if ( isset( $data['date_deactivated'] ) && strlen( $data['date_deactivated'] ) ) {
+				$date_deactivated = strtotime( $data['date_deactivated'] );			
+				$data['date_deactivated'] = ( strtotime( $campaign_end_date ) < $date_deactivated ) ? $campaign_end_date : date( 'Y-m-d 00:00:00', $date_deactivated );
+			}
+			elseif ( 0 != $campaign_end_date ) {
+				$data['date_deactivated'] = $campaign_end_date;
+			}
+
+			/* Insert or update benefactor record */
+			if ( 0 == $campaign_benefactor_id ) {
+				charitable()->get_db_table( 'benefactors' )->insert( $data );
+			}
+			else {
+				charitable()->get_db_table( 'benefactors' )->update( $campaign_benefactor_id, $data );
+			}
+		}
 	}
 
 	/**

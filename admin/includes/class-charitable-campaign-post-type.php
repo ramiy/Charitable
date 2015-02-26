@@ -84,13 +84,6 @@ final class Charitable_Campaign_Post_Type {
 	 */
 	public function add_meta_boxes() {
 		$meta_boxes = array(
-			// array(
-			// 	'id'			=> 'campaign-title', 
-			// 	'title'			=> __( 'Campaign Title', 'charitable' ), 
-			// 	'context'		=> 'campaign-top', 
-			// 	'priority'		=> 'high', 
-			// 	'view'			=> 'metaboxes/campaign-title'
-			// ),			
 			array( 
 				'id' 			=> 'campaign-description', 
 				'title' 		=> __( 'Campaign Description', 'charitable' ), 
@@ -291,8 +284,8 @@ final class Charitable_Campaign_Post_Type {
 			}
 			
 			/* Sanitize end date. */
-			if ( isset( $_POST['_campaign_end_date'] ) && ! empty( $_POST['_end_date'] ) ) {				
-				$values['_campaign_end_date'] = date( 'Y-m-d H:i:s', strtotime( $_POST['_campaign_end_date'] ) );
+			if ( isset( $_POST['_campaign_end_date'] ) && ! empty( $_POST['_campaign_end_date'] ) ) {				
+				$values['_campaign_end_date'] = date( 'Y-m-d 00:00:00', strtotime( $_POST['_campaign_end_date'] ) );
 			}
 
 			/* @todo This needs work */

@@ -138,6 +138,9 @@ class Charitable_Benefactors_DB extends Charitable_DB {
 	 */
 	public function update( $row_id, $data = array(), $where = '' ) {
 		
+		/* Allow plugins to filter the data before inserting to database */
+		$data = apply_filters( 'charitable_benefactor_data', $data );
+
 		if ( isset( $data['benefactor'] ) ) {
 
 			$benefactor_details = $data['benefactor'];

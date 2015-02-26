@@ -53,13 +53,7 @@ final class Charitable_Currency {
  	 * @since 	1.0.0
  	 */
 	public function get_monetary_amount( $amount ) {
-		/* Sending anything other than a string can cause unexpected returns, so we require floats. */
-		if ( ! is_string( $amount ) ) {
-			_doing_it_wrong( __METHOD__, 'Amount must be passed as a string.', '1.0.0' );
-			return new WP_Error( 'invalid_parameter_type', 'Amount must be passed as a string.' );
-		}
-
-		$amount = $this->sanitize_monetary_amount( $amount );
+		$amount = $this->sanitize_monetary_amount( strval( $amount ) );
 		$amount = number_format( 
 			$amount, 
 			charitable_get_option( 'decimal_count', 2 ), 
@@ -94,7 +88,7 @@ final class Charitable_Currency {
 			$amount = str_replace( '_', '.', $amount );
 		}
 
-		return filter_var( $amount, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
+		return floatval( filter_var( $amount, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION ) );
 	}
 
 	/**

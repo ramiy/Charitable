@@ -23,27 +23,27 @@ class Charitable_Template {
 	/**
 	 * @var 	string Theme template path. 
 	 */
-	private $theme_template_path;
+	protected $theme_template_path;
 
 	/**
 	 * @var 	array Template names to be loaded. 
 	 */
-	private $template_names;
+	protected $template_names;
 
 	/**
 	 * @var 	array Template name options. 
 	 */
-	private $theme_template_options;
+	protected $theme_template_options;
 
 	/**
 	 * @var 	bool Whether to load template file if it is found. 
 	 */
-	private $load;
+	protected $load;
 
 	/** 
 	 * @var 	bool Whether to use require_once or require. 
 	 */
-	private $require_once;
+	protected $require_once;
 
 	/**
 	 * Class constructor. 
@@ -56,7 +56,8 @@ class Charitable_Template {
 	 * @since 	1.0.0
 	 */
 	public function __construct($template_name, $load = false, $require_once = true) {
-		$this->theme_template_path = trailingslashit( charitable()->get_public()->get_path( 'theme_templates' ) );
+		$this->theme_template_path = trailingslashit( apply_filters( 'charitable_theme_template_path', 'charitable' ) );
+		$this->base_template_path = charitable()->get_path( 'public' ) . 'templates/';
 		$this->template_names = (array) $template_name;
 		$this->load = $load;
 		$this->require_once = $require_once;
@@ -69,10 +70,10 @@ class Charitable_Template {
 	 * Return the theme template options. 
 	 *
 	 * @return 	array
-	 * @access 	private
+	 * @access 	protected
 	 * @since 	1.0.0
 	 */
-	private function get_theme_template_options() {
+	protected function get_theme_template_options() {
 		$options = array();
 
 		foreach ( $this->template_names as $template_name ) {
@@ -87,10 +88,10 @@ class Charitable_Template {
 	 * Renders the template. 
 	 *
 	 * @return 	void
-	 * @access 	private
+	 * @access 	protected
 	 * @since 	1.0.0
 	 */
-	private function render() {
+	protected function render() {
 
 		/**
 		 * Get the template and ensure it exists.
@@ -115,10 +116,10 @@ class Charitable_Template {
 	 * @uses 	locate_template()
 	 *
 	 * @return 	string 
-	 * @access 	private
+	 * @access 	protected
 	 * @since 	1.0.0
 	 */
-	private function locate_template() {
+	protected function locate_template() {
 
 		/**
 		 * Template options are first checked in the theme/child theme using locate_template. 
@@ -129,7 +130,7 @@ class Charitable_Template {
 		 * No templates found in the theme/child theme, so use the plugin's default template.
 		 */
 		if ( ! $template ) {
-			$template = charitable()->get_public()->get_path( 'base_templates' ) . $this->template_names[0];
+			$template = $this->base_template_path . $this->template_names[0];
 		}
 
 		return apply_filters( 'charitable_locate_template', $template, $this->template_names );
