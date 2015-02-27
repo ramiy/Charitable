@@ -296,12 +296,14 @@ class Charitable_Campaign {
 	/**
 	 * Returns the key used for caching all donations made to this campaign.
 	 * 
+	 * @param 	int 		$campaign_id
 	 * @return 	string
 	 * @access 	public
+	 * @static
 	 * @since 	1.0.0
 	 */
-	private function get_donations_cache_key() {
-		return 'charitable_campaign_' . $this->get_campaign_id() . '_donations';
+	public static function get_donations_cache_key( $campaign_id ) {
+		return 'charitable_campaign_' . $campaign_id . '_donations';
 	}
 
 	/**
@@ -317,13 +319,13 @@ class Charitable_Campaign {
 			/**
 			 * Try to fetch from cache first.
 			 */
-			$this->donations = get_transient( $this->get_donations_cache_key() );
+			$this->donations = get_transient( $this->get_donations_cache_key( $this->get_campaign_id() ) );
 
 			if ( false === $this->donations ) {
 
 				$this->donations = charitable()->get_db_table('campaign_donations')->get_donations_on_campaign( $this->get_campaign_id() );
 	
-				set_transient( $this->get_donations_cache_key(), $this->donations, 0 ); 
+				set_transient( $this->get_donations_cache_key( $this->get_campaign_id() ), $this->donations, 0 ); 
 			}
 		}
 
@@ -343,12 +345,12 @@ class Charitable_Campaign {
 			/**
 			 * Try to fetch from cache first. 
 			 */
-			$this->donated_amount = get_transient( $this->get_donations_cache_key() . '_amount' );
+			$this->donated_amount = get_transient( $this->get_donations_cache_key( $this->get_campaign_id() ) . '_amount' );
 
 			if ( $this->donated_amount === false ) {
 				$this->donated_amount = charitable()->get_db_table('campaign_donations')->get_campaign_donated_amount( $this->get_campaign_id() );
 
-				set_transient( $this->get_donations_cache_key() . '_amount', $this->donated_amount, 0 );
+				set_transient( $this->get_donations_cache_key( $this->get_campaign_id() ) . '_amount', $this->donated_amount, 0 );
 			}			
 		}
 
@@ -385,13 +387,14 @@ class Charitable_Campaign {
 	/**
 	 * Flush donations cache.
 	 *
+	 * @param 	int 	$campaign_id
 	 * @return 	void
 	 * @access 	public
 	 * @since 	1.0.0
 	 */
 	public function flush_donations_cache() {
-		delete_transient( $this->get_donations_cache_key() );
-		delete_transient( $this->get_donations_cache_key() . '_amount' );
+		delete_transient( self::get_donations_cache_key( $this->get_campaign_id() ) );
+		delete_transient( self::get_donations_cache_key( $this->get_campaign_id() ) . '_amount' );
 
 		$this->donations = null;
 		$this->donated_amount = null;

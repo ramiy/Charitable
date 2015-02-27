@@ -16,14 +16,8 @@ class Test_Charitable_Currency_Helper extends WP_UnitTestCase {
 	}
 
 	function test_get_monetary_amount() {		
+		$this->assertEquals( '&#36;60.00', $this->currency_helper->get_monetary_amount( 60 ) );
 		$this->assertEquals( '&#36;60.00', $this->currency_helper->get_monetary_amount( '60' ) );
-	}
-
-	/**
-	 * @expectedIncorrectUsage	Charitable_Currency::get_monetary_amount
-	 */
-	function test_get_monetary_amount_exception() {		
-		$this->assertInstanceOf( 'WP_Error', $this->currency_helper->get_monetary_amount( 60 ) );		
 	}
 
 	function test_sanitize_monetary_amount() {		
