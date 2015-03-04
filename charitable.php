@@ -1,11 +1,11 @@
 <?php
 /**
  * Plugin Name: 		Charitable
- * Plugin URI: 			http://164a.com
+ * Plugin URI: 			http://wpcharitable.com
  * Description: 		Fundraise with WordPress.
  * Version: 			1.0.0~alpha-1.0
  * Author: 				Studio 164a
- * Author URI: 			http://164a.com
+ * Author URI: 			https://164a.com
  * Requires at least: 	4.0
  * Tested up to: 		4.1
  *

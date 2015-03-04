@@ -8,9 +8,6 @@
 
 $campaign = charitable()->get_request()->get_current_campaign();
 ?>
-<script type="text/javascript">
-
-</script>
 <form class="campaign-donation" method="post">
 	<?php wp_nonce_field( 'charitable-donate-' . charitable_get_session()->get_session_id(), 'charitable-donate-now' ) ?>
 	<input type="hidden" name="charitable_action" value="start-donation" />

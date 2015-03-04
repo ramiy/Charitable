@@ -14,5 +14,5 @@ $campaign_description	= esc_textarea( get_post_meta( $post->ID, '_campaign_descr
 ?>
 <div id="charitable-campaign-description-metabox-wrap" class="charitable-metabox-wrap">
 	<label class="screen-reader-text" for="campaign_description"><?php echo $campaign_description ?></label>
-	<textarea name="campaign_description" id="campaign_description" tabindex="3" rows="10" placeholder="<?php _e( 'Enter a short description of your campaign', 'charitable' ) ?>"><?php echo $campaign_description ?></textarea>
+	<textarea name="_campaign_description" id="campaign_description" tabindex="3" rows="10" placeholder="<?php _e( 'Enter a short description of your campaign', 'charitable' ) ?>"><?php echo $campaign_description ?></textarea>
 </div>

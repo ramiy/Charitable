@@ -42,7 +42,7 @@ class Charitable_Templates {
 	private function __construct(Charitable $charitable) {
 		$this->charitable = $charitable;
 	
-		add_filter( 'the_content', array( $this, 'campaign_content' ) );
+		add_filter( 'the_content', array( $this, 'campaign_content' ), 2 );
 	
 		// The main Charitable class will save the one instance of this object.
 		$this->charitable->register_object( $this );
@@ -86,7 +86,7 @@ class Charitable_Templates {
 			 *
 			 * @uses 	charitable_use_campaign_template
 			 */
-			if ( apply_filters('charitable_use_campaign_template', true ) === false ) {
+			if ( false === apply_filters( 'charitable_use_campaign_template', true ) ) {
 				return $content;
 			}
 

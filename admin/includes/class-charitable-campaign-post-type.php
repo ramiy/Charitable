@@ -275,7 +275,7 @@ final class Charitable_Campaign_Post_Type {
 				'_campaign_end_date' 				=> 0, 
 				'_campaign_suggested_donations'		=> '', 
 				'_campaign_allow_custom_donations'	=> 1, 
-				'_campaign_description'				=> ''
+				'campaign_description'				=> ''
 			), $post );
 
 			/* Sanitize campaign goal. */
