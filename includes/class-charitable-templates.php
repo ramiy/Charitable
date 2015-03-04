@@ -20,33 +20,6 @@ if ( ! class_exists( 'Charitable_Templates' ) ) :
  */
 
 class Charitable_Templates {
-	
-	/**
-	 * @var 	Charitable 	$charitable
-	 * @access 	private
-	 */
-	private $charitable;
-
-	/**
-	 * Set up the class. 
-	 * 
-	 * Note that the only way to instantiate an object is with the charitable_start method, 
-	 * which can only be called during the start phase. In other words, don't try 
-	 * to instantiate this object. 
-	 *
-	 * @param 	Charitable 	$charitable
-	 * @return 	void
-	 * @access 	private
-	 * @since 	1.0.0
-	 */
-	private function __construct(Charitable $charitable) {
-		$this->charitable = $charitable;
-	
-		add_filter( 'the_content', array( $this, 'campaign_content' ), 2 );
-	
-		// The main Charitable class will save the one instance of this object.
-		$this->charitable->register_object( $this );
-	}
 
 	/**
 	 * Instantiate the class, but only during the start phase.
@@ -58,12 +31,26 @@ class Charitable_Templates {
 	 * @access 	public
 	 * @since 	1.0.0
 	 */
-	public static function charitable_start(Charitable $charitable) {
+	public static function charitable_start( Charitable $charitable ) {
 		if ( ! $charitable->is_start() ) {
 			return;
 		}
 
-		new Charitable_Templates( $charitable );
+		$charitable->register_object( new Charitable_Templates() );
+	}
+
+	/**
+	 * Set up the class. 
+	 * 
+	 * Note that the only way to instantiate an object is with the charitable_start method, 
+	 * which can only be called during the start phase. In other words, don't try 
+	 * to instantiate this object. 
+	 *
+	 * @access 	private
+	 * @since 	1.0.0
+	 */
+	private function __construct() {
+		add_filter( 'the_content', array( $this, 'campaign_content' ), 2 );
 	}
 
 	/** 
