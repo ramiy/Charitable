@@ -6,7 +6,7 @@
  * @since 	1.0.0
  */
 
-$campaign 			= charitable()->get_request()->get_current_campaign();
+$campaign 			= charitable_get_current_campaign();
 $currency_helper 	= charitable()->get_currency_helper();
 $classes 			= array( 'campaign-summary' ); 
 $classes[]			= $campaign->has_goal() 	? 'campaign-has-goal' 	: 'campaign-has-no-goal';

@@ -72,18 +72,18 @@ class Charitable_Campaign {
 	}
 
 	/**
-	 * Returns the campaign's ID. 
-	 * 
-	 * @return 	int
-	 * @access 	public
+	 * Magic getter.  
+	 *
+	 * @return 	mixed
+	 * @access  public
 	 * @since 	1.0.0
 	 */
-	public function get_campaign_id() {
-		if ( ! isset( $this->ID ) ) {
-			$this->ID = $this->post->ID;
+	public function __get( $key ) {
+		if ( property_exists( $this->post, $key ) ) {
+			return $this->post->$key;
 		}
 
-		return $this->ID;
+		return $this->get( $key );
 	}
 
 	/**
@@ -102,6 +102,22 @@ class Charitable_Campaign {
 		$meta_name = '_' . $meta_name;
 		return get_post_meta( $this->post->ID, $meta_name, $single );
 	}
+
+	/**
+	 * Returns the campaign's ID. 
+	 * 
+	 * @return 	int
+	 * @access 	public
+	 * @since 	1.0.0
+	 */
+	public function get_campaign_id() {
+		if ( ! isset( $this->ID ) ) {
+			$this->ID = $this->post->ID;
+		}
+
+		return $this->ID;
+	}
+	
 
 	/**
 	 * Returns whether the campaign is endless (i.e. no end date has been set). 
@@ -185,7 +201,7 @@ class Charitable_Campaign {
 			return false;
 		}
 
-		$time_left = $this->get_end_time() - time();
+		$time_left = $this->get_end_time() - current_time( 'timestamp' );
 		return $time_left < 0 ? 0 : $time_left;	
 	}
 
@@ -253,6 +269,32 @@ class Charitable_Campaign {
 	}	
 
 	/**
+	 * Returns whether the campaign has ended. 
+	 *
+	 * @return 	boolean
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function has_ended() {
+		return 0 == $this->get_seconds_left();
+	}
+
+	/**
+	 * Return the time since the campaign finished, or zero if it's still going. 
+	 *
+	 * @return 	int
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function get_time_since_ended() {
+		if ( 0 !== $this->get_seconds_left() ) {
+			return 0;
+		}
+
+		return current_time( 'timestamp' ) - $this->get_end_time();
+	}
+
+	/**
 	 * Returns the fundraising goal of the campaign.
 	 * 
 	 * @return 	decimal|false 		Decimal if goal is set. False if no goal has been set. 
@@ -291,6 +333,17 @@ class Charitable_Campaign {
 		}
 
 		return charitable()->get_currency_helper()->get_monetary_amount( $this->get_goal() );
+	}
+
+	/**
+	 * Returns whether the goal has been achieved. 
+	 *
+	 * @return 	boolean
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function has_achieved_goal() {
+		return $this->get_donated_amount() >= $this->get_goal();
 	}
 
 	/**
@@ -358,20 +411,35 @@ class Charitable_Campaign {
 	}
 
 	/**
-	 * Return the percentage donated. 
+	 * Return the percentage donated. Use this if you want a formatted string.
 	 *
 	 * @return 	string|false 		String if campaign has a goal. False if no goal is set.
 	 * @access 	public
 	 * @since 	1.0.0
 	 */
 	public function get_percent_donated() {
+		$percent = $this->get_percent_donated_raw();
+
+		if ( false === $percent ) {
+			return $percent;
+		}		
+
+		return apply_filters( 'charitable_percent_donated', $percent.'%', $percent, $this );
+	}
+
+	/**
+	 * Returns the percentage donated as a number.
+	 *
+	 * @return 	int
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function get_percent_donated_raw() {
 		if ( ! $this->has_goal() ) {
 			return false;
 		}
 
-		$percent = ( $this->get_donated_amount() / $this->get_goal() ) * 100;
-
-		return apply_filters( 'charitable_percent_donated', $percent.'%', $percent, $this );
+		return ( $this->get_donated_amount() / $this->get_goal() ) * 100;
 	}
 
 	/**
