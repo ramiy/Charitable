@@ -19,13 +19,7 @@ if ( ! class_exists( 'Charitable_Admin' ) ) :
  * @final
  * @since     	1.0.0
  */
-final class Charitable_Admin {
-
-	/**
-	 * @var Charitable $charitable
-	 * @access private
-	 */
-	private $charitable;
+final class Charitable_Admin extends Charitable_Start_Object {
 
 	/**
 	 * Set up the class. 
@@ -34,35 +28,12 @@ final class Charitable_Admin {
 	 * which can only be called during the start phase. In other words, don't try 
 	 * to instantiate this object. 
 	 *
-	 * @param 	Charitable 		$charitable 
-	 * @access 	private
+	 * @access 	protected
 	 * @since 	1.0.0
 	 */
-	private function __construct(Charitable $charitable) {
-		$this->charitable = $charitable;
-
-		$this->charitable->register_object($this);
-
-		$this->include_files();
-
+	protected function __construct() {
+		$this->load_dependencies();
 		$this->attach_hooks_and_filters();
-	}
-
-	/**
-	 * Instantiate the class, but only during the start phase.
-	 * 
-	 * @param 	Charitable 		$charitable
-	 * @return 	void
-	 * @static 
-	 * @access 	public
-	 * @since 	1.0.0
-	 */
-	public static function start(Charitable $charitable) {
-		if ( $charitable->started() ) {
-			return;
-		}
-
-		new Charitable_Admin( $charitable );
 	}
 
 	/**
@@ -72,12 +43,12 @@ final class Charitable_Admin {
 	 * @access 	private
 	 * @since 	1.0.0
 	 */
-	private function include_files() {
-		require_once( $this->charitable->get_path( 'admin' ) . 'includes/charitable-core-admin-functions.php' );			
-		require_once( $this->charitable->get_path( 'admin' ) . 'includes/class-charitable-admin-settings.php' );
-		require_once( $this->charitable->get_path( 'admin' ) . 'includes/class-charitable-meta-box-helper.php' );
-		require_once( $this->charitable->get_path( 'admin' ) . 'includes/class-charitable-campaign-post-type.php' );
-		require_once( $this->charitable->get_path( 'admin' ) . 'includes/class-charitable-donation-post-type.php' );
+	private function load_dependencies() {
+		require_once( charitable()->get_path( 'admin' ) . 'includes/charitable-core-admin-functions.php' );			
+		require_once( charitable()->get_path( 'admin' ) . 'includes/class-charitable-admin-settings.php' );
+		require_once( charitable()->get_path( 'admin' ) . 'includes/class-charitable-meta-box-helper.php' );
+		require_once( charitable()->get_path( 'admin' ) . 'includes/class-charitable-campaign-post-type.php' );
+		require_once( charitable()->get_path( 'admin' ) . 'includes/class-charitable-donation-post-type.php' );
 	}
 
 	/**
@@ -92,7 +63,7 @@ final class Charitable_Admin {
 		add_action( 'charitable_start', 		array( 'Charitable_Campaign_Post_Type', 'charitable_start' ) );
 		add_action( 'charitable_start', 		array( 'Charitable_Donation_Post_Type', 'charitable_start' ) );
 		add_action( 'admin_enqueue_scripts', 	array( $this, 'admin_enqueue_scripts' ) );
-		add_filter( 'plugin_action_links_' . plugin_basename( $this->charitable->get_path() ), 	array( $this, 'add_plugin_action_links' ) );
+		add_filter( 'plugin_action_links_' . plugin_basename( charitable()->get_path() ), 	array( $this, 'add_plugin_action_links' ) );
 	}
 
 	/**
@@ -106,10 +77,10 @@ final class Charitable_Admin {
 	public function admin_enqueue_scripts() {		
 		global $wp_scripts;
 
-		$assets_path = $this->charitable->get_path( 'admin', false ) . 'assets/';	
+		$assets_path = charitable()->get_path( 'admin', false ) . 'assets/';	
 
 		/* Menu styles are loaded everywhere in the Wordpress dashboard. */
-		wp_register_style( 'charitable-admin-menu', $assets_path . 'css/charitable-admin-menu.css', array(), $this->charitable->get_version() );
+		wp_register_style( 'charitable-admin-menu', $assets_path . 'css/charitable-admin-menu.css', array(), charitable()->get_version() );
 		wp_enqueue_style( 'charitable-admin-menu' );
 
 		/* The following styles are only loaded on Charitable screens. */
@@ -117,10 +88,10 @@ final class Charitable_Admin {
 
 		if ( in_array( $screen->id, $this->get_charitable_screens() ) ) {		
 		
-			wp_register_style( 'charitable-admin', $assets_path . 'css/charitable-admin.css', array(), $this->charitable->get_version() );
+			wp_register_style( 'charitable-admin', $assets_path . 'css/charitable-admin.css', array(), charitable()->get_version() );
 			wp_enqueue_style( 'charitable-admin' );
 
-			wp_register_script( 'charitable-admin', $assets_path . 'js/charitable-admin.js', array('jquery-ui-datepicker', 'jquery-ui-tabs'), $this->charitable->get_version() );		
+			wp_register_script( 'charitable-admin', $assets_path . 'js/charitable-admin.js', array('jquery-ui-datepicker', 'jquery-ui-tabs'), charitable()->get_version() );		
 			wp_enqueue_script( 'charitable-admin' );
 
 		}

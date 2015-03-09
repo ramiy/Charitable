@@ -166,6 +166,7 @@ class Charitable {
 		/**
 		 * Start objects.
 		 */
+		require_once( $this->includes_path . 'class-charitable-start-object.php' );
 		require_once( $this->includes_path . 'class-charitable-addons.php' );
 		require_once( $this->includes_path . 'class-charitable-roles.php' );
 		require_once( $this->includes_path . 'class-charitable-donation-actions.php' );
@@ -239,7 +240,7 @@ class Charitable {
 
 		require_once( $this->get_path( 'admin' ) . 'class-charitable-admin.php' );
 
-		Charitable_Admin::start($this);
+		add_action('charitable_start', array( 'Charitable_Admin', 'charitable_start' ), 3 );
 	}
 
 	/**
@@ -256,7 +257,7 @@ class Charitable {
 
 		require_once( $this->get_path( 'public' ) . 'class-charitable-public.php' );
 
-		Charitable_Public::start($this);
+		add_action('charitable_start', array( 'Charitable_Public', 'charitable_start' ), 3 );
 	}
 
 	/**

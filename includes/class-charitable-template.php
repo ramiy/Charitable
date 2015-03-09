@@ -46,25 +46,57 @@ class Charitable_Template {
 	protected $require_once;
 
 	/**
+	 * The arguments available in the view. 
+	 *
+	 * @var 	array
+	 * @access  protected
+	 */
+	protected $view_args;
+
+	/**
 	 * Class constructor. 
 	 *
 	 * @param 	string|array $template_name 	A single template name or an ordered array of template
-	 * @param 	bool $load 						If true the template file will be loaded if it is found.
- 	 * @param 	bool $require_once 				Whether to require_once or require. Default true. Has no effect if $load is false.
+	 * @param 	bool 		$load 				If true the template file will be loaded if it is found.
+ 	 * @param 	bool 		$require_once 		Whether to require_once or require. Default true. Has no effect if $load is false.
 	 * @return 	void
 	 * @access 	public
 	 * @since 	1.0.0
 	 */
-	public function __construct($template_name, $load = false, $require_once = true) {
+	public function __construct($template_name, $load = true, $require_once = true) {
 		$this->theme_template_path = trailingslashit( apply_filters( 'charitable_theme_template_path', 'charitable' ) );
 		$this->base_template_path = charitable()->get_path( 'public' ) . 'templates/';
 		$this->template_names = (array) $template_name;
-		$this->load = $load;
-		$this->require_once = $require_once;
+		$this->view_args = array();
 		$this->theme_template_options = $this->get_theme_template_options();
 
-		$this->render();
+		if ( $load ) {
+			$this->render( $require_once );
+		}		
 	}
+
+	/**
+	 * Adds an array of view arguments. 
+	 *
+	 * @param 	array 		$args
+	 * @return 	void
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function set_view_args( $args ) {
+		$this->view_args = array_merge( $this->view_args, $args );
+	}
+
+	/**
+	 * Adds an argument to be accessed within the view. 
+	 *
+	 * @return 	void
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function set_view_arg( $key, $value ) {
+		$this->view_args[ $key ] = $value;
+	}	
 
 	/**
 	 * Return the theme template options. 
@@ -82,16 +114,17 @@ class Charitable_Template {
 		} 
 
 		return $options;
-	}
+	}	
 
 	/**
 	 * Renders the template. 
 	 *
+	 * @param 	boolean 		$require_once
 	 * @return 	void
-	 * @access 	protected
+	 * @access 	public
 	 * @since 	1.0.0
 	 */
-	protected function render() {
+	public function render( $require_once = true ) {
 
 		/**
 		 * Get the template and ensure it exists.
@@ -104,7 +137,16 @@ class Charitable_Template {
 		}
 
 		if ( $template )  {
-			load_template( $template, $this->require_once );
+
+			$view_args = $this->view_args;
+
+			if ( $this->require_once ) {
+				include_once( $template );
+			}
+			else
+			{
+				include( $template );	
+			}
 		}
 
 		return $template;

@@ -21,13 +21,7 @@ if ( ! class_exists( 'Charitable_Widgets' ) ) :
  * @final
  * @since 		1.0.0
  */
-final class Charitable_Widgets {
-
-	/**
-	 * @var Charitable $charitable
-	 * @access private
-	 */
-	private $charitable;
+final class Charitable_Widgets extends Charitable_Start_Object {
 
 	/**
 	 * Set up the class. 
@@ -36,60 +30,34 @@ final class Charitable_Widgets {
 	 * which can only be called during the start phase. In other words, don't try 
 	 * to instantiate this object. 
 	 *
-	 * @param 	Charitable 	$charitable
-	 * @access 	private
+	 * @access 	protected
 	 * @since 	1.0.0
 	 */
-	private function __construct(Charitable $charitable) {
-		$this->charitable = $charitable;
-	
+	protected function __construct() {
 		$this->include_widgets();
 
 		add_action( 'widgets_init', array( $this, 'register_widgets' ) );
-
-		// The main Charitable class will save the one instance of this object.
-		$this->charitable->register_object( $this );
-	}
-
-	/**
-	 * Instantiate the class, but only during the start phase.
-	 *
-	 * @see 	charitable_start hook
-	 * 
-	 * @param 	Charitable 	$charitable 
-	 * @return 	void
-	 * @static 
-	 * @access 	public
-	 * @since 	1.0.0
-	 */
-	public static function charitable_start(Charitable $charitable) {
-		if ( ! $charitable->is_start() ) {
-			return;
-		}
-
-		new Charitable_Widgets( $charitable );
 	}
 
 	/**
 	 * Include widget files. 
 	 *
-	 * @return void
-	 * @access private
-	 * @since 1.0.0
+	 * @return 	void
+	 * @access 	private
+	 * @since 	1.0.0
 	 */
 	private function include_widgets() {
-		require_once( $this->charitable->get_path( 'includes' ) . 'widgets/class-charitable-campaigns-widget.php' );
+		require_once( charitable()->get_path( 'includes' ) . 'widgets/class-charitable-campaigns-widget.php' );
 	}
 
 	/**
-	 * Register widgets
+	 * Register widgets.
 	 *
-	 * @see widgets_init hook
-	 *
-	 * @return void
-	 * @access public
-	 * @since 1.0.0
-	 * @return void
+	 * @see 	widgets_init hook
+	 * @return 	void
+	 * @access 	public
+	 * @since 	1.0.0
+	 * @return 	void
 	 */
 	public function register_widgets() {
 		register_widget( 'Charitable_Campaigns_Widget' );

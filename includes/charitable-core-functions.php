@@ -46,11 +46,11 @@ function charitable_get_option( $key, $default = false ) {
  * @param 	string|array 	$template_name 		A single template name or an ordered array of template
  * @param 	bool 		 	$load 				If true the template file will be loaded if it is found.
  * @param 	bool 			$require_once 		Whether to require_once or require. Default true. Has no effect if $load is false. 
- * @return 	void
+ * @return 	Charitable_Template
  * @since 	1.0.0
  */
-function charitable_template( $template_name, $load = false, $require_once = true ) {
-	new Charitable_Template( $template_name, $load, $require_once ); 
+function charitable_template( $template_name, $load = true, $require_once = true ) {
+	return new Charitable_Template( $template_name, $load, $require_once ); 
 }
 
 /**
@@ -58,11 +58,11 @@ function charitable_template( $template_name, $load = false, $require_once = tru
  *
  * @param 	string 	$slug
  * @param 	string 	$name 		Optional name.
- * @return 	void
+ * @return 	Charitable_Template_Part
  * @since 	1.0.0
  */
 function charitable_template_part( $slug, $name = "" ) {
-	new Charitable_Template_Part( $slug, $name );
+	return new Charitable_Template_Part( $slug, $name );
 }
 
 /**
@@ -120,6 +120,16 @@ function charitable_get_session() {
  */
 function charitable_get_current_campaign() {
 	return charitable()->get_request()->get_current_campaign();
+}
+
+/**
+ * Returns the current campaign ID.
+ *
+ * @return 	int
+ * @since 	1.0.0
+ */
+function charitable_get_current_campaign_id() {
+	return charitable()->get_request()->get_current_campaign_id();
 }
 
 /**

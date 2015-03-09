@@ -19,25 +19,7 @@ if ( ! class_exists( 'Charitable_Templates' ) ) :
  * @since 		1.0.0
  */
 
-class Charitable_Templates {
-
-	/**
-	 * Instantiate the class, but only during the start phase.
-	 *
-	 * @uses 	charitable_start
-	 * @param 	Charitable 	$charitable 
-	 * @return 	void
-	 * @static 
-	 * @access 	public
-	 * @since 	1.0.0
-	 */
-	public static function charitable_start( Charitable $charitable ) {
-		if ( ! $charitable->is_start() ) {
-			return;
-		}
-
-		$charitable->register_object( new Charitable_Templates() );
-	}
+class Charitable_Templates extends Charitable_Start_Object {
 
 	/**
 	 * Set up the class. 
@@ -46,10 +28,10 @@ class Charitable_Templates {
 	 * which can only be called during the start phase. In other words, don't try 
 	 * to instantiate this object. 
 	 *
-	 * @access 	private
+	 * @access 	protected
 	 * @since 	1.0.0
 	 */
-	private function __construct() {
+	protected function __construct() {
 		add_filter( 'the_content', array( $this, 'campaign_content' ), 2 );
 	}
 

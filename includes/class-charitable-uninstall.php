@@ -44,8 +44,7 @@ class Charitable_Uninstall {
 			$this->remove_post_data();
 			$this->remove_tables();
 
-			do_action( 'charitable_uninstall' );
-			
+			do_action( 'charitable_uninstall' );		
 		}				
 	}
 

@@ -59,7 +59,6 @@ class Charitable_Campaign {
 	 * Class constructor. 
 	 * 
 	 * @param 	mixed 	$post 		The post ID or WP_Post object for this this campaign.
-	 * @return 	void
 	 * @access 	public
 	 * @since 	1.0.0
 	 */
