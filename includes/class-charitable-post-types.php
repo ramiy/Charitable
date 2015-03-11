@@ -18,13 +18,7 @@ if ( ! class_exists( 'Charitable_Post_Types' ) ) :
  *
  * @since		1.0.0
  */
-final class Charitable_Post_Types {
-
-	/**
-	 * @var 	Charitable 		$charitable
-	 * @access 	private
-	 */
-	private $charitable;
+final class Charitable_Post_Types extends Charitable_Start_Object {
 
 	/**
 	 * Set up the class. 
@@ -34,33 +28,12 @@ final class Charitable_Post_Types {
 	 * to instantiate this object. 
 	 *
 	 * @param 	Charitable 		$charitable
-	 * @return 	void
-	 * @access 	private
+	 * @access 	protected
 	 * @since 	1.0.0
 	 */
-	private function __construct(Charitable $charitable) {
-		$this->charitable = $charitable;
-	
+	protected function __construct() {	
 		add_action( 'init', array( $this, 'register_post_types' ), 5 );
 		add_action( 'init', array( $this, 'register_post_statuses' ), 5 );
-	}
-
-	/**
-	 * Instantiate the class, but only during the start phase.
-	 *
-	 * @hook 	charitable_start
-	 * @param 	Charitable 		$charitable 
-	 * @return 	void
-	 * @static 
-	 * @access 	public
-	 * @since 	1.0.0
-	 */
-	public static function charitable_start(Charitable $charitable) {
-		if ( ! $charitable->is_start() ) {
-			return;
-		}
-
-		new Charitable_Post_Types( $charitable );
 	}
 
 	/**
@@ -106,7 +79,7 @@ final class Charitable_Post_Types {
 					'publicly_queryable' 	=> true,
 					'exclude_from_search' 	=> false,
 					'hierarchical' 			=> false, // Hierarchical causes memory issues - WP loads all records!
-					'rewrite' 				=> false,
+					'rewrite' 				=> array( 'slug' => 'campaign', 'with_front' => true ),
 					'query_var' 			=> true,
 					'supports' 				=> array( 'title', 'thumbnail', 'comments' ),
 					'has_archive' 			=> true,
@@ -163,7 +136,6 @@ final class Charitable_Post_Types {
 	/**
 	 * Register custom post statuses. 
 	 *
-	 * @hook 	init
 	 * @return 	void
 	 * @access  public
 	 * @since 	1.0.0

@@ -23,24 +23,16 @@ if ( ! class_exists( 'Charitable_Install' ) ) :
 class Charitable_Install {
 
 	/**
-	 * @var 	Charitable
-	 * @access 	private 
-	 */
-	private $charitable;
-
-	/**
 	 * Install the plugin. 
 	 *
-	 * @param 	Charitable $charitable
-	 * @return 	void
 	 * @access 	public
 	 * @since 	1.0.0
 	 */
-	public function __construct( Charitable $charitable ) {
-		$this->charitable = $charitable;
-
+	public function __construct() {	
 		$this->setup_roles();
 		$this->create_tables();	
+
+		flush_rewrite_rules();
 
 		do_action( 'charitable_install' );	
 	}
@@ -67,7 +59,7 @@ class Charitable_Install {
 	 * @since 	1.0.0
 	 */
 	private function create_tables() {
-		@$this->charitable->get_db_table( 'campaign_donations' )->create_table();
+		@charitable()->get_db_table( 'campaign_donations' )->create_table();
 	}
 }
 
