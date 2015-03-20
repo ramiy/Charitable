@@ -187,6 +187,7 @@ class Charitable {
 		require_once( $this->includes_path . 'class-charitable-donation.php' );
 		require_once( $this->includes_path . 'class-charitable-donation-form.php' );
 		require_once( $this->includes_path . 'class-charitable-donation-form-hidden.php' );
+		require_once( $this->includes_path . 'class-charitable-donations.php' );
 		require_once( $this->includes_path . 'class-charitable-donor.php' );
 		require_once( $this->includes_path . 'class-charitable-session-donation.php' );
 

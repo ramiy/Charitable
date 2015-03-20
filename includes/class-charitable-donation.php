@@ -96,6 +96,23 @@ class Charitable_Donation {
 	}
 
 	/**
+	 * Magic getter.
+	 *
+	 * @param 	string 		$key
+	 * @return 	mixed
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function __get( $key ) {
+		if ( method_exists( $this, 'get_' . $key ) ) {
+			$method = 'get_' . $key;
+			return $this->$method;
+		}
+
+		return $this->donation_data->$key;
+	}
+
+	/**
 	 * Get the donation data.
 	 *
 	 * @return 	array
@@ -137,6 +154,44 @@ class Charitable_Donation {
 	}
 
 	/**
+	 * Returns a comma separated string of campaigns that were donated to.
+	 *
+	 * @return 	string[]
+	 * @access 	public
+	 * @since 	1.0.0
+	 */
+	public function get_campaigns() {
+		return array_map( array( $this, 'get_campaign_name' ), $this->get_campaign_donations() );
+	}
+
+	/**
+	 * Returns the campaign name from a campaign donation record.
+	 *
+	 * @return 	string
+	 * @access 	public
+	 * @since 	1.0.0
+	 */
+	public function get_campaign_name( $campaign_donation ) {
+		return $campaign_donation->campaign_name;
+	}
+
+	/**
+	 * Return the date of the donation.
+	 *
+	 * @param 	string 		$format
+	 * @return 	string
+	 * @access 	public
+	 * @since 	1.0.0
+	 */
+	public function get_date( $format = '' ) {
+		if ( empty( $format ) ) {
+			$format = get_option( 'date_format' );
+		}
+
+		return date_i18n( $format, strtotime( $this->donation_data->post_date ) );
+	}
+
+	/**
 	 * The name of the gateway used to process the donation.
 	 *
 	 * @return 	string 				The name of the gateway.
@@ -150,12 +205,20 @@ class Charitable_Donation {
 	/**
 	 * The status of this donation.
 	 *
+	 * @param 	boolean 	$label 	Whether to return the label. If not, returns the key.
 	 * @return 	string
 	 * @access 	public
 	 * @since 	1.0.0
 	 */
-	public function get_status() {
-		return $this->donation_data->post_status;
+	public function get_status( $label = false ) {
+		$status = $this->donation_data->post_status;
+
+		if ( ! $label ) {
+			return $status;
+		}
+
+		$statuses = self::get_valid_donation_statuses();
+		return $statuses[ $status ];
 	} 
 
 	/**

@@ -66,6 +66,7 @@ final class Charitable_Donation_Post_Type {
 		// Add fields to the dashboard listing of donations.
 		add_filter( 'manage_edit-donation_columns', 		array( $this, 'dashboard_columns' ), 11, 1 );
 		add_filter( 'manage_donation_posts_custom_column', 	array( $this, 'dashboard_column_item' ), 11, 2 );
+		add_filter( 'views_edit-donation', 					array( $this, 'view_options' ) );
 
 		do_action( 'charitable_admin_donation_post_type_start', $this );
 	}
@@ -82,8 +83,13 @@ final class Charitable_Donation_Post_Type {
 	public function dashboard_columns( $column_names ) {
 		$column_names = apply_filters( 'charitable_donation_dashboard_column_names', array(
 			'cb'                => '<input type="checkbox"/>',
+			'id'				=> __( 'ID', 'charitable' ),
 			'donor'				=> __( 'Donor', 'charitable' ), 
-			'amount'			=> __( 'Amount Donated', 'charitable' )
+			'details'			=> __( 'Details', 'charitable' ),
+			'amount'			=> __( 'Amount Donated', 'charitable' ), 
+			'campaigns'			=> __( 'Campaign(s)', 'charitable' ), 			
+			'donation_date'		=> __( 'Date', 'charitable' ), 
+			'status'			=> __( 'Status', 'charitable' )
 		) );
 
 		return $column_names;
@@ -102,16 +108,102 @@ final class Charitable_Donation_Post_Type {
 	 */
 	public function dashboard_column_item( $column_name, $post_id ) {		
 
+		$donation = $this->get_donation( $post_id );
+		
 		switch ( $column_name ) {
+			case 'id' : 
+				$display = $donation->ID;
+				break;
+
 			case 'donor' : 
+				$display = $donation->get_donor()->display_name;
+				break;
+
+			case 'details' : 
+				$display = sprintf( '<a href="%s">%s</a>', 
+					add_query_arg( array( 'post' => $donation->ID, 'action' => 'edit' ), admin_url( 'post.php' ) ), 
+					__( 'View Donation Details', 'charitable' ) );
 				break;
 
 			case 'amount' : 
+				$display = charitable()->get_currency_helper()->get_monetary_amount( $donation->get_total_donation_amount() );
+				break;			
+
+			case 'campaigns' : 
+				$display = implode( ', ', $donation->get_campaigns() );
+				break;
+
+			case 'donation_date' : 				
+				$display = $donation->get_date(); 
+				break;
+
+			case 'status' : 
+				$display = $donation->get_status( true );
 				break;
 
 			default :
+				$display = '';
 				break;
 		}
+
+		echo apply_filters( 'charitable_donation_column_display', $display, $column_name, $post_id, $donation );
+	}	
+
+	/**
+	 * Returns the donation object. Caches the object to avoid re-creating this for each column.
+	 *
+	 * @return 	Charitable_Donation
+	 * @access  private
+	 * @since 	1.0.0
+	 */
+	private function get_donation( $post_id ) {
+		$key = 'charitable_donation_' . $post_id;
+		$donation = wp_cache_get( $key );
+
+		if ( false === $donation ) {
+
+			$donation = new Charitable_Donation( $post_id );
+
+			wp_cache_set( $key, $donation );
+
+		}
+
+		return $donation;
+	}
+
+	/**
+	 * Returns the array of view options for this campaign. 
+	 *
+	 * @param 	array 		$views
+	 * @return 	array
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function view_options( $views ) {
+
+		$current 		= isset( $_GET['post-status'] ) ? $_GET['post-status'] : '';
+		$statuses 		= Charitable_Donation::get_valid_donation_statuses();
+		$donations 		= new Charitable_Donations();
+		$status_count 	= $donations->count_by_status();
+
+		$views 			= array();
+		$views['all'] 	= sprintf( '<a href="%s"%s>%s <span class="count">(%s)</span></a>', 
+			remove_query_arg( array( 'post_status', 'paged' ) ), 
+			$current === 'all' || $current == '' ? ' class="current"' : '', 
+			__('All', 'charitable'), 
+			$donations->count_all()
+		);
+
+		foreach ( $statuses as $status => $label ) {
+			$views[ $status ] = sprintf( '<a href="%s"%s>%s <span class="count">(%s)</span></a>', 
+				add_query_arg( array( 'post_status' => $status, 'paged' => false ) ), 
+				$current === $status ? ' class="current"' : '', 
+				$label, 
+				isset( $status_count[ $status ] ) ? $status_count[ $status ]->num_donations : 0
+			);
+		} 
+
+		return $views;
 	}	
 }
 
