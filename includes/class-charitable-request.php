@@ -19,13 +19,7 @@ if ( ! class_exists( 'Charitable_Request' ) ) :
  * @since		1.0.0
  * @final
  */
-final class Charitable_Request {
-
-	/**
-	 * @var 	post $post
-	 * @access 	private
-	 */
-	private $post;
+final class Charitable_Request extends Charitable_Start_Object {
 
 	/**
 	 * @var 	Charitable_Campaign
@@ -48,33 +42,59 @@ final class Charitable_Request {
 	/**
 	 * Set up the class. 
 	 * 
-	 * @global 	$post
+	 * Note that the only way to instantiate an object is with the on_start method, 
+	 * which can only be called during the start phase. In other words, don't try 
+	 * to instantiate this object. 
 	 *
-	 * @return 	void
-	 * @access 	public
+	 * @param 	Charitable 		$charitable
+	 * @access 	protected
 	 * @since 	1.0.0
 	 */
-	public function __construct() {
-		global $post;
+	protected function __construct() {	
+		add_action( 'the_post', array( $this, 'set_current_campaign' ) );
+	}
 
-		$this->post = $post;
+	/**
+	 * When the_post is set, sets the current campaign to the current post if it is a campaign.
+	 *
+	 * @param 	array 		$args
+	 * @return 	void
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function set_current_campaign( $post ) {
+		if ( 'campaign' == $post->post_type ) {
+
+			$this->campaign = new Charitable_Campaign( $post );
+
+		}
+		else {
+
+			unset( $this->campaign, $this->campaign_id );
+
+		}
 	}
 
 	/** 
 	 * Returns the current campaign. If there is no current campaign, return false. 
 	 *
-	 * @return 	Charitable_Campaign if we're viewing a single campaign page. False otherwise. 
+	 * @return 	Charitable_Campaign if we're viewing a campaign within a loop. False otherwise. 
 	 * @access 	public
 	 * @since 	1.0.0
 	 */
 	public function get_current_campaign() {
+
 		if ( ! isset( $this->campaign ) ) {
 
 			if ( $this->get_current_campaign_id() > 0 ) {
+
 				$this->campaign = new Charitable_Campaign( $this->get_current_campaign_id() );
+
 			}
 			else {
+
 				$this->campaign = false;
+
 			}
 		}
 
@@ -89,18 +109,29 @@ final class Charitable_Request {
 	 * @since 	1.0.0
 	 */
 	public function get_current_campaign_id() {
-		if ( ! isset( $this->campaign_id ) ) {
-			
+
+		if ( isset( $this->campaign ) ) {
+
+			$this->campaign_id = $this->campaign->ID;
+
+		}
+		else {
+
 			$this->campaign_id = 0;
 
-			if ( is_single() && get_post_type() == 'campaign' ) {
+			if ( get_post_type() == 'campaign' ) {
+
 				$this->campaign_id = $this->post->ID;
+
 			}
 			elseif ( get_query_var( 'donate', false ) ) {
+
 				$session_donation = charitable_get_session()->get( 'donation' );
 
 				if ( false !== $session_donation ) {
+
 					$this->campaign_id = $session_donation->get( 'campaign_id' );
+
 				}
 			}
 		}

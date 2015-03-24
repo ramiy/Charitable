@@ -388,14 +388,15 @@ class Charitable_Donation {
 		$donation_args = array(
 			'post_type'		=> 'donation', 
 			'post_author'	=> $args['user_id'], 
-			'post_content'	=> isset( $args['note'] ) 			? $args['note'] 			: '', 
-			'post_status'	=> isset( $args['status'] ) 		? $args['status']			: 'charitable-pending', 
-			'post_parent'	=> isset( $args['donation_plan'] )	? $args['donation_plan']	: 0, 
-			'post_title'	=> sprintf( '% &ndash; %s', __( 'Donation', 'charitable' ), date( 'j F Y H:i a' ) )
-		);
+			'post_status'	=> 'charitable-pending'
+		);		
+		$donation_args['post_content'] 	= isset( $args['note'] ) 			? $args['note'] 			: '';		
+		$donation_args['post_parent'] 	= isset( $args['donation_plan'] )	? $args['donation_plan']	: 0;
+		$donation_args['post_date']		= isset( $args['date'] ) 			? $args['date'] 			: date('Y-m-d h:i:s');
+		$donation_args['post_title'] 	= sprintf( '%s &ndash; %s', __( 'Donation', 'charitable' ), date( 'j F Y H:i a', strtotime( $donation_args['post_date'] ) ) );
 
-		if ( ! array_key_exists( $donation_args['post_status'], self::get_valid_donation_statuses() ) ) {
-			$donation_args['post_status'] = 'charitable-pending';
+		if ( isset( $args['status'] ) && array_key_exists( $args['status'], self::get_valid_donation_statuses() ) ) {
+			$donation_args['post_status'] = $args['status'];
 		}
 
 		$donation_id = wp_insert_post( $donation_args );

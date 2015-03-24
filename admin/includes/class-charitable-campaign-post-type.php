@@ -120,6 +120,13 @@ final class Charitable_Campaign_Post_Type {
 				'context'		=> 'campaign-advanced', 
 				'priority'		=> 'high', 
 				'view'			=> 'metaboxes/campaign-extended-description'
+			), 
+			array( 
+				'id'			=> 'campaign-video', 
+				'title'			=> __( 'Video', 'charitable' ), 
+				'context'		=> 'campaign-advanced',
+				'priority'		=> 'high', 
+				'view'			=> 'metaboxes/campaign-video'
 			)
 		);
 
@@ -161,8 +168,6 @@ final class Charitable_Campaign_Post_Type {
 	 */
 	public function wrap_editor() {
 		add_filter( 'edit_form_after_title', array( $this, 'advanced_campaign_settings' ), 20 );
-		// add_filter( 'edit_form_after_editor', array( $this, 'advanced_campaign_settings' ), 10 );
-		// add_filter( 'edit_form_after_editor', array( $this, 'editor_wrap_after' ), 20 );
 	}
 
 	/**
@@ -302,6 +307,11 @@ final class Charitable_Campaign_Post_Type {
 			if ( isset( $_POST['_campaign_description'] ) )  {
 				$values['_campaign_description'] = sanitize_text_field( $_POST['_campaign_description'] );	
 			}				
+
+			/* Sanitize video. */
+			if ( isset( $_POST['_campaign_video'] ) ) {
+				$values['_campaign_video'] = sanitize_text_field( $_POST['_campaign_video'] );
+			}
 
 			/* Hook for plugins to save custom meta. */
 			$values = apply_filters( 'charitable_campaign_field_values', $values, $post );

@@ -501,6 +501,43 @@ class Charitable_Campaign {
 
 		return explode( '|', $amounts );
 	}
+
+	/**
+	 * Returns the campaign creator. 
+	 *
+	 * By default, this just returns the user from the post_author field, but 
+	 * it can be overridden by plugins. 
+	 *
+	 * @return 	int 		$user_id
+	 * @access 	public
+	 * @since 	1.0.0
+	 */
+	public function get_campaign_creator() {
+		return apply_filters( 'charitable_campaign_creator', $this->post->post_author, $this );
+	}
+
+	/**
+	 * Checks whether there is a campaign video. 
+	 *
+	 * @return 	boolean
+	 * @access 	public
+	 * @since 	1.0.0
+	 */
+	public function has_video() {
+		return strlen( $this->get( 'campaign_video' ) );
+	}
+
+	/**
+	 * Embed a video with WordPress' embed shortcode.
+	 *
+	 * @return 	string
+	 * @access 	public
+	 * @since 	1.0.0
+	 */
+	public function embed_video() {
+		global $wp_embed;
+		return $wp_embed->run_shortcode( '[embed]'. $this->get( 'campaign_video' ) .'[/embed]' );
+	}
 }
 
 endif; // End class_exists check

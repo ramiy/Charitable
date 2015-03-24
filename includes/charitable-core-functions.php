@@ -109,7 +109,7 @@ function charitable_get_location_helper() {
  * @since 	1.0.0
  */
 function charitable_get_session() {
-	return charitable()->get_registered_object( 'Charitable_Session' );
+	return charitable_get_helper( 'session' );
 }
 
 /**
@@ -119,7 +119,7 @@ function charitable_get_session() {
  * @since 	1.0.0
  */
 function charitable_get_current_campaign() {
-	return charitable()->get_request()->get_current_campaign();
+	return charitable_get_helper( 'request' )->get_current_campaign();
 }
 
 /**
@@ -129,7 +129,7 @@ function charitable_get_current_campaign() {
  * @since 	1.0.0
  */
 function charitable_get_current_campaign_id() {
-	return charitable()->get_request()->get_current_campaign_id();
+	return charitable_get_helper( 'request' )->get_current_campaign_id();
 }
 
 /**

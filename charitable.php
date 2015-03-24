@@ -220,11 +220,12 @@ class Charitable {
 		register_activation_hook( 	__FILE__, array( $this, 'activate') );
 		register_deactivation_hook( __FILE__, array( $this, 'deactivate') );
 
-		add_action('charitable_start',			array( 'Charitable_Donation_Actions', 'charitable_start' ), 3 );
-		add_action('charitable_start',			array( 'Charitable_Post_Types', 'charitable_start' ), 3 );		
-		add_action('charitable_start',			array( 'Charitable_Widgets', 'charitable_start' ), 3 );
-		add_action('charitable_start',			array( 'Charitable_Gateway', 'charitable_start' ), 3 ); 
-		add_action('charitable_start', 			array( 'Charitable_Addons', 'charitable_start' ), 3 );		
+		add_action('charitable_start',	array( 'Charitable_Donation_Actions', 'charitable_start' ), 3 );
+		add_action('charitable_start',	array( 'Charitable_Post_Types', 'charitable_start' ), 3 );		
+		add_action('charitable_start',	array( 'Charitable_Widgets', 'charitable_start' ), 3 );
+		add_action('charitable_start',	array( 'Charitable_Gateway', 'charitable_start' ), 3 ); 
+		add_action('charitable_start', 	array( 'Charitable_Addons', 'charitable_start' ), 3 );		
+		add_action('charitable_start', 	array( 'Charitable_Request', 'charitable_start' ), 3 );
 	}
 
 	/**
