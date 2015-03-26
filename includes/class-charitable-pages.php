@@ -21,13 +21,7 @@ if ( ! class_exists( 'Charitable_Pages' ) ) :
  * @final
  * @since 		1.0.0
  */
-final class Charitable_Pages {
-
-	/**
-	 * @var 	Charitable $charitable
-	 * @access 	private
-	 */
-	private $charitable;
+final class Charitable_Pages extends Charitable_Start_Object {
 
 	/**
 	 * @var 	string|false $current_view
@@ -42,19 +36,14 @@ final class Charitable_Pages {
 	 * which can only be called during the start phase. In other words, don't try 
 	 * to instantiate this object. 
 	 *
-	 * @param 	Charitable 	$charitable
-	 * @return 	void
-	 * @access 	private
+	 * @access 	protected
 	 * @since 	1.0.0
 	 */
-	private function __construct( Charitable $charitable ) {
-		$this->charitable = $charitable;
-
-		$this->charitable->register_object( $this );
-
-		add_filter( 'query_vars', 		array( $this, 'register_query_vars' ) );
-		add_action( 'parse_query', 		array( $this, 'parse_query') );
-		add_action( 'template_include',	array( $this, 'maybe_load_ghost_page'), 11 );
+	protected function __construct() {
+		
+		// add_filter( 'query_vars', 		array( $this, 'register_query_vars' ) );
+		// add_action( 'parse_query', 		array( $this, 'parse_query') );
+		// add_action( 'template_include',	array( $this, 'maybe_load_ghost_page'), 11 );
 		
 		/**
 		 * Allow plugins / themes to do something at this point. This
@@ -63,39 +52,6 @@ final class Charitable_Pages {
 		 * @hook 	charitable_pages_start
 		 */
 		do_action( 'charitable_pages_start', $this );
-	}
-
-	/**
-	 * Instantiate the class, but only during the start phase.
-	 *
-	 * @see 	charitable_start
-	 * @param 	Charitable 	$charitable 
-	 * @return 	void
-	 * @static 
-	 * @access 	public
-	 * @since 	1.0.0
-	 */
-	public static function charitable_start(Charitable $charitable) {
-		if ( ! $charitable->is_start() ) {
-			return;
-		}
-
-		new Charitable_Pages( $charitable );
-	}
-
-	/**
-	 * Adds additional query vars. 
-	 *
-	 * @see 	query_vars
-	 * 
-	 * @param 	array $vars
-	 * @return 	array
-	 * @access 	public
-	 * @since 	1.0.0
-	 */
-	public function register_query_vars( $vars ) {
-		$vars[] = 'donate';
-		return $vars;
 	}
 
 	/**
@@ -143,15 +99,28 @@ final class Charitable_Pages {
 	/**
 	 * Returns the URL for the given page. 
 	 *
-	 * @param 	string $page
+	 * @global 	WP_Rewrite 	$wp_rewrite
+	 * @param 	string 		$page
+	 * @param 	array 		$args
 	 * @return 	string
 	 * @access 	public
 	 * @since 	1.0.0
 	 */
-	public function get_page_url( $page ) {
+	public function get_page_url( $page, $args = array() ) {
+		global $wp_rewrite;
+
 		switch ( $page ) {
-			case 'donation-form' : 
-				$url = add_query_arg( array( 'donate' => 1 ), get_home_url() );
+			case 'campaign-donation-page' : 
+
+				$campaign_id = isset( $args[ 'campaign_id' ] ) ? $args[ 'campaign_id' ] : get_the_ID();
+
+				if ( $wp_rewrite->using_permalinks() ) {
+					$url = get_permalink( $campaign_id ) . '/donate/';
+				}
+				else {
+					$url = add_query_arg( array( 'donate' => 1 ), get_permalink( $campaign_id ) );	
+				}
+				
 				break;
 		}
 

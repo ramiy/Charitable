@@ -52,7 +52,6 @@ class Charitable_Donation_Form implements Charitable_Donation_Form_Interface {
 	 * Create a donation form object.
 	 *
 	 * @param 	Charitable_Campaign $campaign
-	 * @return 	void
 	 * @access 	public
 	 * @since 	1.0.0
 	 */
@@ -108,14 +107,14 @@ class Charitable_Donation_Form implements Charitable_Donation_Form_Interface {
 				'type'		=> 'text', 
 				'priority'	=> 4, 
 				'required'	=> true, 
-				'value'		=> 'Eric'
+				'value'		=> ''
 			),
 			'last_name' => array( 
 				'label' 	=> __( 'Last name', 'charitable' ), 				
 				'type'		=> 'text', 
 				'priority'	=> 6, 
 				'required'	=> true, 
-				'value'		=> 'Daams'
+				'value'		=> ''
 			),
 			'address' => array( 
 				'label' 	=> __( 'Address', 'charitable' ), 				

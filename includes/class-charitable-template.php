@@ -63,14 +63,15 @@ class Charitable_Template {
 	 * @access 	public
 	 * @since 	1.0.0
 	 */
-	public function __construct($template_name, $load = true, $require_once = true) {
-		$this->theme_template_path = trailingslashit( apply_filters( 'charitable_theme_template_path', 'charitable' ) );
-		$this->base_template_path = charitable()->get_path( 'public' ) . 'templates/';
-		$this->template_names = (array) $template_name;
-		$this->view_args = array();
-		$this->theme_template_options = $this->get_theme_template_options();
+	public function __construct( $template_name, $load = true, $require_once = true ) {
+		$this->load 					= $load;
+		$this->theme_template_path 		= trailingslashit( apply_filters( 'charitable_theme_template_path', 'charitable' ) );
+		$this->base_template_path 		= charitable()->get_path( 'public' ) . 'templates/';
+		$this->template_names 			= (array) $template_name;
+		$this->view_args 				= array();
+		$this->theme_template_options 	= $this->get_theme_template_options();
 
-		if ( $load ) {
+		if ( $this->load ) {
 			$this->render( $require_once );
 		}		
 	}
@@ -156,17 +157,16 @@ class Charitable_Template {
 	 * Locate the template file of the highest priority.
 	 *
 	 * @uses 	locate_template()
-	 *
 	 * @return 	string 
-	 * @access 	protected
+	 * @access 	public
 	 * @since 	1.0.0
 	 */
-	protected function locate_template() {
+	public function locate_template() {
 
 		/**
 		 * Template options are first checked in the theme/child theme using locate_template. 
 		 */
-		$template = locate_template( $this->theme_template_options );	
+		$template = locate_template( $this->theme_template_options, false );	
 
 		/**
 		 * No templates found in the theme/child theme, so use the plugin's default template.

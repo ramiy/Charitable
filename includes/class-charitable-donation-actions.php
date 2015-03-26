@@ -19,13 +19,7 @@ if ( ! class_exists( 'Charitable_Donation_Actions' ) ) :
  * @since		1.0.0
  * @final
  */
-final class Charitable_Donation_Actions {
-
-	/**
-	 * @var 	Charitable 	$charitable
-	 * @access 	private
-	 */
-	private $charitable;
+final class Charitable_Donation_Actions extends Charitable_Start_Object {
 
 	/**
 	 * Set up the class. 
@@ -34,39 +28,16 @@ final class Charitable_Donation_Actions {
 	 * which can only be called during the start phase. In other words, don't try 
 	 * to instantiate this object. 
 	 *
-	 * @param 	Charitable 	$charitable
-	 * @return 	void
-	 * @access 	private
+	 * @access 	protected
 	 * @since 	1.0.0
 	 */
-	private function __construct(Charitable $charitable) {
-		$this->charitable = $charitable;
-			
+	protected function __construct() {
 		add_action( 'init', 						array( $this, 'handle_form_submissions' ) );
-		add_action( 'charitable_start_donation', 	array( $this, 'start_donation' ), 1 );
+		// add_action( 'charitable_start_donation', 	array( $this, 'start_donation' ), 1 );
 		add_action( 'charitable_make_donation', 	array( $this, 'save_pending_donation' ), 1 );
 		add_action( 'charitable_make_donation', 	array( $this, 'send_to_gateway' ), 2 );
 
 		do_action( 'charitable_donation_actions_start', $this );
-	}
-
-	/**
-	 * Instantiate the class, but only during the start phase.
-	 *
-	 * @see charitable_start hook
-	 * 
-	 * @param Charitable $charitable 
-	 * @return void
-	 * @static 
-	 * @access public
-	 * @since 1.0.0
-	 */
-	public static function charitable_start(Charitable $charitable) {
-		if ( ! $charitable->is_start() ) {
-			return;
-		}
-
-		new Charitable_Donation_Actions( $charitable );
 	}
 
 	/**
@@ -161,11 +132,10 @@ final class Charitable_Donation_Actions {
 			$donation = new Charitable_Session_Donation();			
 		}
 
-		
 		$donation->set( 'campaign_id', $campaign_id ); 
 		$session->set( 'donation', $donation );
 
-		$donations_url = charitable_get_helper( 'pages' )->get_page_url( 'donation-form' );
+		$donations_url = charitable_get_helper( 'pages' )->get_page_url( 'campaign-donation-page', array( 'campaign_id' => $campaign_id ) );
 		
 		wp_redirect( $donations_url );
 	}

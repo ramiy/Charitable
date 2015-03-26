@@ -25,37 +25,37 @@ class Charitable_Upgrade {
 	/**
 	 * Current database version. 
 	 * @var 	false|string
-	 * @access 	private
+	 * @access 	protected
 	 */
-	private $db_version;
+	protected $db_version;
 
 	/**
 	 * Edge version.
 	 * @var 	string
-	 * @access 	private
+	 * @access 	protected
 	 */
-	private $edge_version;
+	protected $edge_version;
 
 	/**
 	 * Array of methods to perform when upgrading to specific versions. 	 
 	 * @var 	array
-	 * @access 	private
+	 * @access 	protected
 	 */
-	private $upgrade_actions = array();
+	protected $upgrade_actions = array();
 
 	/**
 	 * Option key for upgrade log. 
 	 * @var 	string
-	 * @access 	private
+	 * @access 	protected
 	 */
-	private $upgrade_log_key = 'charitable_upgrade_log';
+	protected $upgrade_log_key = 'charitable_upgrade_log';
 	
 	/**
 	 * Option key for plugin version.
 	 * @var 	string
-	 * @access 	private
+	 * @access 	protected
 	 */
-	private $version_key = 'charitable_version';
+	protected $version_key = 'charitable_version';
 
 	/**
 	 * Upgrade from the current version stored in the database to the live version. 
@@ -68,21 +68,23 @@ class Charitable_Upgrade {
 	 * @since 	1.0.0
 	 */
 	public static function upgrade_from( $db_version, $edge_version ) {
+
 		if ( self::requires_upgrade( $db_version, $edge_version ) ) {
+
 			new Charitable_Upgrade( $db_version, $edge_version );
+
 		}
 	}
 
 	/**
 	 * Manages the upgrade process. 
 	 *
-	 * @param 	false|string $db_version
-	 * @param 	string $edge_version
-	 * @return 	void
-	 * @access 	private
+	 * @param 	false|string 	$db_version
+	 * @param 	string 			$edge_version
+	 * @access 	protected
 	 * @since 	1.0.0
 	 */
-	private function __construct( $db_version, $edge_version ) {
+	protected function __construct( $db_version, $edge_version ) {
 		$this->db_version = $db_version;
 		$this->edge_version = $edge_version;
 
@@ -102,17 +104,20 @@ class Charitable_Upgrade {
 	 * Perform version upgrades. 
 	 *
 	 * @return 	void
-	 * @access 	private
+	 * @access 	protected
 	 * @since 	1.0.0
 	 */
-	private function do_upgrades() {
+	protected function do_upgrades() {
 		if ( empty( $this->upgrade_actions ) || ! is_array( $this->upgrade_actions ) ) {
 			return;
 		}
 
 		foreach ( $this->upgrade_actions as $version => $method ) {
+
 			if ( self::requires_upgrade( $this->db_version, $version ) ) {
+
 				call_user_func( $method );
+
 			}
 		}
 	}
@@ -129,17 +134,19 @@ class Charitable_Upgrade {
 	 * @since 	1.0.0
 	 */
 	public static function requires_upgrade( $version_a, $version_b ) {
+
 		return $version_a === false || version_compare( $version_a, $version_b, '<' );
+
 	}	
 
 	/**
 	 * Saves a log of the version to version upgrades made. 
 	 *
 	 * @return 	void
-	 * @access 	private
+	 * @access 	protected
 	 * @since 	1.0.0
 	 */
-	private function save_upgrade_log() {
+	protected function save_upgrade_log() {
 		$log = get_option( $this->upgrade_log_key );
 
 		if ( false === $log || ! is_array( $log ) ) {
@@ -159,10 +166,10 @@ class Charitable_Upgrade {
 	 * Upgrade complete. This saves the new version to the database. 
 	 *
 	 * @return 	void
-	 * @access 	private
+	 * @access 	protected
 	 * @since 	1.0.0
 	 */
-	private function update_db_version() {
+	protected function update_db_version() {
 		update_option( $this->version_key, $this->edge_version );
 	}
 }

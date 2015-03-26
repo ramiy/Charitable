@@ -28,9 +28,31 @@ if ( isset( $field['options'] ) && count( $field['options'] ) ) :
 		</label>
 	<?php endif ?>
 	<select name="<?php echo $field['key'] ?>">
-		<?php foreach ( $field['options'] as $value => $label ) : ?>
-		<option value="<?php echo $value ?>"><?php echo $label ?></option> 
-		<?php endforeach ?>
+		<?php 
+
+		foreach ( $field['options'] as $value => $label ) :
+			if ( is_array( $label ) ) : ?>
+				
+				<optgroup>
+				
+				<?php foreach( $label as $val => $label ) : ?>
+
+					<option value="<?php echo $val ?>"><?php echo $label ?></option>
+
+				<?php endforeach; ?>
+				
+				</optgroup>
+			
+			<?php else : ?>
+
+				<option value="<?php echo $value ?>"><?php echo $label ?></option> 
+				
+			<?php 
+
+			endif;
+		endforeach;
+
+		?>
 	</select>
 </div>
 <?php endif;

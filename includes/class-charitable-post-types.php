@@ -79,7 +79,7 @@ final class Charitable_Post_Types extends Charitable_Start_Object {
 					'publicly_queryable' 	=> true,
 					'exclude_from_search' 	=> false,
 					'hierarchical' 			=> false, // Hierarchical causes memory issues - WP loads all records!
-					'rewrite' 				=> array( 'slug' => 'campaign', 'with_front' => true ),
+					'rewrite' 				=> array( 'slug' => 'campaigns', 'with_front' => true ),
 					'query_var' 			=> true,
 					'supports' 				=> array( 'title', 'thumbnail', 'comments' ),
 					'has_archive' 			=> true,

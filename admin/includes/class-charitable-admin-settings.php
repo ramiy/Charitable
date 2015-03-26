@@ -133,31 +133,31 @@ final class Charitable_Admin_Settings {
 	 * @since 	1.0.0
 	 */
 	private function get_fields() {
-		return apply_filters( 'charitable_settings_fields', array(
+		$settings = apply_filters( 'charitable_settings_fields', array(
 			'general'					=> array(
 				'section_locale'		=> array(
 					'title'				=> __( 'Currency & Location', 'charitable' ), 
 					'type'				=> 'heading', 
-					'priority'			=> 5
+					'priority'			=> 2
 				),
 				'country'				=> array(
 					'title'				=> __( 'Base Country', 'charitable' ), 
 					'type'				=> 'select', 
-					'priority'			=> 10, 
+					'priority'			=> 4, 
 					'default'			=> 'AU', 
 					'options'			=> charitable()->get_location_helper()->get_countries()
 				), 
 				'currency'				=> array(
 					'title'				=> __( 'Currency', 'charitable' ), 
 					'type'				=> 'select', 
-					'priority'			=> 15, 
+					'priority'			=> 10, 
 					'default'			=> 'AUD',
 					'options'			=> charitable()->get_currency_helper()->get_all_currencies()						
 				), 
 				'currency_format'		=> array(
 					'title'				=> __( 'Currency Format', 'charitable' ), 
 					'type'				=> 'select', 
-					'priority'			=> 20, 
+					'priority'			=> 12, 
 					'default'			=> 'left',
 					'options'			=> array(
 						'left' 				=> '$23.00', 
@@ -169,7 +169,7 @@ final class Charitable_Admin_Settings {
 				'decimal_separator'		=> array(
 					'title'				=> __( 'Decimal Separator', 'charitable' ), 
 					'type'				=> 'select', 
-					'priority'			=> 25, 
+					'priority'			=> 14, 
 					'default'			=> '.',
 					'options'			=> array(
 						'.' => 'Period (12.50)',
@@ -179,7 +179,7 @@ final class Charitable_Admin_Settings {
 				'thousands_separator'	=> array(
 					'title'				=> __( 'Thousands Separator', 'charitable' ), 
 					'type'				=> 'select', 
-					'priority'			=> 30, 
+					'priority'			=> 16, 
 					'default'			=> ',',
 					'options'			=> array(
 						',' => 'Comma (10,000)', 
@@ -189,8 +189,26 @@ final class Charitable_Admin_Settings {
 				'decimal_count'			=> array(
 					'title'				=> __( 'Number of Decimals', 'charitable' ), 
 					'type'				=> 'number', 
-					'priority'			=> 35, 
+					'priority'			=> 18, 
 					'default'			=> 2		
+				),
+				'section_pages'			=> array(
+					'title'				=> __( 'Pages', 'charitable' ), 
+					'type'				=> 'heading', 
+					'priority'			=> 20
+				),
+				'donation_page'			=> array(
+					'title'				=> __( 'Donation Page', 'charitable' ), 
+					'type'				=> 'select', 
+					'priority'			=> 22, 
+					'default'			=> 'auto',
+					'options'			=> array(
+						'auto'			=> __( 'Use Automatic Routing', 'charitable' ), 
+						'pages'			=> array( 
+							'options' 	=> array_reduce( get_pages(), array( $this, 'filter_page' ), array() ), 
+							'label'		=> __( 'Choose a Static Page', 'charitable' )
+						)
+					)
 				),
 				'section_dangerous'		=> array(
 					'title'				=> __( 'Dangerous Settings', 'charitable' ), 
@@ -212,6 +230,8 @@ final class Charitable_Admin_Settings {
 				)
 			)
 		) );
+
+		return $settings;
 	}
 
 	/**
@@ -340,6 +360,20 @@ final class Charitable_Admin_Settings {
 	 */
 	public function render_gateways_table( $args ) {
 		charitable_admin_view( 'settings/gateways-table', $args );
+	}
+
+	/**
+	 * Used by array_reduce to return an associative array with the page ID for the key and title for the value.
+	 *
+	 * @param 	string[]		$result
+	 * @param 	WP_Post 		$page
+	 * @return 	string[] 		$result
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function filter_page( $result, $page ) {
+		$result[ $page->ID ] = $page->post_title;
+		return $result;
 	}
 }
 
