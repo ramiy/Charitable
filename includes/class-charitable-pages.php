@@ -44,6 +44,9 @@ final class Charitable_Pages extends Charitable_Start_Object {
 		// add_filter( 'query_vars', 		array( $this, 'register_query_vars' ) );
 		// add_action( 'parse_query', 		array( $this, 'parse_query') );
 		// add_action( 'template_include',	array( $this, 'maybe_load_ghost_page'), 11 );
+
+		add_filter( 'template_include', array( $this, 'donate_template' ) );		
+		add_filter( 'template_include', array( $this, 'widget_template' ) );
 		
 		/**
 		 * Allow plugins / themes to do something at this point. This
@@ -125,6 +128,93 @@ final class Charitable_Pages extends Charitable_Start_Object {
 		}
 
 		return $url;
+	}	
+
+	/**
+	 * Checks whether the current request is for the given page. 
+	 *
+	 * @global 	WP_Query 	$wp_query
+	 * @param 	string 		$page
+	 * @return 	boolean
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function is_page( $page ) {		
+		global $wp_query;
+
+		$ret = false;
+
+		switch ( $page ) {
+
+			case 'campaign-donation-page' : 
+
+				$ret = is_main_query() && isset ( $wp_query->query_vars[ 'donate' ] ) && is_singular( 'campaign' );
+
+				break;
+
+			case 'campaign-widget' : 
+
+				$ret = is_main_query() && isset ( $wp_query->query_vars[ 'widget' ] ) && is_singular( 'campaign' );
+
+				break;
+		}
+
+		return $ret;
+	}
+
+	/**
+	 * Load the donation template if we're looking at the donate page. 
+	 *
+	 * @param 	string 		$template
+	 * @return 	string
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function donate_template( $template ) {
+		global $wp_query;
+
+		if ( $this->is_page( 'campaign-donation-page' ) ) {
+
+			do_action( 'charitable_is_donate_page' );
+			
+			$new_template 	= apply_filters( 'charitable_donate_page_template', 'campaign-donation-page.php' );
+			$path 			= charitable_template( $new_template, false )->locate_template();
+
+			if ( file_exists( $path ) ) {
+
+				$template = $path;
+
+			}
+		}
+
+		return $template;
+	}
+
+	/**
+	 * Load the widget template if we're looking at the widget page. 
+	 *
+	 * @param 	string 		$template
+	 * @return 	string
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function widget_template( $template ) {
+		
+		if ( $this->is_page( 'campaign-widget' ) ) {
+
+			do_action( 'charitable_is_widget_page' );
+			
+			$new_template 	= apply_filters( 'charitable_widget_page_template', 'campaign-widget.php' );
+			$path 			= charitable_template( $new_template, false )->locate_template();
+
+			if ( file_exists( $path ) ) {
+
+				$template = $path;
+
+			}
+		}
+
+		return $template;
 	}	
 }
 

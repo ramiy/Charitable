@@ -34,6 +34,8 @@ final class Charitable_Post_Types extends Charitable_Start_Object {
 	protected function __construct() {	
 		add_action( 'init', array( $this, 'register_post_types' ), 5 );
 		add_action( 'init', array( $this, 'register_post_statuses' ), 5 );
+		add_action( 'init', array( $this, 'add_endpoints' ) );
+		// add_action( 'init', array( $this, 'add_rewrite_rules' ) );
 	}
 
 	/**
@@ -197,6 +199,18 @@ final class Charitable_Post_Types extends Charitable_Start_Object {
 			'show_in_admin_status_list' => true,
 			'exclude_from_search'       => true,
 		) );
+	}
+
+	/**
+	 * Add custom endpoints. 
+	 *
+	 * @return 	void
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function add_endpoints() {
+		add_rewrite_endpoint( 'donate', EP_ALL );
+		add_rewrite_endpoint( 'widget', EP_ALL );
 	}
 }
 

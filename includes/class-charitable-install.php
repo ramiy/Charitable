@@ -31,8 +31,8 @@ class Charitable_Install {
 	public function __construct() {	
 		$this->setup_roles();
 		$this->create_tables();	
-		$this->add_endpoints();
-		$this->add_rewrite_rules();
+		// $this->add_endpoints();
+		// $this->add_rewrite_rules();
 
 		flush_rewrite_rules();
 
@@ -72,20 +72,8 @@ class Charitable_Install {
 	 * @since 	1.0.0
 	 */
 	public function add_endpoints() {
-		add_rewrite_endpoint( 'donate', EP_ALL );
-		add_rewrite_endpoint( 'widget', EP_ALL );
-	}
-
-	/**
-	 * Add rewrite rules. 
-	 *
-	 * @return 	void
-	 * @access  public
-	 * @since 	1.0.0
-	 */
-	public function add_rewrite_rules() {
-		add_rewrite_rule( '^campaigns/([^&]+)/donate/?', 'index.php?campaign=$matches[1]&donate=1', 'top' );
-	}
+		charitable_get_helper( 'post-types' )->add_endpoints();
+	}	
 }
 
 endif;

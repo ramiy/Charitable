@@ -31,67 +31,9 @@ class Charitable_Templates extends Charitable_Start_Object {
 	 * @access 	protected
 	 * @since 	1.0.0
 	 */
-	protected function __construct() {
-		add_filter( 'template_include', array( $this, 'donate_template' ) );
-		// add_filter( 'template_include', array( $this, 'widget_template' ) );
+	protected function __construct() {		
 		add_filter( 'the_content', 		array( $this, 'campaign_content' ), 2 );
-	}
-
-	/**
-	 * Load the donation template if we're looking at the donate page. 
-	 *
-	 * @param 	string 		$template
-	 * @return 	string
-	 * @access  public
-	 * @since 	1.0.0
-	 */
-	public function donate_template( $template ) {
-		global $wp_query;
-
-		if ( is_main_query() && isset ( $wp_query->query_vars[ 'donate' ] ) && is_singular( 'campaign' ) ) {
-
-			do_action( 'charitable_is_donate_page' );
-			
-			$new_template 	= apply_filters( 'charitable_donate_page_template', 'campaign-donation-page.php' );
-			$path 			= charitable_template( $new_template, false )->locate_template();
-
-			if ( file_exists( $path ) ) {
-
-				$template = $path;
-
-			}
-		}
-
-		return $template;
-	}
-
-	/**
-	 * Load the widget template if we're looking at the widget page. 
-	 *
-	 * @param 	string 		$template
-	 * @return 	string
-	 * @access  public
-	 * @since 	1.0.0
-	 */
-	public function widget_template( $template ) {
-		global $wp_query;
-
-		if ( is_main_query() && isset ( $wp_query->query_vars[ 'widget' ] ) && is_singular( 'campaign' ) ) {
-
-			do_action( 'charitable_is_widget_page' );
-			
-			$new_template 	= apply_filters( 'charitable_widget_page_template', 'campaign-widget.php' );
-			$path 			= charitable_template( $new_template, false )->locate_template();
-
-			if ( file_exists( $path ) ) {
-
-				$template = $path;
-
-			}
-		}
-
-		return $template;
-	}
+	}	
 
 	/** 
 	 * Use our template for the campaign content.
