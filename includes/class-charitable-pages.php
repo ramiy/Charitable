@@ -43,10 +43,10 @@ final class Charitable_Pages extends Charitable_Start_Object {
 		
 		// add_filter( 'query_vars', 		array( $this, 'register_query_vars' ) );
 		// add_action( 'parse_query', 		array( $this, 'parse_query') );
-		// add_action( 'template_include',	array( $this, 'maybe_load_ghost_page'), 11 );
-
+		// add_action( 'template_include',	array( $this, 'maybe_load_ghost_page'), 11 );		
 		add_filter( 'template_include', array( $this, 'donate_template' ) );		
 		add_filter( 'template_include', array( $this, 'widget_template' ) );
+		add_filter( 'body_class', 		array( $this, 'add_custom_body_classes' ) );
 		
 		/**
 		 * Allow plugins / themes to do something at this point. This
@@ -202,7 +202,7 @@ final class Charitable_Pages extends Charitable_Start_Object {
 		
 		if ( $this->is_page( 'campaign-widget' ) ) {
 
-			do_action( 'charitable_is_widget_page' );
+			do_action( 'charitable_is_widget' );
 			
 			$new_template 	= apply_filters( 'charitable_widget_page_template', 'campaign-widget.php' );
 			$path 			= charitable_template( $new_template, false )->locate_template();
@@ -216,6 +216,26 @@ final class Charitable_Pages extends Charitable_Start_Object {
 
 		return $template;
 	}	
+
+	/**
+	 * Adds custom body classes when viewing widget or donation form.
+	 *
+	 * @param 	array 		$classes
+	 * @return 	array
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function add_custom_body_classes( $classes ) {
+		if ( $this->is_page( 'campaign-donation-page' ) ) {
+			$classes[] = 'campaign-donation-page';
+		}
+
+		if ( $this->is_page( 'campaign-widget' ) ) {
+			$classes[] = 'campaign-widget';
+		}
+
+		return $classes;
+	}
 }
 
 endif; // End class_exists check.

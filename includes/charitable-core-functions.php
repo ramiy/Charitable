@@ -113,6 +113,17 @@ function charitable_get_session() {
 }
 
 /**
+ * Returns the given campaign. 
+ *
+ * @param 	int 	$campaign_id
+ * @return 	Charitable_Campaign
+ * @since 	1.0.0
+ */
+function charitable_get_campaign( $campaign_id ) {
+	return new Charitable_Campaign( $campaign_id );
+}
+
+/**
  * Returns the current campaign. 
  *
  * @return 	Charitable_Campaign
