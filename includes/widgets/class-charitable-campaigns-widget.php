@@ -63,7 +63,6 @@ class Charitable_Campaigns_Widget extends WP_Widget {
 
 			?>
 
-		
 		</ul>
 		<?php
 		echo $args['after_widget'];
