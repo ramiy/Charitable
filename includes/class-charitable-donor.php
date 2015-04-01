@@ -231,6 +231,18 @@ class Charitable_Donor extends WP_User {
 	}
 
 	/**
+	 * Return the number of donations made by the donor. 
+	 *
+	 * @param 	boolean 	$count_distinct 		If true, will not include extra donations made to the same campaign. 
+	 * @return 	int
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function get_donation_count( $count_distinct = false ) {
+		return charitable()->get_db_table( 'campaign_donations' )->count_donations_by_donor( $this->ID, $count_distinct );
+	}
+
+	/**
 	 * Return the total amount donated by the donor.
 	 *
 	 * @return 	float
@@ -239,6 +251,54 @@ class Charitable_Donor extends WP_User {
 	 */
 	public function get_total_donated() {
 		return (float) charitable()->get_db_table( 'campaign_donations' )->get_total_donated_by_donor( $this->ID );
+	}
+
+	/**
+	 * Returns the user's avatar. 
+	 *
+	 * By default, this will return the gravatar, but it can 
+	 * be extended to add support for locally hosted avatars.
+	 *
+	 * @return 	string
+	 * @access 	public
+	 * @since 	1.0.0
+	 */
+	public function get_avatar( $size = 100 ) {
+
+		$avatar = apply_filters( 'charitable_user_avatar', false, $this );
+
+		if ( false === $avatar ) {
+
+			$avatar = get_avatar( $this->ID, $size );
+
+		}
+			
+		return $avatar;
+	}
+
+	/**
+	 * Returns the user's donation and campaign creation activity. 
+	 *
+	 * @see 	WP_Query 	
+	 * @param 	array 		$args 		Optional. Any arguments accepted by WP_Query.
+	 * @return 	WP_Query 
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function get_activity( $args = array() ) {
+		$defaults = array(
+			'author'		=> $this->ID,
+			'post_status'	=> array( 'charitable-completed', 'charitable-preapproved', 'publish' ),
+			'post_type' 	=> array( 'donation', 'campaign' ), 
+			'order'			=> 'DESC', 
+			'orderby'		=> 'date'
+		);
+
+		$args = wp_parse_args( $args, $defaults );
+
+		$args = apply_filters( 'charitable_donor_activity_args', $args, $this );
+
+		return new WP_Query( $args );
 	}
 }
 

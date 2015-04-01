@@ -154,7 +154,7 @@ class Charitable_Donation {
 	}
 
 	/**
-	 * Returns a comma separated string of campaigns that were donated to.
+	 * Returns an array of the campaigns that were donated to.
 	 *
 	 * @return 	string[]
 	 * @access 	public
@@ -173,6 +173,46 @@ class Charitable_Donation {
 	 */
 	public function get_campaign_name( $campaign_donation ) {
 		return $campaign_donation->campaign_name;
+	}
+
+	/**
+	 * Return a comma separated list of the campaigns that were donated to.	
+	 *
+	 * @param 	boolean 	$linked 		Whether to return the campaigns with links to the campaign pages.
+	 * @return 	string
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function get_campaigns_donated_to( $linked = false ) {
+		$campaigns = $linked ? $this->get_campaigns_links() : $this->get_campaigns();
+
+		return implode( ', ', $campaigns );
+	}
+
+	/**
+	 * Return a comma separated list of the campaigns that were donated to, with links to the campaigns. 
+	 *
+	 * @return 	string[]
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function get_campaigns_links() {
+		$links = array();
+
+		foreach ( $this->get_campaign_donations() as $campaign ) {
+
+			if ( ! isset( $links[ $campaign->campaign_id ] ) ) {
+
+				$links[ $campaign->campaign_id ] = sprintf( '<a href="%s" title="%s">%s</a>', 
+					get_permalink( $campaign->campaign_id ), 
+					sprintf( '%s %s', _x( 'Go to', 'go to campaign', 'charitable' ), get_the_title( $campaign->campaign_id ) ), 
+					get_the_title( $campaign->campaign_id )
+				);
+
+			}
+		}
+
+		return $links;
 	}
 
 	/**

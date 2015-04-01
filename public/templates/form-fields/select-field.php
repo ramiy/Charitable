@@ -7,16 +7,18 @@
  * @version 1.0.0
  */
 
-$form 			= charitable_get_current_donation_form();
-
-if ( ! $form ) {
+if ( ! isset( $view_args[ 'form' ] ) || ! isset( $view_args[ 'field' ] ) ) {
 	return;
 }
 
-$field 			= $form->get_current_field();
-$is_required 	= isset( $field['required'] ) 	? $field['required']	: false;
+$form 			= $view_args[ 'form' ];
+$field 			= $view_args[ 'field' ];
+$is_required 	= isset( $field[ 'required' ] ) 	? $field[ 'required' ] 		: false;
+$options		= isset( $field[ 'options' ] ) 		? $field[ 'options' ] 		: array();
+$value			= isset( $field[ 'value' ] ) 		? $field[ 'value' ] 		: '';
 
-if ( isset( $field['options'] ) && count( $field['options'] ) ) : 
+if ( count( $options ) ) : 
+
 ?>
 <div id="charitable_field_<?php echo $field['key'] ?>" class="charitable-form-field <?php if ( $is_required ) echo 'required-field' ?>">
 	<?php if ( isset( $field['label'] ) ) : ?>
@@ -30,14 +32,14 @@ if ( isset( $field['options'] ) && count( $field['options'] ) ) :
 	<select name="<?php echo $field['key'] ?>">
 		<?php 
 
-		foreach ( $field['options'] as $value => $label ) :
+		foreach ( $options as $val => $label ) :
 			if ( is_array( $label ) ) : ?>
 				
 				<optgroup>
 				
 				<?php foreach( $label as $val => $label ) : ?>
 
-					<option value="<?php echo $val ?>"><?php echo $label ?></option>
+					<option value="<?php echo $val ?>" <?php selected( $val, $value ) ?>><?php echo $label ?></option>
 
 				<?php endforeach; ?>
 				
@@ -45,7 +47,7 @@ if ( isset( $field['options'] ) && count( $field['options'] ) ) :
 			
 			<?php else : ?>
 
-				<option value="<?php echo $value ?>"><?php echo $label ?></option> 
+				<option value="<?php echo $val ?>" <?php selected( $val, $value ) ?>><?php echo $label ?></option> 
 				
 			<?php 
 
@@ -55,4 +57,6 @@ if ( isset( $field['options'] ) && count( $field['options'] ) ) :
 		?>
 	</select>
 </div>
-<?php endif;
+<?php 
+
+endif;

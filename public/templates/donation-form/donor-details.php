@@ -7,8 +7,8 @@
  * @version 1.0.0
  */
 
-$form 			= charitable_get_current_donation_form();
-$donor 			= new Charitable_Donor( wp_get_current_user() );
+$form 	= $view_args[ 'form' ];
+$donor 	= new Charitable_Donor( wp_get_current_user() );
 
 if ( ! $donor->is_logged_in() ) {
 	return;

@@ -7,7 +7,7 @@
  * @version 1.0.0
  */
 
-$form 				= charitable_get_current_donation_form();
+$form 				= $view_args[ 'form' ];
 $suggested_amounts 	= $form->get_campaign()->get_suggested_amounts();
 $currency_helper 	= charitable()->get_currency_helper();
 

@@ -18,35 +18,35 @@ if ( ! class_exists( 'Charitable_Donation_Form' ) ) :
  *
  * @since		1.0.0
  */
-class Charitable_Donation_Form implements Charitable_Donation_Form_Interface {
+class Charitable_Donation_Form extends Charitable_Form implements Charitable_Donation_Form_Interface {
 
 	/** 
 	 * @var 	Charitable_Campaign
 	 */
-	private $campaign;
-
-	/**
-	 * Temporary, unique ID of this form. 
-	 *
-	 * @var 	string
-	 * @access  private
-	 */
-	private $id;
+	protected $campaign;
 
 	/**
 	 * @var 	array
 	 */
-	private $form_fields;
+	protected $form_fields;
 
 	/**
 	 * @var 	string
 	 */
-	private $nonce_action = 'charitable_donation';
+	protected $nonce_action = 'charitable_donation';
 
 	/**
 	 * @var 	string
 	 */
-	private $nonce_name = '_charitable_donation_nonce';
+	protected $nonce_name = '_charitable_donation_nonce';
+
+	/**
+	 * Action to be executed upon form submission. 
+	 *
+	 * @var 	string
+	 * @access  protected
+	 */
+	protected $form_action = 'make-donation';
 
 	/**
 	 * Create a donation form object.
@@ -57,8 +57,19 @@ class Charitable_Donation_Form implements Charitable_Donation_Form_Interface {
 	 */
 	public function __construct( Charitable_Campaign $campaign ) {
 		$this->campaign = $campaign;
-		$this->id 		= uniqid();
+		$this->id 		= uniqid();	
 
+		$this->attach_hooks_and_filters();	
+	}
+
+	/**
+	 * Set up callbacks for actions and filters. 
+	 *
+	 * @return 	void
+	 * @access  protected
+	 * @since 	1.0.0
+	 */
+	protected function attach_hooks_and_filters() {
 		add_action( 'charitable_login_form', 						array( $this, 'login_form' ) );
 		add_action( 'charitable_donation_form_amount', 				array( $this, 'enter_donation_amount' ) );
 		add_action( 'charitable_donation_form_before_user_fields',	array( $this, 'add_hidden_fields' ) ); 
@@ -77,18 +88,6 @@ class Charitable_Donation_Form implements Charitable_Donation_Form_Interface {
 	 */
 	public function get_campaign() {
 		return $this->campaign;
-	}
-
-	/**
-	 * Compares the ID of the form passed by the action and the current form object to ensure they're the same. 
-	 *
-	 * @param 	string 		$id
-	 * @return 	boolean
-	 * @access  public
-	 * @since 	1.0.0
-	 */
-	public function is_current_form( $id ) {
-		return $id === $this->id;
 	}
 
 	/**
@@ -218,21 +217,6 @@ class Charitable_Donation_Form implements Charitable_Donation_Form_Interface {
 	}
 
 	/**
-	 * Whether the given field type can use the default field template. 
-	 *
-	 * @param 	string 		$field_type
-	 * @return 	boolean
-	 * @access 	protected
-	 * @since 	1.0.0
-	 */
-	protected function use_default_field_template( $field_type ) {
-		$default_field_types = apply_filters( 'charitable_default_template_field_types', array( 
-			'text', 'url', 'email', 'password' 
-		) );
-		return in_array( $field_type, $default_field_types );
-	}
-
-	/**
 	 * Render the donation form. 
 	 *
 	 * @return 	void
@@ -240,7 +224,9 @@ class Charitable_Donation_Form implements Charitable_Donation_Form_Interface {
 	 * @since 	1.0.0
 	 */
 	public function render() {
-		charitable_template_part( 'donation-form/form-donation' );
+		$template = charitable_template( 'donation-form/form-donation.php', false );
+		$template->set_view_args( array( 'form' => $this ) );
+		$template->render();
 	}
 
 	/**
@@ -256,7 +242,7 @@ class Charitable_Donation_Form implements Charitable_Donation_Form_Interface {
 			return;
 		}		
 
-		charitable_template_part( 'donation-form/form-login' );
+		charitable_template( 'donation-form/form-login.php' );
 	}
 
 	/**
@@ -272,7 +258,9 @@ class Charitable_Donation_Form implements Charitable_Donation_Form_Interface {
 			return;
 		}
 
-		charitable_template_part( 'donation-form/donation-amount' );
+		$template = charitable_template( 'donation-form/donation-amount.php', false );
+		$template->set_view_args( array( 'form' => $this ) );
+		$template->render();
 	}
 
 	/**
@@ -283,16 +271,12 @@ class Charitable_Donation_Form implements Charitable_Donation_Form_Interface {
 	 * @access  public
 	 * @since 	1.0.0
 	 */
-	public function add_hidden_fields( $form ) {
-		if ( ! $form->is_current_form( $this->id ) ) {
-			return;
-		}
-
-		$this->nonce_field();
-		?>				
-		<input type="hidden" name="campaign_id" value="<?php echo $this->campaign->get_campaign_id() ?>" />
-		<input type="hidden" name="charitable_action" value="make-donation" />
-		<?php
+	public function add_hidden_fields( $form ) {		
+		if ( parent::add_hidden_fields( $form ) ) :
+			?>				
+			<input type="hidden" name="campaign_id" value="<?php echo $this->campaign->get_campaign_id() ?>" />
+			<?php
+		endif;
 	}
 
 	/**
@@ -307,7 +291,9 @@ class Charitable_Donation_Form implements Charitable_Donation_Form_Interface {
 			return;
 		}
 
-		charitable_template_part( 'donation-form/donor-details' );
+		$template = charitable_template( 'donation-form/donor-details.php', false );
+		$template->set_view_args( array( 'form' => $this ) );
+		$template->render();
 	}
 
 	/**
@@ -323,44 +309,9 @@ class Charitable_Donation_Form implements Charitable_Donation_Form_Interface {
 			return;
 		}
 
-		charitable_template_part( 'donation-form/user-fields' );
-	}
-
-	/**
-	 * Render a form field. 
-	 *
-	 * @param 	array 	$field
-	 * @param 	string 	$key
-	 * @param 	Charitable_Donation_Form 	$form
-	 * @return 	void
-	 * @access  public
-	 * @since 	1.0.0
-	 */
-	public function render_field( $field, $key, $form ) {
-		if ( ! $form->is_current_form( $this->id ) ) {
-			return;
-		}
-
-		if ( ! isset( $field['type'] ) ) {
-			return;
-		}
-
-		$this->current_field = $field;
-		$this->current_field['key'] = $key;
-
-		/**
-		 * Many field types, like text, email, url, etc fall 
-		 * back to the default-field template. 
-		 */
-		$field_type = $field['type'];			
-		if ( $this->use_default_field_template( $field_type ) ) {
-			$this->current_field['type'] = $field_type;
-			$field_type = 'default';
-		}
-
-		$template_name = 'donation-form/fields/' . $field_type . '-field';
-
-		charitable_template_part( $template_name );
+		$template = charitable_template( 'donation-form/user-fields.php', false );
+		$template->set_view_args( array( 'form' => $this ) );
+		$template->render();
 	}
 
 	/**
@@ -384,39 +335,6 @@ class Charitable_Donation_Form implements Charitable_Donation_Form_Interface {
 		}
 
 		charitable_template_part( 'donation-form/user-login-fields' );
-	}
-
-	/**
-	 * Returns the current field being displayed. 
-	 *
-	 * @return 	array
-	 * @access  public
-	 * @since 	1.0.0
-	 */
-	public function get_current_field() {
-		return $this->current_field;
-	}
-
-	/**
-	 * Output the nonce. 
-	 *
-	 * @return 	void
-	 * @access 	public
-	 * @since 	1.0.0
-	 */
-	public function nonce_field() {
-		wp_nonce_field( $this->nonce_action, $this->nonce_name );
-	}
-
-	/** 
-	 * Validate nonce data passed by the submitted form. 
-	 * 
-	 * @return 	boolean
-	 * @access 	public
-	 * @since 	1.0.0
-	 */
-	public function validate_nonce() {
-		return isset( $_POST[$this->nonce_name] ) && wp_verify_nonce( $_POST[$this->nonce_name], $this->nonce_action );
 	}
 
 	/**

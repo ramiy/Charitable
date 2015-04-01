@@ -7,7 +7,7 @@
  * @version 1.0.0
  */
 
-$form 			= charitable_get_current_donation_form();
+$form 			= $view_args[ 'form' ];
 $user_fields 	= $form->get_user_fields();
 $user 			= wp_get_current_user();
 

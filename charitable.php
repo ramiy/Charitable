@@ -176,13 +176,14 @@ class Charitable {
 		require_once( $this->includes_path . 'class-charitable-gateway.php' );
 
 		/**
-		 * Interfaces.
+		 * Interfaces
 		 */
 		require_once( $this->includes_path . 'interface-charitable-donation-form.php' );
 
 		/**
 		 * Models.
 		 */
+		require_once( $this->includes_path . 'class-charitable-form.php' );
 		require_once( $this->includes_path . 'class-charitable-campaign.php' );
 		require_once( $this->includes_path . 'class-charitable-donation.php' );
 		require_once( $this->includes_path . 'class-charitable-donation-form.php' );

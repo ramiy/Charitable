@@ -7,7 +7,7 @@
  * @version 1.0.0
  */
 
-$user 			= wp_get_current_user();
+$user = wp_get_current_user();
 
 if ( 0 !== $user->ID ) {
 	return;

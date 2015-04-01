@@ -7,7 +7,7 @@
  * @version 1.0.0
  */
 
-$form 			= charitable_get_current_donation_form();
+$form 			= $view_args[ 'form' ];
 $user_fields 	= $form->get_user_fields();
 $user 			= wp_get_current_user();
 
@@ -44,19 +44,36 @@ endif
 
 		<div id="charitable-user-fields" class="charitable-hidden">
 
-	<?php endif ?>
+	<?php endif;
 
-		<?php do_action( 'charitable_donation_form_before_user_fields', $form ) ?>
+		/**
+		 * @hook 	charitable_form_before_fields
+		 */
+		do_action( 'charitable_form_before_fields', $form ) ?>
 
-		<?php foreach ( $user_fields as $key => $field ) : ?>
+		<div class="charitable-form-fields cf">
 
-			<?php do_action( 'charitable_donation_form_user_field', $field, $key, $form ) ?>
+		<?php 
 
-		<?php endforeach ?>
+		foreach ( $user_fields as $key => $field ) : 
 
-		<?php do_action( 'charitable_donation_form_after_user_fields', $form ) ?>
+			/**
+			 * @hook 	charitable_form_field
+			 */
+			do_action( 'charitable_form_field', $field, $key, $form );
 
-	<?php if ( $user->ID ) : ?>
+		endforeach ?>
+
+		</div>
+
+		<?php 
+		/**
+		 * @hook 	charitable_form_after_fields
+		 */
+		do_action( 'charitable_form_after_fields', $form );
+
+	if ( $user->ID ) : 
+	?>
 
 	</div>
 

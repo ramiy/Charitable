@@ -7,14 +7,16 @@
  * @version 1.0.0
  */
 
-$form 			= charitable_get_current_donation_form();
-
-if ( ! $form ) {
+if ( ! isset( $view_args[ 'form' ] ) || ! isset( $view_args[ 'field' ] ) ) {
 	return;
 }
 
-$field 			= $form->get_current_field();
-$is_required 	= isset( $field['required'] ) 	? $field['required']	: false;
+$form 			= $view_args[ 'form' ];
+$field 			= $view_args[ 'field' ];
+$is_required 	= isset( $field[ 'required' ] ) 	? $field[ 'required' ] 		: false;
+$value			= isset( $field[ 'value' ] ) 		? $field[ 'value' ] 		: '';
+$placeholder 	= isset( $field[ 'placeholder' ] ) 	? $field[ 'placeholder' ] 	: '';
+
 ?>
 <div id="charitable_field_<?php echo $field['key'] ?>" class="charitable-form-field <?php if ( $is_required ) echo 'required-field' ?>">
 	<?php if ( isset( $field['label'] ) ) : ?>
@@ -25,5 +27,5 @@ $is_required 	= isset( $field['required'] ) 	? $field['required']	: false;
 			<?php endif ?>
 		</label>
 	<?php endif ?>
-	<textarea name="<?php echo $field['key'] ?>"></textarea>
+	<textarea name="<?php echo $field['key'] ?>" placeholder="<?php echo $placeholder ?>"><?php echo $value ?></textarea>
 </div>
