@@ -53,7 +53,7 @@ class Charitable_User_Dashboard implements Charitable_Addon_Interface {
 	 */
 	private function load_dependencies() {
 		require_once( 'charitable-user-dashboard-functions.php' );
-		require_once( 'class-charitable-profile-shortcode.php' );		
+		require_once( 'class-charitable-profile-form.php' );		
 	}
 
 	/**
@@ -64,12 +64,13 @@ class Charitable_User_Dashboard implements Charitable_Addon_Interface {
 	 * @since 	1.0.0
 	 */
 	private function attach_hooks_and_filters() {
+		add_action( 'charitable_update_profile',array( 'Charitable_Profile_Form', 'update_profile' ) );		
 		add_action( 'after_setup_theme', 		array( $this, 'register_menu' ) );
 		add_action( 'template_include',			array( $this, 'load_user_dashboard_template' ) );
 		add_action( 'wp_update_nav_menu', 		array( $this, 'flush_menu_object_cache' ) );
 		add_action( 'wp_update_nav_menu_item', 	array( $this, 'flush_menu_object_cache' ) );
 		add_filter( 'body_class',				array( $this, 'add_body_class' ) );
-		add_shortcode( 'charitable_profile', 	array( 'Charitable_Profile_Shortcode', 'shortcode' ) );
+		add_shortcode( 'charitable_profile', 	array( $this, 'charitable_profile_shortcode' ) );
 	}
 
 	/**
@@ -239,6 +240,36 @@ class Charitable_User_Dashboard implements Charitable_Addon_Interface {
 		}
 
 		return $classes;
+	}
+
+	/**
+	 * The shortcode's callback method. 
+	 *
+	 * This receives the user-defined attributes and passes the logic off to the class. 
+	 *
+	 * @param 	array 		$atts 		User-defined shortcode attributes.
+	 * @return 	void
+	 * @access  public
+	 * @static
+	 * @since 	1.0.0
+	 */
+	public function charitable_profile_shortcode( $atts ) {		
+
+		if ( ! is_user_logged_in() ) {
+			return wp_login_form( apply_filters( 'charitable_profile_shortcode_login_args', array() ) );
+		}
+
+		$args = shortcode_atts( array(), $atts, 'charitable_profile' );	    
+
+		ob_start();
+
+		$template = charitable_template( 'shortcodes/profile.php', false );
+		$template->set_view_args( array( 
+			'form' => new Charitable_Profile_Form( $args ) 
+		) );
+		$template->render();
+
+		return apply_filters( 'charitable_profile_shortcode', ob_get_clean() );
 	}
 
 	/**

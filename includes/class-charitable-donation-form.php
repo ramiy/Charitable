@@ -46,7 +46,7 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
 	 * @var 	string
 	 * @access  protected
 	 */
-	protected $form_action = 'make-donation';
+	protected $form_action = 'make_donation';
 
 	/**
 	 * Create a donation form object.

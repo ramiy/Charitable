@@ -227,6 +227,8 @@ class Charitable {
 		add_action('charitable_start',	array( 'Charitable_Gateway', 'charitable_start' ), 3 ); 
 		add_action('charitable_start', 	array( 'Charitable_Addons', 'charitable_start' ), 3 );		
 		add_action('charitable_start', 	array( 'Charitable_Request', 'charitable_start' ), 3 );
+
+		add_action('init', 				array( $this, 'do_charitable_actions' ) );
 	}
 
 	/**
@@ -539,6 +541,22 @@ class Charitable {
 			require_once( $this->get_path( 'includes' ) . 'class-charitable-upgrade.php' );
 
 			Charitable_Upgrade::upgrade_from( $db_version, self::VERSION );
+		}
+	}
+
+	/**
+	 * If a charitable_action event is triggered, delegate the event using do_action.
+	 *
+	 * @return 	void
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function do_charitable_actions() {
+		if ( isset( $_POST['charitable_action'] ) ) {
+
+			$action = $_POST[ 'charitable_action' ];
+
+			do_action( 'charitable_' . $action );
 		}
 	}
 

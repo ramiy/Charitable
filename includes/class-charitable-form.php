@@ -59,7 +59,7 @@ abstract class Charitable_Form {
 	 */
 	protected function attach_hooks_and_filters() {
 		add_action( 'charitable_form_before_fields',	array( $this, 'add_hidden_fields' ) ); 
-		add_action( 'charitable_form_field', 			array( $this, 'render_field' ), 10, 3 );
+		add_action( 'charitable_form_field', 			array( $this, 'render_field' ), 10, 4 );
 	}
 
 	/**
@@ -118,36 +118,91 @@ abstract class Charitable_Form {
 	 * @param 	array 	$field
 	 * @param 	string 	$key
 	 * @param 	Charitable_Form 	$form
+	 * @param 	int 	$index
 	 * @return 	void
 	 * @access  public
 	 * @since 	1.0.0
 	 */
-	public function render_field( $field, $key, $form ) {		
+	public function render_field( $field, $key, $form, $index = 0 ) {		
 		if ( ! $form->is_current_form( $this->id ) ) {
 			return false;
 		}
 
 		if ( ! isset( $field['type'] ) ) {
 			return false;
-		}		
+		}				
 
-		/**
-		 * Many field types, like text, email, url, etc fall 
-		 * back to the default-field template. 
-		 */				
-		$field_template = $this->use_default_field_template( $field[ 'type' ] ) ? 'default' : $field[ 'type' ];	
-		$template_name	= sprintf( 'form-fields/%s-field.php', $field_template );
 		$field[ 'key' ] = $key;
 
 		/**
 		 * Display template, passing the form and field objects as parameters to the view.
 		 */
-		$template = charitable_template( $template_name, false );
+		$template = charitable_template( $this->get_template_name( $field ), false );
 		$template->set_view_args( array(
-			'form' 	=> $this, 
-			'field' => $field
+			'form' 		=> $this, 
+			'field' 	=> $field, 
+			'classes'	=> $this->get_field_classes( $field, $index )
 		) );
 		$template->render();
+	}
+
+	/**
+	 * Return the template name used for this field. 
+	 *
+	 * @param 	array 		$field
+	 * @return 	string
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function get_template_name( $field ) {
+		if ( 'fieldset' == $field[ 'type' ] ) {
+			$template_name = 'form-fields/fieldset.php';
+		}
+		elseif ( $this->use_default_field_template( $field[ 'type' ] ) ) {
+			$template_name = 'form-fields/default-field.php';
+		}
+		else {
+			$template_name = 'form-fields/' . $field[ 'type' ] . '-field.php';
+		}
+
+		return apply_filters( 'charitable_form_field_template_name', $template_name );
+	}
+
+	/**
+	 * Return classes that will be applied to the field.	
+	 *
+	 * @param 	array 		$field
+	 * @param 	int 		$index
+	 * @return 	string
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function get_field_classes( $field, $index = 0 ) {
+		if ( 'hidden' == $field[ 'type' ] ) {
+			return;
+		}
+
+		$classes = array();		
+
+		if ( 'fieldset' == $field[ 'type' ] ) {
+			$classes[] = 'charitable-fieldset';
+		}
+		else {
+			$classes[] = 'charitable-form-field';
+			$classes[] = 'charitable-form-field-' . $field[ 'type' ];
+		}
+
+		if ( $field[ 'required' ] ) {
+			$classes[] = 'required-field';
+		}
+
+		if ( $index > 0 ) {			
+			$classes[] = $index % 2 ? 'odd' : 'even';
+		}
+
+		$classes = apply_filters( 'charitable_form_field_classes', $classes, $field, $index );
+
+		return implode( ' ', $classes );
 	}
 
 	/**

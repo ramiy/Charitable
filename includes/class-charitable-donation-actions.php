@@ -32,10 +32,13 @@ final class Charitable_Donation_Actions extends Charitable_Start_Object {
 	 * @since 	1.0.0
 	 */
 	protected function __construct() {
-		add_action( 'init', 						array( $this, 'handle_form_submissions' ) );
+		// add_action( 'init', 						array( $this, 'handle_form_submissions' ) );
 		// add_action( 'charitable_start_donation', 	array( $this, 'start_donation' ), 1 );
-		add_action( 'charitable_make_donation', 	array( $this, 'save_pending_donation' ), 1 );
-		add_action( 'charitable_make_donation', 	array( $this, 'send_to_gateway' ), 2 );
+		add_action( 'charitable_start_donation', 	array( $this, 'start_donation' ) );
+		add_action( 'charitable_make_donation', 	array( $this, 'make_donation' ) );
+
+		// add_action( 'charitable_make_donation', 	array( $this, 'save_pending_donation' ), 1 );
+		// add_action( 'charitable_make_donation', 	array( $this, 'send_to_gateway' ), 2 );
 
 		do_action( 'charitable_donation_actions_start', $this );
 	}
