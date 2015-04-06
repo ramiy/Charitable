@@ -87,7 +87,9 @@ abstract class Charitable_Form {
 			'text', 
 			'url', 
 			'email', 
-			'password' 
+			'password', 
+			'date', 
+			'price'
 		) );
 		return in_array( $field_type, $default_field_types );
 	}

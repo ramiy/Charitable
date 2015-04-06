@@ -62,7 +62,7 @@ class Charitable_Profile_Form extends Charitable_Form {
 	 * @access 	public
 	 * @since	1.0.0
 	 */
-	public function __construct( $args ) {	
+	public function __construct( $args = array() ) {	
 		$this->id = uniqid();	
 		$this->shortcode_args = $args;		
 		$this->attach_hooks_and_filters();	
