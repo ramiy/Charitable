@@ -421,6 +421,11 @@ class Charitable_Donation {
 			
 			unset( $args['user'] ); 
 		}
+		else {
+
+			Charitable_Donor::create_from_user( $args[ 'user_id' ] );
+
+		}
 
 		/**
 		 * Save core donation object in Posts table.

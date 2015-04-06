@@ -35,6 +35,21 @@ class Charitable_Donor extends WP_User {
 	}
 
 	/**
+	 * Magic getter method. Looks for the specified key in the mapped keys before using WP_User's __get method.	
+	 *
+	 * @return 	mixed
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function __get( $key ) {
+		if ( array_key_exists( $key, $this->get_mapped_keys() ) ) {
+			$key = $this->get_mapped_keys()[ $key ];
+		}
+
+		return parent::__get( $key );
+	}
+
+	/**
 	 * Returns whether the user is logged in. 
 	 *
 	 * @return 	boolean
@@ -205,6 +220,90 @@ class Charitable_Donor extends WP_User {
 	}
 
 	/**
+	 * Update the donor with submitted values.	
+	 *
+	 * @param 	array 		$keys 			The keys of fields that are to be updated. 
+	 * @param 	array 		$submitted 		The submitted values.
+	 * @return 	int 		User ID
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function update( $keys, $submitted = array() ) {
+		if ( empty( $submitted ) ) {
+			$submitted = $_POST;
+		}
+		
+		$this->update_core_user( $submitted );
+
+		$this->update_user_meta( $keys, $submitted );
+	}
+
+	/**
+	 * Update core fields of the user (i.e. the wp_users data) 
+	 *
+	 * @uses 	wp_update_user
+	 * @param 	array 		$submitted
+	 * @return 	int  		User ID
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function update_core_user( $submitted ) {
+		$core_fields = array_intersect( array_keys( $submitted ), $this->get_core_keys() );
+
+		if ( empty( $core_fields ) ) {
+			return 0;
+		}
+
+		$values = array(
+			'ID' => $this->ID
+		);
+
+		foreach ( $core_fields as $field ) {
+
+			$values[ $field ] = $submitted[ $field ];
+
+		}
+
+		return wp_update_user( $values );
+	}
+
+	/**
+	 * Update the user's meta fields. 
+	 *
+	 * @param 	array 		$keys 			The keys of fields that are to be updated. 
+	 * @param 	array 		$submitted 		The submitted values.
+	 * @return 	int  		Number of fields updated.
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function update_user_meta( $keys, $submitted ) {
+		
+		/** 
+		 * Exclude the core keys. 
+		 */		
+		$meta_fields 	= array_diff( $keys, $this->get_core_keys() );
+		$updated 		= 0;
+
+		foreach ( $meta_fields as $field ) {
+
+			if ( isset( $submitted[ $field ] ) ) {
+
+				$meta_key = array_key_exists( $field, $this->get_mapped_keys() ) ? $this->get_mapped_keys()[ $field ] : $field;
+
+				$meta_value = sanitize_meta( $meta_key, $submitted[ $field ], 'user' );
+
+				update_user_meta( $this->ID, $meta_key, $meta_value );
+
+				$updated++;
+
+			}
+
+		}
+
+		return $updated;
+	}
+
+	/**
 	 * Make an existing user a donor. 
 	 *
 	 * @param 	WP_User 			$user
@@ -299,6 +398,56 @@ class Charitable_Donor extends WP_User {
 		$args = apply_filters( 'charitable_donor_activity_args', $args, $this );
 
 		return new WP_Query( $args );
+	}
+
+	/**
+	 * Return the array of mapped keys, where the key is mapped to a meta_key in the user meta table. 
+	 *
+	 * @return 	array
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function get_mapped_keys() {
+		return apply_filters( 'charitable_donor_mapped_keys', array(			
+			'email'			=> 'user_email',
+			'company'       => 'donor_company',
+			'address'    	=> 'donor_address',
+			'address_2'     => 'donor_address_2',
+			'city'          => 'donor_city',
+			'state'         => 'donor_state',
+			'postcode'      => 'donor_postcode',
+			'zip' 		    => 'donor_postcode',
+			'country'       => 'donor_country',
+			'phone'			=> 'donor_phone',
+		) );
+	}
+
+	/**
+	 * Return the array of core keys. 
+	 *
+	 * @return 	array
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function get_core_keys() {
+		return array( 
+			'ID',
+			'user_pass',
+			'user_login',
+			'user_nicename',
+			'user_url',
+			'user_email',
+			'display_name',
+			'nickname',
+			'first_name',
+			'last_name',
+			'rich_editing',
+			'date_registered',
+			'role',
+			'jabber',
+			'aim',
+			'yim'
+		);
 	}
 }
 
