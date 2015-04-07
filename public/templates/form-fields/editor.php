@@ -1,6 +1,6 @@
 <?php
 /**
- * The template used to display date form fields.
+ * The template used to display the WP Editor in a form.
  *
  * @author 	Studio 164a
  * @since 	1.0.0
@@ -14,9 +14,25 @@ if ( ! isset( $view_args[ 'form' ] ) || ! isset( $view_args[ 'field' ] ) ) {
 $form 			= $view_args[ 'form' ];
 $field 			= $view_args[ 'field' ];
 $classes 		= $view_args[ 'classes' ];
+$field_type		= isset( $field[ 'type' ] ) 		? $field[ 'type' ] 			: 'text';
 $is_required 	= isset( $field[ 'required' ] ) 	? $field[ 'required' ] 		: false;
 $value			= isset( $field[ 'value' ] ) 		? $field[ 'value' ] 		: '';
 $placeholder 	= isset( $field[ 'placeholder' ] ) 	? $field[ 'placeholder' ] 	: '';
+
+$editor_args 	= isset( $field[ 'editor' ] ) 		? $field[ 'editor' ] 		: array();
+$default_editor_args = array(
+	'media_buttons' => true,
+	'teeny'         => true,
+	'quicktags'     => false,
+	'tinymce'       => array(
+		'theme_advanced_path'     => false,
+		'theme_advanced_buttons1' => 'bold,italic,bullist,numlist,blockquote,justifyleft,justifycenter,justifyright,link,unlink',
+		'plugins'                 => 'paste',
+		'paste_remove_styles'     => true
+	)
+);
+
+$editor_args 	= wp_parse_args( $editor_args, $default_editor_args );
 ?>
 <div id="charitable_field_<?php echo $field['key'] ?>" class="<?php echo $classes ?>">
 	<?php if ( isset( $field['label'] ) ) : ?>
@@ -27,5 +43,7 @@ $placeholder 	= isset( $field[ 'placeholder' ] ) 	? $field[ 'placeholder' ] 	: '
 			<?php endif ?>
 		</label>
 	<?php endif ?>
-	<input type="text" name="<?php echo $field['key'] ?>" value="<?php echo $value ?>" placeholder="<?php echo $placeholder ?>" />
+	<?php
+		wp_editor( $value, esc_attr( $field[ 'key' ] ), $editor_args );
+	?>
 </div>

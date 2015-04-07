@@ -1,6 +1,6 @@
 <?php
 
-class Test_Charitable_Donor extends WP_UnitTestCase {
+class Test_Charitable_User extends WP_UnitTestCase {
 
 	/**
 	 * We have three different users to test several different 
@@ -17,32 +17,39 @@ class Test_Charitable_Donor extends WP_UnitTestCase {
 	function setUp() {
 		parent::setUp();
 
-		/* Fish Mooney is created as a user, then made a donor later after making a donation. */
+		/* Fish Mooney is created as a user, then made a donor later after making a donation */
 		$fish = $this->factory->user->create( array( 
 			'user_email'		=> 'fish@gotham.com',
 			'first_name'		=> 'Fish', 
 			'last_name'			=> 'Mooney'
 		) );
 
-		Charitable_Donor::create( array(
-			'user_email'		=> 'fish@gotham.com',
-			'address' 			=> '102 Bad Lane',
-			'address_2' 		=> '',
-			'city' 				=> 'Gotham',
-			'state' 			=> 'Gotham State',
-			'postcode' 			=> '29292',
-			'country' 			=> 'US'
-		) );
+		$this->fish_mooney = new Charitable_User( $fish );
+		
+		$this->fish_mooney->save( 
+			array( 				
+				'user_email'		=> 'fish@gotham.com',
+				'address' 			=> '102 Bad Lane',
+				'address_2' 		=> '',
+				'city' 				=> 'Gotham',
+				'state' 			=> 'Gotham State',
+				'postcode' 			=> '29292',
+				'country' 			=> 'US'
+			)
+		);
 
-		/* Carmine Falcone is created as a user (NOT a donor). */
+		/* Carmine Falcone is created as a user (NOT a donor) */
 		$carmine = $this->factory->user->create( array( 
 			'user_email'		=> 'carmine@gotham.com',
 			'first_name'		=> 'Carmine', 
 			'last_name'			=> 'Falcone' 
 		) );
 
+		$this->carmine_falcone = new Charitable_User( $carmine );
+
 		/* James Gordon makes a donation and becomes a donor/user in the process. */
-		$james = Charitable_Donor::create( array(
+		$this->james_gordon = new Charitable_User();
+		$this->james_gordon->save( array(
 			'user_email'		=> 'james@gotham.com',
 			'first_name'		=> 'James',
 			'last_name'			=> 'Gordon', 
@@ -57,8 +64,10 @@ class Test_Charitable_Donor extends WP_UnitTestCase {
 		/* Create a campaign wth a donation from James Gordon */
 		$campaign_id = Charitable_Campaign_Helper::create_campaign();
 		
+		$this->james_gordon->make_donor();
+		
 		Charitable_Donation_Helper::create_donation( array(
-			'user_id'			=> $james, 
+			'user_id'			=> $this->james_gordon->ID, 
 			'campaigns'			=> array(
 				array( 
 					'campaign_id' 	=> $campaign_id,
@@ -69,16 +78,12 @@ class Test_Charitable_Donor extends WP_UnitTestCase {
 			'gateway'			=> 'paypal',
 			'note'				=> 'This is a note'	
 		) );
-		
-		$this->james_gordon 	= new Charitable_Donor( $james );
-		$this->fish_mooney 		= new Charitable_Donor( $fish );
-		$this->carmine_falcone 	= new Charitable_Donor( $carmine );
 	}
 
 	function test_is_donor() {
-		$this->assertEquals( 1, $this->james_gordon->is_donor() );
-		$this->assertEquals( 1, $this->fish_mooney->is_donor() );
-		$this->assertEquals( 0, $this->carmine_falcone->is_donor() );
+		$this->assertTrue( $this->james_gordon->is_donor() );
+		$this->assertFalse( $this->fish_mooney->is_donor() );
+		$this->assertFalse( $this->carmine_falcone->is_donor() );
 	}
 
 	function test_get_name() {

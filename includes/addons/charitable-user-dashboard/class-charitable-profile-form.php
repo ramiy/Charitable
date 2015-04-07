@@ -259,34 +259,6 @@ class Charitable_Profile_Form extends Charitable_Form {
 	}
 
 	/**
-	 * Callback method used to filter out non-required fields. 
-	 *
-	 * @return 	array
-	 * @access  public
-	 * @since 	1.0.0
-	 */
-	public function filter_required_fields( $field ) {
-		return isset( $field[ 'required' ] ) && true == $field[ 'required' ];
-	}
-
-	/**
-	 * Filters array returning just the required fields.  
-	 *
-	 * @return 	array
-	 * @access  public
-	 * @since 	1.0.0
-	 */
-	public function get_required_fields( $fields = array() ) {
-		if ( empty( $fields ) ) {
-			$fields = $this->get_merged_fields();
-		}
-
-		$required_fields = array_filter( $fields, array( $this, 'filter_required_fields' ) );
-
-		return $required_fields;
-	}
-
-	/**
 	 * Returns all fields as a merged array. 
 	 *
 	 * @return 	array
@@ -322,18 +294,19 @@ class Charitable_Profile_Form extends Charitable_Form {
 
 		$fields = $form->get_merged_fields();
 
-		foreach ( $form->get_required_fields( $fields ) as $key => $field ) {
+		$valid = $this->check_required_fields( $fields );
 
-			if ( ! isset( $_POST[ $key ] ) || empty( $_POST[ $key ] ) ) {
-				/**
-				 * @todo Provide useful feedback.
-				 */
-				return;
-			}
+		if ( $valid ) {
+			
+			$donor->save( $_POST, array_keys( $fields ) );
 
-		}
+		}	
+		else {
 
-		$donor->update( array_keys( $fields ) );
+			/**
+			 * @todo Send error to say that some required fields are missing. 
+			 */
+		}	
 	}
 }
 

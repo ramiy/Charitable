@@ -54,7 +54,7 @@ class Charitable_Campaigns_Widget extends WP_Widget {
 		<ul>
 
 			<?php
-				$query = Charitable_Campaign_Query::ordered_by_ending_soon( array('posts_per_page' => $instance['number']) );
+				$query = Charitable_Campaigns::ordered_by_ending_soon( array( 'posts_per_page' => $instance['number'] ) );
 
 				while($query->have_posts() ){
 					$query->the_post();

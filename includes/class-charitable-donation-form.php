@@ -352,20 +352,61 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
 			return;
 		}
 
-		$values = array();
+		$values = array();		
+		
+		/* Set the donation amount */
+		$values[ 'amount' ] = $this->get_donation_amount();
 
-		/**
-		 * Set the donation amount.
-		 */
-		if ( ! isset( $_POST['donation-amount'] ) ) {
+		if ( 0 == $values[ 'amount' ] && ! apply_filters( 'charitable_permit_empty_donations', false ) ) {
 			/**
 			 * @todo 	Set error message.
 			 */
 			return;
 		}
+		
+		/* Set all the user fields and make sure that all required fields were submitted */
+		$user_fields = array_merge( $this->get_user_fields(), $this->get_user_account_fields() );
 
+		foreach ( $form->get_required_fields( $user_fields ) as $key => $field ) {
 
-		$donation_amount = $_POST['donation-amount'];
+			if ( ! isset( $_POST[ $key ] ) || empty( $_POST[ $key ] ) ) {
+				/**
+				 * @todo Provide useful feedback.
+				 */
+				return;
+			}
+
+		}	
+
+		/* Save the user. This will insert new users and update existing ones. */
+		$user = new Charitable_User( wp_get_current_user() );
+		$user->save( $_POST, array_keys( $user_fields ) );
+		$user->make_donor();
+		
+		$values[ 'user_id' ] = $user_id;
+
+		/**
+		 * @todo 	Add payment gateway. 
+		 */
+		$values[ 'gateway' ] = 'manual';		
+
+		$values = apply_filters( 'charitable_donation_values', $values ); 
+
+		$donation_id = Charitable_Donation::insert( $values );
+
+		return $donation_id;
+	}
+
+	/**
+	 * Return the donated amount. 
+	 *
+	 * @return 	int
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function get_donation_amount() {
+
+		$donation_amount = isset( $_POST[ 'donation-amount' ] ) ? $_POST[ 'donation-amount' ] : 0;
 
 		if ( 'custom' == $donation_amount ) {
 
@@ -377,41 +418,9 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
 			}
 
 			$values['amount'] = $_POST['custom-donation-amount'];
-		}
-		else {
-			$values['amount'] = $donation_amount;
-		}
+		}		
 
-		/* Set all the user fields. */
-		$user_fields = array_merge( $this->get_user_fields(), $this->get_user_account_fields() );
-
-		foreach ( $user_fields as $key => $field ) {
-
-			if ( isset( $_POST[$key] ) ) {
-				$values['user'][$key] = $_POST[$key];
-			}
-			else {
-				
-				/* If this was a required field, return an error message. */
-				if ( true === $field['required'] ) {
-					/**
-					 * @todo 	Set error message.
-					 */
-					return;
-				}
-			}			
-		}
-
-		/**
-		 * @todo 	Add payment gateway. 
-		 */
-		$values['gateway'] = 'manual';
-
-		$values = apply_filters( 'charitable_donation_values', $values ); 
-
-		$donation_id = Charitable_Donation::insert( $values );
-
-		return $donation_id;
+		return $donation_amount;
 	}
 }
 

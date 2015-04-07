@@ -44,7 +44,9 @@ class Charitable_Donor_Helper extends WP_UnitTestCase {
 
 		$args = array_merge( $defaults, $args );
 
-		return Charitable_Donor::create( $args );
+		$user = new Charitable_User();
+		$user->save( $args );
+		return $user->ID;
 	}
 
 	/**

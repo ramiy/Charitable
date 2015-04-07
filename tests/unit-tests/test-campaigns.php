@@ -1,6 +1,6 @@
 <?php
 
-class Test_Charitable_Campaign_Query extends WP_UnitTestCase {
+class Test_Charitable_Campaigns extends WP_UnitTestCase {
 
 	private $post;
 
@@ -86,13 +86,13 @@ class Test_Charitable_Campaign_Query extends WP_UnitTestCase {
 		);
 	}
 
-	function test_construct() {
-		$query = new Charitable_Campaign_Query();
+	function test_query() {
+		$query = Charitable_Campaigns::query();
 		$this->assertEquals( 4, $query->found_posts );
 	}
 
 	function test_ordered_by_ending_soon() {
-		$query = Charitable_Campaign_Query::ordered_by_ending_soon();
+		$query = Charitable_Campaigns::ordered_by_ending_soon();
 
 		$this->assertEquals( 3, $query->found_posts );
 
@@ -101,13 +101,11 @@ class Test_Charitable_Campaign_Query extends WP_UnitTestCase {
 		while( $query->have_posts() ) {
 			$query->the_post();
 
-			// $this->assertEquals( $this->campaigns_ordered_by_ending_soon[$i], get_the_ID(), 'Index '.$i.' for campaigns orderd by date ending' );
-
 			$this->assertEquals( $this->campaigns_ordered_by_ending_soon[$i], get_the_ID(), sprintf( 'Index %d for campaigns orderd by date ending', $i ) );
 			$i++;
 		}
 
-		$query_2 = Charitable_Campaign_Query::ordered_by_ending_soon( array('posts_per_page' => 1 ) );
+		$query_2 = Charitable_Campaigns::ordered_by_ending_soon( array('posts_per_page' => 1 ) );
 		$this->assertEquals( 1, count( $query_2->posts ) );
 	}
 

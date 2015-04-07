@@ -34,7 +34,7 @@ if ( count( $fields ) ) :
 
 		do_action( 'charitable_form_field', $field, $key, $form, $i );
 
-		$i++;
+		$i += apply_filters( 'charitable_form_field_increment_index', 1, $field, $key, $form, $i );
 
 	endforeach;
 

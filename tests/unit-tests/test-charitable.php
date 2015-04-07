@@ -17,7 +17,7 @@ class Test_Charitable extends WP_UnitTestCase {
 		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'class-charitable-roles.php' );
 		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'class-charitable-donation-actions.php' );
 		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'class-charitable-post-types.php' );
-		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'class-charitable-campaign-query.php' );
+		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'class-charitable-campaigns.php' );
 		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'class-charitable-widgets.php' );
 		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'class-charitable-gateway.php' );
 		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'interface-charitable-donation-form.php' );

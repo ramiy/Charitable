@@ -14,7 +14,7 @@ class Charitable_Donation_Helper extends WP_UnitTestCase {
 	 * @since 	1.0.0
 	 */
 	public function delete_donation( $donation_id ) {
-		// wp_delete_post( $donation_id, true );
+		wp_delete_post( $donation_id, true );
 	}
 
 	/**

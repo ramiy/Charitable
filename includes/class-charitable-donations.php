@@ -38,7 +38,7 @@ class Charitable_Donations {
 
 		$args = wp_parse_args( $args, $defaults );
 
-		new WP_Query( $args );
+		return new WP_Query( $args );
 	}
 
 	/**

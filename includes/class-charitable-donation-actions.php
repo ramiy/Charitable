@@ -44,44 +44,6 @@ final class Charitable_Donation_Actions extends Charitable_Start_Object {
 	}
 
 	/**
-	 * Checks the current request for two events: 
-	 *
-	 * 1. Displaying a campaign's donation form.
-	 * 2. Saving a donation.
-	 *
-	 * @uses 	init
-	 * @return 	void
-	 * @access 	public
-	 * @since 	1.0.0
-	 */
-	public function handle_form_submissions() {
-
-		if ( isset( $_POST['charitable_action'] ) ) {
-			$action = $_POST['charitable_action'];
-
-			switch ( $action ) {
-				/**
-				 * Fired when a donation is started (i.e. the donations page is reached).
-				 */
-				case 'start-donation' :
-
-					$this->start_donation();
-
-					break;
-
-				/**
-				 * Fired when the donation is actually made.
-				 */
-				case 'make-donation' :
-
-					$this->make_donation();
-					
-					break; 
-			}
-		}
-	}
-
-	/**
 	 * Returns the campaign ID in the current request. 
 	 *
 	 * This also validates that a campaign ID was passed, and 
@@ -115,10 +77,11 @@ final class Charitable_Donation_Actions extends Charitable_Start_Object {
 	 * Executed when a user first clicks the Donate button on a campaign. 
 	 *
 	 * @return 	void
-	 * @access  private
+	 * @access  public
 	 * @since 	1.0.0
 	 */
-	private function start_donation() {
+	public function start_donation() {
+	
 		$campaign_id = $this->get_campaign_from_request();
 
 		if ( false === $campaign_id ) {
@@ -147,10 +110,10 @@ final class Charitable_Donation_Actions extends Charitable_Start_Object {
 	 * Save a donation.
 	 *
 	 * @return 	void
-	 * @access 	private
+	 * @access 	public
 	 * @since 	1.0.0
 	 */
-	private function make_donation() {
+	public function make_donation() {
 		$campaign_id = $this->get_campaign_from_request();
 
 		if ( false === $campaign_id ) {

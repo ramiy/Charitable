@@ -475,7 +475,6 @@ class Charitable_Campaign {
 	 * @since 	1.0.0
 	 */
 	public function get_donation_form() {
-
 		if ( ! isset( $this->donation_form ) ) {
 
 			$form_class = apply_filters( 'charitable_donation_form_class', 'Charitable_Donation_Form', $this );
@@ -493,8 +492,7 @@ class Charitable_Campaign {
 	 * @access  public
 	 * @since 	1.0.0
 	 */
-	public function get_suggested_amounts() {
-		
+	public function get_suggested_amounts() {		
 		$amounts = $this->get( 'campaign_suggested_donations' );
 
 		if ( false === strpos( $amounts, '|' ) ) {
@@ -540,6 +538,8 @@ class Charitable_Campaign {
 		global $wp_embed;
 		return $wp_embed->run_shortcode( '[embed]'. $this->get( 'campaign_video' ) .'[/embed]' );
 	}
+
+	
 }
 
 endif; // End class_exists check

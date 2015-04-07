@@ -357,15 +357,11 @@ class Charitable_Donation {
 	 * @since 	1.0.0
 	 */
 	private static function is_valid_user_data( $args ) {
-		if ( isset( $args['user_id'] ) && $args['user_id'] ) {
-			return true;
+		if ( ! isset( $args['user_id'] ) ) {
+			return false;
 		}
 
-		if ( false == apply_filters( 'charitable_require_user_account', true ) ) {
-			return true;
-		}
-
-		return isset( $args['user']['user_email'] );
+		return $args[ 'user_id' ] || false == apply_filters( 'charitable_require_user_account', true );		
 	}
 
 	/**
@@ -389,50 +385,18 @@ class Charitable_Donation {
 		}
 
 		if ( ! self::is_valid_user_data( $args ) ) {
-			_doing_it_wrong( 'Charitable_Donation::insert()', 'A donation cannot be inserted without a valid user id or email address.', '1.0.0' );
+			_doing_it_wrong( 'Charitable_Donation::insert()', 'A donation cannot be inserted without a valid user id.', '1.0.0' );
 			return 0;
 		}
 		
 		do_action( 'charitable_before_add_donation', $args );
 
 		/**
-		 * If a user ID hasn't been set, we need to get a
-		 * user ID based on the email address supplied. 
-		 */
-		if ( ! isset( $args['user_id'] ) ) {
-
-			$user_data = $args['user'];
-
-			/**
-			 * No email has been supplied either, so 
-			 * we return with an error message. 
-			 */
-			if ( ! isset( $user_data['user_email'] ) ) {
-				/**
-				 * @todo	Add error message.
-				 */
-				return 0; 
-			}
-
-			/**
-			 * Create the donor and return the user ID.
-			 */			
-			$args['user_id'] = Charitable_Donor::create( $user_data );
-			
-			unset( $args['user'] ); 
-		}
-		else {
-
-			Charitable_Donor::create_from_user( $args[ 'user_id' ] );
-
-		}
-
-		/**
 		 * Save core donation object in Posts table.
 		 */
 		$donation_args = array(
 			'post_type'		=> 'donation', 
-			'post_author'	=> $args['user_id'], 
+			'post_author'	=> $args[ 'user_id' ], 
 			'post_status'	=> 'charitable-pending'
 		);		
 		$donation_args['post_content'] 	= isset( $args['note'] ) 			? $args['note'] 			: '';		

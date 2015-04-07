@@ -1,9 +1,9 @@
 <?php
 /** 
- * A wrapper class around WP_Query for retrieving campaigns.
+ * The class responsible for querying data about campaigns.
  *  
  * @version		1.0.0
- * @package		Charitable/Classes/Charitable_Campaign_Query
+ * @package		Charitable/Classes/Charitable_Campaigns
  * @author 		Eric Daams
  * @copyright 	Copyright (c) 2014, Studio 164a
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License  
@@ -11,23 +11,25 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit; 
 
-if ( ! class_exists( 'Charitable_Campaign_Query' ) ) :
+if ( ! class_exists( 'Charitable_Campaigns' ) ) :
 
 /** 
- * Charitable_Campaign_Query. 
+ * Charitable_Campaigns. 
  *  
  * @since		1.0.0
  */
-class Charitable_Campaign_Query extends WP_Query {
+class Charitable_Campaigns {
 
 	/**
-	 * Extend WP_Query with some predefined defaults to query only campaigns.	 	
+	 * Return WP_Query object with predefined defaults to query only campaigns. 
 	 *
-	 * @param array $args
-	 * @return void
-	 * @since 1.0.0
+	 * @param 	array 		$args
+	 * @return 	WP_Query
+	 * @static
+	 * @access  public
+	 * @since 	1.0.0
 	 */
-	public function __construct( $args = array() ) {
+	public static function query( $args = array() ) {
 		$defaults = array(
 			'post_type'      => array( 'campaign' ),
 			'posts_per_page' => get_option( 'posts_per_page' )
@@ -35,7 +37,7 @@ class Charitable_Campaign_Query extends WP_Query {
 
 		$args = wp_parse_args( $args, $defaults );
 
-		parent::__construct( $args );
+		return new WP_Query( $args );
 	}
 	
 	/**
@@ -64,7 +66,7 @@ class Charitable_Campaign_Query extends WP_Query {
 
 		$args = wp_parse_args( $args, $defaults );
 		
-		return new Charitable_Campaign_Query( $args );	
+		return Charitable_Campaigns::query( $args );	
 	}
 
 	/**
@@ -85,7 +87,7 @@ class Charitable_Campaign_Query extends WP_Query {
 
 		$args = wp_parse_args( $args, $defaults );
 
-		return new Charitable_Campaign_Query( $args );
+		return Charitable_Campaigns::query( $args );
 	}
 }
 

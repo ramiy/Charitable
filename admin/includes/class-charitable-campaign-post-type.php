@@ -22,12 +22,6 @@ if ( ! class_exists( 'Charitable_Campaign_Post_Type' ) ) :
 final class Charitable_Campaign_Post_Type {
 
 	/**
-	 * @var 	Charitable 		$charitable
-	 * @access 	private
-	 */
-	private $charitable;
-
-	/**
 	 * @var 	Charitable_Meta_Box_Helper $meta_box_helper
 	 * @access 	private
 	 */
@@ -36,15 +30,10 @@ final class Charitable_Campaign_Post_Type {
 	/**
 	 * Create object instance. 
 	 *
-	 * @param 	Charitable 		$charitable
 	 * @access 	private
 	 * @since 	1.0.0
 	 */
-	private function __construct(Charitable $charitable) {
-		$this->charitable = $charitable;
-
-		$this->charitable->register_object($this);
-
+	private function __construct() {	
 		$this->meta_box_helper = new Charitable_Meta_Box_Helper( 'charitable-campaign' );
 
 		add_action( 'add_meta_boxes', 								array( $this, 'add_meta_boxes' ), 10);
@@ -59,18 +48,17 @@ final class Charitable_Campaign_Post_Type {
 	 * Create an object instance. This will only work during the charitable_start event.
 	 * 
 	 * @see 	charitable_start hook
-	 *
-	 * @param 	Charitable $charitable
+	 * @param 	Charitable 	$charitable
 	 * @return 	void
 	 * @access 	private
 	 * @since 	1.0.0
 	 */
-	public static function charitable_start(Charitable $charitable) {
+	public static function charitable_start( Charitable $charitable ) {
 		if ( ! $charitable->is_start() ) {
 			return;
 		}
 
-		new Charitable_Campaign_Post_Type($charitable);
+		$charitable->register_object( new Charitable_Campaign_Post_Type() );
 	}
 
 	/**

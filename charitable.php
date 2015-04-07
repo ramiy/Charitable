@@ -163,49 +163,41 @@ class Charitable {
 	 * @since 	1.0.0
 	 */
 	private function load_dependencies() {
-		/**
-		 * Start objects.
-		 */
+		
+		/* Start objects */
 		require_once( $this->includes_path . 'class-charitable-start-object.php' );
 		require_once( $this->includes_path . 'class-charitable-addons.php' );
 		require_once( $this->includes_path . 'class-charitable-roles.php' );
 		require_once( $this->includes_path . 'class-charitable-donation-actions.php' );
 		require_once( $this->includes_path . 'class-charitable-post-types.php' );
-		require_once( $this->includes_path . 'class-charitable-campaign-query.php' );
+		require_once( $this->includes_path . 'class-charitable-campaigns.php' );
 		require_once( $this->includes_path . 'class-charitable-widgets.php' );
 		require_once( $this->includes_path . 'class-charitable-gateway.php' );
 
-		/**
-		 * Interfaces
-		 */
+		/* Interfaces */
 		require_once( $this->includes_path . 'interface-charitable-donation-form.php' );
 
-		/**
-		 * Models.
-		 */
+		/* Models */
 		require_once( $this->includes_path . 'class-charitable-form.php' );
 		require_once( $this->includes_path . 'class-charitable-campaign.php' );
 		require_once( $this->includes_path . 'class-charitable-donation.php' );
 		require_once( $this->includes_path . 'class-charitable-donation-form.php' );
 		require_once( $this->includes_path . 'class-charitable-donation-form-hidden.php' );
 		require_once( $this->includes_path . 'class-charitable-donations.php' );
-		require_once( $this->includes_path . 'class-charitable-donor.php' );
+		require_once( $this->includes_path . 'class-charitable-user.php' );
+		require_once( $this->includes_path . 'class-charitable-donor.php' );		
 		require_once( $this->includes_path . 'class-charitable-session-donation.php' );
 
 		require_once( $this->includes_path . 'db/abstract-class-charitable-db.php' );
 		require_once( $this->includes_path . 'db/class-charitable-campaign-donations-db.php' );
 
-		/**
-		 * Helpers.
-		 */
+		/* Helpers */
 		require_once( $this->includes_path . 'class-charitable-currency.php' );
 		require_once( $this->includes_path . 'class-charitable-request.php' );		
 		require_once( $this->includes_path . 'class-charitable-locations.php' );
 		require_once( $this->includes_path . 'class-charitable-notices.php' );
 
-		/**
-		 * Functions.
-		 */
+		/* Functions */
 		require_once( $this->includes_path . 'charitable-core-functions.php' );
 		require_once( $this->includes_path . 'charitable-utility-functions.php' );
 	}
@@ -555,7 +547,7 @@ class Charitable {
 		if ( isset( $_POST['charitable_action'] ) ) {
 
 			$action = $_POST[ 'charitable_action' ];
-
+			
 			do_action( 'charitable_' . $action );
 		}
 	}

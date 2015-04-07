@@ -51,6 +51,14 @@ abstract class Charitable_Form {
 	protected $form_action;
 
 	/**
+	 * Errors with the form submission.
+	 *
+	 * @var 	array
+	 * @access  protected
+	 */
+	protected $errors = array();
+
+	/**
 	 * Set up callbacks for actions and filters. 
 	 *
 	 * @return 	void
@@ -60,6 +68,8 @@ abstract class Charitable_Form {
 	protected function attach_hooks_and_filters() {
 		add_action( 'charitable_form_before_fields',	array( $this, 'add_hidden_fields' ) ); 
 		add_action( 'charitable_form_field', 			array( $this, 'render_field' ), 10, 4 );
+
+		add_filter( 'charitable_form_field_increment_index', array( $this, 'double_increment_index' ), 10, 2 );
 	}
 
 	/**
@@ -89,7 +99,7 @@ abstract class Charitable_Form {
 			'email', 
 			'password', 
 			'date', 
-			'price'
+			'number'
 		) );
 		return in_array( $field_type, $default_field_types );
 	}
@@ -160,6 +170,9 @@ abstract class Charitable_Form {
 		if ( 'fieldset' == $field[ 'type' ] ) {
 			$template_name = 'form-fields/fieldset.php';
 		}
+		elseif ( 'editor' == $field[ 'type' ] ) {
+			$template_name = 'form-fields/editor.php';
+		}
 		elseif ( $this->use_default_field_template( $field[ 'type' ] ) ) {
 			$template_name = 'form-fields/default-field.php';
 		}
@@ -198,13 +211,36 @@ abstract class Charitable_Form {
 			$classes[] = 'required-field';
 		}
 
-		if ( $index > 0 ) {			
+		if ( isset( $field[ 'fullwidth' ] ) && $field[ 'fullwidth' ] ) {
+			$classes[] = 'fullwidth';
+		} 
+		elseif ( $index > 0 ) {			
 			$classes[] = $index % 2 ? 'odd' : 'even';
 		}
 
 		$classes = apply_filters( 'charitable_form_field_classes', $classes, $field, $index );
 
 		return implode( ' ', $classes );
+	}
+
+	/**
+	 * Increment index by two when the field type is an editor.  
+	 *
+	 * @param 	int 		$increment
+	 * @param 	array 		$field
+	 * @return 	int
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function double_increment_index( $increment, $field ) {
+		if ( isset( $field[ 'increment' ] ) ) {
+			$increment = $field[ 'increment' ];
+		}
+		// elseif ( isset( $field[ 'fullwidth' ] ) && $field[ 'fullwidth' ] ) {
+		// 	$increment = 2;
+		// }
+
+		return $increment;
 	}
 
 	/**
@@ -228,6 +264,57 @@ abstract class Charitable_Form {
 	public function validate_nonce() {
 		return isset( $_POST[$this->nonce_name] ) && wp_verify_nonce( $_POST[$this->nonce_name], $this->nonce_action );
 	}	
+
+	/**
+	 * Callback method used to filter out non-required fields. 
+	 *
+	 * @return 	array
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function filter_required_fields( $field ) {
+		return isset( $field[ 'required' ] ) && true == $field[ 'required' ];
+	}
+
+	/**
+	 * Filters array returning just the required fields.  
+	 *
+	 * @return 	array
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function get_required_fields( $fields = array() ) {
+		$required_fields = array_filter( $fields, array( $this, 'filter_required_fields' ) );
+
+		return $required_fields;
+	}
+
+	/**
+	 * Check the passed fields to ensure that all required fields have been submitted.
+	 *
+	 * @return 	boolean
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function check_required_fields( $fields ) {
+		
+		$ret = true;
+
+		foreach ( $form->get_required_fields( $fields ) as $key => $field ) {
+
+			if ( ! isset( $_POST[ $key ] ) || empty( $_POST[ $key ] ) ) {
+				
+				$label = isset( $field[ 'label' ] ) ? $field[ 'label' ] : $key;
+
+				$this->errors[] = sprintf( '%s %s', $label, _x( 'is a required field', 'field is a required field', 'charitable' ) );
+
+				$ret = false;
+			}
+
+		}
+
+		return $ret;
+	}
 }
 
 endif; // End class_exists check
