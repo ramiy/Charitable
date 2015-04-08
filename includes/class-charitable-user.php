@@ -48,8 +48,10 @@ class Charitable_User extends WP_User {
 	 * @since 	1.0.0
 	 */
 	public function __get( $key ) {
-		if ( array_key_exists( $key, $this->get_mapped_keys() ) ) {
-			$key = $this->get_mapped_keys()[ $key ];
+		$mapped_keys = $this->get_mapped_keys();
+
+		if ( array_key_exists( $key, $mapped_keys ) ) {
+			$key = $mapped_keys[ $key ];
 		}
 
 		return parent::__get( $key );

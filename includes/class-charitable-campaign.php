@@ -539,7 +539,103 @@ class Charitable_Campaign {
 		return $wp_embed->run_shortcode( '[embed]'. $this->get( 'campaign_video' ) .'[/embed]' );
 	}
 
-	
+	/**
+	 * Return an array of meta keys with alternative keys. 
+	 *
+	 * In frontend forms, the preference is for using the mapped meta keys, which 
+	 * are the keys of the array this method returns. In the backend, the actual
+	 * meta keys are used instead.
+	 *
+	 * @return 	string[]
+	 * @access  public
+	 * @static
+	 * @since 	1.0.0
+	 */
+	public static function get_mapped_meta_keys() {
+		return apply_filters( 'charitable_campaign_mapped_meta_keys', array(
+			'end_date'				=> '_campaign_end_date', 
+			'goal'					=> '_campaign_goal', 
+			'suggested_donations' 	=> '_campaign_suggested_donations',
+			'allow_custom'			=> '_campaign_allow_custom_donations',
+			'description'			=> '_campaign_description', 
+			'video'					=> '_campaign_video'
+		) );
+	}
+	/**
+	 * Sanitize meta values before they are persisted to the database. 
+	 *
+	 * @param  	mixed 		$value
+	 * @param 	string 		$key
+	 * @return 	mixed
+	 * @access 	public
+	 * @static
+	 * @since 	1.0.0
+	 */
+	public static function sanitize_meta( $value, $key ) {
+
+		switch ( $key ) {
+
+			case '_campaign_goal' :
+				if ( empty( $value ) || ! $value ) {
+					$value = 0;
+				}
+				else {
+					$value = charitable()->get_currency_helper()->sanitize_monetary_amount( $value );
+				}
+				break;
+
+			case '_campaign_end_date' :
+				if ( empty( $value ) || ! $value ) {
+					$value = 0;
+				}
+				else {
+					$value = date( 'Y-m-d 00:00:00', strtotime( $value ) );
+				}
+				break;
+
+			case '_campaign_suggested_donations' :
+				if ( ! is_array( $value ) ) {
+					$value = array();
+				}
+				else {
+					$value = array_filter( $value, array( 'Charitable_Campaign', 'filter_suggested_donation' ) );
+				}
+				break;
+
+			case '_campaign_allow_custom_donations' : 
+				$value = true == $value || 'on' == $value;
+				break;
+
+			case '_campaign_description' : 
+				$value = sanitize_text_field( $value );
+				break;
+
+			case '_campaign_video' : 
+				$value = sanitize_text_field( $value );
+				break;
+
+		}
+
+		return apply_filters( 'charitable_sanitize_campaign_meta-' . $key, $value );
+	}
+
+	/**
+	 * Filter out any suggested donations that do not have an amount set.  
+	 *
+	 * @param 	array|string 	$donation
+	 * @return 	boolean
+	 * @access  public
+	 * @static
+	 * @since 	1.0.0
+	 */
+	public static function filter_suggested_donation( $donation ) {
+		if ( is_array( $donation ) ) {
+			return isset( $donation[ 'amount' ] ) && ! empty( $donation[ 'amount' ] );
+		}
+		else {
+			return ! empty( $donation[ 'amount' ] );
+		}
+	}
 }
 
 endif; // End class_exists check

@@ -29,7 +29,6 @@
 		} );
 	};
 
-
 	var setup_advanced_meta_box = function() {
 		var $meta_box = $('#charitable-campaign-advanced-metabox');
 
@@ -41,6 +40,27 @@
 			$(this).css( 'min-height', min_height );
 		});
 	};
+
+	var add_suggested_amount_row = function() {
+		var $table = $( '#charitable-campaign-suggested-donations tbody' ),
+			index = function() {
+				var $rows = $table.find( '[data-index]' ), 
+					index = 0;
+
+				if ( $rows.length ) {
+					index = parseInt( $rows.last().data( 'index' ), 10 ) + 1;
+				}
+
+				return index;
+			}(),
+			row = '<tr data-index="' + index + '">'
+				+ '<td><input type="text" id="campaign_suggested_donations_' + index + '" name="_campaign_suggested_donations[' + index + '][amount]" placeholder="' + CHARITABLE.suggested_amount_placeholder + '" />'
+				+ '<td><input type="text" id="campaign_suggested_donations_' + index + '" name="_campaign_suggested_donations[' + index + '][description]" placeholder="' + CHARITABLE.suggested_amount_description_placeholder + '" />'
+				+ '</tr>';
+
+		$table.find( '.no-suggested-amounts' ).hide();
+		$table.append( row );
+	};	
 
 	$(document).ready( function(){
 
@@ -72,6 +92,16 @@
 
 		setup_charitable_ajax();	
 		setup_charitable_toggle();	
+
+		$('[data-charitable-add-row]').on( 'click', function() {
+			var type = $( this ).data( 'charitable-add-row' );
+
+			if ( 'suggested-amount' === type ) {
+				add_suggested_amount_row();
+			}
+
+			return false;
+		});
 	});
 
 })( jQuery );

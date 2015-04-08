@@ -27,7 +27,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  * @since 	1.0.0
  */
 function charitable_admin_view( $view, $view_args = array() ) {
-	$filename = charitable()->get_path( 'admin' ) . 'views/' . $view . '.php';
+	$filename = apply_filters( 'charitable_admin_view_path', charitable()->get_path( 'admin' ) . 'views/' . $view . '.php', $view, $view_args );
 
 	if ( ! is_readable( $filename ) ) {
 		_doing_it_wrong( __FUNCTION__, __( 'Passed view (' . $filename . ') not found or is not readable.', 'charitable' ), '1.0.0' );

@@ -40,7 +40,7 @@ class Charitable_Donation {
 	/**
 	 * The Campaign Donations table.
 	 *
-	 * @var 	Charitable_Campaign_Donations
+	 * @var 	Charitable_Campaign_Donations_DB
 	 * @access  private
 	 */
 	private $campaign_donations_db;	
@@ -70,12 +70,12 @@ class Charitable_Donation {
 	// private $campaign;
 
 	/**
-	 * The WP_user object of the person who donated. 
+	 * The WP_User object of the person who donated. 
 	 * 
 	 * @var 	WP_User 
 	 * @access 	private
 	 */
-	private $user;
+	private $donor;
 
 	/**
 	 * Instantiate a new donation object based off the ID.
@@ -115,7 +115,7 @@ class Charitable_Donation {
 	/**
 	 * Get the donation data.
 	 *
-	 * @return 	array
+	 * @return 	Charitable_Campaign_Donations_DB
 	 * @access  public
 	 * @since 	1.0.0
 	 */

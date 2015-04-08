@@ -6,6 +6,28 @@
 	@include clearfix;
 }
 
+/* 
+ * Media block
+ *
+ * Credit: http://www.stubbornella.org/content/2010/06/25/the-media-object-saves-hundreds-of-lines-of-code/
+ */
+.charitable-media-block {
+	overflow: hidden;
+
+	.charitable-media-image {
+		float: left; 
+		margin-right: 12px;
+
+		img {
+			display: block;
+		}
+	}
+
+	.charitable-media-body {
+		overflow: hidden;		
+	}
+}
+
 /*
  * Metaboxes
  */
@@ -79,11 +101,25 @@
 			margin-bottom: 6px;
 			font-weight: bold;			
 		}
+
+		.widefat {
+			th {
+				font-size: 13px;
+			}
+		}
 	}
 
 	.charitable-checkbox-wrap {
 		label {
 			display: inline-block;
+		}
+	}	
+
+	.table-header {
+		background: #f5f5f5;
+
+		label {
+			margin-bottom: 0;
 		}
 	}
 }

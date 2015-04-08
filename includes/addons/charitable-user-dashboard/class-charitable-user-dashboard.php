@@ -120,23 +120,27 @@ class Charitable_User_Dashboard implements Charitable_Addon_Interface {
 			$objects 		= array();
 			$nav_menu_items = wp_get_nav_menu_items( __( 'Frontend Dashboard', 'charitable' ) ); 
 
-			foreach ( $nav_menu_items as $nav_menu_item ) {
+			if ( is_array( $nav_menu_items ) ) {
 
-				switch ( $nav_menu_item->type ) {
+				foreach ( $nav_menu_items as $nav_menu_item ) {
 
-					case 'custom' : 
+					switch ( $nav_menu_item->type ) {
 
-						$identifier = trailingslashit( $nav_menu_item->url );
+						case 'custom' : 
 
-						break;
+							$identifier = trailingslashit( $nav_menu_item->url );
 
-					default : 
+							break;
 
-						$identifier = apply_filters( 'charitable_nav_menu_object_identifier', $nav_menu_item->object_id, $nav_menu_item );
-				}
+						default : 
 
-				$objects[] = $identifier;
+							$identifier = apply_filters( 'charitable_nav_menu_object_identifier', $nav_menu_item->object_id, $nav_menu_item );
+					}
 
+					$objects[] = $identifier;
+
+				}			
+			
 			}
 
 			set_transient( 'charitable_user_dashboard_objects', $objects );

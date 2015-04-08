@@ -217,6 +217,8 @@ final class Charitable_Campaign_Post_Type {
 			}
 		}
 
+
+
 		return $meta_boxes;
 	}
 
@@ -260,55 +262,14 @@ final class Charitable_Campaign_Post_Type {
 	public function save_post( $post_id, WP_Post $post ) {
 		if ( $this->meta_box_helper->user_can_save( $post ) ) {
 					
-			$values = array();
+			$meta_keys = array_intersect( Charitable_Campaign::get_mapped_meta_keys(), array_keys( $_POST ) );
 
-			/* Set up sane defaults for every field. */
-			$defaults = apply_filters( 'charitable_campaign_field_defaults', array(
-				'_campaign_goal' 					=> 0, 
-				'_campaign_end_date' 				=> 0, 
-				'_campaign_suggested_donations'		=> '', 
-				'_campaign_allow_custom_donations'	=> 1, 
-				'campaign_description'				=> ''
-			), $post );
+			foreach ( $meta_keys as $key ) {
 
-			/* Sanitize campaign goal. */
-			if ( isset( $_POST['_campaign_goal'] ) && ! empty( $_POST['_campaign_goal'] ) ) {
-				$values['_campaign_goal'] = charitable()->get_currency_helper()->sanitize_monetary_amount( $_POST['_campaign_goal'] );
-			}
-			
-			/* Sanitize end date. */
-			if ( isset( $_POST['_campaign_end_date'] ) && ! empty( $_POST['_campaign_end_date'] ) ) {				
-				$values['_campaign_end_date'] = date( 'Y-m-d 00:00:00', strtotime( $_POST['_campaign_end_date'] ) );
-			}
+				$value = apply_filters( 'charitable_sanitize_campaign_meta', $_POST[ $key ], $key );
 
-			/* @todo This needs work */
-			if ( isset( $_POST['_campaign_suggested_donations'] ) ) {
-				$values['_campaign_suggested_donations'] = $_POST['_campaign_suggested_donations'];
-			}			
-
-			/* Sanitize custom donation field. */
-			if ( isset( $_POST['_campaign_allow_custom_donations'] ) ) {
-				$values['_campaign_allow_custom_donations'] = intval( $_POST['_campaign_allow_custom_donations'] == 'on' ); 
-			}
-			
-			/* Sanitize description. */
-			if ( isset( $_POST['_campaign_description'] ) )  {
-				$values['_campaign_description'] = sanitize_text_field( $_POST['_campaign_description'] );	
-			}				
-
-			/* Sanitize video. */
-			if ( isset( $_POST['_campaign_video'] ) ) {
-				$values['_campaign_video'] = sanitize_text_field( $_POST['_campaign_video'] );
-			}
-
-			/* Hook for plugins to save custom meta. */
-			$values = apply_filters( 'charitable_campaign_field_values', $values, $post );
-
-			/* Merge defaults with passed values. */
-			$values = array_merge( $defaults, $values );
-			
-			foreach ( $values as $key => $value ) {
 				update_post_meta( $post_id, $key, $value );
+
 			}
 
 			/* Hook for plugins to do something else with the posted data */

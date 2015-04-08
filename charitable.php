@@ -219,8 +219,9 @@ class Charitable {
 		add_action('charitable_start',	array( 'Charitable_Gateway', 'charitable_start' ), 3 ); 
 		add_action('charitable_start', 	array( 'Charitable_Addons', 'charitable_start' ), 3 );		
 		add_action('charitable_start', 	array( 'Charitable_Request', 'charitable_start' ), 3 );
-
 		add_action('init', 				array( $this, 'do_charitable_actions' ) );
+
+		add_filter('charitable_sanitize_campaign_meta', array( 'Charitable_Campaign', 'sanitize_meta' ), 10, 2 );
 	}
 
 	/**
