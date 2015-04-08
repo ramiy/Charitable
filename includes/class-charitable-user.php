@@ -403,6 +403,7 @@ class Charitable_User extends WP_User {
 		/** 
 		 * Exclude the core keys. 
 		 */		
+		$mapped_keys 	= $this->get_mapped_keys();
 		$meta_fields 	= array_diff( $keys, $this->get_core_keys() );
 		$updated 		= 0;
 
@@ -410,7 +411,7 @@ class Charitable_User extends WP_User {
 
 			if ( isset( $submitted[ $field ] ) ) {
 
-				$meta_key = array_key_exists( $field, $this->get_mapped_keys() ) ? $this->get_mapped_keys()[ $field ] : $field;
+				$meta_key = array_key_exists( $field, $mapped_keys ) ? $mapped_keys[ $field ] : $field;
 
 				$meta_value = sanitize_meta( $meta_key, $submitted[ $field ], 'user' );
 
