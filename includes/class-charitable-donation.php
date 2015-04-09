@@ -411,7 +411,7 @@ class Charitable_Donation {
 		$campaign_donation_ids = self::insert_campaign_donations( $donation_id, $args[ 'campaigns' ] );
 
 		/* Save donation meta */
-		self::add_donation_meta( $donation_id, $campaign_donation_ids, $args );		
+		self::add_donation_meta( $donation_id, $args );		
 
 		$donation = new Charitable_Donation( $donation_id );
 		$donation->update_donation_log( __( 'Donation created.', 'charitable' ) );
@@ -456,14 +456,13 @@ class Charitable_Donation {
 	 * Save the meta for the donation.	
 	 *
 	 * @param 	int 		$donation_id
-	 * @param 	int[] 		$campaign_donation_ids
-	 * @param 	
+	 * @param 	array 		$args
 	 * @return 	void
 	 * @access  public
 	 * @static
 	 * @since 	1.0.0
 	 */
-	public static function add_donation_meta( $donation_id, $campaign_donation_ids, $args ) {		
+	public static function add_donation_meta( $donation_id, $args ) {		
 
 		/* Save other donation meta */
 		$meta_keys = array_intersect_key( self::get_mapped_meta_keys(), $args );
