@@ -147,6 +147,30 @@ abstract class Charitable_DB {
 	}
 
 	/**
+	 * Count all rows.  
+	 *
+	 * @return 	int
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function count_all() {
+		global $wpdb;
+		return $wpdb->get_var( "SELECT COUNT( * ) FROM $this->table_name;" );
+	}
+
+	/**
+	 * Count all rows that certain criteria.
+	 *
+	 * @return 	int
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function count_by( $column, $column_value ) {
+		global $wpdb;
+		return $wpdb->get_var( $wpdb->prepare( "SELECT COUNT( * ) FROM $this->table_name WHERE $column = {$this->get_column_format($column)};", $column_value ) );
+	}
+
+	/**
 	 * Insert a new row
 	 *
 	 * @access  public
@@ -156,25 +180,30 @@ abstract class Charitable_DB {
 	public function insert( $data, $type = '' ) {
 		global $wpdb;
 
-		// Set default values
+		/* Set default values */
 		$data = wp_parse_args( $data, $this->get_column_defaults() );
 
 		do_action( 'charitable_pre_insert_' . $type, $data );
 
-		// Initialise column format array
+		/* Initialise column format array */
 		$column_formats = $this->get_columns();
 
-		// Force fields to lower case
+		/* Force fields to lower case */
 		$data = array_change_key_case( $data );
 
-		// White list columns
+		/* White list columns */
 		$data = array_intersect_key( $data, $column_formats );
 
-		// Reorder $column_formats to match the order of columns given in $data
+		/* Reorder $column_formats to match the order of columns given in $data */
 		$data_keys = array_keys( $data );
 		$column_formats = array_merge( array_flip( $data_keys ), $column_formats );
 
-		$wpdb->insert( $this->table_name, $data, $column_formats );
+		$inserted = $wpdb->insert( $this->table_name, $data, $column_formats );
+
+		/* If the insert failed, return 0 */
+		if ( false === $inserted ) {
+			return 0;
+		}
 
 		do_action( 'charitable_post_insert_' . $type, $wpdb->insert_id, $data );
 

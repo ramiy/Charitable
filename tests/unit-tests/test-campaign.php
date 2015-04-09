@@ -145,21 +145,38 @@ class Test_Charitable_Campaign extends WP_UnitTestCase {
 		$this->assertEquals( '', $this->campaign_2->get_monetary_goal() );
 	}
 
-	function test_get_donations() {
-		$this->assertCount( 3, $this->campaign_1->get_donations() );
-		$this->assertCount( 1, $this->campaign_2->get_donations() );
+	function test_get_donations_db_call() {
+		$this->assertCount( 3, charitable()->get_db_table('campaign_donations')->get_donations_on_campaign( $this->campaign_1->ID ), 'Testing call to campaign_donations table to retrieve campaign donations.' );
+		$this->assertCount( 1, charitable()->get_db_table('campaign_donations')->get_donations_on_campaign( $this->campaign_2->ID ), 'Testing call to campaign_donations table to retrieve campaign donations.' );
 	}
 
+	/**
+	 * @depends test_get_donations_db_call
+	 */
+	function test_get_donations() {
+		$this->assertCount( 3, $this->campaign_1->get_donations(), 'Testing Campaign model\'s get_donations method.' );
+		$this->assertCount( 1, $this->campaign_2->get_donations(), 'Testing Campaign model\'s get_donations method.' );
+	}
+
+	/**
+	 * @depends test_get_donations
+	 */
 	function test_get_donated_amount() {
 		$this->assertEquals( 60.00, $this->campaign_1->get_donated_amount() );
 		$this->assertEquals( 25.00, $this->campaign_2->get_donated_amount() );
 	}
 
+	/**
+	 * @depends test_get_donations
+	 */
 	function test_get_percent_donated() {
 		$this->assertEquals( '0.15%', $this->campaign_1->get_percent_donated() );
 		$this->assertFalse( $this->campaign_2->get_percent_donated() );
 	}
 
+	/**
+	 * @depends test_get_donations
+	 */
 	function test_flush_donations_cache() {
 		// Test count of donations pre-cache
 		$this->assertCount( 3, $this->campaign_1->get_donations() );
@@ -190,10 +207,9 @@ class Test_Charitable_Campaign extends WP_UnitTestCase {
 		$this->assertCount( 4, $this->campaign_1->get_donations() );
 	}
 
-	function test_get_donation_form() {
-		$this->assertInstanceOf( 'Charitable_Donation_Form', $this->campaign_1->get_donation_form() );
-	}	
-
+	/**
+	 * @depends test_get_donations
+	 */
 	function test_get_donor_count() {
 		$this->assertEquals( 3, $this->campaign_1->get_donor_count() );
 		$this->assertEquals( 1, $this->campaign_2->get_donor_count() );
@@ -204,4 +220,9 @@ class Test_Charitable_Campaign extends WP_UnitTestCase {
 			$this->assertContains( $suggested_donation, $this->campaign_1->get_suggested_amounts() );
 		}
 	}
+
+	function test_get_donation_form() {
+		$this->assertInstanceOf( 'Charitable_Donation_Form', $this->campaign_1->get_donation_form() );
+	}	
+
 }

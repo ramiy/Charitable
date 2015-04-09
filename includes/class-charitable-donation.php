@@ -356,11 +356,7 @@ class Charitable_Donation {
 	 * @static
 	 * @since 	1.0.0
 	 */
-	private static function is_valid_user_data( $args ) {
-		if ( ! isset( $args['user_id'] ) ) {
-			return false;
-		}
-
+	private static function is_valid_user_data( $args ) {		
 		return $args[ 'user_id' ] || false == apply_filters( 'charitable_require_user_account', true );		
 	}
 
@@ -376,14 +372,13 @@ class Charitable_Donation {
 	public static function insert( array $args ) {
 		$args = apply_filters( 'charitable_donation_args', $args );
 
-		/**
-		 * Validate the donate data.
-		 */
+		/* Ensure that an array of campaigns has been passed */
 		if ( ! isset( $args['campaigns'] ) || ! is_array( $args['campaigns'] ) ) {
 			_doing_it_wrong( 'Charitable_Donation::insert()', 'A donation cannot be inserted without an array of campaigns being donated to.', '1.0.0' );
 			return 0;
 		}
 
+		/* Validate the user data we have received */
 		if ( ! self::is_valid_user_data( $args ) ) {
 			_doing_it_wrong( 'Charitable_Donation::insert()', 'A donation cannot be inserted without a valid user id.', '1.0.0' );
 			return 0;
@@ -391,9 +386,7 @@ class Charitable_Donation {
 		
 		do_action( 'charitable_before_add_donation', $args );
 
-		/**
-		 * Save core donation object in Posts table.
-		 */
+		/* Save core donation object in Posts table */
 		$donation_args = array(
 			'post_type'		=> 'donation', 
 			'post_author'	=> $args[ 'user_id' ], 
@@ -414,40 +407,122 @@ class Charitable_Donation {
 			return 0;
 		}
 
-		do_action( 'charitable_after_add_donation', $donation_id, $args );
+		/* Insert campaign donations */
+		$campaign_donation_ids = self::insert_campaign_donations( $donation_id, $args[ 'campaigns' ] );
 
-		/**
-		 * Save donation meta.
-		 */
-		$gateway = isset( $args['gateway'] ) ? $args['gateway'] : 'manual';
-		add_post_meta( $donation_id, 'donation_gateway', $gateway );
+		/* Save donation meta */
+		self::add_donation_meta( $donation_id, $campaign_donation_ids, $args );		
 
 		$donation = new Charitable_Donation( $donation_id );
-		$donation->update_donation_log( __( 'Donation created.', 'charitable' ) );				
+		$donation->update_donation_log( __( 'Donation created.', 'charitable' ) );
 
-		/**
-		 * Save each campaign donation as a separate object. 
-		 */		
-		$campaign_donations_db = charitable()->get_db_table( 'campaign_donations' );
+		do_action( 'charitable_after_add_donation', $donation_id, $args );
 
-		foreach ( $args['campaigns'] as $campaign_args ) {
-			$campaign_args['donation_id'] = $donation_id;
-			$campaign_donations_db->insert( $campaign_args );
-		}		
-
-		/**
-		 * Finally, return the donation ID. 
-		 */
+		/* Finally, return the donation ID. */
 		return $donation_id;
+	}
+
+	/**
+	 * Inserts the campaign donations into the campaign_donations table. 
+	 *
+	 * @param 	int 		$donation_id
+	 * @param 	array 		$campaigns
+	 * @return 	int 		The number of donations inserted. 
+	 * @access  public
+	 * @static
+	 * @since 	1.0.0
+	 */
+	public static function insert_campaign_donations( $donation_id, $campaigns ) {
+		
+		$inserted = 0;
+
+		foreach ( $campaigns as $campaign ) {
+
+			$campaign[ 'donation_id' ] = $donation_id;
+			$campaign_donation_id = charitable()->get_db_table( 'campaign_donations' )->insert( $campaign );
+
+			if ( 0 == $campaign_donation_id ) {
+				return 0;
+			}
+
+			$inserted++;
+
+		}	
+
+		return $inserted;
+	}
+
+	/**
+	 * Save the meta for the donation.	
+	 *
+	 * @param 	int 		$donation_id
+	 * @param 	int[] 		$campaign_donation_ids
+	 * @param 	
+	 * @return 	void
+	 * @access  public
+	 * @static
+	 * @since 	1.0.0
+	 */
+	public static function add_donation_meta( $donation_id, $campaign_donation_ids, $args ) {		
+
+		/* Save other donation meta */
+		$meta_keys = array_intersect_key( self::get_mapped_meta_keys(), $args );
+
+		foreach ( $meta_keys as $key => $meta_key ) {
+
+			$value = apply_filters( 'charitable_sanitize_donation_meta', $args[ $key ], $meta_key );
+			update_post_meta( $donation_id, $meta_key, $value );
+
+		}
+
+	}
+
+	/**
+	 * Return an array of meta keys with alternative keys. 
+	 *
+	 * In frontend forms, the preference is for using the mapped meta keys, which 
+	 * are the keys of the array this method returns. In the backend, the actual
+	 * meta keys are used instead.
+	 *
+	 * @return 	string[]
+	 * @access  public
+	 * @static
+	 * @since 	1.0.0
+	 */
+	public static function get_mapped_meta_keys() {
+		return apply_filters( 'charitable_donation_mapped_meta_keys', array(
+			'gateway' => 'donation_gateway'
+		) );
+	}
+
+	/**
+	 * Sanitize meta values before they are persisted to the database. 
+	 *
+	 * @param  	mixed 		$value
+	 * @param 	string 		$key
+	 * @return 	mixed
+	 * @access 	public
+	 * @static
+	 * @since 	1.0.0
+	 */
+	public static function sanitize_meta( $value, $key ) {
+
+		if ( 'donation_gateway' == $key ) {			
+			if ( empty( $value ) || ! $value ) {
+				$value = 'manual';
+			}			
+		}
+
+		return apply_filters( 'charitable_sanitize_donation_meta-' . $key, $value );
 	}
 
 	/**
 	 * Update the status of the donation. 
 	 *	
 	 * @uses 	wp_update_post()
-	 * @uses 	wp_transition_post_status()		// Use this for hooks that tap into status transitions.
+	 * @uses 	wp_transition_post_status()		Use this for hooks that tap into status transitions.
 	 * @param 	string 		$new_status
-	 * @return 	void
+	 * @return 	int|WP_Error 					The value 0 or WP_Error on failure. The donation ID on success.
 	 * @access  public
 	 * @since 	1.0.0
 	 */
@@ -462,7 +537,7 @@ class Charitable_Donation {
 
 			if ( false === $status ) {
 				_doing_it_wrong( __METHOD__, sprintf( '%s is not a valid donation status.', $new_status ), '1.0.0' );
-				return;
+				return 0;
 			}
 
 			$new_status = $status;
@@ -471,14 +546,14 @@ class Charitable_Donation {
 		$old_status = $this->get_status();		
 
 		if ( $old_status == $new_status ) {
-			return;
+			return 0;
 		}		
 
 		/**
 		 * This actually updates the post status.
 		 */
 		$this->donation_data->post_status = $new_status;
-		wp_update_post( $this->donation_data );
+		$donation_id = wp_update_post( $this->donation_data );		
 
 		/**
 		 * Log the status transition.
@@ -490,6 +565,8 @@ class Charitable_Donation {
 		 * Fires off action hooks that you can use to tap into this event.
 		 */
 		wp_transition_post_status( $new_status, $old_status, $this->donation_data );
+
+		return $donation_id;
 	}
 }
 

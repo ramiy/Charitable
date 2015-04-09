@@ -26,11 +26,6 @@ class Charitable_Campaign {
 	private $post;
 
 	/**
-	 * @var int The ID of the campaign. 
-	 */
-	private $ID;
-
-	/**
 	 * @var int The timestamp for the expiry for this campaign.
 	 */
 	private $end_time;
@@ -62,7 +57,7 @@ class Charitable_Campaign {
 	 * @access 	public
 	 * @since 	1.0.0
 	 */
-	public function __construct($post) {
+	public function __construct( $post ) {
 		if ( ! is_a( $post, 'WP_Post' ) ) {
 			$post = get_post( $post );
 		}
@@ -77,7 +72,7 @@ class Charitable_Campaign {
 	 * @access  public
 	 * @since 	1.0.0
 	 */
-	public function __get( $key ) {
+	public function __get( $key ) {		
 		if ( property_exists( $this->post, $key ) ) {
 			return $this->post->$key;
 		}
@@ -100,23 +95,7 @@ class Charitable_Campaign {
 	public function get( $meta_name, $single = true ) {
 		$meta_name = '_' . $meta_name;
 		return get_post_meta( $this->post->ID, $meta_name, $single );
-	}
-
-	/**
-	 * Returns the campaign's ID. 
-	 * 
-	 * @return 	int
-	 * @access 	public
-	 * @since 	1.0.0
-	 */
-	public function get_campaign_id() {
-		if ( ! isset( $this->ID ) ) {
-			$this->ID = $this->post->ID;
-		}
-
-		return $this->ID;
-	}
-	
+	}	
 
 	/**
 	 * Returns whether the campaign is endless (i.e. no end date has been set). 
@@ -366,18 +345,17 @@ class Charitable_Campaign {
 	 * @since 	1.0.0
 	 */
 	public function get_donations() {
+
 		if ( ! isset( $this->donations ) || is_null( $this->donations ) ) {
 
-			/**
-			 * Try to fetch from cache first.
-			 */
-			$this->donations = get_transient( $this->get_donations_cache_key( $this->get_campaign_id() ) );
+			/* Try to fetch from cache first */
+			$this->donations = get_transient( $this->get_donations_cache_key( $this->ID ) );
 
 			if ( false === $this->donations ) {
 
-				$this->donations = charitable()->get_db_table('campaign_donations')->get_donations_on_campaign( $this->get_campaign_id() );
+				$this->donations = charitable()->get_db_table('campaign_donations')->get_donations_on_campaign( $this->ID );
 	
-				set_transient( $this->get_donations_cache_key( $this->get_campaign_id() ), $this->donations, 0 ); 
+				set_transient( $this->get_donations_cache_key( $this->ID ), $this->donations, 0 ); 
 			}
 		}
 
@@ -397,12 +375,12 @@ class Charitable_Campaign {
 			/**
 			 * Try to fetch from cache first. 
 			 */
-			$this->donated_amount = get_transient( $this->get_donations_cache_key( $this->get_campaign_id() ) . '_amount' );
+			$this->donated_amount = get_transient( $this->get_donations_cache_key( $this->ID ) . '_amount' );
 
 			if ( $this->donated_amount === false ) {
-				$this->donated_amount = charitable()->get_db_table('campaign_donations')->get_campaign_donated_amount( $this->get_campaign_id() );
+				$this->donated_amount = charitable()->get_db_table('campaign_donations')->get_campaign_donated_amount( $this->ID );
 
-				set_transient( $this->get_donations_cache_key( $this->get_campaign_id() ) . '_amount', $this->donated_amount, 0 );
+				set_transient( $this->get_donations_cache_key( $this->ID ) . '_amount', $this->donated_amount, 0 );
 			}			
 		}
 
@@ -448,7 +426,7 @@ class Charitable_Campaign {
 	 * @since 	1.0.0
 	 */
 	public function get_donor_count() {
-		return charitable()->get_db_table('campaign_donations')->count_campaign_donors( $this->get_campaign_id() );
+		return charitable()->get_db_table('campaign_donations')->count_campaign_donors( $this->ID );
 	}
 
 	/**
@@ -460,8 +438,8 @@ class Charitable_Campaign {
 	 * @since 	1.0.0
 	 */
 	public function flush_donations_cache() {
-		delete_transient( self::get_donations_cache_key( $this->get_campaign_id() ) );
-		delete_transient( self::get_donations_cache_key( $this->get_campaign_id() ) . '_amount' );
+		delete_transient( self::get_donations_cache_key( $this->ID ) );
+		delete_transient( self::get_donations_cache_key( $this->ID ) . '_amount' );
 
 		$this->donations = null;
 		$this->donated_amount = null;
@@ -636,6 +614,14 @@ class Charitable_Campaign {
 			return ! empty( $donation[ 'amount' ] );
 		}
 	}
+
+	/**
+	 * @deprecated
+	 * @todo Get rid of this.
+	 */
+	public function get_campaign_id() {
+		return $this->ID;
+	}	
 }
 
 endif; // End class_exists check

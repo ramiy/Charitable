@@ -222,6 +222,7 @@ class Charitable {
 		add_action('init', 				array( $this, 'do_charitable_actions' ) );
 
 		add_filter('charitable_sanitize_campaign_meta', array( 'Charitable_Campaign', 'sanitize_meta' ), 10, 2 );
+		add_filter('charitable_sanitize_donation_meta', array( 'Charitable_Donation', 'sanitize_meta' ), 10, 2 );
 	}
 
 	/**

@@ -86,17 +86,19 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 	/** 
 	 * Add a new campaign donation.
 	 * 
-	 * @param 	array 	$data
-	 * @return 	int 
+	 * @param 	array 		$data
+	 * @return 	int 		The ID of the inserted campaign donation
 	 * @access 	public
 	 * @since 	1.0.0
 	 */
 	public function insert( $data, $type = 'campaign_donation' ) {
+		
 		/* Ensure the campaign name is set */
-		if ( ! isset( $data['campaign_name'] ) ) {
-			$campaign = get_post( $data['campaign_id'] );
-			$data['campaign_name'] = $campaign->post_title;
-		}		
+		if ( ! isset( $data[ 'campaign_name' ] ) ) {
+
+			$data[ 'campaign_name' ] = get_the_title( $data[ 'campaign_id' ] );
+
+		}
 
 		$this->flush_campaign_cache( $data['campaign_id'] );
 
@@ -158,13 +160,12 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 	 */
 	public function get_donation_records( $donation_id ) {
 		global $wpdb;
-		return $wpdb->get_results( 
-			$wpdb->prepare( 
-				"SELECT * 
+
+		$sql = "SELECT * 
 				FROM $this->table_name 
-				WHERE donation_id = %d;", 
-				$donation_id 
-			), OBJECT_K);
+				WHERE donation_id = %d;";
+
+		return $wpdb->get_results( $wpdb->prepare( $sql, intval( $donation_id ) ), OBJECT_K );				
 	}
 
 	/**
@@ -178,13 +179,12 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 	 */
 	public function get_donation_total_amount( $donation_id ) {
 		global $wpdb;
-		return $wpdb->get_var( 
-			$wpdb->prepare( 
-				"SELECT SUM(amount) 
+
+		$sql = "SELECT SUM(amount) 
 				FROM $this->table_name 
-				WHERE donation_id = %d;", 
-				$donation_id 
-			) );
+				WHERE donation_id = %d;";
+
+		return $wpdb->get_var( $wpdb->prepare( $sql, intval( $donation_id ) ) );
 	}
 
 	/**
