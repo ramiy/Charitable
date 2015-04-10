@@ -207,7 +207,7 @@ abstract class Charitable_Form {
 			$classes[] = 'charitable-form-field-' . $field[ 'type' ];
 		}
 
-		if ( $field[ 'required' ] ) {
+		if ( isset( $field[ 'required' ] ) && $field[ 'required' ] ) {
 			$classes[] = 'required-field';
 		}
 

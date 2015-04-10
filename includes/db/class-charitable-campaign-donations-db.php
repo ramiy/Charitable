@@ -278,15 +278,15 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 	 */
 	public function get_donations_by_donor( $donor_id ) {
 		global $wpdb;
-		return $wpdb->get_results(
-			$wpdb->prepare( 
-				"SELECT c.campaign_donation_id, c.donation_id, c.campaign_id, c.campaign_name, c.amount
+
+		$sql = "SELECT c.campaign_donation_id, c.donation_id, c.campaign_id, c.campaign_name, c.amount
 				FROM $this->table_name c
 				INNER JOIN {$wpdb->prefix}posts p
 				ON c.donation_id = p.ID
-				AND p.post_author = %d;",
-				$donor_id
-			), OBJECT_K );
+				WHERE p.post_author = %d
+				AND p.post_type = 'donation';";
+
+		return $wpdb->get_results( $wpdb->prepare( $sql, $donor_id ), OBJECT_K );
 	}
 
 	/**
@@ -300,15 +300,42 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 	 */
 	public function get_total_donated_by_donor( $donor_id ) {
 		global $wpdb;
-		return $wpdb->get_var(
-			$wpdb->prepare( 
-				"SELECT SUM(c.amount)
+
+		$sql = "SELECT SUM(c.amount)
 				FROM $this->table_name c
 				INNER JOIN {$wpdb->prefix}posts p
 				ON c.donation_id = p.ID
-				AND p.post_author = %d;",
-				$donor_id
-			) );
+				WHERE p.post_author = %d
+				AND p.post_type = 'donation';";
+
+		return $wpdb->get_var( $wpdb->prepare( $sql, $donor_id ) );
+	}
+
+	/**
+	 * Count the number of donations made by the donor.  
+	 *
+	 * @global	wpdb	$wpdb
+	 * @param 	int 	$donor_id
+	 * @param 	boolean $distinct_campaigns 	If true, will not count multiple donations to the same campaign.
+	 * @return 	int
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function count_donations_by_donor( $donor_id, $distinct_campaigns = false ) {
+		global $wpdb;
+
+		// if ( $distinct_campaigns ) {
+
+		// }
+		
+		$sql = "SELECT COUNT(*)
+				FROM $this->table_name c
+				INNER JOIN {$wpdb->prefix}posts p
+				ON c.donation_id = p.ID
+				AND p.post_author = %d
+				AND p.post_type = 'donation';";
+
+		return $wpdb->get_var( $wpdb->prepare( $sql, $donor_id ) );
 	}
 
 	/**

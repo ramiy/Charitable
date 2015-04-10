@@ -408,7 +408,7 @@ class Charitable_Donation {
 		}
 
 		/* Insert campaign donations */
-		$campaign_donation_ids = self::insert_campaign_donations( $donation_id, $args[ 'campaigns' ] );
+		self::insert_campaign_donations( $donation_id, $args[ 'campaigns' ] );
 
 		/* Save donation meta */
 		self::add_donation_meta( $donation_id, $args );		

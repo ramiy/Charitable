@@ -146,13 +146,13 @@ class Charitable_User extends WP_User {
 	/**
 	 * Return the number of donations made by the donor. 
 	 *
-	 * @param 	boolean 	$count_distinct 		If true, will not include extra donations made to the same campaign. 
+	 * @param 	boolean 	$distinct_campaigns 	If true, will not count multiple donations to the same campaign.
 	 * @return 	int
 	 * @access  public
 	 * @since 	1.0.0
 	 */
-	public function get_donation_count( $count_distinct = false ) {
-		return charitable()->get_db_table( 'campaign_donations' )->count_donations_by_donor( $this->ID, $count_distinct );
+	public function get_donation_count( $distinct_campaigns = false ) {
+		return charitable()->get_db_table( 'campaign_donations' )->count_donations_by_donor( $this->ID, $distinct_campaigns);
 	}
 
 	/**

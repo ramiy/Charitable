@@ -31,9 +31,7 @@ class Charitable_Install {
 	public function __construct() {	
 		$this->setup_roles();
 		$this->create_tables();	
-		// $this->add_endpoints();
-		// $this->add_rewrite_rules();
-
+		
 		flush_rewrite_rules();
 
 		do_action( 'charitable_install' );	

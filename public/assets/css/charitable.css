@@ -69,11 +69,16 @@
   .charitable-form-field label {
     display: block;
     margin-bottom: 4px; }
-  .charitable-form-field input, .charitable-form-field select, .charitable-form-field textarea, .charitable-form-field button {
+  .charitable-form-field input,
+  .charitable-form-field select,
+  .charitable-form-field textarea,
+  .charitable-form-field button {
     width: 100%; }
   .charitable-form-field input[type=radio],
   .charitable-form-field input[type=checkbox] {
     width: auto; }
+  .charitable-form-field.charitable-form-field-checkbox label {
+    display: inline-block; }
 
 .donation-amounts {
   margin: 0 0 1em;

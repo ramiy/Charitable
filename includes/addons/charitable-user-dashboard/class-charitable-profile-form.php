@@ -294,7 +294,7 @@ class Charitable_Profile_Form extends Charitable_Form {
 
 		$fields = $form->get_merged_fields();
 
-		$valid = $this->check_required_fields( $fields );
+		$valid = $form->check_required_fields( $fields );
 
 		if ( $valid ) {
 			

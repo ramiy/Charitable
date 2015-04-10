@@ -105,6 +105,23 @@ class Charitable_User_Dashboard implements Charitable_Addon_Interface {
 	}
 
 	/**
+	 * Return the menu ID based on the theme location. 
+	 *
+	 * @return 	int 		0 if no menu found. Menu ID otherwise.
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function get_nav_id() {
+		$locations = get_nav_menu_locations();
+
+		if ( ! isset( $locations[ 'charitable-dashboard' ] ) ) {
+			return 0;
+		}
+		
+		return wp_get_nav_menu_object( $locations[ 'charitable-dashboard' ] );
+	}
+
+	/**
 	 * Returns all objects in the user dashboard navigation.
 	 *
 	 * @uses 	wp_get_nav_menu_items
@@ -113,12 +130,12 @@ class Charitable_User_Dashboard implements Charitable_Addon_Interface {
 	 * @since 	1.0.0
 	 */
 	public function nav_objects() {		
-		$objects 	= get_transient( 'charitable_user_dashboard_objects' );
+		$objects 	= get_transient( 'charitable_user_dashboard_objects' );	
 		
-		if ( false === $objects ) {
+		if ( false === $objects ) {			
 
 			$objects 		= array();
-			$nav_menu_items = wp_get_nav_menu_items( __( 'Frontend Dashboard', 'charitable' ) ); 
+			$nav_menu_items = wp_get_nav_menu_items( $this->get_nav_id() ); 
 
 			if ( is_array( $nav_menu_items ) ) {
 
@@ -157,9 +174,9 @@ class Charitable_User_Dashboard implements Charitable_Addon_Interface {
 	 * @since 	1.0.0
 	 */
 	public function flush_menu_object_cache( $menu_id ) {
-		$nav_menu 	= wp_get_nav_menu_object( __( 'Frontend Dashboard', 'charitable' ) );
+		$nav_menu 	= wp_get_nav_menu_object( $this->get_nav_id() );
 
-		if ( $menu_id == $nav_menu->term_id ) {
+		if ( $nav_menu && $menu_id == $nav_menu->term_id ) {
 
 			delete_transient( 'charitable_user_dashboard_objects' );
 
@@ -177,7 +194,7 @@ class Charitable_User_Dashboard implements Charitable_Addon_Interface {
 	public function in_nav() {
 		global $wp;
 
-		$ret = wp_cache_get( 'charitable_in_user_dashboard', '', false, $found );
+		$ret = wp_cache_get( 'charitable_in_user_dashboard', '', false, $found );		
 
 		if ( false === $found ) {			
 			$current_url 	= trailingslashit( add_query_arg( $wp->query_string, '', home_url( $wp->request ) ) );
@@ -198,8 +215,8 @@ class Charitable_User_Dashboard implements Charitable_Addon_Interface {
 	 * @access  public
 	 * @since 	1.0.0
 	 */
-	public function load_user_dashboard_template( $template ) {
-		
+	public function load_user_dashboard_template( $template ) {		
+
 		/**
 		 * The user dashboard template is not loaded by default; this has to be enabled. 
 		 */

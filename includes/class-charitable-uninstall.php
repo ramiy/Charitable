@@ -23,22 +23,13 @@ if ( ! class_exists( 'Charitable_Uninstall' ) ) :
 class Charitable_Uninstall {
 
 	/**
-	 * @var 	Charitable
-	 * @access 	private 
-	 */
-	private $charitable;
-
-	/**
 	 * Uninstall the plugin.
 	 *
-	 * @param 	Charitable $charitable
-	 * @return 	void
-	 * @static
 	 * @access 	public
 	 * @since 	1.0.0
 	 */
-	public function __construct( Charitable $charitable ) {
-		if ( $charitable->is_deactivation() && charitable_get_option( 'delete_data_on_uninstall' ) ) {
+	public function __construct() {
+		if ( charitable()->is_deactivation() && charitable_get_option( 'delete_data_on_uninstall' ) ) {
 
 			$this->remove_caps();
 			$this->remove_post_data();

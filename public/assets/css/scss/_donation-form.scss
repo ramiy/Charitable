@@ -43,13 +43,22 @@
 		margin-bottom: 4px;
 	}
 
-	input, select, textarea, button {
+	input, 
+	select, 
+	textarea, 
+	button {
 		width: 100%;
 	}
 
 	input[type=radio], 
 	input[type=checkbox] {
 		width: auto;
+	}
+
+	&.charitable-form-field-checkbox {
+		label {
+			display: inline-block;
+		}
 	}
 }
 

@@ -104,6 +104,8 @@ final class Charitable_Donation_Actions extends Charitable_Start_Object {
 		$donations_url = charitable_get_helper( 'pages' )->get_page_url( 'campaign-donation-page', array( 'campaign_id' => $campaign_id ) );
 		
 		wp_redirect( $donations_url );
+
+		die();
 	}
 
 	/**

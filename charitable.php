@@ -103,13 +103,12 @@ class Charitable {
     /**
      * Create class instance. 
      * 
-     * @return 	void
      * @since 	1.0.0
      */
 	public function __construct() {
-		$this->directory_path = plugin_dir_path( __FILE__ );
-		$this->directory_url = plugin_dir_url( __FILE__ );
-		$this->includes_path = $this->directory_path . 'includes/';
+		$this->directory_path 	= plugin_dir_path( __FILE__ );
+		$this->directory_url 	= plugin_dir_url( __FILE__ );
+		$this->includes_path 	= $this->directory_path . 'includes/';
 		$this->start();
 	}
 
@@ -324,8 +323,8 @@ class Charitable {
 	/**
 	 * Returns a registered object.
 	 * 
-	 * @param 	string $class The type of class you want to retrieve.
-	 * @return 	mixed The object if its registered. Otherwise false.
+	 * @param 	string 		$class 			The type of class you want to retrieve.
+	 * @return 	mixed 		The object if its registered. Otherwise false.
 	 * @access 	public
 	 * @since 	1.0.0
 	 */
@@ -336,8 +335,8 @@ class Charitable {
 	/**
 	 * Returns plugin paths. 
 	 *
-	 * @param 	string $path 			// If empty, returns the path to the plugin.
-	 * @param 	bool $absolute_path 	// If true, returns the file system path. If false, returns it as a URL.
+	 * @param 	string 		$type 			If empty, returns the path to the plugin.
+	 * @param 	bool 		$absolute_path 	If true, returns the file system path. If false, returns it as a URL.
 	 * @return 	string
 	 * @since 	1.0.0
 	 */
@@ -503,7 +502,7 @@ class Charitable {
 	 */
 	public function activate() {
 		require_once( $this->get_path( 'includes' ) . 'class-charitable-install.php' );
-		new Charitable_Install( $this );
+		new Charitable_Install();
 	}
 
 	/**
@@ -517,7 +516,7 @@ class Charitable {
 	 */
 	public function deactivate() {
 		require_once( $this->get_path( 'includes' ) . 'class-charitable-uninstall.php' );
-		new Charitable_Uninstall( $this );
+		new Charitable_Uninstall();
 	}
 
 	/**

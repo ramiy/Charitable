@@ -118,7 +118,7 @@ final class Charitable_Pages extends Charitable_Start_Object {
 				$campaign_id = isset( $args[ 'campaign_id' ] ) ? $args[ 'campaign_id' ] : get_the_ID();
 
 				if ( $wp_rewrite->using_permalinks() ) {
-					$url = get_permalink( $campaign_id ) . '/donate/';
+					$url = trailingslashit( get_permalink( $campaign_id ) ) . '/donate/';
 				}
 				else {
 					$url = add_query_arg( array( 'donate' => 1 ), get_permalink( $campaign_id ) );	
