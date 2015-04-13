@@ -34,6 +34,7 @@ final class Charitable_Post_Types extends Charitable_Start_Object {
 	protected function __construct() {	
 		add_action( 'init', array( $this, 'register_post_types' ), 5 );
 		add_action( 'init', array( $this, 'register_post_statuses' ), 5 );
+		add_action( 'init', array( $this, 'register_taxonomies' ), 6 );
 		add_action( 'init', array( $this, 'add_endpoints' ) );
 		// add_action( 'init', array( $this, 'add_rewrite_rules' ) );
 	}
@@ -199,6 +200,82 @@ final class Charitable_Post_Types extends Charitable_Start_Object {
 			'show_in_admin_status_list' => true,
 			'exclude_from_search'       => true,
 		) );
+	}
+
+	/**
+	 * Register the campaign category taxonomy. 
+	 *
+	 * @return 	void
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function register_taxonomies() {
+		$labels = array(
+			'name'                       => _x( 'Campaign Categories', 'Taxonomy General Name', 'charitable' ),
+			'singular_name'              => _x( 'Campaign Category', 'Taxonomy Singular Name', 'charitable' ),
+			'menu_name'                  => __( 'Categories', 'charitable' ),
+			'all_items'                  => __( 'All Campaign Categories', 'charitable' ),
+			'parent_item'                => __( 'Parent Campaign Category', 'charitable' ),
+			'parent_item_colon'          => __( 'Parent Campaign Category:', 'charitable' ),
+			'new_item_name'              => __( 'New Campaign Category Name', 'charitable' ),
+			'add_new_item'               => __( 'Add New Campaign Category', 'charitable' ),
+			'edit_item'                  => __( 'Edit Campaign Category', 'charitable' ),
+			'update_item'                => __( 'Update Campaign Category', 'charitable' ),
+			'view_item'                  => __( 'View Campaign Category', 'charitable' ),
+			'separate_items_with_commas' => __( 'Separate campaign categories with commas', 'charitable' ),
+			'add_or_remove_items'        => __( 'Add or remove campaign categories', 'charitable' ),
+			'choose_from_most_used'      => __( 'Choose from the most used', 'charitable' ),
+			'popular_items'              => __( 'Popular Campaign Categories', 'charitable' ),
+			'search_items'               => __( 'Search Campaign Categories', 'charitable' ),
+			'not_found'                  => __( 'Not Found', 'charitable' ),
+		);
+
+		$args = array(
+			'labels'                     => $labels,
+			'hierarchical'               => true,
+			'public'                     => true,
+			'show_ui'                    => true,
+			'show_admin_column'          => true,
+			'show_in_nav_menus'          => true,
+			'show_tagcloud'              => true,
+		);
+
+		register_taxonomy( 'campaign_category', array( 'campaign' ), $args );
+
+		$labels = array(
+			'name'                       => _x( 'Campaign Tags', 'Taxonomy General Name', 'charitable' ),
+			'singular_name'              => _x( 'Campaign Tag', 'Taxonomy Singular Name', 'charitable' ),
+			'menu_name'                  => __( 'Tags', 'charitable' ),
+			'all_items'                  => __( 'All Campaign Tags', 'charitable' ),
+			'parent_item'                => __( 'Parent Campaign Tag', 'charitable' ),
+			'parent_item_colon'          => __( 'Parent Campaign Tag:', 'charitable' ),
+			'new_item_name'              => __( 'New Campaign Tag Name', 'charitable' ),
+			'add_new_item'               => __( 'Add New Campaign Tag', 'charitable' ),
+			'edit_item'                  => __( 'Edit Campaign Tag', 'charitable' ),
+			'update_item'                => __( 'Update Campaign Tag', 'charitable' ),
+			'view_item'                  => __( 'View Campaign Tag', 'charitable' ),
+			'separate_items_with_commas' => __( 'Separate campaign tags with commas', 'charitable' ),
+			'add_or_remove_items'        => __( 'Add or remove campaign tags', 'charitable' ),
+			'choose_from_most_used'      => __( 'Choose from the most used', 'charitable' ),
+			'popular_items'              => __( 'Popular Campaign Tags', 'charitable' ),
+			'search_items'               => __( 'Search Campaign Tags', 'charitable' ),
+			'not_found'                  => __( 'Not Found', 'charitable' ),
+		);
+
+		$args = array(
+			'labels'                     => $labels,
+			'hierarchical'               => false,
+			'public'                     => true,
+			'show_ui'                    => true,
+			'show_admin_column'          => true,
+			'show_in_nav_menus'          => true,
+			'show_tagcloud'              => true,
+		);
+
+		register_taxonomy( 'campaign_tag', array( 'campaign' ), $args );
+
+		register_taxonomy_for_object_type( 'campaign_category', 'campaign' );
+		register_taxonomy_for_object_type( 'campaign_tag', 'campaign' );
 	}
 
 	/**
