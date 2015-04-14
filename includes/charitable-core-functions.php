@@ -30,7 +30,7 @@ function charitable() {
 /**
  * This returns the value for a particular Charitable setting. 
  *
- * @param 	key 		$key
+ * @param 	string		$key
  * @param 	mixed 		$default 		The value to return if key is not set.
  * @return 	mixed
  * @since 	1.0.0
