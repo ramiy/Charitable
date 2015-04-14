@@ -127,15 +127,13 @@ class Charitable_Template {
 	 */
 	public function render( $require_once = true ) {
 
-		/**
-		 * Get the template and ensure it exists.
-		 */
+		/* Make sure that the template file exists. */
 		$template = $this->locate_template();
 
-		if ( ! file_exists( $template ) ) {
+		if ( ! $this->template_file_exists( $template ) ) {	
 			_doing_it_wrong( __FUNCTION__, sprintf( '<code>%s</code> does not exist.', $template ), '1.0.0' );
-			return;
-		}
+			return false;
+		}		
 
 		if ( $template )  {
 
@@ -176,6 +174,22 @@ class Charitable_Template {
 		}
 
 		return apply_filters( 'charitable_locate_template', $template, $this->template_names );
+	}
+
+	/**
+	 * Checks whether the template file exists. 
+	 *
+	 * @param 	string 		$template
+	 * @return  boolean
+	 * @access  public
+	 * @since   1.0.0
+	 */
+	public function template_file_exists( $template = "" ) {
+		if ( empty( $template ) ) {
+			$template = $this->locate_template();
+		}
+
+		return file_exists( $template );
 	}
 }
 

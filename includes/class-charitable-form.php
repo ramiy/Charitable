@@ -68,8 +68,6 @@ abstract class Charitable_Form {
 	protected function attach_hooks_and_filters() {
 		add_action( 'charitable_form_before_fields',	array( $this, 'add_hidden_fields' ) ); 
 		add_action( 'charitable_form_field', 			array( $this, 'render_field' ), 10, 4 );
-
-		add_filter( 'charitable_form_field_increment_index', array( $this, 'double_increment_index' ), 10, 2 );
 	}
 
 	/**
@@ -98,8 +96,7 @@ abstract class Charitable_Form {
 			'url', 
 			'email', 
 			'password', 
-			'date', 
-			'number'
+			'date'
 		) );
 		return in_array( $field_type, $default_field_types );
 	}
@@ -127,11 +124,11 @@ abstract class Charitable_Form {
 	/**
 	 * Render a form field. 
 	 *
-	 * @param 	array 	$field
-	 * @param 	string 	$key
+	 * @param 	array 		$field
+	 * @param 	string 		$key
 	 * @param 	Charitable_Form 	$form
-	 * @param 	int 	$index
-	 * @return 	void
+	 * @param 	int 		$index
+	 * @return 	boolean 	False if the field was not rendered. True otherwise.
 	 * @access  public
 	 * @since 	1.0.0
 	 */
@@ -140,22 +137,27 @@ abstract class Charitable_Form {
 			return false;
 		}
 
-		if ( ! isset( $field['type'] ) ) {
+		if ( ! isset( $field[ 'type' ] ) ) {
 			return false;
 		}				
 
 		$field[ 'key' ] = $key;
 
-		/**
-		 * Display template, passing the form and field objects as parameters to the view.
-		 */
+		/* Display template, passing the form and field objects as parameters to the view */
 		$template = charitable_template( $this->get_template_name( $field ), false );
+
+		if ( ! $template->template_file_exists() ) {
+			return false;
+		}
+
 		$template->set_view_args( array(
 			'form' 		=> $this, 
 			'field' 	=> $field, 
 			'classes'	=> $this->get_field_classes( $field, $index )
 		) );
 		$template->render();
+
+		return true;
 	}
 
 	/**
@@ -167,17 +169,11 @@ abstract class Charitable_Form {
 	 * @since 	1.0.0
 	 */
 	public function get_template_name( $field ) {
-		if ( 'fieldset' == $field[ 'type' ] ) {
-			$template_name = 'form-fields/fieldset.php';
-		}
-		elseif ( 'editor' == $field[ 'type' ] ) {
-			$template_name = 'form-fields/editor.php';
-		}
-		elseif ( $this->use_default_field_template( $field[ 'type' ] ) ) {
-			$template_name = 'form-fields/default-field.php';
+		if ( $this->use_default_field_template( $field[ 'type' ] ) ) {
+			$template_name = 'form-fields/default.php';
 		}
 		else {
-			$template_name = 'form-fields/' . $field[ 'type' ] . '-field.php';
+			$template_name = 'form-fields/' . $field[ 'type' ] . '.php';
 		}
 
 		return apply_filters( 'charitable_form_field_template_name', $template_name );
@@ -221,26 +217,6 @@ abstract class Charitable_Form {
 		$classes = apply_filters( 'charitable_form_field_classes', $classes, $field, $index );
 
 		return implode( ' ', $classes );
-	}
-
-	/**
-	 * Increment index by two when the field type is an editor.  
-	 *
-	 * @param 	int 		$increment
-	 * @param 	array 		$field
-	 * @return 	int
-	 * @access  public
-	 * @since 	1.0.0
-	 */
-	public function double_increment_index( $increment, $field ) {
-		if ( isset( $field[ 'increment' ] ) ) {
-			$increment = $field[ 'increment' ];
-		}
-		// elseif ( isset( $field[ 'fullwidth' ] ) && $field[ 'fullwidth' ] ) {
-		// 	$increment = 2;
-		// }
-
-		return $increment;
 	}
 
 	/**

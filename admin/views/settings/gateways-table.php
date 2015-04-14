@@ -6,8 +6,8 @@
  * @since 	1.0.0
  */
 
-$helper	= charitable_get_helper( 'gateway' );
-$gateway = charitable_get_option( 'defaultgateway' );
+$helper		= charitable_get_helper( 'gateway' );
+$default 	= charitable_get_option( 'default_gateway' );
 
 if ( count( $helper->get_available_gateways() ) ) : 
 ?>
@@ -25,7 +25,7 @@ if ( count( $helper->get_available_gateways() ) ) :
 				<td><?php echo $gateway::GATEWAY_NAME ?></td>
 				<td><?php echo $gateway::GATEWAY_ID ?></td>
 				<td>
-					<?php if ( $gateway::is_enabled() ) : ?>
+					<?php if ( $helper->is_active_gateway( $gateway::GATEWAY_ID ) ) : ?>
 						<a class="button"><?php _e( 'Disable Gateway', 'charitable' ) ?></a>
 					<?php else : ?>
 						<a class="button"><?php _e( 'Enable Gateway', 'charitable' ) ?></a>

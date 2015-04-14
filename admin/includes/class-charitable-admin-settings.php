@@ -2,10 +2,10 @@
 /**
  * Charitable Settings Pages.
  * 
- * @package 	Charitable/Classes/Charitable_Admin_Settings
+ * @package     Charitable/Classes/Charitable_Admin_Settings
  * @version     1.0.0
- * @author 		Eric Daams
- * @copyright 	Copyright (c) 2014, Studio 164a
+ * @author      Eric Daams
+ * @copyright   Copyright (c) 2014, Studio 164a
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License  
  */
 
@@ -17,366 +17,405 @@ if ( ! class_exists( 'Charitable_Admin_Settings' ) ) :
  * Charitable_Admin_Settings
  *
  * @final
- * @since  	   1.0.0
+ * @since      1.0.0
  */
-final class Charitable_Admin_Settings {
+final class Charitable_Admin_Settings extends Charitable_Start_Object {
 
-	/**
-	 * @var 	Charitable $charitable
-	 * @access 	private
-	 */
-	private $charitable;
+    /**
+     * The page to use when registering sections and fields.
+     *
+     * @var     string 
+     * @access  private
+     */
+    private $admin_menu_parent_page;
 
-	/**
-	 * The page to use when registering sections and fields.
-	 *
-	 * @var 	string 
-	 * @access 	private
-	 */
-	private $admin_menu_parent_page;
+    /**
+     * The capability required to view the admin menu. 
+     *
+     * @var     string
+     * @access  private
+     */
+    private $admin_menu_capability;
 
-	/**
-	 * The capability required to view the admin menu. 
-	 *
-	 * @var 	string
-	 * @access  private
-	 */
-	private $admin_menu_capability;
+    /**
+     * Current field. Used to access field args from the views.      
+     *
+     * @var     array
+     * @access  private
+     */
+    private $current_field; 
 
-	/**
-	 * Current field. Used to access field args from the views. 	 
-	 *
-	 * @var 	array
-	 * @access  private
-	 */
-	private $current_field;	
+    /**
+     * Create object instance. 
+     *
+     * @access  protected
+     * @since   1.0.0
+     */
+    protected function __construct() {
+        $this->admin_menu_capability    = apply_filters( 'charitable_admin_menu_capability', 'manage_options' );
+        $this->admin_menu_parent_page   = 'charitable';
 
-	/**
-	 * Create an object instance. This will only work during the charitable_start event.
-	 * 
-	 * @see charitable_start hook
-	 *
-	 * @param 	Charitable $charitable
-	 * @access 	private
-	 * @since 	1.0.0
-	 */
-	public static function charitable_start(Charitable $charitable) {
-		if ( ! $charitable->is_start() ) {
-			return;
-		}
+        add_action( 'admin_menu', array( $this, 'add_menu' ) );
+        add_action( 'admin_init', array( $this, 'register_settings' ) );      
+        do_action( 'charitable_admin_settings_start', $this );
+    }
 
-		new Charitable_Admin_Settings($charitable);
-	}
+    /**
+     * Add Settings menu item under the Campaign menu tab.
+     * 
+     * @return  void
+     * @access  public
+     * @since   1.0.0
+     */
+    public function add_menu() {
 
-	/**
-	 * Create object instance. 
-	 *
-	 * @param 	Charitable $charitable
-	 * @access 	private
-	 * @since 	1.0.0
-	 */
-	private function __construct( Charitable $charitable ) {
-		$this->charitable = $charitable;
+        add_menu_page( 'Charitable', 'Charitable', $this->admin_menu_capability, $this->admin_menu_parent_page, array( $this, 'render_charitable_settings_page' ) );
 
-		$this->charitable->register_object($this);
+        add_submenu_page( $this->admin_menu_parent_page, __( 'All Campaigns', 'charitable' ), __( 'Campaigns', 'charitable' ), $this->admin_menu_capability, 'edit.php?post_type=campaign' );
+        add_submenu_page( $this->admin_menu_parent_page, __( 'Add Campaign', 'charitable' ), __( 'Add Campaign', 'charitable' ), $this->admin_menu_capability, 'post-new.php?post_type=campaign' );
+        add_submenu_page( $this->admin_menu_parent_page, __( 'Donations', 'charitable' ), __( 'Donations', 'charitable' ), $this->admin_menu_capability, 'edit.php?post_type=donation' );
+        add_submenu_page( $this->admin_menu_parent_page, __( 'Campaign Categories', 'charitable' ), __( 'Categories', 'charitable' ), $this->admin_menu_capability, 'edit-tags.php?taxonomy=campaign_category&post_type=campaign' );
+        add_submenu_page( $this->admin_menu_parent_page, __( 'Campaign Tags', 'charitable' ), __( 'Tags', 'charitable' ), $this->admin_menu_capability, 'edit-tags.php?taxonomy=campaign_tag&post_type=campaign' );
+        add_submenu_page( $this->admin_menu_parent_page, __( 'Settings', 'charitable' ), __( 'Settings', 'charitable' ), $this->admin_menu_capability, 'charitable-settings', array( $this, 'render_charitable_settings_page' ) );
 
-		$this->admin_menu_capability 	= apply_filters( 'charitable_admin_menu_capability', 'manage_options' );
-		$this->admin_menu_parent_page 	= 'charitable';
+        remove_submenu_page( $this->admin_menu_parent_page, $this->admin_menu_parent_page );
+    }
 
-		add_action( 'admin_menu', 							array( $this, 'add_menu' ) );
-		add_action( 'admin_init', 							array( $this, 'register_settings' ) );		
-		do_action( 'charitable_admin_settings_start', 		$this );
-	}
+    /**
+     * Return the array of tabs used on the settings page.  
+     *
+     * @return  string[]
+     * @access  public
+     * @since   1.0.0
+     */
+    public function get_sections() {
+        return apply_filters( 'charitable_settings_tabs', array( 
+            'general'   => __( 'General', 'charitable' ), 
+            'forms'     => __( 'Forms', 'charitable' ),
+            'gateways'  => __( 'Payment Gateways', 'charitable' ), 
+            'emails'    => __( 'Emails', 'charitable' )
+        ) );
+    }
 
-	/**
-	 * Add Settings menu item under the Campaign menu tab.
-	 * 
-	 * @return 	void
-	 * @access 	public
-	 * @since 	1.0.0
-	 */
-	public function add_menu() {
+    /**
+     * Return all the general fields.  
+     *
+     * @return  array[]
+     * @access  private
+     * @since   1.0.0
+     */
+    private function get_general_fields() {
+        return apply_filters( 'charitable_settings_fields_general', array(
+            'section_locale'        => array(
+                'title'             => __( 'Currency & Location', 'charitable' ), 
+                'type'              => 'heading', 
+                'priority'          => 2
+            ),
+            'country'               => array(
+                'title'             => __( 'Base Country', 'charitable' ), 
+                'type'              => 'select', 
+                'priority'          => 4, 
+                'default'           => 'AU', 
+                'options'           => charitable()->get_location_helper()->get_countries()
+            ), 
+            'currency'              => array(
+                'title'             => __( 'Currency', 'charitable' ), 
+                'type'              => 'select', 
+                'priority'          => 10, 
+                'default'           => 'AUD',
+                'options'           => charitable()->get_currency_helper()->get_all_currencies()                        
+            ), 
+            'currency_format'       => array(
+                'title'             => __( 'Currency Format', 'charitable' ), 
+                'type'              => 'select', 
+                'priority'          => 12, 
+                'default'           => 'left',
+                'options'           => array(
+                    'left'              => '$23.00', 
+                    'right'             => '23.00$',
+                    'left-with-space'   => '$ 23.00',
+                    'right-with-space'  => '23.00 $'
+                )
+            ),
+            'decimal_separator'     => array(
+                'title'             => __( 'Decimal Separator', 'charitable' ), 
+                'type'              => 'select', 
+                'priority'          => 14, 
+                'default'           => '.',
+                'options'           => array(
+                    '.' => 'Period (12.50)',
+                    ',' => 'Comma (12,50)'                      
+                )
+            ), 
+            'thousands_separator'   => array(
+                'title'             => __( 'Thousands Separator', 'charitable' ), 
+                'type'              => 'select', 
+                'priority'          => 16, 
+                'default'           => ',',
+                'options'           => array(
+                    ',' => __( 'Comma (10,000)', 'charitable' ), 
+                    '.' => __( 'Period (10.000)', 'charitable' ), 
+                    ''  => __( 'None', 'charitable' )
+                )
+            ),
+            'decimal_count'         => array(
+                'title'             => __( 'Number of Decimals', 'charitable' ), 
+                'type'              => 'number', 
+                'priority'          => 18, 
+                'default'           => 2
+            ),
+            'section_pages'         => array(
+                'title'             => __( 'Pages', 'charitable' ), 
+                'type'              => 'heading', 
+                'priority'          => 20
+            ),
+            'donation_page'         => array(
+                'title'             => __( 'Donation Page', 'charitable' ), 
+                'type'              => 'select', 
+                'priority'          => 22, 
+                'default'           => 'auto',
+                'options'           => array(
+                    'auto'          => __( 'Use Automatic Routing', 'charitable' ), 
+                    'pages'         => array( 
+                        'options'   => $this->get_pages(), 
+                        'label'     => __( 'Choose a Static Page', 'charitable' )
+                    )
+                )
+            ),
+            'section_dangerous'     => array(
+                'title'             => __( 'Dangerous Settings', 'charitable' ), 
+                'type'              => 'heading', 
+                'priority'          => 100
+            ),
+            'delete_data_on_uninstall'  => array(
+                'label_for'         => __( 'Reset Data', 'charitable' ), 
+                'type'              => 'checkbox', 
+                'help'              => __( 'DELETE ALL DATA when uninstalling the plugin.', 'charitable' ), 
+                'priority'          => 105
+            )
+        ) );
+    }
 
-		add_menu_page( 'Charitable', 'Charitable', $this->admin_menu_capability, $this->admin_menu_parent_page, array( $this, 'render_charitable_settings_page' ) );
+    /**
+     * Return all the settings fields related to forms (donation forms, profile forms, etc).
+     *
+     * @return  array[]
+     * @access  private
+     * @since   1.0.0
+     */
+    private function get_form_fields() {
+        return apply_filters( 'charitable_settings_fields_forms', array(
+            'section_donation_form' => array(
+                'title'             => __( 'Donation Form', 'charitable' ),
+                'type'              => 'heading',
+                'priority'          => 2
+            )
+        ) ); 
+    }
 
-		add_submenu_page( $this->admin_menu_parent_page, __( 'All Campaigns', 'charitable' ), __( 'Campaigns', 'charitable' ), $this->admin_menu_capability, 'edit.php?post_type=campaign' );
-		add_submenu_page( $this->admin_menu_parent_page, __( 'Add Campaign', 'charitable' ), __( 'Add Campaign', 'charitable' ), $this->admin_menu_capability, 'post-new.php?post_type=campaign' );
-		add_submenu_page( $this->admin_menu_parent_page, __( 'Donations', 'charitable' ), __( 'Donations', 'charitable' ), $this->admin_menu_capability, 'edit.php?post_type=donation' );
-		add_submenu_page( $this->admin_menu_parent_page, __( 'Campaign Categories', 'charitable' ), __( 'Categories', 'charitable' ), $this->admin_menu_capability, 'edit-tags.php?taxonomy=campaign_category&post_type=campaign' );
-		add_submenu_page( $this->admin_menu_parent_page, __( 'Campaign Tags', 'charitable' ), __( 'Tags', 'charitable' ), $this->admin_menu_capability, 'edit-tags.php?taxonomy=campaign_tag&post_type=campaign' );
-		add_submenu_page( $this->admin_menu_parent_page, __( 'Settings', 'charitable' ), __( 'Settings', 'charitable' ), $this->admin_menu_capability, 'charitable-settings', array( $this, 'render_charitable_settings_page' ) );
+    /**
+     * Returns all the payment gateway settings fields.  
+     *
+     * @return  array[]
+     * @access  private
+     * @since   1.0.0
+     */
+    private function get_gateway_fields() {
+        return apply_filters( 'charitable_settings_fields_gateways', array(
+            'gateways' => array(
+                'label_for'         => __( 'Available Payment Gateways', 'charitable' ),
+                'callback'          => array( $this, 'render_gateways_table' ), 
+                'priority'          => 5
+            )
+        ) );
+    }
 
-		remove_submenu_page( $this->admin_menu_parent_page, $this->admin_menu_parent_page );
-	}
+    /**
+     * Return an array with all the fields & sections to be displayed. 
+     *
+     * @uses    charitable_settings_fields
+     * @see     Charitable_Admin_Settings::register_setting()
+     * @return  array
+     * @access  private
+     * @since   1.0.0
+     */
+    private function get_fields() {
+        return apply_filters( 'charitable_settings_fields', array(
+            'general'   => $this->get_general_fields(),
+            'forms'     => $this->get_form_fields(),
+            'gateways'  => $this->get_gateway_fields()          
+        ) );
+    }
 
-	/**
-	 * Return the array of tabs used on the settings page.  
-	 *
-	 * @return 	array
-	 * @access  public
-	 * @since 	1.0.0
-	 */
-	public function get_sections() {
-		return apply_filters( 'charitable_settings_tabs', array( 
-			'general'	=> __( 'General', 'charitable' ), 
-			'gateways' 	=> __( 'Payment Gateways', 'charitable' ), 
-			'emails'	=> __( 'Emails', 'charitable' )
-		) );
-	}
+    /**
+     * Register setting.
+     *
+     * @return  void
+     * @access  public
+     * @since   1.0.0
+     */
+    public function register_settings() {
+        register_setting( 'charitable_settings', 'charitable_settings', array( $this, 'sanitize_settings' ) );
 
-	/**
-	 * Return an array with all the fields & sections to be displayed. 
-	 *
-	 * @uses 	charitable_settings_fields
-	 * @see 	Charitable_Admin_Settings::register_setting()
-	 *
-	 * @return 	array
-	 * @access 	private
-	 * @since 	1.0.0
-	 */
-	private function get_fields() {
-		$settings = apply_filters( 'charitable_settings_fields', array(
-			'general'					=> array(
-				'section_locale'		=> array(
-					'title'				=> __( 'Currency & Location', 'charitable' ), 
-					'type'				=> 'heading', 
-					'priority'			=> 2
-				),
-				'country'				=> array(
-					'title'				=> __( 'Base Country', 'charitable' ), 
-					'type'				=> 'select', 
-					'priority'			=> 4, 
-					'default'			=> 'AU', 
-					'options'			=> charitable()->get_location_helper()->get_countries()
-				), 
-				'currency'				=> array(
-					'title'				=> __( 'Currency', 'charitable' ), 
-					'type'				=> 'select', 
-					'priority'			=> 10, 
-					'default'			=> 'AUD',
-					'options'			=> charitable()->get_currency_helper()->get_all_currencies()						
-				), 
-				'currency_format'		=> array(
-					'title'				=> __( 'Currency Format', 'charitable' ), 
-					'type'				=> 'select', 
-					'priority'			=> 12, 
-					'default'			=> 'left',
-					'options'			=> array(
-						'left' 				=> '$23.00', 
-						'right' 			=> '23.00$',
-						'left-with-space' 	=> '$ 23.00',
-						'right-with-space' 	=> '23.00 $'
-					)
-				),
-				'decimal_separator'		=> array(
-					'title'				=> __( 'Decimal Separator', 'charitable' ), 
-					'type'				=> 'select', 
-					'priority'			=> 14, 
-					'default'			=> '.',
-					'options'			=> array(
-						'.' => 'Period (12.50)',
-						',' => 'Comma (12,50)'						
-					)
-				), 
-				'thousands_separator'	=> array(
-					'title'				=> __( 'Thousands Separator', 'charitable' ), 
-					'type'				=> 'select', 
-					'priority'			=> 16, 
-					'default'			=> ',',
-					'options'			=> array(
-						',' => 'Comma (10,000)', 
-						'.' => 'Period (10.000)' 
-					)
-				),
-				'decimal_count'			=> array(
-					'title'				=> __( 'Number of Decimals', 'charitable' ), 
-					'type'				=> 'number', 
-					'priority'			=> 18, 
-					'default'			=> 2		
-				),
-				'section_pages'			=> array(
-					'title'				=> __( 'Pages', 'charitable' ), 
-					'type'				=> 'heading', 
-					'priority'			=> 20
-				),
-				'donation_page'			=> array(
-					'title'				=> __( 'Donation Page', 'charitable' ), 
-					'type'				=> 'select', 
-					'priority'			=> 22, 
-					'default'			=> 'auto',
-					'options'			=> array(
-						'auto'			=> __( 'Use Automatic Routing', 'charitable' ), 
-						'pages'			=> array( 
-							'options' 	=> array_reduce( get_pages(), array( $this, 'filter_page' ), array() ), 
-							'label'		=> __( 'Choose a Static Page', 'charitable' )
-						)
-					)
-				),
-				'section_dangerous'		=> array(
-					'title'				=> __( 'Dangerous Settings', 'charitable' ), 
-					'type'				=> 'heading', 
-					'priority'			=> 100
-				),
-				'delete_data_on_uninstall'	=> array(
-					'label_for'			=> __( 'Reset Data', 'charitable' ), 
-					'type'				=> 'checkbox', 
-					'help'				=> __( 'DELETE ALL DATA when uninstalling the plugin.', 'charitable' ), 
-					'priority'			=> 105
-				)
-			),
-			'gateways'					=> array(
-				'gateways'				=> array(
-					'label_for'			=> __( 'Available Payment Gateways', 'charitable' ),
-					'callback'			=> array( $this, 'render_gateways_table' ), 
-					'priority'			=> 5
-				)
-			)
-		) );
+        $fields = $this->get_fields();
 
-		return $settings;
-	}
+        if ( empty( $fields ) ) {
+            return;
+        }
 
-	/**
-	 * Register setting.
-	 *
-	 * @return 	void
-	 * @access 	public
-	 * @since 	1.0.0
-	 */
-	public function register_settings() {
-		register_setting( 'charitable_settings', 'charitable_settings', array( $this, 'sanitize_settings' ) );
+        /* Register each section */
+        foreach ( $this->get_sections() as $section_key => $section ) {
+            $section_id = 'charitable_settings_' . $section_key;
+            
+            add_settings_section(
+                $section_id,
+                __return_null(), 
+                '__return_false', 
+                $section_id
+            );          
 
-		$fields = $this->get_fields();
+            if ( ! isset( $fields[ $section_key ] ) || empty( $fields[ $section_key ] ) ) {
+                continue;
+            }
 
-		if ( empty( $fields ) ) {
-			return;
-		}
+            /* Sort by priority */
+            $section_fields = $fields[ $section_key ];
+            uasort( $section_fields, 'charitable_priority_sort' );
 
-		/**
-		 * Register each section.
-		 */
-		foreach ( $this->get_sections() as $section_key => $section ) {
-			$section_id = 'charitable_settings_' . $section_key;
-			
-			add_settings_section(
-				$section_id,
-				__return_null(), 
-				'__return_false', 
-				$section_id
-			);			
+            /* Add the individual fields within the section */
+            foreach ( $section_fields as $key => $field ) {             
 
-			if ( ! isset( $fields[ $section_key ] ) || empty( $fields[ $section_key ] ) ) {
-				continue;
-			}
+                $callback       = isset( $field[ 'callback' ] ) ? $field[ 'callback' ] : array( $this, 'render_field' );
+                $field[ 'key' ] = $key;
+                $label          = $this->get_field_label( $field, $key );                        
 
-			/**
-			 * Sort by priority
-			 */
-			$section_fields = $fields[ $section_key ];
-			uasort( $section_fields, 'charitable_priority_sort' );
+                add_settings_field( 
+                    'charitable_settings['. $key .']', 
+                    $label, 
+                    $callback, 
+                    $section_id, 
+                    $section_id, 
+                    $field 
+                ); 
+            }
+        }
+    }   
 
-			/**
-			 * Add the individual fields within the section.
-			 */
-			foreach ( $section_fields as $key => $field ) {				
+    /**
+     * Return the label for the given field. 
+     *
+     * @return  string
+     * @access  private
+     * @since   1.0.0
+     */
+    private function get_field_label( $field, $key ) {
+        if ( isset( $field[ 'label_for' ] ) ) {
+            $label = $field[ 'label_for' ];
+        }
+        elseif ( isset( $field[ 'title' ] ) ) {
+            $label = $field[ 'title' ];
+        }
+        else {
+            $label = ucfirst( $key );
+        }  
 
-				$callback 		= isset( $field[ 'callback' ] ) ? $field[ 'callback' ] : array( $this, 'render_field' );
-				$field[ 'key' ] = $key;
+        return $label;
+    }
 
-				if ( isset( $field[ 'label_for' ] ) ) {
-					$label = $field[ 'label_for' ];
-				}
-				elseif ( isset( $field[ 'title' ] ) ) {
-					$label = $field[ 'title' ];
-				}
-				else {
-					$label = ucfirst( $key );
-				}			
+    /**
+     * Sanitize submitted settings before saving to the database. 
+     *
+     * @param   array   $values
+     * @return  string
+     * @access  public
+     * @since   1.0.0
+     */
+    public function sanitize_settings( $values ) {
 
-				add_settings_field( 
-					'charitable_settings['. $key .']', 
-					$label, 
-					$callback, 
-					$section_id, 
-					$section_id, 
-					$field 
-				); 
-			}
-		}
-	}	
+        foreach ( $this->get_fields() as $section ) {
 
-	/**
-	 * Sanitize submitted settings before saving to the database. 
-	 *
-	 * @param 	array 	$values
-	 * @return 	string
-	 * @access  public
-	 * @since 	1.0.0
-	 */
-	public function sanitize_settings( $values ) {
-		foreach ( $this->get_fields() as $section ) {
-			foreach ( $section as $key => $field ) {
-				/**
-				 * Checkboxes are either 1 or 0
-				 */
-				if ( 'checkbox' == $field[ 'type' ] ) {
-					$values[$key] = intval( isset( $values[ $key ] ) && 'on' == $values[ $key ] );
-				}
-			}
-		}
+            foreach ( $section as $key => $field ) {
+                
+                /* Checkboxes are either 1 or 0 */
+                if ( 'checkbox' == $field[ 'type' ] ) {
+                    $values[$key] = intval( isset( $values[ $key ] ) && 'on' == $values[ $key ] );
+                }
 
-		return $values;
-	}
+            }
+            
+        }
 
-	/**
-	 * Display the Charitable settings page. 
-	 *
-	 * @return 	void
-	 * @access  public
-	 * @since 	1.0.0
-	 */
-	public function render_charitable_settings_page() {
-		charitable_admin_view( 'settings/settings' );
-	}
+        return $values;
+    }
 
-	/**
-	 * Render field. This is the default callback used for all fields, unless an alternative callback has been specified. 
-	 *
-	 * @param 	array 		$args
-	 * @return 	void
-	 * @access 	public
-	 * @since 	1.0.0
-	 */
-	public function render_field( $args ) {		
-		$field_type = isset( $args[ 'type' ] ) ? $args[ 'type' ] : 'text';
+    /**
+     * Display the Charitable settings page. 
+     *
+     * @return  void
+     * @access  public
+     * @since   1.0.0
+     */
+    public function render_charitable_settings_page() {
+        charitable_admin_view( 'settings/settings' );
+    }
 
-		charitable_admin_view( 'settings/' . $field_type . '-field', $args );
-	}
+    /**
+     * Render field. This is the default callback used for all fields, unless an alternative callback has been specified. 
+     *
+     * @param   array       $args
+     * @return  void
+     * @access  public
+     * @since   1.0.0
+     */
+    public function render_field( $args ) {     
+        $field_type = isset( $args[ 'type' ] ) ? $args[ 'type' ] : 'text';
 
-	/**
-	 * Display table with available payment gateways.  
-	 *
-	 * @return 	void
-	 * @access  public
-	 * @since 	1.0.0
-	 */
-	public function render_gateways_table( $args ) {
-		charitable_admin_view( 'settings/gateways-table', $args );
-	}
+        charitable_admin_view( 'settings/' . $field_type . '-field', $args );
+    }
 
-	/**
-	 * Used by array_reduce to return an associative array with the page ID for the key and title for the value.
-	 *
-	 * @param 	string[]		$result
-	 * @param 	WP_Post 		$page
-	 * @return 	string[] 		$result
-	 * @access  public
-	 * @since 	1.0.0
-	 */
-	public function filter_page( $result, $page ) {
-		$result[ $page->ID ] = $page->post_title;
-		return $result;
-	}
+    /**
+     * Display table with available payment gateways.  
+     *
+     * @return  void
+     * @access  public
+     * @since   1.0.0
+     */
+    public function render_gateways_table( $args ) {
+        charitable_admin_view( 'settings/gateways-table', $args );
+    }
+
+    /**
+     * Used by array_reduce to return an associative array with the page ID for the key and title for the value.
+     *
+     * @param   string[]        $result
+     * @param   WP_Post         $page
+     * @return  string[]        $result
+     * @access  public
+     * @since   1.0.0
+     */
+    public function filter_page( $result, $page ) {
+        $result[ $page->ID ] = $page->post_title;
+        return $result;
+    }
+
+    /**
+     * Returns an array of all pages in the id=>title format. 
+     *
+     * @return  string[]
+     * @access  public
+     * @since   1.0.0
+     */
+    public function get_pages() {
+        $pages = wp_cache_get( 'filtered_static_pages', 'charitable' );
+
+        if ( false === $pages ) {
+            $pages = array_reduce( get_pages(), array( $this, 'filter_page' ), array() );
+
+            wp_cache_set( 'filtered_static_pages', $pages, 'charitable' );
+        }
+
+        return $pages;
+    }   
 }
 
 endif; // End class_exists check

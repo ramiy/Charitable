@@ -73,7 +73,15 @@ function charitable_template_part( $slug, $name = "" ) {
  * @since 	1.0.0
  */
 function charitable_get_helper( $class_key ) {
-	$class_name = 'Charitable_' . ucfirst( $class_key );
+	if ( false !== strpos( $class_key, '_' ) ) {
+		$class_words = str_replace( '_', ' ', $class_key );
+	}
+	else {
+		$class_words = $class_key;
+	}
+
+	$class_words = ucwords( $class_words );
+	$class_name = 'Charitable_' . str_replace( ' ', '_', $class_words );
 	
 	if ( ! class_exists( $class_name ) ) {
 		return false;
