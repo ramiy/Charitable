@@ -22,40 +22,34 @@ if ( ! class_exists( 'Charitable_Addons' ) ) :
 class Charitable_Addons {
 
 	/**
-	 * @var 	Charitable 		$charitable
-	 * @access 	private
-	 */
-	private $charitable;
-
-	/**
-	 * Create class instane. 
+	 * Load addons. This is executed before the charitable_start hook 
+	 * to allow addons to hook into that.
 	 *
 	 * @param 	Charitable 		$charitable
 	 * @return 	void
-	 * @access  public
+	 * @access 	public
 	 * @static
 	 * @since 	1.0.0
 	 */
-	public static function charitable_start( Charitable $charitable ) {
-		if ( ! $charitable->is_start() ) {
+	public static function load( Charitable $charitable ) {
+		if ( $charitable->started() ) {
 			return;
 		}
 
-		new Charitable_Addons( $charitable );
+		new Charitable_Addons();				
 	}
 
 	/**
 	 * Create class object.
 	 * 
-	 * @param 	Charitable 		$charitable
 	 * @access 	private
 	 * @since	1.0.0
 	 */
-	private function __construct( Charitable $charitable ) {
-		$this->charitable = $charitable;	
+	private function __construct() {		
+		add_action( 'charitable_activate_addon', 	array( $this, 'activate_addon' ) );
+		add_action( 'plugins_loaded',				array( $this, 'load_addons' ), 500 );
 
-		add_action('charitable_activate_addon', array( $this, 'activate_addon' ) );
-		add_action('plugins_loaded',			array( $this, 'load_addons' ), 100 );
+		do_action( 'charitable_addons_start', $this );
 	}
 
 	/**
@@ -125,7 +119,7 @@ class Charitable_Addons {
 	 * @since 	1.0.0
 	 */
 	private function load_addon_dependencies() {
-		require_once( $this->charitable->get_path( 'includes' ) . 'addons/interface-charitable-addon.php' );
+		require_once( charitable()->get_path( 'includes' ) . 'addons/interface-charitable-addon.php' );
 	}
 
 	/**
@@ -137,7 +131,7 @@ class Charitable_Addons {
 	 * @since 	1.0.0
 	 */
 	private function get_addon_filepath( $addon ) {
-		return $this->charitable->get_path( 'includes' ) . "addons/{$addon}/class-{$addon}.php";
+		return charitable()->get_path( 'includes' ) . "addons/{$addon}/class-{$addon}.php";
 	}
 
 	/**

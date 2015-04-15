@@ -12,28 +12,22 @@ module.exports = function(grunt) {
  
         // watch for changes and trigger compass, jshint, uglify and livereload
         watch: {                        
-            sass_admin: {
-                files: [ 'admin/assets/css/scss/*.{scss,sass}' ],
-                tasks: ['sass:dist_admin']
-            },
-            sass_public: {
-                files: [ 'public/assets/css/scss/*.{scss,sass}' ],
-                tasks: ['sass:dist_public']
+            sass: {
+                files: [ 'assets/css/scss/*.{scss,sass}' ],
+                tasks: ['sass:dist']
             },
             sync: {
                 files: [
                     'admin/', 
                     'admin/**', 
-                    '!admin/assets/css/scss', 
-                    '!admin/assets/css/scss/**',
+                    'assets/',
+                    'assets/**',                    
                     'includes', 
                     'includes/**', 
                     'i18n', 
                     'i18n/**', 
-                    'public', 
-                    'public/**', 
-                    '!public/assets/css/scss', 
-                    '!public/assets/css/scss/**', 
+                    'templates', 
+                    'templates/**', 
                     'charitable.php'
                 ],
                 tasks: ['sync:dist']
@@ -42,15 +36,11 @@ module.exports = function(grunt) {
 
         // Sass
         sass: {
-            dist_admin: {
+            dist: {
                 files: {
-                    'admin/assets/css/charitable-admin-menu.css' : 'admin/assets/css/scss/charitable-admin-menu.scss', 
-                    'admin/assets/css/charitable-admin.css' : 'admin/assets/css/scss/charitable-admin.scss'
-                }
-            }, 
-            dist_public: {
-                files: {
-                    'public/assets/css/charitable.css' : 'public/assets/css/scss/charitable.scss'
+                    'assets/css/charitable-admin-menu.css'  : 'assets/css/scss/charitable-admin-menu.scss', 
+                    'assets/css/charitable-admin.css'       : 'assets/css/scss/charitable-admin.scss',
+                    'assets/css/charitable.css'             : 'assets/css/scss/charitable.scss'
                 }
             }
         },
@@ -61,20 +51,18 @@ module.exports = function(grunt) {
                 files: [
                     // includes files within path
                     {
-                        src: [  
+                        src: [ 
                             'admin/', 
                             'admin/**', 
-                            '!admin/assets/scss', 
-                            '!admin/assets/scss/**',
+                            'assets/',
+                            'assets/**',                    
                             'includes', 
                             'includes/**', 
                             'i18n', 
                             'i18n/**', 
-                            'public', 
-                            'public/**', 
-                            '!public/assets/compass', 
-                            '!public/assets/compass/**', 
-                            'charitable.php'                                
+                            'templates', 
+                            'templates/**', 
+                            'charitable.php'                         
                         ], 
                         dest: '../../plugins/charitable'
                     }
@@ -99,7 +87,7 @@ module.exports = function(grunt) {
         uglify: {
             dist: {
                 files: {
-                    'admin/assets/js/charitable-admin.min.js': 'admin/assets/js/charitable-admin.js'
+                    'assets/js/charitable-admin.min.js' : 'assets/js/charitable-admin.js'
                 }
             }
         },
@@ -108,9 +96,7 @@ module.exports = function(grunt) {
         cssmin: {
             minify: {
                 files: {
-                    'public/assets/css/charitable.min.css' : [ 
-                        'public/assets/css/charitable.css'
-                    ]
+                    'assets/css/charitable.min.css' : 'assets/css/charitable.css'
                 }
             }
         },        

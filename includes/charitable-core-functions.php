@@ -41,31 +41,6 @@ function charitable_get_option( $key, $default = false ) {
 }
 
 /**
- * Displays a template. 
- *
- * @param 	string|array 	$template_name 		A single template name or an ordered array of template
- * @param 	bool 		 	$load 				If true the template file will be loaded if it is found.
- * @param 	bool 			$require_once 		Whether to require_once or require. Default true. Has no effect if $load is false. 
- * @return 	Charitable_Template
- * @since 	1.0.0
- */
-function charitable_template( $template_name, $load = true, $require_once = true ) {
-	return new Charitable_Template( $template_name, $load, $require_once ); 
-}
-
-/**
- * Displays a template. 
- *
- * @param 	string 	$slug
- * @param 	string 	$name 		Optional name.
- * @return 	Charitable_Template_Part
- * @since 	1.0.0
- */
-function charitable_template_part( $slug, $name = "" ) {
-	return new Charitable_Template_Part( $slug, $name );
-}
-
-/**
  * Returns a helper class. 
  *
  * @param 	string $class_key

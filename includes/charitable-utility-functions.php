@@ -43,3 +43,16 @@ function charitable_is_func_disabled( $function ) {
 
 	return in_array( $function, $disabled );
 }
+
+/**
+ * Returns the current URL. 
+ *
+ * @see 	https://kovshenin.com/2012/current-url-in-wordpress/
+ * @global 	WP 		$wp
+ * @return  string
+ * @since   1.0.0
+ */
+function charitable_get_current_url() {
+	global $wp;
+    return add_query_arg( $wp->query_string, '', home_url( $wp->request ) );
+}

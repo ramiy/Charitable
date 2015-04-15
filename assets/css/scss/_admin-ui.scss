@@ -415,15 +415,30 @@
 .charitable-help {
     display: block;
     font-size: 13px;
+    line-height: 21px;
     font-style: italic;
     margin-top: 4px;
 } 
 
-#charitable-settings {
+.charitable_page_charitable-settings {
 
 	.form-table {
-		th label {
-			font-size: 13px;
-		}
+
+		th {	
+			@include bp( 48em ) {
+				min-width: 200px;
+			}			
+
+			label {
+				font-size: 13px;
+			}	
+		}	
+
+		td {
+			select {
+				max-width: 400px;
+			}
+		}	
 	}
 }
+

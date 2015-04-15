@@ -66,7 +66,7 @@ class Charitable_Template {
 	public function __construct( $template_name, $load = true, $require_once = true ) {
 		$this->load 					= $load;
 		$this->theme_template_path 		= trailingslashit( apply_filters( 'charitable_theme_template_path', 'charitable' ) );
-		$this->base_template_path 		= charitable()->get_path( 'public' ) . 'templates/';
+		$this->base_template_path 		= charitable()->get_path( 'templates' );
 		$this->template_names 			= (array) $template_name;
 		$this->view_args 				= array();
 		$this->theme_template_options 	= $this->get_theme_template_options();

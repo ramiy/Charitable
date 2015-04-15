@@ -35,6 +35,7 @@ class Test_Charitable extends WP_UnitTestCase {
 		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'class-charitable-notices.php' );
 		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'charitable-core-functions.php' );
 		$this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'charitable-utility-functions.php' );
+		$this->assertFileExists( $this->chartiable->get_path( 'includes' ) . 'charitable-template-functions.php' );
 	}
 
 	function test_attach_hooks_and_filters() {
@@ -63,8 +64,10 @@ class Test_Charitable extends WP_UnitTestCase {
 		$this->assertEquals( $this->directory_path, 					$this->charitable->get_path( 'directory' ) );
 		$this->assertEquals( $this->directory_url, 						$this->charitable->get_path( 'directory', false ) );
 		$this->assertEquals( $this->directory_path . 'includes/', 		$this->charitable->get_path( 'includes' ) );
-		$this->assertEquals( $this->directory_path . 'admin/', 			$this->charitable->get_path( 'admin' ) );
-		$this->assertEquals( $this->directory_path . 'public/', 		$this->charitable->get_path( 'public' ) );		
+		$this->assertEquals( $this->directory_path . 'includes/admin/', $this->charitable->get_path( 'admin' ) );
+		$this->assertEquals( $this->directory_path . 'includes/public/',$this->charitable->get_path( 'public' ) );		
+		$this->assertEquals( $this->directory_path . 'assets/',			$this->charitable->get_path( 'assets' ) );
+		$this->assertEquals( $this->directory_path . 'templates/',		$this->charitable->get_path( 'templates' ) );
 	}
 
 	function test_get_location_helper() {

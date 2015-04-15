@@ -148,10 +148,9 @@ class Charitable {
 
         $this->maybe_start_admin();      
 
-        $this->maybe_start_public();
+        $this->maybe_start_public();   		
 
-		// Hook in here to do something when the plugin is first loaded.
-		do_action('charitable_start', $this);
+        Charitable_Addons::load( $this );
 	}
 
 	/**
@@ -185,7 +184,6 @@ class Charitable {
 		require_once( $this->includes_path . 'class-charitable-donations.php' );
 		require_once( $this->includes_path . 'class-charitable-user.php' );
 		require_once( $this->includes_path . 'class-charitable-donor.php' );		
-		require_once( $this->includes_path . 'class-charitable-session-donation.php' );
 
 		require_once( $this->includes_path . 'db/abstract-class-charitable-db.php' );
 		require_once( $this->includes_path . 'db/class-charitable-campaign-donations-db.php' );
@@ -199,6 +197,7 @@ class Charitable {
 		/* Functions */
 		require_once( $this->includes_path . 'charitable-core-functions.php' );
 		require_once( $this->includes_path . 'charitable-utility-functions.php' );
+		require_once( $this->includes_path . 'charitable-template-functions.php' );
 	}
 
 	/**
@@ -212,11 +211,12 @@ class Charitable {
 		register_activation_hook( 	__FILE__, array( $this, 'activate') );
 		register_deactivation_hook( __FILE__, array( $this, 'deactivate') );
 
+		add_action('plugins_loaded', 	array( $this, 'charitable_start' ), 100 );
+
 		add_action('charitable_start',	array( 'Charitable_Donation_Actions', 'charitable_start' ), 3 );
 		add_action('charitable_start',	array( 'Charitable_Post_Types', 'charitable_start' ), 3 );		
 		add_action('charitable_start',	array( 'Charitable_Widgets', 'charitable_start' ), 3 );
 		add_action('charitable_start',	array( 'Charitable_Gateway', 'charitable_start' ), 3 ); 
-		add_action('charitable_start', 	array( 'Charitable_Addons', 'charitable_start' ), 3 );		
 		add_action('charitable_start', 	array( 'Charitable_Request', 'charitable_start' ), 3 );
 		add_action('init', 				array( $this, 'do_charitable_actions' ) );
 
@@ -256,6 +256,19 @@ class Charitable {
 		require_once( $this->get_path( 'public' ) . 'class-charitable-public.php' );
 
 		add_action('charitable_start', array( 'Charitable_Public', 'charitable_start' ), 3 );
+	}
+
+	/**
+	 * This method is fired after all plugins are loaded and simply fires the charitable_start hook.
+	 *
+	 * Extensions can use the charitable_start event to load their own functionality.
+	 *
+	 * @return  void
+	 * @access  public
+	 * @since   1.0.0
+	 */
+	public function charitable_start() {		
+		do_action( 'charitable_start', $this );		
 	}
 
 	/**
@@ -349,11 +362,19 @@ class Charitable {
 				break;
 
 			case 'admin' :
-				$path = $base . 'admin/';
+				$path = $base . 'includes/admin/';
 				break;
 
 			case 'public' : 
-				$path = $base . 'public/';
+				$path = $base . 'includes/public/';
+				break;
+
+			case 'assets' : 
+				$path = $base . 'assets/';
+				break;
+
+			case 'templates' : 
+				$path = $base . 'templates/';
 				break;
 
 			case 'directory' : 

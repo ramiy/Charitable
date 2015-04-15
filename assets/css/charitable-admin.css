@@ -364,10 +364,16 @@
 .charitable-help {
   display: block;
   font-size: 13px;
+  line-height: 21px;
   font-style: italic;
   margin-top: 4px; }
 
-#charitable-settings .form-table th label {
+@media (min-width: 48em) {
+  .charitable_page_charitable-settings .form-table th {
+    min-width: 200px; } }
+.charitable_page_charitable-settings .form-table th label {
   font-size: 13px; }
+.charitable_page_charitable-settings .form-table td select {
+  max-width: 400px; }
 
 /*# sourceMappingURL=charitable-admin.css.map */

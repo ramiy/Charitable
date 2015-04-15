@@ -53,7 +53,9 @@ class Charitable_User_Dashboard implements Charitable_Addon_Interface {
      */
     private function load_dependencies() {
         require_once( 'charitable-user-dashboard-functions.php' );
+        require_once( 'charitable-user-dashboard-template-functions.php' );
         require_once( 'class-charitable-profile-form.php' );        
+        require_once( 'class-charitable-user-dashboard-shortcodes.php' );
     }
 
     /**
@@ -63,15 +65,18 @@ class Charitable_User_Dashboard implements Charitable_Addon_Interface {
      * @access  private
      * @since   1.0.0
      */
-    private function attach_hooks_and_filters() {
-        add_action( 'charitable_update_profile',array( 'Charitable_Profile_Form', 'update_profile' ) );     
-        add_action( 'after_setup_theme',        array( $this, 'register_menu' ) );
-        add_action( 'template_include',         array( $this, 'load_user_dashboard_template' ) );
-        add_action( 'wp_update_nav_menu',       array( $this, 'flush_menu_object_cache' ) );
-        add_action( 'wp_update_nav_menu_item',  array( $this, 'flush_menu_object_cache' ) );
-        add_filter( 'body_class',               array( $this, 'add_body_class' ) );
-        add_filter( 'charitable_settings_fields_general', array( $this, 'add_page_settings' ) );
-        add_shortcode( 'charitable_profile',    array( $this, 'charitable_profile_shortcode' ) );
+    private function attach_hooks_and_filters() {        
+        add_action( 'charitable_user_dashboard_start',  array( 'Charitable_User_Dashboard_Shortcodes', 'start' ), 5 );
+        add_action( 'charitable_update_profile',        array( 'Charitable_Profile_Form', 'update_profile' ) );     
+        add_action( 'after_setup_theme',                array( $this, 'register_menu' ) );
+        add_action( 'template_include',                 array( $this, 'load_user_dashboard_template' ) );
+        add_action( 'wp_update_nav_menu',               array( $this, 'flush_menu_object_cache' ) );
+        add_action( 'wp_update_nav_menu_item',          array( $this, 'flush_menu_object_cache' ) );
+        
+        add_filter( 'body_class',                       array( $this, 'add_body_class' ) );
+        add_filter( 'charitable_settings_fields_general', array( $this, 'add_page_settings' ) );     
+
+        do_action( 'charitable_user_dashboard_start', $this );   
     }
 
     /**
@@ -198,7 +203,7 @@ class Charitable_User_Dashboard implements Charitable_Addon_Interface {
         $ret = wp_cache_get( 'charitable_in_user_dashboard', '', false, $found );       
 
         if ( false === $found ) {           
-            $current_url    = trailingslashit( add_query_arg( $wp->query_string, '', home_url( $wp->request ) ) );
+            $current_url    = trailingslashit( charitable_get_current_url() );
             $ret            = in_array( get_queried_object_id(), $this->nav_objects() ) || in_array( $current_url, $this->nav_objects() );
             $ret            = apply_filters( 'charitable_is_current_in_nav', $ret, $this->nav_objects() );
 
@@ -279,7 +284,7 @@ class Charitable_User_Dashboard implements Charitable_Addon_Interface {
                 'type'      => 'select', 
                 'priority'  => 24, 
                 'options'   => charitable_get_helper( 'admin_settings' )->get_pages(), 
-                'help'      => __( 'The static page should contain the <code>[charitable_login]</code> shortcode.', 'charitable' )
+                'help'      => __( 'The static page should contain the <code>[charitable_profile]</code> shortcode.', 'charitable' )
             ), 
             'login_page'    => array(
                 'title'     => __( 'Login Page', 'charitable' ), 
@@ -296,7 +301,7 @@ class Charitable_User_Dashboard implements Charitable_Addon_Interface {
                 'help'      => __( 'Allow users to login via the normal WordPress login page or via a static page. The static page should contain the <code>[charitable_login]</code> shortcode.', 'charitable' )
 
             ), 
-            'register_page' => array(
+            'registration_page' => array(
                 'title'     => __( 'Registration Page', 'charitable' ), 
                 'type'      => 'select', 
                 'priority'  => 26, 
@@ -318,36 +323,6 @@ class Charitable_User_Dashboard implements Charitable_Addon_Interface {
     }
 
     /**
-     * The shortcode's callback method. 
-     *
-     * This receives the user-defined attributes and passes the logic off to the class. 
-     *
-     * @param   array       $atts       User-defined shortcode attributes.
-     * @return  void
-     * @access  public
-     * @static
-     * @since   1.0.0
-     */
-    public function charitable_profile_shortcode( $atts ) {     
-
-        if ( ! is_user_logged_in() ) {
-            return wp_login_form( apply_filters( 'charitable_profile_shortcode_login_args', array() ) );
-        }
-
-        $args = shortcode_atts( array(), $atts, 'charitable_profile' );     
-
-        ob_start();
-
-        $template = charitable_template( 'shortcodes/profile.php', false );
-        $template->set_view_args( array( 
-            'form' => new Charitable_Profile_Form( $args ) 
-        ) );
-        $template->render();
-
-        return apply_filters( 'charitable_profile_shortcode', ob_get_clean() );
-    }
-
-    /**
      * Activate the addon. 
      *
      * @return  void
@@ -355,8 +330,7 @@ class Charitable_User_Dashboard implements Charitable_Addon_Interface {
      * @static
      * @since   1.0.0
      */
-    public static function activate() {     
-        
+    public static function activate() {         
         /* This method should only be called on the charitable_activate_addon hook */
         if ( 'charitable_activate_addon' !== current_filter() ) {
             return false;

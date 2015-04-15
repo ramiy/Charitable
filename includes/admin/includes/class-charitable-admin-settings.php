@@ -57,6 +57,9 @@ final class Charitable_Admin_Settings extends Charitable_Start_Object {
 
         add_action( 'admin_menu', array( $this, 'add_menu' ) );
         add_action( 'admin_init', array( $this, 'register_settings' ) );      
+
+        add_filter( 'charitable_sanitize_value', array( $this, 'sanitize_checkbox_value' ), 10, 2 );
+
         do_action( 'charitable_admin_settings_start', $this );
     }
 
@@ -240,7 +243,12 @@ final class Charitable_Admin_Settings extends Charitable_Start_Object {
      * @since   1.0.0
      */
     private function get_fields() {
-        return apply_filters( 'charitable_settings_fields', array(
+        /** 
+         * Use the charitable_settings_tab_fields to include the fields for new tabs. 
+         * DO NOT use it to add individual fields. That should be done with the
+         * filters within each of the methods. 
+         */
+        return apply_filters( 'charitable_settings_tab_fields', array(
             'general'   => $this->get_general_fields(),
             'forms'     => $this->get_form_fields(),
             'gateways'  => $this->get_gateway_fields()          
@@ -332,20 +340,56 @@ final class Charitable_Admin_Settings extends Charitable_Start_Object {
      */
     public function sanitize_settings( $values ) {
 
-        foreach ( $this->get_fields() as $section ) {
+        $old_values = get_option( 'charitable_settings' );
+        $new_values = array();
+        $fields     = array_merge( $this->get_general_fields(), $this->get_form_fields(), $this->get_gateway_fields() );
 
-            foreach ( $section as $key => $field ) {
-                
-                /* Checkboxes are either 1 or 0 */
-                if ( 'checkbox' == $field[ 'type' ] ) {
-                    $values[$key] = intval( isset( $values[ $key ] ) && 'on' == $values[ $key ] );
-                }
+        foreach ( $fields as $key => $field ) {
+
+            $value = null;
+
+            /* No need to save headings :) */
+            if ( isset( $field[ 'type' ] ) && 'heading' == $field[ 'type' ] ) {
+                continue;
+            }
+
+            /* Checkbox fields need to be set to 0 when they're not in the submitted array */
+            if ( isset( $field[ 'type' ] ) && 'checkbox' == $field[ 'type' ] ) {
+
+                $value = isset( $values[ $key ] );
+                $new_values[ $key ] = apply_filters( 'charitable_sanitize_value', $value, $field, $values, $key );
 
             }
-            
+            elseif ( isset( $values[ $key ] ) ) {
+
+                $value = $values[ $key ];
+                $new_values[ $key ] = apply_filters( 'charitable_sanitize_value', $value, $field, $values, $key );
+
+            } 
+
         }
 
-        return $values;
+        $values = wp_parse_args( $new_values, $old_values );
+
+        return apply_filters( 'charitable_save_settings', $values, $new_values, $old_values );
+    }
+
+    /**
+     * Checkbox settings should always be either 1 or 0. 
+     *
+     * @param   mixed       $value     
+     * @param   array       $field
+     * @return  boolean
+     * @access  public
+     * @since   1.0.0
+     */
+    public function sanitize_checkbox_value( $value, $field ) {
+        
+        if ( isset( $field[ 'type' ] ) && 'checkbox' == $field[ 'type' ] ) {
+            $value = intval( $value && 'on' == $value );            
+        }
+
+        return $value;
     }
 
     /**
