@@ -193,15 +193,11 @@ abstract class Charitable_Form {
 			return;
 		}
 
-		$classes = array();		
+		$classes = $this->get_field_type_classes( $field[ 'type' ] );
 
-		if ( 'fieldset' == $field[ 'type' ] ) {
-			$classes[] = 'charitable-fieldset';
-		}
-		else {
-			$classes[] = 'charitable-form-field';
-			$classes[] = 'charitable-form-field-' . $field[ 'type' ];
-		}
+		if ( isset( $field[ 'class' ] ) ) {
+			$classes[] = $field[ 'class' ];
+		}		
 
 		if ( isset( $field[ 'required' ] ) && $field[ 'required' ] ) {
 			$classes[] = 'required-field';
@@ -217,6 +213,35 @@ abstract class Charitable_Form {
 		$classes = apply_filters( 'charitable_form_field_classes', $classes, $field, $index );
 
 		return implode( ' ', $classes );
+	}
+
+	/**
+	 * Return array of classes based on the field type.  
+	 *
+	 * @param 	string
+	 * @return  string[]
+	 * @access  public
+	 * @since   1.0.0
+	 */
+	public function get_field_type_classes( $type ) {
+		$classes = array();
+
+		switch ( $type ) {
+
+			case 'paragraph' : 
+				$classes[] = 'charitable-form-content';
+				break;
+
+			case 'fieldset' : 
+				$classes[] = 'charitable-fieldset';
+				break;
+
+			default : 
+				$classes[] = 'charitable-form-field';
+				$classes[] = 'charitable-form-field-' . $type;
+		}
+
+		return $classes;
 	}
 
 	/**
@@ -276,7 +301,7 @@ abstract class Charitable_Form {
 		
 		$ret = true;
 
-		foreach ( $form->get_required_fields( $fields ) as $key => $field ) {
+		foreach ( $this->get_required_fields( $fields ) as $key => $field ) {
 
 			if ( ! isset( $_POST[ $key ] ) || empty( $_POST[ $key ] ) ) {
 				

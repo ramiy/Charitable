@@ -54,5 +54,5 @@ function charitable_is_func_disabled( $function ) {
  */
 function charitable_get_current_url() {
 	global $wp;
-    return add_query_arg( $wp->query_string, '', home_url( $wp->request ) );
+    return esc_url_raw( add_query_arg( $wp->query_string, '', home_url( $wp->request ) ) );
 }

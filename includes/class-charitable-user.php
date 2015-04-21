@@ -167,25 +167,64 @@ class Charitable_User extends WP_User {
 	}
 
 	/**
-	 * Returns the user's avatar. 
+	 * Returns the user's avatar as a fully formatted <img> tag.
 	 *
 	 * By default, this will return the gravatar, but it can 
 	 * be extended to add support for locally hosted avatars.
 	 *
-	 * @return 	string
+	 * @param 	int 		$size
+	 * @return 	string 	
 	 * @access 	public
 	 * @since 	1.0.0
 	 */
 	public function get_avatar( $size = 100 ) {
 
+		/** If you use this filter, be sure to return just the source of the image, 
+			not the fully formatted <img> tag. */
 		$avatar = apply_filters( 'charitable_user_avatar', false, $this );
 
-		if ( false === $avatar ) {
+		if ( $avatar ) {
+
+			$avatar = apply_filters( 'charitable_user_avatar_custom', sprintf( '<img src="%s" alt="%s" class="avatar photo" width="%s" height="%s" />', 
+				$avatar, 
+				esc_attr( $this->display_name ), 
+				$size,
+				$size
+			), $avatar, $size, $this );
+
+		}
+		else {
 
 			$avatar = get_avatar( $this->ID, $size );
 
 		}
-			
+
+		return $avatar;
+	}
+
+	/**
+	 * Return the src of the avatar.  
+	 *
+	 * @param 	int 		$size
+	 * @return  string
+	 * @access  public
+	 * @since   1.0.0
+	 */
+	public function get_avatar_src( $size = 100 ) {
+		
+		/* If this returns something, we don't need to deal with the gravatar. */
+		$avatar = apply_filters( 'charitable_user_avatar', false, $this );
+
+		if ( false === $avatar ) {
+
+			/* The gravatars are returned as fully formatted img tags, so we need to pull out the src. */
+			$gravatar 	= get_avatar( $this->ID, $size );
+
+			preg_match( "@src='([^']+)'@" , $gravatar, $matches );
+
+			$avatar 	= array_pop( $matches );
+		}
+
 		return $avatar;
 	}
 
@@ -400,9 +439,7 @@ class Charitable_User extends WP_User {
 	 */
 	public function save_user_meta( $submitted, $keys ) {
 		
-		/** 
-		 * Exclude the core keys. 
-		 */		
+		/* Exclude the core keys */		
 		$mapped_keys 	= $this->get_mapped_keys();
 		$meta_fields 	= array_diff( $keys, $this->get_core_keys() );
 		$updated 		= 0;

@@ -99,7 +99,7 @@ function charitable_get_campaign_donation_page_permalink( $url, $args = array() 
 		$url = trailingslashit( get_permalink( $campaign_id ) ) . '/donate/';
 	}
 	else {
-		$url = add_query_arg( array( 'donate' => 1 ), get_permalink( $campaign_id ) );	
+		$url = esc_url_raw( add_query_arg( array( 'donate' => 1 ), get_permalink( $campaign_id ) ) );	
 	}
 			
 	return $url;

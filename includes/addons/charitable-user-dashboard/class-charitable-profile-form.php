@@ -48,12 +48,12 @@ class Charitable_Profile_Form extends Charitable_Form {
 	protected $form_action = 'update_profile';
 
 	/**
-	 * The current donor. 
+	 * The current user. 
 	 *
-	 * @var 	Charitable_Donor
+	 * @var 	Charitable_User
 	 * @access  protected
 	 */
-	protected $donor;
+	protected $user;
 
 	/**
 	 * Create class object.
@@ -69,18 +69,18 @@ class Charitable_Profile_Form extends Charitable_Form {
 	}
 
 	/**
-	 * Return the current user's donor object.  
+	 * Return the current user's Charitable_User object.  
 	 *
-	 * @return 	Charitable_Donor
+	 * @return 	Charitable_User
 	 * @access  public
 	 * @since 	1.0.0
 	 */
-	public function get_donor() {
-		if ( ! isset( $this->donor ) ) {
-			$this->donor = new Charitable_Donor( wp_get_current_user() );
+	public function get_user() {
+		if ( ! isset( $this->user ) ) {
+			$this->user = new Charitable_User( wp_get_current_user() );
 		}
 
-		return $this->donor;
+		return $this->user;
 	}
 
 	/**
@@ -97,30 +97,44 @@ class Charitable_Profile_Form extends Charitable_Form {
 				'type'		=> 'text', 
 				'priority'	=> 2, 
 				'required'	=> true, 
-				'value'		=> $this->get_donor()->first_name
+				'value'		=> $this->get_user()->first_name
 			),
 			'last_name' => array( 
 				'label' 	=> __( 'Last name', 'charitable' ), 				
 				'type'		=> 'text', 
 				'priority'	=> 4, 
 				'required'	=> true, 
-				'value'		=> $this->get_donor()->last_name
+				'value'		=> $this->get_user()->last_name
 			),
+			'user_login' => array( 
+                'label'     => __( 'Username', 'charitable' ),                 
+                'type'      => 'text', 
+                'priority'  => 6, 
+                'required'  => true, 
+                'value'		=> $this->get_user()->user_login
+            ),
 			'user_email' => array(
 				'label' 	=> __( 'Email', 'charitable' ), 
 				'type'		=> 'email',
 				'required' 	=> true, 
-				'priority'	=> 6, 
-				'value' 	=> $this->get_donor()->user_email
-			),
-			'company' => array(
-				'label' 	=> __( 'Company', 'charitable' ), 				
-				'type'		=> 'text', 
 				'priority'	=> 8, 
+				'value' 	=> $this->get_user()->user_email
+			),
+			'description' => array(
+				'label'		=> __( 'Bio', 'charitable' ), 
+				'type'		=> 'textarea', 
+				'required' 	=> false,
+				'priority'	=> 10, 
+				'value' 	=> $this->get_user()->description
+			),
+			'organisation' => array(
+				'label' 	=> __( 'Organisation', 'charitable' ), 				
+				'type'		=> 'text', 
+				'priority'	=> 12, 
 				'required'	=> false, 
-				'value' 	=> $this->get_donor()->company
+				'value' 	=> $this->get_user()->organisation
 			)
-		) );
+		), $this );
 
 		uasort( $user_fields, 'charitable_priority_sort' );
 
@@ -141,35 +155,35 @@ class Charitable_Profile_Form extends Charitable_Form {
 				'type'		=> 'text', 
 				'priority'	=> 22, 
 				'required'	=> false, 
-				'value' 	=> $this->get_donor()->address
+				'value' 	=> $this->get_user()->address
 			),
 			'address_2' => array( 
 				'label' 	=> __( 'Address 2', 'charitable' ), 
 				'type'		=> 'text', 
 				'priority' 	=> 24, 
 				'required'	=> false,			
-				'value' 	=> $this->get_donor()->address_2
+				'value' 	=> $this->get_user()->address_2
 			),
 			'city' => array( 
 				'label' 	=> __( 'City', 'charitable' ), 			
 				'type'		=> 'text', 
 				'priority'	=> 26, 
 				'required'	=> false, 
-				'value' 	=> $this->get_donor()->city
+				'value' 	=> $this->get_user()->city
 			),
 			'state' => array( 
 				'label' 	=> __( 'State', 'charitable' ), 				
 				'type'		=> 'text', 
 				'priority'	=> 28, 
 				'required'	=> false, 
-				'value' 	=> $this->get_donor()->state
+				'value' 	=> $this->get_user()->state
 			),
 			'postcode' => array( 
 				'label' 	=> __( 'Postcode / ZIP code', 'charitable' ), 				
 				'type'		=> 'text', 
 				'priority'	=> 30, 
 				'required'	=> false, 
-				'value' 	=> $this->get_donor()->postcode
+				'value' 	=> $this->get_user()->postcode
 			),
 			'country' => array( 
 				'label' 	=> __( 'Country', 'charitable' ), 				
@@ -177,16 +191,16 @@ class Charitable_Profile_Form extends Charitable_Form {
 				'options' 	=> charitable_get_location_helper()->get_countries(), 
 				'priority'	=> 32, 
 				'required'	=> false, 
-				'value' 	=> $this->get_donor()->country
+				'value' 	=> $this->get_user()->country
 			),
 			'phone' => array( 
 				'label' 	=> __( 'Phone', 'charitable' ), 				
 				'type'		=> 'text', 
 				'priority'	=> 34, 
 				'required'	=> false, 
-				'value'		=> $this->get_donor()->phone
+				'value'		=> $this->get_user()->phone
 			)
-		) );
+		), $this );
 
 		uasort( $address_fields, 'charitable_priority_sort' );
 
@@ -202,21 +216,28 @@ class Charitable_Profile_Form extends Charitable_Form {
 	 */
 	public function get_social_fields() {
 		$social_fields = apply_filters( 'charitable_user_social_fields', array(
+			'website' => array(
+				'label'		=> __( 'Your Website', 'charitable' ), 
+				'type'		=> 'url', 
+				'priority' 	=> 42, 
+				'required'	=> false, 
+				'value' 	=> $this->get_user()->website
+			),
 			'twitter' => array( 
 				'label' 	=> __( 'Twitter', 'charitable' ), 				
 				'type'		=> 'text', 
-				'priority'	=> 42, 
+				'priority'	=> 44, 
 				'required'	=> false, 
-				'value'		=> $this->get_donor()->twitter
+				'value'		=> $this->get_user()->twitter
 			),
 			'facebook' => array( 
 				'label' 	=> __( 'Facebook', 'charitable' ), 				
 				'type'		=> 'text', 
-				'priority'	=> 44, 
+				'priority'	=> 46, 
 				'required'	=> false, 
-				'value'		=> $this->get_donor()->facebook
+				'value'		=> $this->get_user()->facebook
 			)
-		) );
+		), $this );
 
 		uasort( $social_fields, 'charitable_priority_sort' );
 
@@ -226,7 +247,7 @@ class Charitable_Profile_Form extends Charitable_Form {
 	/**
 	 * Profile fields to be displayed.  	
 	 *
-	 * @return 	array
+	 * @return 	array[]
 	 * @access  public
 	 * @since 	1.0.0
 	 */
@@ -251,7 +272,7 @@ class Charitable_Profile_Form extends Charitable_Form {
 				'fields'	=> $this->get_social_fields(),
 				'priority' 	=> 40
 			)
-		) );		
+		), $this );		
 
 		uasort( $fields, 'charitable_priority_sort' );
 
@@ -261,12 +282,18 @@ class Charitable_Profile_Form extends Charitable_Form {
 	/**
 	 * Returns all fields as a merged array. 
 	 *
-	 * @return 	array
+	 * @return 	array[]
 	 * @access  public
 	 * @since 	1.0.0
 	 */
 	public function get_merged_fields() {
-		return array_merge( $this->get_user_fields(), $this->get_address_fields(), $this->get_social_fields() );
+		$fields = array();
+
+		foreach ( $this->get_fields() as $fieldset ) {
+			$fields = array_merge( $fields, $fieldset[ 'fields' ] );
+		}
+
+		return $fields;
 	}
 
 	/**
@@ -285,20 +312,24 @@ class Charitable_Profile_Form extends Charitable_Form {
 			return;
 		}
 
-		$donor = $form->get_donor();
+		$user = $form->get_user();
 
 		/* Verify that the user is logged in. */
-		if ( 0 == $donor->ID ) {
+		if ( 0 == $user->ID ) {
 			return;
 		}
 
 		$fields = $form->get_merged_fields();
 
+		$submitted = apply_filters( 'charitable_profile_update_values', $_POST, $fields, $form );
+
 		$valid = $form->check_required_fields( $fields );
 
 		if ( $valid ) {
 			
-			$donor->save( $_POST, array_keys( $fields ) );
+			$user->save( $submitted, array_keys( $fields ) );
+
+			do_action( 'charitable_profile_updated', $submitted, $fields, $form );
 
 		}	
 		else {

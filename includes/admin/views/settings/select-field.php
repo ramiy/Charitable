@@ -12,7 +12,7 @@ if ( empty( $value ) ) {
 	$value = isset( $view_args['default'] ) ? $view_args['default'] : '';
 }
 ?>
-<select name="charitable_settings[<?php echo $view_args['key'] ?>]">
+<select name="charitable_settings[<?php echo $view_args[ 'section' ] ?>][<?php echo $view_args['key'] ?>]">
 	<?php 
 
 	foreach( $view_args['options'] as $key => $option ) : 

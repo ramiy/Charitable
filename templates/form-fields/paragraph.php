@@ -13,11 +13,12 @@ if ( ! isset( $view_args[ 'form' ] ) || ! isset( $view_args[ 'field' ] ) ) {
 
 $form 			= $view_args[ 'form' ];
 $field 			= $view_args[ 'field' ];
+$classes        = $view_args[ 'classes' ];
 
 if ( ! isset( $field[ 'content' ] ) ) {
 	return;
 }
 ?>
-<p class="charitable-form-content">
+<p class="<?php echo $classes ?>">
 	<?php echo $field[ 'content' ] ?>
 </p>

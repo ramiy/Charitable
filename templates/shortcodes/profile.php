@@ -16,7 +16,7 @@ $donor	= new Charitable_Donor( wp_get_current_user() );
 do_action('charitable_user_profile_before');
 
 ?>
-<form method="post" id="charitable-profile-form" class="charitable-form">
+<form method="post" id="charitable-profile-form" class="charitable-form" enctype="multipart/form-data">
 	<?php 
 	/**
 	 * @hook 	charitable_form_before_fields
@@ -27,9 +27,13 @@ do_action('charitable_user_profile_before');
 
 	<?php 
 
+	$i = 1;
+
 	foreach ( $form->get_fields() as $key => $field ) :
 
 		do_action( 'charitable_form_field', $field, $key, $form );
+
+		$i += apply_filters( 'charitable_form_field_increment_index', 1, $field, $key, $form, $i );
 
 	endforeach;
 

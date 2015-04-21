@@ -15,7 +15,7 @@ $form           = $view_args[ 'form' ];
 $field          = $view_args[ 'field' ];
 $classes        = $view_args[ 'classes' ];
 $options        = isset( $field[ 'options' ] )      ? $field[ 'options' ]       : array();
-$value          = isset( $field[ 'value' ] )        ? $field[ 'value' ]         : '';
+$value          = isset( $field[ 'value' ] )        ? $field[ 'value' ]         : array();
 $placeholder    = isset( $field[ 'placeholder' ] )  ? $field[ 'placeholder' ]   : '';
 
 if ( empty( $options ) ) {
@@ -37,7 +37,7 @@ if ( empty( $options ) ) {
     <?php foreach ( $options as $val => $label ) : ?>
 
         <li>
-            <input type="checkbox" name="<?php echo $field[ 'key' ] ?>" value="<?php echo $value ?>" />
+            <input type="checkbox" name="<?php echo $field[ 'key' ] ?>" value="<?php echo $val ?>" <?php checked( in_array( $val, $value ) ) ?> />
             <?php echo $label ?>
         </li>
 

@@ -121,7 +121,7 @@ final class Charitable_Donation_Post_Type {
 
 			case 'details' : 
 				$display = sprintf( '<a href="%s">%s</a>', 
-					add_query_arg( array( 'post' => $donation->ID, 'action' => 'edit' ), admin_url( 'post.php' ) ), 
+					esc_url( add_query_arg( array( 'post' => $donation->ID, 'action' => 'edit' ), admin_url( 'post.php' ) ) ), 
 					__( 'View Donation Details', 'charitable' ) );
 				break;
 
@@ -188,7 +188,7 @@ final class Charitable_Donation_Post_Type {
 
 		$views 			= array();
 		$views['all'] 	= sprintf( '<a href="%s"%s>%s <span class="count">(%s)</span></a>', 
-			remove_query_arg( array( 'post_status', 'paged' ) ), 
+			esc_url( remove_query_arg( array( 'post_status', 'paged' ) ) ), 
 			$current === 'all' || $current == '' ? ' class="current"' : '', 
 			__('All', 'charitable'), 
 			$donations->count_all()
@@ -196,7 +196,7 @@ final class Charitable_Donation_Post_Type {
 
 		foreach ( $statuses as $status => $label ) {
 			$views[ $status ] = sprintf( '<a href="%s"%s>%s <span class="count">(%s)</span></a>', 
-				add_query_arg( array( 'post_status' => $status, 'paged' => false ) ), 
+				esc_url( add_query_arg( array( 'post_status' => $status, 'paged' => false ) ) ), 
 				$current === $status ? ' class="current"' : '', 
 				$label, 
 				isset( $status_count[ $status ] ) ? $status_count[ $status ]->num_donations : 0

@@ -54,7 +54,9 @@ class Charitable_User_Dashboard implements Charitable_Addon_Interface {
     private function load_dependencies() {
         require_once( 'charitable-user-dashboard-functions.php' );
         require_once( 'charitable-user-dashboard-template-functions.php' );
-        require_once( 'class-charitable-profile-form.php' );        
+        require_once( 'class-charitable-profile-form.php' );
+        require_once( 'class-charitable-login-form.php' );
+        require_once( 'class-charitable-registration-form.php' );
         require_once( 'class-charitable-user-dashboard-shortcodes.php' );
     }
 
@@ -68,6 +70,7 @@ class Charitable_User_Dashboard implements Charitable_Addon_Interface {
     private function attach_hooks_and_filters() {        
         add_action( 'charitable_user_dashboard_start',  array( 'Charitable_User_Dashboard_Shortcodes', 'start' ), 5 );
         add_action( 'charitable_update_profile',        array( 'Charitable_Profile_Form', 'update_profile' ) );     
+        add_action( 'charitable_save_registration',     array( 'Charitable_Registration_Form', 'save_registration' ) );
         add_action( 'after_setup_theme',                array( $this, 'register_menu' ) );
         add_action( 'template_include',                 array( $this, 'load_user_dashboard_template' ) );
         add_action( 'wp_update_nav_menu',               array( $this, 'flush_menu_object_cache' ) );

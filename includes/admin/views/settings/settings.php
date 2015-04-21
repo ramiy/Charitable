@@ -13,7 +13,7 @@ ob_start();
 <div class="wrap">
 	<h2 class="nav-tab-wrapper">
 		<?php foreach( charitable_get_admin_settings()->get_sections() as $tab => $name ) : ?>
-		<a href="<?php echo add_query_arg('tab', $tab, remove_query_arg( 'settings-updated' ) ) ?>" class="nav-tab <?php echo $active_tab == $tab ? 'nav-tab-active' : '' ?>"><?php echo $name ?></a>
+		<a href="<?php echo esc_url( add_query_arg('tab', $tab, remove_query_arg( 'settings-updated' ) ) ) ?>" class="nav-tab <?php echo $active_tab == $tab ? 'nav-tab-active' : '' ?>"><?php echo $name ?></a>
 		<?php endforeach ?>
 	</h2>
 

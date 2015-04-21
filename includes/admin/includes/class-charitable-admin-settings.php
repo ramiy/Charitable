@@ -295,6 +295,7 @@ final class Charitable_Admin_Settings extends Charitable_Start_Object {
 
                 $callback       = isset( $field[ 'callback' ] ) ? $field[ 'callback' ] : array( $this, 'render_field' );
                 $field[ 'key' ] = $key;
+                $field[ 'section' ] = $section_key;
                 $label          = $this->get_field_label( $field, $key );                        
 
                 add_settings_field( 
@@ -342,32 +343,42 @@ final class Charitable_Admin_Settings extends Charitable_Start_Object {
 
         $old_values = get_option( 'charitable_settings' );
         $new_values = array();
-        $fields     = array_merge( $this->get_general_fields(), $this->get_form_fields(), $this->get_gateway_fields() );
+        $form_fields = $this->get_fields();
 
-        foreach ( $fields as $key => $field ) {
+        foreach ( $values as $section => $submitted ) {
 
-            $value = null;
-
-            /* No need to save headings :) */
-            if ( isset( $field[ 'type' ] ) && 'heading' == $field[ 'type' ] ) {
+            if ( ! isset( $form_fields[ $section ] ) ) {
                 continue;
             }
 
-            /* Checkbox fields need to be set to 0 when they're not in the submitted array */
-            if ( isset( $field[ 'type' ] ) && 'checkbox' == $field[ 'type' ] ) {
+            $section_fields = $form_fields[ $section ];
 
-                $value = isset( $values[ $key ] );
-                $new_values[ $key ] = apply_filters( 'charitable_sanitize_value', $value, $field, $values, $key );
+            foreach ( $section_fields as $key => $field ) {
+
+                $value = null;
+
+                /* No need to save headings :) */
+                if ( isset( $field[ 'type' ] ) && 'heading' == $field[ 'type' ] ) {
+                    continue;
+                }
+
+                /* Checkbox fields need to be set to 0 when they're not in the submitted array */
+                if ( isset( $field[ 'type' ] ) && 'checkbox' == $field[ 'type' ] ) {
+
+                    $value = isset( $submitted[ $key ] );
+                    $new_values[ $key ] = apply_filters( 'charitable_sanitize_value', $value, $field, $value, $key );
+
+                }
+                elseif ( isset( $submitted[ $key ] ) ) {
+
+                    $value = $submitted[ $key ];
+                    $new_values[ $key ] = apply_filters( 'charitable_sanitize_value', $value, $field, $values, $key );
+
+                } 
 
             }
-            elseif ( isset( $values[ $key ] ) ) {
 
-                $value = $values[ $key ];
-                $new_values[ $key ] = apply_filters( 'charitable_sanitize_value', $value, $field, $values, $key );
-
-            } 
-
-        }
+        }      
 
         $values = wp_parse_args( $new_values, $old_values );
 
