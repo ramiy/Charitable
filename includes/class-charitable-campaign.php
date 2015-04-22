@@ -58,7 +58,8 @@ class Charitable_Campaign {
 	 * @since 	1.0.0
 	 */
 	public function __construct( $post ) {
-		if ( ! is_a( $post, 'WP_Post' ) ) {
+
+		if ( ! is_a( $post, 'WP_Post' ) ) {			
 			$post = get_post( $post );
 		}
 
@@ -81,10 +82,9 @@ class Charitable_Campaign {
 	}
 
 	/**
-	 * Returns the campaign's post_meta values. An underscore is automatically prepended to the meta key.
+	 * Returns the campaign's post_meta values. _campaign_ is automatically prepended to the meta key.
 	 *
 	 * @see 	get_post_meta
-	 * 
 	 * @param 	string 	$meta_name 		The meta name to search for.
 	 * @param 	bool 	$single 		Whether to return a single value or an array. 
 	 * @return 	mixed 					This will return an array if single is false. If it's true, 
@@ -93,7 +93,7 @@ class Charitable_Campaign {
 	 * @since 	1.0.0
 	 */
 	public function get( $meta_name, $single = true ) {
-		$meta_name = '_' . $meta_name;
+		$meta_name = '_campaign_' . $meta_name;
 		return get_post_meta( $this->post->ID, $meta_name, $single );
 	}	
 
@@ -105,7 +105,7 @@ class Charitable_Campaign {
 	 * @since 	1.0.0
 	 */
 	public function is_endless() {
-		return 0 == $this->get('campaign_end_date');
+		return 0 == $this->end_date;
 	}
 
 	/**
@@ -136,7 +136,7 @@ class Charitable_Campaign {
 		 * This is how the end date is stored in the database, so just return that directly.
 		 */
 		if ( 'Y-m-d H:i:s' == $date_format ) {
-			return $this->get('campaign_end_date');
+			return $this->end_date;
 		}
 		
 		return date( $date_format, $this->get_end_time() );
@@ -159,7 +159,7 @@ class Charitable_Campaign {
 			/**
 			 * The date is stored in the format of Y-m-d H:i:s.
 			 */
-			$date_time 	= explode( ' ', $this->get('campaign_end_date') );
+			$date_time 	= explode( ' ', $this->end_date );
 			$date 		= explode( '-', $date_time[0] );
 			$time 		= explode( ':', $date_time[1] );
 			$this->end_time = mktime( $time[0], $time[1], $time[2], $date[1], $date[2], $date[0] );
@@ -281,7 +281,7 @@ class Charitable_Campaign {
 	 */
 	public function get_goal() {
 		if ( ! isset( $this->goal ) ) {
-			$this->goal = $this->has_goal() ? $this->get('campaign_goal') : false;
+			$this->goal = $this->has_goal() ? $this->get( 'goal' ) : false;
 		}
 
 		return $this->goal;
@@ -295,7 +295,7 @@ class Charitable_Campaign {
 	 * @since 	1.0.0
 	 */
 	public function has_goal() {
-		return 0 < $this->get('campaign_goal');
+		return 0 < $this->get( 'goal' );
 	}	
 
 	/**
@@ -464,23 +464,6 @@ class Charitable_Campaign {
 	}
 
 	/**
-	 * Returns any suggested amounts, or an empty array if none have been set. 
-	 *
-	 * @return 	array
-	 * @access  public
-	 * @since 	1.0.0
-	 */
-	public function get_suggested_amounts() {		
-		$amounts = $this->get( 'campaign_suggested_donations' );
-
-		if ( false === strpos( $amounts, '|' ) ) {
-			return array();
-		}
-
-		return explode( '|', $amounts );
-	}
-
-	/**
 	 * Returns the campaign creator. 
 	 *
 	 * By default, this just returns the user from the post_author field, but 
@@ -502,7 +485,7 @@ class Charitable_Campaign {
 	 * @since 	1.0.0
 	 */
 	public function has_video() {
-		return strlen( $this->get( 'campaign_video' ) );
+		return strlen( $this->video );
 	}
 
 	/**
@@ -514,42 +497,21 @@ class Charitable_Campaign {
 	 */
 	public function embed_video() {
 		global $wp_embed;
-		return $wp_embed->run_shortcode( '[embed]'. $this->get( 'campaign_video' ) .'[/embed]' );
+		return $wp_embed->run_shortcode( '[embed]'. $this->video .'[/embed]' );
 	}
 
-	/**
-	 * Return an array of meta keys with alternative keys. 
-	 *
-	 * In frontend forms, the preference is for using the mapped meta keys, which 
-	 * are the keys of the array this method returns. In the backend, the actual
-	 * meta keys are used instead.
-	 *
-	 * @return 	string[]
-	 * @access  public
-	 * @static
-	 * @since 	1.0.0
-	 */
-	public static function get_mapped_meta_keys() {
-		return apply_filters( 'charitable_campaign_mapped_meta_keys', array(
-			'end_date'				=> '_campaign_end_date', 
-			'goal'					=> '_campaign_goal', 
-			'suggested_donations' 	=> '_campaign_suggested_donations',
-			'allow_custom'			=> '_campaign_allow_custom_donations',
-			'description'			=> '_campaign_description', 
-			'video'					=> '_campaign_video'
-		) );
-	}
 	/**
 	 * Sanitize meta values before they are persisted to the database. 
 	 *
 	 * @param  	mixed 		$value
 	 * @param 	string 		$key
+	 * @param 	array 		$submitted
 	 * @return 	mixed
 	 * @access 	public
 	 * @static
 	 * @since 	1.0.0
 	 */
-	public static function sanitize_meta( $value, $key ) {
+	public static function sanitize_meta( $value, $key, $submitted ) {
 
 		switch ( $key ) {
 
@@ -594,7 +556,7 @@ class Charitable_Campaign {
 
 		}
 
-		return apply_filters( 'charitable_sanitize_campaign_meta-' . $key, $value );
+		return apply_filters( 'charitable_sanitize_campaign_meta_' . $key, $value );
 	}
 
 	/**

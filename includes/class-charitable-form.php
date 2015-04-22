@@ -68,6 +68,7 @@ abstract class Charitable_Form {
 	protected function attach_hooks_and_filters() {
 		add_action( 'charitable_form_before_fields',	array( $this, 'add_hidden_fields' ) ); 
 		add_action( 'charitable_form_field', 			array( $this, 'render_field' ), 10, 4 );
+		add_filter( 'charitable_form_field_increment', 	array( $this, 'increment_index' ), 10, 4 );
 	}
 
 	/**
@@ -119,6 +120,25 @@ abstract class Charitable_Form {
 		?>
 		<input type="hidden" name="charitable_action" value="<?php echo $this->form_action ?>" />	
 		<?php
+	}
+
+	/**
+	 * Set how much the index should be incremented by. 
+	 *
+	 * @param 	int 		$index
+	 * @param 	array 		$field
+	 * @param 	string 		$key
+	 * @param 	Charitable_Form 	$form	 
+	 * @return  int
+	 * @access  public
+	 * @since   1.0.0
+	 */
+	public function increment_index( $increment, $field, $key, $form ) {
+		if ( 'hidden' == $field[ 'type' ] || ( isset( $field[ 'fullwidth'] ) && $field[ 'fullwidth' ] ) ) {
+			$increment = 0;
+		}
+
+		return $increment;
 	}
 
 	/**

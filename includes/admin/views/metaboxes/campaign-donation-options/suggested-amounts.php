@@ -24,8 +24,8 @@ if ( ! $suggested_donations ) {
 				<th colspan="2"><label for="campaign_suggested_donations"><?php echo $title ?></label></th>
 			</tr>
 			<tr>
-				<th><?php _e( 'Amount', 'charitable' ) ?></th>
-				<th><?php _e( 'Description (optional)', 'charitable' ) ?></th>
+				<th class="amount-col"><?php _e( 'Amount', 'charitable' ) ?></th>
+				<th class="description-col"><?php _e( 'Description (optional)', 'charitable' ) ?></th>
 			</tr>
 		</thead>		
 		<tbody>
@@ -39,14 +39,14 @@ if ( ! $suggested_donations ) {
 					
 					?>
 					<tr data-index="<?php echo $i ?>">
-						<td><input 
+						<td class="amount-col"><input 
 							type="text" 
 							id="campaign_suggested_donations_<?php echo $i ?>" 
 							name="_campaign_suggested_donations[<?php echo $i ?>][amount]" 
 							value="<?php echo $amount ?>" 
 							placeholder="<?php _e( 'Amount', 'charitable' ) ?>" />
 						</td>
-						<td><input 
+						<td class="description-col"><input 
 							type="text" 
 							id="campaign_suggested_donations_<?php echo $i ?>" 
 							name="_campaign_suggested_donations[<?php echo $i ?>][description]" 

@@ -226,6 +226,11 @@
   #charitable-campaign-advanced-metabox.ui-tabs #wp-content-editor-tools {
     padding-top: 0; }
 
+/* --- Suggested Donations --- */
+#charitable-campaign-suggested-donations .amount-col {
+  width: 100px;
+  min-width: 35%; }
+
 /* --- Benefactors --- */
 .charitable-benefactor-wrap {
   padding: 0 10px 10px;

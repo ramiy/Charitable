@@ -262,11 +262,20 @@ final class Charitable_Campaign_Post_Type {
 	public function save_post( $post_id, WP_Post $post ) {
 		if ( $this->meta_box_helper->user_can_save( $post ) ) {
 					
-			$meta_keys = array_intersect( Charitable_Campaign::get_mapped_meta_keys(), array_keys( $_POST ) );
+			$meta_keys = apply_filters( 'charitable_campaign_meta_keys', array(
+				'_campaign_end_date', 
+				'_campaign_goal', 
+				'_campaign_suggested_donations',
+				'_campaign_allow_custom_donations',
+				'_campaign_description', 
+				'_campaign_video'
+			) );			
+
+			$submitted = $_POST;
 
 			foreach ( $meta_keys as $key ) {
 
-				$value = apply_filters( 'charitable_sanitize_campaign_meta', $_POST[ $key ], $key );
+				$value = apply_filters( 'charitable_sanitize_campaign_meta', $submitted[ $key ], $key, $submitted );
 
 				update_post_meta( $post_id, $key, $value );
 

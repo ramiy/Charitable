@@ -23,7 +23,13 @@ class Test_Charitable_Campaign extends WP_UnitTestCase {
 		$campaign_1_id 		= Charitable_Campaign_Helper::create_campaign( array( 
 			'_campaign_goal' 					=> 40000.00,
 			'_campaign_end_date' 				=> date( 'Y-m-d H:i:s', $this->end_time_1 ), 
-			'_campaign_suggested_donations' 	=> '5|20|50|100|250'
+			'_campaign_suggested_donations' 	=> array( 
+				array( 'amount' => 5 ), 
+				array( 'amount' => 20 ), 
+				array( 'amount' => 50 ), 
+				array( 'amount' => 100 ), 
+				array( 'amount' => 250 ) 
+			)
 		) );
 
 		$this->post_1 		= get_post( $campaign_1_id );
@@ -102,11 +108,11 @@ class Test_Charitable_Campaign extends WP_UnitTestCase {
 	}	
 
 	function test_get() {
-		$this->assertEquals( 40000.00, $this->campaign_1->get('campaign_goal') );
-		$this->assertEquals( date( 'Y-m-d H:i:s', $this->end_time_1 ), $this->campaign_1->get('campaign_end_date') );		
+		$this->assertEquals( 40000.00, $this->campaign_1->get('goal') );
+		$this->assertEquals( date( 'Y-m-d H:i:s', $this->end_time_1 ), $this->campaign_1->get('end_date') );		
 
-		$this->assertEquals( 0, $this->campaign_2->get('campaign_goal') );
-		$this->assertEquals( 0, $this->campaign_2->get('campaign_end_date') );
+		$this->assertEquals( 0, $this->campaign_2->get('goal') );
+		$this->assertEquals( 0, $this->campaign_2->get('end_date') );
 	}
 
 	function test_get_end_time() {
@@ -215,9 +221,9 @@ class Test_Charitable_Campaign extends WP_UnitTestCase {
 		$this->assertEquals( 1, $this->campaign_2->get_donor_count() );
 	}
 
-	function test_get_suggested_amounts() {
+	function test_suggested_amounts() {
 		foreach ( array( 5, 20, 50, 100, 250 ) as $suggested_donation ) {
-			$this->assertContains( $suggested_donation, $this->campaign_1->get_suggested_amounts() );
+			$this->assertContains( $suggested_donation, $this->campaign_1->suggested_amounts );
 		}
 	}
 

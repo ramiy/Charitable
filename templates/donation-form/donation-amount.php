@@ -8,7 +8,7 @@
  */
 
 $form 				= $view_args[ 'form' ];
-$suggested_amounts 	= $form->get_campaign()->get_suggested_amounts();
+$suggested_amounts 	= $form->get_campaign()->get( 'suggested_amounts' );
 $currency_helper 	= charitable()->get_currency_helper();
 
 /**

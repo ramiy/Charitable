@@ -37,7 +37,7 @@ if ( empty( $options ) ) {
     <?php foreach ( $options as $val => $label ) : ?>
 
         <li>
-            <input type="checkbox" name="<?php echo $field[ 'key' ] ?>" value="<?php echo $val ?>" <?php checked( in_array( $val, $value ) ) ?> />
+            <input type="checkbox" name="<?php echo $field[ 'key' ] ?>[]" value="<?php echo $val ?>" <?php checked( in_array( $val, $value ) ) ?> />
             <?php echo $label ?>
         </li>
 
