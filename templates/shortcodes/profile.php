@@ -8,7 +8,7 @@
  */
 
 $form 	= $view_args[ 'form' ];
-$donor	= new Charitable_Donor( wp_get_current_user() );
+$donor	= new Charitable_User( wp_get_current_user() );
 
 /**
  * @hook 	charitable_user_profile_before

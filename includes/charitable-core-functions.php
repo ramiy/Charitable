@@ -86,6 +86,16 @@ function charitable_get_location_helper() {
 }
 
 /**
+ * Return currency helper class.  
+ *
+ * @return  Charitable_Currency
+ * @since   1.0.0
+ */
+function charitable_get_currency_helper() {
+	return charitable()->get_currency_helper();
+}
+
+/**
  * Returns the current user's session object. 
  *
  * @return 	Charitable_Session

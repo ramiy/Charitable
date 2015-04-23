@@ -229,6 +229,24 @@ class Charitable_User extends WP_User {
 	}
 
 	/**
+	 * Return the campaigns created by the user. 
+	 *
+	 * @param 	array 		$args 		Optional. Any arguments accepted by WP_Query.
+	 * @return  WP_Query
+	 * @access  public
+	 * @since   1.0.0
+	 */
+	public function get_campaigns( $args = array() ) {
+		$defaults = array(
+			'author' => $this->ID
+		);
+
+		$args = wp_parse_args( $args, $defaults );
+
+		return Charitable_Campaigns::query( $args );
+	}
+
+	/**
 	 * Returns the user's donation and campaign creation activity. 
 	 *
 	 * @see 	WP_Query 	
