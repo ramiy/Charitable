@@ -188,6 +188,13 @@ class Charitable {
 		require_once( $this->includes_path . 'db/abstract-class-charitable-db.php' );
 		require_once( $this->includes_path . 'db/class-charitable-campaign-donations-db.php' );
 
+		/* Public */
+		require_once( $this->get_path( 'public' ) . 'class-charitable-session.php' );
+		require_once( $this->get_path( 'public' ) . 'class-charitable-session-donation.php' );
+		require_once( $this->get_path( 'public' ) . 'class-charitable-template.php' );		
+		require_once( $this->get_path( 'public' ) . 'class-charitable-template-part.php' );
+		require_once( $this->get_path( 'public' ) . 'class-charitable-templates.php' );
+
 		/* Helpers */
 		require_once( $this->includes_path . 'class-charitable-currency.php' );
 		require_once( $this->includes_path . 'class-charitable-request.php' );		

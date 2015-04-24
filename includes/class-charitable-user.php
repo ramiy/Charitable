@@ -247,6 +247,47 @@ class Charitable_User extends WP_User {
 	}
 
 	/**
+	 * Checks whether the user has any current campaigns (i.e. non-expired). 
+	 *
+	 * @return  boolean
+	 * @access  public
+	 * @since   1.0.0
+	 */
+	public function get_current_campaigns( $args = array() ) {
+		$defaults = array(
+			'author' => $this->ID, 
+			'meta_query' 	=> array(
+				'relation' 		=> 'OR',
+				array(
+					'key' 		=> '_campaign_end_date',
+					'value' 	=> date( 'Y-m-d H:i:s' ),
+					'compare' 	=> '>=',
+					'type' 		=> 'datetime'
+				), 
+				array( 
+					'key'		=> '_campaign_end_date',
+					'value'		=> '0'
+				)
+			)
+		);
+
+		$args = wp_parse_args( $args, $defaults );
+
+		return Charitable_Campaigns::query( $args );
+	}
+
+	/**
+	 * Returns all current campaigns by the user. 
+	 *
+	 * @return  WP_Query
+	 * @access  public
+	 * @since   1.0.0
+	 */
+	public function has_current_campaigns() {
+		return $this->get_current_campaigns()->found_posts;
+	}
+
+	/**
 	 * Returns the user's donation and campaign creation activity. 
 	 *
 	 * @see 	WP_Query 	

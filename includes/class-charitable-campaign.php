@@ -531,6 +531,10 @@ class Charitable_Campaign {
 				else {
 					$value = date( 'Y-m-d 00:00:00', strtotime( $value ) );
 				}
+				// echo '<pre>';
+				// var_dump( $value );
+				// var_dump( $submitted );
+				// die;
 				break;
 
 			case '_campaign_suggested_donations' :

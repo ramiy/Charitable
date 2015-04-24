@@ -89,7 +89,7 @@ final class Charitable_Admin extends Charitable_Start_Object {
 			wp_register_style( 'charitable-admin', charitable()->get_path( 'assets', false ) . 'css/charitable-admin.css', array(), charitable()->get_version() );
 			wp_enqueue_style( 'charitable-admin' );
 
-			wp_register_script( 'charitable-admin', charitable()->get_path( 'assets', false ) . 'js/charitable-admin.js', array( 'jquery-ui-datepicker', 'jquery-ui-tabs' ), charitable()->get_version() );		
+			wp_register_script( 'charitable-admin', charitable()->get_path( 'assets', false ) . 'js/charitable-admin.js', array( 'jquery-ui-datepicker', 'jquery-ui-tabs' ), charitable()->get_version(), false );		
 			wp_enqueue_script( 'charitable-admin' );
 
 			$localized_vars = apply_filters( 'charitable_localized_javascript_vars', array(

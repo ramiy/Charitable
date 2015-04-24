@@ -65,9 +65,9 @@ class Charitable_Template {
 	 */
 	public function __construct( $template_name, $load = true, $require_once = true ) {
 		$this->load 					= $load;
-		$this->theme_template_path 		= trailingslashit( apply_filters( 'charitable_theme_template_path', 'charitable' ) );
-		$this->base_template_path 		= charitable()->get_path( 'templates' );
-		$this->template_names 			= (array) $template_name;
+		$this->theme_template_path 		= $this->get_theme_template_path();
+        $this->base_template_path 		= $this->get_base_template_path();		
+		$this->template_names 			= apply_filters( 'charitable_template_name', (array) $template_name );
 		$this->view_args 				= array();
 		$this->theme_template_options 	= $this->get_theme_template_options();
 
@@ -75,6 +75,28 @@ class Charitable_Template {
 			$this->render( $require_once );
 		}		
 	}
+
+	/**
+     * Set theme template path. 
+     *
+     * @return  string
+     * @access  public
+     * @since   1.0.0
+     */
+    public function get_theme_template_path() {
+        return trailingslashit( apply_filters( 'charitable_theme_template_path', 'charitable' ) );
+    }
+
+    /**
+     * Return the base template path.
+     *
+     * @return  string
+     * @access  public
+     * @since   1.0.0
+     */
+    public function get_base_template_path() {
+        return charitable()->get_path( 'templates' );
+    }
 
 	/**
 	 * Adds an array of view arguments. 
@@ -161,14 +183,10 @@ class Charitable_Template {
 	 */
 	public function locate_template() {
 
-		/**
-		 * Template options are first checked in the theme/child theme using locate_template. 
-		 */
+		/* Template options are first checked in the theme/child theme using locate_template. */
 		$template = locate_template( $this->theme_template_options, false );	
 
-		/**
-		 * No templates found in the theme/child theme, so use the plugin's default template.
-		 */
+		/* No templates found in the theme/child theme, so use the plugin's default template. */
 		if ( ! $template ) {
 			$template = $this->base_template_path . $this->template_names[0];
 		}

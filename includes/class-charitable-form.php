@@ -134,7 +134,8 @@ abstract class Charitable_Form {
 	 * @since   1.0.0
 	 */
 	public function increment_index( $increment, $field, $key, $form ) {
-		if ( 'hidden' == $field[ 'type' ] || ( isset( $field[ 'fullwidth'] ) && $field[ 'fullwidth' ] ) ) {
+		if ( in_array( $field[ 'type' ], array( 'hidden', 'paragraph' ) )
+			|| ( isset( $field[ 'fullwidth'] ) && $field[ 'fullwidth' ] ) ) {
 			$increment = 0;
 		}
 
@@ -163,8 +164,13 @@ abstract class Charitable_Form {
 
 		$field[ 'key' ] = $key;
 
-		/* Display template, passing the form and field objects as parameters to the view */
-		$template = charitable_template( $this->get_template_name( $field ), false );
+		/* Allows extensions/themes to plug in their own template objects here. */
+		$template = apply_filters( 'charitable_form_field_template', false, $field, $form, $index );
+
+		/* Fall back to default Charitable_Template if no template returned or if template was not object of 'Charitable_Template' class. */
+		if ( false === $template || ! is_object( $template ) || ! is_a( $template, 'Charitable_Template' ) ) {		
+			$template = charitable_template( $this->get_template_name( $field ), false );
+		}		
 
 		if ( ! $template->template_file_exists() ) {
 			return false;
@@ -300,11 +306,11 @@ abstract class Charitable_Form {
 	/**
 	 * Filters array returning just the required fields.  
 	 *
-	 * @return 	array
+	 * @return 	array[]
 	 * @access  public
 	 * @since 	1.0.0
 	 */
-	public function get_required_fields( $fields = array() ) {
+	public function get_required_fields( $fields ) {
 		$required_fields = array_filter( $fields, array( $this, 'filter_required_fields' ) );
 
 		return $required_fields;
@@ -317,8 +323,7 @@ abstract class Charitable_Form {
 	 * @access  public
 	 * @since 	1.0.0
 	 */
-	public function check_required_fields( $fields ) {
-		
+	public function check_required_fields( $fields ) {		
 		$ret = true;
 
 		foreach ( $this->get_required_fields( $fields ) as $key => $field ) {
@@ -336,6 +341,79 @@ abstract class Charitable_Form {
 
 		return $ret;
 	}
+
+	/**
+	 * Return overrides array for use with upload_file() and upload_post_attachment() methods. 
+	 *
+	 * @param 	string 		$file_key
+	 * @param 	array 		$overrides 
+	 * @param 	
+	 * @return  array
+	 * @access  protected
+	 * @since   1.0.0
+	 */
+	protected function get_file_overrides( $file_key, $overrides = array() ) {
+		$defaults = array(
+			'test_form' => false, 
+            'mimes'     => apply_filters( 'charitable_file_' . $file_key . '_allowed_mimes', array(
+            	'jpg|jpeg|jpe'  => 'image/jpeg',
+                'gif'           => 'image/gif',
+                'png'           => 'image/png',
+                'bmp'           => 'image/bmp',
+                'tif|tiff'      => 'image/tiff',
+                'ico'           => 'image/x-icon'
+            )
+		) );
+
+		$overrides = wp_parse_args( $overrides, $defaults );
+
+		return $overrides;
+	}
+
+	/**
+	 * Uploads a file and attaches it to the given post.
+	 *
+	 * @return 	int|WP_Error 	ID of the attachment or a WP_Error object on failure.
+	 * @access  public
+	 * @since   1.0.0
+	 */
+	public function upload_post_attachment( $file_key, $post_id, $post_data = array(), $overrides = array() ) {
+
+		/* Load dependencies */
+		require_once( ABSPATH . 'wp-admin/includes/image.php' );
+		require_once( ABSPATH . 'wp-admin/includes/file.php' );
+		require_once( ABSPATH . 'wp-admin/includes/media.php' );
+
+		$overrides 	= $this->get_file_overrides( $file_key, $overrides );
+
+		return media_handle_upload( $file_key, $post_id, $post_data, $overrides );
+	}
+
+    /**
+     * Upload a file. 
+     *
+     * @param 	string 	$key
+     * @param 	array 	$mimes 	
+     * @return  array|WP_Error  On success, returns an associative array of file attributes. On failure, returns
+     *                          $overrides['upload_error_handler'](&$file, $message ) or array( 'error'=>$message ).
+     * @access  public
+     * @since   1.0.0
+     */
+    public function upload_file( $file_key, $overrides = array() ) {
+    	    	    
+    	/* Load dependency */
+        require_once( ABSPATH . 'wp-admin/includes/file.php' );
+
+        $name       = $_FILES[ $file_key ]['name'];
+        $overrides  = $this->get_file_overrides( $file_key, $overrides );
+        $file       = wp_handle_upload( $_FILES[ $file_key ], $overrides );
+
+        if ( isset( $file[ 'error' ] ) ) {
+            return new WP_Error( 'upload_error', $file[ 'error' ] );        
+        }
+
+        return $file;
+    }
 }
 
 endif; // End class_exists check

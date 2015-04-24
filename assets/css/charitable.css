@@ -80,6 +80,9 @@
   .charitable-form-field.charitable-form-field-checkbox label {
     display: inline-block; }
 
+.charitable-repeatable-form-field-table {
+  margin-bottom: 1em; }
+
 .donation-amounts {
   margin: 0 0 1em;
   padding: 0;

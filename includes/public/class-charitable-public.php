@@ -32,26 +32,9 @@ final class Charitable_Public extends Charitable_Start_Object {
 	 * @since 	1.0.0
 	 */
 	protected function __construct() {		
-		$this->load_dependencies();
-
 		$this->attach_hooks_and_filters();
 
 		do_action( 'charitable_public_start', $this );
-	}
-
-	/**
-	 * Load dependencies used for the public facing site. 
-	 *
-	 * @return 	void
-	 * @access 	private
-	 * @since 	1.0.0
-	 */
-	private function load_dependencies() {
-		require_once( charitable()->get_path( 'public' ) . 'class-charitable-session.php' );
-		require_once( charitable()->get_path( 'public' ) . 'class-charitable-session-donation.php' );
-		require_once( charitable()->get_path( 'public' ) . 'class-charitable-template.php' );		
-		require_once( charitable()->get_path( 'public' ) . 'class-charitable-template-part.php' );
-		require_once( charitable()->get_path( 'public' ) . 'class-charitable-templates.php' );
 	}
 
 	/**
