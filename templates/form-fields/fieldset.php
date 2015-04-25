@@ -23,7 +23,7 @@ if ( count( $fields ) ) :
 	<?php 
 	if ( isset( $field[ 'legend' ] ) ) : ?>
 
-		<legend><?php echo $field[ 'legend' ] ?></legend>
+		<div class="legend"><?php echo $field[ 'legend' ] ?></div>
 
 	<?php
 	endif;

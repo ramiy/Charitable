@@ -174,12 +174,15 @@ add_filter( 'charitable_is_campaign_widget_page', 'charitable_is_campaign_widget
 /**
  * Returns the current URL. 
  *
- * @see 	https://kovshenin.com/2012/current-url-in-wordpress/
+ * @see 	https://gist.github.com/leereamsnyder/fac3b9ccb6b99ab14f36
  * @global 	WP 		$wp
  * @return  string
  * @since   1.0.0
  */
 function charitable_get_current_url() {
 	global $wp;
-    return esc_url_raw( add_query_arg( $wp->query_string, '', home_url( $wp->request ) ) );
+
+	$url = esc_url_raw( add_query_arg( $_SERVER['QUERY_STRING'], '', home_url( $wp->request ) ) );	
+
+	return $url;
 }
