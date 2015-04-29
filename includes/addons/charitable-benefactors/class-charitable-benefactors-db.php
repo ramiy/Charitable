@@ -175,7 +175,7 @@ class Charitable_Benefactors_DB extends Charitable_DB {
 	 *
 	 * @global 	WPDB 		$wpdb
 	 * @param 	int 		$campaign_id
-	 * @return 	Object
+	 * @return 	Object[]
 	 * @access  public
 	 * @since 	1.0.0
 	 */
@@ -198,7 +198,7 @@ class Charitable_Benefactors_DB extends Charitable_DB {
 	 *
 	 * @param 	int 			$campaign_id
 	 * @param 	string 			$extension
-	 * @return 	Object|false 	False if extensions return nothing. Object otherwise.
+	 * @return 	Object[]|false 	False if extensions return nothing. Object otherwise.
 	 * @access  public
 	 * @since 	1.0.0
 	 */

@@ -14,12 +14,10 @@ if ( ! isset( $view_args[ 'form' ] ) || ! isset( $view_args[ 'field' ] ) ) {
 $form 			= $view_args[ 'form' ];
 $field 			= $view_args[ 'field' ];
 $classes 		= $view_args[ 'classes' ];
-$field_type		= isset( $field[ 'type' ] ) 		? $field[ 'type' ] 			: 'text';
-$is_required 	= isset( $field[ 'required' ] ) 	? $field[ 'required' ] 		: false;
-$value			= isset( $field[ 'value' ] ) 		? $field[ 'value' ] 		: '';
-$placeholder 	= isset( $field[ 'placeholder' ] ) 	? $field[ 'placeholder' ] 	: '';
+$is_required 	= isset( $field[ 'required' ] ) ? $field[ 'required' ] : false;
+$value			= isset( $field[ 'value' ] ) ? esc_textarea( $field[ 'value' ] ) : '';
 
-$editor_args 	= isset( $field[ 'editor' ] ) 		? $field[ 'editor' ] 		: array();
+$editor_args 	= isset( $field[ 'editor' ] ) ? $field[ 'editor' ] : array();
 $default_editor_args = array(
 	'media_buttons' => true,
 	'teeny'         => true,
@@ -32,7 +30,7 @@ $default_editor_args = array(
 	)
 );
 
-$editor_args 	= wp_parse_args( $editor_args, $default_editor_args );
+$editor_args = wp_parse_args( $editor_args, $default_editor_args );
 ?>
 <div id="charitable_field_<?php echo $field['key'] ?>" class="<?php echo $classes ?>">
 	<?php if ( isset( $field['label'] ) ) : ?>

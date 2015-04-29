@@ -79,7 +79,7 @@ class Charitable_Notices {
 	 * @since 	1.0.0
 	 */
 	protected function add_notice( $message, $type ) {
-		$this->notices[$type][] = $message; 
+		$this->notices[ $type ][] = $message; 
 	}
 
 	/**

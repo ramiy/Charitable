@@ -66,8 +66,9 @@ abstract class Charitable_Form {
 	 * @since 	1.0.0
 	 */
 	protected function attach_hooks_and_filters() {
+		add_action( 'charitable_form_before_fields',	array( $this, 'render_error_notices' ) ); 
 		add_action( 'charitable_form_before_fields',	array( $this, 'add_hidden_fields' ) ); 
-		add_action( 'charitable_form_field', 			array( $this, 'render_field' ), 10, 4 );
+		add_action( 'charitable_form_field', 			array( $this, 'render_field' ), 10, 5 );
 		add_filter( 'charitable_form_field_increment', 	array( $this, 'increment_index' ), 10, 4 );
 	}
 
@@ -100,6 +101,33 @@ abstract class Charitable_Form {
 			'date'
 		) );
 		return in_array( $field_type, $default_field_types );
+	}
+	
+	/**
+	 * Display error notices at the start of the form, if there are any.	
+	 *
+	 * @param 	Charitable_Form 	$form
+	 * @return 	void
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function render_error_notices( $form ) {
+		if ( ! $form->is_current_form( $this->id ) ) {
+			return false;
+		}
+
+		$errors = charitable_get_notices()->get_errors();
+
+		if ( ! empty( $errors ) ) {
+
+			$template = charitable_template( 'form-fields/errors.php', false );
+			$template->set_view_args( array(
+				'form' 		=> $form, 
+				'errors' 	=> $errors
+			) );
+			$template->render();
+
+		}
 	}
 
 	/**
@@ -153,16 +181,21 @@ abstract class Charitable_Form {
 	 * @access  public
 	 * @since 	1.0.0
 	 */
-	public function render_field( $field, $key, $form, $index = 0 ) {		
+	public function render_field( $field, $key, $form, $index = 0, $namespace = null ) {		
 		if ( ! $form->is_current_form( $this->id ) ) {
 			return false;
 		}
 
 		if ( ! isset( $field[ 'type' ] ) ) {
 			return false;
-		}				
+		}						
 
-		$field[ 'key' ] = $key;
+		if ( ! is_null( $namespace ) ) {
+			$field[ 'key' ] = $namespace . '[' . $key . ']';
+		}
+		else {
+			$field[ 'key' ] = $key;
+		}
 
 		/* Allows extensions/themes to plug in their own template objects here. */
 		$template = apply_filters( 'charitable_form_field_template', false, $field, $form, $index );
@@ -289,7 +322,13 @@ abstract class Charitable_Form {
 	 * @since 	1.0.0
 	 */
 	public function validate_nonce() {
-		return isset( $_POST[$this->nonce_name] ) && wp_verify_nonce( $_POST[$this->nonce_name], $this->nonce_action );
+		$validated = isset( $_POST[$this->nonce_name] ) && wp_verify_nonce( $_POST[$this->nonce_name], $this->nonce_action );
+
+		if ( ! $validated ) {
+			charitable_get_notices()->add_error( __( 'Unable to submit form. Please try again.', 'charitable' ) );
+		}
+
+		return $validated;
 	}	
 
 	/**
@@ -324,7 +363,7 @@ abstract class Charitable_Form {
 	 * @since 	1.0.0
 	 */
 	public function check_required_fields( $fields ) {		
-		$ret = true;
+		$missing = array();
 
 		foreach ( $this->get_required_fields( $fields ) as $key => $field ) {
 
@@ -332,14 +371,23 @@ abstract class Charitable_Form {
 				
 				$label = isset( $field[ 'label' ] ) ? $field[ 'label' ] : $key;
 
-				$this->errors[] = sprintf( '%s %s', $label, _x( 'is a required field', 'field is a required field', 'charitable' ) );
-
-				$ret = false;
+				$missing[] = $label;
 			}
 
 		}
 
-		return $ret;
+		if ( count( $missing ) ) {
+
+			$missing_fields = implode( '</li><li>', $missing );			
+			charitable_get_notices()->add_error( sprintf( '<p>%s</p><ul class="error-list"><li>%s</li></ul>', 
+				__( 'There were problems with your form submission. The following required fields were not filled out:', 'charitable' ), 
+				$missing_fields
+			) );
+
+			return false;
+		}
+
+		return true;
 	}
 
 	/**

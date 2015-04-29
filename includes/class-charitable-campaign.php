@@ -325,6 +325,25 @@ class Charitable_Campaign {
 	}
 
 	/**
+	 * Return the campaign status. 
+	 *
+	 * If the campaign is published, this will return whether either 'active' or 'finished'. 
+	 *
+	 * @return  string
+	 * @access  public
+	 * @since   1.0.0
+	 */
+	public function get_status() {
+		$status = $this->post->post_status;
+
+		if ( 'publish' == $status ) {
+			$status = $this->has_ended() ? 'finished' : 'active';
+		}
+
+		return apply_filters( 'charitable_campaign_status', $status, $this->post->post_status, $this );
+	}
+
+	/**
 	 * Returns the key used for caching all donations made to this campaign.
 	 * 
 	 * @param 	int 		$campaign_id
