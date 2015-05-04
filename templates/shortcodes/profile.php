@@ -33,7 +33,7 @@ do_action('charitable_user_profile_before');
 
 		do_action( 'charitable_form_field', $field, $key, $form );
 
-		$i += apply_filters( 'charitable_form_field_increment_index', 1, $field, $key, $form, $i );
+		$i += apply_filters( 'charitable_form_field_increment', 1, $field, $key, $form, $i );
 
 	endforeach;
 

@@ -31,8 +31,8 @@ do_action('charitable_user_registration_before');
     foreach ( $form->get_fields() as $key => $field ) :
 
         do_action( 'charitable_form_field', $field, $key, $form, $i );
-
-        $i += apply_filters( 'charitable_form_field_increment_index', 1, $field, $key, $form, $i );
+    
+        $i += apply_filters( 'charitable_form_field_increment', 1, $field, $key, $form, $i );
 
     endforeach;
 

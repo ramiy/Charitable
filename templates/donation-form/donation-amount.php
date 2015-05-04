@@ -30,7 +30,7 @@ if ( count( $suggested_amounts ) ) :
 			<?php echo $currency_helper->get_monetary_amount( $amount ) ?>
 		</li>
 		<?php 
-	endforeach 
+	endforeach;
 	?>
 	<li class="donation-amount custom-donation-amount" data-charitable-toggle="custom-donation-amount-field">
 		<input type="radio" name="donation-amount" value="custom" />

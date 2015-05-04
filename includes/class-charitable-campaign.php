@@ -93,8 +93,8 @@ class Charitable_Campaign {
 	 * @since 	1.0.0
 	 */
 	public function get( $meta_name, $single = true ) {
-		$meta_name = '_campaign_' . $meta_name;
-		return get_post_meta( $this->post->ID, $meta_name, $single );
+		$meta_name = '_campaign_' . $meta_name;	
+		return get_post_meta( $this->post->ID, $meta_name, $single );		
 	}	
 
 	/**
@@ -106,6 +106,23 @@ class Charitable_Campaign {
 	 */
 	public function is_endless() {
 		return 0 == $this->end_date;
+	}
+
+	/**
+	 * Return the suggested amounts, or an empty array if there are none. 
+	 *
+	 * @return  array
+	 * @access  public
+	 * @since   1.0.0
+	 */
+	public function get_suggested_donations() {
+		$value = get_post_meta( $this->post->ID, '_campaign_suggested_donations', true );
+
+		if ( ! is_array( $value ) ) {
+			$value = array();
+		}
+
+		return $value;
 	}
 
 	/**
@@ -206,41 +223,41 @@ class Charitable_Campaign {
 
 		$seconds_left = $this->get_seconds_left();		
 
-		/**
-		 * Condition 1: The campaign has finished.
-		 */ 
+		/* Condition 1: The campaign has finished. */ 
 		if ( $seconds_left === 0 ) {
+
 			$time_left = apply_filters( 'charitable_campaign_ended', __( 'Campaign has ended', 'charitable' ), $this );
+
 		}
-		/**
-		 * Condition 2: There is less than an hour left.
-		 */
+		/* Condition 2: There is less than an hour left. */
 		elseif ( $seconds_left <= $hour ) {
+
 			$minutes_remaining = ceil( $seconds_left / 60 );
 			$time_left = apply_filters( 'charitabile_campaign_minutes_left', 
 				sprintf( _n('%s Minute Left', '%s Minutes Left', $minutes_remaining, 'charitable'), '<span class="amount time-left minutes-left">' . $minutes_remaining . '</span>' ), 
 				$this
 			);
+
 		}
-		/**
-		 * Condition 3: There is less than a day left. 
-		 */
+		/* Condition 3: There is less than a day left. */
 		elseif ( $seconds_left <= $day ) {
+
 			$hours_remaining = floor( $seconds_left / 3600 );
 			$time_left = apply_filters( 'charitabile_campaign_hours_left', 
 				sprintf( _n('%s Hour Left', '%s Hours Left', $hours_remaining, 'charitable'), '<span class="amount time-left hours-left">' . $hours_remaining . '</span>' ), 
 				$this
 			);
+
 		}
-		/**
-		 * Condition 4: There is more than a day left.
-		 */
+		/* Condition 4: There is more than a day left. */
 		else {
+
 			$days_remaining = floor( $seconds_left / 86400 );
 			$time_left = apply_filters( 'charitabile_campaign_days_left', 
 				sprintf( _n('%s Day Left', '%s Days Left', $days_remaining, 'charitable'), '<span class="amount time-left days-left">' . $days_remaining . '</span>' ),
 				$this
 			);
+
 		}
 
 		return apply_filters( 'charitable_campaign_time_left', $time_left, $this );	
@@ -420,7 +437,9 @@ class Charitable_Campaign {
 			return $percent;
 		}		
 
-		return apply_filters( 'charitable_percent_donated', $percent.'%', $percent, $this );
+		$percent = number_format( $percent, 2 );
+
+		return apply_filters( 'charitable_percent_donated', $percent . '%', $percent, $this );
 	}
 
 	/**
@@ -549,11 +568,7 @@ class Charitable_Campaign {
 				}
 				else {
 					$value = date( 'Y-m-d 00:00:00', strtotime( $value ) );
-				}
-				// echo '<pre>';
-				// var_dump( $value );
-				// var_dump( $submitted );
-				// die;
+				}				
 				break;
 
 			case '_campaign_suggested_donations' :

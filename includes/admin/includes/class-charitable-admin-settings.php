@@ -55,7 +55,7 @@ final class Charitable_Admin_Settings extends Charitable_Start_Object {
         $this->admin_menu_capability    = apply_filters( 'charitable_admin_menu_capability', 'manage_options' );
         $this->admin_menu_parent_page   = 'charitable';
 
-        add_action( 'admin_menu', array( $this, 'add_menu' ) );
+        add_action( 'admin_menu', array( $this, 'add_menu' ), 5 );
         add_action( 'admin_init', array( $this, 'register_settings' ) );      
 
         add_filter( 'charitable_sanitize_value', array( $this, 'sanitize_checkbox_value' ), 10, 2 );
