@@ -87,7 +87,37 @@ class Charitable_User extends WP_User {
 	 * @since 	1.0.0
 	 */
 	public function get_name() {
-		return $this->display_name;
+		return apply_filters( 'charitable_donor_name', $this->display_name, $this );
+	}
+
+	/**
+	 * Returns the user's location.  
+	 *
+	 * @return  string
+	 * @access  public
+	 * @since   1.0.0
+	 */
+	public function get_location() {
+		$city = $this->get( 'donor_city' );
+		$state = $this->get( 'donor_state' );
+		$country = $this->get( 'donor_country' );
+		$location = "";
+
+		if ( strlen( $city ) || strlen( $state ) ) {
+			$region = strlen( $city ) ? $city : $state;
+
+			if ( strlen( $country ) ) {
+				$location = sprintf( "%s, %s", $region, $country );
+			}
+			else {
+				$location = $region;
+			}
+		}
+		elseif ( strlen( $country ) ) {
+			$location = $country;
+		}		
+
+		return apply_filters( 'charitable_donor_location', $location, $this );
 	}
 
 	/**
@@ -177,8 +207,7 @@ class Charitable_User extends WP_User {
 	 * @access 	public
 	 * @since 	1.0.0
 	 */
-	public function get_avatar( $size = 100 ) {
-
+	public function get_avatar( $size = 100 ) {		
 		/** If you use this filter, be sure to return just the source of the image, 
 			not the fully formatted <img> tag. */
 		$avatar = apply_filters( 'charitable_user_avatar', false, $this );
@@ -210,8 +239,7 @@ class Charitable_User extends WP_User {
 	 * @access  public
 	 * @since   1.0.0
 	 */
-	public function get_avatar_src( $size = 100 ) {
-		
+	public function get_avatar_src( $size = 100 ) {		
 		/* If this returns something, we don't need to deal with the gravatar. */
 		$avatar = apply_filters( 'charitable_user_avatar', false, $this );
 

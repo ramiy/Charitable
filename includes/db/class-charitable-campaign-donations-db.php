@@ -323,10 +323,6 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 	 */
 	public function count_donations_by_donor( $donor_id, $distinct_campaigns = false ) {
 		global $wpdb;
-
-		// if ( $distinct_campaigns ) {
-
-		// }
 		
 		$sql = "SELECT COUNT(*)
 				FROM $this->table_name c
