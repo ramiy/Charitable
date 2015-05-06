@@ -75,11 +75,30 @@ class Charitable_Notices {
 	 * @param 	string 		$message
 	 * @param 	string 		$type
 	 * @return 	void
-	 * @access  protected
+	 * @access  public
 	 * @since 	1.0.0
 	 */
-	protected function add_notice( $message, $type ) {
+	public function add_notice( $message, $type ) {
 		$this->notices[ $type ][] = $message; 
+	}
+
+	/**
+	 * Add multiple notices at once.  
+	 *
+	 * @param 	array		$messages
+	 * @param 	string 		$type
+	 * @return  void
+	 * @access  public
+	 * @since   1.0.0
+	 */
+	public function add_notices( $messages, $type ) {
+		if ( ! is_array( $messages ) ) {
+			$messages = array( $messages );
+		}
+
+		$this->notices[ $type ] = array_merge( $this->notices[ $type ], $messages );
+
+
 	}
 
 	/**
@@ -128,6 +147,18 @@ class Charitable_Notices {
 	 */
 	public function add_info( $message ) {
 		$this->add_notice( $message, 'info' );
+	}
+
+	/**
+	 * Receives a WP_Error object and adds the error messages to our array. 
+	 *
+	 * @param 	WP_Error 	$error
+	 * @return  void
+	 * @access  public
+	 * @since   1.0.0
+	 */
+	public function add_errors_from_wp_error( WP_Error $error ) {
+		$this->add_notices( $error->get_error_messages(), 'error' );
 	}
 
 	/**

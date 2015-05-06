@@ -75,8 +75,7 @@ class Charitable_Registration_Form extends Charitable_Form {
      * @access  public
      * @since   1.0.0
      */
-    public function get_fields() {
-            
+    public function get_fields() {            
         $fields = apply_filters( 'charitable_user_registration_fields', array(            
             'user_email' => array(
                 'label'     => __( 'Email', 'charitable' ), 
@@ -112,7 +111,6 @@ class Charitable_Registration_Form extends Charitable_Form {
      * @since   1.0.0
      */
     public static function save_registration() {
-        
         $form = new Charitable_Registration_Form();
 
         if ( ! $form->validate_nonce() ) {
@@ -121,7 +119,7 @@ class Charitable_Registration_Form extends Charitable_Form {
 
         $fields = $form->get_fields();
 
-        $valid = $form->check_required_fields( $fields );    
+        $valid = $form->check_required_fields( $fields );
 
         if ( $valid ) {
                         
@@ -132,13 +130,11 @@ class Charitable_Registration_Form extends Charitable_Form {
             $user = new Charitable_User();
             $user->save( $submitted, array_keys( $fields ) );
 
-        }   
-        else {
-
-            /**
-             * @todo Send error to say that some required fields are missing. 
-             */
-            
+            $creds = array();
+            $creds['user_login'] = 'example';
+            $creds['user_password'] = 'plaintextpw';
+            $creds['remember'] = true;
+            $user = wp_signon( $creds, false );
         }   
     }
 }
