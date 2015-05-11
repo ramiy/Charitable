@@ -17,6 +17,8 @@ class Test_Charitable_User extends WP_UnitTestCase {
 	function setUp() {
 		parent::setUp();
 
+		add_filter( 'charitable_auto_login_after_registration', '__return_false' );
+
 		/* Fish Mooney is created as a user, then made a donor later after making a donation */
 		$fish = $this->factory->user->create( array( 
 			'user_email'		=> 'fish@gotham.com',

@@ -221,10 +221,8 @@ class Test_Charitable_Campaign extends WP_UnitTestCase {
 		$this->assertEquals( 1, $this->campaign_2->get_donor_count() );
 	}
 
-	function test_suggested_amounts() {
-		foreach ( array( 5, 20, 50, 100, 250 ) as $suggested_donation ) {
-			$this->assertContains( $suggested_donation, $this->campaign_1->suggested_amounts );
-		}
+	function test_suggested_amounts() {	
+		$this->assertCount( 5, $this->campaign_1->get_suggested_donations() );
 	}
 
 	function test_get_donation_form() {
