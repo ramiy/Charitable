@@ -16,6 +16,10 @@ $field 			= $view_args[ 'field' ];
 $classes 		= $view_args[ 'classes' ];
 $fields 		= isset( $field[ 'fields' ] ) ? $field[ 'fields' ] : array();
 
+// echo '<pre>'; 
+// var_dump( $field[ 'key' ] );
+// echo '</pre>';
+
 if ( count( $fields ) ) : 
 
 ?>
@@ -30,11 +34,11 @@ if ( count( $fields ) ) :
 
 	$i = 1;
 
-	foreach ( $fields as $key => $field ) :
+	foreach ( $fields as $key => $fieldset_field ) :
 
-		do_action( 'charitable_form_field', $field, $key, $form, $i );
+		do_action( 'charitable_form_field', $fieldset_field, $key, $form, $i );
 
-		$i += apply_filters( 'charitable_form_field_increment', 1, $field, $key, $form );
+		$i += apply_filters( 'charitable_form_field_increment', 1, $fieldset_field, $key, $form );
 
 	endforeach;
 

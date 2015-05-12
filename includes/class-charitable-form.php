@@ -85,6 +85,17 @@ abstract class Charitable_Form {
 	}
 
 	/**
+	 * Return the form ID. 
+	 *
+	 * @return 	string
+	 * @access 	public
+	 * @since 	1.0.0
+	 */
+	public function get_form_identifier() {
+		return $this->id;
+	}
+
+	/**
 	 * Whether the given field type can use the default field template. 
 	 *
 	 * @param 	string 		$field_type
@@ -190,12 +201,8 @@ abstract class Charitable_Form {
 			return false;
 		}						
 
-		if ( ! is_null( $namespace ) ) {
-			$field[ 'key' ] = $namespace . '[' . $key . ']';
-		}
-		else {
-			$field[ 'key' ] = $key;
-		}
+		$input_name = is_null( $namespace ) ? $key : $namespace . '[' . $key . ']';
+		$field[ 'key' ] = apply_filters( 'charitable_form_field_key', $input_name, $key, $namespace, $form, $index );
 
 		/* Allows extensions/themes to plug in their own template objects here. */
 		$template = apply_filters( 'charitable_form_field_template', false, $field, $form, $index );
