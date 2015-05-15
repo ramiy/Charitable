@@ -27,12 +27,33 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  * @since   1.0.0
  */
 function charitable_get_login_page_permalink( $url, $args = array() ) {     
-    $page   = charitable_get_option( 'login_page', 'wp' );
-    $url    = 'wp' == $page ? wp_login_url() : get_permalink( $page );
+    $page = charitable_get_option( 'login_page', 'wp' );
+    $url = 'wp' == $page ? wp_login_url() : get_permalink( $page );
     return $url;
 }   
 
 add_filter( 'charitable_permalink_login_page', 'charitable_get_login_page_permalink', 2, 2 );      
+
+/**
+ * Checks whether the current request is for the campaign editing page. 
+ *
+ * This is used when you call charitable_is_page( 'login_page' ). 
+ * In general, you should use charitable_is_page() instead since it will
+ * take into account any filtering by plugins/themes.
+ *
+ * @see     charitable_is_page
+ * @return  boolean
+ * @since   1.0.0
+ */
+function charitable_is_login_page( $ret = false ) {
+    global $post;
+
+    $page = charitable_get_option( 'login_page', 'wp' );
+
+    return 'wp' == $page ? wp_login_url() == charitable_get_current_url() : $page == $post->ID;
+}
+
+add_filter( 'charitable_is_page_login_page', 'charitable_is_login_page', 2 );
 
 /**
  * Returns the URL for the user registration page. 
@@ -49,12 +70,33 @@ add_filter( 'charitable_permalink_login_page', 'charitable_get_login_page_permal
  * @since   1.0.0
  */
 function charitable_get_registration_page_permalink( $url, $args = array() ) {      
-    $page   = charitable_get_option( 'registration_page', 'wp' );
-    $url    = 'wp' == $page ? wp_registration_url() : get_permalink( $page );
+    $page = charitable_get_option( 'registration_page', 'wp' );
+    $url = 'wp' == $page ? wp_registration_url() : get_permalink( $page );
     return $url;
 }   
 
 add_filter( 'charitable_permalink_registration_page', 'charitable_get_registration_page_permalink', 2, 2 );    
+
+/**
+ * Checks whether the current request is for the campaign editing page. 
+ *
+ * This is used when you call charitable_is_page( 'registration_page' ). 
+ * In general, you should use charitable_is_page() instead since it will
+ * take into account any filtering by plugins/themes.
+ *
+ * @see     charitable_is_page
+ * @return  boolean
+ * @since   1.0.0
+ */
+function charitable_is_registration_page( $ret = false ) {
+    global $post;
+
+    $page = charitable_get_option( 'registration_page', 'wp' );
+
+    return 'wp' == $page ? wp_registration_url() == charitable_get_current_url() : $page == $post->ID;
+}
+
+add_filter( 'charitable_is_page_registration_page', 'charitable_is_registration_page', 2 );
 
 /**
  * Returns the URL for the user profile page. 
@@ -71,7 +113,7 @@ add_filter( 'charitable_permalink_registration_page', 'charitable_get_registrati
  * @since   1.0.0
  */
 function charitable_get_profile_page_permalink( $url, $args = array() ) {       
-    $page   = charitable_get_option( 'profile_page', false );
+    $page = charitable_get_option( 'profile_page', false );
 
     if ( $page ) {
         $url = get_permalink( $page );        
@@ -81,3 +123,24 @@ function charitable_get_profile_page_permalink( $url, $args = array() ) {
 }   
 
 add_filter( 'charitable_permalink_profile_page', 'charitable_get_profile_page_permalink', 2, 2 );  
+
+/**
+ * Checks whether the current request is for the campaign editing page. 
+ *
+ * This is used when you call charitable_is_page( 'profile_page' ). 
+ * In general, you should use charitable_is_page() instead since it will
+ * take into account any filtering by plugins/themes.
+ *
+ * @see     charitable_is_page
+ * @return  boolean
+ * @since   1.0.0
+ */
+function charitable_is_profile_page( $ret = false ) {
+    global $post;
+
+    $page = charitable_get_option( 'profile_page', false );
+
+    return false == $page ? false : $page == $post->ID;
+}
+
+add_filter( 'charitable_is_page_profile_page', 'charitable_is_profile_page', 2 );

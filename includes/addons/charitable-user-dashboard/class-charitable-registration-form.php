@@ -93,7 +93,7 @@ class Charitable_Registration_Form extends Charitable_Form {
                 'label'     => __( 'Password', 'charitable' ),              
                 'type'      => 'password', 
                 'priority'  => 8, 
-                'required'  => false
+                'required'  => true
             )
         ) );        
 
@@ -130,11 +130,13 @@ class Charitable_Registration_Form extends Charitable_Form {
             $user = new Charitable_User();
             $user->save( $submitted, array_keys( $fields ) );
 
-            $creds = array();
-            $creds['user_login'] = 'example';
-            $creds['user_password'] = 'plaintextpw';
-            $creds['remember'] = true;
-            $user = wp_signon( $creds, false );
+            if ( isset( $submitted[ 'user_pass' ] ) ) {
+                $creds = array();
+                $creds['user_login'] = isset( $submitted[ 'user_login' ] ) ? $submitted[ 'user_login' ] : $user->user_login; 
+                $creds['user_password'] = $submitted[ 'user_pass' ];
+                $creds['remember'] = true;
+                $user = wp_signon( $creds, false );
+            }            
         }   
     }
 }
