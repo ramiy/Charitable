@@ -412,12 +412,26 @@
 /*
  * Settings pages
  */
-.charitable-table {
-	td, 
-	th {
-		padding: 8px;
-	}	
-} 
+.charitable-gateway {    
+    padding: 10px 20px;
+    margin-bottom: 4px;
+    border: 1px solid #e1e1e1;
+    background-color: #fff;
+
+    h4 {    
+        float: left;
+        margin: 0;
+        line-height: 28px;
+    }
+
+    span.actions {
+        float: right;
+
+        a {
+            margin-left: 10px;
+        }
+    }
+}
 
 .charitable-help {
     display: block;

@@ -30,14 +30,47 @@ function charitable() {
 /**
  * This returns the value for a particular Charitable setting. 
  *
- * @param 	string		$key
+ * @param 	mixed		$key 			Accepts an array of strings or a single string.
  * @param 	mixed 		$default 		The value to return if key is not set.
+ * @param 	array 		$settings 		Optional. Used when $key is an array.
  * @return 	mixed
  * @since 	1.0.0
  */
-function charitable_get_option( $key, $default = false ) {
-	$settings = get_option( 'charitable_settings' );
-	return isset( $settings[ $key ] ) ? $settings[ $key ] : $default;
+function charitable_get_option( $key, $default = false, $settings = array() ) {
+	if ( empty( $settings ) ) {
+		$settings = get_option( 'charitable_settings' );		
+	}
+
+	if ( is_array( $key ) ) {
+		$current_key = current( $key );
+
+		/* Key does not exist */
+		if ( ! isset( $settings[ $current_key ] ) ) {		
+
+			return $default;
+
+		}
+		else {
+
+			array_shift( $key );
+
+			if ( empty( $key ) ) {
+				
+				return $settings[ $current_key ];
+
+			}
+			else {
+
+				return charitable_get_option( $key, $default, $settings[ $current_key ] );
+
+			}			
+		}
+	}
+	else {
+
+		return isset( $settings[ $key ] ) ? $settings[ $key ] : $default;
+
+	}
 }
 
 /**

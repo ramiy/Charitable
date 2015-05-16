@@ -39,8 +39,6 @@ class Charitable_Gateway extends Charitable_Start_Object {
 	 * @since 	1.0.0
 	 */
 	protected function __construct() {
-
-		$this->include_default_gateways();
 		$this->attach_hooks_and_filters();		
 
 		/**
@@ -48,11 +46,9 @@ class Charitable_Gateway extends Charitable_Start_Object {
 		 * give Charitable the name of your gateway class.
 		 */
 		$this->gateways = apply_filters( 'charitable_payment_gateways', array(
-			'Charitable_Gateway_Offline', 
-			'Charitable_Gateway_Paypal'
+			'offline' 	=> 'Charitable_Gateway_Offline', 
+			'paypal'	=> 'Charitable_Gateway_Paypal'
 		) );
-
-		$this->registered_gateways = apply_filters( 'charitable_registered_gateways', array() );
 	}
 
 	/**
@@ -64,34 +60,85 @@ class Charitable_Gateway extends Charitable_Start_Object {
 	 */
 	private function attach_hooks_and_filters() {
 		add_action( 'charitable_after_save_donation', array( $this, 'send_donation_to_gateway' ), 10, 2 );
+		add_action( 'charitable_enable_gateway', array( $this, 'handle_gateway_request' ) );
+		add_action( 'charitable_disable_gateway', array( $this, 'handle_gateway_request' ) );
 
 		do_action( 'charitable_gateway_start', $this );		
 	}
 
 	/**
-	 * Include default gateways provided in core. 
-	 *
-	 * @return 	void
-	 * @access  private
-	 * @since 	1.0.0
-	 */
-	private function include_default_gateways() {
-		include_once( charitable()->get_path( 'includes' ) . 'gateways/abstract-class-charitable-gateway.php' );
-		include_once( charitable()->get_path( 'includes' ) . 'gateways/class-charitable-gateway-offline.php' );
-		include_once( charitable()->get_path( 'includes' ) . 'gateways/class-charitable-gateway-paypal.php' );
-	}
-
-	/**
-	 * Register default gateways. 
+	 * Receives a request to enable or disable a payment gateway and validates it before passing it off.
 	 * 
 	 * @param 	array
 	 * @return 	array
 	 * @access 	public
 	 * @since 	1.0.0
 	 */
-	public function register_default_gateways( $gateways ) {
-		
+	public function handle_gateway_request() {
+		if ( ! wp_verify_nonce( $_REQUEST[ '_nonce' ], 'gateway' ) ) {
+			wp_die( __( 'Cheatin\' eh?!', 'charitable' ) );
+		}
+
+		$gateway = isset( $_REQUEST[ 'gateway_id' ] ) ? $_REQUEST[ 'gateway_id' ] : false;
+
+		/* Gateway must be set */
+		if ( false === $gateway ) {
+			wp_die( __( 'Missing gateway.', 'charitable' ) );
+		}		
+
+		/* Validate gateway. */
+		if ( ! isset( $this->gateways[ $gateway ] ) ) {
+			wp_die( __( 'Invalid gateway.', 'charitable' ) );
+		}
+
+		/* All good, so disable or enable the gateway */
+		if ( 'charitable_disable_gateway' == current_filter() ) {
+			$this->disable_gateway( $gateway );
+		}
+		else {
+			$this->enable_gateway( $gateway );
+		}	
 	}
+
+	/**
+	 * Enable a payment gateway. 
+	 *
+	 * @return  void
+	 * @access  protected
+	 * @since   1.0.0
+	 */
+	protected function enable_gateway( $gateway ) {
+		$settings = get_option( 'charitable_settings' );
+
+		$active_gateways = isset( $settings[ 'active_gateways' ] ) ? $settings[ 'active_gateways' ] : array();
+		$active_gateways[ $gateway ] = $this->gateways[ $gateway ];
+		$settings[ 'active_gateways' ] = $active_gateways;
+
+		update_option( 'charitable_settings', $settings );
+
+		do_action( 'charitable_gateway_enable', $gateway );
+	}
+
+	/**
+	 * Disable a payment gateway. 
+	 *
+	 * @return  void
+	 * @access  protected
+	 * @since   1.0.0
+	 */
+	protected function disable_gateway( $gateway ) {
+		$settings = get_option( 'charitable_settings' );
+
+		if ( ! isset( $settings[ 'active_gateways' ][ $gateway ] ) ) {
+			return;
+		}
+		
+		unset( $settings[ 'active_gateways' ][ $gateway ] );
+
+		update_option( 'charitable_settings', $settings );		
+
+		do_action( 'charitable_gateway_disable', $gateway );
+	}	
 
 	/**
 	 * Send the donation/donor off to the gateway.  
@@ -126,6 +173,18 @@ class Charitable_Gateway extends Charitable_Start_Object {
 	 */
 	public function get_active_gateways() {
 		return charitable_get_option( 'active_gateways' ) ? charitable_get_option( 'active_gateways' ) : array();
+	}
+
+	/**
+	 * Return the gateway class name for a given gateway.	 
+	 *
+	 * @param 	string 	$gateway
+	 * @return  string|false 	
+	 * @access  public
+	 * @since   1.0.0
+	 */
+	public function get_gateway( $gateway ) {
+		return isset( $this->gateways[ $gateway ] ) ? $this->gateways[ $gateway ] : false;
 	}
 
 	/**

@@ -362,9 +362,19 @@
 /*
  * Settings pages
  */
-.charitable-table td,
-.charitable-table th {
-  padding: 8px; }
+.charitable-gateway {
+  padding: 10px 20px;
+  margin-bottom: 4px;
+  border: 1px solid #e1e1e1;
+  background-color: #fff; }
+  .charitable-gateway h4 {
+    float: left;
+    margin: 0;
+    line-height: 28px; }
+  .charitable-gateway span.actions {
+    float: right; }
+    .charitable-gateway span.actions a {
+      margin-left: 10px; }
 
 .charitable-help {
   display: block;

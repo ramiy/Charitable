@@ -161,51 +161,54 @@ class Charitable {
      * @since   1.0.0
      */
     private function load_dependencies() {
+        $includes_path = $this->get_path( 'includes' );
         
-        /* Start objects */
-        require_once( $this->includes_path . 'class-charitable-start-object.php' );
-        require_once( $this->includes_path . 'class-charitable-addons.php' );
-        require_once( $this->includes_path . 'class-charitable-roles.php' );
-        require_once( $this->includes_path . 'class-charitable-donation-actions.php' );
-        require_once( $this->includes_path . 'class-charitable-post-types.php' );
-        require_once( $this->includes_path . 'class-charitable-campaigns.php' );
-        require_once( $this->includes_path . 'class-charitable-widgets.php' );
-        require_once( $this->includes_path . 'class-charitable-gateway.php' );
+        /* Functions */
+        require_once( $includes_path . 'charitable-core-functions.php' );
+        require_once( $includes_path . 'charitable-utility-functions.php' );
+        require_once( $includes_path . 'charitable-template-functions.php' );
 
         /* Interfaces */
-        require_once( $this->includes_path . 'interface-charitable-donation-form.php' );
+        require_once( $includes_path . 'interface-charitable-donation-form.php' );
 
-        /* Models */
-        require_once( $this->includes_path . 'class-charitable-form.php' );
-        require_once( $this->includes_path . 'class-charitable-campaign.php' );
-        require_once( $this->includes_path . 'class-charitable-donation.php' );
-        require_once( $this->includes_path . 'class-charitable-donation-form.php' );
-        require_once( $this->includes_path . 'class-charitable-donation-form-hidden.php' );
-        require_once( $this->includes_path . 'class-charitable-donations.php' );
-        require_once( $this->includes_path . 'class-charitable-user.php' );
-        require_once( $this->includes_path . 'class-charitable-donor.php' );
-        require_once( $this->includes_path . 'class-charitable-donor-query.php' );
+        /* Classes */
+        require_once( $includes_path . 'class-charitable-start-object.php' );
+        require_once( $includes_path . 'class-charitable-addons.php' );
+        require_once( $includes_path . 'class-charitable-roles.php' );
+        require_once( $includes_path . 'class-charitable-donation-actions.php' );
+        require_once( $includes_path . 'class-charitable-post-types.php' );
+        require_once( $includes_path . 'class-charitable-campaigns.php' );
+        require_once( $includes_path . 'class-charitable-widgets.php' );
+        require_once( $includes_path . 'class-charitable-gateway.php' );
+        require_once( $includes_path . 'class-charitable-form.php' );
+        require_once( $includes_path . 'class-charitable-campaign.php' );
+        require_once( $includes_path . 'class-charitable-donation.php' );
+        require_once( $includes_path . 'class-charitable-donation-form.php' );
+        require_once( $includes_path . 'class-charitable-donation-form-hidden.php' );
+        require_once( $includes_path . 'class-charitable-donations.php' );
+        require_once( $includes_path . 'class-charitable-user.php' );
+        require_once( $includes_path . 'class-charitable-donor.php' );
+        require_once( $includes_path . 'class-charitable-donor-query.php' );
+        require_once( $includes_path . 'class-charitable-currency.php' );
+        require_once( $includes_path . 'class-charitable-request.php' );      
+        require_once( $includes_path . 'class-charitable-locations.php' );
+        require_once( $includes_path . 'class-charitable-notices.php' );
 
-        require_once( $this->includes_path . 'db/abstract-class-charitable-db.php' );
-        require_once( $this->includes_path . 'db/class-charitable-campaign-donations-db.php' );
+        /* Gateways */
+        include_once( $includes_path . 'gateways/abstract-class-charitable-gateway.php' );
+        include_once( $includes_path . 'gateways/class-charitable-gateway-offline.php' );
+        include_once( $includes_path . 'gateways/class-charitable-gateway-paypal.php' );        
+        
+        /* Database */
+        require_once( $includes_path . 'db/abstract-class-charitable-db.php' );
+        require_once( $includes_path . 'db/class-charitable-campaign-donations-db.php' );
 
         /* Public */
-        require_once( $this->get_path( 'public' ) . 'class-charitable-session.php' );
-        require_once( $this->get_path( 'public' ) . 'class-charitable-session-donation.php' );
-        require_once( $this->get_path( 'public' ) . 'class-charitable-template.php' );      
-        require_once( $this->get_path( 'public' ) . 'class-charitable-template-part.php' );
-        require_once( $this->get_path( 'public' ) . 'class-charitable-templates.php' );
-
-        /* Helpers */
-        require_once( $this->includes_path . 'class-charitable-currency.php' );
-        require_once( $this->includes_path . 'class-charitable-request.php' );      
-        require_once( $this->includes_path . 'class-charitable-locations.php' );
-        require_once( $this->includes_path . 'class-charitable-notices.php' );
-
-        /* Functions */
-        require_once( $this->includes_path . 'charitable-core-functions.php' );
-        require_once( $this->includes_path . 'charitable-utility-functions.php' );
-        require_once( $this->includes_path . 'charitable-template-functions.php' );
+        require_once( $includes_path . 'public/class-charitable-session.php' );
+        require_once( $includes_path . 'public/class-charitable-session-donation.php' );
+        require_once( $includes_path . 'public/class-charitable-template.php' );      
+        require_once( $includes_path . 'public/class-charitable-template-part.php' );
+        require_once( $includes_path . 'public/class-charitable-templates.php' );            
     }
 
     /**
@@ -574,9 +577,9 @@ class Charitable {
      * @since   1.0.0
      */
     public function do_charitable_actions() {
-        if ( isset( $_POST['charitable_action'] ) ) {
+        if ( isset( $_REQUEST['charitable_action'] ) ) {
 
-            $action = $_POST[ 'charitable_action' ];
+            $action = $_REQUEST[ 'charitable_action' ];
             
             do_action( 'charitable_' . $action );
         }

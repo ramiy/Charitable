@@ -59,6 +59,7 @@ final class Charitable_Admin_Settings extends Charitable_Start_Object {
         add_action( 'admin_init', array( $this, 'register_settings' ) );      
 
         add_filter( 'charitable_sanitize_value', array( $this, 'sanitize_checkbox_value' ), 10, 2 );
+        add_filter( 'charitable_settings_tab_fields', array( $this, 'add_gateway_settings_fields' ) );
 
         do_action( 'charitable_admin_settings_start', $this );
     }
@@ -224,13 +225,51 @@ final class Charitable_Admin_Settings extends Charitable_Start_Object {
      * @since   1.0.0
      */
     private function get_gateway_fields() {
-        return apply_filters( 'charitable_settings_fields_gateways', array(
-            'gateways' => array(
-                'label_for'         => __( 'Available Payment Gateways', 'charitable' ),
-                'callback'          => array( $this, 'render_gateways_table' ), 
-                'priority'          => 5
+        /* Check if we are editing a specific gateway's settings. */   
+        if ( isset( $_GET[ 'edit_gateway' ] ) ) {            
+
+            $gateway = charitable_get_helper( 'gateway' )->get_gateway( $_GET[ 'edit_gateway' ] );
+            $gateway_fields[ $gateway::GATEWAY_ID ] = $this->get_individual_gateway_fields( $gateway );
+            
+        }
+        else {
+            
+            $gateway_fields = apply_filters( 'charitable_settings_fields_gateways', array(
+                'gateways' => array(
+                    'label_for'         => __( 'Available Payment Gateways', 'charitable' ),
+                    'callback'          => array( $this, 'render_gateways_table' ), 
+                    'priority'          => 5
+                )
+            ) );
+
+        }
+
+        return $gateway_fields;
+    }
+
+    /**
+     * Get the fields for one particular gateway. 
+     *
+     * @return  array
+     * @access  private
+     * @since   1.0.0
+     */
+    private function get_individual_gateway_fields( $gateway ) {        
+        $fields = apply_filters( 'charitable_settings_fields_gateways_gateway_default', array(
+            'section_gateway' => array(
+                'type'      => 'heading',
+                'title'     => $gateway::GATEWAY_NAME,
+                'priority'  => 2
+            ),
+            'label' => array(
+                'type'      => 'text', 
+                'title'     => __( 'Gateway Label', 'charitable' ), 
+                'help'      => __( 'The label that will be shown to donors on the donation form.', 'charitable' ), 
+                'priority'  => 4
             )
         ) );
+
+        return apply_filters( 'charitable_settings_fields_gateways_gateway_' . $gateway::GATEWAY_ID, $fields );        
     }
 
     /**
@@ -256,6 +295,22 @@ final class Charitable_Admin_Settings extends Charitable_Start_Object {
     }
 
     /**
+     * Add settings for each individual payment gateway. 
+     *
+     * @return  array[]
+     * @access  public
+     * @since   1.0.0
+     */
+    public function add_gateway_settings_fields( $fields ) {
+        foreach ( charitable_get_helper( 'gateway' )->get_active_gateways() as $gateway_id => $gateway_class ) {
+            $gateway_fields = $this->get_individual_gateway_fields( $gateway_class );
+            $fields[ $gateway_id ] = $gateway_fields;
+        }
+
+        return $fields;
+    }
+
+    /**
      * Register setting.
      *
      * @return  void
@@ -271,7 +326,7 @@ final class Charitable_Admin_Settings extends Charitable_Start_Object {
             return;
         }
 
-        /* Register each section */
+        /* Register each section */        
         foreach ( $this->get_sections() as $section_key => $section ) {
             $section_id = 'charitable_settings_' . $section_key;
             
@@ -291,24 +346,57 @@ final class Charitable_Admin_Settings extends Charitable_Start_Object {
             uasort( $section_fields, 'charitable_priority_sort' );
 
             /* Add the individual fields within the section */
-            foreach ( $section_fields as $key => $field ) {             
+            foreach ( $section_fields as $key => $field ) {
 
-                $callback       = isset( $field[ 'callback' ] ) ? $field[ 'callback' ] : array( $this, 'render_field' );
-                $field[ 'key' ] = $key;
-                $field[ 'section' ] = $section_key;
-                $label          = $this->get_field_label( $field, $key );                        
+                $this->register_field( $field, array( $section_key, $key ) );
 
-                add_settings_field( 
-                    'charitable_settings['. $key .']', 
-                    $label, 
-                    $callback, 
-                    $section_id, 
-                    $section_id, 
-                    $field 
-                ); 
             }
         }
     }   
+
+    /**
+     * Recursively add settings fields, given an array. 
+     *
+     * @param   array   $fields
+     * @param   string  $section_key
+     * @return  void
+     * @access  public
+     * @since   1.0.0
+     */
+    public function register_field( $field, $keys ) {
+        if ( is_array( current( $field ) ) ) {
+
+            foreach ( $field as $key => $new_field ) {
+
+                $new_keys = array_merge( $keys, array( $key ) );
+                $this->register_field( $new_field, $new_keys );
+
+            }
+
+        } 
+        else {            
+
+            $section_id = 'charitable_settings_' . $keys[ 0 ];
+
+            /* Drop the first key, which is the section identifier */            
+            $field[ 'name' ] = implode( '][', $keys );
+            array_shift( $keys ); 
+            $field[ 'key' ] = $keys;
+
+            $callback = isset( $field[ 'callback' ] ) ? $field[ 'callback' ] : array( $this, 'render_field' );        
+            $label = $this->get_field_label( $field, end( $keys ) );         
+
+            add_settings_field( 
+                sprintf( 'charitable_settings_%s', implode( '_', $keys ) ),
+                $label, 
+                $callback, 
+                $section_id, 
+                $section_id, 
+                $field 
+            ); 
+
+        }
+    }
 
     /**
      * Return the label for the given field. 
@@ -340,49 +428,100 @@ final class Charitable_Admin_Settings extends Charitable_Start_Object {
      * @since   1.0.0
      */
     public function sanitize_settings( $values ) {
-
         $old_values = get_option( 'charitable_settings' );
-        $new_values = array();
-        $form_fields = $this->get_fields();
+        $new_values = array();        
 
+        /* Loop through each section of the submitted data, merging the submitted values into the master array */
         foreach ( $values as $section => $submitted ) {
 
-            if ( ! isset( $form_fields[ $section ] ) ) {
-                continue;
-            }
-
-            $section_fields = $form_fields[ $section ];
-
-            foreach ( $section_fields as $key => $field ) {
-
-                $value = null;
-
-                /* No need to save headings :) */
-                if ( isset( $field[ 'type' ] ) && 'heading' == $field[ 'type' ] ) {
-                    continue;
-                }
-
-                /* Checkbox fields need to be set to 0 when they're not in the submitted array */
-                if ( isset( $field[ 'type' ] ) && 'checkbox' == $field[ 'type' ] ) {
-
-                    $value = isset( $submitted[ $key ] );
-                    $new_values[ $key ] = apply_filters( 'charitable_sanitize_value', $value, $field, $value, $key );
-
-                }
-                elseif ( isset( $submitted[ $key ] ) ) {
-
-                    $value = $submitted[ $key ];
-                    $new_values[ $key ] = apply_filters( 'charitable_sanitize_value', $value, $field, $values, $key );
-
-                } 
-
-            }
+            $new_values = array_merge( $new_values, $this->get_section_submitted_values( $section, $submitted ) );
 
         }      
 
         $values = wp_parse_args( $new_values, $old_values );
 
         return apply_filters( 'charitable_save_settings', $values, $new_values, $old_values );
+    }
+
+    /**
+     * Return the submitted values for the given section.   
+     *
+     * @param   string      $section
+     * @param   array       $submitted
+     * @return  array
+     * @access  private
+     * @since   1.0.0
+     */
+    private function get_section_submitted_values( $section, $submitted ) {
+        $values = array();            
+
+        /* If the current section contains another section, loop back on ourselves. */ 
+        if ( is_array( current( $submitted ) ) ) {
+
+            foreach ( $submitted as $key => $submitted ) {
+
+                $values[ $key ] = $this->get_section_submitted_values( $key, $submitted );
+
+            }
+        }
+        else {  
+
+            $form_fields = $this->get_fields();
+
+            if ( ! isset( $form_fields[ $section ] ) ) {
+                return $values;
+            }
+
+            foreach ( $form_fields[ $section ] as $key => $field ) {
+
+                $value = $this->get_setting_submitted_value( $key, $field, $submitted );
+
+                if ( ! is_null( $value ) ) {
+
+                    $values[ $key ] = $value;
+
+                }
+                
+            }
+
+        }
+
+        return $values;
+    }
+
+    /**
+     * Get the submitted value for a particular setting. 
+     *
+     * @param   string      $key
+     * @param   array       $field
+     * @param   array       $submitted
+     * @return  mixed|null  Returns null if the value was not submitted or is not applicable.
+     * @access  public
+     * @since   1.0.0
+     */
+    public function get_setting_submitted_value( $key, $field, $submitted ) {
+        $value = null;        
+
+        /* No need to save headings :) */
+        if ( isset( $field[ 'type' ] ) && 'heading' == $field[ 'type' ] ) {
+            return $value;
+        }
+
+        /* Checkbox fields need to be set to 0 when they're not in the submitted array */
+        if ( isset( $field[ 'type' ] ) && 'checkbox' == $field[ 'type' ] ) {
+
+            $value = isset( $submitted[ $key ] );
+            return apply_filters( 'charitable_sanitize_value', $value, $field, $submitted, $key );
+
+        }
+        elseif ( isset( $submitted[ $key ] ) ) {
+
+            $value = $submitted[ $key ];
+            return apply_filters( 'charitable_sanitize_value', $value, $field, $submitted, $key );
+
+        } 
+
+        return $value;
     }
 
     /**
@@ -395,13 +534,12 @@ final class Charitable_Admin_Settings extends Charitable_Start_Object {
      * @since   1.0.0
      */
     public function sanitize_checkbox_value( $value, $field ) {
-        
         if ( isset( $field[ 'type' ] ) && 'checkbox' == $field[ 'type' ] ) {
             $value = intval( $value && 'on' == $value );            
         }
 
         return $value;
-    }
+    }    
 
     /**
      * Display the Charitable settings page. 
@@ -436,7 +574,7 @@ final class Charitable_Admin_Settings extends Charitable_Start_Object {
      * @since   1.0.0
      */
     public function render_gateways_table( $args ) {
-        charitable_admin_view( 'settings/gateways-table', $args );
+        charitable_admin_view( 'settings/gateways', $args );
     }
 
     /**
