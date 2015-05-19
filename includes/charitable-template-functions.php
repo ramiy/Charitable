@@ -96,7 +96,7 @@ function charitable_get_campaign_donation_page_permalink( $url, $args = array() 
 	$campaign_id = isset( $args[ 'campaign_id' ] ) ? $args[ 'campaign_id' ] : get_the_ID();
 
 	if ( $wp_rewrite->using_permalinks() && ! isset( $_GET[ 'preview' ] ) ) {
-		$url = trailingslashit( get_permalink( $campaign_id ) ) . '/donate/';
+		$url = trailingslashit( get_permalink( $campaign_id ) ) . 'donate/';
 	}
 	else {
 		$url = esc_url_raw( add_query_arg( array( 'donate' => 1 ), get_permalink( $campaign_id ) ) );	

@@ -1,14 +1,14 @@
 <?php
 /**
- * The template used to display the login form.
+ * The template used to display the donation amount inputs.
  *
  * @author 	Studio 164a
  * @since 	1.0.0
  * @version 1.0.0
  */
 
-$form 				= $view_args[ 'form' ];
-$suggested_amounts 	= $form->get_campaign()->get( 'suggested_amounts' );
+$campaign 			= $view_args[ 'campaign' ];
+$suggested_donations = $campaign->get_suggested_donations();
 $currency_helper 	= charitable()->get_currency_helper();
 
 /**
@@ -19,22 +19,26 @@ do_action( 'charitable_donation_form_before_donation_amount' ); ?>
 <h3 class="charitable-form-header"><?php _e( 'Enter Donation Amount', 'charitable' ) ?></h3>
 
 <?php 
-if ( count( $suggested_amounts ) ) : 
+if ( count( $suggested_donations ) ) : 
 ?>
 <ul class="donation-amounts">
 	<?php 	
-	foreach ( $suggested_amounts as $amount ) : 
+	foreach ( $suggested_donations as $suggestion ) : 
 		?>
 		<li class="donation-amount suggested-donation-amount">
-			<input type="radio" name="donation-amount" value="<?php echo $amount ?>" />
-			<?php echo $currency_helper->get_monetary_amount( $amount ) ?>
+			<input type="radio" name="donation-amount" value="<?php echo $suggestion[ 'amount' ] ?>" /><?php 
+			printf( '%s %s', 
+				$currency_helper->get_monetary_amount( $suggestion[ 'amount' ] ), 
+				strlen( $suggestion[ 'description' ] ) ? '- ' . $suggestion[ 'description' ] : ''
+			) ?>
 		</li>
 		<?php 
 	endforeach;
 	?>
 	<li class="donation-amount custom-donation-amount" data-charitable-toggle="custom-donation-amount-field">
-		<input type="radio" name="donation-amount" value="custom" />
-		<?php _e( 'Enter custom amount', 'charitable' ) ?>
+		<input type="radio" name="donation-amount" value="custom" /><?php 
+			_e( 'Enter custom amount', 'charitable' );
+		?>
 	</li>
 </ul>
 

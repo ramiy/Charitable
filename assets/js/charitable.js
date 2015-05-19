@@ -42,6 +42,10 @@ var CHARITABLE = ( function( $ ){
 
 			$( '.donation-amount.selected ').removeClass( 'selected' );
 			$( this ).addClass( 'selected' );
+
+			if ( false === $( this ).hasClass( 'custom-donation-amount' ) ) {
+				$( '#custom-donation-amount-field' ).addClass( 'charitable-hidden' );
+			}
 		},
 
 		hideInputs : function( el ) {

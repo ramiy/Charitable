@@ -194,7 +194,6 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
 	 * @since 	1.0.0
 	 */
 	public function get_user_account_fields() {
-		
 		$account_fields = array(
 			'user_pass' => array(
 				'label'		=> __( 'Password', 'charitable' ), 
@@ -225,7 +224,7 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
 	 */
 	public function render() {
 		$template = charitable_template( 'donation-form/form-donation.php', false );
-		$template->set_view_args( array( 'form' => $this ) );
+		$template->set_view_args( array( 'campaign' => $this->get_campaign() ) );
 		$template->render();
 	}
 

@@ -54,18 +54,14 @@ final class Charitable_Donation_Actions extends Charitable_Start_Object {
 	 * @since 	1.0.0
 	 */ 
 	public function get_campaign_from_request() {
-		/**
-		 * A campaign ID must be set. 
-		 */
+		/* A campaign ID must be set */
 		if ( ! isset( $_POST['campaign_id'] ) ) {
 			return false;
 		}
 
 		$campaign_id = absint( $_POST['campaign_id'] );
 
-		/**
-		 * The ID must be for a campaign. 
-		 */
+		/* The ID must be for a campaign. */
 		if ( 'campaign' !== get_post_type( $campaign_id ) ) {
 			return false;
 		} 
@@ -81,22 +77,24 @@ final class Charitable_Donation_Actions extends Charitable_Start_Object {
 	 * @since 	1.0.0
 	 */
 	public function start_donation() {
-	
 		$campaign_id = $this->get_campaign_from_request();
 
 		if ( false === $campaign_id ) {
 			return;
-		}
+		}		
 
-		/**
-		 * Create or update the donation object in the session, with the current campaign ID.
-		 */
+		/* Create or update the donation object in the session, with the current campaign ID. */
 		$session = charitable_get_session();
 		$donation = $session->get( 'donation' );
 		
 		if ( false === $donation ) {
 			$donation = new Charitable_Session_Donation();			
 		}
+
+		// echo '<pre>'; 
+		// var_dump( $donation );
+		// var_dump( charitable_get_permalink( 'campaign_donation_page', array( 'campaign_id' => $campaign_id ) ) );
+		// die;
 
 		$donation->set( 'campaign_id', $campaign_id ); 
 		$session->set( 'donation', $donation );
