@@ -87,7 +87,8 @@ final class Charitable_Post_Types extends Charitable_Start_Object {
 					'supports' 				=> array( 'title', 'thumbnail', 'comments' ),
 					'has_archive' 			=> true,
 					'show_in_nav_menus' 	=> true, 
-					'show_in_menu'			=> true
+					'show_in_menu'			=> false, 
+					'show_in_admin_bar'		=> true
 				)
 			) 
 		);

@@ -66,9 +66,10 @@ class Charitable_Benefactors implements Charitable_Addon_Interface {
 	private function attach_hooks_and_filters() {
 		add_filter( 'charitable_db_tables', 					array( $this, 'register_table' ) );
 		add_filter( 'charitable_campaign_save',			 		array( $this, 'save_benefactors' ) );
+		add_action( 'wp_ajax_charitable_delete_benefactor', 	array( $this, 'delete_benefactor' ) );
 		add_action( 'charitable_campaign_benefactor_meta_box', 	array( $this, 'benefactor_meta_box' ), 5, 2);
 		add_action( 'charitable_campaign_benefactor_meta_box', 	array( $this, 'benefactor_form' ), 10, 2 );
-		add_action( 'charitable_uninstall', 					array( $this, 'uninstall' ) );
+		add_action( 'charitable_uninstall', 					array( $this, 'uninstall' ) );		
 	}
 
 	/**
@@ -161,6 +162,32 @@ class Charitable_Benefactors implements Charitable_Addon_Interface {
 				charitable()->get_db_table( 'benefactors' )->update( $campaign_benefactor_id, $data );
 			}
 		}
+	}
+
+	/**
+	 * Deactivate a benefactor.
+	 *
+	 * @return  boolean	
+	 * @access  public
+	 * @since   1.0.0
+	 */
+	public function delete_benefactor() {			
+		/* Run a security check first to ensure we initiated this action. */
+        check_ajax_referer( 'charitable-deactivate-benefactor', 'nonce' );
+
+        $benefactor_id = isset( $_POST[ 'benefactor_id' ] ) ? $_POST[ 'benefactor_id' ] : 0;
+
+        if ( ! $benefactor_id ) {
+        	$return = array( 'error' => __( 'No benefactor ID provided.', 'charitable' ) );
+        }
+		else {
+			$deleted = charitable()->get_db_table( 'benefactors' )->delete( $benefactor_id );
+			$return = array( 'deleted' => $deleted );
+		}
+
+		echo json_encode( $return );
+
+		wp_die();
 	}
 
 	/**
