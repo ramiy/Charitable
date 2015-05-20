@@ -381,7 +381,6 @@ class Charitable_Campaign {
 	 * @since 	1.0.0
 	 */
 	public function get_donations() {
-
 		if ( ! isset( $this->donations ) || is_null( $this->donations ) ) {
 
 			/* Try to fetch from cache first */

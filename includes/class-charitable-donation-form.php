@@ -71,6 +71,7 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
 	 */
 	protected function attach_hooks_and_filters() {
 		add_action( 'charitable_login_form', 						array( $this, 'login_form' ) );
+		add_action( 'charitable_donation_form_before_donation_amount', array( $this, 'enter_donation_amount_header' ) );
 		add_action( 'charitable_donation_form_amount', 				array( $this, 'enter_donation_amount' ) );
 		add_action( 'charitable_donation_form_before_user_fields',	array( $this, 'add_hidden_fields' ) ); 
 		add_action( 'charitable_donor_details', 					array( $this, 'add_donor_details' ) );
@@ -194,7 +195,6 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
 	 * @since 	1.0.0
 	 */
 	public function get_user_account_fields() {
-		
 		$account_fields = array(
 			'user_pass' => array(
 				'label'		=> __( 'Password', 'charitable' ), 
@@ -246,6 +246,22 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
 	}
 
 	/**
+	 * Add header before donation amount section.
+	 *
+	 * @param 	Charitable_Donation_Form 	$form
+	 * @return 	void
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function enter_donation_amount_header( $form ) {
+		if ( ! $form->is_current_form( $this->id ) ) {
+			return;
+		}
+
+		charitable_template( 'donation-form/donation-amount-header.php' );		
+	}	
+
+	/**
 	 * Add fields to select or enter donation amount. 
 	 *
 	 * @param 	Charitable_Donation_Form 	$form
@@ -259,7 +275,7 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
 		}
 
 		$template = charitable_template( 'donation-form/donation-amount.php', false );
-		$template->set_view_args( array( 'form' => $this ) );
+		$template->set_view_args( array( 'form' => $this, 'campaign' => $this->campaign ) );
 		$template->render();
 	}
 
@@ -271,12 +287,14 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
 	 * @access  public
 	 * @since 	1.0.0
 	 */
-	public function add_hidden_fields( $form ) {		
-		if ( parent::add_hidden_fields( $form ) ) :
-			?>				
-			<input type="hidden" name="campaign_id" value="<?php echo $this->campaign->get_campaign_id() ?>" />
-			<?php
-		endif;
+	public function add_hidden_fields( $form ) {	
+		if ( false === parent::add_hidden_fields( $form ) ) {
+			return false;
+		}	
+
+		?>				
+		<input type="hidden" name="campaign_id" value="<?php echo $this->campaign->ID ?>" />
+		<?php
 	}
 
 	/**
@@ -346,10 +364,7 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
 	 */
 	public function save_donation() {
 		if ( ! $this->validate_nonce() ) {
-			/**
-			 * @todo 	Set error message.
-			 */
-			return;
+			return false;
 		}
 
 		$values = array();		
@@ -358,10 +373,9 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
 		$values[ 'amount' ] = $this->get_donation_amount();
 
 		if ( 0 == $values[ 'amount' ] && ! apply_filters( 'charitable_permit_empty_donations', false ) ) {
-			/**
-			 * @todo 	Set error message.
-			 */
-			return;
+			
+			charitable_get_notices()->add_error( __( 'No donation amount was set.', 'charitable' ) );
+			return false;
 		}
 		
 		/* Set all the user fields and make sure that all required fields were submitted */
@@ -398,29 +412,29 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
 	}
 
 	/**
-	 * Return the donated amount. 
+	 * Return the donation amount.  
 	 *
-	 * @return 	int
+	 * @return 	float
 	 * @access  public
+	 * @static
 	 * @since 	1.0.0
 	 */
-	public function get_donation_amount() {
+	public static function get_donation_amount() {
+		$suggested 	= isset( $_POST[ 'donation-amount' ] ) ? $_POST[ 'donation-amount' ] : 0;
+		$custom 	= isset( $_POST[ 'custom-donation-amount' ] ) ? $_POST[ 'custom-donation-amount' ] : 0;
 
-		$donation_amount = isset( $_POST[ 'donation-amount' ] ) ? $_POST[ 'donation-amount' ] : 0;
+		if ( 0 === $suggested || 'custom' === $suggested ) {
 
-		if ( 'custom' == $donation_amount ) {
+			$amount = $custom;
 
-			if ( ! isset( $_POST['custom-donation-amount'] ) ) {
-				/**
-				 * @todo 	Set error message.
-				 */
-				return;
-			}
+		} 
+		else {
 
-			$values['amount'] = $_POST['custom-donation-amount'];
-		}		
+			$amount = $suggested;
 
-		return $donation_amount;
+		}
+
+		return $amount;
 	}
 }
 
