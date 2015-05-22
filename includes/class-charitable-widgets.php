@@ -50,6 +50,7 @@ final class Charitable_Widgets extends Charitable_Start_Object {
 		require_once( charitable()->get_path( 'includes' ) . 'widgets/class-charitable-campaigns-widget.php' );
 		require_once( charitable()->get_path( 'includes' ) . 'widgets/class-charitable-donors-widget.php' );
 		require_once( charitable()->get_path( 'includes' ) . 'widgets/class-charitable-donate-widget.php' );
+		require_once( charitable()->get_path( 'includes' ) . 'widgets/class-charitable-donation-stats-widget.php' );
 	}
 
 	/**
@@ -65,6 +66,7 @@ final class Charitable_Widgets extends Charitable_Start_Object {
 		register_widget( 'Charitable_Campaigns_Widget' );
 		register_widget( 'Charitable_Donors_Widget' );
 		register_widget( 'Charitable_Donate_Widget' );
+		register_widget( 'Charitable_Donation_Stats_Widget' );
 	}
 }
 

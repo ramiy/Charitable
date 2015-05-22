@@ -277,7 +277,7 @@ class Charitable_User extends WP_User {
     /**
      * Checks whether the user has any current campaigns (i.e. non-expired). 
      *
-     * @return  boolean
+     * @return  WP_Query
      * @access  public
      * @since   1.0.0
      */

@@ -151,9 +151,46 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 	}
 
 	/**
+	 * Get the total amount donated, ever.
+	 *
+	 * @global 	$wpdb
+	 * @return 	float
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function get_total() {
+		global $wpdb;
+
+		$sql = "SELECT SUM(amount) 
+				FROM $this->table_name";
+
+		return $wpdb->get_var( $sql );
+	}
+
+	/**
+	 * Get the total amount donated, ever.
+	 *
+	 * @global 	$wpdb
+	 * @return 	float
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function get_donor_count() {
+		global $wpdb;
+
+		$sql = "SELECT COUNT(*) 
+				FROM $wpdb->posts
+				WHERE post_type = 'donation'
+				AND post_status IN ( 'charitable-completed', 'charitable-preapproval' )
+				GROUP BY post_author;";
+
+		return $wpdb->get_var( $sql );
+	}
+
+	/**
 	 * Get an object of all campaign donations associated with a single donation. 
 	 *
-	 * @global 	wpdb		$wpdb
+	 * @global 	wpdb	$wpdb
 	 * @return 	Object
 	 * @access  public
 	 * @since 	1.0.0
@@ -172,7 +209,7 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 	 * Get the total amount donated in a single donation. 
 	 *
 	 * @global 	$wpdb
-	 * @param 	int 		$donation_id
+	 * @param 	int 	$donation_id
 	 * @return 	float
 	 * @access  public
 	 * @since 	1.0.0
