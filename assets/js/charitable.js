@@ -8,7 +8,7 @@ var CHARITABLE = ( function( $ ){
 		toggleTarget : function( event ) {
 			var target = $( this ).data( 'charitable-toggle' );
 
-			$( '#' + target ).toggleClass( 'charitable-hidden' );
+			$( '#' + target ).toggleClass( 'charitable-hidden', $( this ).is( ':checked' ) );
 
 			if ( $(this).is( 'a' ) ) {
 				return false;
@@ -35,7 +35,7 @@ var CHARITABLE = ( function( $ ){
 	var Donation_Selection = {
 
 		selectOption : function( event ) {
-			var input = $( this ).find( 'input' ), 
+			var input = $( this ).find( 'input[type=radio]' ), 
 				checked = ! input.attr( 'checked' );
 
 			input.attr( 'checked', checked ); 
@@ -46,10 +46,13 @@ var CHARITABLE = ( function( $ ){
 			if ( false === $( this ).hasClass( 'custom-donation-amount' ) ) {
 				$( '#custom-donation-amount-field' ).addClass( 'charitable-hidden' );
 			}
+			else {
+				$( 'input[name=custom-donation-amount]' ).focus();
+			}
 		},
 
 		hideInputs : function( el ) {
-			$( el ).find( 'input' ).hide();
+			$( el ).find( 'input[type=radio]' ).hide();
 		},
 
 		init : function() {

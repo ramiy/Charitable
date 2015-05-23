@@ -216,12 +216,12 @@ class Charitable_Profile_Form extends Charitable_Form {
 	 */
 	public function get_social_fields() {
 		$social_fields = apply_filters( 'charitable_user_social_fields', array(
-			'website' => array(
+			'user_url' => array(
 				'label'		=> __( 'Your Website', 'charitable' ), 
 				'type'		=> 'url', 
 				'priority' 	=> 42, 
 				'required'	=> false, 
-				'value' 	=> $this->get_user()->website
+				'value' 	=> $this->get_user()->user_url
 			),
 			'twitter' => array( 
 				'label' 	=> __( 'Twitter', 'charitable' ), 				

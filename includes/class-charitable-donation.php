@@ -351,6 +351,7 @@ class Charitable_Donation {
 	/**
 	 * Checks whether the user data passed when inserting the donation is valid. 
 	 *
+	 * @param 	array 	$args
 	 * @return 	boolean
 	 * @access  private
 	 * @static
@@ -358,6 +359,120 @@ class Charitable_Donation {
 	 */
 	private static function is_valid_user_data( $args ) {		
 		return $args[ 'user_id' ] || false == apply_filters( 'charitable_require_user_account', true );		
+	}
+
+	/**
+	 * Validate campaign data passed to insert. 
+	 *
+	 * @param 	array 	$args
+	 * @return  boolean
+	 * @access  private
+	 * @static
+	 * @since   1.0.0
+	 */
+	private static function is_valid_campaign_data( $args ) {
+		return ! isset( $args['campaigns'] ) || ! is_array( $args['campaigns'] );
+	}
+
+	/**
+	 * Receives the passed arguments and returns the donation content. 
+	 *
+	 * @param 	array 	$args
+	 * @return  string
+	 * @access  private
+	 * @static
+	 * @since   1.0.0
+	 */
+	private function parse_donation_content( $args ) {
+		$ret = isset( $args[ 'note' ] ) ? $args[ 'note' ] : '';
+		return apply_filters( 'charitable_donation_data_content', $ret, $args );
+	}
+
+	/**
+	 * Receives the passed arguments and returns the donation parent. 
+	 *
+	 * @param 	array 	$args
+	 * @return  string
+	 * @access  private
+	 * @static
+	 * @since   1.0.0
+	 */
+	private function parse_donation_parent( $args ) {
+		$ret = isset( $args[ 'donation_plan' ] ) ? $args[ 'donation_plan' ] : 0;
+		return apply_filters( 'charitable_donation_data_post_parent', $ret, $args );
+	}
+
+	/**
+	 * Receives the passed arguments and returns the donation date. 
+	 *
+	 * @param 	array 	$args
+	 * @return  string
+	 * @access  private
+	 * @static
+	 * @since   1.0.0
+	 */
+	private function parse_donation_date( $args ) {
+		$ret = isset( $args[ 'date' ] ) ? $args[ 'date' ] : date('Y-m-d h:i:s');
+		return apply_filters( 'charitable_donation_data_post_date', $ret, $args );
+	}
+
+	/**
+	 * Receives the passed arguments and returns the donation title. 
+	 *
+	 * @param 	array 	$args
+	 * @return  string
+	 * @access  private
+	 * @static
+	 * @since   1.0.0
+	 */
+	private function parse_donation_title( $args ) {
+		$ret = sprintf( '%s &ndash; %s', __( 'Donation', 'charitable' ), date( 'j F Y H:i a', strtotime( self::parse_donation_date( $args ) ) ) );
+		return apply_filters( 'charitable_donation_data_post_title', $ret, $args );
+	}
+
+	/**
+	 * Receives the passed arguments and returns the donation status. 
+	 *
+	 * @param 	array 	$args
+	 * @return  string
+	 * @access  private
+	 * @static
+	 * @since   1.0.0
+	 */
+	private function parse_donation_status( $args ) {
+		$ret = 'charitable-pending';
+
+		/* Override if a valid status was set */
+		if ( isset( $args[ 'status' ] ) && array_key_exists( $args[ 'status' ], self::get_valid_donation_statuses() ) ) {
+			$ret = $args[ 'status' ];
+		}
+
+		return apply_filters( 'charitable_donation_data_post_status', $ret, $args );
+	}
+
+	/**
+	 * Parse the donation data, based on the passed $args array. 
+	 *
+	 * @param 	array 	$args
+	 * @return  array
+	 * @access  private
+	 * @static
+	 * @since   1.0.0
+	 */
+	private function parse_donation_data( $args ) {
+		$donation_args = array(
+			'post_type'		=> 'donation', 
+			'post_author'	=> $args[ 'user_id' ], 
+			'post_status'	=> self::parse_donation_status( $args ),
+			'post_content'	=> self::parse_donation_content( $args ), 
+			'post_parent'	=> self::parse_donation_parent( $args ),
+			'post_date'		=> self::parse_donation_date( $args ),
+			'post_title'	=> self::parse_donation_title( $args )
+		);						
+
+		$donation_args[ 'post_date_gmt' ] = get_gmt_from_date( $donation_args[ 'post_date' ] );
+
+		return apply_filters( 'charitable_donation_data', $donation_args, $args );
 	}
 
 	/**
@@ -372,13 +487,11 @@ class Charitable_Donation {
 	public static function insert( array $args ) {
 		$args = apply_filters( 'charitable_donation_args', $args );
 
-		/* Ensure that an array of campaigns has been passed */
-		if ( ! isset( $args['campaigns'] ) || ! is_array( $args['campaigns'] ) ) {
+		if ( ! self::is_valid_campaign_data( $args ) ) {
 			_doing_it_wrong( 'Charitable_Donation::insert()', 'A donation cannot be inserted without an array of campaigns being donated to.', '1.0.0' );
 			return 0;
 		}
 
-		/* Validate the user data we have received */
 		if ( ! self::is_valid_user_data( $args ) ) {
 			_doing_it_wrong( 'Charitable_Donation::insert()', 'A donation cannot be inserted without a valid user id.', '1.0.0' );
 			return 0;
@@ -386,20 +499,7 @@ class Charitable_Donation {
 		
 		do_action( 'charitable_before_add_donation', $args );
 
-		/* Save core donation object in Posts table */
-		$donation_args = array(
-			'post_type'		=> 'donation', 
-			'post_author'	=> $args[ 'user_id' ], 
-			'post_status'	=> 'charitable-pending'
-		);		
-		$donation_args['post_content'] 	= isset( $args['note'] ) 			? $args['note'] 			: '';		
-		$donation_args['post_parent'] 	= isset( $args['donation_plan'] )	? $args['donation_plan']	: 0;
-		$donation_args['post_date']		= isset( $args['date'] ) 			? $args['date'] 			: date('Y-m-d h:i:s');
-		$donation_args['post_title'] 	= sprintf( '%s &ndash; %s', __( 'Donation', 'charitable' ), date( 'j F Y H:i a', strtotime( $donation_args['post_date'] ) ) );
-
-		if ( isset( $args['status'] ) && array_key_exists( $args['status'], self::get_valid_donation_statuses() ) ) {
-			$donation_args['post_status'] = $args['status'];
-		}
+		$donation_args = self::parse_donation_data( $args );		
 
 		$donation_id = wp_insert_post( $donation_args );
 
@@ -463,8 +563,6 @@ class Charitable_Donation {
 	 * @since 	1.0.0
 	 */
 	public static function add_donation_meta( $donation_id, $args ) {		
-
-		/* Save other donation meta */
 		$meta_keys = array_intersect_key( self::get_mapped_meta_keys(), $args );
 
 		foreach ( $meta_keys as $key => $meta_key ) {
@@ -505,7 +603,6 @@ class Charitable_Donation {
 	 * @since 	1.0.0
 	 */
 	public static function sanitize_meta( $value, $key ) {
-
 		if ( 'donation_gateway' == $key ) {			
 			if ( empty( $value ) || ! $value ) {
 				$value = 'manual';

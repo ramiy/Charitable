@@ -50,7 +50,14 @@ function charitable_is_login_page( $ret = false ) {
 
     $page = charitable_get_option( 'login_page', 'wp' );
 
-    return 'wp' == $page ? wp_login_url() == charitable_get_current_url() : $page == $post->ID;
+    if ( 'wp' == $page ) {
+        $ret = wp_login_url() == charitable_get_current_url();
+    }
+    elseif ( is_object( $post ) ) {
+        $ret = $page == $post->ID;
+    }
+
+    return $ret;
 }
 
 add_filter( 'charitable_is_page_login_page', 'charitable_is_login_page', 2 );
@@ -93,7 +100,14 @@ function charitable_is_registration_page( $ret = false ) {
 
     $page = charitable_get_option( 'registration_page', 'wp' );
 
-    return 'wp' == $page ? wp_registration_url() == charitable_get_current_url() : $page == $post->ID;
+    if ( 'wp' == $page ) {
+        $ret = wp_registration_url() == charitable_get_current_url();
+    }
+    elseif ( is_object( $post ) ) {
+        $ret = $page == $post->ID;
+    }
+
+    return $ret;
 }
 
 add_filter( 'charitable_is_page_registration_page', 'charitable_is_registration_page', 2 );
@@ -140,7 +154,7 @@ function charitable_is_profile_page( $ret = false ) {
 
     $page = charitable_get_option( 'profile_page', false );
 
-    return false == $page ? false : $page == $post->ID;
+    return false == $page || is_null( $post ) ? false : $page == $post->ID;
 }
 
 add_filter( 'charitable_is_page_profile_page', 'charitable_is_profile_page', 2 );

@@ -2,55 +2,67 @@
 /**
  * The template used to display the donation amount inputs.
  *
- * @author 	Studio 164a
- * @since 	1.0.0
+ * @author  Studio 164a
+ * @since   1.0.0
  * @version 1.0.0
  */
 
-$campaign 			= $view_args[ 'campaign' ];
+$campaign           = $view_args[ 'campaign' ];
 $suggested_donations = $campaign->get_suggested_donations();
-$currency_helper 	= charitable()->get_currency_helper();
+$currency_helper    = charitable()->get_currency_helper();
+
+if ( empty( $suggested_donations ) && ! $campaign->get( 'allow_custom_donations' ) ) {
+    return;
+}
 
 /**
- * @hook 	charitable_donation_form_before_donation_amount
+ * @hook    charitable_donation_form_before_donation_amount
  */
-do_action( 'charitable_donation_form_before_donation_amount' ); ?>
+do_action( 'charitable_donation_form_before_donation_amount', $view_args[ 'form' ] );
 
-<h3 class="charitable-form-header"><?php _e( 'Enter Donation Amount', 'charitable' ) ?></h3>
-
-<?php 
 if ( count( $suggested_donations ) ) : 
 ?>
 <ul class="donation-amounts">
-	<?php 	
-	foreach ( $suggested_donations as $suggestion ) : 
-		?>
-		<li class="donation-amount suggested-donation-amount">
-			<input type="radio" name="donation-amount" value="<?php echo $suggestion[ 'amount' ] ?>" /><?php 
-			printf( '%s %s', 
-				$currency_helper->get_monetary_amount( $suggestion[ 'amount' ] ), 
-				strlen( $suggestion[ 'description' ] ) ? '- ' . $suggestion[ 'description' ] : ''
-			) ?>
-		</li>
-		<?php 
-	endforeach;
-	?>
-	<li class="donation-amount custom-donation-amount" data-charitable-toggle="custom-donation-amount-field">
-		<input type="radio" name="donation-amount" value="custom" /><?php 
-			_e( 'Enter custom amount', 'charitable' );
-		?>
-	</li>
+    <?php   
+    foreach ( $suggested_donations as $suggestion ) : 
+        ?>
+        <li class="donation-amount suggested-donation-amount">
+            <input type="radio" name="donation-amount" value="<?php echo $suggestion[ 'amount' ] ?>" /><?php 
+            printf( '<span class="amount">%s</span> <span class="description">%s</span>', 
+                $currency_helper->get_monetary_amount( $suggestion[ 'amount' ] ), 
+                strlen( $suggestion[ 'description' ] ) ? $suggestion[ 'description' ] : ''
+            ) ?>
+        </li>
+        <?php 
+    endforeach;
+
+    if ( $campaign->get( 'allow_custom_donations' ) ) :
+    ?>
+
+    <li class="donation-amount custom-donation-amount" data-charitable-toggle="custom-donation-amount-field">
+        <input type="radio" name="donation-amount" value="custom" /><?php 
+            _e( 'Enter custom amount', 'charitable' );
+        ?>
+        <div id="custom-donation-amount-field" class="charitable-form-field charitable-hidden">
+            <input type="text" name="custom-donation-amount" />
+        </div>
+    </li>
+
+    <?php endif ?>
+
 </ul>
 
-<?php endif ?>
+<?php elseif ( $campaign->get( 'allow_custom_donations' ) ) : ?>
 
-<div id="custom-donation-amount-field" class="charitable-form-field">
-	<label for="custom-donation-amount"><?php _e( 'Enter donation amount', 'charitable' ) ?></label>
-	<input type="text" name="custom-donation-amount" placeholder="" />
-</div>
+    <div id="custom-donation-amount-field" class="charitable-form-field charitable-custom-donation-field-alone">
+        <input type="text" name="custom-donation-amount" placeholder="<?php esc_attr_e( 'Enter donation amount', 'charitable' ) ?>" />
+    </div>
 
 <?php 
+
+endif;
+
 /**
- * @hook 	charitable_donation_form_after_donation_amount
+ * @hook    charitable_donation_form_after_donation_amount
  */
-do_action( 'charitable_donation_form_after_donation_amount' ); ?>
+do_action( 'charitable_donation_form_after_donation_amount', $view_args[ 'form' ]); ?>

@@ -102,6 +102,37 @@
 
 			return false;
 		});
+
+		$('body').on( 'click', '[data-campaign-benefactor-delete]', function() {			
+			var $block = $( this ).parents( '.charitable-benefactor' ),
+				data = {
+					action 			: 'charitable_delete_benefactor',
+					benefactor_id 	: $(this).data( 'campaign-benefactor-delete' ), 
+					nonce 			: $(this).data( 'nonce' )
+				};
+
+			$.ajax({
+	            type: "POST",
+	            data: data,
+	            dataType: "json",
+	            url: ajaxurl,
+	            xhrFields: {
+	                withCredentials: true
+	            },
+	            success: function (response) {
+	            	if ( response.deleted ) {
+	            		$block.remove();
+	            	}
+	            }
+	        }).fail(function (data) {
+	            if ( window.console && window.console.log ) {
+	            	console.log( 'failture' );
+	                console.log( data );
+	            }
+	        });
+
+			return false;
+		});
 	});
 
 })( jQuery );

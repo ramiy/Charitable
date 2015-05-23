@@ -365,18 +365,24 @@ abstract class Charitable_Form {
 	/**
 	 * Check the passed fields to ensure that all required fields have been submitted.
 	 *
+	 * @param 	array 	$fields
+	 * @param 	array 	$submitted
 	 * @return 	boolean
 	 * @access  public
 	 * @since 	1.0.0
 	 */
-	public function check_required_fields( $fields ) {		
+	public function check_required_fields( $fields, $submitted = array() ) {		
+		if ( empty( $submitted ) ) {
+			$submitted = $_POST;
+		}
+		
 		$missing = array();
 
 		foreach ( $this->get_required_fields( $fields ) as $key => $field ) {
 
-			$exists = isset( $_POST[ $key ] ) && ! empty( $_POST[ $key ] );
+			$exists = isset( $submitted[ $key ] ) && ! empty( $submitted[ $key ] );
 			$exists = $exists || ( 'picture' == $field[ 'type' ] && isset( $_FILES[ $key ] ) && ! empty( $_FILES[ $key ] ) );
-			$exists = apply_filters( $exists, $key, $field );
+			$exists = apply_filters( 'charitable_required_field_exists', $exists, $key, $field, $submitted );
 
 			if ( ! $exists ) {
 				

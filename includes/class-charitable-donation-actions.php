@@ -36,6 +36,7 @@ final class Charitable_Donation_Actions extends Charitable_Start_Object {
 		// add_action( 'charitable_start_donation', 	array( $this, 'start_donation' ), 1 );
 		add_action( 'charitable_start_donation', 	array( $this, 'start_donation' ) );
 		add_action( 'charitable_make_donation', 	array( $this, 'make_donation' ) );
+		add_action( 'charitable_make_donation_streamlined', array( $this, 'make_donation_streamlined' ) );
 
 		// add_action( 'charitable_make_donation', 	array( $this, 'save_pending_donation' ), 1 );
 		// add_action( 'charitable_make_donation', 	array( $this, 'send_to_gateway' ), 2 );
@@ -137,6 +138,25 @@ final class Charitable_Donation_Actions extends Charitable_Start_Object {
 		 */
 		do_action( 'charitable_after_save_donation', $campaign, $donation_id );
 	}
+
+	/**
+	 * Save a donation.
+	 *
+	 * @return 	void
+	 * @access 	public
+	 * @since 	1.0.0
+	 */
+	public function make_donation_streamlined() {
+		$campaign_id = $this->get_campaign_from_request();
+
+		if ( false === $campaign_id ) {
+			return;
+		}
+
+		$campaign = new Charitable_Campaign( $campaign_id );
+		$form = new Charitable_Donation_Amount_Form( $campaign );
+		$form->save_donation();
+	}	
 }
 
 endif; // End class_exists check.

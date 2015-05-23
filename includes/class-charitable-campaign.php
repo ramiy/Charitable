@@ -176,6 +176,7 @@ class Charitable_Campaign {
 			/**
 			 * The date is stored in the format of Y-m-d H:i:s.
 			 */
+			// echo '<pre>'; var_dump( $this->end_date ); die;
 			$date_time 	= explode( ' ', $this->end_date );
 			$date 		= explode( '-', $date_time[0] );
 			$time 		= explode( ':', $date_time[1] );
@@ -381,7 +382,6 @@ class Charitable_Campaign {
 	 * @since 	1.0.0
 	 */
 	public function get_donations() {
-
 		if ( ! isset( $this->donations ) || is_null( $this->donations ) ) {
 
 			/* Try to fetch from cache first */
@@ -550,7 +550,6 @@ class Charitable_Campaign {
 	 * @since 	1.0.0
 	 */
 	public static function sanitize_meta( $value, $key, $submitted ) {
-
 		switch ( $key ) {
 
 			case '_campaign_goal' :
@@ -593,7 +592,7 @@ class Charitable_Campaign {
 				break;
 
 		}
-
+		
 		return apply_filters( 'charitable_sanitize_campaign_meta_' . $key, $value );
 	}
 

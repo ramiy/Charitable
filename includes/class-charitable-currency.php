@@ -48,18 +48,18 @@ final class Charitable_Currency {
 	 * 50.00 -> $50.00 
 	 *
 	 * @param 	string 		$amount
+	 * @param 	int|false 	$decimal_count 	Optional. If not set, default decimal count will be used.
  	 * @return 	string|WP_Error
  	 * @access 	public
  	 * @since 	1.0.0
  	 */
-	public function get_monetary_amount( $amount ) {
+	public function get_monetary_amount( $amount, $decimal_count = false ) {
+		if ( false === $decimal_count ) {
+			$decimal_count = charitable_get_option( 'decimal_count', 2 );
+		}
+		
 		$amount = $this->sanitize_monetary_amount( strval( $amount ) );
-		$amount = number_format( 
-			$amount, 
-			charitable_get_option( 'decimal_count', 2 ), 
-			charitable_get_option( 'decimal_separator', '.' ), 
-			charitable_get_option( 'thousands_separator', ',' ) 
-		);
+		$amount = number_format( $amount, $decimal_count, charitable_get_option( 'decimal_separator', '.' ), charitable_get_option( 'thousands_separator', ',' ) );
 		return sprintf( $this->get_currency_format(), $this->get_currency_symbol(), $amount );
 	}
 
