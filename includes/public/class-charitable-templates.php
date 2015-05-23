@@ -36,7 +36,7 @@ class Charitable_Templates extends Charitable_Start_Object {
 		add_filter( 'template_include', array( $this, 'widget_template' ) );
 		add_filter( 'body_class', 		array( $this, 'add_donation_page_body_class' ) );
 		add_filter( 'body_class', 		array( $this, 'add_widget_page_body_class' ) );
-		add_filter( 'the_content', 		array( $this, 'campaign_content' ), 2 );		
+		add_filter( 'the_content', 		array( $this, 'campaign_content' ), 20 );		
 		
 		/* If you want to unhook any of the callbacks attached above, use this hook. */
 		do_action( 'charitable_templates_start', $this );

@@ -2,10 +2,10 @@
 /**
  * Campaign model
  *
- * @version		1.0.0
- * @package		Charitable/Classes/Charitable_Campaign
- * @author 		Eric Daams
- * @copyright 	Copyright (c) 2014, Studio 164a
+ * @version     1.0.0
+ * @package     Charitable/Classes/Charitable_Campaign
+ * @author      Eric Daams
+ * @copyright   Copyright (c) 2014, Studio 164a
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License  
  */
 
@@ -16,611 +16,622 @@ if ( ! class_exists( 'Charitable_Campaign' ) ) :
 /**
  * Campaign Model
  *
- * @since		1.0.0
+ * @since       1.0.0
  */
 class Charitable_Campaign {
 
-	/**
-	 * @var WP_Post The WP_Post object associated with this campaign.
-	 */
-	private $post;
-
-	/**
-	 * @var int The timestamp for the expiry for this campaign.
-	 */
-	private $end_time;
-
-	/**	 
-	 * @var decimal The fundraising goal for the campaign.
-	 */
-	private $goal;
-
-	/**
-	 * @var WP_Query The donations made to this campaign. 
-	 */
-	private $donations;
-
-	/**
-	 * @var int The amount donated to the campaign. 
-	 */
-	private $donated_amount;
-
-	/**
-	 * @var Charitable_Donation_Form The form object for this campaign.
-	 */
-	private $donation_form;
-
-	/**
-	 * Class constructor. 
-	 * 
-	 * @param 	mixed 	$post 		The post ID or WP_Post object for this this campaign.
-	 * @access 	public
-	 * @since 	1.0.0
-	 */
-	public function __construct( $post ) {
-
-		if ( ! is_a( $post, 'WP_Post' ) ) {			
-			$post = get_post( $post );
-		}
-
-		$this->post = $post;
-	}
-
-	/**
-	 * Magic getter.  
-	 *
-	 * @return 	mixed
-	 * @access  public
-	 * @since 	1.0.0
-	 */
-	public function __get( $key ) {		
-		if ( property_exists( $this->post, $key ) ) {
-			return $this->post->$key;
-		}
-
-		return $this->get( $key );
-	}
-
-	/**
-	 * Returns the campaign's post_meta values. _campaign_ is automatically prepended to the meta key.
-	 *
-	 * @see 	get_post_meta
-	 * @param 	string 	$meta_name 		The meta name to search for.
-	 * @param 	bool 	$single 		Whether to return a single value or an array. 
-	 * @return 	mixed 					This will return an array if single is false. If it's true, 
-	 *  								the value of the meta_value field will be returned.
-	 * @access 	public
-	 * @since 	1.0.0
-	 */
-	public function get( $meta_name, $single = true ) {
-		$meta_name = '_campaign_' . $meta_name;	
-		return get_post_meta( $this->post->ID, $meta_name, $single );		
-	}	
-
-	/**
-	 * Returns whether the campaign is endless (i.e. no end date has been set). 
-	 *
-	 * @return 	boolean
-	 * @access  public
-	 * @since 	1.0.0
-	 */
-	public function is_endless() {
-		return 0 == $this->end_date;
-	}
-
-	/**
-	 * Return the suggested amounts, or an empty array if there are none. 
-	 *
-	 * @return  array
-	 * @access  public
-	 * @since   1.0.0
-	 */
-	public function get_suggested_donations() {
-		$value = get_post_meta( $this->post->ID, '_campaign_suggested_donations', true );
-
-		if ( ! is_array( $value ) ) {
-			$value = array();
-		}
-
-		return $value;
-	}
-
-	/**
-	 * Returns the end date in your preferred format.
-	 *
-	 * If a format is not provided, the user-defined date_format in Wordpress settings is used.
-	 * 
-	 * @param 	string 	$date_format 	A date format accepted by PHP's date() function.
-	 * @return 	string|false 		String if an end date is set. False if campaign has no end date. 
-	 * @access 	public
-	 * @since 	1.0.0
-	 */
-	public function get_end_date($date_format = '') {
-		if ( $this->is_endless() ) {
-			return false;
-		}
-
-		if ( ! strlen( $date_format ) ) {
-			$date_format = get_option('date_format', 'd/m/Y');
-		}
-
-		/**
-		 * Filter the end date format using the charitable_campaign_end_date_format hook.
-		 */
-		$date_format = apply_filters( 'charitable_campaign_end_date_format', $date_format, $this );
-
-		/**
-		 * This is how the end date is stored in the database, so just return that directly.
-		 */
-		if ( 'Y-m-d H:i:s' == $date_format ) {
-			return $this->end_date;
-		}
-		
-		return date( $date_format, $this->get_end_time() );
-	}
-
-	/**
-	 * Returns the timetamp of the end date.
-	 *
-	 * @return 	int|false  			Int if campaign has an end date. False if campaign has no end date.
-	 * @access 	public
-	 * @since 	1.0.0
-	 */
-	public function get_end_time() {
-		if ( ! isset( $this->end_time ) ) {
-
-			if ( $this->is_endless() ) {
-				return false;
-			}
-
-			/**
-			 * The date is stored in the format of Y-m-d H:i:s.
-			 */
-			// echo '<pre>'; var_dump( $this->end_date ); die;
-			$date_time 	= explode( ' ', $this->end_date );
-			$date 		= explode( '-', $date_time[0] );
-			$time 		= explode( ':', $date_time[1] );
-			$this->end_time = mktime( $time[0], $time[1], $time[2], $date[1], $date[2], $date[0] );
-		}
-		return $this->end_time;
-	}
-
-	/**
-	 * Returns the amount of time left in the campaign in seconds.
-	 *
-	 * @return 	int $time_left 		Int if campaign has an end date. False if campaign has no end date.
-	 * @access 	public
-	 * @since 	1.0.0
-	 */
-	public function get_seconds_left() {
-		if ( $this->is_endless() ) {
-			return false;
-		}
-
-		$time_left = $this->get_end_time() - current_time( 'timestamp' );
-		return $time_left < 0 ? 0 : $time_left;	
-	}
-
-	/**
-	 * Returns the amount of time left in the campaign as a descriptive string. 
-	 *
-	 * @uses charitable_campaign_ended 			Change the text displayed when there is no time left.
-	 * @uses charitabile_campaign_minutes_left 	Change the text displayed when there is less than an hour left.
-	 * @uses charitabile_campaign_hours_left 	Change the text displayed when there is less than a day left.
-	 * @uses charitabile_campaign_days_left 	Change the text displayed when there is more than a day left.
-	 * @uses charitable_campaign_time_left 		Change the text displayed when there is time left. This will 
-	 *
-	 * @return 	string 		
-	 * @access 	public
-	 * @since 	1.0.0
-	 */
-	public function get_time_left() {
-		if ( $this->is_endless() ) {
-			return '';
-		}
-
-		$hour = 3600; 
-		$day = 86400;
-
-		$seconds_left = $this->get_seconds_left();		
-
-		/* Condition 1: The campaign has finished. */ 
-		if ( $seconds_left === 0 ) {
-
-			$time_left = apply_filters( 'charitable_campaign_ended', __( 'Campaign has ended', 'charitable' ), $this );
-
-		}
-		/* Condition 2: There is less than an hour left. */
-		elseif ( $seconds_left <= $hour ) {
-
-			$minutes_remaining = ceil( $seconds_left / 60 );
-			$time_left = apply_filters( 'charitabile_campaign_minutes_left', 
-				sprintf( _n('%s Minute Left', '%s Minutes Left', $minutes_remaining, 'charitable'), '<span class="amount time-left minutes-left">' . $minutes_remaining . '</span>' ), 
-				$this
-			);
-
-		}
-		/* Condition 3: There is less than a day left. */
-		elseif ( $seconds_left <= $day ) {
-
-			$hours_remaining = floor( $seconds_left / 3600 );
-			$time_left = apply_filters( 'charitabile_campaign_hours_left', 
-				sprintf( _n('%s Hour Left', '%s Hours Left', $hours_remaining, 'charitable'), '<span class="amount time-left hours-left">' . $hours_remaining . '</span>' ), 
-				$this
-			);
-
-		}
-		/* Condition 4: There is more than a day left. */
-		else {
-
-			$days_remaining = floor( $seconds_left / 86400 );
-			$time_left = apply_filters( 'charitabile_campaign_days_left', 
-				sprintf( _n('%s Day Left', '%s Days Left', $days_remaining, 'charitable'), '<span class="amount time-left days-left">' . $days_remaining . '</span>' ),
-				$this
-			);
-
-		}
-
-		return apply_filters( 'charitable_campaign_time_left', $time_left, $this );	
-	}	
-
-	/**
-	 * Returns whether the campaign has ended. 
-	 *
-	 * @return 	boolean
-	 * @access  public
-	 * @since 	1.0.0
-	 */
-	public function has_ended() {
-		return 0 == $this->get_seconds_left();
-	}
-
-	/**
-	 * Return the time since the campaign finished, or zero if it's still going. 
-	 *
-	 * @return 	int
-	 * @access  public
-	 * @since 	1.0.0
-	 */
-	public function get_time_since_ended() {
-		if ( 0 !== $this->get_seconds_left() ) {
-			return 0;
-		}
-
-		return current_time( 'timestamp' ) - $this->get_end_time();
-	}
-
-	/**
-	 * Returns the fundraising goal of the campaign.
-	 * 
-	 * @return 	decimal|false 		Decimal if goal is set. False if no goal has been set. 
-	 * @access 	public
-	 * @since 	1.0.0
-	 */
-	public function get_goal() {
-		if ( ! isset( $this->goal ) ) {
-			$this->goal = $this->has_goal() ? $this->get( 'goal' ) : false;
-		}
-
-		return $this->goal;
-	}
-
-	/**
-	 * Returns whether a goal has been set (anything greater than $0 is a goal).
-	 * 
-	 * @return 	boolean
-	 * @access 	public
-	 * @since 	1.0.0
-	 */
-	public function has_goal() {
-		return 0 < $this->get( 'goal' );
-	}	
-
-	/**
-	 * Returns the fundraising goal formatted as a monetary amount. 
-	 *
-	 * @return 	string
-	 * @access 	public
-	 * @since 	1.0.0
-	 */
-	public function get_monetary_goal() {
-		if ( ! $this->has_goal() ) {
-			return '';
-		}
-
-		return charitable()->get_currency_helper()->get_monetary_amount( $this->get_goal() );
-	}
-
-	/**
-	 * Returns whether the goal has been achieved. 
-	 *
-	 * @return 	boolean
-	 * @access  public
-	 * @since 	1.0.0
-	 */
-	public function has_achieved_goal() {
-		return $this->get_donated_amount() >= $this->get_goal();
-	}
-
-	/**
-	 * Return the campaign status. 
-	 *
-	 * If the campaign is published, this will return whether either 'active' or 'finished'. 
-	 *
-	 * @return  string
-	 * @access  public
-	 * @since   1.0.0
-	 */
-	public function get_status() {
-		$status = $this->post->post_status;
-
-		if ( 'publish' == $status ) {
-			$status = $this->has_ended() ? 'finished' : 'active';
-		}
-
-		return apply_filters( 'charitable_campaign_status', $status, $this->post->post_status, $this );
-	}
-
-	/**
-	 * Returns the key used for caching all donations made to this campaign.
-	 * 
-	 * @param 	int 		$campaign_id
-	 * @return 	string
-	 * @access 	public
-	 * @static
-	 * @since 	1.0.0
-	 */
-	public static function get_donations_cache_key( $campaign_id ) {
-		return 'charitable_campaign_' . $campaign_id . '_donations';
-	}
-
-	/**
-	 * Returns the donations made to this campaign. 
-	 *
-	 * @return 	WP_Query
-	 * @access 	public
-	 * @since 	1.0.0
-	 */
-	public function get_donations() {
-		if ( ! isset( $this->donations ) || is_null( $this->donations ) ) {
-
-			/* Try to fetch from cache first */
-			$this->donations = get_transient( $this->get_donations_cache_key( $this->ID ) );
-
-			if ( false === $this->donations ) {
-
-				$this->donations = charitable()->get_db_table('campaign_donations')->get_donations_on_campaign( $this->ID );
-	
-				set_transient( $this->get_donations_cache_key( $this->ID ), $this->donations, 0 ); 
-			}
-		}
-
-		return $this->donations;
-	}
-
-	/**
-	 * Return the current amount of donations.
-	 *
-	 * @return 	int
-	 * @access 	public
-	 * @since 	1.0.0
-	 */
-	public function get_donated_amount() {
-		if ( ! isset( $this->donated_amount ) || is_null( $this->donated_amount ) ) {
-
-			/**
-			 * Try to fetch from cache first. 
-			 */
-			$this->donated_amount = get_transient( $this->get_donations_cache_key( $this->ID ) . '_amount' );
-
-			if ( $this->donated_amount === false ) {
-				$this->donated_amount = charitable()->get_db_table('campaign_donations')->get_campaign_donated_amount( $this->ID );
-
-				set_transient( $this->get_donations_cache_key( $this->ID ) . '_amount', $this->donated_amount, 0 );
-			}			
-		}
-
-		return $this->donated_amount;
-	}
-
-	/**
-	 * Return the percentage donated. Use this if you want a formatted string.
-	 *
-	 * @return 	string|false 		String if campaign has a goal. False if no goal is set.
-	 * @access 	public
-	 * @since 	1.0.0
-	 */
-	public function get_percent_donated() {
-		$percent = $this->get_percent_donated_raw();
-
-		if ( false === $percent ) {
-			return $percent;
-		}		
-
-		$percent = number_format( $percent, 2 );
-
-		return apply_filters( 'charitable_percent_donated', $percent . '%', $percent, $this );
-	}
-
-	/**
-	 * Returns the percentage donated as a number.
-	 *
-	 * @return 	int
-	 * @access  public
-	 * @since 	1.0.0
-	 */
-	public function get_percent_donated_raw() {
-		if ( ! $this->has_goal() ) {
-			return false;
-		}
-
-		return ( $this->get_donated_amount() / $this->get_goal() ) * 100;
-	}
-
-	/**
-	 * Return the number of people who have donated to the campaign. 
-	 *
-	 * @return 	int
-	 * @since 	1.0.0
-	 */
-	public function get_donor_count() {
-		return charitable()->get_db_table('campaign_donations')->count_campaign_donors( $this->ID );
-	}
-
-	/**
-	 * Flush donations cache.
-	 *
-	 * @param 	int 	$campaign_id
-	 * @return 	void
-	 * @access 	public
-	 * @since 	1.0.0
-	 */
-	public function flush_donations_cache() {
-		delete_transient( self::get_donations_cache_key( $this->ID ) );
-		delete_transient( self::get_donations_cache_key( $this->ID ) . '_amount' );
-
-		$this->donations = null;
-		$this->donated_amount = null;
-	}
-
-	/**
-	 * Returns the donation form object. 
-	 * 
-	 * @return 	Charitable_Donation_Form_Interface
-	 * @access 	public
-	 * @since 	1.0.0
-	 */
-	public function get_donation_form() {
-		if ( ! isset( $this->donation_form ) ) {
-
-			$form_class = apply_filters( 'charitable_donation_form_class', 'Charitable_Donation_Form', $this );
-			
-			$this->donation_form = new $form_class( $this );
-		}
-
-		return $this->donation_form;
-	}
-
-	/**
-	 * Returns the campaign creator. 
-	 *
-	 * By default, this just returns the user from the post_author field, but 
-	 * it can be overridden by plugins. 
-	 *
-	 * @return 	int 		$user_id
-	 * @access 	public
-	 * @since 	1.0.0
-	 */
-	public function get_campaign_creator() {
-		return apply_filters( 'charitable_campaign_creator', $this->post->post_author, $this );
-	}
-
-	/**
-	 * Checks whether there is a campaign video. 
-	 *
-	 * @return 	boolean
-	 * @access 	public
-	 * @since 	1.0.0
-	 */
-	public function has_video() {
-		return strlen( $this->video );
-	}
-
-	/**
-	 * Embed a video with WordPress' embed shortcode.
-	 *
-	 * @return 	string
-	 * @access 	public
-	 * @since 	1.0.0
-	 */
-	public function embed_video() {
-		global $wp_embed;
-		return $wp_embed->run_shortcode( '[embed]'. $this->video .'[/embed]' );
-	}
-
-	/**
-	 * Sanitize meta values before they are persisted to the database. 
-	 *
-	 * @param  	mixed 		$value
-	 * @param 	string 		$key
-	 * @param 	array 		$submitted
-	 * @return 	mixed
-	 * @access 	public
-	 * @static
-	 * @since 	1.0.0
-	 */
-	public static function sanitize_meta( $value, $key, $submitted ) {
-		switch ( $key ) {
-
-			case '_campaign_goal' :
-				if ( empty( $value ) || ! $value ) {
-					$value = 0;
-				}
-				else {
-					$value = charitable()->get_currency_helper()->sanitize_monetary_amount( $value );
-				}
-				break;
-
-			case '_campaign_end_date' :
-				if ( empty( $value ) || ! $value ) {
-					$value = 0;
-				}
-				else {
-					$value = date( 'Y-m-d 00:00:00', strtotime( $value ) );
-				}				
-				break;
-
-			case '_campaign_suggested_donations' :
-				if ( ! is_array( $value ) ) {
-					$value = array();
-				}
-				else {
-					$value = array_filter( $value, array( 'Charitable_Campaign', 'filter_suggested_donation' ) );
-				}
-				break;
-
-			case '_campaign_allow_custom_donations' : 
-				$value = true == $value || 'on' == $value;
-				break;
-
-			case '_campaign_description' : 
-				$value = sanitize_text_field( $value );
-				break;
-
-			case '_campaign_video' : 
-				$value = sanitize_text_field( $value );
-				break;
-
-		}
-		
-		return apply_filters( 'charitable_sanitize_campaign_meta_' . $key, $value );
-	}
-
-	/**
-	 * Filter out any suggested donations that do not have an amount set.  
-	 *
-	 * @param 	array|string 	$donation
-	 * @return 	boolean
-	 * @access  public
-	 * @static
-	 * @since 	1.0.0
-	 */
-	public static function filter_suggested_donation( $donation ) {
-		if ( is_array( $donation ) ) {
-			return isset( $donation[ 'amount' ] ) && ! empty( $donation[ 'amount' ] );
-		}
-		else {
-			return ! empty( $donation[ 'amount' ] );
-		}
-	}
-
-	/**
-	 * @deprecated
-	 * @todo Get rid of this.
-	 */
-	public function get_campaign_id() {
-		return $this->ID;
-	}	
+    /**
+     * @var WP_Post The WP_Post object associated with this campaign.
+     */
+    private $post;
+
+    /**
+     * @var int The timestamp for the expiry for this campaign.
+     */
+    private $end_time;
+
+    /**  
+     * @var decimal The fundraising goal for the campaign.
+     */
+    private $goal;
+
+    /**
+     * @var WP_Query The donations made to this campaign. 
+     */
+    private $donations;
+
+    /**
+     * @var int The amount donated to the campaign. 
+     */
+    private $donated_amount;
+
+    /**
+     * @var Charitable_Donation_Form The form object for this campaign.
+     */
+    private $donation_form;
+
+    /**
+     * Class constructor. 
+     * 
+     * @param   mixed   $post       The post ID or WP_Post object for this this campaign.
+     * @access  public
+     * @since   1.0.0
+     */
+    public function __construct( $post ) {
+
+        if ( ! is_a( $post, 'WP_Post' ) ) {         
+            $post = get_post( $post );
+        }
+
+        $this->post = $post;
+    }
+
+    /**
+     * Magic getter.  
+     *
+     * @return  mixed
+     * @access  public
+     * @since   1.0.0
+     */
+    public function __get( $key ) {     
+        if ( property_exists( $this->post, $key ) ) {
+            return $this->post->$key;
+        }
+
+        return $this->get( $key );
+    }
+
+    /**
+     * Returns the campaign's post_meta values. _campaign_ is automatically prepended to the meta key.
+     *
+     * @see     get_post_meta
+     * @param   string  $meta_name      The meta name to search for.
+     * @param   bool    $single         Whether to return a single value or an array. 
+     * @return  mixed                   This will return an array if single is false. If it's true, 
+     *                                  the value of the meta_value field will be returned.
+     * @access  public
+     * @since   1.0.0
+     */
+    public function get( $meta_name, $single = true ) {
+        $meta_name = '_campaign_' . $meta_name; 
+        return get_post_meta( $this->post->ID, $meta_name, $single );       
+    }   
+
+    /**
+     * Returns whether the campaign is endless (i.e. no end date has been set). 
+     *
+     * @return  boolean
+     * @access  public
+     * @since   1.0.0
+     */
+    public function is_endless() {
+        return 0 == $this->end_date;
+    }
+
+    /**
+     * Return the suggested amounts, or an empty array if there are none. 
+     *
+     * @return  array
+     * @access  public
+     * @since   1.0.0
+     */
+    public function get_suggested_donations() {
+        $value = get_post_meta( $this->post->ID, '_campaign_suggested_donations', true );
+
+        if ( ! is_array( $value ) ) {
+            $value = array();
+        }
+
+        return $value;
+    }
+
+    /**
+     * Returns the end date in your preferred format.
+     *
+     * If a format is not provided, the user-defined date_format in Wordpress settings is used.
+     * 
+     * @param   string  $date_format    A date format accepted by PHP's date() function.
+     * @return  string|false        String if an end date is set. False if campaign has no end date. 
+     * @access  public
+     * @since   1.0.0
+     */
+    public function get_end_date($date_format = '') {
+        if ( $this->is_endless() ) {
+            return false;
+        }
+
+        if ( ! strlen( $date_format ) ) {
+            $date_format = get_option('date_format', 'd/m/Y');
+        }
+
+        /* Filter the end date format using the charitable_campaign_end_date_format hook. */
+        $date_format = apply_filters( 'charitable_campaign_end_date_format', $date_format, $this );
+
+        /* This is how the end date is stored in the database, so just return that directly. */
+        if ( 'Y-m-d H:i:s' == $date_format ) {
+            return $this->end_date;
+        }
+        
+        return date( $date_format, $this->get_end_time() );
+    }
+
+    /**
+     * Returns the timetamp of the end date.
+     *
+     * @return  int|false           Int if campaign has an end date. False if campaign has no end date.
+     * @access  public
+     * @since   1.0.0
+     */
+    public function get_end_time() {
+        if ( ! isset( $this->end_time ) ) {
+
+            if ( $this->is_endless() ) {
+                return false;
+            }
+
+            /* The date is stored in the format of Y-m-d H:i:s. */
+            $date_time  = explode( ' ', $this->end_date );
+            $date       = explode( '-', $date_time[0] );
+            $time       = explode( ':', $date_time[1] );
+            $this->end_time = mktime( $time[0], $time[1], $time[2], $date[1], $date[2], $date[0] );
+        }
+        return $this->end_time;
+    }
+
+    /**
+     * Returns the amount of time left in the campaign in seconds.
+     *
+     * @return  int $time_left      Int if campaign has an end date. False if campaign has no end date.
+     * @access  public
+     * @since   1.0.0
+     */
+    public function get_seconds_left() {
+        if ( $this->is_endless() ) {
+            return false;
+        }
+
+        $time_left = $this->get_end_time() - current_time( 'timestamp' );
+        return $time_left < 0 ? 0 : $time_left; 
+    }
+
+    /**
+     * Returns the amount of time left in the campaign as a descriptive string. 
+     *
+     * @uses charitable_campaign_ended          Change the text displayed when there is no time left.
+     * @uses charitabile_campaign_minutes_left  Change the text displayed when there is less than an hour left.
+     * @uses charitabile_campaign_hours_left    Change the text displayed when there is less than a day left.
+     * @uses charitabile_campaign_days_left     Change the text displayed when there is more than a day left.
+     * @uses charitable_campaign_time_left      Change the text displayed when there is time left. This will 
+     *
+     * @return  string      
+     * @access  public
+     * @since   1.0.0
+     */
+    public function get_time_left() {
+        if ( $this->is_endless() ) {
+            return '';
+        }
+
+        $hour = 3600; 
+        $day = 86400;
+
+        $seconds_left = $this->get_seconds_left();      
+
+        /* Condition 1: The campaign has finished. */ 
+        if ( $seconds_left === 0 ) {
+
+            $time_left = apply_filters( 'charitable_campaign_ended', __( 'Campaign has ended', 'charitable' ), $this );
+
+        }
+        /* Condition 2: There is less than an hour left. */
+        elseif ( $seconds_left <= $hour ) {
+
+            $minutes_remaining = ceil( $seconds_left / 60 );
+            $time_left = apply_filters( 'charitabile_campaign_minutes_left', 
+                sprintf( _n('%s Minute Left', '%s Minutes Left', $minutes_remaining, 'charitable'), '<span class="amount time-left minutes-left">' . $minutes_remaining . '</span>' ), 
+                $this
+            );
+
+        }
+        /* Condition 3: There is less than a day left. */
+        elseif ( $seconds_left <= $day ) {
+
+            $hours_remaining = floor( $seconds_left / 3600 );
+            $time_left = apply_filters( 'charitabile_campaign_hours_left', 
+                sprintf( _n('%s Hour Left', '%s Hours Left', $hours_remaining, 'charitable'), '<span class="amount time-left hours-left">' . $hours_remaining . '</span>' ), 
+                $this
+            );
+
+        }
+        /* Condition 4: There is more than a day left. */
+        else {
+
+            $days_remaining = floor( $seconds_left / 86400 );
+            $time_left = apply_filters( 'charitabile_campaign_days_left', 
+                sprintf( _n('%s Day Left', '%s Days Left', $days_remaining, 'charitable'), '<span class="amount time-left days-left">' . $days_remaining . '</span>' ),
+                $this
+            );
+
+        }
+
+        return apply_filters( 'charitable_campaign_time_left', $time_left, $this ); 
+    }   
+
+    /**
+     * Returns whether the campaign has ended. 
+     *
+     * @return  boolean
+     * @access  public
+     * @since   1.0.0
+     */
+    public function has_ended() {
+        return 0 == $this->get_seconds_left();
+    }
+
+    /**
+     * Return the time since the campaign finished, or zero if it's still going. 
+     *
+     * @return  int
+     * @access  public
+     * @since   1.0.0
+     */
+    public function get_time_since_ended() {
+        if ( 0 !== $this->get_seconds_left() ) {
+            return 0;
+        }
+
+        return current_time( 'timestamp' ) - $this->get_end_time();
+    }
+
+    /**
+     * Returns the fundraising goal of the campaign.
+     * 
+     * @return  decimal|false       Decimal if goal is set. False if no goal has been set. 
+     * @access  public
+     * @since   1.0.0
+     */
+    public function get_goal() {
+        if ( ! isset( $this->goal ) ) {
+            $this->goal = $this->has_goal() ? $this->get( 'goal' ) : false;
+        }
+
+        return $this->goal;
+    }
+
+    /**
+     * Returns whether a goal has been set (anything greater than $0 is a goal).
+     * 
+     * @return  boolean
+     * @access  public
+     * @since   1.0.0
+     */
+    public function has_goal() {
+        return 0 < $this->get( 'goal' );
+    }   
+
+    /**
+     * Returns the fundraising goal formatted as a monetary amount. 
+     *
+     * @return  string
+     * @access  public
+     * @since   1.0.0
+     */
+    public function get_monetary_goal() {
+        if ( ! $this->has_goal() ) {
+            return '';
+        }
+
+        return charitable()->get_currency_helper()->get_monetary_amount( $this->get_goal() );
+    }
+
+    /**
+     * Returns whether the goal has been achieved. 
+     *
+     * @return  boolean
+     * @access  public
+     * @since   1.0.0
+     */
+    public function has_achieved_goal() {
+        return $this->get_donated_amount() >= $this->get_goal();
+    }
+
+    /**
+     * Return the campaign status. 
+     *
+     * If the campaign is published, this will return whether either 'active' or 'finished'. 
+     *
+     * @return  string
+     * @access  public
+     * @since   1.0.0
+     */
+    public function get_status() {
+        $status = $this->post->post_status;
+
+        if ( 'publish' == $status ) {
+            $status = $this->has_ended() ? 'finished' : 'active';
+        }
+
+        return apply_filters( 'charitable_campaign_status', $status, $this->post->post_status, $this );
+    }
+
+    /**
+     * Returns the donations made to this campaign. 
+     *
+     * @return  WP_Query
+     * @access  public
+     * @since   1.0.0
+     */
+    public function get_donations() {
+        $this->donations = get_transient( self::get_donations_cache_key( $this->ID ) );
+
+        if ( false === $this->donations ) {
+
+            $this->donations = charitable()->get_db_table('campaign_donations')->get_donations_on_campaign( $this->ID );
+
+            set_transient( self::get_donations_cache_key( $this->ID ), $this->donations, 0 ); 
+        }
+
+        return $this->donations;
+    }
+
+    /**
+     * Return the current amount of donations.
+     *
+     * @return  int
+     * @access  public
+     * @since   1.0.0
+     */
+    public function get_donated_amount() {
+        $this->donated_amount = get_transient( self::get_donation_amount_cache_key( $this->ID ) );
+
+        if ( false === $this->donated_amount ) {
+            $this->donated_amount = charitable()->get_db_table('campaign_donations')->get_campaign_donated_amount( $this->ID );
+
+            set_transient( self::get_donation_amount_cache_key( $this->ID ), $this->donated_amount, 0 );
+        }
+
+        return $this->donated_amount;
+    }
+
+    /**
+     * Return a string describing the campaign's donation summary. 
+     *
+     * @return  string
+     * @access  public
+     * @since   1.0.0
+     */
+    public function get_donation_summary() {
+        $currency_helper = charitable_get_currency_helper();
+
+        if ( $this->has_goal() ) {
+            $ret = sprintf( _x( '%s donated of %s goal', 'amount donated of goal', 'charitable' ), 
+                '<span class="amount">' . $currency_helper->get_monetary_amount( $this->get_donated_amount() ) . '</span>', 
+                '<span class="goal-amount">' . $currency_helper->get_monetary_amount( $this->get_goal() ) . '</span>'
+            );
+        }
+        else {
+            $ret = sprintf( _x( '%s Donated', 'amount donated', 'charitable' ), 
+                '<span class="amount">' . $currency_helper->get_monetary_amount( $this->get_donated_amount() ) . '</span>'
+            );
+        }
+        
+        return apply_filters( 'charitable_donation_summary', $ret, $this );
+    }   
+
+    /**
+     * Return the percentage donated. Use this if you want a formatted string.
+     *
+     * @return  string|false        String if campaign has a goal. False if no goal is set.
+     * @access  public
+     * @since   1.0.0
+     */
+    public function get_percent_donated() {
+        $percent = $this->get_percent_donated_raw();
+
+        if ( false === $percent ) {
+            return $percent;
+        }       
+
+        $percent = number_format( $percent, 2 );
+
+        return apply_filters( 'charitable_percent_donated', $percent . '%', $percent, $this );
+    }
+
+    /**
+     * Returns the percentage donated as a number.
+     *
+     * @return  int
+     * @access  public
+     * @since   1.0.0
+     */
+    public function get_percent_donated_raw() {
+        if ( ! $this->has_goal() ) {
+            return false;
+        }
+
+        return ( $this->get_donated_amount() / $this->get_goal() ) * 100;
+    }
+
+    /**
+     * Return the number of people who have donated to the campaign. 
+     *
+     * @return  int
+     * @since   1.0.0
+     */
+    public function get_donor_count() {
+        return charitable()->get_db_table('campaign_donations')->count_campaign_donors( $this->ID );
+    }
+
+    /**
+     * Returns the donation form object. 
+     * 
+     * @return  Charitable_Donation_Form_Interface
+     * @access  public
+     * @since   1.0.0
+     */
+    public function get_donation_form() {
+        if ( ! isset( $this->donation_form ) ) {
+
+            $form_class = apply_filters( 'charitable_donation_form_class', 'Charitable_Donation_Form', $this );
+            
+            $this->donation_form = new $form_class( $this );
+        }
+
+        return $this->donation_form;
+    }
+
+    /**
+     * Returns the campaign creator. 
+     *
+     * By default, this just returns the user from the post_author field, but 
+     * it can be overridden by plugins. 
+     *
+     * @return  int         $user_id
+     * @access  public
+     * @since   1.0.0
+     */
+    public function get_campaign_creator() {
+        return apply_filters( 'charitable_campaign_creator', $this->post->post_author, $this );
+    }
+
+    /**
+     * Checks whether there is a campaign video. 
+     *
+     * @return  boolean
+     * @access  public
+     * @since   1.0.0
+     */
+    public function has_video() {
+        return strlen( $this->video );
+    }
+
+    /**
+     * Embed a video with WordPress' embed shortcode.
+     *
+     * @return  string
+     * @access  public
+     * @since   1.0.0
+     */
+    public function embed_video() {
+        global $wp_embed;
+        return $wp_embed->run_shortcode( '[embed]'. $this->video .'[/embed]' );
+    }
+
+    /**
+     * Sanitize meta values before they are persisted to the database. 
+     *
+     * @param   mixed       $value
+     * @param   string      $key
+     * @param   array       $submitted
+     * @return  mixed
+     * @access  public
+     * @static
+     * @since   1.0.0
+     */
+    public static function sanitize_meta( $value, $key, $submitted ) {
+        switch ( $key ) {
+
+            case '_campaign_goal' :
+                if ( empty( $value ) || ! $value ) {
+                    $value = 0;
+                }
+                else {
+                    $value = charitable()->get_currency_helper()->sanitize_monetary_amount( $value );
+                }
+                break;
+
+            case '_campaign_end_date' :
+                if ( empty( $value ) || ! $value ) {
+                    $value = 0;
+                }
+                else {
+                    $value = date( 'Y-m-d 00:00:00', strtotime( $value ) );
+                }               
+                break;
+
+            case '_campaign_suggested_donations' :
+                if ( ! is_array( $value ) ) {
+                    $value = array();
+                }
+                else {
+                    $value = array_filter( $value, array( 'Charitable_Campaign', 'filter_suggested_donation' ) );
+                }
+                break;
+
+            case '_campaign_allow_custom_donations' : 
+                $value = true == $value || 'on' == $value;
+                break;
+
+            case '_campaign_description' : 
+                $value = sanitize_text_field( $value );
+                break;
+
+            case '_campaign_video' : 
+                $value = sanitize_text_field( $value );
+                break;
+
+        }
+        
+        return apply_filters( 'charitable_sanitize_campaign_meta_' . $key, $value );
+    }
+
+    /**
+     * Filter out any suggested donations that do not have an amount set.  
+     *
+     * @param   array|string    $donation
+     * @return  boolean
+     * @access  public
+     * @static
+     * @since   1.0.0
+     */
+    public static function filter_suggested_donation( $donation ) {
+        if ( is_array( $donation ) ) {
+            return isset( $donation[ 'amount' ] ) && ! empty( $donation[ 'amount' ] );
+        }
+        else {
+            return ! empty( $donation[ 'amount' ] );
+        }
+    }
+
+    /**
+     * Flush donations cache.
+     *
+     * @param   int     $campaign_id
+     * @return  void
+     * @access  public
+     * @static
+     * @since   1.0.0
+     */
+    public static function flush_donations_cache( $campaign_id ) {
+        delete_transient( self::get_donations_cache_key( $campaign_id ) );
+        delete_transient( self::get_donation_amount_cache_key( $campaign_id ) );
+    }
+
+    /**
+     * Returns the key used for caching all donations made to this campaign.
+     * 
+     * @param   int         $campaign_id
+     * @return  string
+     * @access  private
+     * @static
+     * @since   1.0.0
+     */
+    private static function get_donations_cache_key( $campaign_id ) {
+        return 'charitable_campaign_' . $campaign_id . '_donations';
+    }
+
+    /**
+     * Returns the key used for caching the donation amount for this campaign.
+     * 
+     * @param   int         $campaign_id
+     * @return  string
+     * @access  private
+     * @static
+     * @since   1.0.0
+     */
+    private static function get_donation_amount_cache_key( $campaign_id ) {
+        return 'charitable_campaign_' . $campaign_id . '_donation_amount';
+    }   
 }
 
 endif; // End class_exists check

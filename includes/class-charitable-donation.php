@@ -371,7 +371,7 @@ class Charitable_Donation {
 	 * @since   1.0.0
 	 */
 	private static function is_valid_campaign_data( $args ) {
-		return ! isset( $args['campaigns'] ) || ! is_array( $args['campaigns'] );
+		return isset( $args['campaigns'] ) && is_array( $args['campaigns'] );
 	}
 
 	/**
@@ -383,7 +383,7 @@ class Charitable_Donation {
 	 * @static
 	 * @since   1.0.0
 	 */
-	private function parse_donation_content( $args ) {
+	private static function parse_donation_content( $args ) {
 		$ret = isset( $args[ 'note' ] ) ? $args[ 'note' ] : '';
 		return apply_filters( 'charitable_donation_data_content', $ret, $args );
 	}
@@ -397,7 +397,7 @@ class Charitable_Donation {
 	 * @static
 	 * @since   1.0.0
 	 */
-	private function parse_donation_parent( $args ) {
+	private static function parse_donation_parent( $args ) {
 		$ret = isset( $args[ 'donation_plan' ] ) ? $args[ 'donation_plan' ] : 0;
 		return apply_filters( 'charitable_donation_data_post_parent', $ret, $args );
 	}
@@ -411,7 +411,7 @@ class Charitable_Donation {
 	 * @static
 	 * @since   1.0.0
 	 */
-	private function parse_donation_date( $args ) {
+	private static function parse_donation_date( $args ) {
 		$ret = isset( $args[ 'date' ] ) ? $args[ 'date' ] : date('Y-m-d h:i:s');
 		return apply_filters( 'charitable_donation_data_post_date', $ret, $args );
 	}
@@ -425,7 +425,7 @@ class Charitable_Donation {
 	 * @static
 	 * @since   1.0.0
 	 */
-	private function parse_donation_title( $args ) {
+	private static function parse_donation_title( $args ) {
 		$ret = sprintf( '%s &ndash; %s', __( 'Donation', 'charitable' ), date( 'j F Y H:i a', strtotime( self::parse_donation_date( $args ) ) ) );
 		return apply_filters( 'charitable_donation_data_post_title', $ret, $args );
 	}
@@ -439,7 +439,7 @@ class Charitable_Donation {
 	 * @static
 	 * @since   1.0.0
 	 */
-	private function parse_donation_status( $args ) {
+	private static function parse_donation_status( $args ) {
 		$ret = 'charitable-pending';
 
 		/* Override if a valid status was set */
@@ -459,7 +459,7 @@ class Charitable_Donation {
 	 * @static
 	 * @since   1.0.0
 	 */
-	private function parse_donation_data( $args ) {
+	private static function parse_donation_data( $args ) {
 		$donation_args = array(
 			'post_type'		=> 'donation', 
 			'post_author'	=> $args[ 'user_id' ], 

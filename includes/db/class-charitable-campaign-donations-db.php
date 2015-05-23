@@ -91,16 +91,14 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 	 * @access 	public
 	 * @since 	1.0.0
 	 */
-	public function insert( $data, $type = 'campaign_donation' ) {
-		
-		/* Ensure the campaign name is set */
+	public function insert( $data, $type = 'campaign_donation' ) {	
 		if ( ! isset( $data[ 'campaign_name' ] ) ) {
 
 			$data[ 'campaign_name' ] = get_the_title( $data[ 'campaign_id' ] );
 
 		}
 
-		$this->flush_campaign_cache( $data['campaign_id'] );
+		Charitable_Campaign::flush_donations_cache( $data[ 'campaign_id' ] );
 
 		return parent::insert( $data, $type );
 	}
@@ -117,7 +115,7 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 	 */
 	public function update( $row_id, $data = array(), $where = '' ) {
 		if ( empty( $where ) ) {
-			$this->flush_campaign_cache( $row_id );
+			Charitable_Campaign::flush_donations_cache( $row_id );
 		}
 
 		return parent::update( $row_id, $data, $where );
@@ -132,22 +130,9 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 	 * @return  bool
 	 */
 	public function delete( $row_id = 0 ) {	
-		$this->flush_campaign_cache( $row_id );
+		Charitable_Campaign::flush_donations_cache( $row_id );
 
 		return parent::delete( $row_id );
-	}
-
-	/**
-	 * Flush a campaign's cache after insert/update/delete. 
-	 *
-	 * @param 	int 		$campaign_id
-	 * @return 	void
-	 * @access  private
-	 * @since 	1.0.0
-	 */
-	private function flush_campaign_cache( $campaign_id ) {
-		delete_transient( Charitable_Campaign::get_donations_cache_key( $campaign_id ) );
-		delete_transient( Charitable_Campaign::get_donations_cache_key( $campaign_id ) . '_amount' );
 	}
 
 	/**

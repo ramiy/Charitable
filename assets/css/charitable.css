@@ -123,4 +123,15 @@
   margin-top: 1em;
   border-top: 1px solid #ddd; }
 
+/* Widgets */
+.widget_charitable_campaigns_widget .campaigns {
+  list-style: none; }
+.widget_charitable_campaigns_widget .campaign {
+  padding: 1em 0;
+  border-bottom-color: #e6e6e6;
+  border-bottom-style: solid;
+  border-bottom-width: 1px; }
+  .widget_charitable_campaigns_widget .campaign:first-child {
+    padding-top: 0; }
+
 /*# sourceMappingURL=charitable.css.map */

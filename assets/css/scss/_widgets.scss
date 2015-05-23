@@ -1,0 +1,18 @@
+.widget_charitable_campaigns_widget {
+    .campaigns {
+        list-style: none;
+    }
+
+    .campaign {
+        padding: 1em 0;
+        border-bottom: {
+            color: #e6e6e6;
+            style: solid;
+            width: 1px;
+        }
+
+        &:first-child {
+            padding-top: 0;
+        }
+    }
+}

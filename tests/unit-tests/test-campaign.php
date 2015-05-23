@@ -100,11 +100,6 @@ class Test_Charitable_Campaign extends WP_UnitTestCase {
 		foreach ( $donations as $donation ) {
 			Charitable_Donation_Helper::create_donation( $donation );		
 		}
-	}
-
-	function test_get_campaign_id() {
-		$this->assertEquals( $this->post_1->ID, $this->campaign_1->get_campaign_id() );
-		$this->assertEquals( $this->post_2->ID, $this->campaign_2->get_campaign_id() );
 	}	
 
 	function test_get() {
@@ -194,7 +189,7 @@ class Test_Charitable_Campaign extends WP_UnitTestCase {
 			'user_id'			=> $user_id_4, 
 			'campaigns'			=> array(
 				array(
-					'campaign_id' 		=> $this->campaign_1->get_campaign_id(), 
+					'campaign_id' 		=> $this->campaign_1->ID, 
 					'campaign_name'		=> 'Test Campaign',
 					'amount'			=> 100
 				)				

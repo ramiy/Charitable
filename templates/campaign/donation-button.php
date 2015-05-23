@@ -8,6 +8,9 @@
 
 $campaign = charitable_get_current_campaign();
 
+if ( $campaign->has_ended() ) :
+    return;
+endif;
 ?>
 <form class="campaign-donation" method="post">
 	<?php wp_nonce_field( 'charitable-donate-' . charitable_get_session()->get_session_id(), 'charitable-donate-now' ) ?>
