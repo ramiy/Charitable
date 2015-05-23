@@ -286,7 +286,7 @@ class Charitable_Campaign {
     /**
      * Returns the fundraising goal of the campaign.
      * 
-     * @return  decimal|false       Decimal if goal is set. False if no goal has been set. 
+     * @return  string|false  Amount if goal is set. False otherwise.
      * @access  public
      * @since   1.0.0
      */
@@ -321,7 +321,7 @@ class Charitable_Campaign {
             return '';
         }
 
-        return charitable()->get_currency_helper()->get_monetary_amount( $this->get_goal() );
+        return charitable()->get_currency_helper()->get_monetary_amount( $this->get( 'goal' ) );
     }
 
     /**
@@ -406,7 +406,7 @@ class Charitable_Campaign {
         if ( $this->has_goal() ) {
             $ret = sprintf( _x( '%s donated of %s goal', 'amount donated of goal', 'charitable' ), 
                 '<span class="amount">' . $currency_helper->get_monetary_amount( $this->get_donated_amount() ) . '</span>', 
-                '<span class="goal-amount">' . $currency_helper->get_monetary_amount( $this->get_goal() ) . '</span>'
+                '<span class="goal-amount">' . $currency_helper->get_monetary_amount( $this->get( 'goal' ) ) . '</span>'
             );
         }
         else {

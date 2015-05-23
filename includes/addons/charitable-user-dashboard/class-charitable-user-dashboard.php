@@ -183,7 +183,7 @@ class Charitable_User_Dashboard implements Charitable_Addon_Interface {
      * @since   1.0.0
      */
     public function flush_menu_object_cache( $menu_id ) {
-        $nav_menu   = wp_get_nav_menu_object( $this->get_nav_id() );
+        $nav_menu = wp_get_nav_menu_object( $this->get_nav_id() );
 
         if ( $nav_menu && $menu_id == $nav_menu->term_id ) {
 
@@ -203,6 +203,7 @@ class Charitable_User_Dashboard implements Charitable_Addon_Interface {
     public function in_nav() {
         global $wp;
 
+        $found = false;
         $ret = wp_cache_get( 'charitable_in_user_dashboard', '', false, $found );       
 
         if ( false === $found ) {           

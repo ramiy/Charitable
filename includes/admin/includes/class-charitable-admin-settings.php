@@ -228,7 +228,9 @@ final class Charitable_Admin_Settings extends Charitable_Start_Object {
         if ( isset( $_GET[ 'edit_gateway' ] ) ) {            
 
             $gateway = charitable_get_helper( 'gateway' )->get_gateway( $_GET[ 'edit_gateway' ] );
-            $gateway_fields[ $gateway::GATEWAY_ID ] = $this->get_individual_gateway_fields( $gateway );
+            $gateway_fields = array(
+                $gateway::GATEWAY_ID => $this->get_individual_gateway_fields( $gateway )
+            );
             
         }
         else {

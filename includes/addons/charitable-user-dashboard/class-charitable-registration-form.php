@@ -1,4 +1,4 @@
-<?php
+    <?php
 /**
  * Class that manages the display and processing of the registration form.
  *
@@ -135,7 +135,7 @@ class Charitable_Registration_Form extends Charitable_Form {
                 $creds['user_login'] = isset( $submitted[ 'user_login' ] ) ? $submitted[ 'user_login' ] : $user->user_login; 
                 $creds['user_password'] = $submitted[ 'user_pass' ];
                 $creds['remember'] = true;
-                $user = wp_signon( $creds, false );
+                wp_signon( $creds, false );
             }            
         }   
     }

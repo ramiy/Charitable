@@ -139,11 +139,11 @@ final class Charitable_Currency {
 			case 'right-with-space':
 				$format = '%2$s&nbsp;%1$s';
 				break; 
+			default: 
+				$format = apply_filters( 'charitable_currency_format', '%1$s%2$s', $symbol_position );
 		}
-
-		$this->currency_format = apply_filters( 'charitable_currency_format', $format, $symbol_position );
-
-		return $this->currency_format;
+		
+		return $format;
 	}
 
 	/**
