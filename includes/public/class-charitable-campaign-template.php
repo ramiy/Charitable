@@ -149,6 +149,9 @@ class Charitable_Campaign_Template {
             case 'modal' : 
                 $template_name = 'campaign/donate-modal.php';
                 break;
+
+            default : 
+                $template_name = apply_filters( 'charitable_donate_button_template', 'campaign/donate-button.php', $campaign );
         }
 
         charitable_template_with_args( $template_name, array( 'campaign' => $campaign ) );
