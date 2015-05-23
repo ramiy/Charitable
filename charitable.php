@@ -36,9 +36,19 @@ class Charitable {
     const VERSION = '1.0.0';
 
     /**
-     * @var     string          A date in the format: YYYYMMDD
+     * @var     string      A date in the format: YYYYMMDD
      */
     const DB_VERSION = '20141024';  
+
+    /**
+     * @var     string      The Campaign post type.
+     */
+    const CAMPAIGN_POST_TYPE = 'campaign';
+
+    /**
+     * @var     string      The Donation post type.
+     */
+    const DONATION_POST_TYPE = 'donation';
 
     /**
      * @var     Charitable
@@ -210,6 +220,7 @@ class Charitable {
         require_once( $includes_path . 'public/class-charitable-template.php' );      
         require_once( $includes_path . 'public/class-charitable-template-part.php' );
         require_once( $includes_path . 'public/class-charitable-templates.php' );            
+        require_once( $includes_path . 'public/class-charitable-campaign-template.php' );
     }
 
     /**

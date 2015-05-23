@@ -225,7 +225,7 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
 	 */
 	public function render() {
 		$template = charitable_template( 'donation-form/form-donation.php', false );
-		$template->set_view_args( array( 'campaign' => $this->get_campaign() ) );
+		$template->set_view_args( array( 'campaign' => $this->get_campaign(), 'form' => $this ) );
 		$template->render();
 	}
 

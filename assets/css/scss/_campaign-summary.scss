@@ -34,14 +34,14 @@
         padding: 1em 0;
         text-align: center;
 
-        .button {
-            display: inline-block;            
+        .donate-button {
+            display: inline-block;    
         }
     }
 }
 
-.campaign-summary.campaign-is-endless,
-.campaign-summary.campaign-has-no-goal {
+.campaign-is-endless,
+.campaign-has-no-goal {
 	.campaign-summary-item {
 		width: 100%;
 		text-align: center;

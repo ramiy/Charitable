@@ -30,11 +30,11 @@
     width: 100%;
     padding: 1em 0;
     text-align: center; }
-    .campaign-summary .campaign-donation .button {
+    .campaign-summary .campaign-donation .donate-button {
       display: inline-block; }
 
-.campaign-summary.campaign-is-endless .campaign-summary-item,
-.campaign-summary.campaign-has-no-goal .campaign-summary-item {
+.campaign-is-endless .campaign-summary-item,
+.campaign-has-no-goal .campaign-summary-item {
   width: 100%;
   text-align: center; }
 

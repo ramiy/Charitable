@@ -194,17 +194,11 @@ class Test_Charitable_Campaign extends WP_UnitTestCase {
 					'amount'			=> 100
 				)				
 			),		
-			'gateway'			=> 'paypal', 
+			'gateway'			=> 'paypal',
 			'status'			=> 'charitable-completed'
 		) );
 
 		// Test count of donations again, before flush caching
-		$this->assertCount( 3, $this->campaign_1->get_donations() );
-
-		// Flush cache
-		$this->campaign_1->flush_donations_cache();	
-
-		// Test count of donations again, should be +1
 		$this->assertCount( 4, $this->campaign_1->get_donations() );
 	}
 

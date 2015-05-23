@@ -57,12 +57,18 @@ final class Charitable_Public extends Charitable_Start_Object {
 	 * @access 	public
 	 * @since 	1.0.0
 	 */
-	public function wp_enqueue_scripts() {		
+	public function wp_enqueue_scripts() {				
 		wp_register_script( 'charitable-script', charitable()->get_path( 'assets', false ) . 'js/charitable.js', array( 'jquery' ), charitable()->get_version() );
 		wp_enqueue_script( 'charitable-script' );
 
 		wp_register_style( 'charitable-styles', charitable()->get_path( 'assets', false ) . 'css/charitable.css', array(), charitable()->get_version() );
 		wp_enqueue_style( 'charitable-styles' );
+
+		/* Lean Modal is registered but NOT enqueued yet. */
+		if ( 'modal' == charitable_get_option( 'donation_form_display', 'separate_page' ) ) {
+			wp_register_script( 'lean-modal', charitable()->get_path( 'assets', false ) . 'js/libraries/jquery.leanModal.min.js', array( 'jquery' ), charitable()->get_version() );
+			wp_register_style( 'lean-modal-css', charitable()->get_path( 'assets', false ) . 'css/modal.css', array(), charitable()->get_version() );
+		}
 	}
 }
 

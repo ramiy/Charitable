@@ -435,10 +435,11 @@
 
 .charitable-help {
     display: block;
+    margin-top: 4px;
     font-size: 13px;
     line-height: 21px;
-    font-style: italic;
-    margin-top: 4px;
+    font-style: italic;    
+    color: #777;
 } 
 
 .charitable_page_charitable-settings {
@@ -463,3 +464,12 @@
 	}
 }
 
+.charitable-radio-list {
+    margin: 0;
+    list-style: none;
+
+    li {
+        display: inline-block;
+        margin-right: 20px;
+    }
+}

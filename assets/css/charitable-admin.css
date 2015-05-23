@@ -378,10 +378,11 @@
 
 .charitable-help {
   display: block;
+  margin-top: 4px;
   font-size: 13px;
   line-height: 21px;
   font-style: italic;
-  margin-top: 4px; }
+  color: #777; }
 
 @media (min-width: 48em) {
   .charitable_page_charitable-settings .form-table th {
@@ -390,5 +391,12 @@
   font-size: 13px; }
 .charitable_page_charitable-settings .form-table td select {
   max-width: 400px; }
+
+.charitable-radio-list {
+  margin: 0;
+  list-style: none; }
+  .charitable-radio-list li {
+    display: inline-block;
+    margin-right: 20px; }
 
 /*# sourceMappingURL=charitable-admin.css.map */

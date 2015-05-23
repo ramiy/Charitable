@@ -72,7 +72,6 @@ final class Charitable_Admin_Settings extends Charitable_Start_Object {
      * @since   1.0.0
      */
     public function add_menu() {
-
         add_menu_page( 'Charitable', 'Charitable', $this->admin_menu_capability, $this->admin_menu_parent_page, array( $this, 'render_charitable_settings_page' ) );
 
         add_submenu_page( $this->admin_menu_parent_page, __( 'All Campaigns', 'charitable' ), __( 'Campaigns', 'charitable' ), $this->admin_menu_capability, 'edit.php?post_type=campaign' );
@@ -97,7 +96,8 @@ final class Charitable_Admin_Settings extends Charitable_Start_Object {
             'general'   => __( 'General', 'charitable' ), 
             'forms'     => __( 'Forms', 'charitable' ),
             'gateways'  => __( 'Payment Gateways', 'charitable' ), 
-            'emails'    => __( 'Emails', 'charitable' )
+            'emails'    => __( 'Emails', 'charitable' ), 
+            'advanced'  => __( 'Advanced', 'charitable' )
         ) );
     }
 
@@ -172,30 +172,6 @@ final class Charitable_Admin_Settings extends Charitable_Start_Object {
                 'title'             => __( 'Pages', 'charitable' ), 
                 'type'              => 'heading', 
                 'priority'          => 20
-            ),
-            'donation_page'         => array(
-                'title'             => __( 'Donation Page', 'charitable' ), 
-                'type'              => 'select', 
-                'priority'          => 22, 
-                'default'           => 'auto',
-                'options'           => array(
-                    'auto'          => __( 'Use Automatic Routing', 'charitable' ), 
-                    'pages'         => array( 
-                        'options'   => $this->get_pages(), 
-                        'label'     => __( 'Choose a Static Page', 'charitable' )
-                    )
-                )
-            ),
-            'section_dangerous'     => array(
-                'title'             => __( 'Dangerous Settings', 'charitable' ), 
-                'type'              => 'heading', 
-                'priority'          => 100
-            ),
-            'delete_data_on_uninstall'  => array(
-                'label_for'         => __( 'Reset Data', 'charitable' ), 
-                'type'              => 'checkbox', 
-                'help'              => __( 'DELETE ALL DATA when uninstalling the plugin.', 'charitable' ), 
-                'priority'          => 105
             )
         ) );
     }
@@ -213,6 +189,29 @@ final class Charitable_Admin_Settings extends Charitable_Start_Object {
                 'title'             => __( 'Donation Form', 'charitable' ),
                 'type'              => 'heading',
                 'priority'          => 2
+            ), 
+            'donation_form_display' => array(
+                'title'             => __( 'Display Options', 'charitable' ), 
+                'type'              => 'select', 
+                'priority'          => 4, 
+                'default'           => 'separate_page',
+                'options'           => array(
+                    'separate_page' => __( 'Show on a Separate Page', 'charitable' ), 
+                    'same_page'     => __( 'Show on the Same Page', 'charitable' ),
+                    'modal'         => __( 'Reveal in a Modal', 'charitable' )
+                ), 
+                'help'              => __( 'Choose how you want a campaign\'s donation form to show.', 'charitable' )
+            ),
+            'require_donor_account' => array(
+                'title'             => __( 'Require Donors to Log In', 'charitable' ), 
+                'type'              => 'radio', 
+                'priority'          => 6, 
+                'default'           => 'yes',
+                'options'           => array(
+                    'yes'           => __( 'Yes', 'charitable' ), 
+                    'no'            => __( 'No', 'charitable' )
+                ), 
+                'help'              => __( 'If you select <strong>Yes</strong>, donors will have to register or login before making a donation.', 'charitable' )
             )
         ) ); 
     }
@@ -273,6 +272,29 @@ final class Charitable_Admin_Settings extends Charitable_Start_Object {
     }
 
     /**
+     * Get the advanced settings tab fields.  
+     *
+     * @return  array
+     * @access  private
+     * @since   1.0.0
+     */
+    private function get_advanced_fields() {
+        return apply_filters( 'charitable_settings_fields_forms', array(
+            'section_dangerous'     => array(
+                'title'             => __( 'Dangerous Settings', 'charitable' ), 
+                'type'              => 'heading', 
+                'priority'          => 100
+            ),
+            'delete_data_on_uninstall'  => array(
+                'label_for'         => __( 'Reset Data', 'charitable' ), 
+                'type'              => 'checkbox', 
+                'help'              => __( 'DELETE ALL DATA when uninstalling the plugin.', 'charitable' ), 
+                'priority'          => 105
+            )
+        ) );
+    }
+
+    /**
      * Return an array with all the fields & sections to be displayed. 
      *
      * @uses    charitable_settings_fields
@@ -290,7 +312,8 @@ final class Charitable_Admin_Settings extends Charitable_Start_Object {
         return apply_filters( 'charitable_settings_tab_fields', array(
             'general'   => $this->get_general_fields(),
             'forms'     => $this->get_form_fields(),
-            'gateways'  => $this->get_gateway_fields()          
+            'gateways'  => $this->get_gateway_fields(), 
+            'advanced'  => $this->get_advanced_fields()
         ) );
     }
 
@@ -563,7 +586,7 @@ final class Charitable_Admin_Settings extends Charitable_Start_Object {
     public function render_field( $args ) {     
         $field_type = isset( $args[ 'type' ] ) ? $args[ 'type' ] : 'text';
 
-        charitable_admin_view( 'settings/' . $field_type . '-field', $args );
+        charitable_admin_view( 'settings/' . $field_type, $args );
     }
 
     /**

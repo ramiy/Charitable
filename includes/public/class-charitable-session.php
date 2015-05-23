@@ -19,7 +19,7 @@ if ( ! class_exists( 'Charitable_Session' ) ) :
  *
  * @since 		1.0.0
  */
-class Charitable_Session {
+class Charitable_Session extends Charitable_Start_Object {
 
 	/**
 	 * Holds our session data
@@ -33,51 +33,27 @@ class Charitable_Session {
 	/**
 	 * Instantiate session object. Private constructor.
 	 *
-	 * @param 	Charitable $charitable
-	 * @return 	void
-	 * @access 	private
+	 * @access 	protected
 	 * @since 	1.0.0
 	 */
-	private function __construct( Charitable $charitable ) {
-		
-		$charitable->register_object( $this );
-
-		if( ! defined( 'WP_SESSION_COOKIE' ) )
+	protected function __construct() {	
+		if ( ! defined( 'WP_SESSION_COOKIE' ) )
 			define( 'WP_SESSION_COOKIE', 'charitable_session' );
 
 		if ( ! class_exists( 'Recursive_ArrayAccess' ) ) {
-			require_once( $charitable->get_path( 'includes' ) . 'libraries/wp-session/class-recursive-arrayaccess.php' );
+			require_once( charitable()->get_path( 'includes' ) . 'libraries/wp-session/class-recursive-arrayaccess.php' );
 		}
 		
 		if ( ! class_exists( 'WP_Session' ) ) {
-			require_once( $charitable->get_path( 'includes' ) . 'libraries/wp-session/class-wp-session.php' );
-			require_once( $charitable->get_path( 'includes' ) . 'libraries/wp-session/wp-session.php' );			
+			require_once( charitable()->get_path( 'includes' ) . 'libraries/wp-session/class-wp-session.php' );
+			require_once( charitable()->get_path( 'includes' ) . 'libraries/wp-session/wp-session.php' );			
 		}
 
-		/**
-		 * Set the expiration length & variant of the sessions.
-		 */
+		/* Set the expiration length & variant of the session */
 		add_filter( 'wp_session_expiration', array( $this, 'set_session_length' ), 99999 );
 		add_filter( 'wp_session_expiration_variant', array( $this, 'set_session_expiration_variant_length' ), 99999 );		
 
 		$this->session = WP_Session::get_instance();		
-	}
-
-	/**
-	 * Start the session object. 
-	 *
-	 * @param 	Charitable $charitable
-	 * @return 	Charitable_Session
-	 * @access 	public
-	 * @static
-	 * @since 	1.0.0
-	 */
-	public static function charitable_start( Charitable $charitable ) {
-		if ( ! $charitable->is_start() ) {
-			return;
-		}
-
-		return new Charitable_Session( $charitable );
 	}
 
 	/**

@@ -32,48 +32,32 @@ class Charitable_Templates extends Charitable_Start_Object {
 	 * @since 	1.0.0
 	 */
 	protected function __construct() {		
+		add_action( 'wp',  				array( $this, 'maybe_load_charitable_template' ) );
 		add_filter( 'template_include', array( $this, 'donate_template' ) );		
 		add_filter( 'template_include', array( $this, 'widget_template' ) );
 		add_filter( 'body_class', 		array( $this, 'add_donation_page_body_class' ) );
-		add_filter( 'body_class', 		array( $this, 'add_widget_page_body_class' ) );
-		add_filter( 'the_content', 		array( $this, 'campaign_content' ), 20 );		
+		add_filter( 'body_class', 		array( $this, 'add_widget_page_body_class' ) );		
 		
 		/* If you want to unhook any of the callbacks attached above, use this hook. */
 		do_action( 'charitable_templates_start', $this );
 	}	
 
-	/** 
-	 * Use our template for the campaign content.
-	 * 
-	 * @uses 	the_content
-	 * @global 	WP_Post 	$post
-	 * @param 	string 		$content
-	 * @return 	string
-	 * @access 	public
-	 * @since 	1.0.0
+	/**
+	 * Possibly load a Charitable template class. Depends on whether we are looking at a campaign, 
+	 * donation page or widget. 
+	 *
+	 * @return  boolean 	True if a template was loaded. False otherwise.
+	 * @access  public
+	 * @since   1.0.0
 	 */
-	public function campaign_content($content) {
-		global $post;
-
-		if ( $post->post_type == 'campaign' ) {
-
-			/**
-			 * If you do not want to use the default campaign template, use this filter and return false. 
-			 *
-			 * @uses 	charitable_use_campaign_template
-			 */
-			if ( false === apply_filters( 'charitable_use_campaign_template', true ) ) {
-				return $content;
-			}
-
-			ob_start();
-
-			charitable_template( 'content-campaign.php' );
+	public function maybe_load_charitable_template() {
+		if ( Charitable::CAMPAIGN_POST_TYPE == get_post_type() ) {
 			
-			$content = ob_get_clean();
+			return Charitable_Campaign_Template::load();
+			
 		}
 
-		return $content;
+		return false;
 	}
 
 	/**
@@ -113,8 +97,7 @@ class Charitable_Templates extends Charitable_Start_Object {
 	 * @access  public
 	 * @since 	1.0.0
 	 */
-	public function widget_template( $template ) {
-		
+	public function widget_template( $template ) {	
 		if ( charitable_is_campaign_widget_page() ) {
 
 			do_action( 'charitable_is_widget' );
@@ -141,7 +124,6 @@ class Charitable_Templates extends Charitable_Start_Object {
 	 * @since 	1.0.0
 	 */
 	public function add_donation_page_body_class( $classes ) {
-		
 		if ( charitable_is_campaign_donation_page() ) {
 
 			$classes[] = 'campaign-donation-page';
@@ -160,7 +142,6 @@ class Charitable_Templates extends Charitable_Start_Object {
 	 * @since 	1.0.0
 	 */
 	public function add_widget_page_body_class( $classes ) {
-
 		if ( charitable_is_campaign_widget_page() ) {
 
 			$classes[] = 'campaign-widget';
