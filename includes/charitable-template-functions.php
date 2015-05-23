@@ -40,6 +40,18 @@ function charitable_template_part( $slug, $name = "" ) {
 }
 
 /**
+ * Renders a template, passing in the args to the view.
+ * @param 	string 	$template_name
+ * @return  void
+ * @since   1.0.0
+ */
+function charitable_template_with_args( $template_name, array $args ) {
+    $template = new Charitable_Template( $template_name, false );
+    $template->set_view_args( $args );
+    $template->render();
+}
+
+/**
  * Return the URL for a given page. 
  *
  * Example usage: 

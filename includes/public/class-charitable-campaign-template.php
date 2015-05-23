@@ -62,20 +62,6 @@ class Charitable_Campaign_Template {
     }    
 
     /**
-     * Enqueue lean modal script if the donation form is set to display in a modal. 
-     *
-     * @return  void
-     * @access  public
-     * @since   1.0.0
-     */
-    // public function enqueue_lean_modal() {
-    //     if ( 'modal' == charitable_get_option( 'donation_form_display', 'separate_page' ) ) {
-    //         wp_enqueue_script( 'lean-modal' );
-    //         wp_enqueue_style( 'lean-modal-css' );
-    //     }
-    // }
-
-    /**
      * Display the percentage that the campaign has raised in summary block. 
      *
      * @param   Charitable_Campaign $campaign
@@ -88,9 +74,7 @@ class Charitable_Campaign_Template {
             return false;
         }
 
-        $template = charitable_template( 'campaign/summary-percentage-raised.php', false );
-        $template->set_view_args( array( 'campaign' => $campaign ) );
-        $template->render();
+        charitable_template_with_args( 'campaign/summary-percentage-raised.php', array( 'campaign' => $campaign ) );
 
         return true;
     }
@@ -104,10 +88,7 @@ class Charitable_Campaign_Template {
      * @since   1.0.0
      */
     public function display_campaign_donation_summary( $campaign ) {
-        $template = charitable_template( 'campaign/summary-donations.php', false );
-        $template->set_view_args( array( 'campaign' => $campaign ) );
-        $template->render();
-
+        charitable_template_with_args( 'campaign/summary-donations.php', array( 'campaign' => $campaign ) );
         return true;
     }
 
@@ -120,10 +101,7 @@ class Charitable_Campaign_Template {
      * @since   1.0.0
      */
     public function display_campaign_donor_count( $campaign ) {
-        $template = charitable_template( 'campaign/summary-donors.php', false );
-        $template->set_view_args( array( 'campaign' => $campaign ) );
-        $template->render();
-
+        charitable_template_with_args( 'campaign/summary-donors.php', array( 'campaign' => $campaign ) );
         return true;
     }
 
@@ -140,10 +118,7 @@ class Charitable_Campaign_Template {
             return false;
         }
 
-        $template = charitable_template( 'campaign/summary-time-left.php', false );
-        $template->set_view_args( array( 'campaign' => $campaign ) );
-        $template->render();
-
+        charitable_template_with_args( 'campaign/summary-time-left.php', array( 'campaign' => $campaign ) );
         return true;
     }
 
@@ -176,10 +151,7 @@ class Charitable_Campaign_Template {
                 break;
         }
 
-        $template = charitable_template( $template_name, false );
-        $template->set_view_args( array( 'campaign' => $campaign ) );
-        $template->render();
-
+        charitable_template_with_args( $template_name, array( 'campaign' => $campaign ) );
         return true;
     }
 
