@@ -45,7 +45,7 @@ class Charitable_Campaign_Template {
      * @since   1.0.0
      */
     private function __construct() {            
-        // add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_lean_modal' ) );   
+        add_action( 'charitable_campaign_content_before', array( $this, 'display_campaign_summary' ) );
         add_action( 'charitable_campaign_summary', array( $this, 'display_campaign_percentage_raised' ), 4 );
         add_action( 'charitable_campaign_summary', array( $this, 'display_campaign_donation_summary' ), 6 );
         add_action( 'charitable_campaign_summary', array( $this, 'display_campaign_donor_count' ), 8 );
@@ -53,13 +53,24 @@ class Charitable_Campaign_Template {
         add_action( 'charitable_campaign_summary', array( $this, 'display_donate_button' ), 14 );
         add_action( 'wp_footer', array( $this, 'add_modal_window' ) );
 
-        add_filter( 'post_class', array( $this, 'campaign_post_class' ) );
-        add_filter( 'the_content', array( $this, 'campaign_content' ), 10 );
-        add_filter( 'the_content', array( $this, 'campaign_donation_form' ), 20 );
+        // add_filter( 'post_class', array( $this, 'campaign_post_class' ) );
+        // add_filter( 'the_content', array( $this, 'campaign_content' ), 10 );
+        // add_filter( 'the_content', array( $this, 'campaign_donation_form' ), 20 );
         
-        /* If you want to unhook any of the callbacks attached above, use this hook. */
-        do_action( 'charitable_campaign_template_start', $this );
+        // /* If you want to unhook any of the callbacks attached above, use this hook. */
+        // do_action( 'charitable_campaign_template_start', $this );
     }    
+
+    /**
+     * Display campaign summary before rest of campaign content. 
+     *
+     * @return  void
+     * @access  public
+     * @since   1.0.0
+     */
+    public function display_campaign_summary() {
+        charitable_template( 'campaign/summary.php' );
+    }
 
     /**
      * Display the percentage that the campaign has raised in summary block. 
@@ -135,26 +146,8 @@ class Charitable_Campaign_Template {
             return false;
         }
 
-        $display_option = charitable_get_option( 'donation_form_display', 'separate_page' );
+        $campaign->donate_button_template();
 
-        switch ( $display_option ) {
-            case 'separate_page' : 
-                $template_name = 'campaign/donate-button.php';
-                break;
-
-            case 'same_page' : 
-                $template_name = 'campaign/donate-link.php';
-                break;
-
-            case 'modal' : 
-                $template_name = 'campaign/donate-modal.php';
-                break;
-
-            default : 
-                $template_name = apply_filters( 'charitable_donate_button_template', 'campaign/donate-button.php', $campaign );
-        }
-
-        charitable_template_with_args( $template_name, array( 'campaign' => $campaign ) );
         return true;
     }
 
@@ -185,7 +178,6 @@ class Charitable_Campaign_Template {
         $campaign = charitable_get_current_campaign();
         $classes[] = $campaign->has_goal()      ? 'campaign-has-goal'   : 'campaign-has-no-goal';
         $classes[] = $campaign->is_endless()    ? 'campaign-is-endless' : 'campaign-has-end-date';
-
         return $classes;
     }
 
@@ -199,6 +191,10 @@ class Charitable_Campaign_Template {
      * @since   1.0.0
      */
     public function campaign_content( $content ) {
+        if ( ! $this->is_campaign_post() ) {
+            return $content;
+        }
+
         /**
          * If you do not want to use the default campaign template, use this filter and return false. 
          *
@@ -208,11 +204,17 @@ class Charitable_Campaign_Template {
             return $content;
         }
 
-        ob_start();
+        $campaign = charitable_get_current_campaign();
 
-        charitable_template( 'content-campaign.php' );
-        
-        $content = ob_get_clean();
+        ob_start();
+        do_action( 'charitable_campaign_content_before', $campaign ); 
+        $before_content = ob_get_clean();
+
+        ob_start();
+        do_action( 'charitable_campaign_content_after', $campaign );
+        $after_content = ob_get_clean();
+
+        $content = $before_content . $content . $after_content;
         
         return $content;
     }   
@@ -250,6 +252,17 @@ class Charitable_Campaign_Template {
      */
     private function show_donation_form_on_campaign_page() {
         return 'same_page' == charitable_get_option( 'donation_form_display', 'separate_page' );
+    }
+
+    /**
+     * Checks whether the current post object is a campaign. 
+     *
+     * @return  boolean
+     * @access  private
+     * @since   1.0.0
+     */
+    private function is_campaign_post() {
+        return Charitable::CAMPAIGN_POST_TYPE == get_post_type();
     }
 }
 

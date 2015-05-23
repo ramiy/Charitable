@@ -481,6 +481,40 @@ class Charitable_Campaign {
     }
 
     /**
+     * Renders the donate button template. 
+     *
+     * @return  void
+     * @access  public
+     * @since   1.0.0
+     */
+    public function donate_button_template() {
+        if ( $this->has_ended() ) {
+            return;
+        }
+        
+        $display_option = charitable_get_option( 'donation_form_display', 'separate_page' );
+
+        switch ( $display_option ) {
+            case 'separate_page' : 
+                $template_name = 'campaign/donate-button.php';
+                break;
+
+            case 'same_page' : 
+                $template_name = 'campaign/donate-link.php';
+                break;
+
+            case 'modal' : 
+                $template_name = 'campaign/donate-modal.php';
+                break;
+
+            default : 
+                $template_name = apply_filters( 'charitable_donate_button_template', 'campaign/donate-button.php', $campaign );
+        }
+
+        charitable_template_with_args( $template_name, array( 'campaign' => $this ) );
+    }
+
+    /**
      * Returns the campaign creator. 
      *
      * By default, this just returns the user from the post_author field, but 

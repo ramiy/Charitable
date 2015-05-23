@@ -16,9 +16,9 @@ do_action( 'charitable_campaign_content_before', $campaign );
 /**
  * Display the summary of the campaign. 
  */
-charitable_template_part( 'campaign/summary' );
+charitable_template_part( 'campaign/summary.php' );
 
-echo get_the_content();
+echo $view_args[ 'content' ];
 
 /**
  * @hook charitable_campaign_content_after
