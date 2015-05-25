@@ -511,7 +511,7 @@ class Charitable_Campaign {
                 $template_name = apply_filters( 'charitable_donate_button_template', 'campaign/donate-button.php', $campaign );
         }
 
-        charitable_template_with_args( $template_name, array( 'campaign' => $this ) );
+        charitable_template( $template_name, array( 'campaign' => $this ) );
     }
 
     /**

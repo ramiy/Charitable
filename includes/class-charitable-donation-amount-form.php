@@ -79,9 +79,9 @@ class Charitable_Donation_Amount_Form extends Charitable_Donation_Form implement
      * @since   1.0.0
      */
     public function render() {
-        $template = charitable_template( 'donation-form/form-donation-amount.php', false );
-        $template->set_view_args( array( 'form' => $this ) );
-        $template->render();
+        $template = charitable_template( 'donation-form/form-donation-amount.php', array( 
+            'form' => $this 
+        ) );
     }
 
     /**

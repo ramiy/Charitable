@@ -148,7 +148,6 @@ class Charitable_Template {
 	 * @since 	1.0.0
 	 */
 	public function render( $require_once = true ) {
-
 		/* Make sure that the template file exists. */
 		$template = $this->locate_template();
 
@@ -182,7 +181,6 @@ class Charitable_Template {
 	 * @since 	1.0.0
 	 */
 	public function locate_template() {
-
 		/* Template options are first checked in the theme/child theme using locate_template. */
 		$template = locate_template( $this->theme_template_options, false );	
 

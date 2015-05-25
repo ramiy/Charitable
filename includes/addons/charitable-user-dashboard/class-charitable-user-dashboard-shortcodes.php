@@ -88,11 +88,9 @@ class Charitable_User_Dashboard_Shortcodes {
 
         ob_start();
 
-        $template = charitable_template( 'shortcodes/profile.php', false );
-        $template->set_view_args( array( 
+        charitable_template( 'shortcodes/profile.php', array( 
             'form' => new Charitable_Profile_Form( $args ) 
         ) );
-        $template->render();
 
         return apply_filters( 'charitable_profile_shortcode', ob_get_clean() );
     }	
@@ -115,11 +113,9 @@ class Charitable_User_Dashboard_Shortcodes {
 
         ob_start();
 
-        $template = charitable_template( 'shortcodes/login.php', false );
-        $template->set_view_args( array(
+        charitable_template( 'shortcodes/login.php', array(
             'form' => new Charitable_Login_Form( $args ) 
         ) );
-        $template->render();
 
         return apply_filters( 'charitable_login_shortcode', ob_get_clean() );
     }
@@ -141,11 +137,9 @@ class Charitable_User_Dashboard_Shortcodes {
 
         ob_start();
 
-        $template = charitable_template( 'shortcodes/registration.php', false );
-        $template->set_view_args( array( 
+        charitable_template( 'shortcodes/registration.php', array( 
             'form' => new Charitable_Registration_Form( $args ) 
         ) );
-        $template->render();
 
         return apply_filters( 'charitable_registration_shortcode', ob_get_clean() );
     }

@@ -26,7 +26,7 @@ $benefactors 	= charitable()->get_db_table( 'benefactors' )->get_campaign_benefa
 		foreach ( $benefactors as $benefactor ) :
 		?>
 		<div class="charitable-metabox-block charitable-benefactor">
-			<?php do_action( 'charitable_campaign_benefactor_meta_box', new Charitable_Benefactor( $benefactor ), $extension ) ?>
+			<?php do_action( 'charitable_campaign_benefactor_meta_box', Charitable_Benefactor::get_object( $benefactor, $extension ), $extension ) ?>
 		</div>
 		<?php
 		endforeach;

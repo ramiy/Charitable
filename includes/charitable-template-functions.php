@@ -18,13 +18,21 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  * Displays a template. 
  *
  * @param 	string|array 	$template_name 		A single template name or an ordered array of template
- * @param 	bool 		 	$load 				If true the template file will be loaded if it is found.
- * @param 	bool 			$require_once 		Whether to require_once or require. Default true. Has no effect if $load is false. 
+ * @param 	arary 			$args 				Optional array of arguments to pass to the view.
  * @return 	Charitable_Template
  * @since 	1.0.0
  */
-function charitable_template( $template_name, $load = true, $require_once = true ) {
-	return new Charitable_Template( $template_name, $load, $require_once ); 
+function charitable_template( $template_name, array $args = array() ) {
+	if ( empty( $args ) ) {
+		$template = new Charitable_Template( $template_name ); 
+	}
+	else {
+		$template = new Charitable_Template( $template_name, false ); 
+		$template->set_view_args( $args );
+		$template->render();
+	}
+
+	return $template;
 }
 
 /**
@@ -40,15 +48,21 @@ function charitable_template_part( $slug, $name = "" ) {
 }
 
 /**
- * Renders a template, passing in the args to the view.
- * @param 	string 	$template_name
- * @return  void
+ * Return the template path if the template exists. Otherwise, return default.
+ *
+ * @param 	string 	$template
+ * @return  string 				The template path if the template exists. Otherwise, return default.
  * @since   1.0.0
  */
-function charitable_template_with_args( $template_name, array $args ) {
-    $template = new Charitable_Template( $template_name, false );
-    $template->set_view_args( $args );
-    $template->render();
+function charitable_get_template_path( $template, $default = "" ) {
+    $t = new Charitable_Template( $template, false );
+    $path = $t->locate_template();
+
+    if ( ! file_exists( $path ) ) {
+    	$path = $default;
+    }
+
+    return $path;
 }
 
 /**

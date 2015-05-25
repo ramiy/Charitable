@@ -131,12 +131,10 @@ abstract class Charitable_Form {
 
 		if ( ! empty( $errors ) ) {
 
-			$template = charitable_template( 'form-fields/errors.php', false );
-			$template->set_view_args( array(
+			$template = charitable_template( 'form-fields/errors.php', array(
 				'form' 		=> $form, 
 				'errors' 	=> $errors
 			) );
-			$template->render();
 
 		}
 	}
@@ -208,8 +206,8 @@ abstract class Charitable_Form {
 		$template = apply_filters( 'charitable_form_field_template', false, $field, $form, $index );
 
 		/* Fall back to default Charitable_Template if no template returned or if template was not object of 'Charitable_Template' class. */
-		if ( false === $template || ! is_object( $template ) || ! is_a( $template, 'Charitable_Template' ) ) {		
-			$template = charitable_template( $this->get_template_name( $field ), false );
+		if ( ! $this->is_valid_template( $template ) ) {		
+			$template = new Charitable_Template( $this->get_template_name( $field ), false );
 		}		
 
 		if ( ! $template->template_file_exists() ) {
@@ -478,6 +476,17 @@ abstract class Charitable_Form {
         }
 
         return $file;
+    }
+
+    /**
+     * Checks whether a template is valid. 
+     *
+     * @return  boolean
+     * @access  protected
+     * @since   1.0.0
+     */
+    protected function is_valid_template( $template ) {
+    	return is_object( $template ) && is_a( $template, 'Charitable_Template' );
     }
 }
 

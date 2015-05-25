@@ -36,8 +36,9 @@ class Charitable_Donors_Widget extends WP_Widget {
     /**
      * Display the widget contents on the front-end. 
      *
-     * @param   array $args
-     * @param   array $instance
+     * @param   array   $args
+     * @param   array   $instance
+     * @return  void
      * @access  public 
      * @since   1.0.0
      */
@@ -45,9 +46,7 @@ class Charitable_Donors_Widget extends WP_Widget {
         $view_args = array_merge( $args, $instance );
         $view_args[ 'donors' ] = $this->get_widget_donors( $instance );
 
-        $template = charitable_template( 'widgets/donors.php', false );
-        $template->set_view_args( $view_args );
-        $template->render();        
+        charitable_template( 'widgets/donors.php', $view_args );
     }    
 
     /**

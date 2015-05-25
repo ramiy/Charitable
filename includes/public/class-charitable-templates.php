@@ -76,14 +76,8 @@ class Charitable_Templates extends Charitable_Start_Object {
 
 			do_action( 'charitable_is_donate_page' );
 			
-			$new_template 	= apply_filters( 'charitable_donate_page_template', 'campaign-donation-page.php' );
-			$path 			= charitable_template( $new_template, false )->locate_template();
-
-			if ( file_exists( $path ) ) {
-
-				$template = $path;
-
-			}
+			$new_template = apply_filters( 'charitable_donate_page_template', 'campaign-donation-page.php' );
+			$template = charitable_get_template_path( $new_template, $template );			
 		}
 
 		return $template;
@@ -102,18 +96,12 @@ class Charitable_Templates extends Charitable_Start_Object {
 
 			do_action( 'charitable_is_widget' );
 			
-			$new_template 	= apply_filters( 'charitable_widget_page_template', 'campaign-widget.php' );
-			$path 			= charitable_template( $new_template, false )->locate_template();
-
-			if ( file_exists( $path ) ) {
-
-				$template = $path;
-
-			}
+			$new_template = apply_filters( 'charitable_widget_page_template', 'campaign-widget.php' );
+			$template = charitable_get_template_path( $new_template, $template );
 		}
 
 		return $template;
-	}	
+	}
 
 	/**
 	 * Adds custom body classes when viewing widget or donation form.

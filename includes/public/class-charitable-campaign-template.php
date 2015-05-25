@@ -85,7 +85,7 @@ class Charitable_Campaign_Template {
             return false;
         }
 
-        charitable_template_with_args( 'campaign/summary-percentage-raised.php', array( 'campaign' => $campaign ) );
+        charitable_template( 'campaign/summary-percentage-raised.php', array( 'campaign' => $campaign ) );
 
         return true;
     }
@@ -99,7 +99,7 @@ class Charitable_Campaign_Template {
      * @since   1.0.0
      */
     public function display_campaign_donation_summary( $campaign ) {
-        charitable_template_with_args( 'campaign/summary-donations.php', array( 'campaign' => $campaign ) );
+        charitable_template( 'campaign/summary-donations.php', array( 'campaign' => $campaign ) );
         return true;
     }
 
@@ -112,7 +112,7 @@ class Charitable_Campaign_Template {
      * @since   1.0.0
      */
     public function display_campaign_donor_count( $campaign ) {
-        charitable_template_with_args( 'campaign/summary-donors.php', array( 'campaign' => $campaign ) );
+        charitable_template( 'campaign/summary-donors.php', array( 'campaign' => $campaign ) );
         return true;
     }
 
@@ -129,7 +129,7 @@ class Charitable_Campaign_Template {
             return false;
         }
 
-        charitable_template_with_args( 'campaign/summary-time-left.php', array( 'campaign' => $campaign ) );
+        charitable_template( 'campaign/summary-time-left.php', array( 'campaign' => $campaign ) );
         return true;
     }
 

@@ -224,9 +224,10 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
 	 * @since 	1.0.0
 	 */
 	public function render() {
-		$template = charitable_template( 'donation-form/form-donation.php', false );
-		$template->set_view_args( array( 'campaign' => $this->get_campaign(), 'form' => $this ) );
-		$template->render();
+		charitable_template( 'donation-form/form-donation.php', array( 
+			'campaign' => $this->get_campaign(), 
+			'form' => $this 
+		) );
 	}
 
 	/**
@@ -257,7 +258,6 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
 		if ( ! $form->is_current_form( $this->id ) ) {
 			return;
 		}
-
 		charitable_template( 'donation-form/donation-amount-header.php' );		
 	}	
 
@@ -274,9 +274,10 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
 			return;
 		}
 
-		$template = charitable_template( 'donation-form/donation-amount.php', false );
-		$template->set_view_args( array( 'form' => $this, 'campaign' => $this->campaign ) );
-		$template->render();
+		charitable_template( 'donation-form/donation-amount.php', array( 
+			'form' => $this, 
+			'campaign' => $this->campaign 
+		) );
 	}
 
 	/**
@@ -309,9 +310,9 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
 			return;
 		}
 
-		$template = charitable_template( 'donation-form/donor-details.php', false );
-		$template->set_view_args( array( 'form' => $this ) );
-		$template->render();
+		charitable_template( 'donation-form/donor-details.php', array( 
+			'form' => $this 
+		) );
 	}
 
 	/**
@@ -327,9 +328,9 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
 			return;
 		}
 
-		$template = charitable_template( 'donation-form/user-fields.php', false );
-		$template->set_view_args( array( 'form' => $this ) );
-		$template->render();
+		charitable_template( 'donation-form/user-fields.php', array( 
+			'form' => $this 
+		) );
 	}
 
 	/**

@@ -19,30 +19,47 @@ if ( ! class_exists( 'Charitable_Benefactor' ) ) :
  *
  * @since 		1.0.0
  */
-class Charitable_Benefactor {
+abstract class Charitable_Benefactor {
 
 	/**
 	 * Core benefactor record. 
 	 *
 	 * @var 	Object
-	 * @access  private
+	 * @access  protected
 	 */
-	private $benefactor;
+	protected $benefactor;
 
 	/**
 	 * Create class object.
 	 * 
-	 * @param 	mixed 		$benefactor
+	 * @param 	mixed 	$benefactor
 	 * @access 	public
 	 * @since	1.0.0
 	 */
 	public function __construct( $benefactor ) {
 		if ( ! is_object( $benefactor ) ) {
-			$benefactor = charitable()->get_db_table( 'benefactors' )->get( $benefactor );
+			$this->benefactor = charitable_get_table( 'benefactors' )->get( $benefactor );
+		}
+	}
+
+	/**
+	 * Return an object of type Charitable_Benefactor, given a benefactor record and an extension.	
+	 *
+	 * @param 	Object 	$benefactor
+	 * @param 	string  $extension
+	 * @return  Charitable_Benefactor
+	 * @access  public
+	 * @static
+	 * @since   1.0.0
+	 */
+	public function get_object( $benefactor, $extension ) {
+		$class = apply_filters( 'charitable_benefactor_class_' . $extension, false );
+
+		if ( ! class_exists( $class ) ) {
+			_doing_it_wrong( __METHOD__, __( 'Benefactor class does not exist for given extension.', '1.0.0' ) );
 		}
 
-		/** @hook 	charitable_benefactor 	Use this filter to augment the $benefactor object. **/
-		$this->benefactor = apply_filters( 'charitable_benefactor', $benefactor );
+		return new $class;
 	}
 
 	/**
@@ -109,6 +126,44 @@ class Charitable_Benefactor {
 		$type = $this->benefactor->contribution_amount_is_per_item ? __( 'per item', 'charitable' ) : __( 'per purchase', 'charitable' );
 		return apply_filters( 'charitable_benefactor_contribution_type', $type, $this->benefactor->contribution_amount_is_per_item, $this );
 	}
+
+    /**
+     * Return the benefit amount of a product based on the price, quantity and percent going to benefit. 
+     *
+     * @param   float 	$price
+     * @param   int   	$quantity
+     * @return  float
+     * @access  protected
+     * @since   1.0.0
+     */
+    protected function calculate_line_item_percent_contribution( $price, $quantity ) {
+        return $price * $quantity * ( $this->benefactor->contribution_amount / 100 );
+    }
+
+    /**
+     * Return the benefit amount of a product based on the quantity and fixed amount going per item.
+     *
+     * @param   int   	$quantity
+     * @return  float
+     * @access  protected
+     * @since   1.0.0
+     */
+    protected function calculate_line_item_fixed_contribution( $quantity = 1 ) {
+        return $quantity * $this->benefactor->contribution_amount;
+    }    
+
+    /**
+     * Returns whether the benefactor's benefit is applied once per cart.
+     *
+     * False means that more benefit is added for every applicable item in the cart.
+     *
+     * @return  boolean
+     * @access  protected
+     * @since   1.0.0
+     */
+    protected function benefit_is_per_cart() {
+    	return false === ( $this->benefactor->contribution_amount_is_per_item || $this->benefactor->contribution_amount_is_percentage );
+    }	
 }
 
 endif; // End class_exists check

@@ -243,15 +243,9 @@ class Charitable_User_Dashboard implements Charitable_Addon_Interface {
 
         do_action( 'charitable_is_user_dashboard' );
             
-        $new_template   = apply_filters( 'charitable_user_dashboard_template', 'user-dashboard.php' );
-        $path           = charitable_template( $new_template, false )->locate_template();
-
-        if ( file_exists( $path ) ) {
-
-            $template = $path;
-
-        }
-
+        $new_template = apply_filters( 'charitable_user_dashboard_template', 'user-dashboard.php' );
+        $template = charitable_get_template_path( $new_template, $template );
+        
         return $template;
     }
 

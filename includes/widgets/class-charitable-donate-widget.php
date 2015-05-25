@@ -52,9 +52,7 @@ class Charitable_Donate_Widget extends WP_Widget {
             return;
         }
 
-        $template = charitable_template( 'widgets/donate.php', false );
-        $template->set_view_args( array_merge( $args, $instance ) );
-        $template->render();
+        charitable_template( 'widgets/donate.php', array_merge( $args, $instance ) );
     }
 
     /**

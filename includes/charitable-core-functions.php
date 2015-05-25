@@ -138,6 +138,18 @@ function charitable_get_session() {
 	return charitable_get_helper( 'session' );
 }
 
+
+/**
+ * Return the database table helper object. 
+ *
+ * @param 	string 	$table
+ * @return  Charitable_DB|null
+ * @since   1.0.0
+ */
+function charitable_get_table( $table ) {
+	return charitable()->get_db_table( $table );    
+}
+
 /**
  * Returns the given campaign. 
  *

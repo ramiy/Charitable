@@ -30,7 +30,9 @@ class Charitable_Benefactors implements Charitable_Addon_Interface {
 	 * @since 	1.0.0
 	 */
 	public static function load() {
-		new Charitable_Benefactors();				
+		$object = new Charitable_Benefactors();			
+
+		do_action( 'charitable_benefactors_addon_loaded', $object );	
 	}
 
 	/**
