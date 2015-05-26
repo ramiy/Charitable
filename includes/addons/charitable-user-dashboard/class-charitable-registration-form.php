@@ -1,4 +1,4 @@
-    <?php
+<?php
 /**
  * Class that manages the display and processing of the registration form.
  *

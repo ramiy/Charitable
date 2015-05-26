@@ -266,7 +266,6 @@ final class Charitable_Campaign_Post_Type {
 				'_campaign_end_date', 
 				'_campaign_goal', 
 				'_campaign_suggested_donations',
-				'_campaign_allow_custom_donations',
 				'_campaign_description', 
 				'_campaign_video'
 			) );			
@@ -275,7 +274,9 @@ final class Charitable_Campaign_Post_Type {
 
 			foreach ( $meta_keys as $key ) {
 
-				$value = apply_filters( 'charitable_sanitize_campaign_meta', $submitted[ $key ], $key, $submitted );
+				$value = isset( $submitted[ $key ] ) ? $submitted[ $key ] : false;
+
+				$value = apply_filters( 'charitable_sanitize_campaign_meta', $value, $key, $submitted );
 
 				update_post_meta( $post_id, $key, $value );
 

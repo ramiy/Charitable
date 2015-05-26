@@ -547,8 +547,8 @@ class Charitable_Campaign {
      * @since   1.0.0
      */
     public function embed_video() {
-        global $wp_embed;
-        return $wp_embed->run_shortcode( '[embed]'. $this->video .'[/embed]' );
+        $video_embed_args = apply_filters( 'charitable_campaign_video_embed_args', array() );
+        return wp_oembed_get( $this->video, $video_embed_args );
     }
 
     /**
@@ -562,51 +562,70 @@ class Charitable_Campaign {
      * @static
      * @since   1.0.0
      */
-    public static function sanitize_meta( $value, $key, $submitted ) {
-        switch ( $key ) {
+    public static function sanitize_meta( $value, $key, $submitted ) {        
+        add_filter( 'charitable_sanitize_campaign_meta_campaign_goal', array( 'Charitable_Campaign', 'sanitize_campaign_goal' ) );
+        add_filter( 'charitable_sanitize_campaign_meta_campaign_end_date', array( 'Charitable_Campaign', 'sanitize_campaign_end_date' ) );
+        add_filter( 'charitable_sanitize_campaign_meta_campaign_suggested_donations', array( 'Charitable_Campaign', 'sanitize_campaign_suggested_donations' ) );
+        add_filter( 'charitable_sanitize_campaign_meta_campaign_allow_custom_donations', array( 'Charitable_Campaign', 'sanitize_campaign_allow_custom_donations' ) );
+        add_filter( 'charitable_sanitize_campaign_meta_campaign_description', array( 'Charitable_Campaign', 'sanitize_campaign_description' ) );
+        add_filter( 'charitable_sanitize_campaign_meta_campaign_video', array( 'Charitable_Campaign', 'sanitize_campaign_video' ) );
 
-            case '_campaign_goal' :
-                if ( empty( $value ) || ! $value ) {
-                    $value = 0;
-                }
-                else {
-                    $value = charitable()->get_currency_helper()->sanitize_monetary_amount( $value );
-                }
-                break;
+        echo '<pre>';
+        var_dump( 'charitable_sanitize_campaign_meta' . $key );
+        echo '</pre>';
 
-            case '_campaign_end_date' :
-                if ( empty( $value ) || ! $value ) {
-                    $value = 0;
-                }
-                else {
-                    $value = date( 'Y-m-d 00:00:00', strtotime( $value ) );
-                }               
-                break;
+        return apply_filters( 'charitable_sanitize_campaign_meta' . $key, $value, $submitted );
+    }
 
-            case '_campaign_suggested_donations' :
-                if ( ! is_array( $value ) ) {
-                    $value = array();
-                }
-                else {
-                    $value = array_filter( $value, array( 'Charitable_Campaign', 'filter_suggested_donation' ) );
-                }
-                break;
-
-            case '_campaign_allow_custom_donations' : 
-                $value = true == $value || 'on' == $value;
-                break;
-
-            case '_campaign_description' : 
-                $value = sanitize_text_field( $value );
-                break;
-
-            case '_campaign_video' : 
-                $value = sanitize_text_field( $value );
-                break;
-
+    /**
+     * Sanitize the campaign goal. 
+     *
+     * @param   string  $value
+     * @return  string|int      
+     * @access  public
+     * @static
+     * @since   1.0.0
+     */
+    public static function sanitize_campaign_goal( $value ) {
+        if ( empty( $value ) || ! $value ) {
+            return 0;
         }
         
-        return apply_filters( 'charitable_sanitize_campaign_meta_' . $key, $value );
+        return charitable()->get_currency_helper()->sanitize_monetary_amount( $value );        
+    }
+
+    /**
+     * Sanitize the campaign end date. 
+     *
+     * @param   string  $value
+     * @return  string|int      
+     * @access  public
+     * @static
+     * @since   1.0.0
+     */
+    public static function sanitize_campaign_end_date( $value ) {
+        if ( empty( $value ) || ! $value ) {
+            return 0;
+        }
+        
+        return date( 'Y-m-d 00:00:00', strtotime( $value ) );        
+    }
+
+    /**
+     * Sanitize the campaign suggested donations. 
+     *
+     * @param   string  $value
+     * @return  array
+     * @access  public
+     * @static
+     * @since   1.0.0
+     */
+    public static function sanitize_campaign_suggested_donations( $value ) {
+        if ( ! is_array( $value ) ) {
+            return array();
+        }
+                
+        return array_filter( $value, array( 'Charitable_Campaign', 'filter_suggested_donation' ) );                
     }
 
     /**
@@ -625,6 +644,66 @@ class Charitable_Campaign {
         else {
             return ! empty( $donation[ 'amount' ] );
         }
+    }
+
+    /**
+     * Sanitize the allow custom donations checkbox value. 
+     *
+     * @param   mixed   $value
+     * @return  boolean
+     * @access  public
+     * @static
+     * @since   1.0.0
+     */
+    public static function sanitize_campaign_allow_custom_donations( $value ) {
+        return true == $value || 'on' == $value;
+    }    
+
+    /**
+     * Sanitize the campaign description.
+     *
+     * @param   string  $value
+     * @return  string
+     * @access  public
+     * @static
+     * @since   1.0.0
+     */
+    public static function sanitize_campaign_description( $value ) {
+        return sanitize_text_field( $value );
+    }
+
+    /**
+     * Sanitize campaign video before saving to database. 
+     *
+     * @return  string  $value
+     * @access  public
+     * @static
+     * @since   1.0.0
+     */
+    public static function sanitize_campaign_video( $value ) {
+        global $allowedtags;
+
+        $iframe = array( 'iframe' => array(
+            'src'             => array(),
+            'height'          => array(),
+            'width'           => array(),
+            'frameborder'     => array(),
+            'allowfullscreen' => array(),
+        ) );
+
+        $allowed = array_merge( $allowedtags, $iframe );
+        $allowed = apply_filters( 'charitable_campaign_video_allowed_tags', $allowed );
+
+        // echo '<pre>';
+        // echo 'VALUE' . PHP_EOL;
+        // var_dump( $value );
+        // echo 'WP_KSES' . PHP_EOL;
+        // var_dump( wp_kses( $value, $allowed ) );
+        // echo 'ESC_HTML' . PHP_EOL;
+        // var_dump( esc_html( $value ) );
+        // die;
+
+        return $value;
     }
 
     /**
