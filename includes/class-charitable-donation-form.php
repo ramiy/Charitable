@@ -70,13 +70,13 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
 	 * @since 	1.0.0
 	 */
 	protected function attach_hooks_and_filters() {
+		parent::attach_hooks_and_filters();
+
 		add_action( 'charitable_login_form', 						array( $this, 'login_form' ) );
 		add_action( 'charitable_donation_form_before_donation_amount', array( $this, 'enter_donation_amount_header' ) );
-		add_action( 'charitable_donation_form_amount', 				array( $this, 'enter_donation_amount' ) );
-		add_action( 'charitable_donation_form_before_user_fields',	array( $this, 'add_hidden_fields' ) ); 
+		add_action( 'charitable_donation_form_amount', 				array( $this, 'enter_donation_amount' ) );		
 		add_action( 'charitable_donor_details', 					array( $this, 'add_donor_details' ) );
 		add_action( 'charitable_donation_form_user_fields', 		array( $this, 'add_user_fields' ) ); 
-		add_action( 'charitable_donation_form_user_field', 			array( $this, 'render_field' ), 10, 3 );		
 		add_action( 'charitable_donation_form_after_user_fields', 	array( $this, 'add_password_field' ) );
 	}
 
@@ -99,84 +99,101 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
 	 * @since 	1.0.0
 	 */
 	public function get_user_fields() {
-		$user = wp_get_current_user();
+		$user = new Charitable_User( wp_get_current_user() );
 
 		$user_fields = array(
 			'first_name' => array( 
 				'label' 	=> __( 'First name', 'charitable' ), 
 				'type'		=> 'text', 
 				'priority'	=> 4, 
-				'required'	=> true, 
-				'value'		=> ''
+				'value'		=> $user->get( 'first_name' ), 
+				'required'	=> true, 				
+				'requires_registration' => false
 			),
 			'last_name' => array( 
 				'label' 	=> __( 'Last name', 'charitable' ), 				
 				'type'		=> 'text', 
 				'priority'	=> 6, 
-				'required'	=> true, 
-				'value'		=> ''
+				'value'		=> $user->get( 'last_name' ), 
+				'required'	=> true, 				
+				'requires_registration' => false
 			),
 			'address' => array( 
 				'label' 	=> __( 'Address', 'charitable' ), 				
 				'type'		=> 'text', 
 				'priority'	=> 10, 
-				'required'	=> false
+				'value'		=> $user->get( 'donor_address' ), 
+				'required'	=> false, 
+				'requires_registration' => true
 			),
 			'address_2' => array( 
 				'label' 	=> __( 'Address 2', 'charitable' ), 
 				'type'		=> 'text', 
 				'priority' 	=> 12, 
-				'required'	=> false
+				'value'		=> $user->get( 'donor_address_2' ), 
+				'required'	=> false,
+				'requires_registration' => true
 			),
 			'city' => array( 
 				'label' 	=> __( 'City', 'charitable' ), 			
 				'type'		=> 'text', 
 				'priority'	=> 14, 
-				'required'	=> false
+				'value'		=> $user->get( 'donor_city' ), 
+				'required'	=> false,
+				'requires_registration' => true
 			),
 			'state' => array( 
 				'label' 	=> __( 'State', 'charitable' ), 				
 				'type'		=> 'text', 
 				'priority'	=> 16, 
-				'required'	=> false
+				'value'		=> $user->get( 'donor_state' ), 
+				'required'	=> false,
+				'requires_registration' => true
 			),
 			'postcode' => array( 
 				'label' 	=> __( 'Postcode / ZIP code', 'charitable' ), 				
 				'type'		=> 'text', 
 				'priority'	=> 18, 
-				'required'	=> false
+				'value'		=> $user->get( 'donor_postcode' ), 
+				'required'	=> false,
+				'requires_registration' => true
 			),
 			'country' => array( 
 				'label' 	=> __( 'Country', 'charitable' ), 				
 				'type'		=> 'select', 
 				'options' 	=> charitable_get_location_helper()->get_countries(), 
 				'priority'	=> 20, 
-				'required'	=> false
+				'value'		=> $user->get( 'donor_country' ), 
+				'required'	=> false,
+				'requires_registration' => true
 			),
 			'phone' => array( 
 				'label' 	=> __( 'Phone', 'charitable' ), 				
 				'type'		=> 'text', 
 				'priority'	=> 22, 
-				'required'	=> false 
+				'value'		=> $user->get( 'donor_phone' ), 
+				'required'	=> false,
+				'requires_registration' => true 
 			)
 		);
 		
-		/**
-		 * Allow plugin/theme developers to add new fields or remove/edit any of the above fields.
-		 */
+		/* Allow plugin/theme developers to add new fields or remove/edit any of the above fields. */
 		$user_fields = apply_filters( 'charitable_donor_fields', $user_fields, $this );
 
-		/**
-		 * Add the email field, which is required in the form.
-		 */
+		/* Add the email field, which is required in the form. */
 		if ( ! isset( $user_fields['user_email'] ) ) {
+
 			$email_field_priority = apply_filters( 'charitable_donor_email_field_priority', 8, $this );
+
 			$user_fields['user_email'] = array(
 				'label' 	=> __( 'Email', 'charitable' ), 
 				'type'		=> 'email',
 				'required' 	=> true, 
-				'priority'	=> $email_field_priority
+				'priority'	=> $email_field_priority,
+				'value'		=> $user->get( 'user_email' ), 
+				'requires_registration' => false
 			);
+			
 		}
 
 		uasort( $user_fields, 'charitable_priority_sort' );
@@ -200,7 +217,8 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
 				'label'		=> __( 'Password', 'charitable' ), 
 				'type'		=> 'password', 
 				'priority'	=> 4, 
-				'required'	=> true
+				'required'	=> true,
+				'requires_registration' => true
 			)
 		);
 
@@ -209,7 +227,8 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
 				'label'		=> __( 'Username', 'charitable' ), 
 				'type'		=> 'text', 
 				'priority'	=> 2,
-				'required'	=> true
+				'required'	=> true,
+				'requires_registration' => true
 			);
 		}
 
@@ -233,7 +252,7 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
 	/**
 	 * Display the login form. 
 	 *
-	 * @param 	Charitable_Donation_Form 	$form
+	 * @param 	Charitable_Donation_Form $form
 	 * @return 	void
 	 * @access  public
 	 * @since 	1.0.0
@@ -249,7 +268,7 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
 	/**
 	 * Add header before donation amount section.
 	 *
-	 * @param 	Charitable_Donation_Form 	$form
+	 * @param 	Charitable_Donation_Form $form
 	 * @return 	void
 	 * @access  public
 	 * @since 	1.0.0
@@ -264,7 +283,7 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
 	/**
 	 * Add fields to select or enter donation amount. 
 	 *
-	 * @param 	Charitable_Donation_Form 	$form
+	 * @param 	Charitable_Donation_Form $form
 	 * @return 	void
 	 * @access  public
 	 * @since 	1.0.0
@@ -283,7 +302,7 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
 	/**
 	 * Adds hidden fields to the start of the donation form.	
 	 *
-	 * @param 	Charitable_Donation_Form 	$form
+	 * @param 	Charitable_Donation_Form $form
 	 * @return 	void
 	 * @access  public
 	 * @since 	1.0.0
@@ -301,6 +320,7 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
 	/**
 	 * Add current donor details to the donation form. 
 	 *
+	 * @param 	Charitable_Donation_Form $form
 	 * @return 	void
 	 * @access  public
 	 * @since 	1.0.0
@@ -318,7 +338,7 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
 	/**
 	 * Add user fields to the donation form. 
 	 *
-	 * @param 	Charitable_Donation_Form 	$form
+	 * @param 	Charitable_Donation_Form $form
 	 * @return 	void
 	 * @access  public
 	 * @since 	1.0.0
@@ -336,7 +356,7 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
 	/**
 	 * Add a password field to the end of the form.  
 	 *
-	 * @param 	Charitable_Donation_form 	$form
+	 * @param 	Charitable_Donation_Form $form
 	 * @return 	void
 	 * @access  public
 	 * @since 	1.0.0
@@ -359,55 +379,51 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
 	/**
 	 * Save the submitted donation.
 	 *
-	 * @return 	int|false 		If successful, this returns the donation ID. If unsuccessful, returns false.
+	 * @return 	int|false 	If successful, this returns the donation ID. If unsuccessful, returns false.
 	 * @access 	public
 	 * @since 	1.0.0
 	 */
 	public function save_donation() {
 		if ( ! $this->validate_nonce() ) {
 			return false;
-		}
+		}	
 
-		$values = array();		
+		$amount = $this->get_donation_amount();
 		
-		/* Set the donation amount */
-		$values[ 'amount' ] = $this->get_donation_amount();
-
-		if ( 0 == $values[ 'amount' ] && ! apply_filters( 'charitable_permit_empty_donations', false ) ) {
-			
+		if ( 0 == $amount && ! apply_filters( 'charitable_permit_empty_donations', false ) ) {
 			charitable_get_notices()->add_error( __( 'No donation amount was set.', 'charitable' ) );
 			return false;
 		}
 		
-		/* Set all the user fields and make sure that all required fields were submitted */
 		$user_fields = array_merge( $this->get_user_fields(), $this->get_user_account_fields() );
 
-		foreach ( $form->get_required_fields( $user_fields ) as $key => $field ) {
+		if ( $this->is_missing_required_fields( $user_fields ) ) {
+			return false;
+		}
 
-			if ( ! isset( $_POST[ $key ] ) || empty( $_POST[ $key ] ) ) {
-				/**
-				 * @todo Provide useful feedback.
-				 */
-				return;
-			}
-
-		}	
-
-		/* Save the user. This will insert new users and update existing ones. */
+		/* Update the user's profile */
 		$user = new Charitable_User( wp_get_current_user() );
-		$user->save( $_POST, array_keys( $user_fields ) );
-		$user->make_donor();
-		
-		$values[ 'user_id' ] = $user_id;
 
-		/**
-		 * @todo 	Add payment gateway. 
-		 */
-		$values[ 'gateway' ] = 'manual';		
+		if ( $this->has_profile_fields( $_POST, $user_fields ) ) {			
+			$user->update_profile( $_POST, array_keys( $user_fields ) );
+		}
 
-		$values = apply_filters( 'charitable_donation_values', $values ); 
+		$values = array(			
+			'user_id' 	=> $user->ID,
+			'gateway' 	=> 'manual', 
+			'campaigns' => array(
+				array(
+					'campaign_id' 	=> $_POST[ 'campaign_id' ],
+					'amount'	 	=> $amount
+				)				
+			)
+		);
 
-		$donation_id = Charitable_Donation::insert( $values );
+		$values = array_merge( $values, $this->get_donor_value_fields( $_POST ) );
+
+		$values = apply_filters( 'charitable_donation_values', $values );
+
+		$donation_id = Charitable_Donation::add_donation( $values );
 
 		return $donation_id;
 	}
@@ -436,6 +452,64 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
 		}
 
 		return $amount;
+	}
+
+	/**
+	 * Return the donor value fields. 
+	 *
+	 * @return  string[]
+	 * @access  protected
+	 * @since   1.0.0
+	 */
+	protected function get_donor_value_fields( $submitted ) {
+		$donor_fields = array();
+
+		if ( isset( $submitted[ 'first_name' ] ) ) {
+			$donor_fields[ 'first_name' ] = $submitted[ 'first_name' ];
+		}
+
+		if ( isset( $submitted[ 'last_name' ] ) ) {
+			$donor_fields[ 'last_name' ] = $submitted[ 'last_name' ];
+		}
+
+		if ( isset( $submitted[ 'user_email' ] ) ) {
+			$donor_fields[ 'email' ] = $submitted[ 'user_email' ];
+		}
+
+		return $donor_fields;
+	}
+
+	/**
+	 * Checks whether the form submission contains profile fields.  
+	 *
+	 * @return  boolean
+	 * @access  protected
+	 * @since   1.0.0
+	 */
+	protected function has_profile_fields( $submitted, $user_fields ) {
+		foreach ( $user_fields as $key => $field ) {
+			if ( $field[ 'requires_registration' ] && isset( $submitted[ $key ] ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Returns true if required fields are missing. 
+	 *
+	 * @param 	array 	$user_fields
+	 * @return  boolean
+	 * @access  protected
+	 * @since   1.0.0
+	 */
+	protected function is_missing_required_fields( $user_fields ) {
+		if ( is_user_logged_in() ) {
+			return false;
+		}
+
+		return ! $this->check_required_fields( $required_fields );
 	}
 }
 

@@ -53,13 +53,8 @@ endif
 
 		<div class="charitable-form-fields cf">
 
-		<?php 
-
-		foreach ( $user_fields as $key => $field ) : 
-
-			/**
-			 * @hook 	charitable_form_field
-			 */
+		<?php foreach ( $user_fields as $key => $field ) : 
+			
 			do_action( 'charitable_form_field', $field, $key, $form );
 
 		endforeach ?>

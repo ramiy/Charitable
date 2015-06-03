@@ -362,18 +362,31 @@
 /*
  * Settings pages
  */
-.charitable-gateway {
+.charitable-settings-field {
+  padding: 7px 10px;
+  width: 300px;
+  font-size: 16px;
+  line-height: 1.5em; }
+  .charitable-settings-field.short {
+    width: 60px; }
+  .charitable-settings-field.wide {
+    width: 100%; }
+
+select.charitable-settings-field {
+  width: auto; }
+
+.charitable-settings-object {
   padding: 10px 20px;
   margin-bottom: 4px;
   border: 1px solid #e1e1e1;
   background-color: #fff; }
-  .charitable-gateway h4 {
+  .charitable-settings-object h4 {
     float: left;
     margin: 0;
     line-height: 28px; }
-  .charitable-gateway span.actions {
+  .charitable-settings-object span.actions {
     float: right; }
-    .charitable-gateway span.actions a {
+    .charitable-settings-object span.actions a {
       margin-left: 10px; }
 
 .charitable-help {
@@ -383,6 +396,16 @@
   line-height: 21px;
   font-style: italic;
   color: #777; }
+
+.form-table .charitable-help p {
+  font-size: 13px;
+  line-height: 21px; }
+
+.charitable-shortcode-options ul {
+  list-style: disc;
+  margin-left: 16px; }
+.charitable-shortcode-options li {
+  margin-bottom: 2px; }
 
 @media (min-width: 48em) {
   .charitable_page_charitable-settings .form-table th {

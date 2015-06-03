@@ -18,17 +18,34 @@ if ( ! class_exists( 'Charitable_Gateway_Paypal' ) ) :
  *
  * @since		1.0.0
  */
-class Charitable_Gateway_Paypal extends Abstract_Charitable_Gateway {
+class Charitable_Gateway_Paypal extends Charitable_Gateway {
 	
-	/**
-	 * @var 	string 		The gateway name.
-	 */
-	const GATEWAY_NAME = 'Paypal';
+    /**
+     * @var     string
+     */
+    CONST ID = 'paypal';
 
-	/**
-	 * @var 	string 		The gateway ID.
-	 */
-	const GATEWAY_ID = 'paypal';
+    /**
+     * Instantiate the gateway class, defining its key values.
+     *
+     * @access  public
+     * @since   1.0.0
+     */
+    public function __construct() {
+        $this->name = apply_filters( 'charitable_gateway_paypal_name', __( 'PayPal', 'charitable' ) );        
+    }
+
+    /**
+     * Register gateway settings. 
+     *
+     * @param   array   $settings
+     * @return  array
+     * @access  public
+     * @since   1.0.0
+     */
+    public function gateway_settings( $settings ) {
+        return $settings;
+    }
 
 	/**
 	 * Send the donation/donor off to the gateway.  

@@ -59,7 +59,8 @@ class Charitable_Install {
 	 * @since 	1.0.0
 	 */
 	private function create_tables() {
-		@charitable()->get_db_table( 'campaign_donations' )->create_table();
+		charitable_get_table( 'campaign_donations' )->create_table();
+		charitable_get_table( 'donors' )->create_table();
 	}
 
 	/**

@@ -44,8 +44,9 @@ class Charitable_Campaign_Template {
      * @access  private
      * @since   1.0.0
      */
-    private function __construct() {            
-        add_action( 'charitable_campaign_content_before', array( $this, 'display_campaign_summary' ) );
+    private function __construct() {
+        add_action( 'charitable_campaign_content_before', array( $this, 'display_campaign_description' ), 4 );
+        add_action( 'charitable_campaign_content_before', array( $this, 'display_campaign_summary' ), 8 );
         add_action( 'charitable_campaign_summary', array( $this, 'display_campaign_percentage_raised' ), 4 );
         add_action( 'charitable_campaign_summary', array( $this, 'display_campaign_donation_summary' ), 6 );
         add_action( 'charitable_campaign_summary', array( $this, 'display_campaign_donor_count' ), 8 );
@@ -53,13 +54,24 @@ class Charitable_Campaign_Template {
         add_action( 'charitable_campaign_summary', array( $this, 'display_donate_button' ), 14 );
         add_action( 'wp_footer', array( $this, 'add_modal_window' ) );
 
-        // add_filter( 'post_class', array( $this, 'campaign_post_class' ) );
-        // add_filter( 'the_content', array( $this, 'campaign_content' ), 10 );
-        // add_filter( 'the_content', array( $this, 'campaign_donation_form' ), 20 );
+        add_filter( 'post_class', array( $this, 'campaign_post_class' ) );
+        add_filter( 'the_content', array( $this, 'campaign_content' ), 10 );
+        add_filter( 'the_content', array( $this, 'campaign_donation_form' ), 20 );
         
-        // /* If you want to unhook any of the callbacks attached above, use this hook. */
-        // do_action( 'charitable_campaign_template_start', $this );
+        /* If you want to unhook any of the callbacks attached above, use this hook. */
+        do_action( 'charitable_campaign_template_start', $this );
     }    
+
+    /**
+     * Display the campaign description before the summary and rest of content. 
+     *
+     * @return  void
+     * @access  public
+     * @since   1.0.0
+     */
+    public function display_campaign_description( $campaign ) {
+        charitable_template( 'campaign/description.php', array( 'campaign' => $campaign ) );
+    }
 
     /**
      * Display campaign summary before rest of campaign content. 

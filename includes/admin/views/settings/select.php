@@ -3,6 +3,7 @@
  * Display select field. 
  *
  * @author 	Studio 164a
+ * @package Charitable/Admin View/Settings
  * @since 	1.0.0
  */
 
@@ -13,7 +14,8 @@ if ( empty( $value ) ) {
 }
 ?>
 <select id="<?php printf( 'charitable_settings_%s', implode( '_', $view_args[ 'key' ] ) ) ?>" 
-	name="<?php printf( 'charitable_settings[%s]', $view_args[ 'name' ] ) ?>">
+	name="<?php printf( 'charitable_settings[%s]', $view_args[ 'name' ] ) ?>"
+	class="<?php echo esc_attr( $view_args[ 'classes' ] ) ?>">	
 	<?php 
 
 	foreach( $view_args['options'] as $key => $option ) : 
@@ -44,5 +46,7 @@ if ( empty( $value ) ) {
 	?>
 </select>
 <?php if ( isset( $view_args['help'] ) ) : ?>
-	<span class="charitable-help"><?php echo $view_args['help']  ?></span>
+
+	<div class="charitable-help"><?php echo $view_args['help']  ?></div>
+	
 <?php endif;

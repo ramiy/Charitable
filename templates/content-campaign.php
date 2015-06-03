@@ -3,6 +3,7 @@
  * Displays the content of the campaign.
  *
  * @author 	Studio 164a
+ * @package Charitable/Templates/Campaign
  * @since 	1.0.0
  */
 

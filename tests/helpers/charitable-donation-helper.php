@@ -28,6 +28,7 @@ class Charitable_Donation_Helper extends WP_UnitTestCase {
 	 */
 	public static function create_donation( $args = array() ) {
 		$defaults = array(
+			'donor_id'		=> 1,
 			'user_id'		=> 1, 
 			'campaigns'		=> array(), 
 			'status'		=> 'charitable-pending', 
@@ -41,7 +42,7 @@ class Charitable_Donation_Helper extends WP_UnitTestCase {
 			wp_die( 'You must pass an array of campaigns to create a donation.' );
 		}
 
-		return Charitable_Donation::insert( $args );
+		return Charitable_Donation::add_donation( $args );
 	}
 
 	/**
@@ -57,6 +58,7 @@ class Charitable_Donation_Helper extends WP_UnitTestCase {
 	 */
 	public static function create_campaign_donation_for_user( $user_id, $campaign_id, $amount ) {
 	 	$args = array(
+	 		'donor_id'			=> $user_id, 
 	 		'user_id'			=> $user_id, 
 	 		'campaigns'			=> array(
 	 			array(	 		

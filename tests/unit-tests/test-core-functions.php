@@ -12,11 +12,10 @@ class Test_Charitable_Core_Functions extends WP_UnitTestCase {
 	
 	function test_charitable_get_option() {
 		$this->assertFalse( charitable_get_option( 'nonexistentkey' ) );
-		// charitable_get_option( 'defaultgateway' );
 	}
 	
 	function test_charitable_get_helper() {
-		$this->assertInstanceOf( 'Charitable_Gateway', charitable_get_helper( 'gateway' ) );
+		$this->assertInstanceOf( 'Charitable_Gateway', charitable_get_helper( 'gateways' ) );
 	}
 	
 	function test_charitable_get_notices() {

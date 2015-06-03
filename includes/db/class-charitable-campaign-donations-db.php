@@ -50,6 +50,33 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 	}
 
 	/**
+	 * Create the table.
+	 *
+	 * @global 	$wpdb
+	 * @access 	public
+	 * @since 	1.0.0
+	 */
+	public function create_table() {
+		global $wpdb;
+
+        $charset_collate = $wpdb->get_charset_collate();
+
+		$sql = "CREATE TABLE IF NOT EXISTS {$this->table_name} (
+				`campaign_donation_id` bigint(20) NOT NULL AUTO_INCREMENT,
+				`donation_id` bigint(20) NOT NULL,
+				`donor_id` bigint(20) NOT NULL,
+				`campaign_id` bigint(20) NOT NULL,
+				`campaign_name` text NOT NULL,
+				`amount` float NOT NULL,
+				PRIMARY KEY (campaign_donation_id),
+				KEY donation (donation_id),
+				KEY campaign (campaign_id)
+				) $charset_collate;";
+
+		$this->_create_table( $sql );
+	}
+	
+	/**
 	 * Whitelist of columns.
 	 *
 	 * @return  array 
@@ -60,6 +87,7 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 		return array(
 			'campaign_donation_id'	=> '%d', 
 			'donation_id'			=> '%d',
+			'donor_id' 				=> '%d',
 			'campaign_id'			=> '%d',
 			'campaign_name'			=> '%s',
 			'amount'				=> '%f'
@@ -77,6 +105,7 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 		return array(
 			'campaign_donation_id'	=> '', 
 			'donation_id'			=> '',
+			'donor_id'				=> '',
 			'campaign_id'			=> '',
 			'campaign_name'			=> '',
 			'amount'				=> '',			
@@ -93,9 +122,7 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 	 */
 	public function insert( $data, $type = 'campaign_donation' ) {	
 		if ( ! isset( $data[ 'campaign_name' ] ) ) {
-
 			$data[ 'campaign_name' ] = get_the_title( $data[ 'campaign_id' ] );
-
 		}
 
 		Charitable_Campaign::flush_donations_cache( $data[ 'campaign_id' ] );
@@ -354,36 +381,6 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 				AND p.post_type = 'donation';";
 
 		return $wpdb->get_var( $wpdb->prepare( $sql, $donor_id ) );
-	}
-
-	/**
-	 * Create the table.
-	 *
-	 * @global 	$wpdb
-	 * @access 	public
-	 * @since 	1.0.0
-	 */
-	public function create_table() {
-		global $wpdb;
-
-		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-
-		$sql = <<<EOD
-CREATE TABLE IF NOT EXISTS {$this->table_name} (
-`campaign_donation_id` bigint(20) NOT NULL AUTO_INCREMENT,
-`donation_id` bigint(20) NOT NULL,
-`campaign_id` bigint(20) NOT NULL,
-`campaign_name` text NOT NULL,
-`amount` float NOT NULL,
-PRIMARY KEY (campaign_donation_id),
-KEY donation (donation_id),
-KEY campaign (campaign_id)
-) CHARACTER SET utf8 COLLATE utf8_general_ci;
-EOD;
-
-		dbDelta( $sql );
-
-		update_option( $this->table_name . '_db_version', $this->version );
 	}
 }	
 

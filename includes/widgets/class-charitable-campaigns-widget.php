@@ -43,29 +43,9 @@ class Charitable_Campaigns_Widget extends WP_Widget {
 	 * @since 	1.0.0
 	 */
 	public function widget( $args, $instance ) {
-		
-		$title = apply_filters( "campaigns-widget-title", $instance['title'] );
-
-		echo $args['before_widget'];
-		if ( ! empty( $title ) ) {
-			echo $args['before_title'] . $title . $args['after_title'];
-		}
-		?>
-		<ul>
-
-			<?php
-				$query = Charitable_Campaigns::ordered_by_ending_soon( array( 'posts_per_page' => $instance['number'] ) );
-
-				while($query->have_posts() ){
-					$query->the_post();
-					?><li><a href="<?php the_permalink() ?>" ><?php the_title(); ?></a></li><?php
-				}
-
-			?>
-
-		</ul>
-		<?php
-		echo $args['after_widget'];
+		$view_args = array_merge( $args, $instance );
+        $view_args[ 'campaigns' ] = $this->get_widget_campaigns( $instance );
+        charitable_template( 'widgets/campaigns.php', $view_args );
 	}
 
 	/**
@@ -92,8 +72,8 @@ class Charitable_Campaigns_Widget extends WP_Widget {
 		<p>
 			<label for="<?php echo $this->get_field_id('order') ?>"><?php _e( 'Order', 'charitable' ) ?></label>
 			<select name="<?php echo $this->get_field_name('order') ?>" id="<?php echo $this->get_field_id('order') ?>">
-				<option value="recent" <?php echo $order=="recent" ? "selected='selected'" : ""?>><?php _e( 'Date published', 'charitable' ) ?></option>
-				<option value="ending" <?php echo $order=="ending" ? "selected='selected'" : ""?>><?php _e( 'Ending soonest', 'charitable' ) ?></option>
+				<option value="recent" <?php selected( 'recent', $order ) ?>><?php _e( 'Date published', 'charitable' ) ?></option>
+				<option value="ending" <?php selected( 'ending', $order ) ?>><?php _e( 'Ending soonest', 'charitable' ) ?></option>
 			</select>
 		</p>
 		<?php
@@ -102,8 +82,8 @@ class Charitable_Campaigns_Widget extends WP_Widget {
 	/**
 	 * Update the widget settings in the admin. 
 	 *
-	 * @param 	array $new_instance 		The updated settings. 
-	 * @param 	array $new_instance 		The old settings. 
+	 * @param 	array 	$new_instance 	The updated settings. 
+	 * @param 	array 	$new_instance 	The old settings. 
 	 * @return 	void
 	 * @access 	public
 	 * @since 	1.0.0
@@ -115,6 +95,28 @@ class Charitable_Campaigns_Widget extends WP_Widget {
 		$instance['order']  = isset( $new_instance['order'] ) ? $new_instance['order'] : $old_instance['order'];
 		return $instance;
 	}	
+
+	/**
+	 * Return campaigns to display in the widget. 
+	 *
+	 * @param 	array 	$instance
+	 * @return  WP_Query
+	 * @access  protected
+	 * @since   1.0.0
+	 */
+	protected function get_widget_campaigns( $instance ) {
+		$args = array(
+			'posts_per_page' => $instance[ 'number' ]
+		);
+
+		if ( 'recent' == $instance[ 'order' ] ) {
+			$args[ 'orderby' ] = 'date';
+			$args[ 'order' ] = 'DESC';
+			return Charitable_Campaigns::query( $args );
+		}
+
+		return Charitable_Campaigns::ordered_by_ending_soon( $args );
+	}
 }
 
 endif; // End class_exists check

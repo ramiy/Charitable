@@ -213,9 +213,9 @@ abstract class Charitable_DB {
 	/**
 	 * Update a row
 	 *
-	 * @param 	int 		$row_id
-	 * @param 	array 		$data
-	 * @param 	string 		$where 			Column used in where argument.
+	 * @param 	int 	$row_id
+	 * @param 	array 	$data
+	 * @param 	string 	$where 	Column used in where argument.
 	 * @access  public
 	 * @since   1.0.0
 	 * @return  bool
@@ -258,7 +258,7 @@ abstract class Charitable_DB {
 	/**
 	 * Delete a row identified by the primary key
 	 *
-	 * @param 	int 		$row_id
+	 * @param 	int 	$row_id
 	 * @access  public
 	 * @since   1.0.0
 	 * @return  bool
@@ -281,6 +281,23 @@ abstract class Charitable_DB {
 		return true;
 	}
 
+    /**
+     * Create the table.
+     *
+     * @global  $wpdb
+     * @param 	string 	$sql
+     * @access  protected
+     * @since   1.0.0
+     */
+    protected function _create_table( $sql ) {
+        global $wpdb;
+
+        require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+
+        dbDelta( $sql );
+
+        update_option( $this->table_name . '_db_version', $this->version );
+    }
 }
 
 endif;

@@ -172,7 +172,7 @@ function charitable_is_campaign_donation_page( $ret = false, $args = array() ) {
 	return $ret;
 }
 
-add_filter( 'charitable_is_campaign_donation_page', 'charitable_is_campaign_donation_page', 2, 2 );
+add_filter( 'charitable_is_page_campaign_donation_page', 'charitable_is_campaign_donation_page', 2, 2 );
 
 /**
  * Checks whether the current request is for the campaign widget page.
@@ -195,7 +195,26 @@ function charitable_is_campaign_widget_page( $ret = false, $args = array()  ) {
 	return $ret;
 }
 
-add_filter( 'charitable_is_campaign_widget_page', 'charitable_is_campaign_widget_page', 2, 2 );
+add_filter( 'charitable_is_page_campaign_widget_page', 'charitable_is_campaign_widget_page', 2, 2 );
+
+/**
+ * Checks whether the current request is for an email preview.
+ *
+ * This is used when you call charitable_is_page( 'email_preview' ). 
+ * In general, you should use charitable_is_page() instead since it will
+ * take into account any filtering by plugins/themes.
+ *
+ * @param   string      $page
+ * @param   array       $args 
+ * @return  boolean
+ * @since   1.0.0
+ */
+function charitable_is_email_preview( $ret = false, $args = array()  ) {     
+    return isset( $_GET[ 'charitable_action' ] ) && 'preview_email' == $_GET[ 'charitable_action' ];
+}
+
+add_filter( 'charitable_is_page_email_preview', 'charitable_is_email_preview', 2, 2 );
+
 
 /**
  * Returns the current URL. 

@@ -92,11 +92,6 @@ final class Charitable_Donation_Actions extends Charitable_Start_Object {
 			$donation = new Charitable_Session_Donation();			
 		}
 
-		// echo '<pre>'; 
-		// var_dump( $donation );
-		// var_dump( charitable_get_permalink( 'campaign_donation_page', array( 'campaign_id' => $campaign_id ) ) );
-		// die;
-
 		$donation->set( 'campaign_id', $campaign_id ); 
 		$session->set( 'donation', $donation );
 

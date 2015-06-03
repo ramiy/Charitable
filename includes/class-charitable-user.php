@@ -27,17 +27,39 @@ if ( ! class_exists( 'Charitable_User' ) ) :
 class Charitable_User extends WP_User {
 
     /**
+     * @var     int
+     * @access  protected
+     */
+    protected $donor_id;
+
+    /**
      * Create class object.
      * 
-     * @param   int|string|stdClass|WP_User $id         User's ID, a WP_User object, or a user object from the DB.
-     * @param   string                      $name       Optional. User's username
-     * @param   int                         $blog_id    Optional Blog ID, defaults to current blog.
+     * @param   int|string|stdClass|WP_User $id     User's ID, a WP_User object, or a user object from the DB.
+     * @param   string  $name                       Optional. User's username
+     * @param   int     $blog_id                    Optional Blog ID, defaults to current blog.
      * @return  void
      * @access  public
      * @since   1.0.0
      */
     public function __construct( $id = 0, $name = '', $blog_id = '' ) {
         parent::__construct( $id, $name, $blog_id );
+    }
+
+    /**
+     * Create object using a donor ID. 
+     *
+     * @param   int     $donor_id
+     * @return  Charitable_user
+     * @access  public
+     * @static
+     * @since   1.0.0
+     */
+    public static function init_with_donor( $donor_id ) {
+        $user_id = charitable_get_table( 'donors' )->get_user_id( $donor_id );
+        $user = new Charitable_User( $user_id );
+        $user->set_donor_id( $donor_id );
+        return $user;
     }
 
     /**
@@ -69,6 +91,71 @@ class Charitable_User extends WP_User {
     }
 
     /**
+     * Set the donor ID of this user. 
+     *
+     * @param   int     $donor_id
+     * @return  void
+     * @access  public
+     * @since   1.0.0
+     */
+    public function set_donor_id( $donor_id ) {
+        $this->donor_id = $donor_id;
+    }
+
+    /**
+     * Return the donor ID of this user. 
+     *
+     * @return  int     $donor_id
+     * @access  public
+     * @since   1.0.0
+     */
+    public function get_donor_id() {
+        if ( isset( $this->donor_id ) || ! is_null( $this->get_donor() ) ) {
+            return $this->donor_id;
+        }        
+
+        return 0;
+    }
+
+    /**
+     * Return the donor record. 
+     *
+     * @return  Object|null     Object if a donor record could be matched. 
+     *                          null if user is logged out or no donor record found.
+     * @access  public
+     * @since   1.0.0
+     */
+    public function get_donor() {    
+        if ( ! $this->is_logged_in() && ! isset( $this->donor_id ) ) {
+            return null;
+        } 
+
+        if ( isset( $this->donor_id ) ) {
+            $donor = wp_cache_get( $this->donor_id, 'donors' );
+
+            if ( is_object( $donor ) ) {
+                return $donor;
+            }
+
+            $donor = charitable_get_table( 'donors' )->get( $this->donor_id );
+        }    
+        else {
+
+            $donor = charitable_get_table( 'donors' )->get_by( 'user_id', $this->ID );
+
+            if ( ! is_object( $donor ) ) {
+                return null;
+            }
+
+            $this->donor_id = $donor->donor_id;
+        }
+
+        wp_cache_add( $this->donor_id, $donor, 'donors' );
+
+        return $donor;
+    }
+
+    /**
      * Returns whether the user has ever made a donation. 
      *
      * @return  boolean
@@ -76,7 +163,7 @@ class Charitable_User extends WP_User {
      * @since   1.0.0
      */
     public function is_donor() {
-        return $this->has_cap( 'donor' );
+        return ! is_null( $this->get_donor() );
     }
 
     /**
@@ -170,7 +257,7 @@ class Charitable_User extends WP_User {
      * @since   1.0.0
      */
     public function get_donations() {
-        return charitable()->get_db_table( 'campaign_donations' )->get_donations_by_donor( $this->ID );
+        return charitable_get_table( 'campaign_donations' )->get_donations_by_donor( $this->ID );
     }
 
     /**
@@ -182,7 +269,7 @@ class Charitable_User extends WP_User {
      * @since   1.0.0
      */
     public function get_donation_count( $distinct_campaigns = false ) {
-        return charitable()->get_db_table( 'campaign_donations' )->count_donations_by_donor( $this->ID, $distinct_campaigns);
+        return charitable_get_table( 'campaign_donations' )->count_donations_by_donor( $this->ID, $distinct_campaigns);
     }
 
     /**
@@ -193,7 +280,7 @@ class Charitable_User extends WP_User {
      * @since   1.0.0
      */
     public function get_total_donated() {
-        return (float) charitable()->get_db_table( 'campaign_donations' )->get_total_donated_by_donor( $this->ID );
+        return (float) charitable_get_table( 'campaign_donations' )->get_total_donated_by_donor( $this->ID );
     }
 
     /**
@@ -341,98 +428,45 @@ class Charitable_User extends WP_User {
     }
 
     /**
-     * Create a new donor. 
+     * Add a new donor. This may also create a user account for them.   
      *
-     * @param   array           $submitted
-     * @return  int|false
-     * @static
+     * @param   array   $submitted
+     * @return  int     $donor_id
      * @access  public
      * @since   1.0.0
      */
-    public static function create( $submitted ) {
-        $user_data = array( 'role' => 'donor' );
+    public function add_donor( $submitted = array() ) {
+        $email = false;
 
-        /**
-         * Set the user's email address.
+        if ( isset( $submitted[ 'email' ] ) ) {
+            $email = $submitted[ 'email' ];
+        }
+
+        if ( ! $email && $this->is_logged_in() ) {
+            $email = $this->user_email;
+        }
+
+        /**  
+         * Still no email? We're going to have to call an end 
+         * to this party right now then. 
          */
-        if ( isset( $submitted['user_email'] ) ) {
-            $user_data['user_email'] = $submitted['user_email'];
-            unset( $submitted['user_email'] );
-        }
-        elseif ( isset( $submitted['email'] ) ) {
-            $user_data['user_email'] = $submitted['email'];
-            unset( $submitted['email'] );
-        }
-        else {
-            /**
-             * @todo    Set error message. 
-             */
-            return false;
+        if ( ! $email ) {
+            _doing_it_wrong( __METHOD__, __( 'Unable to add donor. Email not set for logged out user.', 'charitable' ), '1.0.0' );
+            return 0;
         }
 
-        $user = get_user_by( 'email', $user_data['user_email'] );
+        $donor_values = apply_filters( 'charitable_donor_values', array(
+            'user_id' => $this->ID,
+            'email' => $email, 
+            'first_name' => isset( $submitted[ 'first_name' ] ) ? $submitted[ 'first_name' ] : $this->first_name,
+            'last_name' => isset( $submitted[ 'last_name' ] ) ? $submitted[ 'last_name' ] : $this->last_name
+        ), $this, $submitted );
 
-        /**
-         * This is a completely new user. 
-         */
-        if ( false === $user ) {
-            /**
-             * Set their password, if provided. 
-             */
-            if ( isset( $submitted['user_pass'] ) ) {
-                $user_data['user_pass'] = $submitted['user_pass'];
-                unset( $user_data['user_pass'] );
-            }
-            else {
-                $user_data['user_pass'] = NULL;
-            }       
+        $donor_id = charitable_get_table( 'donors' )->insert( $donor_values );
 
-            /**
-             * Set their username, if provided. Otherwise it's set to their email address.
-             */
-            if ( isset( $submitted['user_login'] ) ) {
-                $user_data['user_login'] = $submitted['user_login'];
-                unset( $user_data['username'] );        
-            }
-            else {
-                $user_data['user_login'] = $user_data['user_email'];
-            }
+        do_action( 'charitable_after_insert_donor', $donor_id, $this );
 
-            /**
-             * Set their first name and last name, if provided.
-             */
-            if ( isset( $submitted['first_name'] ) ) {
-                $user_data['first_name'] = $submitted['first_name'];
-                unset( $submitted['first_name'] );
-            }
-
-            if ( isset( $submitted['last_name'] ) ) {
-                $user_data['last_name'] = $submitted['last_name'];
-                unset( $submitted['last_name'] );
-            }
-
-            $user_id = wp_insert_user( $user_data );
-
-            if ( is_wp_error( $user_id ) ) {
-
-            }
-        }
-        /**
-         * The user already exists, so just make them a donor.
-         */
-        else {
-            self::create_from_user( $user );
-            $user_id = $user->ID;
-        }       
-
-        /**
-         * Finally, loop over all the other provided values and save them as user meta fields. 
-         */
-        foreach ( $submitted as $key => $value ) {
-            update_user_meta( $user_id, 'donor_' . $key, $value );
-        }
-
-        return $user_id;
+        return $donor_id;
     }
 
     /**
@@ -444,7 +478,7 @@ class Charitable_User extends WP_User {
      * @access  public
      * @since   1.0.0
      */
-    public function save( $submitted = array(), $keys = array() ) {
+    public function update_profile( $submitted = array(), $keys = array() ) {
         if ( empty( $submitted ) ) {
             $submitted = $_POST;
         }
@@ -453,21 +487,21 @@ class Charitable_User extends WP_User {
             $keys = array_keys( $submitted );
         }
 
-        $this->save_core_user( $submitted );
+        $this->update_core_user( $submitted );
 
-        $this->save_user_meta( $submitted, $keys );
+        $this->update_user_meta( $submitted, $keys );
     }
 
     /**
      * Save core fields of the user (i.e. the wp_users data) 
      *
      * @uses    wp_insert_user
-     * @param   array       $submitted
-     * @return  int         User ID
+     * @param   array   $submitted
+     * @return  int     User ID
      * @access  public
      * @since   1.0.0
      */
-    public function save_core_user( $submitted ) {
+    public function update_core_user( $submitted ) {
         $core_fields = array_intersect( array_keys( $submitted ), $this->get_core_keys() );
 
         if ( empty( $core_fields ) ) {
@@ -502,22 +536,16 @@ class Charitable_User extends WP_User {
 
             $user_id = wp_insert_user( $values );
 
-            if ( ! is_wp_error( $user_id ) ) {
+            if ( is_wp_error( $user_id ) ) {
 
-                $this->init( self::get_data_by( 'id', $user_id ) );
+                charitable_get_notices()->add_errors_from_wp_error( $user_id );
+                return 0;
 
-                if ( apply_filters( 'charitable_auto_login_after_registration', true, $this ) ) {
+            }
 
-                    $creds = array(
-                        'user_login'    => $values[ 'user_login' ], 
-                        'user_password' => $values[ 'user_pass' ], 
-                        'remember'      => true
-                    );
-                    
-                    wp_signon( $creds, false );
-                }               
-                
-            }           
+            $this->init( self::get_data_by( 'id', $user_id ) );       
+
+            do_action( 'charitable_after_insert_user', $user_id, $values );
 
         }
         else {
@@ -535,6 +563,8 @@ class Charitable_User extends WP_User {
 
         }
 
+        do_action( 'charitable_after_save_user', $user_id, $values );
+
         return $user_id;
     }
 
@@ -547,8 +577,7 @@ class Charitable_User extends WP_User {
      * @access  public
      * @since   1.0.0
      */
-    public function save_user_meta( $submitted, $keys ) {
-        
+    public function update_user_meta( $submitted, $keys ) {
         /* Exclude the core keys */     
         $mapped_keys    = $this->get_mapped_keys();
         $meta_fields    = array_diff( $keys, $this->get_core_keys() );
@@ -574,16 +603,31 @@ class Charitable_User extends WP_User {
     }
 
     /**
-     * Adds the donor role to the user.
+     * Automatically sign on user after registration. 
      *
-     * @return  void
-     * @access  public   
+     * @param   int     $user_id
+     * @param   array   $values
+     * @return  WP_User|WP_Error|false WP_User on login, WP_Error on failure. False if feature is disabled.
+     * @access  public
+     * @static
      * @since   1.0.0
      */
-    public function make_donor() {
-        if ( ! $this->has_cap( 'donor' ) ) {
-            $this->add_role( 'donor' );
+    public static function signon( $user_id, $values ) {
+        if ( ! apply_filters( 'charitable_auto_login_after_registration', true, $user_id ) ) {
+            return false;
         }
+
+        if ( is_user_logged_in() ) {
+
+        }
+
+        $creds = array(
+            'user_login'    => $values[ 'user_login' ], 
+            'user_password' => $values[ 'user_pass' ], 
+            'remember'      => true
+        );
+        
+        return wp_signon( $creds, false );
     }
 
     /**

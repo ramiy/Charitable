@@ -158,10 +158,10 @@ class Charitable_Benefactors implements Charitable_Addon_Interface {
 
 			/* Insert or update benefactor record */
 			if ( 0 == $campaign_benefactor_id ) {
-				charitable()->get_db_table( 'benefactors' )->insert( $data );
+				charitable_get_table( 'benefactors' )->insert( $data );
 			}
 			else {
-				charitable()->get_db_table( 'benefactors' )->update( $campaign_benefactor_id, $data );
+				charitable_get_table( 'benefactors' )->update( $campaign_benefactor_id, $data );
 			}
 		}
 	}
@@ -183,7 +183,7 @@ class Charitable_Benefactors implements Charitable_Addon_Interface {
         	$return = array( 'error' => __( 'No benefactor ID provided.', 'charitable' ) );
         }
 		else {
-			$deleted = charitable()->get_db_table( 'benefactors' )->delete( $benefactor_id );
+			$deleted = charitable_get_table( 'benefactors' )->delete( $benefactor_id );
 			$return = array( 'deleted' => $deleted );
 		}
 

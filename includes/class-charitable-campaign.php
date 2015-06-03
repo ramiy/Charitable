@@ -366,7 +366,7 @@ class Charitable_Campaign {
 
         if ( false === $this->donations ) {
 
-            $this->donations = charitable()->get_db_table('campaign_donations')->get_donations_on_campaign( $this->ID );
+            $this->donations = charitable_get_table('campaign_donations')->get_donations_on_campaign( $this->ID );
 
             set_transient( self::get_donations_cache_key( $this->ID ), $this->donations, 0 ); 
         }
@@ -385,7 +385,7 @@ class Charitable_Campaign {
         $this->donated_amount = get_transient( self::get_donation_amount_cache_key( $this->ID ) );
 
         if ( false === $this->donated_amount ) {
-            $this->donated_amount = charitable()->get_db_table('campaign_donations')->get_campaign_donated_amount( $this->ID );
+            $this->donated_amount = charitable_get_table('campaign_donations')->get_campaign_donated_amount( $this->ID );
 
             set_transient( self::get_donation_amount_cache_key( $this->ID ), $this->donated_amount, 0 );
         }
@@ -459,7 +459,7 @@ class Charitable_Campaign {
      * @since   1.0.0
      */
     public function get_donor_count() {
-        return charitable()->get_db_table('campaign_donations')->count_campaign_donors( $this->ID );
+        return charitable_get_table('campaign_donations')->count_campaign_donors( $this->ID );
     }
 
     /**
@@ -569,11 +569,6 @@ class Charitable_Campaign {
         add_filter( 'charitable_sanitize_campaign_meta_campaign_allow_custom_donations', array( 'Charitable_Campaign', 'sanitize_campaign_allow_custom_donations' ) );
         add_filter( 'charitable_sanitize_campaign_meta_campaign_description', array( 'Charitable_Campaign', 'sanitize_campaign_description' ) );
         add_filter( 'charitable_sanitize_campaign_meta_campaign_video', array( 'Charitable_Campaign', 'sanitize_campaign_video' ) );
-
-        echo '<pre>';
-        var_dump( 'charitable_sanitize_campaign_meta' . $key );
-        echo '</pre>';
-
         return apply_filters( 'charitable_sanitize_campaign_meta' . $key, $value, $submitted );
     }
 

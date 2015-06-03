@@ -266,6 +266,7 @@ final class Charitable_Campaign_Post_Type {
 				'_campaign_end_date', 
 				'_campaign_goal', 
 				'_campaign_suggested_donations',
+				'_campaign_allow_custom_donations',
 				'_campaign_description', 
 				'_campaign_video'
 			) );			

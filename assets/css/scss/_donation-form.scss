@@ -67,17 +67,23 @@
 }
 
 .donation-amounts {
+	@include clearfix;
 	margin: 0 0 1em;
 	padding: 0;
 	list-style: none;
 
 	.donation-amount {
-		display: inline-block;
-		margin: 0 2px 4px 0;
-		padding: 1em;
+		float: left;
+		width: 49%;
+		margin: 0 2% 0.5em 0;
+		padding: 0.5em 1em;
 		border: 1px solid #ddd;
 		background-color: #ebebeb;		
 		cursor: pointer;
+
+		&:nth-child( 2n+2 ) {
+			margin-right: 0;
+		}
 	}
 
 	.donation-amount.selected {

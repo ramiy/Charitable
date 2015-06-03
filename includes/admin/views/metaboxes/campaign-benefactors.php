@@ -14,7 +14,7 @@ if ( ! isset( $view_args['extension'] ) ) {
 }
 
 $extension		= $view_args['extension'];
-$benefactors 	= charitable()->get_db_table( 'benefactors' )->get_campaign_benefactors_by_extension( $post->ID, $extension );
+$benefactors 	= charitable_get_table( 'benefactors' )->get_campaign_benefactors_by_extension( $post->ID, $extension );
 ?>
 <div class="charitable-metabox">
 	<?php 

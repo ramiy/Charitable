@@ -3,7 +3,7 @@
  * Class that sets up the gateways. 
  *
  * @version		1.0.0
- * @package		Charitable/Classes/Charitable_Gateway
+ * @package		Charitable/Classes/Charitable_Gateways
  * @author 		Eric Daams
  * @copyright 	Copyright (c) 2014, Studio 164a
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License   
@@ -11,14 +11,14 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-if ( ! class_exists( 'Charitable_Gateway' ) ) : 
+if ( ! class_exists( 'Charitable_Gateways' ) ) : 
 
 /**
- * Charitable_Gateway
+ * Charitable_Gateways
  *
  * @since 		1.0.0
  */
-class Charitable_Gateway extends Charitable_Start_Object {
+class Charitable_Gateways extends Charitable_Start_Object {
 
 	/**
 	 * All available payment gateways. 
@@ -60,8 +60,10 @@ class Charitable_Gateway extends Charitable_Start_Object {
 	 */
 	private function attach_hooks_and_filters() {
 		add_action( 'charitable_after_save_donation', array( $this, 'send_donation_to_gateway' ), 10, 2 );
-		add_action( 'charitable_enable_gateway', array( $this, 'handle_gateway_request' ) );
-		add_action( 'charitable_disable_gateway', array( $this, 'handle_gateway_request' ) );
+		add_action( 'charitable_enable_gateway', array( $this, 'handle_gateway_settings_request' ) );
+		add_action( 'charitable_disable_gateway', array( $this, 'handle_gateway_settings_request' ) );
+		add_filter( 'charitable_settings_fields_gateways_gateway', array( $this, 'register_gateway_settings' ), 10, 2 );
+	
 
 		do_action( 'charitable_gateway_start', $this );		
 	}
@@ -74,7 +76,7 @@ class Charitable_Gateway extends Charitable_Start_Object {
 	 * @access 	public
 	 * @since 	1.0.0
 	 */
-	public function handle_gateway_request() {
+	public function handle_gateway_settings_request() {
 		if ( ! wp_verify_nonce( $_REQUEST[ '_nonce' ], 'gateway' ) ) {
 			wp_die( __( 'Cheatin\' eh?!', 'charitable' ) );
 		}
@@ -100,6 +102,91 @@ class Charitable_Gateway extends Charitable_Start_Object {
 		}	
 	}
 
+	/**
+	 * Send the donation/donor off to the gateway.  
+	 *
+	 * @param 	Charitable_Campaign 	$campaign
+	 * @param 	int 					$donation_id
+	 * @return 	void
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function send_donation_to_gateway( $campaign, $donation_id ) {
+		
+	}
+
+	/**
+	 * Returns all available payment gateways. 
+	 *
+	 * @return 	string
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function get_available_gateways() {
+		return $this->gateways;
+	}
+
+	/**
+	 * Returns the current active gateways. 
+	 *
+	 * @return 	array
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function get_active_gateways() {
+		return charitable_get_option( 'active_gateways', array() );
+	}
+
+	/**
+	 * Return the gateway class name for a given gateway.	 
+	 *
+	 * @param 	string 	$gateway
+	 * @return  string|false 	
+	 * @access  public
+	 * @since   1.0.0
+	 */
+	public function get_gateway( $gateway ) {
+		return isset( $this->gateways[ $gateway ] ) ? $this->gateways[ $gateway ] : false;
+	}
+
+	/**
+	 * Returns whether the passed gateway is active. 
+	 *
+	 * @param 	string 		$gateway_id
+	 * @return 	boolean
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function is_active_gateway( $gateway_id ) {		
+		return array_key_exists( $gateway_id, $this->get_active_gateways() );
+	}
+
+	/**
+	 * Returns the default gateway. 
+	 *
+	 * @return 	string
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function get_default_gateway() {
+	
+	}
+
+	/**
+	 * Provide default gateway settings fields.
+	 *
+	 * @param 	array 	$settings
+	 * @param 	Charitable_Gateway	$gateway 	The gateway's helper object.
+	 * @return  array
+	 * @access  public
+	 * @since   1.0.0
+	 */
+	public function register_gateway_settings( $settings, Charitable_Gateway $gateway ) {
+		add_filter( 'charitable_settings_fields_gateways_gateway_' . $gateway::ID, array( $gateway, 'default_gateway_settings' ), 5 );
+        add_filter( 'charitable_settings_fields_gateways_gateway_' . $gateway::ID, array( $gateway, 'gateway_settings' ), 15 );
+        return apply_filters( 'charitable_settings_fields_gateways_gateway_' . $gateway::ID, $settings );
+	}
+	
 	/**
 	 * Enable a payment gateway. 
 	 *
@@ -138,76 +225,6 @@ class Charitable_Gateway extends Charitable_Start_Object {
 		update_option( 'charitable_settings', $settings );		
 
 		do_action( 'charitable_gateway_disable', $gateway );
-	}	
-
-	/**
-	 * Send the donation/donor off to the gateway.  
-	 *
-	 * @param 	Charitable_Campaign 	$campaign
-	 * @param 	int 					$donation_id
-	 * @return 	void
-	 * @access  public
-	 * @since 	1.0.0
-	 */
-	public function send_donation_to_gateway( $campaign, $donation_id ) {
-		
-	}
-
-	/**
-	 * Returns all available payment gateways. 
-	 *
-	 * @return 	string
-	 * @access  public
-	 * @since 	1.0.0
-	 */
-	public function get_available_gateways() {
-		return $this->gateways;
-	}
-
-	/**
-	 * Returns the current active gateways. 
-	 *
-	 * @return 	array
-	 * @access  public
-	 * @since 	1.0.0
-	 */
-	public function get_active_gateways() {
-		return charitable_get_option( 'active_gateways' ) ? charitable_get_option( 'active_gateways' ) : array();
-	}
-
-	/**
-	 * Return the gateway class name for a given gateway.	 
-	 *
-	 * @param 	string 	$gateway
-	 * @return  string|false 	
-	 * @access  public
-	 * @since   1.0.0
-	 */
-	public function get_gateway( $gateway ) {
-		return isset( $this->gateways[ $gateway ] ) ? $this->gateways[ $gateway ] : false;
-	}
-
-	/**
-	 * Returns whether the passed gateway is active. 
-	 *
-	 * @param 	string 		$gateway_id
-	 * @return 	boolean
-	 * @access  public
-	 * @since 	1.0.0
-	 */
-	public function is_active_gateway( $gateway_id ) {		
-		return array_key_exists( $gateway_id, $this->get_active_gateways() );
-	}
-
-	/**
-	 * Returns the default gateway. 
-	 *
-	 * @return 	string
-	 * @access  public
-	 * @since 	1.0.0
-	 */
-	public function get_default_gateway() {
-	
 	}
 }
 

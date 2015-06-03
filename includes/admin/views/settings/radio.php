@@ -3,6 +3,7 @@
  * Display select field. 
  *
  * @author  Studio 164a
+ * @package Charitable/Admin View/Settings
  * @since   1.0.0
  */
 
@@ -13,7 +14,7 @@ if ( empty( $value ) ) :
 endif;
 
 ?>
-<ul class="charitable-radio-list">
+<ul class="charitable-radio-list <?php echo esc_attr( $view_args[ 'classes' ] ) ?>">
 
     <?php foreach ( $view_args[ 'options' ] as $option => $label ) : ?>
 
@@ -30,6 +31,6 @@ endif;
 </ul>
 <?php if ( isset( $view_args['help'] ) ) : ?>
 
-    <span class="charitable-help"><?php echo $view_args['help']  ?></span>
+    <div class="charitable-help"><?php echo $view_args['help']  ?></div>
 
 <?php endif;

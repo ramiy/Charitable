@@ -49,13 +49,13 @@ class Test_Campaign_Donations_DB extends WP_UnitTestCase {
 			'amount'		=> 10
 		);
 
-		$campaign_donation_id = charitable()->get_db_table('campaign_donations')->insert( $args );
+		$campaign_donation_id = charitable_get_table('campaign_donations')->insert( $args );
 
 		$this->assertGreaterThan( 0, $campaign_donation_id );
 	}
 
 	public function test_count_all() {
-		$this->assertEquals( 4, charitable()->get_db_table('campaign_donations')->count_all() );
+		$this->assertEquals( 4, charitable_get_table('campaign_donations')->count_all() );
 	}
 
 	/**

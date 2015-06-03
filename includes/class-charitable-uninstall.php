@@ -82,9 +82,11 @@ class Charitable_Uninstall {
 		global $wpdb;		
 
 		$wpdb->query( "DROP TABLE IF EXISTS " . $wpdb->prefix . "charitable_campaign_donations" );
+		$wpdb->query( "DROP TABLE IF EXISTS " . $wpdb->prefix . "charitable_donors" );
 		$wpdb->query( "DROP TABLE IF EXISTS " . $wpdb->prefix . "charitable_benefactors" );
 
 		delete_option( $wpdb->prefix . 'charitable_campaign_donations_db_version' );
+		delete_option( $wpdb->prefix . 'charitable_donors_db_version' );
 		delete_option( $wpdb->prefix . 'charitable_benefactors_db_version' );
 	}
 }

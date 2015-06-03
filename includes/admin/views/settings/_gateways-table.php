@@ -6,7 +6,7 @@
  * @since 	1.0.0
  */
 
-$helper		= charitable_get_helper( 'gateway' );
+$helper		= charitable_get_helper( 'gateways' );
 $default 	= charitable_get_option( 'default_gateway' );
 
 if ( count( $helper->get_available_gateways() ) ) : 

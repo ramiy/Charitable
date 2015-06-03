@@ -176,43 +176,49 @@ class Charitable {
         /* Functions */
         require_once( $includes_path . 'charitable-core-functions.php' );
         require_once( $includes_path . 'charitable-utility-functions.php' );
-        require_once( $includes_path . 'charitable-template-functions.php' );
+        require_once( $includes_path . 'charitable-template-functions.php' );        
 
-        /* Interfaces */
-        require_once( $includes_path . 'interface-charitable-donation-form.php' );
-
-        /* Classes */
+        /* Base Classes & Interfaces */
+        require_once( $includes_path . 'interface-charitable-donation-form.php' );        
         require_once( $includes_path . 'class-charitable-start-object.php' );
+        require_once( $includes_path . 'class-charitable-form.php' );     
         require_once( $includes_path . 'class-charitable-addons.php' );
-        require_once( $includes_path . 'class-charitable-roles.php' );
-        require_once( $includes_path . 'class-charitable-donation-actions.php' );
-        require_once( $includes_path . 'class-charitable-post-types.php' );
-        require_once( $includes_path . 'class-charitable-campaigns.php' );
-        require_once( $includes_path . 'class-charitable-widgets.php' );
-        require_once( $includes_path . 'class-charitable-gateway.php' );
-        require_once( $includes_path . 'class-charitable-form.php' );
         require_once( $includes_path . 'class-charitable-campaign.php' );
+        require_once( $includes_path . 'class-charitable-campaigns.php' );
+        require_once( $includes_path . 'class-charitable-currency.php' );
         require_once( $includes_path . 'class-charitable-donation.php' );
+        require_once( $includes_path . 'class-charitable-donation-actions.php' );        
         require_once( $includes_path . 'class-charitable-donation-form.php' );
         require_once( $includes_path . 'class-charitable-donation-form-hidden.php' );
         require_once( $includes_path . 'class-charitable-donation-amount-form.php' );
         require_once( $includes_path . 'class-charitable-donations.php' );
-        require_once( $includes_path . 'class-charitable-user.php' );
-        require_once( $includes_path . 'class-charitable-donor.php' );
+        // require_once( $includes_path . 'class-charitable-donor.php' );
         require_once( $includes_path . 'class-charitable-donor-query.php' );
-        require_once( $includes_path . 'class-charitable-currency.php' );
-        require_once( $includes_path . 'class-charitable-request.php' );      
+        require_once( $includes_path . 'class-charitable-emails.php' );        
+        require_once( $includes_path . 'class-charitable-gateways.php' );
         require_once( $includes_path . 'class-charitable-locations.php' );
         require_once( $includes_path . 'class-charitable-notices.php' );
+        require_once( $includes_path . 'class-charitable-post-types.php' );
+        require_once( $includes_path . 'class-charitable-request.php' ); 
+        require_once( $includes_path . 'class-charitable-roles.php' );
+        require_once( $includes_path . 'class-charitable-user.php' );
+        require_once( $includes_path . 'class-charitable-widgets.php' );        
 
         /* Gateways */
         include_once( $includes_path . 'gateways/abstract-class-charitable-gateway.php' );
         include_once( $includes_path . 'gateways/class-charitable-gateway-offline.php' );
         include_once( $includes_path . 'gateways/class-charitable-gateway-paypal.php' );        
-        
+
+        /* Emails */
+        include_once( $includes_path . 'emails/abstract-class-charitable-email.php' );
+        include_once( $includes_path . 'emails/class-charitable-email-new-donation.php' );
+        include_once( $includes_path . 'emails/class-charitable-email-donation-receipt.php' );
+        // include_once( $includes_path . 'emails/class-charitable-email-paypal.php' );        
+            
         /* Database */
         require_once( $includes_path . 'db/abstract-class-charitable-db.php' );
         require_once( $includes_path . 'db/class-charitable-campaign-donations-db.php' );
+        require_once( $includes_path . 'db/class-charitable-donors-db.php' );
 
         /* Public */
         require_once( $includes_path . 'public/class-charitable-session.php' );
@@ -239,12 +245,14 @@ class Charitable {
         add_action('charitable_start',  array( 'Charitable_Donation_Actions', 'charitable_start' ), 3 );
         add_action('charitable_start',  array( 'Charitable_Post_Types', 'charitable_start' ), 3 );      
         add_action('charitable_start',  array( 'Charitable_Widgets', 'charitable_start' ), 3 );
-        add_action('charitable_start',  array( 'Charitable_Gateway', 'charitable_start' ), 3 ); 
+        add_action('charitable_start',  array( 'Charitable_Gateways', 'charitable_start' ), 3 ); 
+        add_action('charitable_start',  array( 'Charitable_Emails', 'charitable_start' ), 3 ); 
         add_action('charitable_start',  array( 'Charitable_Request', 'charitable_start' ), 3 );
         add_action('init',              array( $this, 'do_charitable_actions' ) );
 
         add_filter('charitable_sanitize_campaign_meta', array( 'Charitable_Campaign', 'sanitize_meta' ), 10, 3 );
         add_filter('charitable_sanitize_donation_meta', array( 'Charitable_Donation', 'sanitize_meta' ), 10, 2 );
+        add_filter('charitable_after_insert_user',      array( 'Charitable_User', 'signon' ), 10, 2 );
     }
 
     /**
@@ -507,23 +515,14 @@ class Charitable {
      * @since   1.0.0
      */
     public function get_db_table( $table ) {
-        $default_tables = array(
-            'campaign_donations'    => 'Charitable_Campaign_Donations_DB'
-        );
-        
-        $tables = apply_filters( 'charitable_db_tables', $default_tables );
+        $tables = $this->get_tables();
 
-        if ( isset( $tables[ $table ] ) ) {
-            $class_name = $tables[ $table ];
-        }
-        elseif ( in_array( $table, $tables ) ) {
-            $class_name = $table;
-        }
-        else {
+        if ( ! isset( $tables[ $table ] ) ) {
             _doing_it_wrong( __METHOD__, sprintf( 'Invalid table %s passed', $table ), '1.0.0' );
             return null;
         }
 
+        $class_name = $tables[ $table ];
 
         $db_table = $this->get_registered_object( $class_name );
 
@@ -533,6 +532,22 @@ class Charitable {
         }
 
         return $db_table;
+    }
+
+    /**
+     * Return the filtered list of registered tables. 
+     *
+     * @return  string[]
+     * @access  private
+     * @since   1.0.0
+     */
+    private function get_tables() {
+        $default_tables = array(
+            'campaign_donations' => 'Charitable_Campaign_Donations_DB', 
+            'donors'             => 'Charitable_Donors_DB'   
+        );
+        
+        return apply_filters( 'charitable_db_tables', $default_tables );
     }
 
     /**

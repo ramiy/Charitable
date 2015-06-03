@@ -31,69 +31,32 @@ class Test_Charitable_Donation extends WP_UnitTestCase {
 		$this->campaign_2 = new Charitable_Campaign( get_post( $campaign_2_id ) );
 
 		/* Create a couple donations */
-		$this->donor_id = $this->factory->user->create( array( 'display_name' => 'John Henry' ) );		
-
-		$this->donation_id_1 = Charitable_Donation_Helper::create_donation( array(
-			'user_id'			=> $this->donor_id, 
-			'campaigns'			=> array(
-				array( 
-					'campaign_id' 	=> $campaign_1_id,
-					'campaign_name'	=> 'Test Campaign 1', 
-					'amount'		=> 100
-				)
-			), 
-			'status'			=> 'charitable-pending', 
-			'gateway'			=> 'paypal',
-			'note'				=> 'This is a note'
-		) );
-
-		$this->donation_1 = new Charitable_Donation( $this->donation_id_1 ); 
-
-		$this->donation_id_2 = Charitable_Donation_Helper::create_donation( array(
-			'user_id'			=> $this->donor_id, 
-			'campaigns'			=> array(
-				array( 
-					'campaign_id' 	=> $campaign_1_id,
-					'campaign_name'	=> 'Test Campaign 1', 
-					'amount'		=> 75
-				), 
-				array( 
-					'campaign_id' 	=> $campaign_2_id,
-					'campaign_name'	=> 'Test Campaign 2', 
-					'amount'		=> 50
-				)
-			), 
-			'status'			=> 'charitable-completed', 
-			'gateway'			=> 'manual', 
-		) );			
-		
-		$this->donation_2 = new Charitable_Donation( $this->donation_id_2 );
+		$this->user_id = $this->factory->user->create( array( 'display_name' => 'John Henry' ) );
+		$user = new Charitable_User( $this->user_id );
+		$this->donor_id = $user->add_donor();
 	}
 
 	/** 
 	 * Test insert method first. If this fails, we can skip most of the other tests.
 	 */
-	public function test_insert() {
-		$args = array(
-			'user_id'			=> $this->donor_id, 
-			'campaigns'			=> array(
+	public function test_add_donation() {
+		$donation_id = Charitable_Donation_Helper::create_donation( array(
+			'campaigns' => array(
 				array( 
 					'campaign_id' 	=> $this->campaign_1->ID,
 					'campaign_name'	=> 'Test Campaign', 
 					'amount'		=> 10
 				)
-			), 
-			'status'			=> 'charitable-completed', 
-			'gateway'			=> 'manual'
-		);
-
-		$this->assertGreaterThan( 0, Charitable_Donation::insert( $args ) );
+			)
+		) );
+		
+		$this->assertGreaterThan( 0, $donation_id );
 	}
 
 	/**
-	 * @depends test_insert
+	 * @depends test_add_donation
 	 */
-	public function test_insert_campaign_donations() {
+	public function test_add_campaign_donations() {
 		$campaigns = array(
 			array( 
 				'campaign_id' 	=> $this->campaign_1->ID,
@@ -102,104 +65,376 @@ class Test_Charitable_Donation extends WP_UnitTestCase {
 			)
 		);
 
-		$inserted = Charitable_Donation::insert_campaign_donations( 1, $campaigns );
+		$inserted = Charitable_Donation::add_campaign_donations( $campaigns, $this->user_id, $this->donor_id );
 
-		$this->assertEquals( 1, Charitable_Donation::insert_campaign_donations( 1, $campaigns ) );
+		$this->assertEquals( 1, $inserted );
 	}
 
 	/**
-	 * @depends test_insert_campaign_donations
+	 * @depends test_add_donation
 	 */
-	public function test_get_donation_id() {
-		$this->assertEquals( $this->donation_id_1, $this->donation_1->get_donation_id() );
-		$this->assertEquals( $this->donation_id_2, $this->donation_2->get_donation_id() );
+	public function test_get_donor_id_for_donation() {
+		$args = array(
+			'donor_id' => $this->donor_id
+		);
+
+		$this->assertEquals( $this->donor_id, Charitable_Donation::get_donor_id_for_donation( $args ) );
+	}
+
+	/**
+	 * @depends test_add_donation
+	 * @depends test_get_donor_id_for_donation
+	 */
+	public function test_get_donor_id_for_donation_with_user_id() {
+		$args = array(
+			'user_id' => $this->user_id
+		);
+
+		$this->assertEquals( $this->donor_id, Charitable_Donation::get_donor_id_for_donation( $args ) );
+	}
+
+	/**
+	 * @depends test_add_donation
+	 * @depends test_get_donor_id_for_donation
+	 */
+	public function test_get_donor_id_for_donation_with_email() {
+		$args = array(
+			'email' => 'john.henry@example.com'
+		);
+
+		$this->assertGreaterThan( 0, Charitable_Donation::get_donor_id_for_donation( $args ) );
+	}
+
+	/**
+	 * @depends test_add_donation
+	 * @depends test_get_donor_id_for_donation
+	 * @expectedIncorrectUsage	Charitable_User::add_donor
+	 */
+	public function test_get_donor_id_for_donation_failure() {
+		Charitable_Donation::get_donor_id_for_donation( array() );
 	}	
 
 	/**
-	 * @depends test_insert_campaign_donations
+	 * @depends test_add_campaign_donations
+	 */
+	public function test_get_ID() {
+		$donation_id = Charitable_Donation_Helper::create_donation( array(
+			'campaigns' => array(
+				array( 
+					'campaign_id' 	=> $this->campaign_1->ID,
+					'campaign_name'	=> 'Test Campaign', 
+					'amount'		=> 10
+				)
+			)
+		) );
+		
+		$donation = new Charitable_Donation( $donation_id );
+		
+		$this->assertEquals( $donation_id, $donation->ID );
+	}	
+
+	/**
+	 * @depends test_add_campaign_donations
 	 */
 	public function test_get_gateway() {
-		$this->assertEquals( 'paypal', $this->donation_1->get_gateway() );
-		$this->assertEquals( 'manual', $this->donation_2->get_gateway() );
+		$donation_id = Charitable_Donation_Helper::create_donation( array(
+			'campaigns' => array(
+				array( 
+					'campaign_id' 	=> $this->campaign_1->ID,
+					'campaign_name'	=> 'Test Campaign', 
+					'amount'		=> 10
+				)
+			), 
+			'gateway' => 'stripe'
+		) );
+		
+		$donation = new Charitable_Donation( $donation_id );
+		
+		$this->assertEquals( 'stripe', $donation->get_gateway() );
 	}
 
 	/**
-	 * @depends test_insert_campaign_donations
+	 * @depends test_add_campaign_donations
 	 */
 	public function test_get_total_donation_amount() {
-		$this->assertEquals( 100, $this->donation_1->get_total_donation_amount() );
-		$this->assertEquals( 125, $this->donation_2->get_total_donation_amount() );
+		$donation_id = Charitable_Donation_Helper::create_donation( array(
+			'campaigns' => array(
+				array( 
+					'campaign_id' 	=> $this->campaign_1->ID,
+					'campaign_name'	=> 'Test Campaign', 
+					'amount'		=> 10
+				)
+			)
+		) );
+		
+		$donation = new Charitable_Donation( $donation_id );
+		
+		$this->assertEquals( 10, $donation->get_total_donation_amount() );
 	}
 
 	/**
-	 * @depends test_insert_campaign_donations
+	 * @depends test_add_campaign_donations
+	 * @depends test_get_total_donation_amount
+	 */
+	public function test_get_total_donation_amount_multi_donation() {
+		$donation_id = Charitable_Donation_Helper::create_donation( array(
+			'campaigns' => array(
+				array( 
+					'campaign_id' 	=> $this->campaign_1->ID,
+					'campaign_name'	=> 'Test Campaign', 
+					'amount'		=> 50
+				), 
+				array( 
+					'campaign_id' 	=> $this->campaign_2->ID,
+					'campaign_name'	=> 'Test Campaign 2', 
+					'amount'		=> 75
+				)
+			)
+		) );
+		
+		$donation = new Charitable_Donation( $donation_id );
+		
+		$this->assertEquals( 125, $donation->get_total_donation_amount() );
+	}
+
+	/**
+	 * @depends test_add_campaign_donations
+	 * @depends test_get_total_donation_amount
 	 */
 	public function test_get_campaign_donations() {
-		$this->assertEquals( 1, count( $this->donation_1->get_campaign_donations() ) );
-		$this->assertEquals( 2, count( $this->donation_2->get_campaign_donations() ) );
+		$donation_id = Charitable_Donation_Helper::create_donation( array(
+			'campaigns' => array(
+				array( 
+					'campaign_id' 	=> $this->campaign_1->ID,
+					'campaign_name'	=> 'Test Campaign', 
+					'amount'		=> 10
+				)
+			)
+		) );
+
+		$donation = new Charitable_Donation( $donation_id );
+		
+		$this->assertCount( 1, $donation->get_campaign_donations() );
 	}
 
 	/**
-	 * @depends test_insert_campaign_donations
+	 * @depends test_add_campaign_donations
+	 * @depends test_get_total_donation_amount
+	 * @depends test_get_campaign_donations
 	 */
-	public function test_get_notes() {
-		$this->assertEquals( 'This is a note', $this->donation_1->get_notes() );
-		$this->assertEquals( '', $this->donation_2->get_notes() );
-	}
-
-	/**
-	 * @depends test_insert_campaign_donations
-	 */
-	public function test_get_status() {
-		$this->assertEquals( 'charitable-pending', $this->donation_1->get_status() );
-		$this->assertEquals( 'charitable-completed', $this->donation_2->get_status() );
-	}
-
-	/**
-	 * @depends test_insert_campaign_donations
-	 */
-	public function test_get_donor() {
-		$this->assertInstanceOf( 'WP_User', $this->donation_1->get_donor() );
-		$this->assertEquals( $this->donor_id, $this->donation_1->get_donor()->ID );
-	}
-
-	/**
-	 * @depends test_insert_campaign_donations
-	 */
-	public function test_donation_log() {
-		$this->assertEquals( 1, count( $this->donation_2->get_donation_log() ) ); // 1 log created when donation inserted
-		$this->donation_2->update_donation_log( 'New message' );
-
-		$updated_log = $this->donation_2->get_donation_log();
-		$this->assertEquals( 2, count( $updated_log ) ); 
-		$this->assertEquals( 'New message', $updated_log[1]['message'] );
+	public function test_get_campaign_donations_multi() {
+		$donation_id = Charitable_Donation_Helper::create_donation( array(
+			'campaigns' => array(
+				array( 
+					'campaign_id' 	=> $this->campaign_1->ID,
+					'campaign_name'	=> 'Test Campaign', 
+					'amount'		=> 50
+				), 
+				array( 
+					'campaign_id' 	=> $this->campaign_2->ID,
+					'campaign_name'	=> 'Test Campaign 2', 
+					'amount'		=> 75
+				)
+			)
+		) );
+		
+		$donation = new Charitable_Donation( $donation_id );
+		
+		$this->assertCount( 2, $donation->get_campaign_donations() );
 	}	
 
 	/**
-	 * @depends test_insert_campaign_donations
+	 * @depends test_add_campaign_donations
+	 */
+	public function test_get_notes() {
+		$donation_id = Charitable_Donation_Helper::create_donation( array(
+			'campaigns' => array(
+				array( 
+					'campaign_id' 	=> $this->campaign_1->ID,
+					'campaign_name'	=> 'Test Campaign', 
+					'amount'		=> 10
+				)
+			), 
+			'note' => 'This is a note'
+		) );
+		
+		$donation = new Charitable_Donation( $donation_id );
+		
+		$this->assertEquals( 'This is a note', $donation->get_notes() );
+	}
+
+	/**
+	 * @depends test_add_campaign_donations
+	 */
+	public function test_get_status() {
+		$donation_id = Charitable_Donation_Helper::create_donation( array(
+			'campaigns' => array(
+				array( 
+					'campaign_id' 	=> $this->campaign_1->ID,
+					'campaign_name'	=> 'Test Campaign', 
+					'amount'		=> 10
+				)
+			), 
+			'status' => 'charitable-completed'
+		) );
+
+		$donation = new Charitable_Donation( $donation_id );
+
+		$this->assertEquals( 'charitable-completed', $donation->get_status() );
+	}
+
+	/**
+	 * @depends test_add_campaign_donations
+	 */
+	public function test_get_donor() {
+		$donation_id = Charitable_Donation_Helper::create_donation( array(
+			'campaigns' => array(
+				array( 
+					'campaign_id' 	=> $this->campaign_1->ID,
+					'campaign_name'	=> 'Test Campaign', 
+					'amount'		=> 10
+				)
+			), 
+			'status' => 'charitable-completed'
+		) );
+		
+		$donation = new Charitable_Donation( $donation_id );
+
+		$this->assertInstanceOf( 'Charitable_User', $donation->get_donor() );
+	}
+
+	/**
+	 * @depends test_add_campaign_donations
+	 */
+	public function test_get_donation_log() {
+		$donation_id = Charitable_Donation_Helper::create_donation( array(
+			'campaigns' => array(
+				array( 
+					'campaign_id' 	=> $this->campaign_1->ID,
+					'campaign_name'	=> 'Test Campaign', 
+					'amount'		=> 10
+				)
+			), 
+			'status' => 'charitable-completed'
+		) );
+		
+		$this->assertCount( 1, Charitable_Donation::get_donation_log( $donation_id ) );
+	}	
+
+	/**
+	 * @depends test_add_campaign_donations
+	 * @depends test_get_donation_log
+	 */
+	public function test_update_donation_log() {
+		$donation_id = Charitable_Donation_Helper::create_donation( array(
+			'campaigns' => array(
+				array( 
+					'campaign_id' 	=> $this->campaign_1->ID,
+					'campaign_name'	=> 'Test Campaign', 
+					'amount'		=> 10
+				)
+			), 
+			'status' => 'charitable-completed'
+		) );
+		
+		Charitable_Donation::update_donation_log( $donation_id, 'New message' );
+
+		$this->assertCount( 2, Charitable_Donation::get_donation_log( $donation_id ) );
+	}		
+
+	/**
+	 * @depends test_add_campaign_donations
 	 */
 	public function test_update_status() {
-		$this->donation_1->update_status( 'charitable-completed' );
-		$this->assertEquals( 'charitable-completed', $this->donation_1->get_status() );
+		$donation_id = Charitable_Donation_Helper::create_donation( array(
+			'campaigns' => array(
+				array( 
+					'campaign_id' 	=> $this->campaign_1->ID,
+					'campaign_name'	=> 'Test Campaign', 
+					'amount'		=> 10
+				)
+			), 
+			'status' => 'charitable-pending'
+		) );
 
-		$log = $this->donation_1->get_donation_log();
+		$donation = new Charitable_Donation( $donation_id );
+
+		$donation->update_status( 'charitable-completed' );
+
+		$this->assertEquals( 'charitable-completed', $donation->get_status() );
+	}
+
+	/**
+	 * @depends test_update_status
+	 */
+	public function test_update_status_log() {
+		$donation_id = Charitable_Donation_Helper::create_donation( array(
+			'campaigns' => array(
+				array( 
+					'campaign_id' 	=> $this->campaign_1->ID,
+					'campaign_name'	=> 'Test Campaign', 
+					'amount'		=> 10
+				)
+			), 
+			'status' => 'charitable-pending'
+		) );
+
+		$donation = new Charitable_Donation( $donation_id );
+
+		$donation->update_status( 'charitable-completed' );
+
+		$log = Charitable_Donation::get_donation_log( $donation_id );
 		$last = array_pop( $log );
+
 		$this->assertEquals( 'Donation status updated from Pending to Completed', $last['message'] );
+	}
 
-		$this->donation_1->update_status( 'charitable-pending' ); // Stick it back to pending for other tests.
+	public function test_get_campaigns() {
+		$donation_id = Charitable_Donation_Helper::create_donation( array(
+			'campaigns' => array(
+				array( 
+					'campaign_id' 	=> $this->campaign_1->ID,
+					'campaign_name'	=> 'Test Campaign 1', 
+					'amount'		=> 10
+				),
+				array( 
+					'campaign_id' 	=> $this->campaign_2->ID,
+					'campaign_name'	=> 'Test Campaign 2', 
+					'amount'		=> 10
+				)
+			), 
+			'status' => 'charitable-pending'
+		) );
 
+		$donation = new Charitable_Donation( $donation_id );
+
+		$this->assertCount( 2, $donation->get_campaigns() );
+	}
+
+	public function test_get_campaigns_donated_to() {
+		$donation_id = Charitable_Donation_Helper::create_donation( array(
+			'campaigns' => array(
+				array( 
+					'campaign_id' 	=> $this->campaign_1->ID,
+					'campaign_name'	=> 'Test Campaign 1', 
+					'amount'		=> 10
+				),
+				array( 
+					'campaign_id' 	=> $this->campaign_2->ID,
+					'campaign_name'	=> 'Test Campaign 2', 
+					'amount'		=> 10
+				)
+			), 
+			'status' => 'charitable-pending'
+		) );
+
+		$donation = new Charitable_Donation( $donation_id );
+
+		$this->assertEquals( 'Test Campaign 1, Test Campaign 2', $donation->get_campaigns_donated_to() );
 	}
 
 	public function test_get_valid_donation_statuses() {
-		$this->assertArrayHasKey( 'charitable-pending', Charitable_Donation::get_valid_donation_statuses() );
-		$this->assertArrayHasKey( 'charitable-completed', Charitable_Donation::get_valid_donation_statuses() );
-		$this->assertArrayHasKey( 'charitable-failed', Charitable_Donation::get_valid_donation_statuses() );
-		$this->assertArrayHasKey( 'charitable-cancelled', Charitable_Donation::get_valid_donation_statuses() );
-		$this->assertArrayHasKey( 'charitable-refunded', Charitable_Donation::get_valid_donation_statuses() );
-	}
-
-	public function test_get_campaign_donations_db() {
-		$this->assertInstanceOf( 'Charitable_Campaign_Donations_DB', $this->donation_1->get_campaign_donations_db() );
+		$this->assertCount( 5, Charitable_Donation::get_valid_donation_statuses() );	
 	}
 
 }

@@ -35,6 +35,7 @@ class Charitable_Templates extends Charitable_Start_Object {
 		add_action( 'wp',  				array( $this, 'maybe_load_charitable_template' ) );
 		add_filter( 'template_include', array( $this, 'donate_template' ) );		
 		add_filter( 'template_include', array( $this, 'widget_template' ) );
+		add_filter( 'template_include', array( $this, 'email_template' ) );
 		add_filter( 'body_class', 		array( $this, 'add_donation_page_body_class' ) );
 		add_filter( 'body_class', 		array( $this, 'add_widget_page_body_class' ) );		
 		
@@ -63,16 +64,13 @@ class Charitable_Templates extends Charitable_Start_Object {
 	/**
 	 * Load the donation template if we're looking at the donate page. 
 	 *
-	 * @global 	WP_Query 	$wp_query
 	 * @param 	string 		$template
 	 * @return 	string
 	 * @access  public
 	 * @since 	1.0.0
 	 */
 	public function donate_template( $template ) {
-		global $wp_query;
-
-		if ( charitable_is_campaign_donation_page() ) {
+		if ( charitable_is_page( 'campaign_donation_page' ) ) {
 
 			do_action( 'charitable_is_donate_page' );
 			
@@ -92,12 +90,31 @@ class Charitable_Templates extends Charitable_Start_Object {
 	 * @since 	1.0.0
 	 */
 	public function widget_template( $template ) {	
-		if ( charitable_is_campaign_widget_page() ) {
+		if ( charitable_is_page( 'campaign_widget_page' ) ) {
 
 			do_action( 'charitable_is_widget' );
 			
 			$new_template = apply_filters( 'charitable_widget_page_template', 'campaign-widget.php' );
 			$template = charitable_get_template_path( $new_template, $template );
+		}
+
+		return $template;
+	}
+
+	/**
+	 * Load the email template if we're looking at the email page. 
+	 *
+	 * @param 	string 		$template
+	 * @return 	string
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function email_template( $template ) {	
+		if ( charitable_is_page( 'email_preview' ) ) {
+
+			do_action( 'charitable_email_preview' );
+			
+			$template = charitable_get_template_path( 'emails/preview.php' );
 		}
 
 		return $template;

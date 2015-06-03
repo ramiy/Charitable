@@ -147,8 +147,8 @@ class Test_Charitable_Campaign extends WP_UnitTestCase {
 	}
 
 	function test_get_donations_db_call() {
-		$this->assertCount( 3, charitable()->get_db_table('campaign_donations')->get_donations_on_campaign( $this->campaign_1->ID ), 'Testing call to campaign_donations table to retrieve campaign donations.' );
-		$this->assertCount( 1, charitable()->get_db_table('campaign_donations')->get_donations_on_campaign( $this->campaign_2->ID ), 'Testing call to campaign_donations table to retrieve campaign donations.' );
+		$this->assertCount( 3, charitable_get_table('campaign_donations')->get_donations_on_campaign( $this->campaign_1->ID ), 'Testing call to campaign_donations table to retrieve campaign donations.' );
+		$this->assertCount( 1, charitable_get_table('campaign_donations')->get_donations_on_campaign( $this->campaign_2->ID ), 'Testing call to campaign_donations table to retrieve campaign donations.' );
 	}
 
 	/**
