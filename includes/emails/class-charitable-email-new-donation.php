@@ -26,77 +26,24 @@ class Charitable_Email_New_Donation extends Charitable_Email {
     CONST ID = 'new_donation';
 
     /**
-     * @var     Charitable_Donation
+     * @var     string[] Array of supported object types (campaigns, donations, donors, etc).
+     * @access  protected
+     * @since   1.0.0
      */
-    protected $donation;
+    protected $object_types = array( 'donation' );
 
     /**
      * Instantiate the email class, defining its key values.
      *
-     * @param   Charitable_Donation|null $donation 
+     * @param   mixed[]  $objects
      * @access  public
      * @since   1.0.0
      */
-    public function __construct( $donation = null ) {
-        $this->name = apply_filters( 'charitable_email_new_donation_name', __( 'New Donation Notification', 'charitable' ) );        
-        $this->donation = $donation;
-    }
+    public function __construct( $objects = array() ) {
+        parent::__construct( $objects );
 
-    /**
-     * Register email settings. 
-     *
-     * @param   array   $settings
-     * @return  array
-     * @access  public
-     * @since   1.0.0
-     */
-    public function email_settings( $settings ) {
-        return array(
-            'section_email' => array(
-                'type'      => 'heading',
-                'title'     => $this->get_name(),
-                'priority'  => 2
-            ),         
-            'recipients' => array(
-                'type'      => 'text',
-                'title'     => __( 'Recipients', 'charitable' ), 
-                'help'      => __( 'A comma-separated list of email address that will receive this email.', 'charitable' ),
-                'priority'  => 4, 
-                'class'     => 'wide', 
-                'default'   => $this->get_default_recipient()
-            ),
-            'subject' => array(
-                'type'      => 'text',
-                'title'     => __( 'Email Subject Line', 'charitable' ), 
-                'help'      => __( 'The ubject line of the email when it is delivered to recipients.', 'charitable' ),
-                'priority'  => 6, 
-                'class'     => 'wide', 
-                'default'   => $this->get_default_subject()
-            ), 
-            'body' => array(
-                'type'      => 'editor',
-                'title'     => __( 'Email Body', 'charitable' ), 
-                'help'      => __( 'The content of the email that will be delivered to recipients. HTML is accepted.', 'charitable' ), 
-                'priority'  => 10, 
-                'default'   => $this->get_default_body()
-            ),
-            'preview' => array(
-                'type'      => 'content',
-                'title'     => __( 'Preview', 'charitable' ),
-                'content'   => sprintf( '<a href="%s" title="%s" target="_blank" class="button">%s</a>', 
-                    esc_url( 
-                        add_query_arg( array( 
-                            'charitable_action' => 'preview_email',
-                            'email_id' => $this::ID
-                        ), site_url() )
-                    ), 
-                    __( 'Preview email in your browser', 'charitable' ),
-                    __( 'Preview email', 'charitable' )
-                ),
-                'priority'  => 14
-            )
-        );        
-    }
+        $this->name = apply_filters( 'charitable_email_new_donation_name', __( 'New Donation Notification', 'charitable' ) );
+    }    
 
     /**
      * Return the default recipient for the email.
@@ -141,7 +88,7 @@ class Charitable_Email_New_Donation extends Charitable_Email {
     protected function get_default_body() {
         ob_start();
 ?>
-        <p>[charitable_email show=donor] has just made a donation!</p>
+        <p>[charitable_email show=donor_full_name] has just made a donation!</p>
         <p>Summary:<br />
         [charitable_email show=donation_summary]</p>
 <?php

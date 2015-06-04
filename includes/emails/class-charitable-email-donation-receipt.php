@@ -26,103 +26,23 @@ class Charitable_Email_Donation_Receipt extends Charitable_Email {
     CONST ID = 'donation_receipt';
 
     /**
-     * @var     Charitable_Donation
+     * @var     string[] Array of supported object types (campaigns, donations, donors, etc).
+     * @access  protected
+     * @since   1.0.0
      */
-    protected $donation;
+    protected $object_types = array( 'donation' );
 
     /**
      * Instantiate the email class, defining its key values.
      *
-     * @param   Charitable_Donation|null $donation 
+     * @param   array   $objects
      * @access  public
      * @since   1.0.0
      */
-    public function __construct( $donation = null ) {
-        $this->name = apply_filters( 'charitable_email_donation_receipt_name', __( 'Donation Receipt', 'charitable' ) );    
-        $this->donation = $donation;    
-
-        add_filter( 'charitable_email_content_fields', array( $this, 'add_email_content_fields' ), 10, 2 );
-        add_filter( 'charitable_email_preview_content_fields', array( $this, 'add_email_preview_content_fields' ), 10, 2 );
-    }
-
-    /**
-     * Add our custom content fields.   
-     *
-     * @return  array
-     * @access  public
-     * @since   1.0.0
-     */
-    public function add_email_content_fields( $fields ) {            
-        $fields[ 'donor_first_name' ] = array(
-            'description'   => __( 'The first name of the donor', 'charitable' ), 
-            'callback'      => array( $this, 'get_donor_first_name' )
-        );
-        $fields[ 'donor_full_name' ] = array(
-            'description'   => __( 'The full name of the donor', 'charitable' ),
-            'callback'      => array( $this, 'get_donor_full_name' )
-        );
-
-        return $fields;
-    }
-
-    /**
-     * Return the first name of the donor. 
-     *
-     * @return  string
-     * @access  public
-     * @since   1.0.0
-     */
-    public function get_donor_first_name() {
-        if ( ! $this->has_valid_donation() ) {
-            return '';            
-        }
-
-        return $this->donation->get_donor()->first_name;
-    }
-
-    /**
-     * Return the full name of the donor. 
-     *
-     * @return  string
-     * @access  public
-     * @since   1.0.0
-     */
-    public function get_donor_full_name() {
-        if ( ! $this->has_valid_donation() ) {
-            return '';            
-        }
-
-        return $this->donation->get_donor()->get_name();
-    }
-
-    /**
-     * Add our custom content fields.   
-     *
-     * @return  array
-     * @access  public
-     * @since   1.0.0
-     */
-    public function add_email_preview_content_fields( $fields ) {
-        $fields[ 'donor_first_name' ] = 'John';
-        $fields[ 'donor_full_name' ] = 'John Deere';
-
-        return $fields;
-    }
-
-    /**
-     * Checks whether the email has a valid donation object set. 
-     *
-     * @return  boolean
-     * @access  protected
-     * @since   1.0.0
-     */
-    protected function has_valid_donation() {
-        if ( is_null( $this->donation ) || ! is_a( $this, 'Charitable_Donation' ) ) {
-            _doing_it_wrong( __METHOD__, __( 'You cannot send a donation receipt email without a donation!', 'charitable' ), '1.0.0' );
-            return false;
-        }
-
-        return true;
+    public function __construct( $objects = array() ) {
+        parent::__construct( $objects );
+        
+        $this->name = apply_filters( 'charitable_email_donation_receipt_name', __( 'Donation Receipt', 'charitable' ) );        
     }
 
     /**

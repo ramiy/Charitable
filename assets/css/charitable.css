@@ -81,7 +81,8 @@
   .charitable-form-field input[type=checkbox] {
     width: auto; }
   .charitable-form-field.charitable-form-field-checkbox label {
-    display: inline-block; }
+    display: inline;
+    padding-left: 4px; }
 
 .charitable-repeatable-form-field-table {
   margin-bottom: 1em; }

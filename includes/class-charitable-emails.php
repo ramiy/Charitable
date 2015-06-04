@@ -44,16 +44,7 @@ class Charitable_Emails extends Charitable_Start_Object {
      * @access  protected
      * @since   1.0.0
      */
-    protected function __construct() {        
-        /**
-         * To register a new email, you need to hook into this filter and 
-         * give Charitable the name of your email class.
-         */
-        $this->emails = apply_filters( 'charitable_emails', array(
-            'new_donation' => 'Charitable_Email_New_Donation',
-            'donation_receipt' => 'Charitable_Email_Donation_Receipt'
-        ) );
-
+    protected function __construct() {                
         $this->attach_hooks_and_filters();
     }
 
@@ -65,6 +56,7 @@ class Charitable_Emails extends Charitable_Start_Object {
      * @since   1.0.0
      */
     private function attach_hooks_and_filters() {
+        add_action( 'plugins_loaded', array( $this, 'register_emails' ), 500 );
         add_action( 'charitable_enable_email', array( $this, 'handle_email_settings_request' ) );
         add_action( 'charitable_disable_email', array( $this, 'handle_email_settings_request' ) );
         add_action( 'charitable_before_send_email', array( $this, 'set_current_email' ) );
@@ -76,6 +68,22 @@ class Charitable_Emails extends Charitable_Start_Object {
         
         /* 3rd party hook for overriding anything we've done above. */
         do_action( 'charitable_emails_start', $this );     
+    }
+
+    /**
+     * Register Charitable emails. 
+     *
+     * @return  string[]
+     * @access  public
+     * @since   1.0.0
+     */
+    public function register_emails() {
+        $this->emails = apply_filters( 'charitable_emails', array(
+            'new_donation' => 'Charitable_Email_New_Donation',
+            'donation_receipt' => 'Charitable_Email_Donation_Receipt'
+        ) );
+
+        return $this->emails;
     }
 
     /**
@@ -168,8 +176,7 @@ class Charitable_Emails extends Charitable_Start_Object {
      * @since   1.0.0
      */
     public function register_email_settings( $settings, Charitable_Email $email ) {
-        add_filter( 'charitable_settings_fields_emails_email_' . $email::ID, array( $email, 'email_settings' ), 5 );
-        return apply_filters( 'charitable_settings_fields_emails_email_' . $email::ID, $settings );        
+        return $email->email_settings( $settings );
     }
 
     /**

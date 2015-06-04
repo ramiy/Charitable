@@ -34,6 +34,56 @@ abstract class Charitable_Email {
     protected $name;
 
     /**
+     * @var     string[] Array of supported object types (campaigns, donations, donors, etc).
+     * @access  protected
+     * @since   1.0.0
+     */
+    protected $object_types = array();
+
+    /**
+     * @var     boolean Whether the email allows you to define the email recipients.
+     * @access  protected
+     * @since   1.0.0
+     */
+    protected $has_recipient_field = false;
+
+    /**
+     * @var     Charitable_Donation
+     */
+    protected $donation;
+
+    /**
+     * @var     Charitable_Campaign
+     */
+    protected $campaign;
+
+    /**
+     * Create a class instance. 
+     *
+     * @param   mixed[]  $objects
+     * @access  public
+     * @since   1.0.0
+     */
+    public function __construct( $objects = array() ) {
+        $this->donation = isset( $objects[ 'donation' ] ) ? $objects[ 'donation' ] : null;
+        $this->campaign = isset( $objects[ 'campaign' ] ) ? $objects[ 'campaign' ] : null;
+
+        if ( $this->has_recipient_field ) {
+            add_filter( 'charitable_settings_fields_emails_email_' . $this::ID, array( $this, 'add_recipients_field' ) );
+        }
+
+        if ( in_array( 'donation', $this->object_types ) ) {
+            add_filter( 'charitable_email_content_fields', array( $this, 'add_donation_content_fields' ), 10, 2 );
+            add_filter( 'charitable_email_preview_content_fields', array( $this, 'add_preview_donation_content_fields' ), 10, 2 );
+        }
+
+        if ( in_array( 'campaign', $this->object_types ) ) {
+            add_filter( 'charitable_email_content_fields', array( $this, 'add_campaign_content_fields' ), 10, 2 );
+            add_filter( 'charitable_email_preview_content_fields', array( $this, 'add_preview_campaign_content_fields' ), 10, 2 );   
+        }
+    }
+
+    /**
      * Return the email name.
      *
      * @return  string
@@ -132,8 +182,14 @@ abstract class Charitable_Email {
      */
     public function get_fields() {
         return apply_filters( 'charitable_email_content_fields', array(
-            'site_name'     => array( $this, 'get_site_name' ), 
-            'site_url'      => array( $this, 'home_url' )
+            'site_name'     => array( 
+                'description'   => __( 'Your website title', 'charitable' ), 
+                'callback'      => array( $this, 'get_site_name' )
+            ), 
+            'site_url'      => array(
+                'description'   => __( 'Your website URL', 'charitable' ), 
+                'callback'      => home_url()
+            )            
         ), $this );
     }
 
@@ -157,7 +213,7 @@ abstract class Charitable_Email {
      * @since   1.0.0
      */
     public function email_settings( $settings ) {
-        return array(
+        $email_settings = apply_filters( 'charitable_settings_fields_emails_email_' . $this::ID, array(
             'section_email' => array(
                 'type'      => 'heading',
                 'title'     => $this->get_name(),
@@ -182,7 +238,10 @@ abstract class Charitable_Email {
             'body' => array(
                 'type'      => 'editor',
                 'title'     => __( 'Email Body', 'charitable' ), 
-                'help'      => __( 'The content of the email that will be delivered to recipients. HTML is accepted.', 'charitable' ), 
+                'help'      => sprintf( '%s <div class="charitable-shortcode-options">%s</div>', 
+                    __( 'The content of the email that will be delivered to recipients. HTML is accepted.', 'charitable' ),
+                    $this->get_shortcode_options()
+                ), 
                 'priority'  => 14, 
                 'default'   => $this->get_default_body()
             ), 
@@ -201,8 +260,177 @@ abstract class Charitable_Email {
                 ),
                 'priority'  => 18
             )
-        );
+        ) );
+
+        return wp_parse_args( $settings, $email_settings );
     } 
+
+    /**
+     * Add recipient field
+     *
+     * @param   array   $settings
+     * @return  array
+     * @access  public
+     * @since   1.0.0
+     */
+    public function add_recipients_field( $settings ) {
+        $settings[ 'recipients' ] = array(
+            'type'      => 'text',
+            'title'     => __( 'Recipients', 'charitable' ), 
+            'help'      => __( 'A comma-separated list of email address that will receive this email.', 'charitable' ),
+            'priority'  => 4, 
+            'class'     => 'wide', 
+            'default'   => $this->get_default_recipient()
+        );
+
+        return $settings;        
+    }
+
+    /**
+     * Add donation content fields.   
+     *
+     * @return  array
+     * @access  public
+     * @since   1.0.0
+     */
+    public function add_donation_content_fields( $fields ) {   
+        $fields[ 'donor' ] = array(
+            'description'   => __( 'The full name of the donor', 'charitable' ),
+            'callback'      => array( $this, 'get_donor_full_name' )
+        );
+         
+        $fields[ 'donor_first_name' ] = array(
+            'description'   => __( 'The first name of the donor', 'charitable' ), 
+            'callback'      => array( $this, 'get_donor_first_name' )
+        );
+
+        return $fields;
+    }
+
+    /**
+     * Return the first name of the donor. 
+     *
+     * @return  string
+     * @access  public
+     * @since   1.0.0
+     */
+    public function get_donor_first_name() {
+        if ( ! $this->has_valid_donation() ) {
+            return '';            
+        }
+
+        return $this->donation->get_donor()->first_name;
+    }
+
+    /**
+     * Return the full name of the donor. 
+     *
+     * @return  string
+     * @access  public
+     * @since   1.0.0
+     */
+    public function get_donor_full_name() {
+        if ( ! $this->has_valid_donation() ) {
+            return '';            
+        }
+
+        return $this->donation->get_donor()->get_name();
+    }
+
+    /**
+     * Add donation content fields' fake data for previews.
+     *
+     * @return  array
+     * @access  public
+     * @since   1.0.0
+     */
+    public function add_preview_donation_content_fields( $fields ) {
+        $fields[ 'donor_first_name' ]   = 'John';
+        $fields[ 'donor_full_name' ]    = 'John Deere';
+        return $fields;
+    }
+
+    /**
+     * Add campaign content fields.   
+     *
+     * @return  array
+     * @access  public
+     * @since   1.0.0
+     */
+    public function add_campaign_content_fields( $fields ) {
+        $fields[ 'campaign_title' ] = array(
+            'description'   => __( 'The title of the campaign', 'charitable' ), 
+            'callback'      => array( $this, 'get_campaign_title' )
+        );
+
+        $fields[ 'campaign_creator' ] = array(
+            'description'   => __( 'The name of the campaign creator', 'charitable' ), 
+            'callback'      => array( $this, 'get_campaign_creator' )
+        );
+
+        $fields[ 'campaign_creator_email' ] = array(
+            'description'   => __( 'The email address of the campaign creator', 'charitable' ), 
+            'callback'      => array( $this, 'get_campaign_creator_email' )
+        );
+
+        return $fields;
+    }    
+
+    /**
+     * Return the campaign creator's name.  
+     *
+     * @return  string
+     * @access  public
+     * @since   1.0.0
+     */
+    public function get_campaign_title() {
+        if ( ! $this->has_valid_campaign() ) {
+            return '';            
+        }
+
+        return $this->campaign->post_title;
+    }
+
+    /**
+     * Return the campaign creator's name.  
+     *
+     * @return  string
+     * @access  public
+     * @since   1.0.0
+     */
+    public function get_campaign_creator() {
+        if ( ! $this->has_valid_campaign() ) {
+            return '';            
+        }
+
+        return get_the_author_meta( 'display_name', $this->campaign->get_campaign_creator() );
+    }
+
+    /**
+     * Return the campaign creator's email address.  
+     *
+     * @return  string
+     * @access  public
+     * @since   1.0.0
+     */
+    public function get_campaign_creator_email() {
+        if ( ! $this->has_valid_campaign() ) {
+            return '';            
+        }
+
+        return get_the_author_meta( 'user_email', $this->campaign->get_campaign_creator() );
+    }
+
+    /**
+     * Add campaign content fields' fake data for previews.
+     *
+     * @return  array
+     * @access  public
+     * @since   1.0.0
+     */
+    public function add_preview_campaign_content_fields( $fields ) {        
+        return $fields;
+    }
 
     /**
      * Sends the email.
@@ -248,6 +476,33 @@ abstract class Charitable_Email {
     }
 
     /**
+     * Returns the body content of the email, formatted as HTML. 
+     *
+     * @return  string
+     * @access  public
+     * @since   1.0.0
+     */
+    public function get_body() {
+        $body = $this->get_option( 'body', $this->get_default_body() );
+        $body = do_shortcode( $body );
+        $body = wpautop( $body );
+        return apply_filters( 'charitable_email_body', $body, $this );
+    }
+
+    /**
+     * Returns the email headline.
+     *
+     * @return  string
+     * @access  public
+     * @since   1.0.0
+     */
+    public function get_headline() {
+        $headline = $this->get_option( 'headline', $this->get_default_headline() );
+        $headline = do_shortcode( $headline );
+        return apply_filters( 'charitable_email_headline', $headline, $this );
+    }    
+
+    /**
      * Build the email.  
      *
      * @return  string
@@ -266,20 +521,6 @@ abstract class Charitable_Email {
         $message = ob_get_clean();
 
         return apply_filters( 'charitable_email_message', $message, $this );
-    }
-
-    /**
-     * Returns the body content of the email, formatted as HTML. 
-     *
-     * @return  string
-     * @access  protected
-     * @since   1.0.0
-     */
-    protected function get_body() {
-        $body = $this->get_option( 'body', $this->get_default_body() );
-        $body = do_shortcode( $body );
-        $body = wpautop( $body );
-        return apply_filters( 'charitable_email_body', $body, $this );
     }
 
     /**
@@ -374,6 +615,61 @@ abstract class Charitable_Email {
         }
 
         return $values[ $field ];
+    }
+
+    /**
+     * Return HTML formatted list of shortcode options that can be used within the body, headline and subject line. 
+     *
+     * @return  string
+     * @access  protected
+     * @since   version
+     */
+    protected function get_shortcode_options() {
+        ob_start();
+?>
+        <p><?php _e( 'The following options are available with the <code>[charitable_email]</code> shortcode:', 'charitable' ) ?></p>
+        <ul>
+        <?php foreach ( $this->get_fields() as $key => $field ) : ?>
+            <li><strong><?php echo $field[ 'description' ] ?></strong>: [charitable_email show=<?php echo $key ?>]</li>
+        <?php endforeach ?> 
+        </ul>
+
+<?php
+        $html = ob_get_clean();
+
+        return apply_filters( 'charitable_email_shortcode_options_text', $html, $this );
+    }
+
+    /**
+     * Checks whether the email has a valid donation object set. 
+     *
+     * @return  boolean
+     * @access  protected
+     * @since   1.0.0
+     */
+    protected function has_valid_donation() {
+        if ( is_null( $this->donation ) || ! is_a( $this, 'Charitable_Donation' ) ) {
+            _doing_it_wrong( __METHOD__, __( 'You cannot send this email without a donation!', 'charitable' ), '1.0.0' );
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Checks whether the email has a valid donation object set. 
+     *
+     * @return  boolean
+     * @access  protected
+     * @since   1.0.0
+     */
+    protected function has_valid_campaign() {
+        if ( is_null( $this->campaign ) || ! is_a( $this, 'Charitable_Campaign' ) ) {
+            _doing_it_wrong( __METHOD__, __( 'You cannot this email without a campaign!', 'charitable' ), '1.0.0' );
+            return false;
+        }
+
+        return true;
     }
 }
 

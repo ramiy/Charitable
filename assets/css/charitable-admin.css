@@ -403,7 +403,8 @@ select.charitable-settings-field {
 
 .charitable-shortcode-options ul {
   list-style: disc;
-  margin-left: 16px; }
+  margin-left: 16px;
+  font-style: normal; }
 .charitable-shortcode-options li {
   margin-bottom: 2px; }
 
