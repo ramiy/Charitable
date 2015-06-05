@@ -151,6 +151,20 @@ class Charitable_Donors_DB extends Charitable_DB {
         
         return is_null( $donor_id ) ? 0 : (int) $donor_id;
     }
+
+    /**
+     * Return a donor ID, based on their email address. 
+     *
+     * @param   string  $email
+     * @return  int
+     * @access  public
+     * @since   1.0.0
+     */
+    public function get_donor_id_by_email( $email ) {
+        $donor_id = $this->get_column_by( 'donor_id', 'email', $email );
+        
+        return is_null( $donor_id ) ? 0 : (int) $donor_id;
+    }    
 }
 
 endif;

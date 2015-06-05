@@ -43,3 +43,20 @@ function charitable_is_func_disabled( $function ) {
 
 	return in_array( $function, $disabled );
 }
+
+/**
+ * Verify a nonce. This also just ensures that the nonce is set.
+ *
+ * @param   string  $nonce 
+ * @param   string  $action
+ * @param   
+ * @return  boolean
+ * @since   1.0.0
+ */
+function charitable_verify_nonce( $nonce, $action, $request_args = array() ) {
+    if ( empty( $request_args ) ) {
+        $request_args = $_GET;
+    }    
+    
+    return isset( $request_args[ $nonce ] ) && wp_verify_nonce( $request_args[ $nonce ], $action );
+}

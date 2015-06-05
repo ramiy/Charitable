@@ -83,13 +83,13 @@ class Charitable_Roles {
 
 		if ( is_object( $wp_roles ) ) {
 
-			$wp_roles->add_cap( 'campaign_manager', 'view_campaign_sensitive_data' );
-			$wp_roles->add_cap( 'campaign_manager', 'export_campaign_reports' );
-			$wp_roles->add_cap( 'campaign_manager', 'manage_campaign_settings' );
+			$wp_roles->add_cap( 'campaign_manager', 'view_charitable_sensitive_data' );
+			$wp_roles->add_cap( 'campaign_manager', 'export_charitable_reports' );
+			$wp_roles->add_cap( 'campaign_manager', 'manage_charitable_settings' );
 
-			$wp_roles->add_cap( 'administrator', 'view_campaign_sensitive_data' );
-			$wp_roles->add_cap( 'administrator', 'export_campaign_reports' );
-			$wp_roles->add_cap( 'administrator', 'manage_campaign_settings' );
+			$wp_roles->add_cap( 'administrator', 'view_charitable_sensitive_data' );
+			$wp_roles->add_cap( 'administrator', 'export_charitable_reports' );
+			$wp_roles->add_cap( 'administrator', 'manage_charitable_settings' );
 
 			// Add the main post type capabilities
 			foreach ( $this->get_core_caps() as $cap ) {
@@ -118,13 +118,13 @@ class Charitable_Roles {
 
 		if ( is_object( $wp_roles ) ) {
 
-			$wp_roles->remove_cap( 'campaign_manager', 'view_campaign_sensitive_data' );
-			$wp_roles->remove_cap( 'campaign_manager', 'export_campaign_reports' );
-			$wp_roles->remove_cap( 'campaign_manager', 'manage_campaign_settings' );
+			$wp_roles->remove_cap( 'campaign_manager', 'view_charitable_sensitive_data' );
+			$wp_roles->remove_cap( 'campaign_manager', 'export_charitable_reports' );
+			$wp_roles->remove_cap( 'campaign_manager', 'manage_charitable_settings' );
 
-			$wp_roles->remove_cap( 'administrator', 'view_campaign_sensitive_data' );
-			$wp_roles->remove_cap( 'administrator', 'export_campaign_reports' );
-			$wp_roles->remove_cap( 'administrator', 'manage_campaign_settings' );
+			$wp_roles->remove_cap( 'administrator', 'view_charitable_sensitive_data' );
+			$wp_roles->remove_cap( 'administrator', 'export_charitable_reports' );
+			$wp_roles->remove_cap( 'administrator', 'manage_charitable_settings' );
 
 			// Remove the main post type capabilities
 			foreach ( $this->get_core_caps() as $cap ) {

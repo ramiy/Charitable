@@ -174,9 +174,10 @@ class Charitable {
         $includes_path = $this->get_path( 'includes' );
         
         /* Functions */
-        require_once( $includes_path . 'charitable-core-functions.php' );
+        require_once( $includes_path . 'charitable-campaign-functions.php' );
+        require_once( $includes_path . 'charitable-core-functions.php' );        
+        require_once( $includes_path . 'charitable-template-functions.php' );
         require_once( $includes_path . 'charitable-utility-functions.php' );
-        require_once( $includes_path . 'charitable-template-functions.php' );        
 
         /* Base Classes & Interfaces */
         require_once( $includes_path . 'interface-charitable-donation-form.php' );        

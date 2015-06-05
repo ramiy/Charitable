@@ -67,9 +67,9 @@ class Test_Charitable_Roles extends WP_UnitTestCase {
 		$this->assertArrayHasKey( 'export', (array) $wp_roles->roles['campaign_manager']['capabilities'] );
 		$this->assertArrayHasKey( 'unfiltered_html', (array) $wp_roles->roles['campaign_manager']['capabilities'] );
 
-		$this->assertArrayHasKey( 'view_campaign_sensitive_data', (array) $wp_roles->roles['campaign_manager']['capabilities'] );
-		$this->assertArrayHasKey( 'export_campaign_reports', (array) $wp_roles->roles['campaign_manager']['capabilities'] );
-		$this->assertArrayHasKey( 'manage_campaign_settings', (array) $wp_roles->roles['campaign_manager']['capabilities'] );
+		$this->assertArrayHasKey( 'view_charitable_sensitive_data', (array) $wp_roles->roles['campaign_manager']['capabilities'] );
+		$this->assertArrayHasKey( 'export_charitable_reports', (array) $wp_roles->roles['campaign_manager']['capabilities'] );
+		$this->assertArrayHasKey( 'manage_charitable_settings', (array) $wp_roles->roles['campaign_manager']['capabilities'] );
 
 		$this->assertArrayHasKey( 'edit_campaign', (array) $wp_roles->roles['campaign_manager']['capabilities'] );
 		$this->assertArrayHasKey( 'read_campaign', (array) $wp_roles->roles['campaign_manager']['capabilities'] );
@@ -99,9 +99,9 @@ class Test_Charitable_Roles extends WP_UnitTestCase {
 			}
 		}
 
-		$this->assertArrayHasKey( 'view_campaign_sensitive_data', (array) $wp_roles->roles['administrator']['capabilities'] );
-		$this->assertArrayHasKey( 'export_campaign_reports', (array) $wp_roles->roles['administrator']['capabilities'] );
-		$this->assertArrayHasKey( 'manage_campaign_settings', (array) $wp_roles->roles['administrator']['capabilities'] );
+		$this->assertArrayHasKey( 'view_charitable_sensitive_data', (array) $wp_roles->roles['administrator']['capabilities'] );
+		$this->assertArrayHasKey( 'export_charitable_reports', (array) $wp_roles->roles['administrator']['capabilities'] );
+		$this->assertArrayHasKey( 'manage_charitable_settings', (array) $wp_roles->roles['administrator']['capabilities'] );
 
 		$this->assertArrayHasKey( 'edit_campaign', (array) $wp_roles->roles['administrator']['capabilities'] );
 		$this->assertArrayHasKey( 'read_campaign', (array) $wp_roles->roles['administrator']['capabilities'] );

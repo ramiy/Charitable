@@ -151,37 +151,6 @@ function charitable_get_table( $table ) {
 }
 
 /**
- * Returns the given campaign. 
- *
- * @param 	int 	$campaign_id
- * @return 	Charitable_Campaign
- * @since 	1.0.0
- */
-function charitable_get_campaign( $campaign_id ) {
-	return new Charitable_Campaign( $campaign_id );
-}
-
-/**
- * Returns the current campaign. 
- *
- * @return 	Charitable_Campaign
- * @since 	1.0.0
- */
-function charitable_get_current_campaign() {
-	return charitable_get_helper( 'request' )->get_current_campaign();
-}
-
-/**
- * Returns the current campaign ID.
- *
- * @return 	int
- * @since 	1.0.0
- */
-function charitable_get_current_campaign_id() {
-	return charitable_get_helper( 'request' )->get_current_campaign_id();
-}
-
-/**
  * Returns the current donation form.
  *
  * @return 	Charitable_Donation_Form_Interface|false

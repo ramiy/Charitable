@@ -375,12 +375,48 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 		
 		$sql = "SELECT COUNT(*)
 				FROM $this->table_name c
-				INNER JOIN {$wpdb->prefix}posts p
+				INNER JOIN $wpdb->posts p
 				ON c.donation_id = p.ID
 				AND p.post_author = %d
 				AND p.post_type = 'donation';";
 
 		return $wpdb->get_var( $wpdb->prepare( $sql, $donor_id ) );
+	}
+
+	/**
+	 * Return a set of donations, filtered by the provided arguments. 
+	 *
+	 * @param 	array 	$args
+	 * @return  array
+	 * @access  public
+	 * @since   1.0.0
+	 */
+	public function get_donations_report( $args ) {
+		global $wpdb;
+
+		$parameters = array();
+		$sql_where = "";
+		$sql_where_clauses = array();		
+
+		if ( isset( $args[ 'campaign_id' ] ) ) {
+			$sql_where_clauses[] = "dntn.campaign_id = %d";
+			$parameters[] = intval( $args[ 'campaign_id' ] );
+		}
+
+		if ( ! empty( $sql_where_clauses ) ) {
+			$sql_where = "WHERE " . implode( " OR ", $sql_where_clauses );
+		}
+
+		/* This is our base SQL query */
+		$sql = "SELECT dntn.donation_id, dntn.campaign_id, dntn.campaign_name, dntn.amount, dnr.email, dnr.first_name, dnr.last_name, p.post_date, p.post_content, p.post_status
+				FROM $this->table_name dntn
+				INNER JOIN {$wpdb->prefix}charitable_donors dnr
+				ON dnr.donor_id = dntn.donor_id
+				INNER JOIN $wpdb->posts p
+				ON p.ID = dntn.donation_id
+				$sql_where";		
+
+		return $wpdb->get_results( $wpdb->prepare( $sql, $parameters ) );
 	}
 }	
 

@@ -540,11 +540,13 @@ class Charitable_Donation {
 
 		$user_id = isset( $args[ 'user_id' ] ) ? $args[ 'user_id' ] : get_current_user_id();
 
-		/* We don't have a donor ID and no user ID, so we cannot complete this donation */
 		$donor_id = 0;
 
 		if ( $user_id ) {
 			$donor_id = charitable_get_table( 'donors' )->get_donor_id( $user_id );
+		}
+		elseif ( isset( $args[ 'email' ] ) ) {
+			$donor_id = charitable_get_table( 'donors' )->get_donor_id_by_email( $args[ 'email' ] );
 		}
 
 		if ( 0 == $donor_id ) {
