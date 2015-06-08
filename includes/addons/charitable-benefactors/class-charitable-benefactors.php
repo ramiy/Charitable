@@ -220,8 +220,6 @@ class Charitable_Benefactors implements Charitable_Addon_Interface {
 	 * @since 	1.0.0
 	 */
 	public static function activate() {		
-		
-		/* This method should only be called on the charitable_activate_addon hook */
 		if ( 'charitable_activate_addon' !== current_filter() ) {
 			return false;
 		}

@@ -62,14 +62,6 @@ class Charitable_Donation {
 	private $campaign_donations;
 
 	/**
-	 * The campaign that was donated to.
-	 * 
-	 * @var 	Charitable_Campaign 
-	 * @access 	private
-	 */
-	// private $campaign;
-
-	/**
 	 * The WP_User object of the person who donated. 
 	 * 
 	 * @var 	WP_User 

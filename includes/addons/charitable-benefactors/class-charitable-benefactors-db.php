@@ -47,6 +47,34 @@ class Charitable_Benefactors_DB extends Charitable_DB {
 
 		$this->table_name = $wpdb->prefix . 'charitable_benefactors';
 	}
+	
+	/**
+	 * Create the table.
+	 *
+	 * @global 	$wpdb
+	 * @access 	public
+	 * @since 	1.0.0
+	 */
+	public function create_table() {
+		global $wpdb;
+
+        $charset_collate = $wpdb->get_charset_collate();
+
+		$sql = "CREATE TABLE IF NOT EXISTS {$this->table_name} (
+			`campaign_benefactor_id` bigint(20) NOT NULL AUTO_INCREMENT,
+			`campaign_id` bigint(20) NOT NULL,				
+			`contribution_amount` float NOT NULL,
+			`contribution_amount_is_percentage` tinyint(1) NOT NULL DEFAULT 0,
+			`contribution_amount_is_per_item` tinyint(1) NOT NULL DEFAULT 0,
+			`date_created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			`date_deactivated` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			PRIMARY KEY (`campaign_benefactor_id`),
+			KEY `campaign` (`campaign_id`), 
+			KEY `active_dates` (`date_created`, `date_deactivated`)
+			) $charset_collate;";
+
+		$this->_create_table( $sql );
+	}
 
 	/**
 	 * Whitelist of columns.
@@ -204,38 +232,6 @@ class Charitable_Benefactors_DB extends Charitable_DB {
 	 */
 	public function get_campaign_benefactors_by_extension( $campaign_id, $extension ) {
 		return apply_filters( 'charitable_get_campaign_benefactors', false, $campaign_id, $extension );
-	}
-
-	/**
-	 * Create the table.
-	 *
-	 * @global 	$wpdb
-	 * @access 	public
-	 * @since 	1.0.0
-	 */
-	public function create_table() {
-		global $wpdb;
-
-		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-
-		$sql = <<<EOD
-CREATE TABLE IF NOT EXISTS {$this->table_name} (
-`campaign_benefactor_id` bigint(20) NOT NULL AUTO_INCREMENT,
-`campaign_id` bigint(20) NOT NULL,				
-`contribution_amount` float NOT NULL,
-`contribution_amount_is_percentage` tinyint(1) NOT NULL DEFAULT 0,
-`contribution_amount_is_per_item` tinyint(1) NOT NULL DEFAULT 0,
-`date_created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-`date_deactivated` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-PRIMARY KEY (`campaign_benefactor_id`),
-KEY `campaign` (`campaign_id`), 
-KEY `active_dates` (`date_created`, `date_deactivated`)
-) CHARACTER SET utf8 COLLATE utf8_general_ci;
-EOD;
-
-		dbDelta( $sql );
-
-		update_option( $this->table_name . '_db_version', $this->version );
 	}
 }	
 

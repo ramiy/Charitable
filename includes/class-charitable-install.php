@@ -28,7 +28,7 @@ class Charitable_Install {
 	 * @access 	public
 	 * @since 	1.0.0
 	 */
-	public function __construct() {	
+	public function __construct() {			
 		$this->setup_roles();
 		$this->create_tables();	
 		
@@ -45,7 +45,8 @@ class Charitable_Install {
 	 * @access 	public
 	 * @since 	1.0.0
 	 */
-	private function setup_roles(){
+	private function setup_roles() {
+		require_once( 'class-charitable-roles.php' );
 		$roles = new Charitable_Roles();
 		$roles->add_roles();
 		$roles->add_caps();
@@ -59,8 +60,15 @@ class Charitable_Install {
 	 * @since 	1.0.0
 	 */
 	private function create_tables() {
-		charitable_get_table( 'campaign_donations' )->create_table();
-		charitable_get_table( 'donors' )->create_table();
+		require_once( 'db/abstract-class-charitable-db.php' );
+
+		require_once( 'db/class-charitable-campaign-donations-db.php' );
+		$table_helper = new Charitable_Campaign_Donations_DB();
+		$table_helper->create_table();
+
+		require_once( 'db/class-charitable-donors-db.php' );
+		$table_helper = new Charitable_Donors_DB();
+		$table_helper->create_table();
 	}
 
 	/**

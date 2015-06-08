@@ -120,6 +120,9 @@ class Charitable {
         $this->directory_url    = plugin_dir_url( __FILE__ );
         $this->includes_path    = $this->directory_path . 'includes/';
 
+        register_activation_hook( __FILE__, array( $this, 'activate') );
+        register_deactivation_hook( __FILE__, array( $this, 'deactivate') );
+
         add_action( 'plugins_loaded', array( $this, 'start' ), 1 );
     }
 
@@ -238,10 +241,7 @@ class Charitable {
      * @access  private
      * @since   1.0.0
      */
-    private function attach_hooks_and_filters() {               
-        register_activation_hook(   __FILE__, array( $this, 'activate') );
-        register_deactivation_hook( __FILE__, array( $this, 'deactivate') );
-
+    private function attach_hooks_and_filters() {
         add_action('plugins_loaded',    array( $this, 'charitable_start' ), 100 );
 
         add_action('charitable_start',  array( 'Charitable_Donation_Actions', 'charitable_start' ), 3 );
