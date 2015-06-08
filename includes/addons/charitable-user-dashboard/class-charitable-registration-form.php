@@ -75,25 +75,28 @@ class Charitable_Registration_Form extends Charitable_Form {
      * @access  public
      * @since   1.0.0
      */
-    public function get_fields() {            
+    public function get_fields() {
         $fields = apply_filters( 'charitable_user_registration_fields', array(            
             'user_email' => array(
                 'label'     => __( 'Email', 'charitable' ), 
                 'type'      => 'email',
                 'required'  => true, 
-                'priority'  => 4
+                'priority'  => 4, 
+                'value'     => isset( $_POST[ 'user_email' ] ) ? $_POST[ 'user_email' ] : ''
             ),
             'user_login' => array( 
                 'label'     => __( 'Username', 'charitable' ),                 
                 'type'      => 'text', 
                 'priority'  => 6, 
-                'required'  => true
+                'required'  => true,
+                'value'     => isset( $_POST[ 'user_login' ] ) ? $_POST[ 'user_login' ] : ''
             ),
             'user_pass' => array(
                 'label'     => __( 'Password', 'charitable' ),              
                 'type'      => 'password', 
                 'priority'  => 8, 
-                'required'  => true
+                'required'  => true,
+                'value'     => isset( $_POST[ 'user_pass' ] ) ? $_POST[ 'user_pass' ] : ''
             )
         ) );        
 
@@ -128,7 +131,7 @@ class Charitable_Registration_Form extends Charitable_Form {
             unset( $submitted[ 'coppa' ], $submitted[ 'user_confirmation' ] );
 
             $user = new Charitable_User();
-            $user->save( $submitted, array_keys( $fields ) );
+            $user->update_profile( $submitted, array_keys( $fields ) );
 
             if ( isset( $submitted[ 'user_pass' ] ) ) {
                 $creds = array();
