@@ -119,7 +119,8 @@ class Charitable {
         $this->directory_path   = plugin_dir_path( __FILE__ );
         $this->directory_url    = plugin_dir_url( __FILE__ );
         $this->includes_path    = $this->directory_path . 'includes/';
-        $this->start();
+
+        add_action( 'plugins_loaded', array( $this, 'start' ), 1 );
     }
 
     /**
@@ -138,10 +139,10 @@ class Charitable {
      * This is only ever executed once.  
      * 
      * @return  void
-     * @access  private
+     * @access  public
      * @since   1.0.0
      */
-    private function start() {
+    public function start() {
         // If we've already started (i.e. run this function once before), do not pass go. 
         if ( $this->started() ) {
             return;
