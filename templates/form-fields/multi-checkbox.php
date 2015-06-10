@@ -14,6 +14,7 @@ if ( ! isset( $view_args[ 'form' ] ) || ! isset( $view_args[ 'field' ] ) ) {
 $form           = $view_args[ 'form' ];
 $field          = $view_args[ 'field' ];
 $classes        = $view_args[ 'classes' ];
+$is_required    = isset( $field[ 'required' ] ) ? $field[ 'required' ] : false;
 $options        = isset( $field[ 'options' ] )      ? $field[ 'options' ]       : array();
 $value          = isset( $field[ 'value' ] )        ? (array) $field[ 'value' ] : array();
 $placeholder    = isset( $field[ 'placeholder' ] )  ? $field[ 'placeholder' ]   : '';
@@ -27,7 +28,10 @@ if ( empty( $options ) ) {
     <?php if ( isset( $field[ 'label' ] ) ) : ?>
 
         <label for="charitable_field_<?php echo $field[ 'key' ] ?>">
-            <?php echo $field[ 'label' ] ?>         
+            <?php echo $field[ 'label' ] ?>
+            <?php if ( $is_required ) : ?>
+                <abbr class="required" title="required">*</abbr>
+            <?php endif ?>
         </label>
 
     <?php endif ?>

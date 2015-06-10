@@ -120,6 +120,8 @@ class Charitable {
         $this->directory_url    = plugin_dir_url( __FILE__ );
         $this->includes_path    = $this->directory_path . 'includes/';
 
+        $this->load_dependencies();
+
         register_activation_hook( __FILE__, array( $this, 'activate') );
         register_deactivation_hook( __FILE__, array( $this, 'deactivate') );
 
@@ -152,9 +154,7 @@ class Charitable {
         }
 
         // Set static instance
-        self::$instance = $this;
-
-        $this->load_dependencies();        
+        self::$instance = $this;        
 
         $this->maybe_upgrade();
 
@@ -226,8 +226,8 @@ class Charitable {
         require_once( $includes_path . 'db/class-charitable-donors-db.php' );
 
         /* Public */
-        require_once( $includes_path . 'public/class-charitable-session.php' );
         require_once( $includes_path . 'public/class-charitable-session-donation.php' );
+        require_once( $includes_path . 'public/class-charitable-session.php' );        
         require_once( $includes_path . 'public/class-charitable-template.php' );      
         require_once( $includes_path . 'public/class-charitable-template-part.php' );
         require_once( $includes_path . 'public/class-charitable-templates.php' );            

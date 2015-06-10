@@ -10,19 +10,22 @@
  * @since   3.7.0
  */
 
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 /**
  * WordPress Session class for managing user session data.
  *
  * @package WordPress
  * @since   3.7.0
  */
-final class WP_Session extends Recursive_ArrayAccess {
+final class WP_Session extends Recursive_ArrayAccess implements Iterator, Countable {
 	/**
 	 * ID of the current session.
 	 *
 	 * @var string
 	 */
-	protected $session_id;
+	public $session_id;
 
 	/**
 	 * Unix timestamp when session expires.
@@ -54,6 +57,11 @@ final class WP_Session extends Recursive_ArrayAccess {
 	 */
 	public static function get_instance() {
 		if ( ! self::$instance ) {
+
+			echo '<pre>';
+			var_dump( class_exists( 'Charitable_Session_Donation' ) );
+			die;
+
 			self::$instance = new self();
 		}
 
@@ -154,13 +162,16 @@ final class WP_Session extends Recursive_ArrayAccess {
 	 */
 	public function write_data() {
 		$option_key = "_wp_session_{$this->session_id}";
-		
-		if ( false === get_option( $option_key ) ) {
-			add_option( "_wp_session_{$this->session_id}", $this->container, '', 'no' );
-			add_option( "_wp_session_expires_{$this->session_id}", $this->expires, '', 'no' );
-		} else {
-			delete_option( "_wp_session_{$this->session_id}" );
-			add_option( "_wp_session_{$this->session_id}", $this->container, '', 'no' );
+
+		// Only write the collection to the DB if it's changed.
+		if ( $this->dirty ) {
+			if ( false === get_option( $option_key ) ) {
+				add_option( "_wp_session_{$this->session_id}", $this->container, '', 'no' );
+				add_option( "_wp_session_expires_{$this->session_id}", $this->expires, '', 'no' );
+			} else {
+				delete_option( "_wp_session_{$this->session_id}" );
+				add_option( "_wp_session_{$this->session_id}", $this->container, '', 'no' );
+			}
 		}
 	}
 
@@ -231,12 +242,77 @@ final class WP_Session extends Recursive_ArrayAccess {
 		$this->container = array();
 	}
 
+	/*****************************************************************/
+	/*                     Iterator Implementation                   */
+	/*****************************************************************/
+
 	/**
-	 * Returns the current session ID. 
+	 * Current position of the array.
 	 *
-	 * @return string 
+	 * @link http://php.net/manual/en/iterator.current.php
+	 *
+	 * @return mixed
 	 */
-	public function get_session_id() {
-		return $this->session_id;
+	public function current() {
+		return current( $this->container );
+	}
+
+	/**
+	 * Key of the current element.
+	 *
+	 * @link http://php.net/manual/en/iterator.key.php
+	 *
+	 * @return mixed
+	 */
+	public function key() {
+		return key( $this->container );
+	}
+
+	/**
+	 * Move the internal point of the container array to the next item
+	 *
+	 * @link http://php.net/manual/en/iterator.next.php
+	 *
+	 * @return void
+	 */
+	public function next() {
+		next( $this->container );
+	}
+
+	/**
+	 * Rewind the internal point of the container array.
+	 *
+	 * @link http://php.net/manual/en/iterator.rewind.php
+	 *
+	 * @return void
+	 */
+	public function rewind() {
+		reset( $this->container );
+	}
+
+	/**
+	 * Is the current key valid?
+	 *
+	 * @link http://php.net/manual/en/iterator.rewind.php
+	 *
+	 * @return bool
+	 */
+	public function valid() {
+		return $this->offsetExists( $this->key() );
+	}
+
+	/*****************************************************************/
+	/*                    Countable Implementation                   */
+	/*****************************************************************/
+
+	/**
+	 * Get the count of elements in the container array.
+	 *
+	 * @link http://php.net/manual/en/countable.count.php
+	 *
+	 * @return int
+	 */
+	public function count() {
+		return count( $this->container );
 	}
 }

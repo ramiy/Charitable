@@ -224,12 +224,12 @@ class Charitable_Benefactors implements Charitable_Addon_Interface {
 			return false;
 		}
 
-		new Charitable_Benefactors();
-
+		/* Load extension */
 		self::load();
 
+		/* Create table */
 		$table = new Charitable_Benefactors_DB();
-		@$table->create_table();
+		$table->create_table();
 	}	
 }
 

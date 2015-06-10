@@ -48,18 +48,8 @@ class Charitable_Login_Form {
      * @since   1.0.0
      */
     public function get_login_form_args() {
-        if ( isset( $_GET[ 'redirect_to' ] ) ) {
-            $redirect = $_GET[ 'redirect_to' ];
-        }
-        elseif ( charitable_get_permalink( 'profile_page' ) ) {
-            $redirect = charitable_get_permalink( 'profile_page' );
-        }
-        else {
-            $redirect = site_url();
-        }
-        
         return apply_filters( 'charitable_login_form_args', array(
-            'redirect' => esc_url( $redirect )
+            'redirect' => esc_url( charitable_get_login_redirect_url() )
         ) );
     }
 }

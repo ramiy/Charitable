@@ -53,7 +53,7 @@ class Charitable_Session extends Charitable_Start_Object {
 		add_filter( 'wp_session_expiration', array( $this, 'set_session_length' ), 99999 );
 		add_filter( 'wp_session_expiration_variant', array( $this, 'set_session_expiration_variant_length' ), 99999 );		
 
-		$this->session = WP_Session::get_instance();		
+		$this->session = WP_Session::get_instance();			
 	}
 
 	/**
@@ -64,7 +64,7 @@ class Charitable_Session extends Charitable_Start_Object {
 	 * @since 	1.0.0
 	 */
 	public function get_session_id() {
-		return $this->session->get_session_id();
+		return $this->session->session_id;
 	}
 
 	/**

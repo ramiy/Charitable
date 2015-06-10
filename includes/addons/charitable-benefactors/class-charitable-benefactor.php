@@ -59,7 +59,7 @@ abstract class Charitable_Benefactor {
 			_doing_it_wrong( __METHOD__, __( 'Benefactor class does not exist for given extension.', '1.0.0' ) );
 		}
 
-		return new $class;
+		return new $class( $benefactor );
 	}
 
 	/**

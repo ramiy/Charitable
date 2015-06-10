@@ -327,17 +327,11 @@ class Charitable_Profile_Form extends Charitable_Form {
 
 		if ( $valid ) {
 			
-			$user->save( $submitted, array_keys( $fields ) );
+			$user->update_profile( $submitted, array_keys( $fields ) );
 
 			do_action( 'charitable_profile_updated', $submitted, $fields, $form );
 
-		}	
-		else {
-
-			/**
-			 * @todo Send error to say that some required fields are missing. 
-			 */
-		}	
+		}
 	}
 }
 

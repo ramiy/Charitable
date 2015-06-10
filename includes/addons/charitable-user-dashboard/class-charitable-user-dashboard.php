@@ -311,7 +311,7 @@ class Charitable_User_Dashboard implements Charitable_Addon_Interface {
                         'label'     => __( 'Choose a Static Page', 'charitable' )
                     )
                 ),
-                'help'      => __( 'Allow users to register via the default WordPress login or via a static page. The static page should contain the <code>[charitable_register]</code> shortcode.', 'charitable' )
+                'help'      => __( 'Allow users to register via the default WordPress login or via a static page. The static page should contain the <code>[charitable_registration]</code> shortcode.', 'charitable' )
             )
         ) );
 

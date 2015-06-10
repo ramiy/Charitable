@@ -378,9 +378,14 @@ abstract class Charitable_Form {
 
 		foreach ( $this->get_required_fields( $fields ) as $key => $field ) {
 
+			/* We already have a value for this field. */
+			if ( ! empty( $field[ 'value' ] ) ) {
+				continue;
+			}
+
 			$exists = isset( $submitted[ $key ] ) && ! empty( $submitted[ $key ] );
-			$exists = $exists || ( 'picture' == $field[ 'type' ] && isset( $_FILES[ $key ] ) && ! empty( $_FILES[ $key ] ) );
-			$exists = apply_filters( 'charitable_required_field_exists', $exists, $key, $field, $submitted );
+			$exists = $exists || ( 'picture' == $field[ 'type' ] && isset( $_FILES[ $key ] ) && ! empty( $_FILES[ $key ][ 'name' ] ) );
+			$exists = apply_filters( 'charitable_required_field_exists', $exists, $key, $field, $submitted, $this );
 
 			if ( ! $exists ) {
 				

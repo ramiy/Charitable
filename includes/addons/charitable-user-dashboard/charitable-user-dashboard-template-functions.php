@@ -158,3 +158,23 @@ function charitable_is_profile_page( $ret = false ) {
 }
 
 add_filter( 'charitable_is_page_profile_page', 'charitable_is_profile_page', 2 );
+
+/**
+ * Returns the URL to which the user should be redirected after signing on or registering an account. 
+ *
+ * @return  string
+ * @since   1.0.0
+ */
+ function charitable_get_login_redirect_url() {
+    if ( isset( $_REQUEST[ 'redirect_to' ] ) ) {
+        $redirect = $_REQUEST[ 'redirect_to' ];
+    }
+    elseif ( charitable_get_permalink( 'profile_page' ) ) {
+        $redirect = charitable_get_permalink( 'profile_page' );
+    }
+    else {
+        $redirect = site_url();
+    }
+
+    return apply_filters( 'charitable_signon_redirect_url', $redirect );
+}
