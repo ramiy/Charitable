@@ -37,6 +37,8 @@ final class Charitable_Donation_Actions extends Charitable_Start_Object {
 		add_action( 'charitable_start_donation', 	array( $this, 'start_donation' ) );
 		add_action( 'charitable_make_donation', 	array( $this, 'make_donation' ) );
 		add_action( 'charitable_make_donation_streamlined', array( $this, 'make_donation_streamlined' ) );
+		add_action( 'wp_ajax_add_donation', 		array( $this, 'ajax_make_donation' ) );
+		add_action( 'wp_ajax_nopriv_add_donation', 	array( $this, 'ajax_make_donation' ) );
 
 		// add_action( 'charitable_make_donation', 	array( $this, 'save_pending_donation' ), 1 );
 		// add_action( 'charitable_make_donation', 	array( $this, 'send_to_gateway' ), 2 );
@@ -132,6 +134,22 @@ final class Charitable_Donation_Actions extends Charitable_Start_Object {
 		 * @hook 	charitable_after_save_donation
 		 */
 		do_action( 'charitable_after_save_donation', $campaign, $donation_id );
+	}
+
+	/**
+	 * Add a donation with AJAX. 
+	 *
+	 * @return 	json
+	 * @access 	public
+	 * @since 	1.0.0
+	 */
+	public function ajax_make_donation() {
+		// var_dump( $_POST );
+		wp_send_json( array( 'sweet as bro' ) );
+
+		// echo 'hello there';
+
+		wp_die();
 	}
 
 	/**

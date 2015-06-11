@@ -23,6 +23,7 @@ if ( ! $form ) {
     do_action( 'charitable_donation_form_amount', $form ); 
     ?>
     <div class="charitable-form-field charitable-submit-field">
-        <input class="button button-primary" type="submit" name="donate" value="<?php esc_attr_e( 'Donate', 'charitable' ) ?>" />
+        <button class="button" name="add-to-cart" data-charitable-ajax-donate><?php esc_attr_e( 'Add', 'charitable' ) ?></button>
+        <input class="button button-primary alignright" type="submit" name="donate" value="<?php esc_attr_e( 'Proceed to Donation', 'charitable' ) ?>" />
     </div>
 </form>

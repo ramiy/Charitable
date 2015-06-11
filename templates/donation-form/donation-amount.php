@@ -39,13 +39,10 @@ if ( count( $suggested_donations ) ) :
     if ( $campaign->get( 'allow_custom_donations' ) ) :
     ?>
 
-    <li class="donation-amount custom-donation-amount" data-charitable-toggle="custom-donation-amount-field">
-        <input type="radio" name="donation-amount" value="custom" /><?php 
-            _e( 'Enter custom amount', 'charitable' );
-        ?>
-        <div id="custom-donation-amount-field" class="charitable-form-field charitable-hidden">
-            <input type="text" name="custom-donation-amount" />
-        </div>
+    <li class="donation-amount custom-donation-amount">                
+        <input type="radio" name="donation-amount" value="custom" />
+        <span class="description"><?php _e( 'Custom amount', 'charitable' ) ?></span>
+        <input type="text" name="custom-donation-amount" />
     </li>
 
     <?php endif ?>

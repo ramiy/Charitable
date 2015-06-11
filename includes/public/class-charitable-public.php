@@ -59,7 +59,8 @@ final class Charitable_Public extends Charitable_Start_Object {
 	 */
 	public function wp_enqueue_scripts() {				
 		wp_register_script( 'charitable-script', charitable()->get_path( 'assets', false ) . 'js/charitable.js', array( 'jquery' ), charitable()->get_version() );
-		wp_enqueue_script( 'charitable-script' );
+        wp_localize_script( 'charitable-script', 'CHARITABLE_VARS', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
+        wp_enqueue_script( 'charitable-script' );
 
 		wp_register_style( 'charitable-styles', charitable()->get_path( 'assets', false ) . 'css/charitable.css', array(), charitable()->get_version() );
 		wp_enqueue_style( 'charitable-styles' );

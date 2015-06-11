@@ -215,8 +215,8 @@ class Charitable_Benefactors_DB extends Charitable_DB {
 				"SELECT * 
 				FROM $this->table_name 
 				WHERE campaign_id = %d
-				AND date_created < NOW()
-				AND ( date_deactivated = '0000-00-00 00:00:00' OR date_deactivated > NOW() );", 
+				AND date_created < UTC_TIMESTAMP()
+				AND ( date_deactivated = '0000-00-00 00:00:00' OR date_deactivated > UTC_TIMESTAMP() );", 
 				$campaign_id 
 			), OBJECT_K);
 	}
