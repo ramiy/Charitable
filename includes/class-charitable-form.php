@@ -106,7 +106,6 @@ abstract class Charitable_Form {
 	protected function use_default_field_template( $field_type ) {
 		$default_field_types = apply_filters( 'charitable_default_template_field_types', array( 
 			'text', 
-			'url', 
 			'email', 
 			'password', 
 			'date'

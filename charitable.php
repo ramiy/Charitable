@@ -164,6 +164,8 @@ class Charitable {
 
         $this->maybe_start_public();        
 
+        $this->maybe_start_ajax();
+
         Charitable_Addons::load( $this );
     }
 
@@ -289,6 +291,21 @@ class Charitable {
         require_once( $this->get_path( 'public' ) . 'class-charitable-public.php' );
 
         add_action('charitable_start', array( 'Charitable_Public', 'charitable_start' ), 3 );
+    }
+
+    /**
+     * Checks whether we're executing an AJAX hook and if so, loads some AJAX functionality. 
+     *
+     * @return  void
+     * @access  private
+     * @since   1.0.0
+     */
+    private function maybe_start_ajax() {
+        if ( false === ( defined('DOING_AJAX') && DOING_AJAX ) ) {
+            return;
+        }
+
+        add_action('charitable_start', array( 'Charitable_Session', 'charitable_start' ), 1 );
     }
 
     /**

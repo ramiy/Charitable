@@ -481,6 +481,19 @@ class Charitable_Campaign {
     }
 
     /**
+     * Returns the amount to be donated to the campaign as it is currently set in the session. 
+     *
+     * @return  int
+     * @access  public
+     * @since   1.0.0
+     */
+    public function get_donation_amount_in_session() {
+        $donation = charitable_get_session()->get_donation_by_campaign( $this->ID );
+        $amount = is_array( $donation ) ? $donation[ 'amount' ] : 0;
+        return apply_filters( 'charitable_session_donation_amount', $amount, $this );
+    }
+
+    /**
      * Renders the donate button template. 
      *
      * @return  void

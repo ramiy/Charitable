@@ -1,119 +1,131 @@
-var CHARITABLE = ( function( $ ){
+var $ = jQuery;
 
-	/**
-	 * Toggle handler
-	 */
-	var Toggle = {
+CHARITABLE = {};
 
-		toggleTarget : function( event ) {
-			var target = $( this ).data( 'charitable-toggle' );
+CHARITABLE.Toggle = {
 
-			$( '#' + target ).toggleClass( 'charitable-hidden', $( this ).is( ':checked' ) );
+	toggleTarget : function( event ) {
+		var target = $( this ).data( 'charitable-toggle' );
 
-			if ( $(this).is( 'a' ) ) {
-				return false;
-			}			
-		}, 
+		$( '#' + target ).toggleClass( 'charitable-hidden', $( this ).is( ':checked' ) );
 
-		hideTarget : function( el ) {
-			var target = $( el ).data( 'charitable-toggle' );
-
-			$( '#' + target ).addClass( 'charitable-hidden' );
-		},
-
-		init : function() {
-			$( '[data-charitable-toggle]' ).each( function() { 
-				Toggle.hideTarget( this ); 
-			} )  
-			.on( 'click', Toggle.toggleTarget );
-		}
-	};
-
-	/**
-	 * Donation amount selection
-	 */
-	var Donation_Selection = {
-
-		selectOption : function( event ) {
-			var input = $( this ).find( 'input[type=radio]' ), 
-				checked = ! input.attr( 'checked' );
-
-			input.attr( 'checked', checked ); 
-
-			$( '.donation-amount.selected ').removeClass( 'selected' );
-			$( this ).addClass( 'selected' );
-
-			if ( false === $( this ).hasClass( 'custom-donation-amount' ) ) {
-				// $( '#custom-donation-amount-field' ).addClass( 'charitable-hidden' );
-			}
-			else {
-				$( this ).siblings( 'input[name=custom-donation-amount]' ).focus();
-			}
-		},
-		
-		init : function() {
-			$( '.donation-amount' ).on ( 'click', Donation_Selection.selectOption );
-		}
-	};
-
-	/**
-	 * AJAX donation
-	 */
-	var AJAX_Donate = {
-
-		onClick : function( event ) {
-	 		var data = $( event.target.form ).serializeArray().reduce( function( obj, item ) {
-			    obj[ item.name ] = item.value;
-			    return obj;
-			}, {} );	 		
-
-			data.action = 'add_donation';
-
-			$.ajax({
-				type: "POST",
-				data: data,
-				dataType: "json",
-				url: CHARITABLE_VARS.ajaxurl,
-				xhrFields: {
-					withCredentials: true
-				},
-				success: function (response) {
-					console.log( response );
-				}
-			}).fail(function (response) {
-				if ( window.console && window.console.log ) {
-					console.log( response );
-				}
-			}).done(function (response) {
-
-			});
-
-       		// $.post( CHARITABLE.ajaxurl, data, function( response ) {
-	            
-	        //     console.log( response );
-
-	        // });
-
+		if ( $(this).is( 'a' ) ) {
 			return false;
-		},
+		}			
+	}, 
 
-		init : function() {
-			$( '[data-charitable-ajax-donate]' ).on ( 'click', AJAX_Donate.onClick );
-		}
+	hideTarget : function( el ) {
+		var target = $( el ).data( 'charitable-toggle' );
+
+		$( '#' + target ).addClass( 'charitable-hidden' );
+	},
+
+	init : function() {
+		var self = this;
+		$( '[data-charitable-toggle]' ).each( function() { 
+			self.hideTarget( this ); 
+		} )  
+		.on( 'click', function( event ) {
+			self.Toggle.toggleTarget( event ) 
+		} );
 	}
+};
 
+/**
+ * Donation amount selection
+ */
+CHARITABLE.DonationSelection = {
 
+	selectOption : function( event ) {
+		var input = $( this ).find( 'input[type=radio]' ), 
+			checked = ! input.attr( 'checked' );
+
+		input.attr( 'checked', checked ); 
+
+		$( '.donation-amount.selected ').removeClass( 'selected' );
+		$( this ).addClass( 'selected' );
+
+		if ( $( this ).hasClass( 'custom-donation-amount' ) ) {				
+			$( this ).siblings( 'input[name=custom-donation-amount]' ).focus();
+		}
+	},
+	
+	init : function() {
+		$( '.donation-amount input:checked' ).each( function(){
+			$( this ).parent().addClass( 'selected' );
+		});
+
+		$( '.donation-amount' ).on ( 'click', function() {
+			this.DonationSelection.selectOption();
+		});
+	}
+};
+
+/**
+ * AJAX donation
+ */
+CHARITABLE.AJAXDonate = {
+
+	onClick : function( event ) {
+ 		var data = $( event.target.form ).serializeArray().reduce( function( obj, item ) {
+		    obj[ item.name ] = item.value;
+		    return obj;
+		}, {} );	 		
+
+ 		/* Cancel the default Charitable action, but pass it along as the form_action variable */	 	
+ 		data.action = 'add_donation';
+ 		data.form_action = data.charitable_action;			
+		delete data.charitable_action;
+
+		$.ajax({
+			type: "POST",
+			data: data,
+			dataType: "json",
+			url: CHARITABLE_VARS.ajaxurl,
+			xhrFields: {
+				withCredentials: true
+			},
+			success: function (response) {
+			}
+		}).fail(function (response) {
+			if ( window.console && window.console.log ) {
+				console.log( response );
+			}
+		}).done(function (response) {
+
+		});
+
+		return false;
+	},
+
+	init : function() {
+		$( '[data-charitable-ajax-donate]' ).on ( 'click', function() {
+			this.AJAXDonate.onClick() 
+		});
+	}
+};
+
+/**
+ * URL sanitization
+ */
+CHARITABLE.SanitizeURL = function(input) {
+	var url = input.value.toLowerCase();
+
+	if ( !/^https?:\/\//i.test( url ) ) {
+	    url = 'http://' + url;
+
+	    input.value = url;
+	}
+};
+
+(function($, CHARITABLE) {
 	$( document ).ready( function() {
-		Toggle.init();
+		CHARITABLE.Toggle.init();
 
-		Donation_Selection.init();
+		CHARITABLE.DonationSelection.init();
 
-		AJAX_Donate.init();
-	} );
+		CHARITABLE.AJAXDonate.init();
+	});
+})(jQuery, CHARITABLE);
 
-	/**
-	 * Public API of the CHARITABLE object.
-	 */
-	return {};
-
-} )( jQuery );
+console.log( CHARITABLE );

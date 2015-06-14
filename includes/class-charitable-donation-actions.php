@@ -32,16 +32,11 @@ final class Charitable_Donation_Actions extends Charitable_Start_Object {
 	 * @since 	1.0.0
 	 */
 	protected function __construct() {
-		// add_action( 'init', 						array( $this, 'handle_form_submissions' ) );
-		// add_action( 'charitable_start_donation', 	array( $this, 'start_donation' ), 1 );
-		add_action( 'charitable_start_donation', 	array( $this, 'start_donation' ) );
-		add_action( 'charitable_make_donation', 	array( $this, 'make_donation' ) );
+		add_action( 'charitable_start_donation', array( $this, 'start_donation' ) );
+		add_action( 'charitable_make_donation', array( $this, 'make_donation' ) );
 		add_action( 'charitable_make_donation_streamlined', array( $this, 'make_donation_streamlined' ) );
-		add_action( 'wp_ajax_add_donation', 		array( $this, 'ajax_make_donation' ) );
-		add_action( 'wp_ajax_nopriv_add_donation', 	array( $this, 'ajax_make_donation' ) );
-
-		// add_action( 'charitable_make_donation', 	array( $this, 'save_pending_donation' ), 1 );
-		// add_action( 'charitable_make_donation', 	array( $this, 'send_to_gateway' ), 2 );
+		add_action( 'wp_ajax_add_donation', array( $this, 'ajax_make_donation' ) );
+		add_action( 'wp_ajax_nopriv_add_donation', array( $this, 'ajax_make_donation' ) );
 
 		do_action( 'charitable_donation_actions_start', $this );
 	}
@@ -86,17 +81,9 @@ final class Charitable_Donation_Actions extends Charitable_Start_Object {
 			return;
 		}		
 
-		/* Create or update the donation object in the session, with the current campaign ID. */
-		$session = charitable_get_session();
-		$donation = $session->get( 'donation' );
+		/* Save the donation in the session */
+		charitable_get_session()->add_donation( $campaign_id, 0 );
 		
-		if ( false === $donation ) {
-			$donation = new Charitable_Session_Donation();			
-		}
-
-		$donation->set( 'campaign_id', $campaign_id ); 
-		$session->set( 'donation', $donation );
-
 		$donations_url = charitable_get_permalink( 'campaign_donation_page', array( 'campaign_id' => $campaign_id ) );
 		
 		wp_redirect( $donations_url );
@@ -143,13 +130,41 @@ final class Charitable_Donation_Actions extends Charitable_Start_Object {
 	 * @access 	public
 	 * @since 	1.0.0
 	 */
-	public function ajax_make_donation() {
-		// var_dump( $_POST );
-		wp_send_json( array( 'sweet as bro' ) );
+	public function ajax_make_donation() {	
+		if ( ! isset( $_POST[ 'campaign_id' ] ) ) {
+			wp_send_json_error( new WP_Error( 'missing_campaign_id', __( 'Campaign ID was not found. Unable to create donation.', 'charitable' ) ) );
+		}
 
-		// echo 'hello there';
+		$form_action = isset( $_POST[ 'form_action' ] ) ? $_POST[ 'form_action' ] : 'make_donation';
 
-		wp_die();
+		$campaign = new Charitable_Campaign( $_POST[ 'campaign_id' ] );
+		
+		/**
+		 * @hook 	charitable_before_save_ajax_donation
+		 */
+		do_action( 'charitable_before_save_ajax_donation', $campaign );
+
+		if ( 'make_donation_streamlined' == $form_action ) {
+
+			$form = new Charitable_Donation_Amount_Form( $campaign );
+			$donation_id = $form->save_donation();
+
+		}
+		else {
+
+			$donation_id = $campaign->get_donation_form()->save_donation();
+		}
+
+		/**
+		 * @hook 	charitable_after_save_ajax_donation
+		 */
+		do_action( 'charitable_after_save_ajax_donation', $campaign, $donation_id );
+
+		$data = apply_filters( 'charitable_ajax_make_donation_data', array(
+			'donation_id' => $donation_id
+		), $donation_id, $campaign );
+
+		wp_send_json_success( $data );		
 	}
 
 	/**

@@ -58,6 +58,9 @@ class Charitable_Donation_Amount_Form extends Charitable_Donation_Form implement
     protected function attach_hooks_and_filters() {
         add_action( 'charitable_donation_form_amount', array( $this, 'add_hidden_fields' ), 1 ); 
         add_action( 'charitable_donation_form_amount', array( $this, 'enter_donation_amount' ) );
+        add_action( 'charitable_donation_amount_form_submit', array( $this, 'redirect_after_submission' ), 10, 2 );
+
+        do_action( 'charitable_donation_amount_form_start', $this );
     }
 
     /**
@@ -106,19 +109,27 @@ class Charitable_Donation_Amount_Form extends Charitable_Donation_Form implement
         }
 
         /* Create or update the donation object in the session, with the current campaign ID. */
-        $session = charitable_get_session();
-        $donation = $session->get( 'donation' );
+        charitable_get_session()->add_donation( $campaign_id, $amount );
         
-        if ( false === $donation ) {
-            $donation = new Charitable_Session_Donation();
-        }
-
-        $donation->set( 'campaign_id', $campaign_id ); 
-        $donation->set( 'amount', $amount ); 
-        $session->set( 'donation', $donation );        
-
         do_action( 'charitable_donation_amount_form_submit', $campaign_id, $amount );
 
+        return true;        
+    }
+
+    /**
+     * Redirect to payment form after submission. 
+     *
+     * @param   int     $campaign_id
+     * @param   int     $amount
+     * @return  void
+     * @access  public
+     * @since   1.0.0
+     */
+    public function redirect_after_submission( $campaign_id, $amount ) {
+        if ( defined('DOING_AJAX') && DOING_AJAX ) {
+            return;
+        }
+        
         $redirect_url = charitable_get_permalink( 'campaign_donation_page', array( 'campaign_id' => $campaign_id ) );
         $redirect_url = apply_filters( 'charitable_donation_amount_form_redirect', $redirect_url, $campaign_id, $amount );
         

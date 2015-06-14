@@ -57,11 +57,6 @@ final class WP_Session extends Recursive_ArrayAccess implements Iterator, Counta
 	 */
 	public static function get_instance() {
 		if ( ! self::$instance ) {
-
-			echo '<pre>';
-			var_dump( class_exists( 'Charitable_Session_Donation' ) );
-			die;
-
 			self::$instance = new self();
 		}
 

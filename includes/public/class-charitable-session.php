@@ -122,6 +122,56 @@ class Charitable_Session extends Charitable_Start_Object {
 	public function set_session_expiration_variant_length() {
 		return ( 30 * 60 * 23 );
 	}
+
+	/**
+	 * Add a donation to a campaign to the session. 
+	 *
+	 * @param 	int 	$campaign_id
+	 * @param 	int 	$amount
+	 * @return  void
+	 * @access  public
+	 * @since   1.0.0
+	 */
+	public function add_donation( $campaign_id, $amount ) {
+		$donations = $this->get( 'donations' );
+
+		$campaign_donation = isset( $donations[ $campaign_id ] ) ? $donations[ $campaign_id ] : array();
+		$campaign_donation[ 'amount' ] = floatval( $amount );
+
+		$donations[ $campaign_id ] = $campaign_donation;
+
+		$this->set( 'donations', $donations );
+	}
+
+	/**
+	 * Remove a donation from the session. 
+	 *
+	 * @return  void
+	 * @access  public
+	 * @since   1.0.0
+	 */
+	public function remove_donation( $campaign_id ) {
+		$donations = $this->get( 'donations' );
+
+		if ( isset( $donations[ $campaign_id ] ) ) {
+			unset( $donations[ $campaign_id ] );
+		}
+
+		$this->set( 'donations', $donations );
+	}
+
+	/**
+	 * Return the donation in session for a campaign. 
+	 *
+	 * @param 	int 	$campaign_id
+	 * @return  false|array
+	 * @access  public
+	 * @since   1.0.0
+	 */
+	public function get_donation_by_campaign( $campaign_id ) {
+		$donations = $this->get( 'donations' );
+		return isset( $donations[ $campaign_id ] ) ? $donations[ $campaign_id ] : false;
+	}
 }
 
 endif;

@@ -72,12 +72,12 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
 	protected function attach_hooks_and_filters() {
 		parent::attach_hooks_and_filters();
 
-		add_action( 'charitable_login_form', 						array( $this, 'login_form' ) );
+		add_action( 'charitable_login_form', array( $this, 'login_form' ) );
 		add_action( 'charitable_donation_form_before_donation_amount', array( $this, 'enter_donation_amount_header' ) );
-		add_action( 'charitable_donation_form_amount', 				array( $this, 'enter_donation_amount' ) );		
-		add_action( 'charitable_donor_details', 					array( $this, 'add_donor_details' ) );
-		add_action( 'charitable_donation_form_user_fields', 		array( $this, 'add_user_fields' ) ); 
-		add_action( 'charitable_donation_form_after_user_fields', 	array( $this, 'add_password_field' ) );
+		add_action( 'charitable_donation_form_amount', array( $this, 'enter_donation_amount' ) );		
+		add_action( 'charitable_donor_details', array( $this, 'add_donor_details' ) );
+		add_action( 'charitable_donation_form_user_fields', array( $this, 'add_user_fields' ) ); 
+		add_action( 'charitable_donation_form_after_user_fields', array( $this, 'add_password_field' ) );		
 	}
 
 	/**
@@ -291,7 +291,7 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
 	public function enter_donation_amount( $form ) {
 		if ( ! $form->is_current_form( $this->id ) ) {
 			return;
-		}
+		}		
 
 		charitable_template( 'donation-form/donation-amount.php', array( 
 			'form' => $this, 
@@ -388,7 +388,7 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
 			return false;
 		}	
 
-		$amount = $this->get_donation_amount();
+		$amount = self::get_donation_amount();
 		
 		if ( 0 == $amount && ! apply_filters( 'charitable_permit_empty_donations', false ) ) {
 			charitable_get_notices()->add_error( __( 'No donation amount was set.', 'charitable' ) );

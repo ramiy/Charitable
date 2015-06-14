@@ -44,10 +44,10 @@ final class Charitable_Public extends Charitable_Start_Object {
 	 * @access 	private
 	 * @since 	1.0.0
 	 */
-	private function attach_hooks_and_filters() {
-		add_action('charitable_start', 		array( 'Charitable_Session', 'charitable_start' ), 1 );
-		add_action('charitable_start', 		array( 'Charitable_Templates', 'charitable_start' ), 2 );
-		add_action('wp_enqueue_scripts', 	array( $this, 'wp_enqueue_scripts') );
+	private function attach_hooks_and_filters() {		
+		add_action('charitable_start', array( 'Charitable_Session', 'charitable_start' ), 5 );
+		add_action('charitable_start', array( 'Charitable_Templates', 'charitable_start' ), 5 );
+		add_action('wp_enqueue_scripts', array( $this, 'wp_enqueue_scripts') );
 	}
 
 	/**
@@ -57,9 +57,13 @@ final class Charitable_Public extends Charitable_Start_Object {
 	 * @access 	public
 	 * @since 	1.0.0
 	 */
-	public function wp_enqueue_scripts() {				
+	public function wp_enqueue_scripts() {						
+		$vars = apply_filters( 'charitable_javascript_vars', array( 
+			'ajaxurl' => admin_url( 'admin-ajax.php' )
+		) );
+
 		wp_register_script( 'charitable-script', charitable()->get_path( 'assets', false ) . 'js/charitable.js', array( 'jquery' ), charitable()->get_version() );
-        wp_localize_script( 'charitable-script', 'CHARITABLE_VARS', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
+        wp_localize_script( 'charitable-script', 'CHARITABLE_VARS', $vars );
         wp_enqueue_script( 'charitable-script' );
 
 		wp_register_style( 'charitable-styles', charitable()->get_path( 'assets', false ) . 'css/charitable.css', array(), charitable()->get_version() );
