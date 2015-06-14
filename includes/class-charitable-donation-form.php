@@ -499,12 +499,12 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
 	/**
 	 * Returns true if required fields are missing. 
 	 *
-	 * @param 	array 	$user_fields
+	 * @param 	array 	$required_fields
 	 * @return  boolean
 	 * @access  protected
 	 * @since   1.0.0
 	 */
-	protected function is_missing_required_fields( $user_fields ) {
+	protected function is_missing_required_fields( $required_fields ) {
 		if ( is_user_logged_in() ) {
 			return false;
 		}

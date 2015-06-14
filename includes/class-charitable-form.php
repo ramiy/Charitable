@@ -130,7 +130,7 @@ abstract class Charitable_Form {
 
 		if ( ! empty( $errors ) ) {
 
-			$template = charitable_template( 'form-fields/errors.php', array(
+			charitable_template( 'form-fields/errors.php', array(
 				'form' 		=> $form, 
 				'errors' 	=> $errors
 			) );
@@ -467,11 +467,8 @@ abstract class Charitable_Form {
      * @since   1.0.0
      */
     public function upload_file( $file_key, $overrides = array() ) {
-    	    	    
-    	/* Load dependency */
         require_once( ABSPATH . 'wp-admin/includes/file.php' );
 
-        $name       = $_FILES[ $file_key ]['name'];
         $overrides  = $this->get_file_overrides( $file_key, $overrides );
         $file       = wp_handle_upload( $_FILES[ $file_key ], $overrides );
 

@@ -21,7 +21,7 @@ if ( ! class_exists( 'Charitable_Locations' ) ) :
 class Charitable_Locations {
 
 	/**
-	 * Array of countries. 
+	 * List of countries in country_code=>name format.
 	 *
 	 * @var 	string[]	$countries
 	 * @access 	private
@@ -30,13 +30,21 @@ class Charitable_Locations {
 	private $countries = array(); 
 
 	/**
-	 * Array of states. 
+	 * List of states as a multidimensional array, grouped by country. 
 	 *
-	 * @var 	string[] 	$states
+	 * @var 	array[] 	$states
 	 * @access 	private
 	 * @since 	1.0.0
 	 */
 	private $states = array(); 
+
+	/**
+	 * List of different countries' address formats.
+	 *
+	 * @var 	string[]
+	 * @access  private
+	 */
+	private $address_formats;
 
 	/** 
 	 * Return an array with all the countries supported by Charitable. 

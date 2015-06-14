@@ -213,10 +213,6 @@ class Charitable_Donors_Query implements Iterator {
 
         $results = $wpdb->get_results( $this->query );
 
-        // if ( 'all' == $this->get( 'fields' ) ) {
-        //     $results = array_map( array( $this, 'get_user_object' ), $results );
-        // }
-
         return $results;
     }
 

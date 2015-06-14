@@ -82,7 +82,7 @@ class Charitable_Donation_Amount_Form extends Charitable_Donation_Form implement
      * @since   1.0.0
      */
     public function render() {
-        $template = charitable_template( 'donation-form/form-donation-amount.php', array( 
+        charitable_template( 'donation-form/form-donation-amount.php', array( 
             'form' => $this 
         ) );
     }
@@ -90,7 +90,7 @@ class Charitable_Donation_Amount_Form extends Charitable_Donation_Form implement
     /**
      * Save the submitted donation.
      *
-     * @return  int|false       If successful, this returns the donation ID. If unsuccessful, returns false.
+     * @return  int|false   If successful, this returns the donation ID. If unsuccessful, returns false.
      * @access  public
      * @since   1.0.0
      */

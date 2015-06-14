@@ -521,7 +521,7 @@ class Charitable_Campaign {
                 break;
 
             default : 
-                $template_name = apply_filters( 'charitable_donate_button_template', 'campaign/donate-button.php', $campaign );
+                $template_name = apply_filters( 'charitable_donate_button_template', 'campaign/donate-button.php', $this );
         }
 
         charitable_template( $template_name, array( 'campaign' => $this ) );
@@ -581,7 +581,6 @@ class Charitable_Campaign {
         add_filter( 'charitable_sanitize_campaign_meta_campaign_suggested_donations', array( 'Charitable_Campaign', 'sanitize_campaign_suggested_donations' ) );
         add_filter( 'charitable_sanitize_campaign_meta_campaign_allow_custom_donations', array( 'Charitable_Campaign', 'sanitize_campaign_allow_custom_donations' ) );
         add_filter( 'charitable_sanitize_campaign_meta_campaign_description', array( 'Charitable_Campaign', 'sanitize_campaign_description' ) );
-        add_filter( 'charitable_sanitize_campaign_meta_campaign_video', array( 'Charitable_Campaign', 'sanitize_campaign_video' ) );
         return apply_filters( 'charitable_sanitize_campaign_meta' . $key, $value, $submitted );
     }
 
@@ -678,40 +677,6 @@ class Charitable_Campaign {
      */
     public static function sanitize_campaign_description( $value ) {
         return sanitize_text_field( $value );
-    }
-
-    /**
-     * Sanitize campaign video before saving to database. 
-     *
-     * @return  string  $value
-     * @access  public
-     * @static
-     * @since   1.0.0
-     */
-    public static function sanitize_campaign_video( $value ) {
-        global $allowedtags;
-
-        $iframe = array( 'iframe' => array(
-            'src'             => array(),
-            'height'          => array(),
-            'width'           => array(),
-            'frameborder'     => array(),
-            'allowfullscreen' => array(),
-        ) );
-
-        $allowed = array_merge( $allowedtags, $iframe );
-        $allowed = apply_filters( 'charitable_campaign_video_allowed_tags', $allowed );
-
-        // echo '<pre>';
-        // echo 'VALUE' . PHP_EOL;
-        // var_dump( $value );
-        // echo 'WP_KSES' . PHP_EOL;
-        // var_dump( wp_kses( $value, $allowed ) );
-        // echo 'ESC_HTML' . PHP_EOL;
-        // var_dump( esc_html( $value ) );
-        // die;
-
-        return $value;
     }
 
     /**
