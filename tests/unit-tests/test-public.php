@@ -18,7 +18,8 @@ class Test_Charitable_Public extends WP_UnitTestCase {
 	}
 
 	function test_attach_hooks_and_filters() {
-		$this->assertEquals( 2, has_action('charitable_start', array( 'Charitable_Templates', 'charitable_start' ) ) );
+		$this->assertEquals( 5, has_action('charitable_start', array( 'Charitable_Templates', 'charitable_start' ) ) );
+		$this->assertEquals( 5, has_action('charitable_start', array( 'Charitable_Templates', 'charitable_start' ) ) );
 		$this->assertEquals( 10, has_action('wp_enqueue_scripts', array( $this->charitable_public, 'wp_enqueue_scripts' ) ) );		
 	}
 }

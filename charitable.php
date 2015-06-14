@@ -228,7 +228,6 @@ class Charitable {
         require_once( $includes_path . 'db/class-charitable-donors-db.php' );
 
         /* Public */
-        require_once( $includes_path . 'public/class-charitable-session-donation.php' );
         require_once( $includes_path . 'public/class-charitable-session.php' );        
         require_once( $includes_path . 'public/class-charitable-template.php' );      
         require_once( $includes_path . 'public/class-charitable-template-part.php' );
