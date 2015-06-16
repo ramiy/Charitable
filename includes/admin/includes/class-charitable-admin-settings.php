@@ -185,10 +185,14 @@ final class Charitable_Admin_Settings extends Charitable_Start_Object {
      * @since   1.0.0
      */
     public function sanitize_settings( $values ) {
-        $old_values = get_option( 'charitable_settings' );
+        $old_values = get_option( 'charitable_settings', array() );
         $new_values = array();        
 
-        /* Loop through each section of the submitted data, merging the submitted values into the master array */
+        if ( ! is_array( $values ) ) {
+            $values = array();
+        }
+
+        /* Loop through all fields, merging the submitted values into the master array */
         foreach ( $values as $section => $submitted ) {
             $new_values = array_merge( $new_values, $this->get_section_submitted_values( $section, $submitted ) );
         }      
@@ -375,6 +379,12 @@ final class Charitable_Admin_Settings extends Charitable_Start_Object {
      */
     private function get_general_fields() {
         return apply_filters( 'charitable_settings_fields_general', array(
+            'section'               => array(
+                'title'             => '',
+                'type'              => 'hidden',
+                'priority'          => 10000,
+                'value'             => 'general'
+            ),
             'section_locale'        => array(
                 'title'             => __( 'Currency & Location', 'charitable' ), 
                 'type'              => 'heading', 
@@ -451,6 +461,12 @@ final class Charitable_Admin_Settings extends Charitable_Start_Object {
      */
     private function get_form_fields() {
         return apply_filters( 'charitable_settings_fields_forms', array(
+            'section'               => array(
+                'title'             => '',
+                'type'              => 'hidden',
+                'priority'          => 10000,
+                'value'             => 'forms'
+            ),
             'section_donation_form' => array(
                 'title'             => __( 'Donation Form', 'charitable' ),
                 'type'              => 'heading',
@@ -498,6 +514,12 @@ final class Charitable_Admin_Settings extends Charitable_Start_Object {
         }
        
         return apply_filters( 'charitable_settings_fields_gateways', array(
+            'section'               => array(
+                'title'             => '',
+                'type'              => 'hidden',
+                'priority'          => 10000,
+                'value'             => 'gateways'
+            ),
             'gateways' => array(
                 'label_for'         => __( 'Available Payment Gateways', 'charitable' ),
                 'callback'          => array( $this, 'render_gateways_table' ), 
@@ -549,6 +571,12 @@ final class Charitable_Admin_Settings extends Charitable_Start_Object {
         }
        
         return apply_filters( 'charitable_settings_fields_emails', array(
+            'section'               => array(
+                'title'             => '',
+                'type'              => 'hidden',
+                'priority'          => 10000,
+                'value'             => 'emails'
+            ),
             'emails' => array(
                 'title'     => __( 'Available Emails', 'charitable' ),
                 'callback'  => array( $this, 'render_emails_table' ), 
@@ -609,6 +637,12 @@ final class Charitable_Admin_Settings extends Charitable_Start_Object {
      */
     private function get_advanced_fields() {
         return apply_filters( 'charitable_settings_fields_forms', array(
+            'section'               => array(
+                'title'             => '',
+                'type'              => 'hidden',
+                'priority'          => 10000,
+                'value'             => 'advanced'
+            ),
             'section_dangerous'     => array(
                 'title'             => __( 'Dangerous Settings', 'charitable' ), 
                 'type'              => 'heading', 

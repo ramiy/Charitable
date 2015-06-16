@@ -35,8 +35,7 @@ final class Charitable_Post_Types extends Charitable_Start_Object {
 		add_action( 'init', array( $this, 'register_post_types' ), 5 );
 		add_action( 'init', array( $this, 'register_post_statuses' ), 5 );
 		add_action( 'init', array( $this, 'register_taxonomies' ), 6 );
-		add_action( 'init', array( $this, 'add_endpoints' ) );
-		// add_action( 'init', array( $this, 'add_rewrite_rules' ) );
+		add_action( 'init', array( $this, 'add_endpoints' ) );	
 	}
 
 	/**

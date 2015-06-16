@@ -31,8 +31,8 @@ class Charitable_Install {
 	public function __construct() {			
 		$this->setup_roles();
 		$this->create_tables();	
-		
-		flush_rewrite_rules();
+
+		add_action( 'init', 'flush_rewrite_rules', 99 ); // Runs after post types & taxonomies are registered
 
 		do_action( 'charitable_install' );	
 	}

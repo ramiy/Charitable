@@ -7,7 +7,7 @@
  * Author:              Studio 164a
  * Author URI:          https://164a.com
  * Requires at least:   4.0
- * Tested up to:        4.1
+ * Tested up to:        4.3
  *
  * Text Domain:         charitable
  * Domain Path:         /i18n/languages/
