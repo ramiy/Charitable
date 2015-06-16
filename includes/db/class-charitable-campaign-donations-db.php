@@ -307,10 +307,8 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 		global $wpdb;
 		return $wpdb->get_var( 
 			$wpdb->prepare( 
-				"SELECT COUNT(DISTINCT p.post_author) 
+				"SELECT COUNT(DISTINCT c.donor_id) 
 				FROM $this->table_name c
-				INNER JOIN {$wpdb->prefix}posts p
-				ON c.donation_id = p.ID
 				WHERE c.campaign_id = %d;", 
 				$campaign_id 
 			) );
@@ -320,12 +318,12 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 	 * Return all donations made by a donor. 
 	 *
 	 * @global	wpdb	$wpdb
-	 * @param 	int 	$donor_id
+	 * @param 	int 	$user_id
 	 * @return 	object
 	 * @access  public
 	 * @since 	1.0.0
 	 */
-	public function get_donations_by_donor( $donor_id ) {
+	public function get_donations_by_user( $user_id ) {
 		global $wpdb;
 
 		$sql = "SELECT c.campaign_donation_id, c.donation_id, c.campaign_id, c.campaign_name, c.amount

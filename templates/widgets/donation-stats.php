@@ -7,7 +7,7 @@
  */
 
 $widget_title = apply_filters( 'widget_title', $view_args[ 'title' ] );
-$campaigns_count = count( Charitable_Campaigns::query( array( 'posts_per_page' => 1, 'fields' => 'ids' ) ) );
+$campaigns_count = Charitable_Campaigns::query( array( 'posts_per_page' => -1, 'fields' => 'ids' ) )->found_posts;
 
 echo $view_args[ 'before_widget' ];
 

@@ -164,7 +164,7 @@ class Charitable_Donors_Widget extends WP_Widget {
                 $query_args[ 'campaign' ] = intval( $instance[ 'campaign' ] );
             }
         }
-
+        
         return new Charitable_Donors_Query( $query_args );
     }
 }

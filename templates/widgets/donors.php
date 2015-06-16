@@ -38,7 +38,7 @@ if ( $donors->count() ) :
                 
                 if ( $view_args[ 'show_name'] ) : ?>
 
-                    <h6 class="donor-name"><?php echo $donor->display_name ?></h6>
+                    <h6 class="donor-name"><?php printf( '%s %s', $donor->first_name, $donor->last_name ) ?></h6>
 
                 <?php 
 

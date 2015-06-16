@@ -3,7 +3,7 @@
  * Plugin Name:         Charitable
  * Plugin URI:          http://wpcharitable.com
  * Description:         Fundraise with WordPress.
- * Version:             1.0.0~alpha-1.0
+ * Version:             1.0.0~alpha-1.1
  * Author:              Studio 164a
  * Author URI:          https://164a.com
  * Requires at least:   4.0
@@ -33,12 +33,12 @@ class Charitable {
     /**
      * @var     string
      */
-    const VERSION = '1.0.0';
+    const VERSION = '1.0.0-20150615';
 
     /**
      * @var     string      A date in the format: YYYYMMDD
      */
-    const DB_VERSION = '20141024';  
+    const DB_VERSION = '20150615';  
 
     /**
      * @var     string      The Campaign post type.

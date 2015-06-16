@@ -1,28 +1,28 @@
-var $ = jQuery;
+jQuery.noConflict();
 
 CHARITABLE = {};
 
 CHARITABLE.Toggle = {
 
 	toggleTarget : function( event ) {
-		var target = $( this ).data( 'charitable-toggle' );
+		var target = jQuery( this ).data( 'charitable-toggle' );
 
-		$( '#' + target ).toggleClass( 'charitable-hidden', $( this ).is( ':checked' ) );
+		jQuery( '#' + target ).toggleClass( 'charitable-hidden', jQuery( this ).is( ':checked' ) );
 
-		if ( $(this).is( 'a' ) ) {
+		if ( jQuery(this).is( 'a' ) ) {
 			return false;
 		}			
 	}, 
 
 	hideTarget : function( el ) {
-		var target = $( el ).data( 'charitable-toggle' );
+		var target = jQuery( el ).data( 'charitable-toggle' );
 
-		$( '#' + target ).addClass( 'charitable-hidden' );
+		jQuery( '#' + target ).addClass( 'charitable-hidden' );
 	},
 
 	init : function() {
 		var self = this;
-		$( '[data-charitable-toggle]' ).each( function() { 
+		jQuery( '[data-charitable-toggle]' ).each( function() { 
 			self.hideTarget( this ); 
 		} )  
 		.on( 'click', function( event ) {
@@ -37,25 +37,25 @@ CHARITABLE.Toggle = {
 CHARITABLE.DonationSelection = {
 
 	selectOption : function( event ) {
-		var input = $( this ).find( 'input[type=radio]' ), 
+		var input = jQuery( this ).find( 'input[type=radio]' ), 
 			checked = ! input.attr( 'checked' );
 
 		input.attr( 'checked', checked ); 
 
-		$( '.donation-amount.selected ').removeClass( 'selected' );
-		$( this ).addClass( 'selected' );
+		jQuery( '.donation-amount.selected ').removeClass( 'selected' );
+		jQuery( this ).addClass( 'selected' );
 
-		if ( $( this ).hasClass( 'custom-donation-amount' ) ) {				
-			$( this ).siblings( 'input[name=custom-donation-amount]' ).focus();
+		if ( jQuery( this ).hasClass( 'custom-donation-amount' ) ) {				
+			jQuery( this ).siblings( 'input[name=custom-donation-amount]' ).focus();
 		}
 	},
 	
 	init : function() {
-		$( '.donation-amount input:checked' ).each( function(){
-			$( this ).parent().addClass( 'selected' );
+		jQuery( '.donation-amount input:checked' ).each( function(){
+			jQuery( this ).parent().addClass( 'selected' );
 		});
 
-		$( '.donation-amount' ).on ( 'click', function() {
+		jQuery( '.donation-amount' ).on ( 'click', function() {
 			this.DonationSelection.selectOption();
 		});
 	}
@@ -67,7 +67,7 @@ CHARITABLE.DonationSelection = {
 CHARITABLE.AJAXDonate = {
 
 	onClick : function( event ) {
- 		var data = $( event.target.form ).serializeArray().reduce( function( obj, item ) {
+ 		var data = jQuery( event.target.form ).serializeArray().reduce( function( obj, item ) {
 		    obj[ item.name ] = item.value;
 		    return obj;
 		}, {} );	 		
@@ -77,7 +77,7 @@ CHARITABLE.AJAXDonate = {
  		data.form_action = data.charitable_action;			
 		delete data.charitable_action;
 
-		$.ajax({
+		jQuery.ajax({
 			type: "POST",
 			data: data,
 			dataType: "json",
@@ -99,7 +99,7 @@ CHARITABLE.AJAXDonate = {
 	},
 
 	init : function() {
-		$( '[data-charitable-ajax-donate]' ).on ( 'click', function() {
+		jQuery( '[data-charitable-ajax-donate]' ).on ( 'click', function() {
 			this.AJAXDonate.onClick() 
 		});
 	}
@@ -118,14 +118,14 @@ CHARITABLE.SanitizeURL = function(input) {
 	}
 };
 
-(function($, CHARITABLE) {
-	$( document ).ready( function() {
+(function() {
+	jQuery( document ).ready( function() {
 		CHARITABLE.Toggle.init();
 
 		CHARITABLE.DonationSelection.init();
 
 		CHARITABLE.AJAXDonate.init();
 	});
-})(jQuery, CHARITABLE);
+})();
 
 console.log( CHARITABLE );

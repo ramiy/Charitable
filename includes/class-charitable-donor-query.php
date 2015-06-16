@@ -199,11 +199,11 @@ class Charitable_Donors_Query implements Iterator {
         
         $sql = "SELECT {$this->get_fields_clause()}
                 FROM $wpdb->posts p
-                {$this->get_joins()}
-                WHERE p.post_type = 'donation'
-                AND p.post_status IN ( {$this->get_status_placeholders()} )
+                INNER JOIN {$wpdb->prefix}charitable_campaign_donations cd ON p.ID = cd.donation_id
+                INNER JOIN {$wpdb->prefix}charitable_donors d ON cd.donor_id = d.donor_id
+                WHERE p.post_status IN ( {$this->get_status_placeholders()} )
                 {$this->get_where_clause()}                
-                GROUP BY p.post_author
+                GROUP BY d.donor_id
                 {$this->get_order_clause()}
                 {$this->get_limit_and_offset_clause()}";
 
@@ -317,7 +317,7 @@ class Charitable_Donors_Query implements Iterator {
      * @since   1.0.0
      */
     protected function get_fields_clause() {
-        $select_fields = array( "p.post_author AS ID" );
+        $select_fields = array( "p.ID" );
         
         if ( is_array( $this->get( 'fields' ) ) ) {
             if ( in_array( 'donations', $this->get( 'fields' ) ) ) {
@@ -328,74 +328,21 @@ class Charitable_Donors_Query implements Iterator {
                 $select_fields[] = "SUM(cd.amount) AS amount";
             }
 
-            if ( in_array( 'display_name', $this->get( 'fields' ) ) ) {
-                $select_fields[] = "u.display_name";
+            if ( in_array( 'name', $this->get( 'fields' ) ) ) {
+                $select_fields[] = "d.first_name";
+                $select_fields[] = "d.last_name";
             }            
         }  
         elseif ( 'all' == $this->get( 'fields' ) ) {
             $select_fields[] = "COUNT(*) AS donations";
             $select_fields[] = "SUM(cd.amount) AS amount";
-            $select_fields[] = "u.display_name";
+            $select_fields[] = "d.first_name";
+            $select_fields[] = "d.last_name";
         }  
 
         $sql = implode( ', ', $select_fields );    
         
         return apply_filters( 'charitable_donor_query_fields_sql', $sql, $select_fields, $this );
-    }
-
-    /**
-     * Return joins sql.  
-     *
-     * @global  WPDB    $wpdb  
-     * @return  string
-     * @access  protected
-     * @since   1.0.0
-     */
-    protected function get_joins() {    
-        global $wpdb;
-
-        $sql = "";
-
-        if ( $this->join_campaign_donations_table() ) {
-            $sql .= "INNER JOIN {$wpdb->prefix}charitable_campaign_donations cd ON cd.donation_id = p.ID ";
-        }
-
-        if ( $this->join_users_table() ) {
-            $sql .= "INNER JOIN $wpdb->users u ON u.ID = p.post_author ";
-        }
-
-        return apply_filters( 'charitable_donor_query_joins_sql', $sql, $this );
-    }
-
-    /**
-     * Returns whether we will join the charitable_campaign_donations table. 
-     *
-     * @return  boolean
-     * @access  protected
-     * @since   1.0.0
-     */
-    protected function join_campaign_donations_table() {
-        $ret = 'all' == $this->get( 'fields' ) 
-            || $this->get( 'campaign' ) // Limiting by campaign ID
-            || 'amount' == $this->get( 'orderby' ) // Ordering by amount 
-            || ( is_array( $this->get( 'fields' ) ) && in_array( 'amount', $this->get( 'fields' ) ) ); // Return amount field
-
-        return apply_filters( 'charitable_donor_query_join_campaign_donations_table', $ret, $this );
-    }
-
-    /**
-     * Returns whether we will join the users table. 
-     *
-     * @return  boolean
-     * @access  protected
-     * @since   1.0.0
-     */
-    protected function join_users_table() {
-        $ret = 'all' == $this->get( 'fields' ) 
-            || 'name' == $this->get( 'orderby' ) // Ordering by display name 
-            || ( is_array( $this->get( 'fields' ) ) && in_array( 'display_name', $this->get( 'fields' ) ) ); // Return display name field
-
-        return apply_filters( 'charitable_donor_query_join_users_table', $ret, $this );
     }
 
     /**
