@@ -28,10 +28,9 @@ class Charitable_Donation_Helper extends WP_UnitTestCase {
 	 */
 	public static function create_donation( $args = array() ) {
 		$defaults = array(
-			'donor_id'		=> 1,
 			'user_id'		=> 1, 
 			'campaigns'		=> array(), 
-			'status'		=> 'charitable-pending', 
+			'status'		=> 'charitable-completed', 
 			'gateway'		=> 'manual', 
 			'note'			=> ''
 		);

@@ -146,8 +146,19 @@ add_filter( 'charitable_permalink_campaign_donation_page', 'charitable_get_campa
  * @since   1.0.0
  */
 function charitable_get_campaign_widget_page_permalink( $url, $args = array() ) {	
-	return $url;
-}
+	global $wp_rewrite;
+
+    $campaign_id = isset( $args[ 'campaign_id' ] ) ? $args[ 'campaign_id' ] : get_the_ID();
+
+    if ( $wp_rewrite->using_permalinks() && ! isset( $_GET[ 'preview' ] ) ) {
+        $url = trailingslashit( get_permalink( $campaign_id ) ) . 'widget/';
+    }
+    else {
+        $url = esc_url_raw( add_query_arg( array( 'widget' => 1 ), get_permalink( $campaign_id ) ) );   
+    }
+            
+    return $url;
+}   
 
 add_filter( 'charitable_permalink_campaign_widget_page', 'charitable_get_campaign_widget_page_permalink', 2, 2 );
 

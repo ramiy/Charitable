@@ -174,7 +174,13 @@ class Charitable_User extends WP_User {
      * @since   1.0.0
      */
     public function get_name() {
-        return apply_filters( 'charitable_donor_name', $this->display_name, $this );
+        if ( $this->is_donor() ) {
+            $name = rtrim( sprintf( '%s %s', $this->get_donor()->first_name, $this->get_donor()->last_name ) );
+        }        
+        else {
+            $name = $this->display_name;
+        }
+        return apply_filters( 'charitable_donor_name', $name, $this );
     }
 
     /**
@@ -257,19 +263,30 @@ class Charitable_User extends WP_User {
      * @since   1.0.0
      */
     public function get_donations() {
-        return charitable_get_table( 'campaign_donations' )->get_donations_by_donor( $this->ID );
+        return charitable_get_table( 'campaign_donations' )->get_donations_by_donor( $this->get_donor_id() );
     }
 
     /**
      * Return the number of donations made by the donor. 
      *
-     * @param   boolean     $distinct_campaigns     If true, will not count multiple donations to the same campaign.
+     * @param   boolean     $distinct_donations     If true, will only count unique donations.
      * @return  int
      * @access  public
      * @since   1.0.0
      */
-    public function get_donation_count( $distinct_campaigns = false ) {
-        return charitable_get_table( 'campaign_donations' )->count_donations_by_donor( $this->ID, $distinct_campaigns);
+    public function count_donations( $distinct_donations = false ) {
+        return charitable_get_table( 'campaign_donations' )->count_donations_by_donor( $this->get_donor_id(), $distinct_donations);
+    }
+
+    /**
+     * Return the number of campaigns that the donor has supported.
+     *
+     * @return  int
+     * @access  public
+     * @since   1.0.0
+     */
+    public function count_campaigns_supported() {
+        return charitable_get_table( 'campaign_donations' )->count_campaigns_supported_by_donor( $this->get_donor_id() );
     }
 
     /**
@@ -280,7 +297,7 @@ class Charitable_User extends WP_User {
      * @since   1.0.0
      */
     public function get_total_donated() {
-        return (float) charitable_get_table( 'campaign_donations' )->get_total_donated_by_donor( $this->ID );
+        return (float) charitable_get_table( 'campaign_donations' )->get_total_donated_by_donor( $this->get_donor_id() );
     }
 
     /**

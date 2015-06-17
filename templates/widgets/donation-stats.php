@@ -24,7 +24,7 @@ endif;
         <?php printf( '<span class="figure">%s</span> %s', charitable_get_currency_helper()->get_monetary_amount( charitable_get_table( 'campaign_donations' )->get_total(), 0 ), __( 'Donated', 'charitable' ) ) ?>
     </li>
     <li>
-        <?php printf( '<span class="figure">%d</span> %s', charitable_get_table( 'campaign_donations' )->get_donor_count(), __( 'Donors', 'charitable' ) ) ?>        
+        <?php printf( '<span class="figure">%d</span> %s', charitable_get_table( 'donors' )->count_all(), __( 'Donors', 'charitable' ) ) ?>        
     </li>
 </ul>
 

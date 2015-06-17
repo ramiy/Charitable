@@ -123,9 +123,7 @@ CHARITABLE.SanitizeURL = function(input) {
 		CHARITABLE.Toggle.init();
 
 		CHARITABLE.DonationSelection.init();
-
-		CHARITABLE.AJAXDonate.init();
+		
+		CHARITABLE.AJAXDonate.init();		
 	});
 })();
-
-console.log( CHARITABLE );

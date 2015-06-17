@@ -59,6 +59,7 @@ class Test_Charitable_Campaign extends WP_UnitTestCase {
 						'amount' 		=> 10
 					)
 				),
+				'status'				=> 'charitable-completed', 
 				'gateway' 				=> 'paypal', 
 				'note'					=> 'This is a note'
 			),
@@ -70,6 +71,7 @@ class Test_Charitable_Campaign extends WP_UnitTestCase {
 						'amount' 		=> 20
 					)
 				),
+				'status'				=> 'charitable-completed', 
 				'gateway' 				=> 'paypal', 
 				'note'					=> ''
 			),
@@ -81,6 +83,7 @@ class Test_Charitable_Campaign extends WP_UnitTestCase {
 						'amount' 		=> 30
 					)
 				),
+				'status'				=> 'charitable-completed', 
 				'gateway' 				=> 'manual', 
 				'note'					=> ''
 			), 

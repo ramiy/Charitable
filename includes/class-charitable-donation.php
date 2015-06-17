@@ -276,6 +276,17 @@ class Charitable_Donation {
 	}
 
 	/**
+	 * Returns the donor ID of the donor. 
+	 *
+	 * @return  int
+	 * @access  public
+	 * @since   1.0.0
+	 */
+	public function get_donor_id() {
+		return current( $this->get_campaign_donations() )->donor_id;
+	}
+
+	/**
 	 * Returns the donor who made this donation.
 	 *
 	 * @return 	Charitable_User
@@ -284,7 +295,7 @@ class Charitable_Donation {
 	 */
 	public function get_donor() {
 		if ( ! isset( $this->donor ) ) {
-			$this->donor = new Charitable_User( $this->donation_data->post_author );
+			$this->donor = Charitable_User::init_with_donor( $this->get_donor_id() );
 		}
 
 		return $this->donor;
@@ -307,6 +318,33 @@ class Charitable_Donation {
 			'charitable-refunded' 	=> __( 'Refunded', 'charitable' ),
 		) );
 	}	
+
+	/**
+	 * Returns whether the donation status is valid. 
+	 *
+	 * @return  boolean
+	 * @access  public
+	 * @static
+	 * @since   1.0.0
+	 */
+	public static function is_valid_donation_status( $status ) {
+		return array_key_exists( $status, self::get_valid_donation_statuses() );
+	}
+
+	/**
+	 * Returns the donation statuses that signify a donation was complete. 
+	 *
+	 * By default, this is just 'charitable-completed'. However, 'charitable-preapproval' 
+	 * is also counted. 
+	 *
+	 * @return  string[]
+	 * @access  public
+	 * @static
+	 * @since   1.0.0
+	 */
+	public static function get_approval_statuses() {
+		return apply_filters( 'charitable_approval_donation_statuses', array( 'charitable-completed' ) );
+	}
 
 	/**
 	 * Inserts a new donation. 
@@ -631,7 +669,7 @@ class Charitable_Donation {
 		$ret = 'charitable-pending';
 
 		/* Override if a valid status was set */
-		if ( isset( $args[ 'status' ] ) && array_key_exists( $args[ 'status' ], self::get_valid_donation_statuses() ) ) {
+		if ( isset( $args[ 'status' ] ) && self::is_valid_donation_status( $args[ 'status' ] ) ) {
 			$ret = $args[ 'status' ];
 		}
 

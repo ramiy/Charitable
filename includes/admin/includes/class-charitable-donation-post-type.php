@@ -116,7 +116,7 @@ final class Charitable_Donation_Post_Type {
 				break;
 
 			case 'donor' : 
-				$display = $donation->get_donor()->display_name;
+				$display = $donation->get_donor()->get_name();
 				break;
 
 			case 'details' : 

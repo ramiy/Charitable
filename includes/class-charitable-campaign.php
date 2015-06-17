@@ -58,7 +58,6 @@ class Charitable_Campaign {
      * @since   1.0.0
      */
     public function __construct( $post ) {
-
         if ( ! is_a( $post, 'WP_Post' ) ) {         
             $post = get_post( $post );
         }

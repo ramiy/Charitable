@@ -164,7 +164,7 @@ class Charitable_Donors_DB extends Charitable_DB {
         $donor_id = $this->get_column_by( 'donor_id', 'email', $email );
         
         return is_null( $donor_id ) ? 0 : (int) $donor_id;
-    }    
+    } 
 }
 
 endif;

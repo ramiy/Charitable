@@ -37,7 +37,7 @@ class Charitable_Templates extends Charitable_Start_Object {
 		add_filter( 'template_include', array( $this, 'widget_template' ) );
 		add_filter( 'template_include', array( $this, 'email_template' ) );
 		add_filter( 'body_class', 		array( $this, 'add_donation_page_body_class' ) );
-		add_filter( 'body_class', 		array( $this, 'add_widget_page_body_class' ) );		
+		add_filter( 'body_class', 		array( $this, 'add_widget_page_body_class' ) );
 		
 		/* If you want to unhook any of the callbacks attached above, use this hook. */
 		do_action( 'charitable_templates_start', $this );
@@ -92,8 +92,11 @@ class Charitable_Templates extends Charitable_Start_Object {
 	public function widget_template( $template ) {	
 		if ( charitable_is_page( 'campaign_widget_page' ) ) {
 
-			do_action( 'charitable_is_widget' );
+			do_action( 'charitable_is_widget' );			
 			
+			add_filter( 'show_admin_bar', '__return_false' );
+			add_action( 'wp_head', array( $this, 'remove_admin_bar_from_widget_template' ) );
+
 			$new_template = apply_filters( 'charitable_widget_page_template', 'campaign-widget.php' );
 			$template = charitable_get_template_path( $new_template, $template );
 		}
@@ -155,6 +158,22 @@ class Charitable_Templates extends Charitable_Start_Object {
 
 		return $classes;
 	}	
+
+	/**
+	 * Removes the admin bar from the widget template.	
+	 *
+	 * @return  void
+	 * @access  public
+	 * @since   1.0.0
+	 */
+	public function remove_admin_bar_from_widget_template() {
+		?>
+<style type="text/css" media="screen">
+html { margin-top: 0 !important; }
+* html body { margin-top: 0 !important; }
+</style>
+		<?php 
+	}
 }
 
 endif; // End class_exists check
