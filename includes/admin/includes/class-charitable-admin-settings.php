@@ -57,8 +57,9 @@ final class Charitable_Admin_Settings extends Charitable_Start_Object {
 
         add_action( 'admin_menu', array( $this, 'add_menu' ), 5 );
         add_action( 'admin_init', array( $this, 'register_settings' ) );      
-
+        
         add_filter( 'charitable_sanitize_value', array( $this, 'sanitize_checkbox_value' ), 10, 2 );
+        add_filter( 'charitable_save_settings', array( $this, 'maybe_change_license_status' ) );
         add_filter( 'charitable_settings_tab_fields', array( $this, 'add_gateway_settings_fields' ) );
         add_filter( 'charitable_settings_tab_fields', array( $this, 'add_email_settings_fields' ) );
 
@@ -200,6 +201,50 @@ final class Charitable_Admin_Settings extends Charitable_Start_Object {
         $values = wp_parse_args( $new_values, $old_values );        
 
         return apply_filters( 'charitable_save_settings', $values, $new_values, $old_values );
+    }
+
+    /**
+     * Checks for updated license and invalidates status field if not set. 
+     *
+     * @param   mixed[]
+     * @return  mixed[]
+     * @access  public
+     * @since   1.0.0
+     */
+    public function maybe_change_license_status( $values ) {
+        if ( isset( $values[ 'license_key' ] ) && $values[ 'license_key' ] != charitable_get_option( 'license_key' ) ) {
+            
+            $license = trim( $values[ 'license_key' ] );
+
+            /* Data to send in our API request */
+            $api_params = array(
+                'edd_action'=> 'activate_license',
+                'license'   => $license,
+                'item_name' => urlencode( 'charitable-pro' ), // the name of our product in EDD
+                'url'       => home_url()
+            );
+
+            /* Call the custom API */
+            $response = wp_remote_post( 'http://wpcharitable.com', array( 'timeout' => 15, 'sslverify' => false, 'body' => $api_params ) );
+
+            // echo '<pre>'; var_dump( $response ); echo '</pre>';
+            // die;
+
+            /* Make sure the response came back okay */
+            if ( is_wp_error( $response ) )
+                return false;
+
+            $license_data = json_decode( wp_remote_retrieve_body( $response ) );
+
+            /* $license_data->license will be either "valid" or "invalid" */
+            $values[ 'license_key_status' ] = $license_data->license;
+            // $values[ 'license_key_status' ] = 'valid';
+        }
+
+        // echo '<pre>'; var_dump( $values ); echo '</pre>';
+        // die;
+
+        return $values;
     }
 
     /**
@@ -636,12 +681,23 @@ final class Charitable_Admin_Settings extends Charitable_Start_Object {
      * @since   1.0.0
      */
     private function get_advanced_fields() {
-        return apply_filters( 'charitable_settings_fields_forms', array(
+        return apply_filters( 'charitable_settings_fields_advanced', array(
             'section'               => array(
                 'title'             => '',
                 'type'              => 'hidden',
                 'priority'          => 10000,
                 'value'             => 'advanced'
+            ),
+            'section_licensing'     => array(
+                'title'             => __( 'Licensing', 'charitable' ),
+                'type'              => 'heading',
+                'priority'          => 2                
+            ),
+            'license_key'           => array(
+                'title'             => __( 'License Key', 'charitable' ), 
+                'type'              => 'text',
+                'priority'          => 4,
+                'help'              => __( 'Your Charitable Pro/Plus license key.', 'charitable' )
             ),
             'section_dangerous'     => array(
                 'title'             => __( 'Dangerous Settings', 'charitable' ), 

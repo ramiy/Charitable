@@ -62,6 +62,8 @@ final class Charitable_Admin extends Charitable_Start_Object {
 		add_action( 'charitable_start', 		array( 'Charitable_Admin_Settings', 'charitable_start' ) );
 		add_action( 'charitable_start', 		array( 'Charitable_Campaign_Post_Type', 'charitable_start' ) );
 		add_action( 'charitable_start', 		array( 'Charitable_Donation_Post_Type', 'charitable_start' ) );
+		// add_action( 'admin_init', 				array( $this, 'activate_license' ) );
+		// add_action( 'admin_init', 				array( $this, 'licensing' ) );
 		add_action( 'admin_enqueue_scripts', 	array( $this, 'admin_enqueue_scripts' ) );
 		add_filter( 'plugin_action_links_' . plugin_basename( charitable()->get_path() ), 	array( $this, 'add_plugin_action_links' ) );
 	}
