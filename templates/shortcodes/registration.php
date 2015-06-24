@@ -48,7 +48,7 @@ do_action('charitable_user_registration_before');
 
     ?>
     <div class="charitable-form-field charitable-submit-field">
-        <input class="button button-primary" type="submit" name="register" value="<?php esc_attr_e( 'Register', 'charitable' ) ?>" />
+        <button class="button button-primary" name="register"><?php esc_attr_e( 'Register', 'charitable' ) ?></button>
     </div>
 </form>
 <?php
