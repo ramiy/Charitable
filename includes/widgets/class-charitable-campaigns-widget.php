@@ -63,11 +63,11 @@ class Charitable_Campaigns_Widget extends WP_Widget {
 		?>
 		<p>
 			<label for="<?php echo $this->get_field_id('title') ?>"><?php _e( 'Title', 'charitable' ) ?></label>
-			<input type="text" name="<?php echo $this->get_field_name('title') ?>" id="<?php echo $this->get_field_id('title') ?>" value="<?php echo $instance['title']?>"/>
+			<input type="text" name="<?php echo $this->get_field_name('title') ?>" id="<?php echo $this->get_field_id('title') ?>" value="<?php echo $title ?>"/>
 		</p>
 		<p>
 			<label for="<?php echo $this->get_field_id('number') ?>"><?php _e( 'Number of campaigns to display', 'charitable' ) ?></label>
-			<input type="text" name="<?php echo $this->get_field_name('number') ?>" id="<?php echo $this->get_field_id('number') ?>" value="<?php echo $instance['number']?>" />
+			<input type="text" name="<?php echo $this->get_field_name('number') ?>" id="<?php echo $this->get_field_id('number') ?>" value="<?php echo $number ?>" />
 		</p>
 		<p>
 			<label for="<?php echo $this->get_field_id('order') ?>"><?php _e( 'Order', 'charitable' ) ?></label>

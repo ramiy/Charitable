@@ -8,7 +8,7 @@
  */
 
 $form 	= $view_args[ 'form' ];
-$donor 	= new Charitable_Donor( wp_get_current_user() );
+$donor 	= new Charitable_User( wp_get_current_user() );
 
 if ( ! $donor->is_logged_in() ) {
 	return;

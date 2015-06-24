@@ -67,7 +67,7 @@
 		if ( $.fn.datepicker ) {
 
 			$('.charitable-datepicker').datepicker( {
-				dateFormat 	: 'DD, d MM, yy', 
+				dateFormat 	: 'MM d, yy', 
 				minDate 	: $(this).data('min-date') || '',
 				beforeShow	: function( input, inst ) {
 					$('#ui-datepicker-div').addClass('charitable-datepicker-table');
