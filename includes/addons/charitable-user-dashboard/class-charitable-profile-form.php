@@ -251,8 +251,7 @@ class Charitable_Profile_Form extends Charitable_Form {
 	 * @access  public
 	 * @since 	1.0.0
 	 */
-	public function get_fields() {
-			
+	public function get_fields() {			
 		$fields = apply_filters( 'charitable_user_profile_fields', array(
 			'user_fields' => array(
 				'legend'	=> __( 'Your Details', 'charitable' ),
@@ -305,7 +304,6 @@ class Charitable_Profile_Form extends Charitable_Form {
 	 * @since 	1.0.0
 	 */
 	public static function update_profile() {
-		
 		$form = new Charitable_Profile_Form();
 
 		if ( ! $form->validate_nonce() ) {
