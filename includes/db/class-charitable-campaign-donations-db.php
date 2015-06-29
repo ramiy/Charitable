@@ -307,14 +307,22 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 	 *
 	 * @global	wpdb	$wpdb
 	 * @param 	int 	$donor_id
+	 * @param 	boolean $distinct_donations
 	 * @return 	object
 	 * @access  public
 	 * @since 	1.0.0
 	 */
-	public function get_donations_by_donor( $donor_id ) {
+	public function get_donations_by_donor( $donor_id, $distinct_donations = false ) {
 		global $wpdb;
 
-		$sql = "SELECT cd.campaign_donation_id, cd.donation_id, cd.campaign_id, cd.campaign_name, cd.amount
+		if ( $distinct_donations ) {
+			$select_fields = "DISTINCT( cd.donation_id ), cd.campaign_id, cd.campaign_name, cd.amount";
+		}
+		else {
+			$select_fields = "cd.campaign_donation_id, cd.donation_id, cd.campaign_id, cd.campaign_name, cd.amount";
+		}
+
+		$sql = "SELECT $select_fields
 				FROM $this->table_name cd
 				WHERE cd.donor_id = %d;";
 

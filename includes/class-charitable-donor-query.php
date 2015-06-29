@@ -317,7 +317,7 @@ class Charitable_Donors_Query implements Iterator {
      * @since   1.0.0
      */
     protected function get_fields_clause() {
-        $select_fields = array( "p.ID" );
+        $select_fields = array( 'd.donor_id', 'd.user_id' );
         
         if ( is_array( $this->get( 'fields' ) ) ) {
             if ( in_array( 'donations', $this->get( 'fields' ) ) ) {

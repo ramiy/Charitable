@@ -258,12 +258,13 @@ class Charitable_User extends WP_User {
     /**
      * Return all donations made by donor. 
      *
+     * @param   boolean     $distinct_donations     If true, will only count unique donations.
      * @return  Object
      * @access  public
      * @since   1.0.0
      */
-    public function get_donations() {
-        return charitable_get_table( 'campaign_donations' )->get_donations_by_donor( $this->get_donor_id() );
+    public function get_donations( $distinct_donations = false ) {
+        return charitable_get_table( 'campaign_donations' )->get_donations_by_donor( $this->get_donor_id(), $distinct_donations );
     }
 
     /**

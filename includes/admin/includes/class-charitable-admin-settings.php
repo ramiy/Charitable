@@ -559,16 +559,21 @@ final class Charitable_Admin_Settings extends Charitable_Start_Object {
         }
        
         return apply_filters( 'charitable_settings_fields_gateways', array(
-            'section'               => array(
+            'section' => array(
                 'title'             => '',
                 'type'              => 'hidden',
                 'priority'          => 10000,
                 'value'             => 'gateways'
             ),
+            'test_mode' => array(
+                'title'             => __( 'Turn on Test Mode', 'charitable' ),
+                'type'              => 'checkbox',
+                'priority'          => 5
+            ),
             'gateways' => array(
                 'label_for'         => __( 'Available Payment Gateways', 'charitable' ),
                 'callback'          => array( $this, 'render_gateways_table' ), 
-                'priority'          => 5
+                'priority'          => 10
             )
         ) );
     }

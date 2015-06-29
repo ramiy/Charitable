@@ -27,7 +27,7 @@ if ( $donors->count() ) :
 
         <?php foreach ( $donors as $donor ) : 
 
-            $donor_object = new Charitable_User( $donor );
+            $donor_object = Charitable_User::init_with_donor( $donor->donor_id );
             ?>
 
             <li class="donor">  

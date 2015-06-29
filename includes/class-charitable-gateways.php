@@ -63,7 +63,6 @@ class Charitable_Gateways extends Charitable_Start_Object {
 		add_action( 'charitable_enable_gateway', array( $this, 'handle_gateway_settings_request' ) );
 		add_action( 'charitable_disable_gateway', array( $this, 'handle_gateway_settings_request' ) );
 		add_filter( 'charitable_settings_fields_gateways_gateway', array( $this, 'register_gateway_settings' ), 10, 2 );
-	
 
 		do_action( 'charitable_gateway_start', $this );		
 	}
@@ -185,6 +184,18 @@ class Charitable_Gateways extends Charitable_Start_Object {
 		add_filter( 'charitable_settings_fields_gateways_gateway_' . $gateway::ID, array( $gateway, 'default_gateway_settings' ), 5 );
         add_filter( 'charitable_settings_fields_gateways_gateway_' . $gateway::ID, array( $gateway, 'gateway_settings' ), 15 );
         return apply_filters( 'charitable_settings_fields_gateways_gateway_' . $gateway::ID, $settings );
+	}
+
+	/**
+	 * Returns true if test mode is enabled.	
+	 *
+	 * @return  boolean
+	 * @access  public
+	 * @since   1.0.0
+	 */
+	public function in_test_mode() {
+		$enabled = charitable_get_option( 'test_mode', false );
+		return apply_filters( 'charitable_in_test_mode', $enabled );
 	}
 	
 	/**
