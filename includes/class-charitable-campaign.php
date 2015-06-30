@@ -19,7 +19,7 @@ if ( ! class_exists( 'Charitable_Campaign' ) ) :
  * @since       1.0.0
  */
 class Charitable_Campaign {
-
+    
     /**
      * @var WP_Post The WP_Post object associated with this campaign.
      */
@@ -360,8 +360,8 @@ class Charitable_Campaign {
      * @access  public
      * @since   1.0.0
      */
-    public function get_donations() {
-        $this->donations = get_transient( self::get_donations_cache_key( $this->ID ) );
+    public function get_donations() {        
+        $this->donations = get_transient( self::get_donations_cache_key( $this->ID ) );        
 
         if ( false === $this->donations ) {
 

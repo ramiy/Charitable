@@ -3,7 +3,7 @@
  * Plugin Name:         Charitable
  * Plugin URI:          http://wpcharitable.com
  * Description:         Fundraise with WordPress.
- * Version:             1.0.0-20150625
+ * Version:             1.0.0-20150701
  * Author:              Studio 164a
  * Author URI:          https://164a.com
  * Requires at least:   4.0

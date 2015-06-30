@@ -240,19 +240,28 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 	 *
 	 * @global 	wpdb 	$wpdb
 	 * @param 	int 	$campaign_id
+	 * @param 	boolean $include_all
 	 * @return 	int 					
 	 * @since 	1.0.0
 	 */
-	public function get_campaign_donated_amount( $campaign_id ){
+	public function get_campaign_donated_amount( $campaign_id, $include_all = false ) {
 		global $wpdb;
-		return $wpdb->get_var( 
-			$wpdb->prepare( 
-				"SELECT SUM(amount) 
-				FROM $this->table_name 
-				WHERE campaign_id = %d;", 
-				$campaign_id 
-			) );
-	}
+
+		$statuses = $include_all ? array() : Charitable_Donation::get_approval_statuses();
+
+		list( $status_clause, $parameters ) = $this->get_donation_status_clause( $statuses );
+
+		array_unshift( $parameters, $campaign_id );
+
+		$sql = "SELECT SUM(amount) cd
+				FROM $this->table_name cd
+				INNER JOIN $wpdb->posts p
+				ON p.ID = cd.donation_id
+				WHERE cd.campaign_id = %d
+				$status_clause;";
+
+		return $wpdb->get_var( $wpdb->prepare( $sql, $parameters ) );
+	}	
 
 	/**
 	 * The users who have donated to the given campaign.

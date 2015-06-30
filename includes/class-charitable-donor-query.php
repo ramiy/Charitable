@@ -92,7 +92,8 @@ class Charitable_Donors_Query implements Iterator {
             'number'    => 20,
             'paged'     => 1, 
             'fields'    => 'all', 
-            'campaign'  => 0
+            'campaign'  => 0,
+            'distinct'  => true
         ) );
 
         $this->args = wp_parse_args( $args, $defaults );
@@ -169,6 +170,10 @@ class Charitable_Donors_Query implements Iterator {
             case 'paged' : 
                 $value = intval( $value );
                 break;
+
+            case 'distinct' : 
+                $value = true == $value;
+                break;
         }
 
         return $value;
@@ -198,12 +203,12 @@ class Charitable_Donors_Query implements Iterator {
         global $wpdb;                        
         
         $sql = "SELECT {$this->get_fields_clause()}
-                FROM $wpdb->posts p
-                INNER JOIN {$wpdb->prefix}charitable_campaign_donations cd ON p.ID = cd.donation_id
+                FROM {$wpdb->prefix}charitable_campaign_donations cd
+                INNER JOIN $wpdb->posts p ON p.ID = cd.donation_id
                 INNER JOIN {$wpdb->prefix}charitable_donors d ON cd.donor_id = d.donor_id
                 WHERE p.post_status IN ( {$this->get_status_placeholders()} )
                 {$this->get_where_clause()}                
-                GROUP BY d.donor_id
+                {$this->get_group_clause()}
                 {$this->get_order_clause()}
                 {$this->get_limit_and_offset_clause()}";
 
@@ -254,6 +259,24 @@ class Charitable_Donors_Query implements Iterator {
         }
 
         return apply_filters( 'charitable_donor_query_where_sql', $sql, $this );
+    }
+
+    /**
+     * Return group clause. 
+     *
+     * @return  string
+     * @access  protected
+     * @since   1.0.0
+     */
+    protected function get_group_clause() {
+        if ( ! $this->get( 'distinct' ) ) {
+            $sql = '';
+        }
+        else {
+            $sql = 'GROUP BY d.donor_id';
+        }
+
+        return apply_filters( 'charitable_donor_query_group_by_sql', $sql, $this );
     }
 
     /**
@@ -320,24 +343,32 @@ class Charitable_Donors_Query implements Iterator {
         $select_fields = array( 'd.donor_id', 'd.user_id' );
         
         if ( is_array( $this->get( 'fields' ) ) ) {
-            if ( in_array( 'donations', $this->get( 'fields' ) ) ) {
-                $select_fields[] = "COUNT(*) AS donations";
+            if ( in_array( 'donations', $this->get( 'fields' ) && $this->get( 'distinct' ) ) ) {
+                $select_fields[] = 'COUNT(*) AS donations';
             } 
 
-            if ( in_array( 'amount', $this->get( 'fields' ) ) ) {
-                $select_fields[] = "SUM(cd.amount) AS amount";
+            if ( in_array( 'amount', $this->get( 'fields' ) && $this->get( 'distinct' ) ) ) {
+                $select_fields[] = 'SUM(cd.amount) AS amount';
             }
 
             if ( in_array( 'name', $this->get( 'fields' ) ) ) {
-                $select_fields[] = "d.first_name";
-                $select_fields[] = "d.last_name";
+                $select_fields[] = 'd.first_name';
+                $select_fields[] = 'd.last_name';
             }            
         }  
         elseif ( 'all' == $this->get( 'fields' ) ) {
-            $select_fields[] = "COUNT(*) AS donations";
-            $select_fields[] = "SUM(cd.amount) AS amount";
-            $select_fields[] = "d.first_name";
-            $select_fields[] = "d.last_name";
+
+            if ( $this->get( 'distinct' ) ) {
+                $select_fields[] = 'COUNT(*) AS donations';
+                $select_fields[] = 'SUM(cd.amount) AS amount';
+            }   
+            else {
+                $select_fields[] = 'cd.donation_id';
+                $select_fields[] = 'cd.amount';
+            }   
+
+            $select_fields[] = 'd.first_name';
+            $select_fields[] = 'd.last_name';
         }  
 
         $sql = implode( ', ', $select_fields );    

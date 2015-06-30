@@ -165,6 +165,8 @@ class Charitable_Donors_Widget extends WP_Widget {
             }
         }
         
+        $query_args = apply_filters( 'charitable_donors_widget_donor_query_args', $query_args, $instance );
+
         return new Charitable_Donors_Query( $query_args );
     }
 }
