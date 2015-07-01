@@ -6,7 +6,7 @@
  * Version:             1.0.0-20150701
  * Author:              Studio 164a
  * Author URI:          https://164a.com
- * Requires at least:   4.0
+ * Requires at least:   4.1
  * Tested up to:        4.3
  *
  * Text Domain:         charitable
