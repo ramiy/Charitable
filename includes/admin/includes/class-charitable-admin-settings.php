@@ -171,6 +171,10 @@ final class Charitable_Admin_Settings extends Charitable_Start_Object {
      */
     public function add_email_settings_fields( $fields ) {
         foreach ( charitable_get_helper( 'emails' )->get_enabled_emails() as $email ) {
+            if ( ! class_exists( $email ) ) {
+                continue;
+            }
+
             $fields[ $email::ID ] = apply_filters( 'charitable_settings_fields_emails_email', array(), new $email );
         }
 
