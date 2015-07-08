@@ -62,6 +62,7 @@ final class Charitable_Admin_Settings extends Charitable_Start_Object {
         add_filter( 'charitable_save_settings', array( $this, 'maybe_change_license_status' ) );
         add_filter( 'charitable_settings_tab_fields', array( $this, 'add_gateway_settings_fields' ) );
         add_filter( 'charitable_settings_tab_fields', array( $this, 'add_email_settings_fields' ) );
+        add_filter( 'charitable_settings_groups', array( $this, 'add_email_settings_groups' ) );
 
         do_action( 'charitable_admin_settings_start', $this );
     }
@@ -179,6 +180,22 @@ final class Charitable_Admin_Settings extends Charitable_Start_Object {
         }
 
         return $fields;
+    }
+
+    /**
+     * Add email keys to the settings groups. 
+     *
+     * @param   string[] $groups
+     * @return  string[]
+     * @access  public
+     * @since   1.0.0
+     */
+    public function add_email_settings_groups( $groups ) {
+        foreach ( charitable_get_helper( 'emails' )->get_enabled_emails() as $email ) {
+            $groups[] = $email::ID;
+        }
+
+        return $groups;
     }
 
     /**
@@ -848,7 +865,7 @@ final class Charitable_Admin_Settings extends Charitable_Start_Object {
      * @since   1.0.0
      */
     private function get_settings_groups() {
-        return apply_filters( 'charitable_admin_settings_groups', array(
+        return apply_filters( 'charitable_settings_groups', array(
             'general', 'forms', 'gateways', 'emails', 'advanced'
         ) );
     }
