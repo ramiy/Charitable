@@ -37,7 +37,7 @@ module.exports = function(grunt) {
         // Sass
         sass: {
             dist: {
-                files: {
+                files: {                    
                     'assets/css/charitable-admin-menu.css'  : 'assets/css/scss/charitable-admin-menu.scss', 
                     'assets/css/charitable-admin.css'       : 'assets/css/scss/charitable-admin.scss',
                     'assets/css/charitable.css'             : 'assets/css/scss/charitable.scss'

@@ -61,9 +61,15 @@ class Charitable_Emails extends Charitable_Start_Object {
         add_action( 'charitable_disable_email', array( $this, 'handle_email_settings_request' ) );
         add_action( 'charitable_before_send_email', array( $this, 'set_current_email' ) );
         add_action( 'charitable_before_preview_email', array( $this, 'set_current_email' ) );
-        
         add_filter( 'charitable_settings_fields_emails_email', array( $this, 'register_email_settings' ), 10, 2 );
 
+        /* Hooks to send emails on certain actions. */
+        add_action( 'charitable_after_add_donation', array( 'Charitable_Email_Donation_Receipt', 'send_with_donation_id' ) );
+        add_action( 'charitable_after_update_donation', array( 'Charitable_Email_Donation_Receipt', 'send_with_donation_id' ) );
+        add_action( 'charitable_after_add_donation', array( 'Charitable_Email_New_Donation', 'send_with_donation_id' ) );
+        add_action( 'charitable_after_update_donation', array( 'Charitable_Email_New_Donation', 'send_with_donation_id' ) );
+
+        /* Register email shortcode */
         add_shortcode( 'charitable_email', array( $this, 'email_shortcode' ) );
         
         /* 3rd party hook for overriding anything we've done above. */

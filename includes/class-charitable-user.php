@@ -167,6 +167,17 @@ class Charitable_User extends WP_User {
     }
 
     /**
+     * Returns the email address of the donor.  
+     *
+     * @return  string
+     * @access  public
+     * @since   1.0.0
+     */
+    public function get_email() {
+        return apply_filters( 'charitable_donor_email', $this->get_donor()->email, $this );
+    }
+
+    /**
      * Returns the display name of the user.
      *
      * @return  string
@@ -239,7 +250,6 @@ class Charitable_User extends WP_User {
      * @since   1.0.0
      */
     public function get_address() {
-    
         $address_fields = apply_filters( 'charitable_donor_address_fields', array(
             'first_name'    => $this->get( 'first_name' ),
             'last_name'     => $this->get( 'last_name' ),

@@ -46,18 +46,41 @@ class Charitable_Email_Donation_Receipt extends Charitable_Email {
     }
 
     /**
-     * Return the default recipient for the email.
+     * Static method that is fired right after a donation is completed, sending the donation receipt.
      *
-     * @return  string
-     * @access  protected
+     * @param   int     $donation_id
+     * @return  boolean
+     * @access  public
+     * @static
      * @since   1.0.0
      */
-    protected function get_recipient() {
+    public static function send_with_donation_id( $donation_id ) {
+        if ( ! Charitable_Donation::is_approved_status( get_post_status( $donation_id ) ) ) {
+            return false;
+        }
+
+        $email = new Charitable_Email_Donation_Receipt( array( 
+            'donation' => new Charitable_Donation( $donation_id ) 
+        ) );
+
+        $email->send();
+
+        return true;
+    }
+
+    /**
+     * Return the recipient for the email.
+     *
+     * @return  string
+     * @access  public
+     * @since   1.0.0
+     */
+    public function get_recipient() {
         if ( ! $this->has_valid_donation() ) {
             return '';
         }
         
-        return $this->donation->get_donor()->user_email;
+        return apply_filters( 'charitable_email_donation_receipt_receipient', $this->donation->get_donor()->get_email(), $this );
     }
 
     /**
@@ -92,9 +115,14 @@ class Charitable_Email_Donation_Receipt extends Charitable_Email {
     protected function get_default_body() {
         ob_start();
 ?>
-        <p>Dear [charitable_email show=donor_first_name],</p>
-        <p>Thank you so much for your generous donation.</p>
-        <p>[charitable_email show=site_name]
+        Dear [charitable_email show=donor_first_name],
+
+        Thank you so much for your generous donation.
+
+        <strong>Your Receipt</strong>
+        [charitable_email show=donation_summary]
+
+        With thanks, [charitable_email show=site_name]
 <?php
         $body = ob_get_clean();
 

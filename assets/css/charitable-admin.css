@@ -423,4 +423,9 @@ select.charitable-settings-field {
     display: inline-block;
     margin-right: 20px; }
 
+.charitable-checkbox-list {
+  width: auto;
+  margin: 0;
+  padding: 0; }
+
 /*# sourceMappingURL=charitable-admin.css.map */

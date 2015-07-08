@@ -58,6 +58,12 @@ abstract class Charitable_Email {
     protected $campaign;
 
     /**
+     * @var     string
+     * @access  protected
+     */
+    protected $recipients;
+
+    /**
      * Create a class instance. 
      *
      * @param   mixed[]  $objects
@@ -102,7 +108,7 @@ abstract class Charitable_Email {
      * @since   1.0.0
      */
     public function get_from_name() {
-        return wp_specialchars_decode( charitable_get_option( 'email_from_name' ) );
+        return wp_specialchars_decode( charitable_get_option( 'email_from_name', get_option('blogname') ) );
     }
 
     /**
@@ -113,7 +119,29 @@ abstract class Charitable_Email {
      * @since   1.0.0
      */
     public function get_from_address() {
-        return charitable_get_option( 'email_from_address' );
+        return charitable_get_option( 'email_from_address', get_option('admin_email') );
+    }
+
+    /**
+     * Return the email recipients. 
+     *
+     * @return  string
+     * @access  public
+     * @since   1.0.0
+     */
+    public function get_recipient() {
+        return $this->get_option( 'recipient', $this->get_default_recipient() );
+    }
+
+    /**
+     * Return the email subject line. 
+     *
+     * @return  string
+     * @access  public
+     * @since   1.0.0
+     */
+    public function get_subject() {
+        return $this->get_option( 'subject', $this->get_default_subject() );
     }
 
     /**
@@ -135,7 +163,7 @@ abstract class Charitable_Email {
      * @since   1.0.0
      */
     public function get_headers() {
-        if ( ! $this->headers ) {
+        if ( ! isset( $this->headers ) ) {
             $this->headers  = "From: {$this->get_from_name()} <{$this->get_from_address()}>\r\n";
             $this->headers .= "Reply-To: {$this->get_from_address()}\r\n";
             $this->headers .= "Content-Type: {$this->get_content_type()}; charset=utf-8\r\n";
@@ -168,7 +196,7 @@ abstract class Charitable_Email {
             return $this->get_preview_field_content( $field );
         }
 
-        add_filter( 'charitable_email_content_field_value_' . $field, $fields[ $field ], 10, 3 );
+        add_filter( 'charitable_email_content_field_value_' . $field, $fields[ $field ][ 'callback' ], 10, 3 );
 
         return apply_filters( 'charitable_email_content_field_value_' . $field, '', $field, $args );
     }
@@ -274,7 +302,7 @@ abstract class Charitable_Email {
      * @since   1.0.0
      */
     public function add_recipients_field( $settings ) {
-        $settings[ 'recipients' ] = array(
+        $settings[ 'recipient' ] = array(
             'type'      => 'text',
             'title'     => __( 'Recipients', 'charitable' ), 
             'help'      => __( 'A comma-separated list of email address that will receive this email.', 'charitable' ),
@@ -304,6 +332,21 @@ abstract class Charitable_Email {
             'callback'      => array( $this, 'get_donor_first_name' )
         );
 
+        $fields[ 'donor_email' ] = array(
+            'description'   => __( 'The email address of the donor', 'charitable' ),
+            'callback'      => array( $this, 'get_donor_email' )
+        );
+
+        $fields[ 'donation_id' ] = array(
+            'description'   => __( 'The donation ID', 'charitable' ), 
+            'callback'      => array( $this, 'get_donation_id' )
+        );
+
+        $fields[ 'donation_summary' ] = array(
+            'description'   => __( 'A summary of the donation', 'charitable' ), 
+            'callback'      => array( $this, 'get_donation_summary' )
+        );
+
         return $fields;
     }
 
@@ -314,12 +357,8 @@ abstract class Charitable_Email {
      * @access  public
      * @since   1.0.0
      */
-    public function get_donor_first_name() {
-        if ( ! $this->has_valid_donation() ) {
-            return '';            
-        }
-
-        return $this->donation->get_donor()->first_name;
+    public function get_donor_first_name() {        
+        return $this->return_value_if_has_valid_donation( $this->donation->get_donor()->first_name );
     }
 
     /**
@@ -330,11 +369,51 @@ abstract class Charitable_Email {
      * @since   1.0.0
      */
     public function get_donor_full_name() {
+        return $this->return_value_if_has_valid_donation( $this->donation->get_donor()->get_name() );
+    }
+
+    /**
+     * Return the full name of the donor. 
+     *
+     * @return  string
+     * @access  public
+     * @since   1.0.0
+     */
+    public function get_donor_email() {
+        return $this->return_value_if_has_valid_donation( $this->donation->get_donor()->get_email() );
+    }
+
+    /**
+     * Returns the donation ID. 
+     *
+     * @return  int
+     * @access  public
+     * @since   1.0.0
+     */
+    public function get_donation_id() {
+        return $this->return_value_if_has_valid_donation( $this->donation->get_donation_id() );
+    }
+
+    /**
+     * Returns a summary of the donation, including all the campaigns that were donated to.  
+     *
+     * @return  string
+     * @access  public
+     * @since   1.0.0
+     */
+    public function get_donation_summary() {
         if ( ! $this->has_valid_donation() ) {
             return '';            
         }
 
-        return $this->donation->get_donor()->get_name();
+        $output = "";
+
+        foreach ( $this->donation->get_campaign_donations() as $campaign_donation ) {
+            $line_item = sprintf( '%s: %s%s', $campaign_donation->campaign_name, charitable_get_currency_helper()->get_monetary_amount( $campaign_donation->amount ), PHP_EOL );
+            $output .= apply_filters( 'charitable_donation_summary_line_item_email', $line_item, $campaign_donation );
+        }
+
+        return $output;
     }
 
     /**
@@ -439,10 +518,15 @@ abstract class Charitable_Email {
      * @access  public
      * @since   1.0.0
      */
-    public function send() {
-        do_action( 'charitable_before_send_email', $this );
+    public function send() {            
+        do_action( 'charitable_before_send_email', $this );        
 
-        $subject = do_shortcode( $this->get_subject() );
+        wp_mail( 
+            $this->get_recipient(),
+            do_shortcode( $this->get_subject() ),
+            $this->build_email(),
+            $this->get_headers()
+        );
 
         do_action( 'charitable_after_send_email', $this );
     }
@@ -641,6 +725,21 @@ abstract class Charitable_Email {
     }
 
     /**
+     * Returns the given value if the current email object has a valid donation. 
+     *
+     * @return  string
+     * @access  protected
+     * @since   1.0.0
+     */
+    protected function return_value_if_has_valid_donation( $return, $fallback = "" ) {
+        if ( ! $this->has_valid_donation() ) {
+            return $fallback;
+        }
+
+        return $return;
+    }
+
+    /**
      * Checks whether the email has a valid donation object set. 
      *
      * @return  boolean
@@ -648,7 +747,7 @@ abstract class Charitable_Email {
      * @since   1.0.0
      */
     protected function has_valid_donation() {
-        if ( is_null( $this->donation ) || ! is_a( $this, 'Charitable_Donation' ) ) {
+        if ( is_null( $this->donation ) || ! is_a( $this->donation, 'Charitable_Donation' ) ) {
             _doing_it_wrong( __METHOD__, __( 'You cannot send this email without a donation!', 'charitable' ), '1.0.0' );
             return false;
         }

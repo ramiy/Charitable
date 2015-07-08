@@ -133,7 +133,7 @@ class Charitable_Donation {
 	/**
 	 * Return the campaigns donated to in this donation. 
 	 *
-	 * @return 	array
+	 * @return 	object[]
 	 * @access  public
 	 * @since 	1.0.0
 	 */
@@ -347,6 +347,18 @@ class Charitable_Donation {
 	}
 
 	/**
+	 * Returns whether the passed status is an confirmed status. 
+	 *
+	 * @return 	boolean
+	 * @access  public
+	 * @static
+	 * @since 	1.0.0
+	 */
+	public static function is_approved_status( $status ) {
+		return in_array( $status, self::get_approval_statuses() );
+	}
+
+	/**
 	 * Inserts a new donation. 
 	 *
 	 * @param 	array 	$args
@@ -516,24 +528,19 @@ class Charitable_Donation {
 	 * Update the status of the donation. 
 	 *	
 	 * @uses 	wp_update_post()
-	 * @uses 	wp_transition_post_status()		Use this for hooks that tap into status transitions.
 	 * @param 	string 		$new_status
 	 * @return 	int|WP_Error 					The value 0 or WP_Error on failure. The donation ID on success.
 	 * @access  public
 	 * @since 	1.0.0
 	 */
-	public function update_status( $new_status ) {
-		$valid_statuses = self::get_valid_donation_statuses();
+	public function update_status( $new_status ) {		
+		if ( false === self::is_valid_donation_status( $new_status ) ) {
+			$new_status = array_search( $new_status, self::get_valid_donation_statuses() );
 
-		if ( ! array_key_exists( $new_status, $valid_statuses ) ) {
-			$status = array_search( $new_status, $valid_statuses );
-
-			if ( false === $status ) {
+			if ( false === $new_status ) {
 				_doing_it_wrong( __METHOD__, sprintf( '%s is not a valid donation status.', $new_status ), '1.0.0' );
 				return 0;
 			}
-
-			$new_status = $status;
 		}
 
 		$old_status = $this->get_status();		
@@ -544,12 +551,11 @@ class Charitable_Donation {
 
 		/* This actually updates the post status */
 		$this->donation_data->post_status = $new_status;
-		$donation_id = wp_update_post( $this->donation_data );		
+		$donation_id = wp_update_post( $this->donation_data );
 
 		self::update_donation_log( $donation_id, sprintf( __( 'Donation status updated from %s to %s', 'charitable' ), $valid_statuses[$old_status], $valid_statuses[$new_status] ) );
 
-		/* Fires off action hooks that you can use to tap into this event */
-		wp_transition_post_status( $new_status, $old_status, $this->donation_data );
+		do_action( 'charitable_after_update_donation', $donation_id, $new_status );
 
 		return $donation_id;
 	}

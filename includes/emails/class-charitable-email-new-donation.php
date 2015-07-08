@@ -43,7 +43,30 @@ class Charitable_Email_New_Donation extends Charitable_Email {
         parent::__construct( $objects );
 
         $this->name = apply_filters( 'charitable_email_new_donation_name', __( 'New Donation Notification', 'charitable' ) );
-    }    
+    }
+
+    /**
+     * Static method that is fired right after a donation is completed, sending the donation receipt.
+     *
+     * @param   int     $donation_id
+     * @return  boolean
+     * @access  public
+     * @static
+     * @since   1.0.0
+     */
+    public static function send_with_donation_id( $donation_id ) {
+        if ( ! Charitable_Donation::is_approved_status( get_post_status( $donation_id ) ) ) {
+            return false;
+        }
+
+        $email = new Charitable_Email_New_Donation( array( 
+            'donation' => new Charitable_Donation( $donation_id ) 
+        ) );
+
+        $email->send();
+
+        return true;
+    }
 
     /**
      * Return the default recipient for the email.
@@ -88,9 +111,10 @@ class Charitable_Email_New_Donation extends Charitable_Email {
     protected function get_default_body() {
         ob_start();
 ?>
-        <p>[charitable_email show=donor_full_name] has just made a donation!</p>
-        <p>Summary:<br />
-        [charitable_email show=donation_summary]</p>
+        [charitable_email show=donor] has just made a donation!
+        
+        <strong>Summary</strong>
+        [charitable_email show=donation_summary]
 <?php
         $body = ob_get_clean();
 

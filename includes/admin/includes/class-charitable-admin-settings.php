@@ -806,9 +806,10 @@ final class Charitable_Admin_Settings extends Charitable_Start_Object {
      */
     private function get_section_submitted_values( $section, $submitted ) {
         $values = array();            
+        $form_fields = $this->get_fields();
 
         /* If the current section contains another section, loop back on ourselves. */ 
-        if ( is_array( current( $submitted ) ) ) {
+        if ( $this->is_settings_group( $submitted ) ) {
 
             foreach ( $submitted as $key => $submitted ) {
 
@@ -816,9 +817,7 @@ final class Charitable_Admin_Settings extends Charitable_Start_Object {
 
             }
         }
-        else {  
-
-            $form_fields = $this->get_fields();
+        else {              
 
             if ( ! isset( $form_fields[ $section ] ) ) {
                 return $values;
@@ -839,7 +838,32 @@ final class Charitable_Admin_Settings extends Charitable_Start_Object {
         }
 
         return $values;
-    }    
+    }  
+
+    /**
+     * Return list of groups of settings. 
+     *
+     * @return  string[]
+     * @access  private
+     * @since   1.0.0
+     */
+    private function get_settings_groups() {
+        return apply_filters( 'charitable_admin_settings_groups', array(
+            'general', 'forms', 'gateways', 'emails', 'advanced'
+        ) );
+    }
+
+    /**
+     * Returns whether the given key indicates the start of a new section of the settings. 
+     *
+     * @param   array|string  $submitted
+     * @return  boolean
+     * @access  private
+     * @since   1.0.0
+     */
+    private function is_settings_group( $submitted ) {
+        return is_array( current( $submitted ) ) && in_array( key( $submitted ), $this->get_settings_groups() );        
+    }  
 }
 
 endif; // End class_exists check
