@@ -6,6 +6,10 @@
  * @since   1.0.0
  */
 
+$taxonomy = isset( $view_args[ 'taxonomy'] ) ? $view_args[ 'taxonomy' ] : 'campaign_category'; 
+$show_count = isset( $view_args[ 'show_count'] ) && $view_args[ 'show_count' ];
+$hide_empty = isset( $view_args[ 'hide_empty'] ) && $view_args[ 'hide_empty' ];
+
 echo $view_args[ 'before_widget' ];
 
 if ( ! empty( $view_args[ 'title' ] ) ) :
@@ -17,9 +21,9 @@ endif;
 <ul class="charitable-terms-widget">
     <?php wp_list_categories( array(
         'title_li' => '',
-        'taxonomy' => $view_args[ 'taxonomy' ], 
-        'show_count' => $view_args[ 'show_count' ], 
-        'hide_empty' => $view_args[ 'hide_empty' ]
+        'taxonomy' => $taxonomy, 
+        'show_count' => $show_count, 
+        'hide_empty' => $hide_empty
     ) ) ?>
 </ul><!-- .charitable-terms-widget -->
 

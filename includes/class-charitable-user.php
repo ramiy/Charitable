@@ -356,16 +356,16 @@ class Charitable_User extends WP_User {
      */
     public function get_avatar_src( $size = 100 ) {     
         /* If this returns something, we don't need to deal with the gravatar. */
-        $avatar = apply_filters( 'charitable_user_avatar', false, $this );
+        $avatar = apply_filters( 'charitable_user_avatar', false, $this, $size );
 
         if ( false === $avatar ) {
 
             /* The gravatars are returned as fully formatted img tags, so we need to pull out the src. */
-            $gravatar   = get_avatar( $this->ID, $size );
+            $gravatar = get_avatar( $this->ID, $size );
 
             preg_match( "@src='([^']+)'@" , $gravatar, $matches );
 
-            $avatar     = array_pop( $matches );
+            $avatar = array_pop( $matches );
         }
 
         return $avatar;
