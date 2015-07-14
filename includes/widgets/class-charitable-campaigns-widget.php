@@ -56,24 +56,33 @@ class Charitable_Campaigns_Widget extends WP_Widget {
 	 * @access 	public
 	 * @since 	1.0.0
 	 */
-	public function form( $instance ) {		 
-		$title 	= isset( $instance['title'] ) ? esc_attr( $instance['title'] ) : '';
-		$number = isset( $instance['number'] ) ? absint( $instance['number'] ) : 5;
-		$order 	= isset( $instance['order'] ) ? $instance['order'] : 'newest';
+	public function form( $instance ) {		
+		$defaults = array(
+            'title'         => '',
+            'number'        => 10, 
+            'order'         => 'recent',
+            'show_thumbnail'=> false
+        );
+
+        $args = wp_parse_args( $instance, $defaults );
 		?>
 		<p>
-			<label for="<?php echo $this->get_field_id('title') ?>"><?php _e( 'Title', 'charitable' ) ?></label>
-			<input type="text" name="<?php echo $this->get_field_name('title') ?>" id="<?php echo $this->get_field_id('title') ?>" value="<?php echo $title ?>"/>
+			<label for="<?php echo $this->get_field_id('title') ?>"><?php _e( 'Title:', 'charitable' ) ?></label>
+			<input type="text" name="<?php echo $this->get_field_name('title') ?>" id="<?php echo $this->get_field_id('title') ?>" value="<?php echo $args[ 'title' ] ?>"/>
 		</p>
 		<p>
-			<label for="<?php echo $this->get_field_id('number') ?>"><?php _e( 'Number of campaigns to display', 'charitable' ) ?></label>
-			<input type="text" name="<?php echo $this->get_field_name('number') ?>" id="<?php echo $this->get_field_id('number') ?>" value="<?php echo $number ?>" />
+			<label for="<?php echo $this->get_field_id('number') ?>"><?php _e( 'Number of campaigns to display:', 'charitable' ) ?></label>
+			<input type="text" name="<?php echo $this->get_field_name('number') ?>" id="<?php echo $this->get_field_id('number') ?>" value="<?php echo $args[ 'number' ] ?>" />
 		</p>
+		<p>			
+            <input id="<?php echo esc_attr( $this->get_field_id( 'show_thumbnail' ) ) ?>" type="checkbox" name="<?php echo esc_attr( $this->get_field_name( 'show_thumbnail' ) ); ?>" <?php checked( $args[ 'show_thumbnail' ] ) ?>>            
+            <label for="<?php echo esc_attr( $this->get_field_id( 'show_thumbnail' ) ) ?>"><?php _e( 'Show thumbnail', 'charitable' ) ?></label>
+        </p>
 		<p>
-			<label for="<?php echo $this->get_field_id('order') ?>"><?php _e( 'Order', 'charitable' ) ?></label>
+			<label for="<?php echo $this->get_field_id('order') ?>"><?php _e( 'Order:', 'charitable' ) ?></label>
 			<select name="<?php echo $this->get_field_name('order') ?>" id="<?php echo $this->get_field_id('order') ?>">
-				<option value="recent" <?php selected( 'recent', $order ) ?>><?php _e( 'Date published', 'charitable' ) ?></option>
-				<option value="ending" <?php selected( 'ending', $order ) ?>><?php _e( 'Ending soonest', 'charitable' ) ?></option>
+				<option value="recent" <?php selected( 'recent', $args[ 'order' ] ) ?>><?php _e( 'Date published', 'charitable' ) ?></option>
+				<option value="ending" <?php selected( 'ending', $args[ 'order' ] ) ?>><?php _e( 'Ending soonest', 'charitable' ) ?></option>
 			</select>
 		</p>
 		<?php
@@ -92,6 +101,7 @@ class Charitable_Campaigns_Widget extends WP_Widget {
 		$instance = array();
 		$instance['title']  = isset( $new_instance['title'] ) ? $new_instance['title'] : $old_instance['title'];
 		$instance['number'] = isset( $new_instance['number'] ) ? $new_instance['number'] : $old_instance['number'];
+		$instance['show_thumbnail']  = isset( $new_instance['show_thumbnail'] ) && $new_instance['show_thumbnail'];
 		$instance['order']  = isset( $new_instance['order'] ) ? $new_instance['order'] : $old_instance['order'];
 		return $instance;
 	}	
@@ -105,11 +115,13 @@ class Charitable_Campaigns_Widget extends WP_Widget {
 	 * @since   1.0.0
 	 */
 	protected function get_widget_campaigns( $instance ) {
+		$number = isset( $instance[ 'number' ] ) ? absint( $instance[ 'number' ] ) : 5;
+		
 		$args = array(
-			'posts_per_page' => $instance[ 'number' ]
+			'posts_per_page' => $number
 		);
 
-		if ( 'recent' == $instance[ 'order' ] ) {
+		if ( isset( $instance[ 'order' ] ) && 'recent' == $instance[ 'order' ] ) {
 			$args[ 'orderby' ] = 'date';
 			$args[ 'order' ] = 'DESC';
 			return Charitable_Campaigns::query( $args );

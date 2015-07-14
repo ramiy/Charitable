@@ -49,7 +49,6 @@ class Charitable_Campaigns {
 	 * @since 	1.0.0
 	 */
 	public static function ordered_by_ending_soon( $args = array() ) {
-
 		$defaults = array(
 			'meta_query' 	=> array(
 				array(

@@ -354,6 +354,31 @@ class Charitable_Campaign {
     }
 
     /**
+     * Return the campaign status tag. 
+     *
+     *  
+     *
+     * @return  string
+     * @access  public
+     * @since   1.0.0
+     */
+    public function get_status_tag() {
+        $ending_soon_threshold = apply_filters( 'charitable_campaign_ending_soon_threshold', 604800 );
+
+        if ( $this->has_ended() ) {
+            $tag = __( 'Ended', 'charitable' );
+        }
+        elseif ( $this->get_seconds_left() < $ending_soon_threshold ) {
+            $tag = __( 'Ending Soon', 'charitable' );
+        }
+        else {
+            $tag = __( 'Active', 'charitable' );
+        }
+
+        return apply_filters( 'charitable_campaign_status_tag', $tag, $this );
+    }
+
+    /**
      * Returns the donations made to this campaign. 
      *
      * @return  WP_Query

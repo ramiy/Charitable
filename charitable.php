@@ -3,7 +3,7 @@
  * Plugin Name:         Charitable
  * Plugin URI:          http://wpcharitable.com
  * Description:         Fundraise with WordPress.
- * Version:             1.0.0-20150713
+ * Version:             1.0.0-20150714
  * Author:              Studio 164a
  * Author URI:          https://164a.com
  * Requires at least:   4.1
@@ -33,7 +33,7 @@ class Charitable {
     /**
      * @var     string
      */
-    const VERSION = '1.0.0-20150713';
+    const VERSION = '1.0.0-20150714';
 
     /**
      * @var     string      A date in the format: YYYYMMDD
@@ -182,7 +182,9 @@ class Charitable {
         /* Functions */
         require_once( $includes_path . 'charitable-campaign-functions.php' );
         require_once( $includes_path . 'charitable-core-functions.php' );        
+        require_once( $includes_path . 'charitable-page-functions.php' );
         require_once( $includes_path . 'charitable-template-functions.php' );
+        require_once( $includes_path . 'charitable-template-hooks.php' );
         require_once( $includes_path . 'charitable-utility-functions.php' );
 
         /* Base Classes & Interfaces */
@@ -207,6 +209,7 @@ class Charitable {
         require_once( $includes_path . 'class-charitable-notices.php' );
         require_once( $includes_path . 'class-charitable-post-types.php' );
         require_once( $includes_path . 'class-charitable-request.php' ); 
+        require_once( $includes_path . 'class-charitable-shortcodes.php' );        
         require_once( $includes_path . 'class-charitable-roles.php' );
         require_once( $includes_path . 'class-charitable-user.php' );
         require_once( $includes_path . 'class-charitable-widgets.php' );        
@@ -251,6 +254,7 @@ class Charitable {
         add_action('charitable_start',  array( 'Charitable_Gateways', 'charitable_start' ), 3 ); 
         add_action('charitable_start',  array( 'Charitable_Emails', 'charitable_start' ), 3 ); 
         add_action('charitable_start',  array( 'Charitable_Request', 'charitable_start' ), 3 );
+        add_action('charitable_start',  array( 'Charitable_Shortcodes', 'charitable_start' ), 3 );
         add_action('init',              array( $this, 'do_charitable_actions' ) );
 
         add_filter('charitable_sanitize_campaign_meta', array( 'Charitable_Campaign', 'sanitize_meta' ), 10, 3 );

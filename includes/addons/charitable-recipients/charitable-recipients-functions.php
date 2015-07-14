@@ -33,3 +33,15 @@ function charitable_register_recipient_type( $recipient_type, $args = array() ) 
 function charitable_get_recipient_types() {
     return Charitable_Recipient_Types::get_instance()->get_types();
 }
+
+/**
+ * Returns a given recipient type, or false if the recipient type is not registered.
+ *
+ * @param   string  $recipient_type
+ * @return  array|false
+ * @since   1.0.0
+ */
+function charitable_get_recipient_type( $recipient_type ) {
+    $recipient_types = charitable_get_recipient_types();
+    return isset( $recipient_types[ $recipient_type ] ) ? $recipient_types[ $recipient_type ] : false;
+}

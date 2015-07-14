@@ -7,6 +7,8 @@
  */
 
 $campaigns = $view_args[ 'campaigns' ];
+$show_thumbnail = isset( $view_args[ 'show_thumbnail' ] ) ? $view_args[ 'show_thumbnail' ] : true;
+$thumbnail_size = apply_filters( 'charitable_campaign_widget_thumbnail_size', 'medium' );
 
 if ( ! $campaigns->have_posts() ) :
     return;
@@ -21,7 +23,7 @@ if ( ! empty( $view_args[ 'title' ] ) ) :
 endif;
 ?>
 
-<ul class="campaigns">
+<ol class="campaigns">
 
 <?php while( $campaigns->have_posts() ) : 
     $campaigns->the_post();
@@ -30,6 +32,13 @@ endif;
     ?>
 
     <li class="campaign">
+        <?php 
+        if ( $show_thumbnail && has_post_thumbnail() ) :
+
+            the_post_thumbnail( $thumbnail_size );
+
+        endif;
+        ?>
         <h6 class="campaign-title"><a href="<?php the_permalink() ?>"><?php the_title() ?></a></h6>
         <?php if ( ! $campaign->is_endless() ) : ?>
             
@@ -40,7 +49,7 @@ endif;
 
 <?php endwhile ?>
 
-</ul>
+</ol>
 
 <?php
 

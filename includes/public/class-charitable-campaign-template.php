@@ -44,9 +44,10 @@ class Charitable_Campaign_Template {
      * @access  private
      * @since   1.0.0
      */
-    private function __construct() {
-        add_action( 'charitable_campaign_content_before', array( $this, 'display_campaign_description' ), 4 );
-        add_action( 'charitable_campaign_content_before', array( $this, 'display_campaign_summary' ), 8 );
+    private function __construct() {        
+        // add_action( 'charitable_campaign_content_before', array( $this, 'display_campaign_description' ), 4 );
+        // add_action( 'charitable_campaign_content_before', array( $this, 'display_campaign_video' ), 6 );
+        // add_action( 'charitable_campaign_content_before', array( $this, 'display_campaign_summary' ), 8 );
         add_action( 'charitable_campaign_summary', array( $this, 'display_campaign_percentage_raised' ), 4 );
         add_action( 'charitable_campaign_summary', array( $this, 'display_campaign_donation_summary' ), 6 );
         add_action( 'charitable_campaign_summary', array( $this, 'display_campaign_donor_count' ), 8 );
@@ -60,29 +61,7 @@ class Charitable_Campaign_Template {
         
         /* If you want to unhook any of the callbacks attached above, use this hook. */
         do_action( 'charitable_campaign_template_start', $this );
-    }    
-
-    /**
-     * Display the campaign description before the summary and rest of content. 
-     *
-     * @return  void
-     * @access  public
-     * @since   1.0.0
-     */
-    public function display_campaign_description( $campaign ) {
-        charitable_template( 'campaign/description.php', array( 'campaign' => $campaign ) );
-    }
-
-    /**
-     * Display campaign summary before rest of campaign content. 
-     *
-     * @return  void
-     * @access  public
-     * @since   1.0.0
-     */
-    public function display_campaign_summary() {
-        charitable_template( 'campaign/summary.php' );
-    }
+    }        
 
     /**
      * Display the percentage that the campaign has raised in summary block. 
@@ -212,7 +191,7 @@ class Charitable_Campaign_Template {
          *
          * @uses    charitable_use_campaign_template
          */
-        if ( false === apply_filters( 'charitable_use_campaign_template', true ) ) {
+        if ( ! apply_filters( 'charitable_use_campaign_template', true ) ) {
             return $content;
         }
 

@@ -16,10 +16,6 @@ $field 			= $view_args[ 'field' ];
 $classes 		= $view_args[ 'classes' ];
 $fields 		= isset( $field[ 'fields' ] ) ? $field[ 'fields' ] : array();
 
-// echo '<pre>'; 
-// var_dump( $field[ 'key' ] );
-// echo '</pre>';
-
 if ( count( $fields ) ) : 
 
 ?>

@@ -41,6 +41,23 @@
   width: 100%;
   text-align: center; }
 
+/* Campaign Progress Bar */
+.campaign-progress-bar {
+  width: 100%;
+  height: 10px;
+  background-color: #e6e6e6; }
+  .campaign-progress-bar .bar {
+    display: block;
+    height: 100%;
+    background-color: #f89d35; }
+
+/* Donate Button */
+.donate-button {
+  padding: 6px 24px;
+  border: none;
+  background-color: #f89d35;
+  color: #fff; }
+
 /* Donation form */
 #login-prompt {
   margin-bottom: 4px; }
@@ -135,6 +152,46 @@
   padding-top: 1em;
   margin-top: 1em;
   border-top: 1px solid #ddd; }
+
+/* Campaigns grid */
+.campaign-loop {
+  list-style: none; }
+  .campaign-loop .campaign.hentry {
+    position: relative;
+    margin-left: 0;
+    margin-right: 0;
+    box-shadow: none; }
+    .campaign-loop .campaign.hentry h3 {
+      margin-top: 0; }
+  .campaign-loop .campaign-donation {
+    padding-top: 1em; }
+  .campaign-loop .wp-post-image {
+    padding-bottom: 1em; }
+  .campaign-loop .campaign-donation-stats {
+    font-size: 0.8em;
+    font-style: italic;
+    padding-top: 6px; }
+
+.campaign-loop.campaign-grid {
+  *zoom: 1; }
+  .campaign-loop.campaign-grid:before, .campaign-loop.campaign-grid:after {
+    content: " ";
+    display: table; }
+  .campaign-loop.campaign-grid:after {
+    clear: both; }
+  .campaign-loop.campaign-grid .campaign.hentry {
+    float: left;
+    margin-top: 0;
+    margin-right: 2%;
+    padding: 1em;
+    border: 1px solid #e6e6e6; }
+  .campaign-loop.campaign-grid .campaign-donation {
+    text-align: center; }
+
+.campaign-grid-2 .campaign.hentry {
+  width: 49%; }
+.campaign-grid-2 .campaign.hentry:nth-child(2n+2) {
+  margin-right: 0; }
 
 /* Widgets */
 .widget_charitable_campaigns_widget .campaigns {

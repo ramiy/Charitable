@@ -2,9 +2,15 @@
 /**
  * Displays the campaign donation form.
  *
- * @author 	Studio 164a
- * @since 	1.0.0
+ * Override this template by copying it to yourtheme/charitable/content-donation-form.php
+ *
+ * @author  Studio 164a
+ * @package Charitable/Templates/Campaign
+ * @since   1.0.0
+ * @version 1.0.0
  */
+
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 /**
  * The donation form object used for donations to this campaign. By

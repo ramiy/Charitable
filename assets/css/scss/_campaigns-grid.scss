@@ -1,0 +1,53 @@
+.campaign-loop {
+    list-style: none;    
+
+    .campaign.hentry {     
+        position: relative;   
+        margin-left: 0;
+        margin-right: 0;
+        box-shadow: none;
+
+        h3 {
+            margin-top: 0;
+        }
+    }
+
+    .campaign-donation {
+        padding-top: 1em;
+    }   
+
+    .wp-post-image {
+        padding-bottom: 1em;
+    }
+
+    .campaign-donation-stats {
+        font-size: 0.8em;
+        font-style: italic;
+        padding-top: 6px;
+    }
+}
+
+.campaign-loop.campaign-grid {
+    @include clearfix;
+
+    .campaign.hentry {
+        float: left;
+        margin-top: 0;
+        margin-right: 2%;
+        padding: 1em;
+        border: 1px solid #e6e6e6;
+    }    
+
+    .campaign-donation {
+        text-align: center;
+    }
+}
+
+.campaign-grid-2 {
+    .campaign.hentry {
+        width: 49%;
+    }
+    .campaign.hentry:nth-child(2n+2) {
+        margin-right: 0;
+    }
+}

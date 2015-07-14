@@ -1,10 +1,10 @@
 @font-face {
 	font-family: 'charitable';
-	src:url('../fonts/charitable.eot?-8ypkn2');
-	src:url('../fonts/charitable.eot?#iefix-8ypkn2') format('embedded-opentype'),
-		url('../fonts/charitable.woff?-8ypkn2') format('woff'),
-		url('../fonts/charitable.ttf?-8ypkn2') format('truetype'),
-		url('../fonts/charitable.svg?-8ypkn2#charitable') format('svg');
+	src:url('../fonts/charitable.eot?o8h719');
+	src:url('../fonts/charitable.eot?#iefixo8h719') format('embedded-opentype'),
+		url('../fonts/charitable.ttf?o8h719') format('truetype'),
+		url('../fonts/charitable.woff?o8h719') format('woff'),
+		url('../fonts/charitable.svg?o8h719#charitable') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
@@ -26,6 +26,9 @@
 .icon-donations:before {
 	content: "\e600";
 }
-.icon-campaign:before {
+.icon-charitable:before {
 	content: "\e601";
+}
+.icon-campaign-creator:before {
+	content: "\e602";
 }

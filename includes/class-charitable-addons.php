@@ -108,7 +108,9 @@ class Charitable_Addons {
 
 			/* Call the Addon's load method */
 			call_user_func( array( $this->get_addon_class( $addon ), 'load' ) );
-		}	
+		}
+
+		do_action( 'charitable_addons_loaded', $active_addons );
 	}
 
 	/**
