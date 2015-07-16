@@ -81,12 +81,58 @@ class Charitable_Campaigns {
 	public static function ordered_by_amount( $args = array() ) {
 		global $wpdb;
 
-		$defaults = array(
-		);
+		/* Set up filters to order by amount */
+		add_filter( 'posts_join_paged', array( 'Charitable_Campaigns', 'join_campaign_donations_table' ) );
+		add_filter( 'posts_groupby', array( 'Charitable_Campaigns', 'groupby_campaign_id' ) );
+		add_filter( 'posts_orderby', array( 'Charitable_Campaigns', 'orderby_campaign_donation_amount' ) );
 
-		$args = wp_parse_args( $args, $defaults );
+		$query = Charitable_Campaigns::query( $args );
 
-		return Charitable_Campaigns::query( $args );
+		/* Clean up filters */
+		remove_filter( 'posts_orderby', array( 'Charitable_Campaigns', 'join_campaign_donations_table' ) );
+		remove_filter( 'posts_join_paged', array( 'Charitable_Campaigns', 'orderby_campaign_donation_amount' ) );
+
+		return $query;
+	}
+
+	/**
+	 * A method used to join the campaign donations table on the campaigns query. 
+	 *
+	 * @param 	string 	$join_statement
+	 * @return  string
+	 * @access  public
+	 * @static
+	 * @since   1.0.0
+	 */
+	public static function join_campaign_donations_table( $join_statement ) {
+		global $wpdb;
+		$join_statement .= " LEFT JOIN {$wpdb->prefix}charitable_campaign_donations cd ON cd.campaign_id = $wpdb->posts.ID ";
+		return $join_statement;
+	}
+
+	/**
+	 * A method used to change the group by parameter of the campaigns query. 
+	 *
+	 * @return  string
+	 * @access  public
+	 * @static
+	 * @since   1.0.0
+	 */
+	public static function groupby_campaign_id() {
+		global $wpdb;
+		return "$wpdb->posts.ID";
+	}
+
+	/**
+	 * A method used to change the ordering of the campaigns query, to order by the amount donated.
+	 *
+	 * @return  string
+	 * @access  public
+	 * @static
+	 * @since   1.0.0
+	 */
+	public static function orderby_campaign_donation_amount() {
+		return "COALESCE(SUM(cd.amount), 0) DESC";
 	}
 }
 

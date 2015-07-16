@@ -364,14 +364,25 @@ class Charitable_Campaign {
      */
     public function get_status_tag() {
         $ending_soon_threshold = apply_filters( 'charitable_campaign_ending_soon_threshold', 604800 );
+        $show_achievement = apply_filters( 'charitable_campaign_show_achievement_status_tag', true );
+        $show_active_tag = apply_filters( 'charitable_campaign_show_active_status_tag', false );
+        $tag = "";
 
         if ( $this->has_ended() ) {
-            $tag = __( 'Ended', 'charitable' );
+            if ( ! $show_achievement || ! $this->has_goal() ) {
+                $tag = __( 'Ended', 'charitable' );
+            }
+            elseif ( $this->has_achieved_goal() ) {
+                $tag = __( 'Successful', 'charitable' );
+            }
+            else {
+                $tag = __( 'Unsuccessful', 'charitable' );
+            }            
         }
         elseif ( $this->get_seconds_left() < $ending_soon_threshold ) {
             $tag = __( 'Ending Soon', 'charitable' );
         }
-        else {
+        elseif ( $show_active_tag ) {
             $tag = __( 'Active', 'charitable' );
         }
 

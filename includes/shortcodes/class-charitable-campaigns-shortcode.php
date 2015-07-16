@@ -32,21 +32,27 @@ class Charitable_Campaigns_Shortcode {
      */
     public static function display( $atts ) {
         $default = array(
-            'orderby'   => 'post_date',
-            'number'    => get_option( 'posts_per_page' ), 
-            'category'  => '',
-            'creator'   => '', 
-            'columns'   => 1
+            'orderby' => 'post_date',
+            'number' => get_option( 'posts_per_page' ), 
+            'category' => '',
+            'creator' => '', 
+            'exclude' => '',
+            'include_inactive' => false,
+            'columns' => 1
         );
 
         $args = shortcode_atts( $default, $atts, 'campaigns' );
-        $args[ 'campaigns' ] = self::get_campaigns( $args );
+
+        $view_args = array(
+            'campaigns' => self::get_campaigns( $args ),
+            'columns'   => $args[ 'columns' ]
+        );
 
         ob_start();        
 
-        charitable_template( 'shortcodes/campaigns.php', $args );
+        charitable_template( 'campaign-loop.php', $view_args );
 
-        return apply_filters( 'charitable_campaigns_shortcode', ob_get_clean() );
+        return apply_filters( 'charitable_campaigns_shortcode', ob_get_clean(), $args, $view_args[ 'campaigns' ] );
     }
 
     /**
@@ -77,6 +83,24 @@ class Charitable_Campaigns_Shortcode {
         /* Set author constraint */
         if ( ! empty( $args[ 'creator' ] ) ) {
             $query_args[ 'author' ] = $args[ 'creator' ];
+        }
+
+        /* Only include active campaigns if flag is set */
+        if ( ! $args[ 'include_inactive' ] ) {
+            $query_args[ 'meta_query' ] = array(
+                'relation' => 'OR',
+                array(
+                    'key'       => '_campaign_end_date',
+                    'value'     => date( 'Y-m-d H:i:s' ),
+                    'compare'   => '>=',
+                    'type'      => 'datetime'
+                ), 
+                array(
+                    'key'       => '_campaign_end_date',
+                    'value'     => 0,
+                    'compare'   => '='
+                )
+            );
         }
 
         /* Return campaigns, ordered by date of creation. */

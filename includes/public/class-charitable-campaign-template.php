@@ -56,8 +56,7 @@ class Charitable_Campaign_Template {
         add_action( 'wp_footer', array( $this, 'add_modal_window' ) );
 
         add_filter( 'post_class', array( $this, 'campaign_post_class' ) );
-        add_filter( 'the_content', array( $this, 'campaign_content' ), 10 );
-        add_filter( 'the_content', array( $this, 'campaign_donation_form' ), 20 );
+        add_filter( 'the_content', array( $this, 'campaign_content' ) );        
         
         /* If you want to unhook any of the callbacks attached above, use this hook. */
         do_action( 'charitable_campaign_template_start', $this );
@@ -195,54 +194,7 @@ class Charitable_Campaign_Template {
             return $content;
         }
 
-        $campaign = charitable_get_current_campaign();
-
-        ob_start();
-        do_action( 'charitable_campaign_content_before', $campaign ); 
-        $before_content = ob_get_clean();
-
-        ob_start();
-        do_action( 'charitable_campaign_content_after', $campaign );
-        $after_content = ob_get_clean();
-
-        $content = $before_content . $content . $after_content;
-        
-        return $content;
-    }   
-
-    /**
-     * Optionally add the donation form straight into the campaign page. 
-     *
-     * @uses    the_content
-     * @param   string      $content
-     * @return  string
-     * @access  public
-     * @since   1.0.0
-     */
-    public function campaign_donation_form( $content ) {        
-        if ( $this->show_donation_form_on_campaign_page() ) {
-
-            ob_start();
-
-            charitable_get_current_donation_form()->render();
-
-            $donation_form = ob_get_clean();
-
-            $content = $content . $donation_form;
-        }   
-
-        return $content;
-    }
-
-    /**
-     * Returns whether to show the donation form on campaign pages. 
-     *
-     * @return  boolean
-     * @access  private
-     * @since   1.0.0
-     */
-    private function show_donation_form_on_campaign_page() {
-        return 'same_page' == charitable_get_option( 'donation_form_display', 'separate_page' );
+        return charitable_template_campaign_content( $content, charitable_get_current_campaign() );
     }
 
     /**

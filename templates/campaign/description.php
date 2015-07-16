@@ -12,5 +12,5 @@ $campaign = $view_args[ 'campaign' ];
 
 ?>
 <div class="campaign-description">  
-    <?php echo $campaign->description ?>
+    <?php echo apply_filters( 'the_content', $campaign->description ) ?>
 </div>

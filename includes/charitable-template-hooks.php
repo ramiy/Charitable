@@ -13,7 +13,6 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-
 /**
  * Single campaign, before content.
  *
@@ -25,6 +24,12 @@ add_action( 'charitable_campaign_content_before', 'charitable_template_campaign_
 add_action( 'charitable_campaign_content_before', 'charitable_template_campaign_video', 6 );
 add_action( 'charitable_campaign_content_before', 'charitable_template_campaign_summary', 8 );
 
+/** 
+ * Single campaign, after content. 
+ *
+ * @see charitable_template_campaign_donation_form_in_page
+ */
+add_action( 'charitable_campaign_content_after', 'charitable_template_campaign_donation_form_in_page', 4 );
 
 // add_action( 'charitable_campaign_summary', array( $this, 'display_campaign_percentage_raised' ), 4 );
 // add_action( 'charitable_campaign_summary', array( $this, 'display_campaign_donation_summary' ), 6 );
