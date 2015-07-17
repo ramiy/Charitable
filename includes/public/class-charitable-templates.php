@@ -69,7 +69,7 @@ class Charitable_Templates extends Charitable_Start_Object {
 	 * @access  public
 	 * @since 	1.0.0
 	 */
-	public function donate_template( $template ) {
+	public function donate_template( $template ) {		
 		if ( charitable_is_page( 'campaign_donation_page' ) ) {
 
 			do_action( 'charitable_is_donate_page' );

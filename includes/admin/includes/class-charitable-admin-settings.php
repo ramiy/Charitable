@@ -192,6 +192,10 @@ final class Charitable_Admin_Settings extends Charitable_Start_Object {
      */
     public function add_email_settings_groups( $groups ) {
         foreach ( charitable_get_helper( 'emails' )->get_enabled_emails() as $email ) {
+            if ( ! class_exists( $email ) ) {
+                continue;
+            }
+            
             $groups[] = $email::ID;
         }
 

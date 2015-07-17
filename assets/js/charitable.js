@@ -36,9 +36,15 @@ CHARITABLE.DonationSelection = {
 
 	selectOption : function( $el ) {
 		var $input = $el.find( 'input[type=radio]' ), 
-			checked = ! $input.attr( 'checked' );
+			checked = ! $input.is( ':checked' );
 
-		$input.attr( 'checked', checked ); 
+
+		$input.prop( 'checked', checked ); 
+
+		if ( $el.hasClass( 'selected' ) ) {
+			$el.removeClass( 'selected' );
+			return false;
+		}
 
 		jQuery( '.donation-amount.selected ').removeClass( 'selected' );
 		$el.addClass( 'selected' );
@@ -46,6 +52,8 @@ CHARITABLE.DonationSelection = {
 		if ( $el.hasClass( 'custom-donation-amount' ) ) {				
 			$el.siblings( 'input[name=custom-donation-amount]' ).focus();
 		}
+
+		return false;
 	},
 	
 	init : function() {
@@ -54,8 +62,13 @@ CHARITABLE.DonationSelection = {
 			jQuery( this ).parent().addClass( 'selected' );
 		});
 
-		jQuery( '.donation-amount' ).on ( 'click', function() {
+		jQuery( '.donation-amount' ).on( 'click', function( event ) {
 			self.selectOption( jQuery(this) );
+		});
+
+		jQuery( '[name=donation-amount]' ).on( 'change', function( event ) {
+			jQuery(this).prop( 'checked', ! jQuery(this).is( ':checked' ) );
+			return false;
 		});
 	}
 };

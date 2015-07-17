@@ -24,6 +24,21 @@ add_action( 'charitable_campaign_content_before', 'charitable_template_campaign_
 add_action( 'charitable_campaign_content_before', 'charitable_template_campaign_video', 6 );
 add_action( 'charitable_campaign_content_before', 'charitable_template_campaign_summary', 8 );
 
+/**
+ * Single campaign, campaign summary. 
+ *
+ * @see charitable_template_campaign_percentage_raised
+ * @see charitable_template_campaign_donation_summary
+ * @see charitable_template_campaign_donor_count
+ * @see charitable_template_campaign_time_left
+ * @see charitable_template_donate_button
+ */
+add_action( 'charitable_campaign_summary', 'charitable_template_campaign_percentage_raised', 4 );
+add_action( 'charitable_campaign_summary', 'charitable_template_campaign_donation_summary', 6 );
+add_action( 'charitable_campaign_summary', 'charitable_template_campaign_donor_count', 8 );
+add_action( 'charitable_campaign_summary', 'charitable_template_campaign_time_left', 10 );
+add_action( 'charitable_campaign_summary', 'charitable_template_donate_button', 14 );
+
 /** 
  * Single campaign, after content. 
  *

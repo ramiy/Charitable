@@ -83,7 +83,6 @@ final class Charitable_Request extends Charitable_Start_Object {
 	 * @since 	1.0.0
 	 */
 	public function get_current_campaign() {
-
 		if ( ! isset( $this->campaign ) ) {
 
 			if ( $this->get_current_campaign_id() > 0 ) {
@@ -109,7 +108,6 @@ final class Charitable_Request extends Charitable_Start_Object {
 	 * @since 	1.0.0
 	 */
 	public function get_current_campaign_id() {
-
 		if ( isset( $this->campaign ) ) {
 
 			$this->campaign_id = $this->campaign->ID;
@@ -119,7 +117,7 @@ final class Charitable_Request extends Charitable_Start_Object {
 
 			$this->campaign_id = 0;
 
-			if ( get_post_type() == 'campaign' ) {
+			if ( get_post_type() == Charitable::CAMPAIGN_POST_TYPE ) {
 
 				$this->campaign_id = $this->post->ID;
 

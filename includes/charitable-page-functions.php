@@ -224,6 +224,16 @@ function charitable_is_email_preview( $ret = false, $args = array()  ) {
 add_filter( 'charitable_is_page_email_preview', 'charitable_is_email_preview', 2, 2 );
 
 /**
+ * Checks whether the current request is for a single campaign. 
+ *
+ * @return  boolean
+ * @since   1.0.0
+ */
+function charitable_is_campaign_page() {
+    return is_singular() && Charitable::CAMPAIGN_POST_TYPE == get_post_type();
+}
+
+/**
  * Returns the current URL. 
  *
  * @see 	https://gist.github.com/leereamsnyder/fac3b9ccb6b99ab14f36

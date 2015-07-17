@@ -268,6 +268,31 @@ class Charitable_Campaign {
     }
 
     /**
+     * Return a text notice to say that a campaign has finished.
+     *
+     * @return  string
+     * @access  public
+     * @since   1.0.0
+     */
+    public function get_finished_notice() {
+        if ( ! $this->has_ended() ) {
+            return '';
+        }
+
+        if ( ! $this->has_goal() ) {
+            $message = __( 'This campaign ended %s ago', 'charitable' );
+        }
+        elseif ( $this->has_achieved_goal() ) {
+            $message = __( 'This campaign successfully reached its funding goal and ended %s ago', 'charitable' );
+        }
+        else {
+            $message = __( 'This campaign failed to reach its funding goal %s ago', 'charitable' ); 
+        }
+
+        return apply_filters( 'charitable_campaign_finished_notice', sprintf( $message, '<span class="time-ago">' . human_time_diff( $this->get_end_time() ) . '</span>' ), $this );
+    }
+
+    /**
      * Return the time since the campaign finished, or zero if it's still going. 
      *
      * @return  int

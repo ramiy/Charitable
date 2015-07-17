@@ -48,11 +48,7 @@ class Charitable_Campaign_Template {
         // add_action( 'charitable_campaign_content_before', array( $this, 'display_campaign_description' ), 4 );
         // add_action( 'charitable_campaign_content_before', array( $this, 'display_campaign_video' ), 6 );
         // add_action( 'charitable_campaign_content_before', array( $this, 'display_campaign_summary' ), 8 );
-        add_action( 'charitable_campaign_summary', array( $this, 'display_campaign_percentage_raised' ), 4 );
-        add_action( 'charitable_campaign_summary', array( $this, 'display_campaign_donation_summary' ), 6 );
-        add_action( 'charitable_campaign_summary', array( $this, 'display_campaign_donor_count' ), 8 );
-        add_action( 'charitable_campaign_summary', array( $this, 'display_campaign_time_left' ), 10 );
-        add_action( 'charitable_campaign_summary', array( $this, 'display_donate_button' ), 14 );
+        
         add_action( 'wp_footer', array( $this, 'add_modal_window' ) );
 
         add_filter( 'post_class', array( $this, 'campaign_post_class' ) );
@@ -61,85 +57,6 @@ class Charitable_Campaign_Template {
         /* If you want to unhook any of the callbacks attached above, use this hook. */
         do_action( 'charitable_campaign_template_start', $this );
     }        
-
-    /**
-     * Display the percentage that the campaign has raised in summary block. 
-     *
-     * @param   Charitable_Campaign $campaign
-     * @return  boolean     True if the template was displayed. False otherwise.
-     * @access  public
-     * @since   1.0.0
-     */
-    public function display_campaign_percentage_raised( $campaign ) {
-        if ( ! $campaign->has_goal() ) {
-            return false;
-        }
-
-        charitable_template( 'campaign/summary-percentage-raised.php', array( 'campaign' => $campaign ) );
-
-        return true;
-    }
-
-    /**
-     * Display campaign goal in summary block. 
-     *
-     * @param   Charitable_Campaign $campaign
-     * @return  true
-     * @access  public
-     * @since   1.0.0
-     */
-    public function display_campaign_donation_summary( $campaign ) {
-        charitable_template( 'campaign/summary-donations.php', array( 'campaign' => $campaign ) );
-        return true;
-    }
-
-    /**
-     * Display number of campaign donors in summary block.
-     *
-     * @param   Charitable_Campaign $campaign
-     * @return  true
-     * @access  public
-     * @since   1.0.0
-     */
-    public function display_campaign_donor_count( $campaign ) {
-        charitable_template( 'campaign/summary-donors.php', array( 'campaign' => $campaign ) );
-        return true;
-    }
-
-    /**
-     * Display the amount of time left in the campaign in the summary block. 
-     *
-     * @param   Charitable_Campaign $campaign
-     * @return  boolean     True if the template was displayed. False otherwise.
-     * @access  public
-     * @since   1.0.0
-     */
-    public function display_campaign_time_left( $campaign ) {
-        if ( $campaign->is_endless() ) {
-            return false;
-        }
-
-        charitable_template( 'campaign/summary-time-left.php', array( 'campaign' => $campaign ) );
-        return true;
-    }
-
-    /**
-     * Display donate button or link in the campaign summary.
-     *
-     * @param   Charitable_Campaign $campaign
-     * @return  boolean     True if the template was displayed. False otherwise.
-     * @access  public
-     * @since   1.0.0
-     */
-    public function display_donate_button( $campaign ) {
-        if ( $campaign->has_ended() ) {
-            return false;
-        }
-
-        $campaign->donate_button_template();
-
-        return true;
-    }
 
     /**
      * Add modal window if we are using the modal display method. 
@@ -194,7 +111,11 @@ class Charitable_Campaign_Template {
             return $content;
         }
 
-        return charitable_template_campaign_content( $content, charitable_get_current_campaign() );
+        ob_start();
+        
+        charitable_template_campaign_content( $content, charitable_get_current_campaign() );
+
+        return ob_get_clean();
     }
 
     /**
