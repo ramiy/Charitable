@@ -33,8 +33,18 @@ class Charitable_Install {
 		$this->create_tables();	
 
 		add_action( 'init', 'flush_rewrite_rules', 99 ); // Runs after post types & taxonomies are registered
+		add_action( 'plugins_loaded', array( $this, 'do_install_action' ), 100 );		
+	}
 
-		do_action( 'charitable_install' );	
+	/**
+	 * Fire off a 'charitable_install' action late in the plugins_loaded cycle. 
+	 *
+	 * @return  void
+	 * @access  public
+	 * @since   1.0.0
+	 */
+	public function do_install_action() {
+		do_action( 'charitable_install' );
 	}
 
 	/**
@@ -70,17 +80,6 @@ class Charitable_Install {
 		$table_helper = new Charitable_Donors_DB();
 		$table_helper->create_table();
 	}
-
-	/**
-	 * Add custom endpoints. 
-	 *
-	 * @return 	void
-	 * @access  public
-	 * @since 	1.0.0
-	 */
-	public function add_endpoints() {
-		charitable_get_helper( 'post-types' )->add_endpoints();
-	}	
 }
 
 endif;

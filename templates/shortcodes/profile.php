@@ -3,9 +3,12 @@
  * The template used to display the profile form.
  *
  * @author 	Studio 164a
+ * @package Charitable/Templates/Account
  * @since 	1.0.0
  * @version 1.0.0
  */
+
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 $form 	= $view_args[ 'form' ];
 $donor	= new Charitable_User( wp_get_current_user() );

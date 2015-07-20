@@ -107,11 +107,22 @@ class Charitable_User_Dashboard_Shortcodes {
      * @since   1.0.0
      */
     public function charitable_login_shortcode( $atts ) {     
-    	global $wp;
+    	global $wp;        
 
-        $args = shortcode_atts( array(), $atts, 'charitable_login' );     
+        $defaults = array(
+            'logged_in_message' => __( 'You are already logged in!', 'charitable' )
+        );
+
+        $args = shortcode_atts( $defaults, $atts, 'charitable_login' );     
 
         ob_start();
+
+        if ( is_user_logged_in() ) {
+
+            charitable_template( 'shortcodes/logged-in.php', $args );
+            
+            return ob_get_clean();
+        }
 
         charitable_template( 'shortcodes/login.php', array(
             'form' => new Charitable_Login_Form( $args ) 
@@ -132,10 +143,20 @@ class Charitable_User_Dashboard_Shortcodes {
      * @since   1.0.0
      */
     public function charitable_registration_shortcode( $atts ) {     
+        $defaults = array(
+            'logged_in_message' => __( 'You are already logged in!', 'charitable' )
+        );
 
-        $args = shortcode_atts( array(), $atts, 'charitable_registration' );     
+        $args = shortcode_atts( $defaults, $atts, 'charitable_registration' );
 
         ob_start();
+
+        if ( is_user_logged_in() ) {
+
+            charitable_template( 'shortcodes/logged-in.php', $args );
+            
+            return ob_get_clean();
+        }
 
         charitable_template( 'shortcodes/registration.php', array( 
             'form' => new Charitable_Registration_Form( $args ) 
