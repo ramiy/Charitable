@@ -44,11 +44,14 @@ final class Charitable_Admin extends Charitable_Start_Object {
 	 * @since 	1.0.0
 	 */
 	private function load_dependencies() {
-		require_once( charitable()->get_path( 'admin' ) . 'includes/charitable-core-admin-functions.php' );			
-		require_once( charitable()->get_path( 'admin' ) . 'includes/class-charitable-admin-settings.php' );
-		require_once( charitable()->get_path( 'admin' ) . 'includes/class-charitable-meta-box-helper.php' );
-		require_once( charitable()->get_path( 'admin' ) . 'includes/class-charitable-campaign-post-type.php' );
-		require_once( charitable()->get_path( 'admin' ) . 'includes/class-charitable-donation-post-type.php' );
+		require_once( charitable()->get_path( 'admin' ) . 'charitable-core-admin-functions.php' );					
+		require_once( charitable()->get_path( 'admin' ) . 'class-charitable-meta-box-helper.php' );
+		require_once( charitable()->get_path( 'admin' ) . 'class-charitable-campaign-post-type.php' );
+		require_once( charitable()->get_path( 'admin' ) . 'class-charitable-donation-post-type.php' );
+
+		/* Settings */
+		require_once( charitable()->get_path( 'admin' ) . 'settings/class-charitable-settings.php' );
+		require_once( charitable()->get_path( 'admin' ) . 'settings/class-charitable-gateway-settings.php' );
 	}
 
 	/**
@@ -59,7 +62,8 @@ final class Charitable_Admin extends Charitable_Start_Object {
 	 * @since 	1.0.0
 	 */
 	private function attach_hooks_and_filters() {
-		add_action( 'charitable_start', 		array( 'Charitable_Admin_Settings', 'charitable_start' ) );
+		add_action( 'charitable_start', 		array( 'Charitable_Settings', 'charitable_start' ) );
+		add_action( 'charitable_start', 		array( 'Charitable_Gateway_Settings', 'charitable_start' ) );
 		add_action( 'charitable_start', 		array( 'Charitable_Campaign_Post_Type', 'charitable_start' ) );
 		add_action( 'charitable_start', 		array( 'Charitable_Donation_Post_Type', 'charitable_start' ) );
 		// add_action( 'admin_init', 				array( $this, 'activate_license' ) );

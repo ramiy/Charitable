@@ -1,8 +1,8 @@
 <?php
 /**
- * Charitable Settings Pages.
+ * Charitable Settings UI.
  * 
- * @package     Charitable/Classes/Charitable_Admin_Settings
+ * @package     Charitable/Classes/Charitable_Settings
  * @version     1.0.0
  * @author      Eric Daams
  * @copyright   Copyright (c) 2014, Studio 164a
@@ -11,15 +11,15 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-if ( ! class_exists( 'Charitable_Admin_Settings' ) ) : 
+if ( ! class_exists( 'Charitable_Settings' ) ) : 
 
 /**
- * Charitable_Admin_Settings
+ * Charitable_Settings
  *
  * @final
  * @since      1.0.0
  */
-final class Charitable_Admin_Settings extends Charitable_Start_Object {
+final class Charitable_Settings extends Charitable_Start_Object {
 
     /**
      * The page to use when registering sections and fields.
@@ -60,10 +60,10 @@ final class Charitable_Admin_Settings extends Charitable_Start_Object {
         
         add_filter( 'charitable_sanitize_value', array( $this, 'sanitize_checkbox_value' ), 10, 2 );
         add_filter( 'charitable_save_settings', array( $this, 'maybe_change_license_status' ) );
-        add_filter( 'charitable_settings_tab_fields', array( $this, 'add_gateway_settings_fields' ) );
+        // add_filter( 'charitable_settings_tab_fields', array( $this, 'add_gateway_settings_fields' ) );
         add_filter( 'charitable_settings_tab_fields', array( $this, 'add_email_settings_fields' ) );
         add_filter( 'charitable_settings_groups', array( $this, 'add_email_settings_groups' ) );
-        add_filter( 'charitable_dynamic_groups', array( $this, 'add_gateway_settings_dynamic_groups' ) );
+        // add_filter( 'charitable_dynamic_groups', array( $this, 'add_gateway_settings_dynamic_groups' ) );
 
         do_action( 'charitable_admin_settings_start', $this );
     }
@@ -150,41 +150,6 @@ final class Charitable_Admin_Settings extends Charitable_Start_Object {
             }
         }
     }   
-
-    /**
-     * Add settings for each individual payment gateway. 
-     *
-     * @return  array[]
-     * @access  public
-     * @since   1.0.0
-     */
-    public function add_gateway_settings_fields( $fields ) {
-        foreach ( charitable_get_helper( 'gateways' )->get_active_gateways() as $gateway ) {
-            $fields[ 'gateways_' . $gateway::ID ] = apply_filters( 'charitable_settings_fields_gateways_gateway', array(), new $gateway );
-        }
-
-        return $fields;
-    }
-
-    /**
-     * Add gateway keys to the settings groups. 
-     *
-     * @param   string[] $groups
-     * @return  string[]
-     * @access  public
-     * @since   1.0.0
-     */
-    public function add_gateway_settings_dynamic_groups( $groups ) {
-        foreach ( charitable_get_helper( 'gateways' )->get_active_gateways() as $gateway_key => $gateway_class ) {
-            if ( ! class_exists( $gateway_class ) ) {
-                continue;
-            }
-                
-            $groups[ 'gateways_' . $gateway_key ] = apply_filters( 'charitable_settings_fields_gateways_gateway', array(), new $gateway_class );
-        }
-
-        return $groups;
-    }
 
     /**
      * Add settings for each individual email. 
@@ -335,17 +300,6 @@ final class Charitable_Admin_Settings extends Charitable_Start_Object {
         $field_type = isset( $args[ 'type' ] ) ? $args[ 'type' ] : 'text';
 
         charitable_admin_view( 'settings/' . $field_type, $args );
-    }
-
-    /**
-     * Display table with available payment gateways.  
-     *
-     * @return  void
-     * @access  public
-     * @since   1.0.0
-     */
-    public function render_gateways_table( $args ) {
-        charitable_admin_view( 'settings/gateways', $args );
     }
 
     /**
@@ -588,50 +542,26 @@ final class Charitable_Admin_Settings extends Charitable_Start_Object {
      * @access  private
      * @since   1.0.0
      */
-    private function get_gateway_fields() {
-        return apply_filters( 'charitable_settings_fields_gateways', array(
-            'section' => array(
-                'title'             => '',
-                'type'              => 'hidden',
-                'priority'          => 10000,
-                'value'             => 'gateways'
-            ),
-            'test_mode' => array(
-                'title'             => __( 'Turn on Test Mode', 'charitable' ),
-                'type'              => 'checkbox',
-                'priority'          => 5
-            ),
-            'gateways' => array(
-                'title'             => __( 'Available Payment Gateways', 'charitable' ),
-                'callback'          => array( $this, 'render_gateways_table' ), 
-                'priority'          => 10
-            )
-        ) );
-    }
-
-    /**
-     * Checks whether we're looking at an individual gateway's settings page. 
-     *
-     * @return  boolean
-     * @access  private
-     * @since   1.0.0
-     */
-    private function is_individual_gateway_settings_page() {
-        return isset( $_GET[ 'edit_gateway' ] );
-    }
-
-    /**
-     * Returns the helper class of the gateway we're editing.
-     *
-     * @return  Charitable_Gateway|false
-     * @access  private
-     * @since   1.0.0
-     */
-    private function get_current_gateway_class() {
-        $gateway = charitable_get_helper( 'gateways' )->get_gateway( $_GET[ 'edit_gateway' ] );
-
-        return $gateway ? new $gateway : false;
-    }
+    // private function get_gateway_fields() {
+    //     return apply_filters( 'charitable_settings_fields_gateways', array(
+    //         'section' => array(
+    //             'title'             => '',
+    //             'type'              => 'hidden',
+    //             'priority'          => 10000,
+    //             'value'             => 'gateways'
+    //         ),
+    //         'test_mode' => array(
+    //             'title'             => __( 'Turn on Test Mode', 'charitable' ),
+    //             'type'              => 'checkbox',
+    //             'priority'          => 5
+    //         ),
+    //         'gateways' => array(
+    //             'title'             => __( 'Available Payment Gateways', 'charitable' ),
+    //             'callback'          => array( $this, 'render_gateways_table' ), 
+    //             'priority'          => 10
+    //         )
+    //     ) );
+    // }
 
     /**
      * Returns all the email settings fields.  
@@ -753,7 +683,7 @@ final class Charitable_Admin_Settings extends Charitable_Start_Object {
      * Return an array with all the fields & sections to be displayed. 
      *
      * @uses    charitable_settings_fields
-     * @see     Charitable_Admin_Settings::register_setting()
+     * @see     Charitable_Settings::register_setting()
      * @return  array
      * @access  private
      * @since   1.0.0
@@ -764,13 +694,13 @@ final class Charitable_Admin_Settings extends Charitable_Start_Object {
          * DO NOT use it to add individual fields. That should be done with the
          * filters within each of the methods. 
          */
-        return apply_filters( 'charitable_settings_tab_fields', array(
-            'general'   => $this->get_general_fields(),
-            'forms'     => $this->get_form_fields(),
-            'gateways'  => $this->get_gateway_fields(), 
-            'emails'    => $this->get_email_fields(),
-            'advanced'  => $this->get_advanced_fields()
-        ) );
+        $fields = array();
+
+        foreach ( $this->get_sections() as $section_key => $section ) {
+            $fields[ $section_key ] = apply_filters( 'charitable_settings_tab_fields_' . $section_key, array() );
+        }   
+
+        return apply_filters( 'charitable_settings_tab_fields', $fields );
     }
 
     /**
@@ -862,19 +792,6 @@ final class Charitable_Admin_Settings extends Charitable_Start_Object {
     }  
 
     /**
-     * Return list of groups of settings. 
-     *
-     * @return  string[]
-     * @access  private
-     * @since   1.0.0
-     */
-    private function get_settings_groups() {
-        return apply_filters( 'charitable_settings_groups', array(
-            'general', 'forms', 'gateways', 'emails', 'advanced'
-        ) );
-    }
-
-    /**
      * Return list of dynamic groups.
      *
      * @return  string[]
@@ -914,18 +831,6 @@ final class Charitable_Admin_Settings extends Charitable_Start_Object {
     private function is_dynamic_group( $composite_key ) {    
         return array_key_exists( $composite_key, $this->get_dynamic_groups() );
     }
-
-    /**
-     * Returns whether the given key indicates the start of a new section of the settings. 
-     *
-     * @param   array|string  $submitted
-     * @return  boolean
-     * @access  private
-     * @since   1.0.0
-     */
-    // private function is_settings_group( $submitted ) {
-    //     return is_array( current( $submitted ) ) && in_array( key( $submitted ), $this->get_settings_groups() );        
-    // }
 }
 
 endif; // End class_exists check
