@@ -15,9 +15,9 @@ $form           = $view_args[ 'form' ];
 $field          = $view_args[ 'field' ];
 $classes        = $view_args[ 'classes' ];
 $is_required    = isset( $field[ 'required' ] ) ? $field[ 'required' ] : false;
-$options        = isset( $field[ 'options' ] )      ? $field[ 'options' ]       : array();
-$value          = isset( $field[ 'value' ] )        ? (array) $field[ 'value' ] : array();
-$placeholder    = isset( $field[ 'placeholder' ] )  ? $field[ 'placeholder' ]   : '';
+$options        = isset( $field[ 'options' ] ) ? $field[ 'options' ] : array();
+$value          = isset( $field[ 'value' ] ) ? (array) $field[ 'value' ] : array();
+$placeholder    = isset( $field[ 'placeholder' ] ) ? $field[ 'placeholder' ] : '';
 
 if ( empty( $options ) ) {
     return;

@@ -7,10 +7,10 @@
  * @since   1.0.0
  */
 
-$value = charitable_get_option( $view_args['key'] );
+$value = charitable_get_option( $view_args['key'], array() );
 
 if ( empty( $value ) ) :
-    $value = isset( $view_args['default'] ) ? $view_args['default'] : '';
+    $value = isset( $view_args['default'] ) ? $view_args['default'] : array();
 endif;
 
 ?>
