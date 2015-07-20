@@ -44,10 +44,11 @@ final class Charitable_Public extends Charitable_Start_Object {
 	 * @access 	private
 	 * @since 	1.0.0
 	 */
-	private function attach_hooks_and_filters() {		
+	private function attach_hooks_and_filters() {
 		add_action('charitable_start', array( 'Charitable_Session', 'charitable_start' ), 5 );
 		add_action('charitable_start', array( 'Charitable_Templates', 'charitable_start' ), 5 );
 		add_action('wp_enqueue_scripts', array( $this, 'wp_enqueue_scripts') );
+		add_filter( 'post_class', array( $this, 'campaign_post_class' ) );
 	}
 
 	/**
@@ -75,6 +76,26 @@ final class Charitable_Public extends Charitable_Start_Object {
 			wp_register_style( 'lean-modal-css', charitable()->get_path( 'assets', false ) . 'css/modal.css', array(), charitable()->get_version() );
 		}
 	}
+
+    /**
+     * Adds custom post classes when viewing campaign. 
+     *
+     * @return  string[] 
+     * @access  public
+     * @since   1.0.0
+     */
+    public function campaign_post_class( $classes ) {
+        $campaign = charitable_get_current_campaign();
+
+        if ( ! $campaign ) {
+        	return $classes;
+        }
+
+        $classes[] = $campaign->has_goal() ? 'campaign-has-goal' : 'campaign-has-no-goal';
+        $classes[] = $campaign->is_endless() ? 'campaign-is-endless' : 'campaign-has-end-date';
+        return $classes;
+    }
+
 }
 
 endif;

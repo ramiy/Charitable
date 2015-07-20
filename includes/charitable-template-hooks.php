@@ -14,6 +14,15 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 /**
+ * Donation form content, modifying the output of the_content(). 
+ *
+ * @see charitable_template_campaign_content
+ */
+add_filter( 'the_content', 'charitable_template_campaign_content' );
+add_filter( 'the_content', 'charitable_template_donation_form_content' );
+add_filter( 'the_content', 'charitable_template_donation_receipt_content' );
+
+/**
  * Single campaign, before content.
  *
  * @see charitable_template_campaign_description
@@ -46,12 +55,6 @@ add_action( 'charitable_campaign_summary', 'charitable_template_donate_button', 
  */
 add_action( 'charitable_campaign_content_after', 'charitable_template_campaign_donation_form_in_page', 4 );
 
-// add_action( 'charitable_campaign_summary', array( $this, 'display_campaign_percentage_raised' ), 4 );
-// add_action( 'charitable_campaign_summary', array( $this, 'display_campaign_donation_summary' ), 6 );
-// add_action( 'charitable_campaign_summary', array( $this, 'display_campaign_donor_count' ), 8 );
-// add_action( 'charitable_campaign_summary', array( $this, 'display_campaign_time_left' ), 10 );
-// add_action( 'charitable_campaign_summary', array( $this, 'display_donate_button' ), 14 );
-
 /**
  * Campaigns loop, before title.
  * 
@@ -64,8 +67,27 @@ add_action( 'charitable_campaign_content_loop_before_title', 'charitable_templat
  *
  * @see charitable_template_campaign_description
  * @see charitable_template_campaign_progress_bar
+ * @see charitable_template_campaign_loop_donation_stats
+ * @see charitable_template_campaign_donate_link
  */
 add_action( 'charitable_campaign_content_loop_after', 'charitable_template_campaign_description', 5 );
 add_action( 'charitable_campaign_content_loop_after', 'charitable_template_campaign_progress_bar', 10 );
 add_action( 'charitable_campaign_content_loop_after', 'charitable_template_campaign_loop_donation_stats', 15 );
 add_action( 'charitable_campaign_content_loop_after', 'charitable_template_campaign_donate_link', 20 );
+
+/** 
+ * Donation receipt, after the page content (if there is any).
+ *
+ * @see charitable_template_donation_receipt_summary
+ * @see charitable_template_donation_receipt_offline_payment_instructions
+ */
+add_action( 'charitable_donation_receipt', 'charitable_template_donation_receipt_summary', 2 );
+add_action( 'charitable_donation_receipt', 'charitable_template_donation_receipt_offline_payment_instructions', 4 );
+add_action( 'charitable_donation_receipt', 'charitable_template_donation_receipt_details', 6 );
+
+/**
+ * Footer, right before the closing body tag.
+ *
+ * @see 
+ */
+add_action( 'wp_footer', 'charitable_template_campaign_modal_donation_window', 2 );

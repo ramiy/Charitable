@@ -264,7 +264,7 @@ class Charitable_Campaign {
      * @since   1.0.0
      */
     public function has_ended() {
-        return 0 == $this->get_seconds_left();
+        return ! $this->is_endless() && 0 == $this->get_seconds_left();
     }
 
     /**

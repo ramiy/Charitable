@@ -27,7 +27,7 @@ if ( count( $gateways ) ) :
             <span class="actions">
                 <?php if ( $is_active ) : 
                     $settings_url = esc_url( add_query_arg( array(
-                        'edit_gateway' => $gateway::ID
+                        'group' => 'gateways_' . $gateway::ID
                     ), admin_url( 'admin.php?page=charitable-settings&tab=gateways' ) ) );
                     ?>
                     <a href="<?php echo $settings_url ?>" class="button button-primary"><?php _e( 'Gateway Settings', 'charitable' ) ?></a>

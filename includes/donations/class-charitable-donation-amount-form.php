@@ -92,15 +92,24 @@ class Charitable_Donation_Amount_Form extends Charitable_Donation_Form implement
      *
      * @return  int|false   If successful, this returns the donation ID. If unsuccessful, returns false.
      * @access  public
+     * @static
      * @since   1.0.0
      */
-    public function save_donation() {
-        if ( ! $this->validate_nonce() ) {
-            return false;
+    public static function save_donation() {
+        $campaign_id = charitable_get_current_campaign_id();
+
+        if ( ! $campaign_id ) {
+            return 0;
+        }
+
+        $form = new Charitable_Donation_Amount_Form( $campaign_id );
+
+        if ( ! $form->validate_nonce() ) {
+            return 0;
         }        
 
         /* Set the donation amount */
-        $campaign_id = $_POST['campaign_id'];
+        $campaign_id = $this->get_campaign()->ID;
         $amount = parent::get_donation_amount();
 
         if ( 0 == $amount && ! apply_filters( 'charitable_permit_empty_donations', false ) ) {

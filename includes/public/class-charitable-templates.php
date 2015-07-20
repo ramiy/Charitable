@@ -32,8 +32,8 @@ class Charitable_Templates extends Charitable_Start_Object {
 	 * @since 	1.0.0
 	 */
 	protected function __construct() {		
-		add_action( 'wp',  				array( $this, 'maybe_load_charitable_template' ) );
-		add_filter( 'template_include', array( $this, 'donate_template' ) );		
+		add_filter( 'template_include', array( $this, 'donation_receipt_template' ) );
+		add_filter( 'template_include', array( $this, 'donate_template' ) );
 		add_filter( 'template_include', array( $this, 'widget_template' ) );
 		add_filter( 'template_include', array( $this, 'email_template' ) );
 		add_filter( 'body_class', 		array( $this, 'add_donation_page_body_class' ) );
@@ -44,21 +44,27 @@ class Charitable_Templates extends Charitable_Start_Object {
 	}	
 
 	/**
-	 * Possibly load a Charitable template class. Depends on whether we are looking at a campaign, 
-	 * donation page or widget. 
+	 * Load the donation receipt template if we're looking at a donation receipt. 
 	 *
-	 * @return  boolean 	True if a template was loaded. False otherwise.
+	 * @param 	string 		$template
+	 * @return 	string
 	 * @access  public
-	 * @since   1.0.0
+	 * @since 	1.0.0
 	 */
-	public function maybe_load_charitable_template() {
-		if ( Charitable::CAMPAIGN_POST_TYPE == get_post_type() ) {
-			
-			return Charitable_Campaign_Template::load();
-			
+	public function donation_receipt_template( $template ) {		
+		if ( charitable_is_page( 'donation_receipt_page' ) ) {
+
+			new Charitable_Ghost_Page( 'donation-receipt-page', array(
+				'title' 	=> __( 'Your Receipt', 'charitable' ),
+				'content' 	=> sprintf( '<p>%s</p>', __( 'Thank you for your donation!', 'charitable' ) )
+			) );
+
+			$new_template = apply_filters( 'charitable_donation_receipt_page_template', 'donation-receipt-page.php' );
+
+			$template = charitable_get_template_path( $new_template, $template );
 		}
 
-		return false;
+		return $template;
 	}
 
 	/**
@@ -73,9 +79,10 @@ class Charitable_Templates extends Charitable_Start_Object {
 		if ( charitable_is_page( 'campaign_donation_page' ) ) {
 
 			do_action( 'charitable_is_donate_page' );
-			
+
 			$new_template = apply_filters( 'charitable_donate_page_template', 'campaign-donation-page.php' );
-			$template = charitable_get_template_path( $new_template, $template );			
+
+			$template = charitable_get_template_path( $new_template, $template );
 		}
 
 		return $template;

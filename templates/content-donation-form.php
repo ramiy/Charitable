@@ -22,6 +22,8 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  */
 $form = charitable_get_current_donation_form();
 
+echo charitable_get_permalink( 'donation_receipt_page', array( 'donation_id' => 56 ) );
+
 if ( ! $form ) {
 	return;
 }

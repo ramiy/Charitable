@@ -59,7 +59,7 @@ class Charitable_Gateways extends Charitable_Start_Object {
 	 * @since 	1.0.0
 	 */
 	private function attach_hooks_and_filters() {
-		add_action( 'charitable_after_save_donation', array( $this, 'send_donation_to_gateway' ), 10, 2 );
+		// add_action( 'charitable_after_save_donation', array( $this, 'send_donation_to_gateway' ), 10, 2 );
 		add_action( 'charitable_enable_gateway', array( $this, 'handle_gateway_settings_request' ) );
 		add_action( 'charitable_disable_gateway', array( $this, 'handle_gateway_settings_request' ) );
 		add_filter( 'charitable_settings_fields_gateways_gateway', array( $this, 'register_gateway_settings' ), 10, 2 );
@@ -99,19 +99,6 @@ class Charitable_Gateways extends Charitable_Start_Object {
 		else {
 			$this->enable_gateway( $gateway );
 		}	
-	}
-
-	/**
-	 * Send the donation/donor off to the gateway.  
-	 *
-	 * @param 	Charitable_Campaign 	$campaign
-	 * @param 	int 					$donation_id
-	 * @return 	void
-	 * @access  public
-	 * @since 	1.0.0
-	 */
-	public function send_donation_to_gateway( $campaign, $donation_id ) {
-		
 	}
 
 	/**

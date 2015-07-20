@@ -49,10 +49,8 @@ class Charitable_Campaign_Template {
         // add_action( 'charitable_campaign_content_before', array( $this, 'display_campaign_video' ), 6 );
         // add_action( 'charitable_campaign_content_before', array( $this, 'display_campaign_summary' ), 8 );
         
-        add_action( 'wp_footer', array( $this, 'add_modal_window' ) );
-
-        add_filter( 'post_class', array( $this, 'campaign_post_class' ) );
-        add_filter( 'the_content', array( $this, 'campaign_content' ) );        
+        // add_action( 'wp_footer', array( $this, 'add_modal_window' ) );        
+        // add_filter( 'the_content', array( $this, 'campaign_content' ) );        
         
         /* If you want to unhook any of the callbacks attached above, use this hook. */
         do_action( 'charitable_campaign_template_start', $this );
@@ -83,8 +81,8 @@ class Charitable_Campaign_Template {
      */
     public function campaign_post_class( $classes ) {
         $campaign = charitable_get_current_campaign();
-        $classes[] = $campaign->has_goal()      ? 'campaign-has-goal'   : 'campaign-has-no-goal';
-        $classes[] = $campaign->is_endless()    ? 'campaign-is-endless' : 'campaign-has-end-date';
+        $classes[] = $campaign->has_goal() ? 'campaign-has-goal' : 'campaign-has-no-goal';
+        $classes[] = $campaign->is_endless() ? 'campaign-is-endless' : 'campaign-has-end-date';
         return $classes;
     }
 
@@ -115,7 +113,9 @@ class Charitable_Campaign_Template {
         
         charitable_template_campaign_content( $content, charitable_get_current_campaign() );
 
-        return ob_get_clean();
+        $content = ob_get_clean();
+
+        return $content;
     }
 
     /**

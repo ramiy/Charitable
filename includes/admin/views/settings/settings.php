@@ -8,6 +8,7 @@
  */
 
 $active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'general';
+$group = isset( $_GET[ 'group' ] ) ? $_GET[ 'group' ] : $active_tab;
 
 ob_start();
 ?>
@@ -23,7 +24,7 @@ ob_start();
 			<table class="form-table">
 			<?php
 				settings_fields( 'charitable_settings' );		
-				do_settings_fields( 'charitable_settings_' . $active_tab, 'charitable_settings_' . $active_tab );				
+				do_settings_fields( 'charitable_settings_' . $group, 'charitable_settings_' . $group );				
 			?>
 			</table>
 			<?php 

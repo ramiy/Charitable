@@ -214,7 +214,6 @@ final class Charitable_Currency {
 	 * @since 	1.0.0
 	 */
 	private function get_currency_symbol( $currency = "" ) {
-
 		if ( ! strlen( $currency ) ) {
 			$currency = charitable_get_option( 'currency', 'AUD' );
 		}		

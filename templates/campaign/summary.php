@@ -11,15 +11,21 @@ $campaign = charitable_get_current_campaign();
 /**
  * @hook charitable_campaign_summary_before
  */
-do_action( 'charitable_campaign_summary_before', $campaign ) ?>
+do_action( 'charitable_campaign_summary_before', $campaign ); 
 
+?>
 <div class="campaign-summary">	
+    <?php 
 
-    <?php do_action( 'charitable_campaign_summary', $campaign ) ?>
+    /**
+     * @hook charitable_campaign_summary
+     */
+    do_action( 'charitable_campaign_summary', $campaign ); 
 
+    ?>
 </div>
-
 <?php
+
 /**
  * @hook charitable_campaign_summary_after
  */

@@ -134,7 +134,63 @@ final class Charitable_Request extends Charitable_Start_Object {
 			}
 		}
 
+		if ( ! $this->campaign_id ) {
+
+			$this->campaign_id = $this->get_campaign_id_from_submission();
+
+		}
+
 		return $this->campaign_id;
+	}
+
+	/**
+	 * Returns the campaign ID from a form submission.  
+	 *
+	 * @return  int
+	 * @access  public
+	 * @since   1.0.0
+	 */
+	public function get_campaign_id_from_submission() {
+		if ( ! isset( $_POST['campaign_id'] ) ) {
+            return 0;
+        }
+
+        $campaign_id = absint( $_POST['campaign_id'] );
+
+        if ( Charitable::CAMPAIGN_POST_TYPE !== get_post_type( $campaign_id ) ) {
+            return 0;
+        } 
+
+        return $campaign_id;
+	}
+
+	/**
+	 * Returns the current donation object. If there is no current donation, return false. 
+	 *
+	 * @return  Charitable_Donation|false
+	 * @access  public
+	 * @since   1.0.0
+	 */
+	public function get_current_donation() {
+		if ( ! isset( $this->donation ) ) {
+
+			$donation_id = $this->get_current_donation_id();
+			$this->donation = $donation_id ? new Charitable_Donation( $donation_id ) : false;
+
+		}
+		
+		return $this->donation;
+	}
+
+	/**
+	 * Returns the current donation ID. If there is no current donation, return 0. 
+	 *
+	 * @return  int
+	 * @access  public
+	 * @since   1.0.0
+	 */
+	public function get_current_donation_id() {
+		return get_query_var( 'donation_id', 0 );
 	}
 }
 

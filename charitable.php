@@ -187,21 +187,13 @@ class Charitable {
         require_once( $includes_path . 'charitable-template-hooks.php' );
         require_once( $includes_path . 'charitable-utility-functions.php' );
 
-        /* Base Classes & Interfaces */
-        require_once( $includes_path . 'interface-charitable-donation-form.php' );        
+        /* Base Classes & Interfaces */        
         require_once( $includes_path . 'class-charitable-start-object.php' );
         require_once( $includes_path . 'class-charitable-form.php' );     
         require_once( $includes_path . 'class-charitable-addons.php' );
         require_once( $includes_path . 'class-charitable-campaign.php' );
         require_once( $includes_path . 'class-charitable-campaigns.php' );
-        require_once( $includes_path . 'class-charitable-currency.php' );
-        require_once( $includes_path . 'class-charitable-donation.php' );
-        require_once( $includes_path . 'class-charitable-donation-actions.php' );        
-        require_once( $includes_path . 'class-charitable-donation-form.php' );
-        require_once( $includes_path . 'class-charitable-donation-form-hidden.php' );
-        require_once( $includes_path . 'class-charitable-donation-amount-form.php' );
-        require_once( $includes_path . 'class-charitable-donations.php' );
-        // require_once( $includes_path . 'class-charitable-donor.php' );
+        require_once( $includes_path . 'class-charitable-currency.php' );        
         require_once( $includes_path . 'class-charitable-donor-query.php' );
         require_once( $includes_path . 'class-charitable-emails.php' );        
         require_once( $includes_path . 'class-charitable-gateways.php' );
@@ -213,6 +205,17 @@ class Charitable {
         require_once( $includes_path . 'class-charitable-roles.php' );
         require_once( $includes_path . 'class-charitable-user.php' );
         require_once( $includes_path . 'class-charitable-widgets.php' );        
+
+        /* Donations */        
+        include_once( $includes_path . 'donations/charitable-donation-hooks.php' );
+        include_once( $includes_path . 'donations/charitable-donation-functions.php' );
+        include_once( $includes_path . 'donations/class-charitable-donation-controller.php' );
+        require_once( $includes_path . 'donations/class-charitable-donation.php' );
+        require_once( $includes_path . 'donations/class-charitable-donations.php' );        
+        require_once( $includes_path . 'donations/interface-charitable-donation-form.php' );
+        require_once( $includes_path . 'donations/class-charitable-donation-form.php' );    
+        require_once( $includes_path . 'donations/class-charitable-donation-form-hidden.php' );    
+        require_once( $includes_path . 'donations/class-charitable-donation-amount-form.php' );
 
         /* Gateways */
         include_once( $includes_path . 'gateways/abstract-class-charitable-gateway.php' );
@@ -236,6 +239,7 @@ class Charitable {
         require_once( $includes_path . 'public/class-charitable-template-part.php' );
         require_once( $includes_path . 'public/class-charitable-templates.php' );            
         require_once( $includes_path . 'public/class-charitable-campaign-template.php' );
+        require_once( $includes_path . 'public/class-charitable-ghost-page.php' );
     }
 
     /**
@@ -248,8 +252,7 @@ class Charitable {
     private function attach_hooks_and_filters() {
         add_action('plugins_loaded',    array( $this, 'charitable_start' ), 100 );
 
-        add_action('charitable_start',  array( 'Charitable_Donation_Actions', 'charitable_start' ), 3 );
-        add_action('charitable_start',  array( 'Charitable_Post_Types', 'charitable_start' ), 3 );      
+        add_action('charitable_start',  array( 'Charitable_Post_Types', 'charitable_start' ), 3 );
         add_action('charitable_start',  array( 'Charitable_Widgets', 'charitable_start' ), 3 );
         add_action('charitable_start',  array( 'Charitable_Gateways', 'charitable_start' ), 3 ); 
         add_action('charitable_start',  array( 'Charitable_Emails', 'charitable_start' ), 3 ); 

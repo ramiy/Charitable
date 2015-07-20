@@ -105,6 +105,17 @@ class Charitable_Donation {
 	}
 
 	/**
+	 * Return the donation number. By default, this is the ID, but it can be filtered. 
+	 *
+	 * @return  string
+	 * @access  public
+	 * @since   1.0.0
+	 */
+	public function get_number() {
+		return apply_filters( 'charitable_donation_number', $this->donation_id );
+	}
+
+	/**
 	 * Get the donation data.
 	 *
 	 * @return 	Charitable_Campaign_Donations_DB
@@ -226,12 +237,46 @@ class Charitable_Donation {
 	/**
 	 * The name of the gateway used to process the donation.
 	 *
-	 * @return 	string 				The name of the gateway.
+	 * @return 	string 	The key identifier of the donation.
 	 * @access 	public
 	 * @since 	1.0.0
 	 */
 	public function get_gateway() {
 		return get_post_meta( $this->donation_id, 'donation_gateway', true );
+	}
+
+	/**
+	 * The public label of the gateway used to process the donation. 
+	 *
+	 * @return  string
+	 * @access  public
+	 * @since   1.0.0
+	 */
+	public function get_gateway_label() {
+		$gateway = $this->get_gateway_object();
+
+		if ( ! $gateway ) {
+			return '';
+		} 
+
+		return $gateway->get_label();
+	}
+
+	/**
+	 * Returns the gateway's object helper.	
+	 *
+	 * @return  Charitable_Gateway
+	 * @access  public
+	 * @since   1.0.0
+	 */
+	public function get_gateway_object() {
+		$class = charitable_get_helper( 'gateways' )->get_gateway( $this->get_gateway() );
+
+		if ( ! $class ) {
+			return false;
+		} 
+
+		return new $class;
 	}
 
 	/**

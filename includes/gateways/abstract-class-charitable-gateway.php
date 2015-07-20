@@ -34,6 +34,13 @@ abstract class Charitable_Gateway {
     protected $name;
 
     /**
+     * @var     array   The default values for all settings added by the gateway.
+     * @access  protected
+     * @since   1.0.0
+     */
+    protected $defaults;
+
+    /**
      * Return the gateway name.
      *
      * @return  string
@@ -44,6 +51,17 @@ abstract class Charitable_Gateway {
         return $this->name;
     }
     
+    /**
+     * Returns the default gateway label to be displayed to donors. 
+     *
+     * @return  string
+     * @access  public
+     * @since   1.0.0
+     */
+    public function get_default_label() {
+        return isset( $this->defaults[ 'label' ] ) ? $this->defaults[ 'label' ] : $this->get_name();
+    }
+
     /**
      * Provide default gateway settings fields.
      *
@@ -60,12 +78,48 @@ abstract class Charitable_Gateway {
                 'priority'  => 2
             ),
             'label' => array(
-                'type'      => 'text', 
+                'type'      => 'text',
                 'title'     => __( 'Gateway Label', 'charitable' ), 
                 'help'      => __( 'The label that will be shown to donors on the donation form.', 'charitable' ), 
-                'priority'  => 4
+                'priority'  => 4,
+                'default'   => $this->get_default_label()
             )
         );
+    }
+
+    /**
+     * Return the settings for this gateway. 
+     *
+     * @return  array
+     * @access  public
+     * @since   1.0.0
+     */
+    public function get_settings() {
+        return charitable_get_option( 'gateways_' . self::ID, array() );
+    }
+
+    /**
+     * Retrieve the gateway label. 
+     *
+     * @return  string
+     * @access  public
+     * @since   1.0.0
+     */
+    public function get_label() {
+        return charitable_get_option( 'label', $this->get_default_label(), $this->get_settings() );
+    }
+
+    /**
+     * Return the value for a particular gateway setting. 
+     *
+     * @param   string  $setting
+     * @return  mixed
+     * @access  public
+     * @since   1.0.0
+     */
+    public function get_value( $setting ) {
+        $default = isset( $this->defaults[ $setting ] ) ? $this->defaults[ $setting ] : '';
+        return charitable_get_option( $setting, $default, $this->get_settings() );
     }
 
     /**

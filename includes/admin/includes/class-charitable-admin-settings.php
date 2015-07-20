@@ -63,6 +63,7 @@ final class Charitable_Admin_Settings extends Charitable_Start_Object {
         add_filter( 'charitable_settings_tab_fields', array( $this, 'add_gateway_settings_fields' ) );
         add_filter( 'charitable_settings_tab_fields', array( $this, 'add_email_settings_fields' ) );
         add_filter( 'charitable_settings_groups', array( $this, 'add_email_settings_groups' ) );
+        add_filter( 'charitable_dynamic_groups', array( $this, 'add_gateway_settings_dynamic_groups' ) );
 
         do_action( 'charitable_admin_settings_start', $this );
     }
@@ -120,8 +121,10 @@ final class Charitable_Admin_Settings extends Charitable_Start_Object {
             return;
         }
 
+        $sections = array_merge( $this->get_sections(), $this->get_dynamic_groups() );
+        
         /* Register each section */        
-        foreach ( $this->get_sections() as $section_key => $section ) {
+        foreach ( $sections as $section_key => $section ) {
             $section_id = 'charitable_settings_' . $section_key;
             
             add_settings_section(
@@ -137,7 +140,7 @@ final class Charitable_Admin_Settings extends Charitable_Start_Object {
 
             /* Sort by priority */
             $section_fields = $fields[ $section_key ];
-            uasort( $section_fields, 'charitable_priority_sort' );
+            uasort( $section_fields, 'charitable_priority_sort' );                        
 
             /* Add the individual fields within the section */
             foreach ( $section_fields as $key => $field ) {
@@ -157,10 +160,30 @@ final class Charitable_Admin_Settings extends Charitable_Start_Object {
      */
     public function add_gateway_settings_fields( $fields ) {
         foreach ( charitable_get_helper( 'gateways' )->get_active_gateways() as $gateway ) {
-            $fields[ $gateway::ID ] = apply_filters( 'charitable_settings_fields_gateways_gateway', array(), new $gateway );
+            $fields[ 'gateways_' . $gateway::ID ] = apply_filters( 'charitable_settings_fields_gateways_gateway', array(), new $gateway );
         }
 
         return $fields;
+    }
+
+    /**
+     * Add gateway keys to the settings groups. 
+     *
+     * @param   string[] $groups
+     * @return  string[]
+     * @access  public
+     * @since   1.0.0
+     */
+    public function add_gateway_settings_dynamic_groups( $groups ) {
+        foreach ( charitable_get_helper( 'gateways' )->get_active_gateways() as $gateway_key => $gateway_class ) {
+            if ( ! class_exists( $gateway_class ) ) {
+                continue;
+            }
+                
+            $groups[ 'gateways_' . $gateway_key ] = apply_filters( 'charitable_settings_fields_gateways_gateway', array(), new $gateway_class );
+        }
+
+        return $groups;
     }
 
     /**
@@ -221,9 +244,9 @@ final class Charitable_Admin_Settings extends Charitable_Start_Object {
         /* Loop through all fields, merging the submitted values into the master array */
         foreach ( $values as $section => $submitted ) {
             $new_values = array_merge( $new_values, $this->get_section_submitted_values( $section, $submitted ) );
-        }      
+        }              
 
-        $values = wp_parse_args( $new_values, $old_values );        
+        $values = wp_parse_args( $new_values, $old_values );
 
         return apply_filters( 'charitable_save_settings', $values, $new_values, $old_values );
     }
@@ -365,36 +388,29 @@ final class Charitable_Admin_Settings extends Charitable_Start_Object {
      * @since   1.0.0
      */
     private function register_field( $field, $keys ) {
-        if ( is_array( current( $field ) ) ) {
+        $section_id = 'charitable_settings_' . $keys[ 0 ];
 
-            foreach ( $field as $key => $new_field ) {
-                $new_keys = array_merge( $keys, array( $key ) );
-                $this->register_field( $new_field, $new_keys );
-            }
-        } 
-        else {            
+        /* Drop the first key, which is the section identifier */            
+        $field[ 'name' ] = implode( '][', $keys );
 
-            $section_id = 'charitable_settings_' . $keys[ 0 ];
-
-            /* Drop the first key, which is the section identifier */            
-            $field[ 'name' ] = implode( '][', $keys );
-            array_shift( $keys ); 
-            $field[ 'key' ] = $keys;
-            $field[ 'classes' ] = $this->get_field_classes( $field );
-
-            $callback = isset( $field[ 'callback' ] ) ? $field[ 'callback' ] : array( $this, 'render_field' );        
-            $label = $this->get_field_label( $field, end( $keys ) );         
-
-            add_settings_field( 
-                sprintf( 'charitable_settings_%s', implode( '_', $keys ) ),
-                $label, 
-                $callback, 
-                $section_id, 
-                $section_id, 
-                $field 
-            ); 
-
+        if ( ! $this->is_dynamic_group( $keys[ 0 ] ) ) {
+            array_shift( $keys );     
         }
+        
+        $field[ 'key' ] = $keys;
+        $field[ 'classes' ] = $this->get_field_classes( $field );
+
+        $callback = isset( $field[ 'callback' ] ) ? $field[ 'callback' ] : array( $this, 'render_field' );        
+        $label = $this->get_field_label( $field, end( $keys ) );         
+
+        add_settings_field( 
+            sprintf( 'charitable_settings_%s', implode( '_', $keys ) ),
+            $label, 
+            $callback, 
+            $section_id, 
+            $section_id, 
+            $field 
+        );
     }
 
     /**
@@ -573,16 +589,6 @@ final class Charitable_Admin_Settings extends Charitable_Start_Object {
      * @since   1.0.0
      */
     private function get_gateway_fields() {
-        /* Check if we are editing a specific gateway's settings. */   
-        if ( $this->is_individual_gateway_settings_page() ) {
-            
-            $gateway = $this->get_current_gateway_class();
-
-            return array( 
-                $gateway::ID => apply_filters( 'charitable_settings_fields_gateways_gateway', array(), $gateway )
-            );      
-        }
-       
         return apply_filters( 'charitable_settings_fields_gateways', array(
             'section' => array(
                 'title'             => '',
@@ -596,7 +602,7 @@ final class Charitable_Admin_Settings extends Charitable_Start_Object {
                 'priority'          => 5
             ),
             'gateways' => array(
-                'label_for'         => __( 'Available Payment Gateways', 'charitable' ),
+                'title'             => __( 'Available Payment Gateways', 'charitable' ),
                 'callback'          => array( $this, 'render_gateways_table' ), 
                 'priority'          => 10
             )
@@ -819,43 +825,37 @@ final class Charitable_Admin_Settings extends Charitable_Start_Object {
     /**
      * Return the submitted values for the given section.   
      *
-     * @param   string      $section
-     * @param   array       $submitted
+     * @param   string  $section
+     * @param   array   $submitted
      * @return  array
      * @access  private
      * @since   1.0.0
      */
     private function get_section_submitted_values( $section, $submitted ) {
-        $values = array();            
-        $form_fields = $this->get_fields();
+        $values = array();
+        $form_fields = $this->get_fields();        
+        $composite_key = $this->get_composite_key( $section, $submitted );
 
-        /* If the current section contains another section, loop back on ourselves. */ 
-        if ( $this->is_settings_group( $submitted ) ) {
+        if ( $composite_key && $this->is_dynamic_group( $composite_key ) ) {
 
-            foreach ( $submitted as $key => $submitted ) {
+            $values[ $composite_key ] = $this->get_section_submitted_values( $composite_key, current( $submitted ) );
+            return $values;
 
-                $values[ $key ] = $this->get_section_submitted_values( $key, $submitted );
-
-            }
         }
-        else {              
 
-            if ( ! isset( $form_fields[ $section ] ) ) {
-                return $values;
+        if ( ! isset( $form_fields[ $section ] ) ) {
+            return $values;
+        }
+
+        foreach ( $form_fields[ $section ] as $key => $field ) {
+
+            $value = $this->get_setting_submitted_value( $key, $field, $submitted );
+
+            if ( ! is_null( $value ) ) {
+
+                $values[ $key ] = $value;
+
             }
-
-            foreach ( $form_fields[ $section ] as $key => $field ) {
-
-                $value = $this->get_setting_submitted_value( $key, $field, $submitted );
-
-                if ( ! is_null( $value ) ) {
-
-                    $values[ $key ] = $value;
-
-                }
-                
-            }
-
         }
 
         return $values;
@@ -875,6 +875,47 @@ final class Charitable_Admin_Settings extends Charitable_Start_Object {
     }
 
     /**
+     * Return list of dynamic groups.
+     *
+     * @return  string[]
+     * @access  private
+     * @since   1.0.0
+     */
+    private function get_dynamic_groups() {
+        return apply_filters( 'charitable_dynamic_groups', array() );
+    }
+
+    /**
+     * Returns a composite key, given a section and submitted values. 
+     *
+     * @param   string  $section
+     * @param   array   $submitted
+     * @return  string
+     * @access  private
+     * @since   1.0.0
+     */
+    private function get_composite_key( $section, $submitted ) {
+        if ( ! is_array( current( $submitted ) ) ) {
+            return false;
+        }
+
+        return sprintf( '%s_%s', $section, key( $submitted ) );
+    }
+
+    /**
+     * Returns whether the given key indicates the start of a new section of the settings. 
+     *
+     * @param   string  $section
+     * @param   array   $submitted
+     * @return  boolean
+     * @access  private
+     * @since   1.0.0
+     */
+    private function is_dynamic_group( $composite_key ) {    
+        return array_key_exists( $composite_key, $this->get_dynamic_groups() );
+    }
+
+    /**
      * Returns whether the given key indicates the start of a new section of the settings. 
      *
      * @param   array|string  $submitted
@@ -882,9 +923,9 @@ final class Charitable_Admin_Settings extends Charitable_Start_Object {
      * @access  private
      * @since   1.0.0
      */
-    private function is_settings_group( $submitted ) {
-        return is_array( current( $submitted ) ) && in_array( key( $submitted ), $this->get_settings_groups() );        
-    }  
+    // private function is_settings_group( $submitted ) {
+    //     return is_array( current( $submitted ) ) && in_array( key( $submitted ), $this->get_settings_groups() );        
+    // }
 }
 
 endif; // End class_exists check
