@@ -28,12 +28,14 @@
 }
 
 .campaign-loop.campaign-grid {
+    margin: 0 0 1em 0;
+    padding: 0;
     @include clearfix;
 
     .campaign.hentry {
+        list-style: none;
         float: left;
-        margin-top: 0;
-        margin-right: 2%;
+        margin: 0 2% 1em 0;        
         padding: 1em;
         border: 1px solid #e6e6e6;
     }    
@@ -50,4 +52,13 @@
     .campaign.hentry:nth-child(2n+2) {
         margin-right: 0;
     }
+}
+    
+.campaign-grid-3 {
+    .campaign.hentry {
+        width: 32%;
+    }
+    .campaign.hentry:nth-child(3n+3) {
+        margin-right: 0;
+    }    
 }

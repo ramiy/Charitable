@@ -85,8 +85,8 @@
 			});
 		}
 
-		$('body.post-type-campaign .handlediv').remove();
-		$('body.post-type-campaign .hndle').removeClass( 'hndle ui-sortable-handle' ).addClass( 'postbox-title' );
+		$('body.post-type-campaign .handlediv, body.post-type-donation .handlediv').remove();
+		$('body.post-type-campaign .hndle, body.post-type-donation .hndle').removeClass( 'hndle ui-sortable-handle' ).addClass( 'postbox-title' );
 
 		setup_advanced_meta_box();
 
@@ -132,6 +132,10 @@
 	        });
 
 			return false;
+		});
+
+		$('#change-donation-status').on( 'change', function() {
+			$(this).parents( 'form' ).submit();
 		});
 	});
 

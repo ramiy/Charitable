@@ -46,8 +46,8 @@ class Charitable_Addons {
 	 * @since	1.0.0
 	 */
 	private function __construct() {		
-		add_action( 'charitable_activate_addon', 	array( $this, 'activate_addon' ) );
-		add_action( 'plugins_loaded',				array( $this, 'load_addons' ), 500 );
+		add_action( 'charitable_activate_addon', array( $this, 'activate_addon' ) );
+		add_action( 'after_setup_theme', array( $this, 'load_addons' ) );
 
 		do_action( 'charitable_addons_start', $this );
 	}

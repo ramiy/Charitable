@@ -131,15 +131,6 @@ abstract class Charitable_Gateway {
      * @since   1.0.0
      */
     abstract public function gateway_settings( $settings );
-
-	/**
-	 * Send a donation to the gateway. 
-	 *
-	 * @param 	Charitable_Campaign 	$campaign
-	 * @param 	int 					$donation_id
-	 */
-	abstract public function send_donation_to_gateway( $campaign, $donation_id );
-
 }
 
 endif; // End class_exists check

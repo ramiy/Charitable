@@ -71,13 +71,14 @@ class Charitable_User_Dashboard implements Charitable_Addon_Interface {
         add_action( 'charitable_user_dashboard_start',  array( 'Charitable_User_Dashboard_Shortcodes', 'start' ), 5 );
         add_action( 'charitable_update_profile',        array( 'Charitable_Profile_Form', 'update_profile' ) );     
         add_action( 'charitable_save_registration',     array( 'Charitable_Registration_Form', 'save_registration' ) );
-        add_action( 'after_setup_theme',                array( $this, 'register_menu' ) );
+        add_action( 'after_setup_theme',                array( $this, 'register_menu' ), 100 );
         add_action( 'template_include',                 array( $this, 'load_user_dashboard_template' ) );
         add_action( 'wp_update_nav_menu',               array( $this, 'flush_menu_object_cache' ) );
         add_action( 'wp_update_nav_menu_item',          array( $this, 'flush_menu_object_cache' ) );
         
         add_filter( 'body_class',                       array( $this, 'add_body_class' ) );
-        add_filter( 'charitable_settings_fields_general', array( $this, 'add_page_settings' ) );     
+        add_filter( 'charitable_settings_tab_fields_general', array( $this, 'add_page_settings' ), 6 );
+        // add_filter( 'charitable_settings_fields_general', array( $this, 'add_page_settings' ) );     
 
         do_action( 'charitable_user_dashboard_start', $this );   
     }
@@ -139,7 +140,7 @@ class Charitable_User_Dashboard implements Charitable_Addon_Interface {
      * @since   1.0.0
      */
     public function nav_objects() {     
-        $objects    = get_transient( 'charitable_user_dashboard_objects' ); 
+        $objects = get_transient( 'charitable_user_dashboard_objects' ); 
         
         if ( false === $objects ) {         
 
@@ -209,8 +210,7 @@ class Charitable_User_Dashboard implements Charitable_Addon_Interface {
         if ( false === $found ) {           
             $current_url    = trailingslashit( charitable_get_current_url() );
             $ret            = in_array( get_queried_object_id(), $this->nav_objects() ) || in_array( $current_url, $this->nav_objects() );
-            $ret            = apply_filters( 'charitable_is_current_in_nav', $ret, $this->nav_objects() );
-
+            $ret            = apply_filters( 'charitable_is_in_user_dashboard', $ret, $this->nav_objects() );
             wp_cache_set( 'charitable_in_user_dashboard', $ret );
         }
 
@@ -225,8 +225,7 @@ class Charitable_User_Dashboard implements Charitable_Addon_Interface {
      * @access  public
      * @since   1.0.0
      */
-    public function load_user_dashboard_template( $template ) {     
-
+    public function load_user_dashboard_template( $template ) {
         /**
          * The user dashboard template is not loaded by default; this has to be enabled. 
          */
@@ -281,7 +280,7 @@ class Charitable_User_Dashboard implements Charitable_Addon_Interface {
                 'title'     => __( 'Profile Page', 'charitable' ), 
                 'type'      => 'select', 
                 'priority'  => 24, 
-                'options'   => charitable_get_helper( 'admin_settings' )->get_pages(), 
+                'options'   => charitable_get_admin_settings()->get_pages(), 
                 'help'      => __( 'The static page should contain the <code>[charitable_profile]</code> shortcode.', 'charitable' )
             ), 
             'login_page'    => array(
@@ -292,7 +291,7 @@ class Charitable_User_Dashboard implements Charitable_Addon_Interface {
                 'options'   => array(
                     'wp'            => __( 'Use WordPress Login', 'charitable' ), 
                     'pages'         => array( 
-                        'options'   => charitable_get_helper( 'admin_settings' )->get_pages(), 
+                        'options'   => charitable_get_admin_settings()->get_pages(), 
                         'label'     => __( 'Choose a Static Page', 'charitable' )
                     )
                 ), 
@@ -307,7 +306,7 @@ class Charitable_User_Dashboard implements Charitable_Addon_Interface {
                 'options'   => array(
                     'wp'    => __( 'Use WordPress Registration Page', 'charitable' ),
                     'pages' => array(
-                        'options'   => charitable_get_helper( 'admin_settings' )->get_pages(),
+                        'options'   => charitable_get_admin_settings()->get_pages(),
                         'label'     => __( 'Choose a Static Page', 'charitable' )
                     )
                 ),

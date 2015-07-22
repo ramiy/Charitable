@@ -17,12 +17,22 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 /**
  * Returns the given donation. 
  *
+ * This will first attempt to retrieve it from the object cache to prevent duplicate objects.
+ *
  * @param   int     $donation_id
+ * @param   boolean $foce
  * @return  Charitable_Donation
  * @since   1.0.0
  */
-function charitable_get_donation( $donation_id ) {
-    return new Charitable_Donation( $donation_id );
+function charitable_get_donation( $donation_id, $force = false ) {
+    $donation = wp_cache_get( $donation_id, 'charitable_donation', $force );
+
+    if ( ! $donation ) {
+        $donation = new Charitable_Donation( $donation_id );
+        wp_cache_set( $donation_id, $donation, 'charitable_donation' );            
+    }
+
+    return $donation;
 }
 
 /**

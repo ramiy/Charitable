@@ -357,7 +357,7 @@ class Charitable_Donation {
 	public static function get_valid_donation_statuses() {
 		return apply_filters( 'charitable_donation_statuses', array( 
 			'charitable-pending' 	=> __( 'Pending', 'charitable' ),
-			'charitable-completed' 	=> __( 'Completed', 'charitable' ),
+			'charitable-completed' 	=> __( 'Paid', 'charitable' ),
 			'charitable-failed' 	=> __( 'Failed', 'charitable' ),
 			'charitable-cancelled' 	=> __( 'Cancelled', 'charitable' ),
 			'charitable-refunded' 	=> __( 'Refunded', 'charitable' ),

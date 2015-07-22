@@ -26,7 +26,7 @@ if ( count( $emails ) ) :
             <span class="actions">
                 <?php if ( $is_enabled ) : 
                     $settings_url = esc_url( add_query_arg( array(
-                        'edit_email' => $email::ID
+                        'group' => 'emails_' . $email::ID
                     ), admin_url( 'admin.php?page=charitable-settings&tab=emails' ) ) );
                     ?>
                     <a href="<?php echo $settings_url ?>" class="button button-primary"><?php _e( 'Email Settings', 'charitable' ) ?></a>

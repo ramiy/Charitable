@@ -13,7 +13,10 @@ module.exports = function(grunt) {
         // watch for changes and trigger compass, jshint, uglify and livereload
         watch: {                        
             sass: {
-                files: [ 'assets/css/scss/*.{scss,sass}' ],
+                files: [ 
+                    'assets/css/',
+                    'assets/css/**'
+                ],
                 tasks: ['sass:dist']
             },
             sync: {

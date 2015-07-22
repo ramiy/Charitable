@@ -19,23 +19,7 @@ if ( ! class_exists( 'Charitable_Settings' ) ) :
  * @final
  * @since      1.0.0
  */
-final class Charitable_Settings extends Charitable_Start_Object {
-
-    /**
-     * The page to use when registering sections and fields.
-     *
-     * @var     string 
-     * @access  private
-     */
-    private $admin_menu_parent_page;
-
-    /**
-     * The capability required to view the admin menu. 
-     *
-     * @var     string
-     * @access  private
-     */
-    private $admin_menu_capability;
+final class Charitable_Settings extends Charitable_Start_Object {    
 
     /**
      * Current field. Used to access field args from the views.      
@@ -51,42 +35,17 @@ final class Charitable_Settings extends Charitable_Start_Object {
      * @access  protected
      * @since   1.0.0
      */
-    protected function __construct() {
-        $this->admin_menu_capability = apply_filters( 'charitable_admin_menu_capability', 'manage_options' );
-        $this->admin_menu_parent_page = 'charitable';
-
-        add_action( 'admin_menu', array( $this, 'add_menu' ), 5 );
+    protected function __construct() {            
         add_action( 'admin_init', array( $this, 'register_settings' ) );      
         
         add_filter( 'charitable_sanitize_value', array( $this, 'sanitize_checkbox_value' ), 10, 2 );
         add_filter( 'charitable_save_settings', array( $this, 'maybe_change_license_status' ) );
-        // add_filter( 'charitable_settings_tab_fields', array( $this, 'add_gateway_settings_fields' ) );
-        add_filter( 'charitable_settings_tab_fields', array( $this, 'add_email_settings_fields' ) );
-        add_filter( 'charitable_settings_groups', array( $this, 'add_email_settings_groups' ) );
-        // add_filter( 'charitable_dynamic_groups', array( $this, 'add_gateway_settings_dynamic_groups' ) );
+        add_filter( 'charitable_settings_tab_fields_general', array( $this, 'add_general_settings_fields' ), 5 );
+        add_filter( 'charitable_settings_tab_fields_forms', array( $this, 'add_forms_settings_fields' ), 5 );
+        add_filter( 'charitable_settings_tab_fields_advanced', array( $this, 'add_advanced_settings_fields' ), 5);
 
         do_action( 'charitable_admin_settings_start', $this );
-    }
-
-    /**
-     * Add Settings menu item under the Campaign menu tab.
-     * 
-     * @return  void
-     * @access  public
-     * @since   1.0.0
-     */
-    public function add_menu() {
-        add_menu_page( 'Charitable', 'Charitable', $this->admin_menu_capability, $this->admin_menu_parent_page, array( $this, 'render_charitable_settings_page' ) );
-
-        add_submenu_page( $this->admin_menu_parent_page, __( 'All Campaigns', 'charitable' ), __( 'Campaigns', 'charitable' ), $this->admin_menu_capability, 'edit.php?post_type=campaign' );
-        add_submenu_page( $this->admin_menu_parent_page, __( 'Add Campaign', 'charitable' ), __( 'Add Campaign', 'charitable' ), $this->admin_menu_capability, 'post-new.php?post_type=campaign' );
-        add_submenu_page( $this->admin_menu_parent_page, __( 'Donations', 'charitable' ), __( 'Donations', 'charitable' ), $this->admin_menu_capability, 'edit.php?post_type=donation' );
-        add_submenu_page( $this->admin_menu_parent_page, __( 'Campaign Categories', 'charitable' ), __( 'Categories', 'charitable' ), $this->admin_menu_capability, 'edit-tags.php?taxonomy=campaign_category&post_type=campaign' );
-        add_submenu_page( $this->admin_menu_parent_page, __( 'Campaign Tags', 'charitable' ), __( 'Tags', 'charitable' ), $this->admin_menu_capability, 'edit-tags.php?taxonomy=campaign_tag&post_type=campaign' );
-        add_submenu_page( $this->admin_menu_parent_page, __( 'Settings', 'charitable' ), __( 'Settings', 'charitable' ), $this->admin_menu_capability, 'charitable-settings', array( $this, 'render_charitable_settings_page' ) );
-
-        remove_submenu_page( $this->admin_menu_parent_page, $this->admin_menu_parent_page );
-    }
+    }    
 
     /**
      * Return the array of tabs used on the settings page.  
@@ -150,45 +109,6 @@ final class Charitable_Settings extends Charitable_Start_Object {
             }
         }
     }   
-
-    /**
-     * Add settings for each individual email. 
-     *
-     * @return  array[]
-     * @access  public
-     * @since   1.0.0
-     */
-    public function add_email_settings_fields( $fields ) {
-        foreach ( charitable_get_helper( 'emails' )->get_enabled_emails() as $email ) {
-            if ( ! class_exists( $email ) ) {
-                continue;
-            }
-
-            $fields[ $email::ID ] = apply_filters( 'charitable_settings_fields_emails_email', array(), new $email );
-        }
-
-        return $fields;
-    }
-
-    /**
-     * Add email keys to the settings groups. 
-     *
-     * @param   string[] $groups
-     * @return  string[]
-     * @access  public
-     * @since   1.0.0
-     */
-    public function add_email_settings_groups( $groups ) {
-        foreach ( charitable_get_helper( 'emails' )->get_enabled_emails() as $email ) {
-            if ( ! class_exists( $email ) ) {
-                continue;
-            }
-            
-            $groups[] = $email::ID;
-        }
-
-        return $groups;
-    }
 
     /**
      * Sanitize submitted settings before saving to the database. 
@@ -275,18 +195,7 @@ final class Charitable_Settings extends Charitable_Start_Object {
         }
 
         return $value;
-    }    
-
-    /**
-     * Display the Charitable settings page. 
-     *
-     * @return  void
-     * @access  public
-     * @since   1.0.0
-     */
-    public function render_charitable_settings_page() {
-        charitable_admin_view( 'settings/settings' );
-    }
+    }        
 
     /**
      * Render field. This is the default callback used for all fields, unless an alternative callback has been specified. 
@@ -302,17 +211,7 @@ final class Charitable_Settings extends Charitable_Start_Object {
         charitable_admin_view( 'settings/' . $field_type, $args );
     }
 
-    /**
-     * Display table with emails.  
-     *
-     * @return  void
-     * @access  public
-     * @since   1.0.0
-     */
-    public function render_emails_table( $args ) {
-        charitable_admin_view( 'settings/emails', $args );
-    }
-
+    
     /**
      * Returns an array of all pages in the id=>title format. 
      *
@@ -414,11 +313,11 @@ final class Charitable_Settings extends Charitable_Start_Object {
      * Return all the general fields.  
      *
      * @return  array[]
-     * @access  private
+     * @access  public
      * @since   1.0.0
      */
-    private function get_general_fields() {
-        return apply_filters( 'charitable_settings_fields_general', array(
+    public function add_general_settings_fields() {
+        return array(
             'section'               => array(
                 'title'             => '',
                 'type'              => 'hidden',
@@ -489,18 +388,18 @@ final class Charitable_Settings extends Charitable_Start_Object {
                 'type'              => 'heading', 
                 'priority'          => 20
             )
-        ) );
+        );
     }
 
     /**
      * Return all the settings fields related to forms (donation forms, profile forms, etc).
      *
      * @return  array[]
-     * @access  private
+     * @access  public
      * @since   1.0.0
      */
-    private function get_form_fields() {
-        return apply_filters( 'charitable_settings_fields_forms', array(
+    public function add_forms_settings_fields() {
+        return array(
             'section'               => array(
                 'title'             => '',
                 'type'              => 'hidden',
@@ -532,7 +431,7 @@ final class Charitable_Settings extends Charitable_Start_Object {
                 'options'           => array(),
                 'help'              => __( 'Choose the fields that you would like your donors to fill out when making a donation.', 'charitable' )
             )
-        ) ); 
+        ); 
     }
 
     /**
@@ -564,90 +463,14 @@ final class Charitable_Settings extends Charitable_Start_Object {
     // }
 
     /**
-     * Returns all the email settings fields.  
-     *
-     * @return  array[]
-     * @access  private
-     * @since   1.0.0
-     */
-    private function get_email_fields() {
-        /* Check if we are editing a specific gateway's settings. */   
-        if ( $this->is_individual_email_settings_page() ) {
-            
-            $email = $this->get_current_email_class();
-
-            return array( 
-                $email::ID => apply_filters( 'charitable_settings_fields_emails_email', array(), $this->get_current_email_class() )
-            );      
-        }
-       
-        return apply_filters( 'charitable_settings_fields_emails', array(
-            'section'               => array(
-                'title'             => '',
-                'type'              => 'hidden',
-                'priority'          => 10000,
-                'value'             => 'emails'
-            ),
-            'emails' => array(
-                'title'     => __( 'Available Emails', 'charitable' ),
-                'callback'  => array( $this, 'render_emails_table' ), 
-                'priority'  => 5
-            ), 
-            'section_email_general' => array(
-                'title'     => __( 'General Email Settings', 'charitable' ), 
-                'type'      => 'heading', 
-                'priority'  => 10
-            ),
-            'email_from_name' => array(
-                'title'     => __( '"From" Name', 'charitable' ),
-                'type'      => 'text',
-                'help'      => __( 'The name of the email sender.', 'charitable' ), 
-                'priority'  => 12, 
-                'default'   => get_option( 'blogname' )
-            ),
-             'email_from_email' => array(
-                'title'     => __( '"From" Email', 'charitable' ),
-                'type'      => 'email',
-                'help'      => __( 'The email address of the email sender. This will be the address recipients email if they hit "Reply".', 'charitable' ), 
-                'priority'  => 14, 
-                'default'   => get_option( 'admin_email' )
-            ),
-        ) );
-    }
-
-    /**
-     * Checks whether we're looking at an individual email's settings page. 
-     *
-     * @return  boolean
-     * @access  private
-     * @since   1.0.0
-     */
-    private function is_individual_email_settings_page() {
-        return isset( $_GET[ 'edit_email' ] );
-    }
-
-    /**
-     * Returns the helper class of the email we're editing.
-     *
-     * @return  Charitable_Email|false
-     * @access  private
-     * @since   1.0.0
-     */
-    private function get_current_email_class() {
-        $email = charitable_get_helper( 'emails' )->get_email( $_GET[ 'edit_email' ] );
-
-        return $email ? new $email : false;
-    }
-
-    /**
      * Get the advanced settings tab fields.  
      *
      * @return  array
-     * @access  private
+     * @access  public
      * @since   1.0.0
      */
-    private function get_advanced_fields() {
-        return apply_filters( 'charitable_settings_fields_advanced', array(
+    public function add_advanced_settings_fields() {
+        return array(
             'section'               => array(
                 'title'             => '',
                 'type'              => 'hidden',
@@ -676,7 +499,7 @@ final class Charitable_Settings extends Charitable_Start_Object {
                 'help'              => __( 'DELETE ALL DATA when uninstalling the plugin.', 'charitable' ), 
                 'priority'          => 105
             )
-        ) );
+        );
     }
 
     /**

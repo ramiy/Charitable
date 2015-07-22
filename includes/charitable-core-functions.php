@@ -41,8 +41,6 @@ function charitable_get_option( $key, $default = false, $settings = array() ) {
 		$settings = get_option( 'charitable_settings' );		
 	}
 
-	// echo '<pre>'; var_dump( $key );
-
 	if ( is_array( $key ) ) {
 		$current_key = current( $key );
 

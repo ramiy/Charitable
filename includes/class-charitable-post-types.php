@@ -36,6 +36,8 @@ final class Charitable_Post_Types extends Charitable_Start_Object {
 		add_action( 'init', array( $this, 'register_post_statuses' ), 5 );
 		add_action( 'init', array( $this, 'register_taxonomies' ), 6 );
 		add_action( 'init', array( $this, 'add_endpoints' ) );	
+		add_action( 'init', array( $this, 'add_rewrite_tags' ) );
+		add_action( 'init', array( $this, 'add_rewrite_rule' ), 11 );
 	}
 
 	/**
@@ -108,7 +110,7 @@ final class Charitable_Post_Types extends Charitable_Start_Object {
 						'add_new' 				=> __( 'Add Donation', 'charitable' ),
 						'add_new_item' 			=> __( 'Add New Donation', 'charitable' ),
 						'edit' 					=> __( 'Edit', 'charitable' ),
-						'edit_item' 			=> __( 'Edit Donation', 'charitable' ),
+						'edit_item' 			=> __( 'Donation Details', 'charitable' ),
 						'new_item' 				=> __( 'New Donation', 'charitable' ),
 						'view' 					=> __( 'View Donation', 'charitable' ),
 						'view_item' 			=> __( 'View Donation', 'charitable' ),
@@ -127,7 +129,7 @@ final class Charitable_Post_Types extends Charitable_Start_Object {
 					'hierarchical' 			=> false, // Hierarchical causes memory issues - WP loads all records!
 					'rewrite' 				=> false,
 					'query_var' 			=> false,
-					'supports' 				=> array( 'page-attributes' ),
+					'supports' 				=> array( '' ),
 					'has_archive' 			=> false,
 					'show_in_nav_menus' 	=> false, 
 					'show_in_menu'			=> false
@@ -144,9 +146,6 @@ final class Charitable_Post_Types extends Charitable_Start_Object {
 	 * @since 	1.0.0
 	 */
 	public function register_post_statuses() {
-		/**
-		 * Post statuses for donations.
-		 */
 		register_post_status( 'charitable-pending', array(
 			'label'                     => _x( 'charitable-pending', 'Status General Name', 'charitable' ),
 			'label_count'               => _n_noop( 'Pending (%s)',  'Pending (%s)', 'charitable' ), 
@@ -288,7 +287,30 @@ final class Charitable_Post_Types extends Charitable_Start_Object {
 	public function add_endpoints() {
 		add_rewrite_endpoint( 'donate', EP_ALL );
 		add_rewrite_endpoint( 'widget', EP_ALL );
+		add_rewrite_endpoint( 'donation_receipt', EP_ROOT );
 	}
+
+	/**
+	 * Add custom rewrite tag. 
+	 *
+	 * @return  void
+	 * @access  public
+	 * @since   1.0.0
+	 */
+	public function add_rewrite_tags() {
+		add_rewrite_tag('%donation_id%', '([0-9]+)' );
+	}
+
+	/**
+	 * Add endpoint for editing campaigns.	
+	 *
+	 * @return  void
+	 * @access  public
+	 * @since   1.0.0
+	 */
+	public function add_rewrite_rule() {
+		add_rewrite_rule( 'donation-receipt/([0-9]+)/?$', 'index.php?donation_id=$matches[1]&donation_receipt=1', 'top' );
+	}		
 }
 
 endif; // End class_exists check.

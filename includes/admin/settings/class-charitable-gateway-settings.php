@@ -28,8 +28,8 @@ final class Charitable_Gateway_Settings extends Charitable_Start_Object {
      * @since   1.0.0
      */
     protected function __construct() {
-        add_filter( 'charitable_settings_tab_fields_gateway', array( $this, 'add_gateway_fields' ) );
-        add_filter( 'charitable_settings_tab_fields', array( $this, 'add_individual_gateway_fields' ) );
+        add_filter( 'charitable_settings_tab_fields_gateways', array( $this, 'add_gateway_fields' ), 5 );
+        add_filter( 'charitable_settings_tab_fields', array( $this, 'add_individual_gateway_fields' ), 5 );
         add_filter( 'charitable_dynamic_groups', array( $this, 'add_gateway_settings_dynamic_groups' ) );
     }
 
@@ -41,7 +41,7 @@ final class Charitable_Gateway_Settings extends Charitable_Start_Object {
      * @since   1.0.0
      */
     public function add_gateway_fields() {
-        return apply_filters( 'charitable_settings_fields_gateways', array(
+        return array(
             'section' => array(
                 'title'             => '',
                 'type'              => 'hidden',
@@ -58,7 +58,7 @@ final class Charitable_Gateway_Settings extends Charitable_Start_Object {
                 'callback'          => array( $this, 'render_gateways_table' ), 
                 'priority'          => 10
             )
-        ) );
+        );
     }
 
     /**

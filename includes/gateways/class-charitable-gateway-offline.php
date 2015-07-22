@@ -62,15 +62,17 @@ class Charitable_Gateway_Offline extends Charitable_Gateway {
 
 	/**
 	 * Send the donation/donor off to the gateway.  
-	 *
-	 * @param 	Charitable_Campaign 	$campaign
-	 * @param 	int 					$donation_id
+	 *	 
+	 * @param 	int     $donation_id
+     * @param   Charitable_Campaign $campaign
 	 * @return 	void
 	 * @access  public
+     * @static
 	 * @since 	1.0.0
 	 */
-	public function send_donation_to_gateway( $campaign, $donation_id ) {
-
+	public static function process_donation( $donation_id, $campaign ) {
+        wp_safe_redirect( charitable_get_permalink( 'donation_receipt_page', array( 'donation_id' => $donation_id ) ) );
+        die();
 	}
 }
 

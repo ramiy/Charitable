@@ -57,7 +57,7 @@ class Charitable_User extends WP_User {
      */
     public static function init_with_donor( $donor_id ) {
         $user_id = charitable_get_table( 'donors' )->get_user_id( $donor_id );
-        $user = new Charitable_User( $user_id );
+        $user = charitable_get_user( $user_id );
         $user->set_donor_id( $donor_id );
         return $user;
     }
@@ -77,6 +77,17 @@ class Charitable_User extends WP_User {
         }
 
         return parent::__get( $key );
+    }
+
+    /**
+     * Display the donor name when printing the object.  
+     *
+     * @return  string
+     * @access  public
+     * @since   1.0.0
+     */
+    public function __toString() {
+        return $this->get_name();
     }
 
     /**

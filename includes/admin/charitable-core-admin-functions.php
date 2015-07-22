@@ -47,5 +47,5 @@ function charitable_admin_view( $view, $view_args = array() ) {
  * @since 	1.0.0
  */
 function charitable_get_admin_settings() {
-	return charitable_get_helper( 'Admin_Settings' );
+	return charitable_get_helper( 'settings' );
 }

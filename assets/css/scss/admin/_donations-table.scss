@@ -1,0 +1,22 @@
+.wp-list-table.donations {
+    .meta {
+        display: block;
+        color: #999;
+    }
+
+    .column-donation {
+        max-width: 200px;
+    }
+
+    .column-details {
+        max-width: 140px;
+    }
+
+    .column-amount {
+        max-width: 120px;
+    }
+
+    .column-status {
+        max-width: 120px;
+    }    
+}

@@ -57,10 +57,17 @@ add_action( 'charitable_make_donation_streamlined', array( 'Charitable_Donation_
  *
  * This is called after the donation is stored in the database.
  *
- * @see send_donation_to_gateway
+ * @see Charitable_Donation_Controller::send_donation_to_gateway
  */
-add_action( 'charitable_after_save_donation', array( 'Charitable_Donation_Controller', 'send_donation_to_gateway' ) );
+add_action( 'charitable_after_save_donation', array( 'Charitable_Donation_Controller', 'send_donation_to_gateway' ), 10, 2 );
 
-
+/**
+ * Send donation to the Offline gateway.
+ *
+ * This is called on the charitable_after_save_donation hook. 
+ *
+ * @see Charitable_Gateway_Offline::process_donation
+ */
+add_action( 'charitable_make_donation_offline', array( 'Charitable_Gateway_Offline', 'process_donation' ), 10, 2 );
 
 

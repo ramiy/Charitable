@@ -46,11 +46,17 @@ final class Charitable_Admin extends Charitable_Start_Object {
 	private function load_dependencies() {
 		require_once( charitable()->get_path( 'admin' ) . 'charitable-core-admin-functions.php' );					
 		require_once( charitable()->get_path( 'admin' ) . 'class-charitable-meta-box-helper.php' );
-		require_once( charitable()->get_path( 'admin' ) . 'class-charitable-campaign-post-type.php' );
-		require_once( charitable()->get_path( 'admin' ) . 'class-charitable-donation-post-type.php' );
+		require_once( charitable()->get_path( 'admin' ) . 'class-charitable-admin-pages.php' );
+
+		/* Campaigns */
+		require_once( charitable()->get_path( 'admin' ) . 'campaigns/class-charitable-campaign-post-type.php' );
+		
+		/* Donations */
+		require_once( charitable()->get_path( 'admin' ) . 'donations/class-charitable-donation-post-type.php' );		
 
 		/* Settings */
 		require_once( charitable()->get_path( 'admin' ) . 'settings/class-charitable-settings.php' );
+		require_once( charitable()->get_path( 'admin' ) . 'settings/class-charitable-email-settings.php' );
 		require_once( charitable()->get_path( 'admin' ) . 'settings/class-charitable-gateway-settings.php' );
 	}
 
@@ -62,10 +68,12 @@ final class Charitable_Admin extends Charitable_Start_Object {
 	 * @since 	1.0.0
 	 */
 	private function attach_hooks_and_filters() {
-		add_action( 'charitable_start', 		array( 'Charitable_Settings', 'charitable_start' ) );
-		add_action( 'charitable_start', 		array( 'Charitable_Gateway_Settings', 'charitable_start' ) );
-		add_action( 'charitable_start', 		array( 'Charitable_Campaign_Post_Type', 'charitable_start' ) );
-		add_action( 'charitable_start', 		array( 'Charitable_Donation_Post_Type', 'charitable_start' ) );
+		add_action( 'charitable_start', array( 'Charitable_Admin_Pages', 'charitable_start' ) );
+		add_action( 'charitable_start', array( 'Charitable_Settings', 'charitable_start' ) );
+		add_action( 'charitable_start', array( 'Charitable_Gateway_Settings', 'charitable_start' ) );
+		add_action( 'charitable_start', array( 'Charitable_Email_Settings', 'charitable_start' ) );
+		add_action( 'charitable_start', array( 'Charitable_Campaign_Post_Type', 'charitable_start' ) );
+		add_action( 'charitable_start', array( 'Charitable_Donation_Post_Type', 'charitable_start' ) );
 		// add_action( 'admin_init', 				array( $this, 'activate_license' ) );
 		// add_action( 'admin_init', 				array( $this, 'licensing' ) );
 		add_action( 'admin_enqueue_scripts', 	array( $this, 'admin_enqueue_scripts' ) );
@@ -132,7 +140,8 @@ final class Charitable_Admin extends Charitable_Start_Object {
 		return apply_filters( 'charitable_admin_screens', array(
 			'campaign', 
 			'donation', 
-			'charitable_page_charitable-settings'
+			'charitable_page_charitable-settings',
+			'charitable_page_charitable-donations-table'
 		) );
 	}
 }

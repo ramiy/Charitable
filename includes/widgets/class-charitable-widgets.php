@@ -34,24 +34,7 @@ final class Charitable_Widgets extends Charitable_Start_Object {
 	 * @since 	1.0.0
 	 */
 	protected function __construct() {
-		$this->include_widgets();
-
 		add_action( 'widgets_init', array( $this, 'register_widgets' ) );
-	}
-
-	/**
-	 * Include widget files. 
-	 *
-	 * @return 	void
-	 * @access 	private
-	 * @since 	1.0.0
-	 */
-	private function include_widgets() {
-		require_once( charitable()->get_path( 'includes' ) . 'widgets/class-charitable-campaign-terms-widget.php' );
-		require_once( charitable()->get_path( 'includes' ) . 'widgets/class-charitable-campaigns-widget.php' );
-		require_once( charitable()->get_path( 'includes' ) . 'widgets/class-charitable-donors-widget.php' );
-		require_once( charitable()->get_path( 'includes' ) . 'widgets/class-charitable-donate-widget.php' );
-		require_once( charitable()->get_path( 'includes' ) . 'widgets/class-charitable-donation-stats-widget.php' );
 	}
 
 	/**

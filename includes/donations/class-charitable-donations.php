@@ -47,9 +47,10 @@ class Charitable_Donations {
 	 * @global 	WPDB 		$wpdb
 	 * @return 	int
 	 * @access  public
+	 * @static
 	 * @since 	1.0.0
 	 */
-	public function count_all() {
+	public static function count_all() {
 		global $wpdb;
 
 		$sql = "SELECT COUNT( * ) 
@@ -65,9 +66,10 @@ class Charitable_Donations {
 	 * @global 	WPDB 		$wpdb
 	 * @return 	array
 	 * @access  public
+	 * @static
 	 * @since 	1.0.0
 	 */
-	public function count_by_status() {
+	public static function count_by_status() {
 		global $wpdb;
 
 		$sql = "SELECT post_status, COUNT( * ) AS num_donations

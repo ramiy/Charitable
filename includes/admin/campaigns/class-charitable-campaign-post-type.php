@@ -19,7 +19,7 @@ if ( ! class_exists( 'Charitable_Campaign_Post_Type' ) ) :
  * @final
  * @since       1.0.0
  */
-final class Charitable_Campaign_Post_Type {
+final class Charitable_Campaign_Post_Type extends Charitable_Start_Object {
 
     /**
      * @var     Charitable_Meta_Box_Helper $meta_box_helper
@@ -30,36 +30,19 @@ final class Charitable_Campaign_Post_Type {
     /**
      * Create object instance. 
      *
-     * @access  private
+     * @access  protected
      * @since   1.0.0
      */
-    private function __construct() {    
+    protected function __construct() {    
         $this->meta_box_helper = new Charitable_Meta_Box_Helper( 'charitable-campaign' );
 
         add_action( 'add_meta_boxes',                               array( $this, 'add_meta_boxes' ), 10);
         add_action( 'add_meta_boxes_campaign',                      array( $this, 'wrap_editor' ) );
-        add_action( 'edit_form_after_title',                        array( $this, 'campaign_form_top' ) );          
+        add_action( 'edit_form_after_title',                        array( $this, 'campaign_form_top' ) );
         add_action( 'save_post',                                    array( $this, 'save_post' ), 10, 2);
         add_action( 'charitable_campaign_donation_options_metabox', array( $this, 'campaign_donation_options_metabox' ));
         add_filter( 'enter_title_here',                             array( $this, 'campaign_enter_title' ), 10, 2 );
         add_filter( 'get_user_option_meta-box-order_campaign',      '__return_false' );
-    }
-
-    /**
-     * Create an object instance. This will only work during the charitable_start event.
-     * 
-     * @see     charitable_start hook
-     * @param   Charitable  $charitable
-     * @return  void
-     * @access  private
-     * @since   1.0.0
-     */
-    public static function charitable_start( Charitable $charitable ) {
-        if ( ! $charitable->is_start() ) {
-            return;
-        }
-
-        $charitable->register_object( new Charitable_Campaign_Post_Type() );
     }
 
     /**
@@ -126,7 +109,7 @@ final class Charitable_Campaign_Post_Type {
                 $meta_box['id'], 
                 $meta_box['title'], 
                 array( $this->meta_box_helper, 'metabox_display' ), 
-                'campaign', 
+                Charitable::CAMPAIGN_POST_TYPE, 
                 $meta_box['context'], 
                 $meta_box['priority'], 
                 $meta_box
@@ -144,7 +127,7 @@ final class Charitable_Campaign_Post_Type {
      */
     public function campaign_form_top( $post ) {
         if ( Charitable::CAMPAIGN_POST_TYPE == $post->post_type ) {
-            do_meta_boxes( 'campaign', 'campaign-top', $post );
+            do_meta_boxes( Charitable::CAMPAIGN_POST_TYPE, 'campaign-top', $post );
         }       
     }
 

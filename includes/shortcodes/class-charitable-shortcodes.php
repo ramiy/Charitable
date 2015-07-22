@@ -32,21 +32,9 @@ class Charitable_Shortcodes extends Charitable_Start_Object  {
      * @since   1.0.0
      */
     protected function __construct() {
-        $this->load_shortcode_classes();
         $this->register_shortcodes();
     }
-
-    /**
-     * Include shortcodes files. 
-     *
-     * @return  void
-     * @access  private
-     * @since   1.0.0
-     */
-    private function load_shortcode_classes() {
-        require_once( charitable()->get_path( 'includes' ) . 'shortcodes/class-charitable-campaigns-shortcode.php' );
-    }
-
+    
     /**
      * Set up hooks and filters. 
      *
@@ -56,6 +44,7 @@ class Charitable_Shortcodes extends Charitable_Start_Object  {
      */
     private function register_shortcodes() {
         add_shortcode( 'campaigns', array( 'Charitable_Campaigns_Shortcode', 'display' ) );
+        add_shortcode( 'my_donations', array( 'Charitable_My_Donations_Shortcode', 'display' ) );
     }
 }
 
