@@ -23,7 +23,7 @@ ob_start();
 <div class="wrap">
     <h2><?php echo $donation_post_type->labels->menu_name ?></h2>
     <?php do_action( 'charitable_donations_page_top' ); ?>
-    <form id="charitable-donations" method="get" action="<?php echo admin_url( 'edit.php?page=charitable-donations-table' ); ?>">
+    <form id="charitable-donations" method="get" action="<?php echo admin_url( 'admin.php?page=charitable-donations-table' ); ?>">
         <input type="hidden" name="page" value="charitable-donations-table" />
 
         <?php $donations_table->views() ?>
@@ -31,16 +31,16 @@ ob_start();
         <div id="charitable-donation-filters">
             <span id="charitable-donation-date-filters">
                 <label for="start-date"><?php _e( 'Start Date:', 'charitable' ); ?></label>
-                <input type="text" id="start-date" name="start-date" class="charitable-datepicker" value="<?php echo $start_date; ?>" placeholder="mm/dd/yyyy"/>
+                <input type="text" id="start-date" name="start-date" class="charitable-datepicker" value="<?php echo $start_date; ?>" />
                 <label for="end-date"><?php _e( 'End Date:', 'charitable' ); ?></label>
-                <input type="text" id="end-date" name="end-date" class="charitable-datepicker" value="<?php echo $end_date; ?>" placeholder="mm/dd/yyyy"/>
+                <input type="text" id="end-date" name="end-date" class="charitable-datepicker" value="<?php echo $end_date; ?>" />
                 <input type="submit" class="button-secondary" value="<?php _e( 'Apply', 'charitable' ) ?>" />
             </span>
             <?php if( ! empty( $status ) ) : ?>
                 <input type="hidden" name="post_status" value="<?php echo esc_attr( $status ); ?>"/>
             <?php endif; ?>
             <?php if( ! empty( $start_date ) || ! empty( $end_date ) ) : ?>
-                <a href="<?php echo admin_url( 'edit.php?post_type=download&page=charitable-donation-history' ); ?>" class="button-secondary"><?php _e( 'Clear Filter', 'charitable' ); ?></a>
+                <a href="<?php echo admin_url( 'admin.php?page=charitable-donations-table' ); ?>" class="button-secondary"><?php _e( 'Clear Filter', 'charitable' ); ?></a>
             <?php endif; ?>
             <?php //$this->search_box( __( 'Search', 'charitable' ), 'edd-donations' ); ?>
         </div>

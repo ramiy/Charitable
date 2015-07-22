@@ -25,12 +25,12 @@
   .charitable-media-block .charitable-media-body {
     overflow: hidden; }
 
-/* --- Charitable Datepicker Styling --- */
 .charitable-datepicker-table.ui-datepicker {
   background-color: #fff;
   padding: 0;
   border: 1px solid #dedede;
-  width: auto; }
+  width: auto;
+  z-index: 100000; }
   .charitable-datepicker-table.ui-datepicker .ui-datepicker-header {
     padding: 10px 20px;
     background: #f5f5f5;
@@ -544,5 +544,16 @@ select.charitable-settings-field {
   max-width: 120px; }
 .wp-list-table.donations .column-status {
   max-width: 120px; }
+
+#charitable-donation-filters {
+  float: left;
+  width: 100%;
+  padding: 12px 0;
+  margin: 12px 0;
+  border: 1px solid #dfdfdf;
+  background-color: #fafafa; }
+
+#charitable-donation-date-filters {
+  margin-left: 11px; }
 
 /*# sourceMappingURL=charitable-admin.css.map */

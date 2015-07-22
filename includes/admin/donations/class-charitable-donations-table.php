@@ -314,7 +314,7 @@ class Charitable_Donations_Table extends WP_List_Table {
         $value = sprintf( '%s<span class="meta">%s %s</span>', 
             charitable()->get_currency_helper()->get_monetary_amount( $donation->get_total_donation_amount() ),
             _x( 'via', 'paid via method', 'charitable' ),
-            $donation->get_gateway_object()->get_name()
+            $donation->get_gateway_object() ? $donation->get_gateway_object()->get_name() : $donation->get_gateway()
         );
         return apply_filters( 'charitable_donations_table_column', $value, $donation->ID, 'amount' );
     }
@@ -514,37 +514,31 @@ class Charitable_Donations_Table extends WP_List_Table {
 
         /* Set up date query */
         if ( isset( $_GET[ 'start-date' ] ) ) {
-            $start_date = sanitize_text_field( $_GET[ 'start-date' ] );
-            list( $start_month, $start_day, $start_year ) = explode( '/', $start_date );
-
-            if ( ! isset( $_GET[ 'end-date' ] ) || $_GET[ 'end-date' ] == $start_date ) {
-                $args[ 'm' ] = intval( $start_year . $start_month );
-                $args[ 'day' ] = intval( $start_day );
+            $start_date = $this->get_parsed_date( $_GET[ 'start-date' ] );
+            
+            if ( ! isset( $_GET[ 'end-date' ] ) || $_GET[ 'end-date' ] == $_GET[ 'start-date' ] ) {
+                $args[ 'm' ] = intval( $start_date[ 'year' ] . $start_date[ 'month' ] );
+                $args[ 'day' ] = intval( $start_date[ 'day' ] );
             }
             else {
-                $end_date = sanitize_text_field( $_GET[ 'end-date' ] );
-                list( $end_month, $end_day, $end_year ) = explode( '/', $end_date );
-
+                $end_date = $this->get_parsed_date( $_GET[ 'end-date' ] );
+                
                 $args[ 'date_query' ] = array(
                     'after' => array(
-                        'year' => $start_year,
-                        'month' => $start_month,
-                        'day' => $start_day
+                        'year' => $start_date[ 'year' ],
+                        'month' => $start_date[ 'month' ],
+                        'day' => $start_date[ 'day' ]
                     ),
                     'before' => array(
-                        'year' => $end_year,
-                        'month' => $end_month,
-                        'day' => $end_day
+                        'year' => $end_date[ 'year' ],
+                        'month' => $end_date[ 'month' ],
+                        'day' => $end_date[ 'day' ]
                     )
                 );
             }
         }
 
         $args = array_filter( $args, array( $this, 'remove_null_query_args' ) );
-
-        // echo '<pre>';
-        // var_dump( $args );
-        // die;
 
         return get_posts( $args );
     }
@@ -577,5 +571,21 @@ class Charitable_Donations_Table extends WP_List_Table {
      */
     protected function remove_null_query_args( $arg ) {
         return ! is_null( $arg );
+    }
+
+    /**
+     * Given a date, returns an array containing the date, month and year. 
+     *
+     * @return  string[]
+     * @access  protected
+     * @since   1.0.0
+     */
+    protected function get_parsed_date( $date ) {
+        $time = strtotime( $date );
+        return array(
+            'year' => date( 'Y', $time ),
+            'month' => date( 'm', $time ),
+            'day' => date( 'd', $time )
+        );
     }
 }

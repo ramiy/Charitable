@@ -17,6 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 /**********************************************/ 
 /* SINGLE CAMPAIGN CONTENT
 /**********************************************/
+
 if ( ! function_exists( 'charitable_template_campaign_content' ) ) :
     /**
      * Display the campaign content.
