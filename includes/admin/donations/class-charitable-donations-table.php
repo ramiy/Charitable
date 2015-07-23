@@ -96,7 +96,7 @@ class Charitable_Donations_Table extends WP_List_Table {
         $this->donation_statuses = Charitable_Donation::get_valid_donation_statuses();
 
         $this->prepare_donation_counts();
-        // $this->process_bulk_action();    
+        $this->process_bulk_action();    
     }
 
     public function advanced_filters() {
@@ -214,8 +214,8 @@ class Charitable_Donations_Table extends WP_List_Table {
      */
     public function get_sortable_columns() {
         $columns = array(
-            'ID'        => array( 'ID', true ),
-            'amount'    => array( 'amount', false ),
+            'donation'  => array( 'ID', true ),
+            // 'amount'    => array( 'amount', false ),
             'date'      => array( 'date', false )
         );
         return apply_filters( 'charitable_donations_table_sortable_columns', $columns );
@@ -232,7 +232,7 @@ class Charitable_Donations_Table extends WP_List_Table {
     public function column_cb( $donation ) {
         return sprintf(
             '<input type="checkbox" name="%1$s[]" value="%2$s" />',
-            'payment',
+            'donation',
             $donation->ID
         );
     }
@@ -357,18 +357,13 @@ class Charitable_Donations_Table extends WP_List_Table {
      * @return array $actions Array of the bulk actions
      */
     public function get_bulk_actions() {
-        $actions = array(
-            'delete'                 => __( 'Delete',                'charitable' ),
-            'set-status-publish'     => __( 'Set To Completed',      'charitable' ),
-            'set-status-pending'     => __( 'Set To Pending',        'charitable' ),
-            'set-status-refunded'    => __( 'Set To Refunded',       'charitable' ),
-            'set-status-revoked'     => __( 'Set To Revoked',        'charitable' ),
-            'set-status-failed'      => __( 'Set To Failed',         'charitable' ),
-            'set-status-abandoned'   => __( 'Set To Abandoned',      'charitable' ),
-            'set-status-preapproval' => __( 'Set To Preapproval',    'charitable' ),
-            'set-status-cancelled'   => __( 'Set To Cancelled',      'charitable' ),
-            'resend-receipt'         => __( 'Resend Email Receipts', 'charitable' )
-        );
+        $actions = array();
+        
+        // $actions = array( 'delete' => __( 'Delete', 'charitable' ) );
+
+        foreach ( $this->donation_statuses as $status_key => $label ) {
+            $actions[ 'set-' . $status_key ] = sprintf( '%s %s', _x( 'Set To', 'Set To Pending', 'charitable' ), $label );
+        }
 
         return apply_filters( 'charitable_donations_table_bulk_actions', $actions );
     }
@@ -381,61 +376,30 @@ class Charitable_Donations_Table extends WP_List_Table {
      * @return void
      */
     public function process_bulk_action() {
-        $ids    = isset( $_GET['payment'] ) ? $_GET['payment'] : false;
+        $ids = isset( $_GET[ 'donation' ] ) ? $_GET[ 'donation' ] : array();
         $action = $this->current_action();
 
-        if ( ! is_array( $ids ) )
-            $ids = array( $ids );
-
-
-        if( empty( $action ) )
+        if ( empty( $action ) || empty( $ids ) ) {
             return;
-
-        foreach ( $ids as $id ) {
-            // Detect when a bulk action is being triggered...
-            if ( 'delete' === $this->current_action() ) {
-                edd_delete_purchase( $id );
-            }
-
-            if ( 'set-status-publish' === $this->current_action() ) {
-                edd_update_payment_status( $id, 'publish' );
-            }
-
-            if ( 'set-status-pending' === $this->current_action() ) {
-                edd_update_payment_status( $id, 'pending' );
-            }
-
-            if ( 'set-status-refunded' === $this->current_action() ) {
-                edd_update_payment_status( $id, 'refunded' );
-            }
-
-            if ( 'set-status-revoked' === $this->current_action() ) {
-                edd_update_payment_status( $id, 'revoked' );
-            }
-
-            if ( 'set-status-failed' === $this->current_action() ) {
-                edd_update_payment_status( $id, 'failed' );
-            }
-
-            if ( 'set-status-abandoned' === $this->current_action() ) {
-                edd_update_payment_status( $id, 'abandoned' );
-            }
-
-            if ( 'set-status-preapproval' === $this->current_action() ) {
-                edd_update_payment_status( $id, 'preapproval' );
-            }
-
-            if ( 'set-status-cancelled' === $this->current_action() ) {
-                edd_update_payment_status( $id, 'cancelled' );
-            }
-
-            if( 'resend-receipt' === $this->current_action() ) {
-                edd_email_purchase_receipt( $id, false );
-            }
-
-            do_action( 'charitable_donations_table_do_bulk_action', $id, $this->current_action() );
         }
 
+        /* Bulk delete donations */
+        if ( 'delete' == $action ) {
+
+        }
+
+        /* Check for status change */
+        foreach ( $this->donation_statuses as $status_key => $label ) {
+            if ( 'set-' . $status_key != $action ) {
+                continue;
+            }
+
+            foreach ( $ids as $id ) {
+                charitable_get_donation( $id )->update_status( $status_key );
+
+                do_action( 'charitable_donations_table_do_bulk_action', $id, $action );
+            }
+        }
     }
 
     /**
@@ -513,10 +477,10 @@ class Charitable_Donations_Table extends WP_List_Table {
         }
 
         /* Set up date query */
-        if ( isset( $_GET[ 'start-date' ] ) ) {
+        if ( isset( $_GET[ 'start-date' ] ) && ! empty( $_GET[ 'start-date' ] ) ) {
             $start_date = $this->get_parsed_date( $_GET[ 'start-date' ] );
             
-            if ( ! isset( $_GET[ 'end-date' ] ) || $_GET[ 'end-date' ] == $_GET[ 'start-date' ] ) {
+            if ( ! isset( $_GET[ 'end-date' ] ) || empty( $_GET[ 'start_date' ] ) || $_GET[ 'end-date' ] == $_GET[ 'start-date' ] ) {
                 $args[ 'm' ] = intval( $start_date[ 'year' ] . $start_date[ 'month' ] );
                 $args[ 'day' ] = intval( $start_date[ 'day' ] );
             }

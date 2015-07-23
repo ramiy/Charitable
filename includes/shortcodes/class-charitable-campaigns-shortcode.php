@@ -38,7 +38,7 @@ class Charitable_Campaigns_Shortcode {
             'creator' => '', 
             'exclude' => '',
             'include_inactive' => false,
-            'columns' => 1
+            'columns' => 2
         );
 
         $args = shortcode_atts( $default, $atts, 'campaigns' );

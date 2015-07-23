@@ -63,6 +63,19 @@
 	}
 }
 
+.charitable-fieldset {	
+	margin: 0 0 1em;
+	padding: 2em;
+	border: 1px solid #ebebeb;
+
+	.legend {
+		margin: 0 0 1em;
+	    font-size: 1.2em;	    
+	    color: #f89d35;
+	    font-weight: bolder;
+	}
+}
+
 .charitable-repeatable-form-field-table {
 	margin-bottom: 1em;
 }

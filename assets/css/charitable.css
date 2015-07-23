@@ -6,8 +6,7 @@
   *zoom: 1;
   padding: 0 1em;
   margin-bottom: 1em;
-  font-size: 1.1em;
-  background-color: #e6e6e6; }
+  border: 1px solid #e6e6e6; }
   .campaign-summary:before, .campaign-summary:after {
     content: " ";
     display: table; }
@@ -17,17 +16,19 @@
     float: left;
     width: 50%;
     padding: 1em 0;
-    border-bottom: 1px solid #fff; }
+    border-bottom: 1px solid #e6e6e6; }
   .campaign-summary .campaign-raised .amount,
   .campaign-summary .campaign-figures .amount {
     display: block;
     font-size: 1.5em;
-    font-weight: bolder; }
+    font-weight: bolder;
+    color: #f89d35; }
   .campaign-summary .campaign-donors {
     clear: left; }
   .campaign-summary .donors-count,
   .campaign-summary .time-left {
-    font-weight: bolder; }
+    font-weight: bolder;
+    color: #f89d35; }
   .campaign-summary .campaign-donation {
     float: left;
     width: 100%;
@@ -58,7 +59,7 @@
   background-color: #f89d35;
   color: #fff; }
 
-/* Donation form */
+/* Forms */
 #login-prompt {
   margin-bottom: 4px; }
 
@@ -100,6 +101,16 @@
   .charitable-form-field.charitable-form-field-checkbox label {
     display: inline;
     padding-left: 4px; }
+
+.charitable-fieldset {
+  margin: 0 0 1em;
+  padding: 2em;
+  border: 1px solid #ebebeb; }
+  .charitable-fieldset .legend {
+    margin: 0 0 1em;
+    font-size: 1.2em;
+    color: #f89d35;
+    font-weight: bolder; }
 
 .charitable-repeatable-form-field-table {
   margin-bottom: 1em; }
@@ -213,5 +224,10 @@
   border-bottom-width: 1px; }
   .widget_charitable_campaigns_widget .campaign:first-child {
     padding-top: 0; }
+.widget_charitable_campaigns_widget .campaign-title {
+  font-size: inherit;
+  font-weight: bolder; }
+.widget_charitable_campaigns_widget .campaign-time-left {
+  font-weight: normal; }
 
 /*# sourceMappingURL=charitable.css.map */

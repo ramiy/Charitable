@@ -119,7 +119,7 @@ final class Charitable_Request extends Charitable_Start_Object {
 
 			if ( get_post_type() == Charitable::CAMPAIGN_POST_TYPE ) {
 
-				$this->campaign_id = $this->post->ID;
+				$this->campaign_id = get_the_ID();
 
 			}
 			elseif ( get_query_var( 'donate', false ) ) {

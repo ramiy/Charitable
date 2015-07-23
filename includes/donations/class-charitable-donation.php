@@ -356,11 +356,11 @@ class Charitable_Donation {
 	 */
 	public static function get_valid_donation_statuses() {
 		return apply_filters( 'charitable_donation_statuses', array( 
-			'charitable-pending' 	=> __( 'Pending', 'charitable' ),
 			'charitable-completed' 	=> __( 'Paid', 'charitable' ),
+			'charitable-pending' 	=> __( 'Pending', 'charitable' ),			
 			'charitable-failed' 	=> __( 'Failed', 'charitable' ),
 			'charitable-cancelled' 	=> __( 'Cancelled', 'charitable' ),
-			'charitable-refunded' 	=> __( 'Refunded', 'charitable' ),
+			'charitable-refunded' 	=> __( 'Refunded', 'charitable' )
 		) );
 	}	
 
@@ -578,7 +578,7 @@ class Charitable_Donation {
 	 * @access  public
 	 * @since 	1.0.0
 	 */
-	public function update_status( $new_status ) {		
+	public function update_status( $new_status ) {
 		if ( false === self::is_valid_donation_status( $new_status ) ) {
 			$new_status = array_search( $new_status, self::get_valid_donation_statuses() );
 
@@ -587,6 +587,8 @@ class Charitable_Donation {
 				return 0;
 			}
 		}
+
+		$valid_statuses = self::get_valid_donation_statuses();
 
 		$old_status = $this->get_status();		
 
