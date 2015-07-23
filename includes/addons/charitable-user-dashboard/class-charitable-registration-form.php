@@ -128,9 +128,7 @@ class Charitable_Registration_Form extends Charitable_Form {
             return;
         }
 
-        $submitted = $_POST;
-
-        unset( $submitted[ 'coppa' ], $submitted[ 'user_confirmation' ] );
+        $submitted = apply_filters( 'charitable_registration_values', $_POST, $fields, $form );        
 
         $user = new Charitable_User();
         $user->update_profile( $submitted, array_keys( $fields ) );
