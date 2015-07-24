@@ -7,7 +7,17 @@
  * @version 1.0.0
  */
 
-$campaign = $view_args[ 'campaign' ];
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
+if ( ! isset( $view_args[ 'form' ] ) ) {
+    return;
+}
+
+/**
+ * @var Charitable_Donation_Form
+ */
+$form = $view_args[ 'form' ];
+$campaign = $form->get_campaign();
 $suggested_donations = $campaign->get_suggested_donations();
 $currency_helper = charitable()->get_currency_helper();
 $donation_amount = $campaign->get_donation_amount_in_session();

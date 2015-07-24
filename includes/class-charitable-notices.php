@@ -97,8 +97,6 @@ class Charitable_Notices {
 		}
 
 		$this->notices[ $type ] = array_merge( $this->notices[ $type ], $messages );
-
-
 	}
 
 	/**

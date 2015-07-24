@@ -276,16 +276,16 @@ final class Charitable_Settings extends Charitable_Start_Object {
      * @since   1.0.0
      */
     private function get_field_label( $field, $key ) {
+        $label = "";
+
         if ( isset( $field[ 'label_for' ] ) ) {
             $label = $field[ 'label_for' ];
         }
-        elseif ( isset( $field[ 'title' ] ) ) {
+        
+        if ( isset( $field[ 'title' ] ) ) {
             $label = $field[ 'title' ];
         }
-        else {
-            $label = ucfirst( $key );
-        }  
-
+        
         return $label;
     }
 
@@ -435,34 +435,6 @@ final class Charitable_Settings extends Charitable_Start_Object {
     }
 
     /**
-     * Returns all the payment gateway settings fields.  
-     *
-     * @return  array[]
-     * @access  private
-     * @since   1.0.0
-     */
-    // private function get_gateway_fields() {
-    //     return apply_filters( 'charitable_settings_fields_gateways', array(
-    //         'section' => array(
-    //             'title'             => '',
-    //             'type'              => 'hidden',
-    //             'priority'          => 10000,
-    //             'value'             => 'gateways'
-    //         ),
-    //         'test_mode' => array(
-    //             'title'             => __( 'Turn on Test Mode', 'charitable' ),
-    //             'type'              => 'checkbox',
-    //             'priority'          => 5
-    //         ),
-    //         'gateways' => array(
-    //             'title'             => __( 'Available Payment Gateways', 'charitable' ),
-    //             'callback'          => array( $this, 'render_gateways_table' ), 
-    //             'priority'          => 10
-    //         )
-    //     ) );
-    // }
-
-    /**
      * Get the advanced settings tab fields.  
      *
      * @return  array
@@ -587,14 +559,6 @@ final class Charitable_Settings extends Charitable_Start_Object {
     private function get_section_submitted_values( $section, $submitted ) {
         $values = array();
         $form_fields = $this->get_fields();        
-        $composite_key = $this->get_composite_key( $section, $submitted );
-
-        if ( $composite_key && $this->is_dynamic_group( $composite_key ) ) {
-
-            $values[ $composite_key ] = $this->get_section_submitted_values( $composite_key, current( $submitted ) );
-            return $values;
-
-        }
 
         if ( ! isset( $form_fields[ $section ] ) ) {
             return $values;
@@ -604,11 +568,16 @@ final class Charitable_Settings extends Charitable_Start_Object {
 
             $value = $this->get_setting_submitted_value( $key, $field, $submitted );
 
-            if ( ! is_null( $value ) ) {
-
-                $values[ $key ] = $value;
-
+            if ( is_null( $value ) ) {
+                continue;
             }
+
+            if ( $this->is_dynamic_group( $section ) ) {
+                $values[ $section ][ $key ] = $value;
+                continue;
+            }
+
+            $values[ $key ] = $value;            
         }
 
         return $values;
@@ -635,6 +604,11 @@ final class Charitable_Settings extends Charitable_Start_Object {
      * @since   1.0.0
      */
     private function get_composite_key( $section, $submitted ) {
+        // echo '<pre>';
+        // var_dump( $section );
+        // var_dump( $submitted );
+        // var_dump( current( $submitted ) );
+        // die;
         if ( ! is_array( current( $submitted ) ) ) {
             return false;
         }

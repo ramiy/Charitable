@@ -23,7 +23,7 @@ if ( count( $fields ) ) :
 	<?php 
 	if ( isset( $field[ 'legend' ] ) ) : ?>
 
-		<div class="legend"><?php echo $field[ 'legend' ] ?></div>
+		<div class="charitable-form-header"><?php echo $field[ 'legend' ] ?></div>
 
 	<?php
 	endif;

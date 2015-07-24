@@ -24,7 +24,7 @@ ob_start();
             <table class="form-table">
             <?php
                 settings_fields( 'charitable_settings' );       
-                do_settings_fields( 'charitable_settings_' . $group, 'charitable_settings_' . $group );             
+                charitable_do_settings_fields( 'charitable_settings_' . $group, 'charitable_settings_' . $group );             
             ?>
             </table>
             <?php 

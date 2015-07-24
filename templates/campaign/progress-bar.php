@@ -9,7 +9,18 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
+/**
+ * @var Charitable_Campaign
+ */
 $campaign = $view_args[ 'campaign' ];
 
+if ( ! $campaign->has_goal() ) :
+    return;
+endif;
+
+// echo '<pre>';
+// var_dump( $campaign->get_percent_donated_raw() );
+// echo '</pre>';
+
 ?>
-<div class="campaign-progress-bar"><span class="bar" style="width: 50%;"></span></div>
+<div class="campaign-progress-bar"><span class="bar" style="width: <?php echo $campaign->get_percent_donated_raw() ?>%;"></span></div>

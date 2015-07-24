@@ -53,6 +53,7 @@
 	input[type=radio], 
 	input[type=checkbox] {
 		width: auto;
+		margin-left: 0;
 	}
 
 	&.charitable-form-field-checkbox {
@@ -61,76 +62,111 @@
 			padding-left: 4px;
 		}
 	}
+
+	&.charitable-radio-list {
+	    list-style: none;
+	    margin: 0;
+	
+		li {
+		    list-style: none;
+		    margin: 0 20px 0 0;
+		    display: inline-block;
+		    line-height: 1em;
+		}
+	}
+
+	&.charitable-form-field-cc-expiration {
+		display: inline-block;
+		margin-right: 20px;
+
+		.month,
+		.year {
+			display: inline-block;
+			width: auto;
+		}
+	}
+}
+
+.charitable-gateway-fields {
+	padding-top: 1em;
+}
+
+#charitable_field_cvc {
+	display: inline-block;
+	max-width: 140px;
 }
 
 .charitable-fieldset {	
 	margin: 0 0 1em;
 	padding: 2em;
-	border: 1px solid #ebebeb;
+	border: 1px solid #ebebeb;	
+}
 
-	.legend {
-		margin: 0 0 1em;
-	    font-size: 1.2em;	    
-	    color: #f89d35;
-	    font-weight: bolder;
-	}
+.charitable-form-header {
+	margin: 0 0 1em;
+    font-size: 1.2em;
+    font-weight: bolder;
 }
 
 .charitable-repeatable-form-field-table {
 	margin-bottom: 1em;
 }
 
-.donation-amounts {
-	@include clearfix;
-	margin: 0 0 1em;
-	padding: 0;
-	list-style: none;
-
-	.donation-amount {
-		float: left;
-		width: 49%;
-		margin: 0 2% 0.5em 0;
-		padding: 0.5em 1em;
-		border: 1px solid #ddd;
-		background-color: #ebebeb;		
-		cursor: pointer;
-
-		&:nth-child( 2n+2 ) {
-			margin-right: 0;
-		}
-	}
-
-	.donation-amount.selected {
-		background-color: #fff;
-	}
-}
-
 #charitable-donation-form {
 	padding-top: 1em;
+
+	.donation-amounts {
+		@include clearfix;
+		margin: 0 0 1em;
+		padding: 0;
+		list-style: none;
+
+		.donation-amount {
+			float: left;
+			width: 49%;
+			margin: 0 2% 0.5em 0;
+			padding: 0.5em 1em;
+			border: 1px solid #ddd;
+			background-color: transparent;		
+			cursor: pointer;
+			list-style: none;
+
+			&:nth-child( 2n+2 ) {
+				margin-right: 0;
+			}
+
+			input[type=radio] {
+				margin: 0 6px 0 0;
+				vertical-align: middle;
+			}
+		}
+
+		.donation-amount.selected {
+			color: #fff;
+			background-color: #f89d35;
+			border-color: #f89d35;
+		}
+	}
 }
 
 .charitable-hidden {
 	@include hidden();
 }
 
-.charitable-user-details {
-    padding: 1em;
-    margin-bottom: 2em;
-    border: 1px solid #ddd;
-
+.charitable-form-field-donor-fields {
     .donor-address, 
     .donor-contact-details {
-    	margin-bottom: 4px;
+    	margin-bottom: 0.5em;
     }
 
     .charitable-login-details {
     	padding-top: 1em;
     }
-}
 
-.charitable-change-user-details {
-	margin-bottom: 0;
-	padding-bottom: 0;
+    .charitable-change-user-details {
+		margin-bottom: 0;
+		padding-bottom: 0;
+	}
 }
 
 #charitable-user-fields {

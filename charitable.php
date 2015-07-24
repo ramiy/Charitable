@@ -179,20 +179,14 @@ class Charitable {
     private function load_dependencies() {
         $includes_path = $this->get_path( 'includes' );
         
-        /* Functions */
-        require_once( $includes_path . 'charitable-campaign-functions.php' );
-        require_once( $includes_path . 'charitable-core-functions.php' );        
-        require_once( $includes_path . 'charitable-page-functions.php' );
-        require_once( $includes_path . 'charitable-template-functions.php' );
-        require_once( $includes_path . 'charitable-template-hooks.php' );
+        /* Functions */        
+        require_once( $includes_path . 'charitable-core-functions.php' );                
         require_once( $includes_path . 'charitable-utility-functions.php' );
 
         /* Base Classes & Interfaces */        
         require_once( $includes_path . 'class-charitable-start-object.php' );
         require_once( $includes_path . 'class-charitable-form.php' );     
-        require_once( $includes_path . 'class-charitable-addons.php' );
-        require_once( $includes_path . 'class-charitable-campaign.php' );
-        require_once( $includes_path . 'class-charitable-campaigns.php' );
+        require_once( $includes_path . 'class-charitable-addons.php' );        
         require_once( $includes_path . 'class-charitable-currency.php' );        
         require_once( $includes_path . 'class-charitable-donor-query.php' );                    
         require_once( $includes_path . 'class-charitable-locations.php' );
@@ -200,6 +194,10 @@ class Charitable {
         require_once( $includes_path . 'class-charitable-post-types.php' );
         require_once( $includes_path . 'class-charitable-request.php' );        
                 
+        /* Campaigns */
+        require_once( $includes_path . 'campaigns/charitable-campaign-functions.php' );
+        require_once( $includes_path . 'campaigns/class-charitable-campaign.php' );
+        require_once( $includes_path . 'campaigns/class-charitable-campaigns.php' );
 
         /* Donations */        
         include_once( $includes_path . 'donations/charitable-donation-hooks.php' );
@@ -236,6 +234,9 @@ class Charitable {
         require_once( $includes_path . 'db/class-charitable-donors-db.php' );
 
         /* Public */
+        require_once( $includes_path . 'public/charitable-page-functions.php' );
+        require_once( $includes_path . 'public/charitable-template-functions.php' );
+        require_once( $includes_path . 'public/charitable-template-hooks.php' );
         require_once( $includes_path . 'public/class-charitable-session.php' );        
         require_once( $includes_path . 'public/class-charitable-template.php' );      
         require_once( $includes_path . 'public/class-charitable-template-part.php' );

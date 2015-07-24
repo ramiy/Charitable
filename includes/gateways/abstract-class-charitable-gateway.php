@@ -41,6 +41,13 @@ abstract class Charitable_Gateway {
     protected $defaults;
 
     /**
+     * @var     boolean  Flags whether the gateway requires credit card fields added to the donation form.
+     * @access  protected
+     * @since   1.0.0
+     */
+    protected $credit_card_form = false;
+
+    /**
      * Return the gateway name.
      *
      * @return  string
@@ -95,7 +102,7 @@ abstract class Charitable_Gateway {
      * @since   1.0.0
      */
     public function get_settings() {
-        return charitable_get_option( 'gateways_' . self::ID, array() );
+        return charitable_get_option( 'gateways_' . $this->get_gateway_id(), array() );
     }
 
     /**
@@ -120,6 +127,69 @@ abstract class Charitable_Gateway {
     public function get_value( $setting ) {
         $default = isset( $this->defaults[ $setting ] ) ? $this->defaults[ $setting ] : '';
         return charitable_get_option( $setting, $default, $this->get_settings() );
+    }
+
+    /**
+     * Returns whether a credit card form is required for this gateway. 
+     *
+     * @return  boolean
+     * @access  public
+     * @since   1.0.0
+     */
+    public function requires_credit_card_form() {
+        return $this->credit_card_form;
+    }
+
+    /**
+     * Returns an array of credit card fields.
+     *
+     * If the gateway requires different fields, this can simply be redefined
+     * in the child class.  
+     *
+     * @return  array[]
+     * @access  public
+     * @since   1.0.0
+     */
+    public function get_credit_card_fields() {
+        return apply_filters( 'charitable_credit_card_fields', array(
+            'name' => array(
+                'label'     => __( 'Name on Card', 'charitable' ),
+                'type'      => 'text',
+                'required'  => true,
+                'priority'  => 2
+            ),
+            'number' => array(
+                'label'     => __( 'Card Number', 'charitable' ),
+                'type'      => 'text',
+                'required'  => true,
+                'priority'  => 4,
+                'pattern'   => '[0-9]{13,16}'
+            ),
+            'expiration' => array(
+                'label'     => __( 'Expiration', 'charitable' ),
+                'type'      => 'cc-expiration',
+                'required'  => true,
+                'priority'  => 6
+            ),
+            'cvc' => array(
+                'label'     => __( 'CVV Number', 'charitable' ),
+                'type'      => 'text',
+                'required'  => true,
+                'priority'  => 8
+            )
+        ), $this );
+    }
+
+    /**
+     * Returns the current gateway's ID.  
+     *
+     * @return  string
+     * @access  protected
+     * @since   1.0.0
+     */
+    protected function get_gateway_id() {
+        $class = get_called_class();
+        return $class::ID;
     }
 
     /**

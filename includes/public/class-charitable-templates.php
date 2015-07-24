@@ -59,7 +59,7 @@ class Charitable_Templates extends Charitable_Start_Object {
 				'content' 	=> sprintf( '<p>%s</p>', __( 'Thank you for your donation!', 'charitable' ) )
 			) );
 
-			$new_template = apply_filters( 'charitable_donation_receipt_page_template', 'donation-receipt-page.php' );
+			$new_template = apply_filters( 'charitable_donation_receipt_page_template', array( 'donation-receipt-page.php', 'page.php', 'index.php' ) );
 
 			$template = charitable_get_template_path( $new_template, $template );
 		}
@@ -80,7 +80,7 @@ class Charitable_Templates extends Charitable_Start_Object {
 
 			do_action( 'charitable_is_donate_page' );
 
-			$new_template = apply_filters( 'charitable_donate_page_template', 'campaign-donation-page.php' );
+			$new_template = apply_filters( 'charitable_donate_page_template', array( 'campaign-donation-page.php', 'page.php', 'index.php' ) );
 
 			$template = charitable_get_template_path( $new_template, $template );
 		}

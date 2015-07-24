@@ -16,6 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  * @var     Charitable_Donation
  */
 $donation = $view_args[ 'donation' ];
+
 ?>
 <h3 class="charitable-header"><?php _e( 'Your Donation', 'charitable' ) ?></h3>
 <table class="donation-details charitable-table">

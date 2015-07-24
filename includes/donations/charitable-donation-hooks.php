@@ -69,5 +69,3 @@ add_action( 'charitable_after_save_donation', array( 'Charitable_Donation_Contro
  * @see Charitable_Gateway_Offline::process_donation
  */
 add_action( 'charitable_make_donation_offline', array( 'Charitable_Gateway_Offline', 'process_donation' ), 10, 2 );
-
-

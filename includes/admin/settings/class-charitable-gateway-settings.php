@@ -48,14 +48,14 @@ final class Charitable_Gateway_Settings extends Charitable_Start_Object {
                 'priority'          => 10000,
                 'value'             => 'gateways'
             ),
+            'gateways' => array(
+                'title'             => false,
+                'callback'          => array( $this, 'render_gateways_table' ), 
+                'priority'          => 5
+            ),
             'test_mode' => array(
                 'title'             => __( 'Turn on Test Mode', 'charitable' ),
                 'type'              => 'checkbox',
-                'priority'          => 5
-            ),
-            'gateways' => array(
-                'title'             => __( 'Available Payment Gateways', 'charitable' ),
-                'callback'          => array( $this, 'render_gateways_table' ), 
                 'priority'          => 10
             )
         );

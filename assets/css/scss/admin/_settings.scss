@@ -38,6 +38,23 @@ select.charitable-settings-field {
     }
 }
 
+.charitable-gateway {
+    .default-gateway,
+    .make-default-gateway { 
+        margin-left: 20px;
+        font-size: 12px;
+        line-height: 28px;
+    }
+
+    .default-gateway {
+        color: #f89d35;
+    } 
+
+    .make-default-gateway {
+        color: #777;
+    }
+}
+
 .charitable-help {
     display: block;
     margin-top: 4px;
@@ -50,6 +67,10 @@ select.charitable-settings-field {
 .form-table .charitable-help p {
     font-size: 13px;
     line-height: 21px;
+}
+
+.form-table td.charitable-fullwidth {
+    padding: 15px 0;
 }
 
 .charitable-shortcode-options {

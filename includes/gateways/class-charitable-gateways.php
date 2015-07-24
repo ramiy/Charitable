@@ -59,12 +59,14 @@ class Charitable_Gateways extends Charitable_Start_Object {
 	 * @since 	1.0.0
 	 */
 	private function attach_hooks_and_filters() {
+		add_action( 'charitable_make_default_gateway', array( $this, 'handle_gateway_settings_request' ) );
 		add_action( 'charitable_enable_gateway', array( $this, 'handle_gateway_settings_request' ) );
 		add_action( 'charitable_disable_gateway', array( $this, 'handle_gateway_settings_request' ) );
 		add_filter( 'charitable_settings_fields_gateways_gateway', array( $this, 'register_gateway_settings' ), 10, 2 );
+		add_filter( 'charitable_donation_form_gateway_fields', array( $this, 'add_credit_card_fields' ), 10, 2 );
 
 		do_action( 'charitable_gateway_start', $this );		
-	}
+	}	
 
 	/**
 	 * Receives a request to enable or disable a payment gateway and validates it before passing it off.
@@ -91,13 +93,19 @@ class Charitable_Gateways extends Charitable_Start_Object {
 			wp_die( __( 'Invalid gateway.', 'charitable' ) );
 		}
 
-		/* All good, so disable or enable the gateway */
-		if ( 'charitable_disable_gateway' == current_filter() ) {
-			$this->disable_gateway( $gateway );
-		}
-		else {
-			$this->enable_gateway( $gateway );
-		}	
+		switch ( $_REQUEST[ 'charitable_action' ] ) {
+			case 'disable_gateway' : 
+				$this->disable_gateway( $gateway );
+				break;
+			case 'enable_gateway' : 
+				$this->enable_gateway( $gateway );
+				break;
+			case 'make_default_gateway' : 
+				$this->set_default_gateway( $gateway );
+				break;
+			default : 
+				do_action( 'charitable_gateway_settings_request', $_REQUEST[ 'charitable_action' ], $gateway );
+		}		
 	}
 
 	/**
@@ -114,12 +122,32 @@ class Charitable_Gateways extends Charitable_Start_Object {
 	/**
 	 * Returns the current active gateways. 
 	 *
-	 * @return 	array
+	 * @return 	string[]
 	 * @access  public
 	 * @since 	1.0.0
 	 */
 	public function get_active_gateways() {
 		return charitable_get_option( 'active_gateways', array() );
+	}
+
+	/**
+	 * Returns an array of the active gateways, in ID => name format. 
+	 *
+	 * This is useful for select/radio input fields. 
+	 *
+	 * @return  string[]
+	 * @access  public
+	 * @since   1.0.0
+	 */
+	public function get_gateway_choices() {
+		$gateways = array();
+
+		foreach ( $this->get_active_gateways() as $id => $class ) {
+			$gateway = new $class;
+			$gateways[ $id ] = $gateway->get_label();
+		}
+
+		return $gateways;
 	}
 
 	/**
@@ -154,7 +182,7 @@ class Charitable_Gateways extends Charitable_Start_Object {
 	 * @since 	1.0.0
 	 */
 	public function get_default_gateway() {
-	
+		return charitable_get_option( 'default_gateway', '' );
 	}
 
 	/**
@@ -183,10 +211,45 @@ class Charitable_Gateways extends Charitable_Start_Object {
 		$enabled = charitable_get_option( 'test_mode', false );
 		return apply_filters( 'charitable_in_test_mode', $enabled );
 	}
-	
+
+    /**
+     * Add credit card fields to the donation form if this gateway requires it. 
+     *
+     * @param   array[] $fields
+     * @param 	Charitable_Gateway $gateway
+     * @return  array[]
+     * @access  public
+     * @since   1.0.0
+     */
+    public function add_credit_card_fields( $fields, Charitable_Gateway $gateway ) {
+        if ( $gateway->requires_credit_card_form() ) {
+            $fields = array_merge( $fields, $gateway->get_credit_card_fields() );
+        }
+
+        return $fields;
+    }
+
+	/**
+	 * Sets the default gateway. 
+	 *
+	 * @param 	string 	$gateway
+	 * @return  void
+	 * @access  protected
+	 * @since   1.0.0
+	 */
+	protected function set_default_gateway( $gateway ) {
+		$settings = get_option( 'charitable_settings' );
+		$settings[ 'default_gateway' ] = $gateway;	
+
+		update_option( 'charitable_settings', $settings );
+
+		do_action( 'charitable_set_gateway_gateway', $gateway );	
+	}
+
 	/**
 	 * Enable a payment gateway. 
 	 *
+	 * @param 	string 	$gateway
 	 * @return  void
 	 * @access  protected
 	 * @since   1.0.0
@@ -198,6 +261,11 @@ class Charitable_Gateways extends Charitable_Start_Object {
 		$active_gateways[ $gateway ] = $this->gateways[ $gateway ];
 		$settings[ 'active_gateways' ] = $active_gateways;
 
+		/* If this is the only gateway, make it the default gateway */
+		if ( 1 == count( $settings[ 'active_gateways'] ) ) {
+			$settings[ 'default_gateway' ] = $gateway;
+		}
+
 		update_option( 'charitable_settings', $settings );
 
 		do_action( 'charitable_gateway_enable', $gateway );
@@ -206,6 +274,7 @@ class Charitable_Gateways extends Charitable_Start_Object {
 	/**
 	 * Disable a payment gateway. 
 	 *
+	 * @param 	string 	$gateway
 	 * @return  void
 	 * @access  protected
 	 * @since   1.0.0
@@ -216,8 +285,15 @@ class Charitable_Gateways extends Charitable_Start_Object {
 		if ( ! isset( $settings[ 'active_gateways' ][ $gateway ] ) ) {
 			return;
 		}
-		
+
 		unset( $settings[ 'active_gateways' ][ $gateway ] );
+
+		/* Set a new default gateway */
+		if ( $gateway == $this->get_default_gateway() ) {
+			
+			$settings[ 'default_gateway' ] = count( $settings[ 'active_gateways' ] ) ? key( $settings[ 'active_gateways' ] ) : '';
+
+		}			
 
 		update_option( 'charitable_settings', $settings );		
 

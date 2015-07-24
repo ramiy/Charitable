@@ -329,6 +329,10 @@ endif;
 if ( ! function_exists( 'charitable_template_campaign_loop_thumbnail' ) ) :
     /**
      * Output the campaign thumbnail on campaigns displayed within the loop.
+     *
+     * @param   Charitable_Campaign $campaign
+     * @return  void
+     * @since   1.0.0
      */
     function charitable_template_campaign_loop_thumbnail( $campaign ) {
         charitable_template( 'campaign-loop/thumbnail.php', array( 'campaign' => $campaign ) );
@@ -338,9 +342,26 @@ endif;
 if ( ! function_exists( 'charitable_template_campaign_loop_donation_stats' ) ) :
     /**
      * Output the campaign donation status on campaigns displayed within the loop.
+     *
+     * @param   Charitable_Campaign $campaign
+     * @return  void
+     * @since   1.0.0
      */
     function charitable_template_campaign_loop_donation_stats( $campaign ) {
         charitable_template( 'campaign-loop/donation-stats.php', array( 'campaign' => $campaign ) );
+    }
+endif;
+
+if ( ! function_exists( 'charitable_template_campaign_loop_donate_link' ) ) : 
+    /**
+     * Output the campaign donation status on campaigns displayed within the loop.
+     *
+     * @param   Charitable_Campaign $campaign
+     * @return  void
+     * @since   1.0.0
+     */
+    function charitable_template_campaign_loop_donate_link( $campaign ) {
+        charitable_template( 'campaign-loop/donation-link.php', array( 'campaign' => $campaign ) );
     }
 endif;
 
@@ -390,13 +411,15 @@ if ( ! function_exists( 'charitable_template_donation_receipt_content' ) ) :
         
         if ( ! $donation ) {
             return $content;
-        }          
+        }
 
         ob_start();            
                 
-        charitable_template( 'content-donation-receipt.php', array( 'content' => $content, 'donation' => $donation ) );
+        charitable_template( 'content-donation-receipt.php', array( 'content' => $content, 'donation' => $donation ) );        
 
-        return ob_get_clean();
+        $content = ob_get_clean();
+
+        return $content;
     }
 endif;
 
@@ -440,5 +463,81 @@ if ( ! function_exists( 'charitable_template_donation_receipt_details' ) ) :
      */
     function charitable_template_donation_receipt_details( Charitable_Donation $donation ) {
         charitable_template( 'donation-receipt/details.php', array( 'donation' => $donation ) );
+    }
+endif;
+
+/**********************************************/
+/* DONATION FORM
+/**********************************************/
+
+if ( ! function_exists( 'charitable_template_donation_form_login' ) ) :
+    /**
+     * Display the login form before the user fields within a donation form.
+     *
+     * @param   Charitable_Form $form
+     * @return  void
+     * @since   1.0.0
+     */
+    function charitable_template_donation_form_login( Charitable_Form $form ) {
+        $user = $form->get_user();
+
+        if ( $user ) {
+            return;
+        }
+
+        charitable_template( 'donation-form/donor-fields/login-form.php', array( 'user' => $user ) );
+    }
+endif;
+
+if ( ! function_exists( 'charitable_template_donation_form_donor_details' ) ) :
+    /**
+     * Display the donor's saved details if the user is logged in.
+     *
+     * @param   Charitable_Form $form
+     * @return  void
+     * @since   1.0.0
+     */
+    function charitable_template_donation_form_donor_details( Charitable_Form $form ) {
+        $user = $form->get_user();
+
+        if ( ! $user ) {
+            return;
+        }
+
+        charitable_template( 'donation-form/donor-fields/donor-details.php', array( 'user' => $user ) );
+    }
+endif;
+
+if ( ! function_exists( 'charitable_template_donation_form_donor_fields_hidden_wrapper_start' ) ) :
+    /**
+     * If the user is logged in, adds a wrapper around the donor fields that hide them.
+     *
+     * @param   Charitable_Form $form
+     * @return  void
+     * @since   1.0.0
+     */
+    function charitable_template_donation_form_donor_fields_hidden_wrapper_start( Charitable_Form $form ) {
+        if ( ! $form->get_user() ) {
+            return;
+        }
+
+        charitable_template( 'donation-form/donor-fields/hidden-fields-wrapper-start.php' );
+    }
+endif;
+
+if ( ! function_exists( 'charitable_template_donation_form_donor_fields_hidden_wrapper_end' ) ) :
+    /**
+     * Closes the hidden donor fields wrapper div if the user is logged in.
+     *
+     * @param   Charitable_Form $form
+     * @return  void
+     * @since   1.0.0
+     */
+    function charitable_template_donation_form_donor_fields_hidden_wrapper_end( Charitable_Form $form ) {
+        if ( ! $form->get_user() ) {
+            return;
+        }
+
+        charitable_template( 'donation-form/donor-fields/hidden-fields-wrapper-end.php' );
     }
 endif;
