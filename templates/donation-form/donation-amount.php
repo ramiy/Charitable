@@ -62,7 +62,7 @@ if ( $donation_amount ) : ?>
             endif; ?>
 
             <li class="donation-amount suggested-donation-amount">
-                <input type="radio" name="donation-amount" value="<?php echo $suggestion[ 'amount' ] ?>" <?php echo $checked ?> /><?php 
+                <input type="radio" name="donation_amount" value="<?php echo $suggestion[ 'amount' ] ?>" <?php echo $checked ?> /><?php 
                 printf( '<span class="amount">%s</span> <span class="description">%s</span>', 
                     $currency_helper->get_monetary_amount( $suggestion[ 'amount' ] ), 
                     strlen( $suggestion[ 'description' ] ) ? $suggestion[ 'description' ] : ''
@@ -76,9 +76,9 @@ if ( $donation_amount ) : ?>
             $has_custom_donation_amount = ! $donation_amount_is_suggestion && $donation_amount; ?>
 
             <li class="donation-amount custom-donation-amount">                
-                <input type="radio" name="donation-amount" value="custom" <?php checked( $has_custom_donation_amount ) ?> />
+                <input type="radio" name="donation_amount" value="custom" <?php checked( $has_custom_donation_amount ) ?> />
                 <span class="description"><?php _e( 'Custom amount', 'charitable' ) ?></span>
-                <input type="text" name="custom-donation-amount" value="<?php if ( $has_custom_donation_amount ) echo $donation_amount ?>" />
+                <input type="text" name="custom_donation_amount" value="<?php if ( $has_custom_donation_amount ) echo $donation_amount ?>" />
             </li>
 
         <?php endif ?>
@@ -88,7 +88,7 @@ if ( $donation_amount ) : ?>
 <?php elseif ( $campaign->get( 'allow_custom_donations' ) ) : ?>
 
     <div id="custom-donation-amount-field" class="charitable-form-field charitable-custom-donation-field-alone">
-        <input type="text" name="custom-donation-amount" placeholder="<?php esc_attr_e( 'Enter donation amount', 'charitable' ) ?>" value="<?php if ( $donation_amount ) echo $donation_amount ?>" />
+        <input type="text" name="custom_donation_amount" placeholder="<?php esc_attr_e( 'Enter donation amount', 'charitable' ) ?>" value="<?php if ( $donation_amount ) echo $donation_amount ?>" />
     </div>
 
 <?php endif ?>

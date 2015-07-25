@@ -62,8 +62,7 @@ class Charitable_Gateways extends Charitable_Start_Object {
 		add_action( 'charitable_make_default_gateway', array( $this, 'handle_gateway_settings_request' ) );
 		add_action( 'charitable_enable_gateway', array( $this, 'handle_gateway_settings_request' ) );
 		add_action( 'charitable_disable_gateway', array( $this, 'handle_gateway_settings_request' ) );
-		add_filter( 'charitable_settings_fields_gateways_gateway', array( $this, 'register_gateway_settings' ), 10, 2 );
-		add_filter( 'charitable_donation_form_gateway_fields', array( $this, 'add_credit_card_fields' ), 10, 2 );
+		add_filter( 'charitable_settings_fields_gateways_gateway', array( $this, 'register_gateway_settings' ), 10, 2 );		
 
 		do_action( 'charitable_gateway_start', $this );		
 	}	
@@ -211,23 +210,6 @@ class Charitable_Gateways extends Charitable_Start_Object {
 		$enabled = charitable_get_option( 'test_mode', false );
 		return apply_filters( 'charitable_in_test_mode', $enabled );
 	}
-
-    /**
-     * Add credit card fields to the donation form if this gateway requires it. 
-     *
-     * @param   array[] $fields
-     * @param 	Charitable_Gateway $gateway
-     * @return  array[]
-     * @access  public
-     * @since   1.0.0
-     */
-    public function add_credit_card_fields( $fields, Charitable_Gateway $gateway ) {
-        if ( $gateway->requires_credit_card_form() ) {
-            $fields = array_merge( $fields, $gateway->get_credit_card_fields() );
-        }
-
-        return $fields;
-    }
 
 	/**
 	 * Sets the default gateway. 

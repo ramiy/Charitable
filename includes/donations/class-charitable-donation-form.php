@@ -78,6 +78,8 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
         parent::attach_hooks_and_filters();
         
         add_filter( 'charitable_form_field_template', array( $this, 'use_custom_templates' ), 10, 2 );
+        add_filter( 'charitable_donation_form_gateway_fields', array( $this, 'add_credit_card_fields' ), 10, 2 );
+
         add_action( 'charitable_donation_form_after_user_fields', array( $this, 'add_password_field' ) );        
 
         $this->setup_payment_fields();
@@ -319,23 +321,7 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
         $gateways_helper = charitable_get_helper( 'gateways' );
         $active_gateways = $gateways_helper->get_active_gateways();
         $default_gateway = $gateways_helper->get_default_gateway();        
-
-        /* If there is only one gateway, set that as a hidden field. */
-        // if ( 1 == count( $active_gateways ) ) {
-        //     $fields[ 'gateway' ] = array(
-        //         'type'      => 'hidden',
-        //         'value'     => $default_gateway, 
-        //         'priority'  => 0
-        //     );
-        // }
-
-        // $payment_fields = apply_filters( 'charitable_donation_form_payment_fields', array(), $default_gateway );
-
-        // $gateways_helper->get_gateway_choices()
-
-        /* If there is more than one gateway, add an option to choose the gateway. */
-        // if ( count( $active_gateways ) > 1 ) {
-
+        
         $gateways = array();
 
         foreach ( $gateways_helper->get_active_gateways() as $gateway_id => $gateway_class ) {
@@ -357,18 +343,6 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
             'priority'  => 60
         );
 
-        // }
-        // if ( ! empty( $payment_fields ) ) {
-        //     uasort( $payment_fields, 'charitable_priority_sort' );
-
-        //     $fields[ 'payment_fields' ] = array(
-        //         'legend'        => __( 'Payment', 'charitable' ), 
-        //         'type'          => 'fieldset',
-        //         'fields'        => $payment_fields,
-        //         'priority'      => 60
-        //     );
-        // }    
-        
         return $fields;
     }
 
@@ -392,6 +366,23 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
         }
 
         return $custom_template;
+    }
+
+    /**
+     * Add credit card fields to the donation form if this gateway requires it. 
+     *
+     * @param   array[] $fields
+     * @param   Charitable_Gateway $gateway
+     * @return  array[]
+     * @access  public
+     * @since   1.0.0
+     */
+    public function add_credit_card_fields( $fields, Charitable_Gateway $gateway ) {
+        if ( $gateway->requires_credit_card_form() ) {
+            $fields = array_merge( $fields, $gateway->get_credit_card_fields() );
+        }
+
+        return $fields;
     }
 
     /**
@@ -465,7 +456,14 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
             return false;
         }   
 
-        $amount = self::get_donation_amount();
+        /**
+         * @hook    charitable_donation_form_before_save
+         */
+        do_action( 'charitable_donation_form_before_save', $this );
+
+        $submitted = $this->get_submitted_values();
+
+        $amount = self::get_donation_amount( $submitted );
         
         if ( 0 == $amount && ! apply_filters( 'charitable_permit_empty_donations', false ) ) {
             charitable_get_notices()->add_error( __( 'No donation amount was set.', 'charitable' ) );
@@ -479,24 +477,24 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
         }
 
         /* Update the user's profile */
-        $user = new Charitable_User( wp_get_current_user() );
+        $user = new Charitable_User( wp_get_current_user() );        
 
-        if ( $this->has_profile_fields( $_POST, $user_fields ) ) {          
-            $user->update_profile( $_POST, array_keys( $user_fields ) );
+        if ( $this->has_profile_fields( $submitted, $user_fields ) ) {          
+            $user->update_profile( $submitted, array_keys( $user_fields ) );
         }
 
         $values = array(            
             'user_id'   => $user->ID,
-            'gateway'   => $_POST[ 'gateway' ], 
+            'gateway'   => $submitted[ 'gateway' ], 
             'campaigns' => array(
                 array(
-                    'campaign_id'   => $_POST[ 'campaign_id' ],
+                    'campaign_id'   => $submitted[ 'campaign_id' ],
                     'amount'        => $amount
                 )               
             )
         );
 
-        $values = array_merge( $values, $this->get_donor_value_fields( $_POST ) );
+        $values = array_merge( $values, $this->get_donor_value_fields( $submitted ) );
 
         $values = apply_filters( 'charitable_donation_values', $values );
 
@@ -514,8 +512,8 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
      * @since   1.0.0
      */
     public static function get_donation_amount() {
-        $suggested  = isset( $_POST[ 'donation-amount' ] ) ? $_POST[ 'donation-amount' ] : 0;
-        $custom     = isset( $_POST[ 'custom-donation-amount' ] ) ? $_POST[ 'custom-donation-amount' ] : 0;
+        $suggested  = isset( $_POST[ 'donation_amount' ] ) ? $_POST[ 'donation_amount' ] : 0;
+        $custom     = isset( $_POST[ 'custom_donation_amount' ] ) ? $_POST[ 'custom_donation_amount' ] : 0;
 
         if ( 0 === $suggested || 'custom' === $suggested ) {
 
@@ -629,7 +627,7 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
             return false;
         }
 
-        if ( ! isset( $_POST[ 'gateway' ] ) ) {
+        if ( is_null( $this->get_submitted_value( 'gateway' ) ) ) {
             
             charitable_get_notices()->add_error( sprintf( '<p>%s</p>', 
                 __( 'Your donation could not be processed. No payment gateway was selected.', 'charitable' )

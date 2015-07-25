@@ -68,12 +68,13 @@ class Charitable_Donation_Controller {
         /**
          * Save the donation using the campaign's donation form object.
          */
-        $donation_id = $campaign->get_donation_form()->save_donation();
+        $form = $campaign->get_donation_form();
+        $donation_id = $form->save_donation();
 
         /**
          * @hook charitable_after_save_donation
          */
-        do_action( 'charitable_after_save_donation', $donation_id, $campaign );
+        do_action( 'charitable_after_save_donation', $donation_id, $campaign, $form );
     }
 
     /**
@@ -106,13 +107,14 @@ class Charitable_Donation_Controller {
         }
         else {
 
+            $form = $campaign->get_donation_form();
             $donation_id = $campaign->get_donation_form()->save_donation();
         }
 
         /**
          * @hook    charitable_after_save_ajax_donation
          */
-        do_action( 'charitable_after_save_ajax_donation', $campaign, $donation_id );
+        do_action( 'charitable_after_save_ajax_donation', $donation_id, $campaign, $form );
 
         $data = apply_filters( 'charitable_ajax_make_donation_data', array(
             'donation_id' => $donation_id
@@ -143,17 +145,18 @@ class Charitable_Donation_Controller {
     /**
      * Send the donation/donor off to the gateway.  
      *
-     * @param   int                     $donation_id
-     * @param   Charitable_Campaign     $campaign
+     * @param   int     $donation_id
+     * @param   Charitable_Campaign $campaign
+     * @param   Charitable_Form $form
      * @return  void
      * @access  public
      * @static
      * @since   1.0.0
      */
-    public static function send_donation_to_gateway( $donation_id, $campaign ) {
+    public static function send_donation_to_gateway( $donation_id, $campaign, $form ) {
         $gateway = charitable_get_donation_gateway( $donation_id );
 
-        do_action( 'charitable_make_donation_' . $gateway, $donation_id, $campaign );
+        do_action( 'charitable_make_donation_' . $gateway, $donation_id, $campaign, $form );
     }
 }
 

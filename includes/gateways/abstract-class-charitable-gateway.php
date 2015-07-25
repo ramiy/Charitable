@@ -152,26 +152,26 @@ abstract class Charitable_Gateway {
      */
     public function get_credit_card_fields() {
         return apply_filters( 'charitable_credit_card_fields', array(
-            'name' => array(
+            'cc_name' => array(
                 'label'     => __( 'Name on Card', 'charitable' ),
                 'type'      => 'text',
                 'required'  => true,
                 'priority'  => 2
             ),
-            'number' => array(
+            'cc_number' => array(
                 'label'     => __( 'Card Number', 'charitable' ),
                 'type'      => 'text',
                 'required'  => true,
                 'priority'  => 4,
                 'pattern'   => '[0-9]{13,16}'
             ),
-            'expiration' => array(
+            'cc_expiration' => array(
                 'label'     => __( 'Expiration', 'charitable' ),
                 'type'      => 'cc-expiration',
                 'required'  => true,
                 'priority'  => 6
             ),
-            'cvc' => array(
+            'cc_cvc' => array(
                 'label'     => __( 'CVV Number', 'charitable' ),
                 'type'      => 'text',
                 'required'  => true,

@@ -59,7 +59,7 @@ add_action( 'charitable_make_donation_streamlined', array( 'Charitable_Donation_
  *
  * @see Charitable_Donation_Controller::send_donation_to_gateway
  */
-add_action( 'charitable_after_save_donation', array( 'Charitable_Donation_Controller', 'send_donation_to_gateway' ), 10, 2 );
+add_action( 'charitable_after_save_donation', array( 'Charitable_Donation_Controller', 'send_donation_to_gateway' ), 10, 3 );
 
 /**
  * Send donation to the Offline gateway.

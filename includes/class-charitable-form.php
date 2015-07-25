@@ -59,6 +59,14 @@ abstract class Charitable_Form {
 	protected $errors = array();
 
 	/**
+	 * Submitted values. 
+	 *
+	 * @var 	array
+	 * @access  protected
+	 */
+	protected $submitted;
+
+	/**
 	 * Set up callbacks for actions and filters. 
 	 *
 	 * @return 	void
@@ -326,7 +334,8 @@ abstract class Charitable_Form {
 	 * @since 	1.0.0
 	 */
 	public function validate_nonce() {
-		$validated = isset( $_POST[$this->nonce_name] ) && wp_verify_nonce( $_POST[$this->nonce_name], $this->nonce_action );
+		$submitted = $this->get_submitted_values();
+		$validated = isset( $submitted[$this->nonce_name] ) && wp_verify_nonce( $submitted[$this->nonce_name], $this->nonce_action );
 
 		if ( ! $validated ) {
 			charitable_get_notices()->add_error( __( 'Unable to submit form. Please try again.', 'charitable' ) );
@@ -370,7 +379,7 @@ abstract class Charitable_Form {
 	 */
 	public function check_required_fields( $fields, $submitted = array() ) {		
 		if ( empty( $submitted ) ) {
-			$submitted = $_POST;
+			$submitted = $this->get_submitted_values();
 		}
 		
 		$missing = array();
@@ -407,6 +416,37 @@ abstract class Charitable_Form {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Returns the submitted values. 
+	 *
+	 * Use this method instead of accessing the raw $_POST array to take
+	 * advantage of the filter on the values. 
+	 *
+	 * @return  array
+	 * @access  public
+	 * @since   1.0.0
+	 */
+	public function get_submitted_values() {
+		if ( ! isset( $this->submitted ) ) {
+			$this->submitted = apply_filters( 'charitable_form_submitted_values', $_POST, $this );
+		}
+
+		return $this->submitted;
+	}
+
+	/**
+	 * Returns the submitted value for a particular field. 
+	 *
+	 * @param 	string 	$key
+	 * @return  mixed 	Submitted value if set. NULL if value was not set.
+	 * @access  public
+	 * @since   1.0.0
+	 */
+	public function get_submitted_value( $key ) {
+		$submitted = $this->get_submitted_values();
+		return isset( $submitted[ $key ] ) ? $submitted[ $key ] : null;
 	}
 
 	/**

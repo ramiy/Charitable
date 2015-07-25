@@ -186,8 +186,7 @@ class Charitable {
         /* Base Classes & Interfaces */        
         require_once( $includes_path . 'class-charitable-start-object.php' );
         require_once( $includes_path . 'class-charitable-form.php' );     
-        require_once( $includes_path . 'class-charitable-addons.php' );        
-        require_once( $includes_path . 'class-charitable-currency.php' );        
+        require_once( $includes_path . 'class-charitable-addons.php' );                    
         require_once( $includes_path . 'class-charitable-donor-query.php' );                    
         require_once( $includes_path . 'class-charitable-locations.php' );
         require_once( $includes_path . 'class-charitable-notices.php' );
@@ -198,6 +197,10 @@ class Charitable {
         require_once( $includes_path . 'campaigns/charitable-campaign-functions.php' );
         require_once( $includes_path . 'campaigns/class-charitable-campaign.php' );
         require_once( $includes_path . 'campaigns/class-charitable-campaigns.php' );
+
+        /* Currency */
+        require_once( $includes_path . 'currency/charitable-currency-functions.php' );
+        require_once( $includes_path . 'currency/class-charitable-currency.php' );
 
         /* Donations */        
         include_once( $includes_path . 'donations/charitable-donation-hooks.php' );

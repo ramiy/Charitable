@@ -50,7 +50,7 @@ CHARITABLE.DonationSelection = {
 		$el.addClass( 'selected' );
 
 		if ( $el.hasClass( 'custom-donation-amount' ) ) {				
-			$el.siblings( 'input[name=custom-donation-amount]' ).focus();
+			$el.siblings( 'input[name=custom_donation_amount]' ).focus();
 		}
 
 		return false;
@@ -66,7 +66,7 @@ CHARITABLE.DonationSelection = {
 			self.selectOption( jQuery(this) );
 		});
 
-		jQuery( '[name=donation-amount]' ).on( 'change', function( event ) {
+		jQuery( '[name=donation_amount]' ).on( 'change', function( event ) {
 			jQuery(this).prop( 'checked', ! jQuery(this).is( ':checked' ) );
 			return false;
 		});
