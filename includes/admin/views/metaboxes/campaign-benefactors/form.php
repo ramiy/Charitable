@@ -16,7 +16,7 @@ if ( is_null( $benefactor ) ) {
 		'name_base'							=> '_campaign_benefactor[0]', 
 		'contribution_amount' 				=> '',
 		'contribution_amount_is_per_item'	=> 0, 
-		'date_created'						=> date( 'l, d F, Y' ), 
+		'date_created'						=> date( 'F d, Y' ), 
 		'date_deactivated'					=> 0
 	);
 }
@@ -26,8 +26,8 @@ else {
 		'name_base' 						=> '_campaign_benefactor[' . $benefactor->campaign_benefactor_id . ']', 
 		'contribution_amount' 				=> $benefactor->get_contribution_amount(), 
 		'contribution_amount_is_per_item'	=> $benefactor->contribution_amount_is_per_item, 
-		'date_created'						=> date( 'l, d F, Y', strtotime( $benefactor->date_created ) ), 
-		'date_deactivated'					=> date( 'l, d F, Y', strtotime( $benefactor->date_deactivated ) )		
+		'date_created'						=> date( 'F d, Y', strtotime( $benefactor->date_created ) ), 
+		'date_deactivated'					=> date( 'F d, Y', strtotime( $benefactor->date_deactivated ) )		
 	);	
 }
 ?>
