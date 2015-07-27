@@ -9,8 +9,6 @@
 
 $value = charitable_get_option( $view_args['key'] );
 
-echo '<pre>'; var_dump( $view_args ); echo '</pre>';
-
 if ( empty( $value ) ) :
     $value = isset( $view_args['default'] ) ? $view_args['default'] : '';
 endif;

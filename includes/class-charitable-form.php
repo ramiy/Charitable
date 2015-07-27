@@ -226,6 +226,7 @@ abstract class Charitable_Form {
 			'field' 	=> $field, 
 			'classes'	=> $this->get_field_classes( $field, $index )
 		) );
+
 		$template->render();
 
 		return true;

@@ -538,9 +538,10 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
      */
     protected function setup_payment_fields() {
         $active_gateways = charitable_get_helper( 'gateways' )->get_active_gateways();
+        $has_gateways = apply_filters( 'charitable_has_active_gateways', ! empty( $active_gateways ) );
 
         /* If no gateways have been selected, display a notice and return the fields */
-        if ( empty( $active_gateways ) ) {  
+        if ( ! $has_gateways ) {  
 
             charitable_get_notices()->add_error( $this->get_no_active_gateways_notice() );
             return;

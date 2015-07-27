@@ -56,35 +56,25 @@ class Charitable_Donation_Amount_Form extends Charitable_Donation_Form implement
      * @since   1.0.0
      */
     protected function attach_hooks_and_filters() {
-        add_action( 'charitable_donation_form_amount', array( $this, 'add_hidden_fields' ), 1 ); 
-        add_action( 'charitable_donation_form_amount', array( $this, 'enter_donation_amount' ) );
-        add_action( 'charitable_donation_amount_form_submit', array( $this, 'redirect_after_submission' ), 10, 2 );
+        parent::attach_hooks_and_filters();
+
+        add_action( 'charitable_donation_amount_form_submit', array( $this, 'redirect_after_submission' ) );
+
+        remove_filter( 'charitable_donation_form_gateway_fields', array( $this, 'add_credit_card_fields' ), 10, 2 );
+        remove_action( 'charitable_donation_form_after_user_fields', array( $this, 'add_password_field' ) );        
 
         do_action( 'charitable_donation_amount_form_start', $this );
     }
 
     /**
-     * Returns the campaign associated with this donation form object. 
+     * Return the donation form fields. 
      *
-     * @return  Charitable_Campaign
+     * @return  array[]
      * @access  public
      * @since   1.0.0
      */
-    public function get_campaign() {
-        return $this->campaign;
-    }
-
-    /**
-     * Render the donation form. 
-     *
-     * @return  void
-     * @access  public
-     * @since   1.0.0
-     */
-    public function render() {
-        charitable_template( 'donation-form/form-donation-amount.php', array( 
-            'form' => $this 
-        ) );
+    public function get_fields() {
+        return $this->get_donation_fields();
     }
 
     /**
