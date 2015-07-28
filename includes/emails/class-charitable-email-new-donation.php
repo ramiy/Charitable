@@ -55,6 +55,10 @@ class Charitable_Email_New_Donation extends Charitable_Email {
      * @since   1.0.0
      */
     public static function send_with_donation_id( $donation_id ) {
+        if ( ! self::is_enabled() ) {
+            return false;
+        }
+
         if ( ! Charitable_Donation::is_approved_status( get_post_status( $donation_id ) ) ) {
             return false;
         }
