@@ -445,6 +445,36 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
     }
 
     /**
+     * Validate the form submission. 
+     *
+     * @return  boolean
+     * @access  public
+     * @since   1.0.0
+     */
+    public function validate_submission() {
+        if ( ! $this->validate_nonce() ) {
+            return false;
+        }
+
+        return apply_filters( 'charitable_validate_donation_form_submission', $this->check_required_fields( $this->get_fields() ), $this );
+    }   
+
+    /**
+     * Return the donation values. 
+     *
+     * @return  array
+     * @access  public
+     * @since   1.0.0
+     */
+    public function get_donation_values() {
+        $submitted = $this->get_submitted_values();
+
+        echo '<pre>'; var_dump( $submitted ); echo '</pre>';
+
+        die;
+    }
+
+    /**
      * Save the submitted donation.
      *
      * @return  int|false   If successful, this returns the donation ID. If unsuccessful, returns false.

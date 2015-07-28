@@ -109,6 +109,16 @@ function charitable_get_notices() {
 }
 
 /**
+ * Returns the Charitable_Donation_Processor class instance. 
+ *
+ * @return  Charitable_Donation_Processor
+ * @since   1.0.0
+ */
+function charitable_get_donation_processor() {
+	return Charitable_Donation_Processor::get_instance();
+}
+
+/**
  * Return Charitable_Locations helper class. 
  *
  * @return 	Charitable_Locations

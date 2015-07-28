@@ -16,7 +16,6 @@ if ( ! isset( $view_args[ 'form' ] ) || ! isset( $view_args[ 'field' ] ) ) {
 
 $form = $view_args[ 'form' ];
 $field = $view_args[ 'field' ];
-$classes = $view_args[ 'classes' ];
 $fields = isset( $field[ 'fields' ] ) ? $field[ 'fields' ] : array();
 
 if ( empty( $fields ) ) {
@@ -24,7 +23,7 @@ if ( empty( $fields ) ) {
 }
 
 ?>
-<fieldset class="<?php echo $classes ?>">
+<fieldset id="charitable-donor-fields" class="charitable-fieldset">
     <?php 
     if ( isset( $field[ 'legend' ] ) ) : ?>
 
@@ -41,9 +40,14 @@ if ( empty( $fields ) ) {
     ?>
 	<div class="charitable-form-fields cf">
 
-		<?php foreach ( $fields as $key => $field ) : 
+		<?php 
+        $i = 1;
+
+        foreach ( $fields as $key => $field ) : 
 			
-			do_action( 'charitable_form_field', $field, $key, $form );
+			do_action( 'charitable_form_field', $field, $key, $form, $i );
+
+            $i += apply_filters( 'charitable_form_field_increment', 1, $field, $key, $form, $i );
 
 		endforeach; ?>
 

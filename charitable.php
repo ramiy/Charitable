@@ -202,16 +202,15 @@ class Charitable {
         require_once( $includes_path . 'currency/charitable-currency-functions.php' );
         require_once( $includes_path . 'currency/class-charitable-currency.php' );
 
-        /* Donations */        
-        include_once( $includes_path . 'donations/charitable-donation-hooks.php' );
-        include_once( $includes_path . 'donations/charitable-donation-functions.php' );
-        include_once( $includes_path . 'donations/class-charitable-donation-controller.php' );
-        require_once( $includes_path . 'donations/class-charitable-donation.php' );
-        require_once( $includes_path . 'donations/class-charitable-donations.php' );        
+        /* Donations */                
         require_once( $includes_path . 'donations/interface-charitable-donation-form.php' );
+        require_once( $includes_path . 'donations/class-charitable-donation-processor.php' );
+        require_once( $includes_path . 'donations/class-charitable-donation.php' );
+        require_once( $includes_path . 'donations/class-charitable-donations.php' );                
         require_once( $includes_path . 'donations/class-charitable-donation-form.php' );    
-        require_once( $includes_path . 'donations/class-charitable-donation-form-hidden.php' );    
         require_once( $includes_path . 'donations/class-charitable-donation-amount-form.php' );
+        require_once( $includes_path . 'donations/charitable-donation-hooks.php' );
+        require_once( $includes_path . 'donations/charitable-donation-functions.php' );
 
         /* Users */
         require_once( $includes_path . 'users/charitable-user-functions.php' );

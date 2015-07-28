@@ -1,9 +1,9 @@
 <?php
 /**
- * The class that is responsible for responding to donation events. 
+ * The class that is responsible for responding to donation events.
  *
  * @version     1.0.0
- * @package     Charitable/Classes/Charitable_Donation_Controller
+ * @package     Charitable/Classes/Charitable_Donation_Processor
  * @author      Eric Daams
  * @copyright   Copyright (c) 2014, Studio 164a
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License  
@@ -11,14 +11,68 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-if ( ! class_exists( 'Charitable_Donation_Controller' ) ) : 
+if ( ! class_exists( 'Charitable_Donation_Processor' ) ) : 
 
 /**
- * Charitable Donation Controller.
+ * Charitable Donation Processor.
  *
  * @since       1.0.0
  */
-class Charitable_Donation_Controller {
+class Charitable_Donation_Processor {
+
+    /**
+     * The single instance of this class.  
+     *
+     * @var     Charitable_Donation_Processor|null
+     * @access  private
+     * @static
+     */
+    private static $instance = null;
+
+    /**
+     * The campaign receiving a donation. 
+     *
+     * @var     Charitable_Campaign|false
+     * @access  private
+     */
+    private $campaign;
+
+    /**
+     * Create class object. A private constructor, so this is used in a singleton context. 
+     * 
+     * @return  void
+     * @access  private
+     * @since   1.0.0
+     */
+    private function __construct() {
+        $this->campaign = charitable_get_current_campaign();
+    }
+
+    /**
+     * Returns and/or create the single instance of this class.  
+     *
+     * @return  Charitable_Donation_Processor
+     * @access  public
+     * @since   1.0.0
+     */
+    public static function get_instance() {
+        if ( is_null( self::$instance ) ) {
+            self::$instance = new Charitable_Donation_Processor();
+        }
+
+        return self::$instance;
+    }
+
+    /**
+     * Return the current campaign. 
+     *
+     * @return  Charitable_Campaign|false False if no campaign is set. Campaign object otherwise.
+     * @access  public
+     * @since   1.0.0
+     */
+    public function get_campaign() {
+        return $this->campaign;
+    }
 
     /**
      * Executed when a user first clicks the Donate button on a campaign. 
@@ -28,17 +82,17 @@ class Charitable_Donation_Controller {
      * @static
      * @since   1.0.0
      */
-    public static function start_donation() {
-        $campaign_id = charitable_get_current_campaign_id();
+    public static function add_donation_to_session() {
+        $processor = self::get_instance();
 
-        if ( ! $campaign_id ) {
+        if ( ! $processor->get_campaign() ) {
             return;
         }       
 
         /* Save the donation in the session */
-        charitable_get_session()->add_donation( $campaign_id, 0 );
+        charitable_get_session()->add_donation( $processor->get_campaign()->ID, 0 );
         
-        $donations_url = charitable_get_permalink( 'campaign_donation_page', array( 'campaign_id' => $campaign_id ) );
+        $donations_url = charitable_get_permalink( 'campaign_donation_page', array( 'campaign_id' => $processor->get_campaign()->ID ) );
         
         wp_redirect( $donations_url );
 
@@ -53,8 +107,9 @@ class Charitable_Donation_Controller {
      * @static
      * @since   1.0.0
      */
-    public static function make_donation() {
-        $campaign = charitable_get_current_campaign();
+    public static function process_donation() {
+        $processor = self::get_instance();
+        $campaign = $processor->get_campaign();
 
         if ( ! $campaign ) {
             return;
@@ -66,10 +121,19 @@ class Charitable_Donation_Controller {
         do_action( 'charitable_before_save_donation', $campaign );
 
         /**
-         * Save the donation using the campaign's donation form object.
+         * Get the submitted fields from the donation form.
          */
         $form = $campaign->get_donation_form();
-        $donation_id = $form->save_donation();
+
+        if ( ! $form->validate_submission() ) {
+            return;
+        }
+
+        $values = $form->get_donation_values();
+        
+        $donation = $form->get_donation_values();
+
+        // $donation_id = $form->save_donation();
 
         /**
          * @hook charitable_after_save_donation

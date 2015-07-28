@@ -39,6 +39,24 @@ interface Charitable_Donation_Form_Interface {
 	 * @since 	1.0.0
 	 */
 	public function save_donation();
+
+	/**
+	 * Validate the submitted values. 
+	 *
+	 * @return  boolean
+	 * @access  public
+	 * @since   1.0.0
+	 */
+	public function validate_submission();
+
+	/**
+	 * Return the donation values.
+	 *
+	 * @return  array
+	 * @access  public
+	 * @since   1.0.0
+	 */
+	public function get_donation_values();	
 }
 
 endif; // End interface_exists check.

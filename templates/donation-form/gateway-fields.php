@@ -54,9 +54,14 @@ $gateways = $field[ 'gateways' ];
 
         ?>
         <div id="charitable-gateway-fields-<?php echo $gateway_id ?>" class="charitable-gateway-fields charitable-form-fields cf" data-gateway="<?php echo $gateway_id ?>">
-            <?php foreach ( $details[ 'fields' ] as $key => $field ) : 
+            <?php 
+            $i = 1;
+
+            foreach ( $details[ 'fields' ] as $key => $field ) : 
                 
-                do_action( 'charitable_form_field', $field, $key, $form );
+                do_action( 'charitable_form_field', $field, $key, $form, $i );
+
+                $i += apply_filters( 'charitable_form_field_increment', 1, $field, $key, $form, $i );
 
             endforeach; ?>
         </div><!-- #charitable-gateway-fields-<?php echo $gateway_id ?> -->
