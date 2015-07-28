@@ -90,6 +90,18 @@ abstract class Charitable_Email {
     }
 
     /**
+     * Checks whether this email is enabled. 
+     *
+     * @return  boolean
+     * @access  public
+     * @static
+     * @since   1.0.0
+     */
+    public static function is_enabled() {
+        return charitable_get_helper( 'emails' )->is_enabled_email( self::ID );
+    }
+
+    /**
      * Return the email name.
      *
      * @return  string
@@ -770,6 +782,18 @@ abstract class Charitable_Email {
 
         return true;
     }
+
+    /**
+     * Returns the current email's ID.  
+     *
+     * @return  string
+     * @access  protected
+     * @since   1.0.0
+     */
+    protected function get_email_id() {
+        $class = get_called_class();
+        return $class::ID;
+    }    
 }
 
 endif; // End class_exists check
