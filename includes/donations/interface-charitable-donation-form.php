@@ -32,15 +32,6 @@ interface Charitable_Donation_Form_Interface {
 	public function render();
 
 	/**
-	 * Save the submitted donation.
-	 *
-	 * @return 	void
-	 * @access 	public
-	 * @since 	1.0.0
-	 */
-	public function save_donation();
-
-	/**
 	 * Validate the submitted values. 
 	 *
 	 * @return  boolean

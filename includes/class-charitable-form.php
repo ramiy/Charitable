@@ -420,6 +420,33 @@ abstract class Charitable_Form {
 	}
 
 	/**
+	 * Organize fields by data type, also filtering out unused parameters (we just need the key and the type). 
+	 *
+	 * @param 	string 		$key
+	 * @param 	array 		$field	 
+	 * @param 	array 		$ret
+	 * @return  array[]
+	 * @access  public
+	 * @since   1.0.0
+	 */
+	public function sort_field_by_data_type( $key, $field, $ret ) {		
+		/* Filter out paragraphs and fields without a type. */
+		if ( ! isset( $field[ 'type' ] ) || 'paragraph' == $field[ 'type' ] ) {
+			return $ret;
+		}
+
+		/* Get the data type. Default to meta if no type is set. */
+		if ( isset( $field[ 'data_type' ] ) ) {
+			$ret[ $field[ 'data_type' ] ][ $key ] = $field[ 'type' ];			
+		}
+		else {
+			$ret[ $key ] = $field[ 'type' ];
+		}
+		
+		return $ret;
+	}
+
+	/**
 	 * Returns the submitted values. 
 	 *
 	 * Use this method instead of accessing the raw $_POST array to take

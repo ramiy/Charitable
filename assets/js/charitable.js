@@ -131,6 +131,37 @@ CHARITABLE.SanitizeURL = function(input) {
 	}
 };
 
+/**
+ * Payment method selection
+ */
+ CHARITABLE.PaymentMethodSelection = {
+
+ 	getActiveMethod : function( $el ) {
+ 		return jQuery( '#charitable-gateway-selector input[name=gateway]:checked' ).val();
+ 	},
+
+ 	hideInactiveMethods : function( active ) {
+ 		var active = active || this.getActiveMethod();
+
+ 		jQuery( '#charitable-gateway-fields .charitable-gateway-fields[data-gateway!=' + active + ']' ).hide();
+ 	},
+
+ 	showActiveMethod : function( active ) {
+ 		jQuery( '#charitable-gateway-fields .charitable-gateway-fields[data-gateway=' + active + ']' ).show();
+ 	},
+
+ 	init : function() {
+ 		var self = this;
+
+ 		self.hideInactiveMethods();
+
+ 		jQuery( '#charitable-gateway-selector input[name=gateway]' ).on( 'change', function() {
+ 			self.hideInactiveMethods();
+ 			self.showActiveMethod( jQuery(this).val() );
+ 		});
+ 	}
+ };
+
 (function() {
 	jQuery( document ).ready( function() {
 		CHARITABLE.Toggle.init();
@@ -138,5 +169,7 @@ CHARITABLE.SanitizeURL = function(input) {
 		CHARITABLE.DonationSelection.init();
 		
 		CHARITABLE.AJAXDonate.init();		
+
+		CHARITABLE.PaymentMethodSelection.init();
 	});
 })();

@@ -162,6 +162,19 @@ class Charitable_Gateways extends Charitable_Start_Object {
 	}
 
 	/**
+	 * Return the gateway object for a given gateway.	 
+	 *
+	 * @param 	string $gateway
+	 * @return  Charitable_Gateway|null
+	 * @access  public
+	 * @since   1.0.0
+	 */
+	public function get_gateway_object( $gateway ) {
+		$class = $this->get_gateway( $gateway );
+		return $class ? new $class : null;
+	}
+
+	/**
 	 * Returns whether the passed gateway is active. 
 	 *
 	 * @param 	string 		$gateway_id

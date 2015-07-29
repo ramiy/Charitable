@@ -2,6 +2,10 @@
 .campaign-description {
   margin-bottom: 1em; }
 
+.single-campaign .campaign-description {
+  font-size: 1.5em;
+  font-weight: bolder; }
+
 .campaign-summary {
   *zoom: 1;
   padding: 0 1em;
@@ -104,7 +108,8 @@
     padding-left: 4px; }
   .charitable-form-field.charitable-radio-list {
     list-style: none;
-    margin: 0; }
+    margin-left: 0;
+    padding-left: 0; }
     .charitable-form-field.charitable-radio-list li {
       list-style: none;
       margin: 0 20px 0 0;

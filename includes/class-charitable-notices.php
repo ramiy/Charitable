@@ -61,12 +61,16 @@ class Charitable_Notices {
 	 * @since	1.0.0
 	 */
 	private function __construct() {
-		$this->notices = array(
+		/* Retrieve the notices from the session */
+		$this->notices = charitable_get_session()->get( 'notices' );
+
+		/* Reset the session back to empty */
+		charitable_get_session()->set( 'notices', array(
 			'error'		=> array(), 
 			'warning'	=> array(), 
 			'success'	=> array(), 
 			'info'		=> array()
-		);
+		) );
 	}
 
 	/**

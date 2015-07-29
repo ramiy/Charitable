@@ -156,26 +156,30 @@ abstract class Charitable_Gateway {
                 'label'     => __( 'Name on Card', 'charitable' ),
                 'type'      => 'text',
                 'required'  => true,
-                'priority'  => 2
+                'priority'  => 2,
+                'data_type' => 'gateway'
             ),
             'cc_number' => array(
                 'label'     => __( 'Card Number', 'charitable' ),
                 'type'      => 'text',
                 'required'  => true,
                 'priority'  => 4,
-                'pattern'   => '[0-9]{13,16}'
+                'pattern'   => '[0-9]{13,16}',
+                'data_type' => 'gateway'
             ),
             'cc_expiration' => array(
                 'label'     => __( 'Expiration', 'charitable' ),
                 'type'      => 'cc-expiration',
                 'required'  => true,
-                'priority'  => 6
+                'priority'  => 6,
+                'data_type' => 'gateway'
             ),
             'cc_cvc' => array(
                 'label'     => __( 'CVV Number', 'charitable' ),
                 'type'      => 'text',
                 'required'  => true,
-                'priority'  => 8
+                'priority'  => 8,
+                'data_type' => 'gateway'
             )
         ), $this );
     }

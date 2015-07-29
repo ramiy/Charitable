@@ -404,100 +404,6 @@ class Charitable_Donation {
 	}
 
 	/**
-	 * Inserts a new donation. 
-	 *
-	 * @param 	array 	$args
-	 * @return 	int 	$donation_id 	Returns 0 in case of failure. Positive donation ID otherwise.
-	 * @access 	public
-	 * @static
-	 * @since 	1.0.0
-	 */
-	public static function add_donation( array $args ) {
-		$args = apply_filters( 'charitable_donation_args', $args );		
-
-		if ( ! self::is_valid_campaign_data( $args ) ) {
-			_doing_it_wrong( __METHOD__, 'A donation cannot be inserted without an array of campaigns being donated to.', '1.0.0' );
-			return 0;
-		}
-
-		$donor_id = self::get_donor_id_for_donation( $args );
-
-		if ( 0 == $donor_id ) {
-			_doing_it_wrong( __METHOD__, 'A donation cannot be inserted without a valid donor id.', '1.0.0' );
-			return 0;
-		}		
-		
-		do_action( 'charitable_before_add_donation', $args );
-
-		$donation_args = self::parse_donation_data( $args, $donor_id );		
-
-		$donation_id = wp_insert_post( $donation_args );
-
-		if ( is_wp_error( $donation_id ) ) {
-			charitable_get_notices()->add_errors_from_wp_error( $donation_id );
-			return 0;
-		}
-
-		if ( $donation_id > 0 ) {
-			self::add_campaign_donations( $args[ 'campaigns' ], $donation_id, $donor_id );
-
-			self::add_donation_meta( $donation_id, $args );				
-
-			self::update_donation_log( $donation_id, __( 'Donation created.', 'charitable' ) );	
-
-			do_action( 'charitable_after_add_donation', $donation_id, $donor_id, $args );
-		}
-
-		return $donation_id;
-	}
-
-	/**
-	 * Inserts the campaign donations into the campaign_donations table. 
-	 *
-	 * @param 	array 	$campaigns
-	 * @param 	int 	$donation_id
-	 * @param 	int 	$donor_id
-	 * @return 	int 	The number of donations inserted. 
-	 * @access  public
-	 * @static
-	 * @since 	1.0.0
-	 */
-	public static function add_campaign_donations( $campaigns, $donation_id, $donor_id ) {
-		
-		foreach ( $campaigns as $campaign ) {
-			$campaign[ 'donor_id' ] = $donor_id;
-			$campaign[ 'donation_id' ] = $donation_id;
-		
-			$campaign_donation_id = charitable_get_table( 'campaign_donations' )->insert( $campaign );
-
-			if ( 0 == $campaign_donation_id ) {
-				return 0;
-			}
-		}
-
-		return count( $campaigns );
-	}
-
-	/**
-	 * Save the meta for the donation.	
-	 *
-	 * @param 	int 	$donation_id
-	 * @param 	array 	$args
-	 * @return 	void
-	 * @access  public
-	 * @static
-	 * @since 	1.0.0
-	 */
-	public static function add_donation_meta( $donation_id, $args ) {		
-		$meta_keys = array_intersect_key( self::get_mapped_meta_keys(), $args );
-
-		foreach ( $meta_keys as $key => $meta_key ) {
-			$value = apply_filters( 'charitable_sanitize_donation_meta', $args[ $key ], $meta_key );
-			update_post_meta( $donation_id, $meta_key, $value );
-		}
-	}
-
-	/**
 	 * Add a message to the donation log. 
 	 *
 	 * @param 	string 		$message
@@ -529,24 +435,6 @@ class Charitable_Donation {
 		$log = get_post_meta( $donation_id, '_donation_log', true );;
 
 		return is_array( $log ) ? $log : array();
-	}
-
-	/**
-	 * Return an array of meta keys with alternative keys. 
-	 *
-	 * In frontend forms, the preference is for using the mapped meta keys, which 
-	 * are the keys of the array this method returns. In the backend, the actual
-	 * meta keys are used instead.
-	 *
-	 * @return 	string[]
-	 * @access  public
-	 * @static
-	 * @since 	1.0.0
-	 */
-	public static function get_mapped_meta_keys() {
-		return apply_filters( 'charitable_donation_mapped_meta_keys', array(
-			'gateway' => 'donation_gateway'
-		) );
 	}
 
 	/**
@@ -608,160 +496,21 @@ class Charitable_Donation {
 	}
 
 	/**
-	 * Returns the donor ID for a new donation. 
+	 * Flush teh donations cache for every campaign receiving a donation. 
 	 *
-	 * @param 	array 	$args
-	 * @return 	int
+	 * @param 	int $donation_id
+	 * @return  void
 	 * @access  public
 	 * @static
-	 * @since 	1.0.0
-	 */
-	public static function get_donor_id_for_donation( $args ) {		
-		if ( isset( $args[ 'donor_id' ] ) ) {			
-			return $args[ 'donor_id' ];
-		}
-
-		$user_id = isset( $args[ 'user_id' ] ) ? $args[ 'user_id' ] : get_current_user_id();
-
-		$donor_id = 0;
-
-		if ( $user_id ) {
-			$donor_id = charitable_get_table( 'donors' )->get_donor_id( $user_id );
-		}
-		elseif ( isset( $args[ 'email' ] ) ) {
-			$donor_id = charitable_get_table( 'donors' )->get_donor_id_by_email( $args[ 'email' ] );
-		}
-
-		if ( 0 == $donor_id ) {
-			$user = new Charitable_User( $user_id );
-			$donor_id = $user->add_donor( $args );
-		}
-		
-		return $donor_id;
-	}
-
-	/**
-	 * Validate campaign data passed to insert. 
-	 *
-	 * @param 	array 	$args
-	 * @return  boolean
-	 * @access  private
-	 * @static
 	 * @since   1.0.0
 	 */
-	private static function is_valid_campaign_data( $args ) {
-		return isset( $args['campaigns'] ) && is_array( $args['campaigns'] );
-	}
+	public static function flush_campaigns_donation_cache( $donation_id ) {
+		$campaign_donations = charitable_get_table( 'campaign_donations' )->get_donation_records( $donation_id );
 
-	/**
-	 * Receives the passed arguments and returns the donation content. 
-	 *
-	 * @param 	array 	$args
-	 * @return  string
-	 * @access  private
-	 * @static
-	 * @since   1.0.0
-	 */
-	private static function parse_donation_content( $args ) {
-		$ret = isset( $args[ 'note' ] ) ? $args[ 'note' ] : '';
-		return apply_filters( 'charitable_donation_data_content', $ret, $args );
-	}
-
-	/**
-	 * Receives the passed arguments and returns the donation parent. 
-	 *
-	 * @param 	array 	$args
-	 * @return  string
-	 * @access  private
-	 * @static
-	 * @since   1.0.0
-	 */
-	private static function parse_donation_parent( $args ) {
-		$ret = isset( $args[ 'donation_plan' ] ) ? $args[ 'donation_plan' ] : 0;
-		return apply_filters( 'charitable_donation_data_post_parent', $ret, $args );
-	}
-
-	/**
-	 * Receives the passed arguments and returns the donation date. 
-	 *
-	 * @param 	array 	$args
-	 * @return  string
-	 * @access  private
-	 * @static
-	 * @since   1.0.0
-	 */
-	private static function parse_donation_date( $args ) {
-		$ret = isset( $args[ 'date' ] ) ? $args[ 'date' ] : date('Y-m-d h:i:s');
-		return apply_filters( 'charitable_donation_data_post_date', $ret, $args );
-	}
-
-	/**
-	 * Receives the passed arguments and returns the donation title. 
-	 *
-	 * @param 	array 	$args
-	 * @return  string
-	 * @access  private
-	 * @static
-	 * @since   1.0.0
-	 */
-	private static function parse_donation_title( $args ) {
-		$ret = sprintf( '%s &ndash; %s', __( 'Donation', 'charitable' ), date( 'j F Y H:i a', strtotime( self::parse_donation_date( $args ) ) ) );
-		return apply_filters( 'charitable_donation_data_post_title', $ret, $args );
-	}
-
-	/**
-	 * Receives the passed arguments and returns the donation status. 
-	 *
-	 * @param 	array 	$args
-	 * @return  string
-	 * @access  private
-	 * @static
-	 * @since   1.0.0
-	 */
-	private static function parse_donation_status( $args ) {
-		$ret = 'charitable-pending';
-
-		/* Override if a valid status was set */
-		if ( isset( $args[ 'status' ] ) && self::is_valid_donation_status( $args[ 'status' ] ) ) {
-			$ret = $args[ 'status' ];
+		foreach ( $campaign_donations as $campaign_donation ) {
+			Charitable_Campaign::flush_donations_cache( $campaign_donation->campaign_id );
 		}
-
-		return apply_filters( 'charitable_donation_data_post_status', $ret, $args );
 	}
-
-	/**
-	 * Parse the donation data, based on the passed $args array. 
-	 *
-	 * @param 	array 	$args
-	 * @param 	int 	$donor_id
-	 * @return  array
-	 * @access  private
-	 * @static
-	 * @since   1.0.0
-	 */
-	private static function parse_donation_data( $args, $donor_id ) {
-		if ( isset( $args[ 'user_id' ] ) ) {
-			$user_id = $args[ 'user_id' ];
-		}
-		else {
-			$user_id = charitable_get_table( 'donors' )->get_user_id( $donor_id );
-		}
-
-		$donation_args = array(
-			'post_type'		=> 'donation', 
-			'post_author'	=> $user_id, 
-			'post_status'	=> self::parse_donation_status( $args ),
-			'post_content'	=> self::parse_donation_content( $args ), 
-			'post_parent'	=> self::parse_donation_parent( $args ),
-			'post_date'		=> self::parse_donation_date( $args ),
-			'post_title'	=> self::parse_donation_title( $args )
-		);						
-
-		$donation_args[ 'post_date_gmt' ] = get_gmt_from_date( $donation_args[ 'post_date' ] );
-
-		return apply_filters( 'charitable_donation_data', $donation_args, $args );
-	}
-
 }
 
 endif; // End class_exists check

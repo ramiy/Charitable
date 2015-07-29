@@ -31,7 +31,7 @@ add_action( 'charitable_start_donation', array( 'Charitable_Donation_Processor',
  *
  * @see Charitable_Donation_Processor::make_donation()
  */
-add_action( 'charitable_make_donation', array( 'Charitable_Donation_Processor', 'process_donation' ) );
+add_action( 'charitable_make_donation', array( 'Charitable_Donation_Processor', 'process_donation_form_submission' ) );
 
 /**
  * AJAX hook to make a donation.
@@ -53,19 +53,12 @@ add_action( 'wp_ajax_nopriv_add_donation', array( 'Charitable_Donation_Processor
 add_action( 'charitable_make_donation_streamlined', array( 'Charitable_Donation_Processor', 'make_donation_streamlined' ) );
 
 /**
- * Send donation to gateway. 
- *
- * This is called after the donation is stored in the database.
- *
- * @see Charitable_Donation_Processor::send_donation_to_gateway
+ * Donation status change.
+ * 
+ * @see Charitable_Donation::flush_campaigns_donation_cache
  */
-add_action( 'charitable_after_save_donation', array( 'Charitable_Donation_Processor', 'send_donation_to_gateway' ), 10, 3 );
+add_action( 'charitable_after_update_donation', array( 'Charitable_Donation', 'flush_campaigns_donation_cache' ) );
 
-/**
- * Send donation to the Offline gateway.
- *
- * This is called on the charitable_after_save_donation hook. 
- *
- * @see Charitable_Gateway_Offline::process_donation
- */
-add_action( 'charitable_make_donation_offline', array( 'Charitable_Gateway_Offline', 'process_donation' ), 10, 2 );
+foreach ( Charitable_Donation::get_valid_donation_statuses() as $status => $label ) {
+    add_action( $status . '_donation', array( 'Charitable_Donation', 'flush_campaigns_donation_cache' ) );
+}

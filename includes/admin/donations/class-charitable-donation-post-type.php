@@ -43,8 +43,7 @@ final class Charitable_Donation_Post_Type extends Charitable_Start_Object {
         $this->meta_box_helper = new Charitable_Meta_Box_Helper( 'charitable-donation' );
 
         add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
-        add_action( 'add_meta_boxes', array( $this, 'remove_meta_boxes' ), 20 );
-        // add_action( 'edit_form_after_title', array( $this, 'donation_top' ) );
+        add_action( 'add_meta_boxes', array( $this, 'remove_meta_boxes' ), 20 );       
 
         // Add fields to the dashboard listing of donations.
         add_filter( 'manage_edit-donation_columns',         array( $this, 'dashboard_columns' ), 11, 1 );

@@ -35,7 +35,7 @@ $gateways = $field[ 'gateways' ];
         <ul id="charitable-gateway-selector" class="charitable-radio-list charitable-form-field">
             <?php foreach ( $gateways as $gateway_id => $details ) : ?>
                 <li><input type="radio" 
-                        id="gateway-' . $gateway_id ?>" 
+                        id="gateway-<?php echo $gateway_id ?>"
                         name="gateway"
                         value="<?php echo esc_attr( $gateway_id ) ?>"
                         <?php checked( $field[ 'default' ], $gateway_id ) ?> />

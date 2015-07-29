@@ -172,6 +172,17 @@ class Charitable_Session extends Charitable_Start_Object {
 		$donations = $this->get( 'donations' );
 		return isset( $donations[ $campaign_id ] ) ? $donations[ $campaign_id ] : false;
 	}
+
+	/**
+	 * Add the all notices to the session. 
+	 *
+	 * @return  void
+	 * @access  public
+	 * @since   1.0.0
+	 */
+	public function add_notices() {
+		$this->set( 'notices', charitable_get_notices()->get_notices() );
+	}
 }
 
 endif;

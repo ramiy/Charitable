@@ -38,6 +38,30 @@ class Charitable_Donation_Processor {
     private $campaign;
 
     /**
+     * The donation data. 
+     *
+     * @var     mixed[]
+     * @access  private
+     */
+    private $donation_data;
+
+    /**
+     * The campaign donations array.  
+     *
+     * @var     array
+     * @access  private
+     */
+    private $campaign_donations_data;
+
+    /**
+     * The donor ID for the current donation. 
+     *
+     * @var     int
+     * @access  private
+     */
+    private $donor_id;
+
+    /**
      * Create class object. A private constructor, so this is used in a singleton context. 
      * 
      * @return  void
@@ -107,7 +131,7 @@ class Charitable_Donation_Processor {
      * @static
      * @since   1.0.0
      */
-    public static function process_donation() {
+    public static function process_donation_form_submission() {
         $processor = self::get_instance();
         $campaign = $processor->get_campaign();
 
@@ -116,13 +140,11 @@ class Charitable_Donation_Processor {
         }
 
         /**
-         * @hook charitable_before_save_donation
+         * @hook charitable_before_process_donation_form
          */
-        do_action( 'charitable_before_save_donation', $campaign );
+        do_action( 'charitable_before_process_donation_form', $processor );
 
-        /**
-         * Get the submitted fields from the donation form.
-         */
+        /* Validate the form submission and retrieve the values. */
         $form = $campaign->get_donation_form();
 
         if ( ! $form->validate_submission() ) {
@@ -130,15 +152,32 @@ class Charitable_Donation_Processor {
         }
 
         $values = $form->get_donation_values();
-        
-        $donation = $form->get_donation_values();
 
-        // $donation_id = $form->save_donation();
+        /* Validate the gateway values */
+        $gateway = $values[ 'gateway' ];
+    
+        if ( ! apply_filters( 'charitable_validate_donation_form_submission_gateway', true, $gateway, $values ) ) {
+            return;
+        }
+        
+        $donation_id = $processor->save_donation( $values );
 
         /**
-         * @hook charitable_after_save_donation
+         * Fire a hook for payment gateways to process the donation.
+         *
+         * Depending on the gateway, execution may be terminated at this point, 
+         * as the donor is redirected to a gateway or some other action takes 
+         * place. 
+         *
+         * @hook charitable_process_donation_$gateway
          */
-        do_action( 'charitable_after_save_donation', $donation_id, $campaign, $form );
+        do_action( 'charitable_process_donation_' . $gateway, $donation_id, $processor );
+
+        /**
+         * If we get this far, forward the user through to the receipt page.
+         */
+        wp_safe_redirect( charitable_get_permalink( 'donation_receipt_page', array( 'donation_id' => $donation_id ) ) );
+        die();
     }
 
     /**
@@ -207,20 +246,307 @@ class Charitable_Donation_Processor {
     } 
 
     /**
-     * Send the donation/donor off to the gateway.  
+     * Inserts a new donation.
      *
-     * @param   int     $donation_id
-     * @param   Charitable_Campaign $campaign
-     * @param   Charitable_Form $form
-     * @return  void
+     * This method is designed to be completely form agnostic. 
+     *
+     * We use this when integrating third-party systems like Easy Digital Downloads and 
+     * WooCommerce. 
+     *
+     * @param   mixed[] $values
+     * @return  int $donation_id    Returns 0 in case of failure. Positive donation ID otherwise.
      * @access  public
-     * @static
      * @since   1.0.0
      */
-    public static function send_donation_to_gateway( $donation_id, $campaign, $form ) {
-        $gateway = charitable_get_donation_gateway( $donation_id );
+    public function save_donation( array $values ) {
+        /**
+         * @hook charitable_donation_values
+         */
+        $this->donation_data = apply_filters( 'charitable_donation_values', $values );
 
-        do_action( 'charitable_make_donation_' . $gateway, $donation_id, $campaign, $form );
+        if ( ! $this->get_campaign_donations_data() ) {
+            _doing_it_wrong( __METHOD__, 'A donation cannot be inserted without an array of campaigns being donated to.', '1.0.0' );
+            return 0;
+        }
+
+        if ( ! $this->is_valid_user_data() ) {
+            _doing_it_wrong( __METHOD__, 'A donation cannot be inserted without valid user data.', '1.0.0' );
+            return 0;
+        }
+
+        /**
+         * @hook charitable_before_save_donation
+         */
+        do_action( 'charitable_before_save_donation', $this );
+
+        $donation_id = wp_insert_post( $this->parse_donation_data() );
+
+        if ( is_wp_error( $donation_id ) ) {
+            charitable_get_notices()->add_errors_from_wp_error( $donation_id );
+            return 0;
+        }
+
+        if ( 0 == $donation_id ) {
+            charitable_get_notices()->add_error( __( 'We were unable to save the donation. Please try again.', 'charitable' ) );
+            return 0;
+        }
+        
+        $this->save_campaign_donations( $donation_id );
+
+        $this->save_donation_meta( $donation_id );             
+
+        $this->update_donation_log( $donation_id, __( 'Donation created.', 'charitable' ) ); 
+
+        /**
+         * @hook charitable_after_save_donation
+         */
+        do_action( 'charitable_after_save_donation', $donation_id, $this );
+    
+        return $donation_id;
+    }
+
+    /**
+     * Inserts the campaign donations into the campaign_donations table. 
+     *
+     * @param   int $donation_id
+     * @return  int The number of donations inserted. 
+     * @access  public
+     * @since   1.0.0
+     */
+    public function save_campaign_donations( $donation_id ) {        
+        $campaigns = $this->get_campaign_donations_data();
+
+        foreach ( $campaigns as $campaign ) {
+            $campaign[ 'donor_id' ] = $this->get_donor_id();
+            $campaign[ 'donation_id' ] = $donation_id;
+        
+            $campaign_donation_id = charitable_get_table( 'campaign_donations' )->insert( $campaign );
+
+            if ( 0 == $campaign_donation_id ) {
+                return 0;
+            }
+        }
+
+        return count( $campaigns );
+    }
+
+    /**
+     * Save the meta for the donation.  
+     *
+     * @param   int $donation_id
+     * @return  void
+     * @access  public
+     * @since   1.0.0
+     */
+    public function save_donation_meta( $donation_id ) {
+        $meta = apply_filters( 'charitable_donation_meta', array(
+            'donation_gateway'  => $this->get_donation_data_value( 'gateway' ), 
+            'donor'             => $this->get_donation_data_value( 'user' ), 
+            'test_mode'         => charitable_get_option( 'test_mode', 0 )
+        ), $donation_id, $this );
+
+        foreach ( $meta as $meta_key => $value ) {  
+            $value = apply_filters( 'charitable_sanitize_donation_meta', $value, $meta_key );
+            update_post_meta( $donation_id, $meta_key, $value );
+        }        
+    }
+
+    /**
+     * Add a message to the donation log. 
+     *
+     * @param   string      $message
+     * @return  void
+     * @access  public
+     * @since   1.0.0
+     */
+    public function update_donation_log( $donation_id, $message ) {
+        $log = Charitable_Donation::get_donation_log( $donation_id );
+
+        $log[] = array( 
+            'time'      => time(), 
+            'message'   => $message
+        );
+
+        update_post_meta( $donation_id, '_donation_log', $log );
+    }
+
+    /**
+     * Returns the submitted donation data. 
+     *
+     * @return  mixed[]
+     * @access  public
+     * @since   1.0.0
+     */
+    public function get_donation_data() {
+        return $this->donation_data;
+    }
+
+    /**
+     * Return the submitted value for a particular key.
+     *
+     * @param   string $key     The key to search for.
+     * @param   mixed $default  Fallback value to return if the data is not set.
+     * @return  mixed
+     * @access  public
+     * @since   1.0.0
+     */
+    public function get_donation_data_value( $key, $default = false ) {
+        $data = $this->get_donation_data();
+        return isset( $data[ $key ] ) ? $data[ $key ] : $default;
+    }
+
+    /**
+     * Returns the campaign donations array, or false if the data is invalid. 
+     *
+     * @return  string[]|false
+     * @access  public
+     * @since   1.0.0
+     */
+    public function get_campaign_donations_data() {
+        if ( ! isset( $this->campaign_donations_data ) ) {
+
+            if ( ! is_array( $this->get_donation_data_value( 'campaigns' ) ) ) {
+                return false;
+            }
+            
+            $this->campaign_donations_data = array();
+
+            foreach ( $this->get_donation_data_value( 'campaigns' ) as $campaign ) {
+
+                /* If the amount or campaign_id are missing, this donation won't work. */
+                if ( ! isset( $campaign[ 'campaign_id' ] ) || ! isset( $campaign[ 'amount' ] ) ) {
+                    return false;
+                }
+
+                if ( ! isset( $campaign[ 'campaign_name' ] ) ) {
+                    $campaign[ 'campaign_name' ] = get_the_title( $campaign[ 'campaign_id' ] );
+                }
+
+                $this->campaign_donations_data[] = $campaign;
+            }    
+        }
+        
+        return $this->campaign_donations_data;
+    }
+
+    /**
+     * Returns the donor_id for the current donation. 
+     *
+     * @return  int
+     * @access  public
+     * @since   1.0.0
+     */
+    public function get_donor_id() {
+        if ( ! isset( $this->donor_id ) ) {
+            $this->donor_id = $this->get_donation_data_value( 'donor_id', 0 );
+
+            if ( $this->donor_id ) {
+                return $this->donor_id;
+            }
+
+            $user_id = $this->get_donation_data_value( 'user_id', get_current_user_id() );
+            $user_data = $this->get_donation_data_value( 'user', array() );
+
+            if ( $user_id ) {
+                $this->donor_id = charitable_get_table( 'donors' )->get_donor_id( $user_id );
+            }    
+            elseif ( isset( $user_data[ 'email' ] ) ) {
+                $this->donor_id = charitable_get_table( 'donors' )->get_donor_id_by_email( $user_data[ 'email' ] );
+            }
+
+            /* If we still do not have a donor ID, it means that this is a first-time donor */
+            if ( 0 == $this->donor_id ) {
+                $user = new Charitable_User( $user_id );
+                $this->donor_id = $user->add_donor( $user_data );
+            }
+        }        
+        
+        return $this->donor_id;
+    }
+
+    /**
+     * Validate user data passed to insert. 
+     *
+     * @return  boolean
+     * @access  private
+     * @since   1.0.0
+     */
+    private function is_valid_user_data() {
+        $ret = $this->get_donation_data_value( 'user_id' ) || $this->get_donation_data_value( 'donor_id' );
+
+        if ( ! $ret ) {
+            $user = $this->get_donation_data_value( 'user' );
+            $ret = isset( $user[ 'email' ] );
+        }
+
+        return $ret;
+    }
+
+    /**
+     * Parse the donation data, based on the passed $values array. 
+     *
+     * @return  array
+     * @access  private
+     * @since   1.0.0
+     */
+    private function parse_donation_data() {        
+        $core_values = array(
+            'post_type'     => 'donation', 
+            'post_author'   => $this->get_donation_data_value( 'user_id', get_current_user_id() ), 
+            'post_status'   => $this->get_donation_status(),
+            'post_content'  => $this->get_donation_data_value( 'note', '' ), 
+            'post_parent'   => $this->get_donation_data_value( 'donation_plan', 0 ),
+            'post_date'     => $this->get_donation_data_value( 'date', date('Y-m-d h:i:s') ),
+            'post_title'    => sprintf( '%s &ndash; %s', $this->get_donor_name(), $this->get_campaign_names() )
+        );                      
+
+        $core_values[ 'post_date_gmt' ] = get_gmt_from_date( $core_values[ 'post_date' ] );
+
+        return apply_filters( 'charitable_donation_values_core', $core_values, $this );
+    }
+
+    /**
+     * Returns the donation status. Defaults to charitable-pending.
+     *
+     * @return  string
+     * @access  private
+     * @since   1.0.0
+     */
+    private function get_donation_status() {
+        $status = $this->get_donation_data_value( 'status', 'charitable-pending' );
+
+        if ( ! Charitable_Donation::is_valid_donation_status( $status ) ) {
+            $status = 'charitable-pending';
+        }
+
+        return $status;
+    }
+
+    /**
+     * Returns the name of the donor. 
+     *
+     * @return  string
+     * @access  private
+     * @since   1.0.0
+     */
+    private function get_donor_name() {
+        $user = new WP_User( $this->get_donation_data_value( 'user_id', 0 ) );
+        $user_data = $this->get_donation_data_value( 'user' );
+        $first_name = isset( $user_data[ 'first_name' ] ) ? $user_data[ 'first_name' ] : $user->get( 'first_name' );
+        $last_name = isset( $user_data[ 'last_name' ] ) ? $user_data[ 'last_name' ] : $user->get( 'last_name' );
+        return trim( sprintf( '%s %s', $first_name, $last_name ) );
+    }
+
+    /**
+     * Returns a comma separated list of the campaigns that are being donated to. 
+     *
+     * @return  string
+     * @access  private
+     * @since   1.0.0
+     */
+    private function get_campaign_names() {
+        $campaigns = array_column( $this->get_campaign_donations_data(), 'campaign_name' );
+        return implode( ', ', $campaigns );
     }
 }
 
