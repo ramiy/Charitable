@@ -5,6 +5,9 @@
 .single-campaign .campaign-description {
   font-size: 1.5em;
   font-weight: bolder; }
+.single-campaign.campaign-widget .campaign-description {
+  font-size: 1em;
+  font-weight: normal; }
 
 .campaign-summary {
   *zoom: 1;

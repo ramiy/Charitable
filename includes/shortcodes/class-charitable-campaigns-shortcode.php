@@ -42,17 +42,32 @@ class Charitable_Campaigns_Shortcode {
         );
 
         $args = shortcode_atts( $default, $atts, 'campaigns' );
+        $args[ 'campaigns' ] = self::get_campaigns( $args );
 
-        $view_args = array(
-            'campaigns' => self::get_campaigns( $args ),
+        /* Allows extensions/themes to plug in their own template objects here. */
+        $template = apply_filters( 'charitable_campaigns_shortcode_template', false, $args );
+
+        /* Fall back to default Charitable_Template if no template returned or if template was not object of 'Charitable_Template' class. */
+        if ( ! is_object( $template ) || ! is_a( $template, 'Charitable_Template' ) ) {
+            $template = new Charitable_Template( 'campaign-loop.php', false );
+        }       
+
+        if ( ! $template->template_file_exists() ) {
+            return false;
+        }
+
+        $view_args = apply_filters( 'charitable_campaigns_shortcode_view_args', array(
+            'campaigns' => $args[ 'campaigns' ],
             'columns'   => $args[ 'columns' ]
-        );
+        ), $args );
+
+        $template->set_view_args( $view_args );
 
         ob_start();        
 
-        charitable_template( 'campaign-loop.php', $view_args );
+        $template->render();
 
-        return apply_filters( 'charitable_campaigns_shortcode', ob_get_clean(), $args, $view_args[ 'campaigns' ] );
+        return apply_filters( 'charitable_campaigns_shortcode', ob_get_clean(), $args );
     }
 
     /**
