@@ -19,10 +19,11 @@
 
 // Easy media queries for breakpoints.
 @mixin bp($point, $min : true) {
+	$em : #{$point / 16}em;
 	@if ( $min ) {
-		@media (min-width: #{$point}) { @content };
+		@media (min-width: $em) { @content };
 	}
 	@else {
-		@media (max-width: #{$point}) { @content };
+		@media (max-width: $em) { @content };
 	}
 }

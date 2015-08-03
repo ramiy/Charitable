@@ -279,14 +279,14 @@ class Charitable_User_Dashboard implements Charitable_Addon_Interface {
             'profile_page'  => array(
                 'title'     => __( 'Profile Page', 'charitable' ), 
                 'type'      => 'select', 
-                'priority'  => 24, 
+                'priority'  => 34, 
                 'options'   => charitable_get_admin_settings()->get_pages(), 
                 'help'      => __( 'The static page should contain the <code>[charitable_profile]</code> shortcode.', 'charitable' )
             ), 
             'login_page'    => array(
                 'title'     => __( 'Login Page', 'charitable' ), 
                 'type'      => 'select', 
-                'priority'  => 24, 
+                'priority'  => 34, 
                 'default'   => 'wp',
                 'options'   => array(
                     'wp'            => __( 'Use WordPress Login', 'charitable' ), 
@@ -301,7 +301,7 @@ class Charitable_User_Dashboard implements Charitable_Addon_Interface {
             'registration_page' => array(
                 'title'     => __( 'Registration Page', 'charitable' ), 
                 'type'      => 'select', 
-                'priority'  => 26, 
+                'priority'  => 36, 
                 'default'   => 'wp',
                 'options'   => array(
                     'wp'    => __( 'Use WordPress Registration Page', 'charitable' ),

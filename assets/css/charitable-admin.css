@@ -351,7 +351,7 @@ body.post-type-campaign .postbox-container .empty-container {
   .charitable-benefactor-contribution-amount .contribution-amount {
     margin-bottom: 10px;
     font-size: 16px; }
-  @media (min-width: 42.5em) {
+  @media (min-width: 2.65625emem) {
     .charitable-benefactor-contribution-amount {
       border: 1px solid #ddd;
       background-color: #fff; }
@@ -391,7 +391,7 @@ body.post-type-campaign .postbox-container .empty-container {
     padding-right: 4%; }
   #campaign-top-sortables #campaign-description {
     clear: both; }
-  @media (max-width: 37.5em) {
+  @media (max-width: 2.34375emem) {
     #campaign-top-sortables #campaign-goal,
     #campaign-top-sortables #campaign-end-date {
       width: 100%;
@@ -526,7 +526,7 @@ select.charitable-settings-field {
 .charitable-shortcode-options li {
   margin-bottom: 2px; }
 
-@media (min-width: 48em) {
+@media (min-width: 3emem) {
   .charitable_page_charitable-settings .form-table th {
     min-width: 200px; } }
 .charitable_page_charitable-settings .form-table th label {

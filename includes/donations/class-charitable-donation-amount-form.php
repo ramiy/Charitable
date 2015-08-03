@@ -58,7 +58,7 @@ class Charitable_Donation_Amount_Form extends Charitable_Donation_Form implement
     protected function attach_hooks_and_filters() {
         parent::attach_hooks_and_filters();
 
-        add_action( 'charitable_donation_amount_form_submit', array( $this, 'redirect_after_submission' ) );
+        // add_action( 'charitable_donation_amount_form_submit', array( $this, 'redirect_after_submission' ) );
 
         remove_filter( 'charitable_donation_form_gateway_fields', array( $this, 'add_credit_card_fields' ), 10, 2 );
         remove_action( 'charitable_donation_form_after_user_fields', array( $this, 'add_password_field' ) );        
@@ -75,6 +75,24 @@ class Charitable_Donation_Amount_Form extends Charitable_Donation_Form implement
      */
     public function get_fields() {
         return $this->get_donation_fields();
+    }
+
+    /**
+     * Return the donation values. 
+     *
+     * @return  array
+     * @access  public
+     * @since   1.0.0
+     */
+    public function get_donation_values() {
+        $submitted = $this->get_submitted_values();
+
+        $values = array(
+            'campaign_id'   => $submitted[ 'campaign_id' ],
+            'amount'        => self::get_donation_amount( $submitted )
+        );
+
+        return apply_filters( 'charitable_donation_amount_form_submission_values', $values, $submitted, $this );
     }
 
     /**

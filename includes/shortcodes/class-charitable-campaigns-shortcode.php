@@ -118,6 +118,10 @@ class Charitable_Campaigns_Shortcode {
             );
         }
 
+        if ( ! empty( $args[ 'exclude' ] ) ) {
+            $query_args[ 'post__not_in' ] = explode( ',', $args[ 'exclude' ] );
+        }
+
         /* Return campaigns, ordered by date of creation. */
         if ( 'post_date' == $args[ 'orderby' ] ) {
             $query_args[ 'orderby' ] = 'date';

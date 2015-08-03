@@ -167,16 +167,16 @@ abstract class Charitable_Gateway {
                 'pattern'   => '[0-9]{13,16}',
                 'data_type' => 'gateway'
             ),
-            'cc_expiration' => array(
-                'label'     => __( 'Expiration', 'charitable' ),
-                'type'      => 'cc-expiration',
+            'cc_cvc' => array(
+                'label'     => __( 'CVV Number', 'charitable' ),
+                'type'      => 'text',
                 'required'  => true,
                 'priority'  => 6,
                 'data_type' => 'gateway'
             ),
-            'cc_cvc' => array(
-                'label'     => __( 'CVV Number', 'charitable' ),
-                'type'      => 'text',
+            'cc_expiration' => array(
+                'label'     => __( 'Expiration', 'charitable' ),
+                'type'      => 'cc-expiration',
                 'required'  => true,
                 'priority'  => 8,
                 'data_type' => 'gateway'

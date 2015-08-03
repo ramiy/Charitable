@@ -10,8 +10,12 @@
 $value = charitable_get_option( $view_args['key'], array() );
 
 if ( empty( $value ) ) :
-    $value = isset( $view_args['default'] ) ? $view_args['default'] : array();
+    $value = isset( $view_args['default'] ) ? (array) $view_args['default'] : array();
 endif;
+
+if ( ! is_array( $value ) ) {
+    $value = (array) $value;
+}
 
 ?>
 <ul class="charitable-checkbox-list <?php echo esc_attr( $view_args[ 'classes' ] ) ?>">

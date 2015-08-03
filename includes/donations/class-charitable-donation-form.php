@@ -334,6 +334,7 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
         $default_gateway = $gateways_helper->get_default_gateway();        
         
         $gateways = array();
+        $has_gateway_fields = false;
 
         foreach ( $gateways_helper->get_active_gateways() as $gateway_id => $gateway_class ) {
 
@@ -344,15 +345,22 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
                 'fields'    => $gateway_fields
             );
 
+            $has_gateway_fields = $has_gateway_fields || ! empty( $gateway_fields );
+
         }
 
-        $fields[ 'payment_fields' ] = array(
-            'type'      => 'gateway-fields',
-            'legend'    => __( 'Payment', 'charitable' ), 
-            'default'   => $default_gateway, 
-            'gateways'  => $gateways, 
-            'priority'  => 60
-        );
+        /* Add the payment section if there are gateway fields to be filled out. */
+        if ( $has_gateway_fields || count( $gateways ) > 1 ) {
+
+            $fields[ 'payment_fields' ] = array(
+                'type'      => 'gateway-fields',
+                'legend'    => __( 'Payment', 'charitable' ), 
+                'default'   => $default_gateway, 
+                'gateways'  => $gateways, 
+                'priority'  => 60
+            );
+
+        }
 
         return $fields;
     }
@@ -430,6 +438,25 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
         foreach ( $hidden_fields as $name => $value  ) {
             printf( '<input type="hidden" name="%s" value="%s" />', $name, $value );
         }
+    }
+
+    /**
+     * Set the gateway as a hidden field when there is only one gateway. 
+     *
+     * @return  string[]
+     * @access  public
+     * @since   1.0.0
+     */
+    public function add_hidden_gateway_field( $fields ) {        
+        $gateways = charitable_get_helper( 'gateways' )->get_active_gateways();
+
+        if ( count( $gateways ) !== 1 ) {
+            return $fields;
+        }
+
+        $fields[ 'gateway' ] = key( $gateways );
+
+        return $fields;
     }
 
     /**
@@ -600,7 +627,13 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
             charitable_get_notices()->add_error( $this->get_no_active_gateways_notice() );
             return;
 
-        }        
+        }
+
+        if ( count( $active_gateways ) == 1 ) {
+
+            add_filter( 'charitable_donation_form_hidden_fields', array( $this, 'add_hidden_gateway_field' ) );
+            
+        }
         
         add_action( 'charitable_donation_form_fields', array( $this, 'add_payment_fields' ) );
     }   

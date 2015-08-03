@@ -470,7 +470,7 @@ class Charitable_Campaign {
             );
         }
         else {
-            $ret = sprintf( _x( '%s Donated', 'amount donated', 'charitable' ), 
+            $ret = sprintf( _x( '%s donated', 'amount donated', 'charitable' ), 
                 '<span class="amount">' . $currency_helper->get_monetary_amount( $this->get_donated_amount() ) . '</span>'
             );
         }

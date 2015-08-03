@@ -3,7 +3,7 @@
  * Plugin Name:         Charitable
  * Plugin URI:          http://wpcharitable.com
  * Description:         Fundraise with WordPress.
- * Version:             1.0.0-20150729
+ * Version:             1.0.0-20150731
  * Author:              Studio 164a
  * Author URI:          https://164a.com
  * Requires at least:   4.1
@@ -33,7 +33,7 @@ class Charitable {
     /**
      * @var     string
      */
-    const VERSION = '1.0.0-20150729';
+    const VERSION = '1.0.0-20150731';
 
     /**
      * @var     string      A date in the format: YYYYMMDD
@@ -185,13 +185,12 @@ class Charitable {
 
         /* Base Classes & Interfaces */        
         require_once( $includes_path . 'class-charitable-start-object.php' );
-        require_once( $includes_path . 'class-charitable-form.php' );     
-        require_once( $includes_path . 'class-charitable-addons.php' );                    
-        require_once( $includes_path . 'class-charitable-donor-query.php' );                    
+        require_once( $includes_path . 'class-charitable-form.php' );
+        require_once( $includes_path . 'class-charitable-addons.php' );
         require_once( $includes_path . 'class-charitable-locations.php' );
         require_once( $includes_path . 'class-charitable-notices.php' );
         require_once( $includes_path . 'class-charitable-post-types.php' );
-        require_once( $includes_path . 'class-charitable-request.php' );        
+        require_once( $includes_path . 'class-charitable-request.php' );
                 
         /* Campaigns */
         require_once( $includes_path . 'campaigns/charitable-campaign-functions.php' );
@@ -216,6 +215,7 @@ class Charitable {
         require_once( $includes_path . 'users/charitable-user-functions.php' );
         require_once( $includes_path . 'users/class-charitable-user.php' );
         require_once( $includes_path . 'users/class-charitable-roles.php' );        
+        require_once( $includes_path . 'class-charitable-donor-query.php' );
 
         /* Gateways */
         require_once( $includes_path . 'gateways/class-charitable-gateways.php' );

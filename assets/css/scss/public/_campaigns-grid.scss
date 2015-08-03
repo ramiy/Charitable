@@ -10,20 +10,29 @@
         h3 {
             margin-top: 0;
         }
-    }
-
-    .campaign-donation {
-        padding-top: 1em;
-    }   
+    } 
 
     .wp-post-image {
         padding-bottom: 1em;
     }
 
+    .campaign-progress-bar {
+        margin-bottom: 0.5em;
+    }
+
     .campaign-donation-stats {
-        font-size: 0.8em;
-        font-style: italic;
-        padding-top: 6px;
+        margin-bottom: 1em;
+
+        .amount, 
+        .goal-amount {
+            font-weight: bolder;
+        }
+    }
+
+    .campaign-donation {
+        .button {
+            display: inline-block;
+        }
     }
 }
 

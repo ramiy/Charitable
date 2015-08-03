@@ -56,7 +56,7 @@ class Charitable_Install {
 	 * @since 	1.0.0
 	 */
 	private function setup_roles() {
-		require_once( 'class-charitable-roles.php' );
+		require_once( 'users/class-charitable-roles.php' );
 		$roles = new Charitable_Roles();
 		$roles->add_roles();
 		$roles->add_caps();

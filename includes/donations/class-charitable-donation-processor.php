@@ -235,14 +235,40 @@ class Charitable_Donation_Processor {
      * @since   1.0.0
      */
     public static function make_donation_streamlined() {
-        $campaign = charitable_get_current_campaign();
+        $processor = self::get_instance();
+        $campaign = $processor->get_campaign();
 
         if ( ! $campaign ) {
             return;
         }
 
+        /**
+         * @hook charitable_before_process_donation_amount_form
+         */
+        do_action( 'charitable_before_process_donation_amount_form', $processor );
+
+        /* Validate the form submission and retrieve the values. */
         $form = new Charitable_Donation_Amount_Form( $campaign );
-        $form->save_donation();
+
+        if ( ! $form->validate_submission() ) {
+            return;
+        }
+
+        $submitted = $form->get_donation_values();
+
+        charitable_get_session()->add_donation( $submitted[ 'campaign_id' ], $submitted[ 'amount' ] );
+        
+        /**
+         * @hook charitable_after_process_donation_amount_form
+         */
+        do_action( 'charitable_after_process_donation_amount_form', $processor, $submitted );
+
+        /**
+         * If we get this far, forward the user through to the donation page.
+         */
+        echo '<pre>'; var_dump( charitable_get_permalink( 'campaign_donation_page', array( 'campaign_id' => $submitted[ 'campaign_id' ] ) ) ); echo '</pre>';
+        wp_safe_redirect( charitable_get_permalink( 'campaign_donation_page', array( 'campaign_id' => $submitted[ 'campaign_id' ] ) ) );
+        die();
     } 
 
     /**

@@ -41,7 +41,6 @@ final class Charitable_Settings extends Charitable_Start_Object {
         add_filter( 'charitable_sanitize_value', array( $this, 'sanitize_checkbox_value' ), 10, 2 );
         add_filter( 'charitable_save_settings', array( $this, 'maybe_change_license_status' ) );
         add_filter( 'charitable_settings_tab_fields_general', array( $this, 'add_general_settings_fields' ), 5 );
-        add_filter( 'charitable_settings_tab_fields_forms', array( $this, 'add_forms_settings_fields' ), 5 );
         add_filter( 'charitable_settings_tab_fields_advanced', array( $this, 'add_advanced_settings_fields' ), 5);
 
         do_action( 'charitable_admin_settings_start', $this );
@@ -57,7 +56,6 @@ final class Charitable_Settings extends Charitable_Start_Object {
     public function get_sections() {
         return apply_filters( 'charitable_settings_tabs', array( 
             'general'   => __( 'General', 'charitable' ), 
-            'forms'     => __( 'Forms', 'charitable' ),
             'gateways'  => __( 'Payment Gateways', 'charitable' ), 
             'emails'    => __( 'Emails', 'charitable' ), 
             'advanced'  => __( 'Advanced', 'charitable' )
@@ -383,38 +381,15 @@ final class Charitable_Settings extends Charitable_Start_Object {
                 'default'           => 2, 
                 'class'             => 'short'
             ),
-            'section_pages'         => array(
-                'title'             => __( 'Pages', 'charitable' ), 
-                'type'              => 'heading', 
-                'priority'          => 20
-            )
-        );
-    }
-
-    /**
-     * Return all the settings fields related to forms (donation forms, profile forms, etc).
-     *
-     * @return  array[]
-     * @access  public
-     * @since   1.0.0
-     */
-    public function add_forms_settings_fields() {
-        return array(
-            'section'               => array(
-                'title'             => '',
-                'type'              => 'hidden',
-                'priority'          => 10000,
-                'value'             => 'forms'
-            ),
             'section_donation_form' => array(
                 'title'             => __( 'Donation Form', 'charitable' ),
                 'type'              => 'heading',
-                'priority'          => 2
+                'priority'          => 20
             ), 
             'donation_form_display' => array(
                 'title'             => __( 'Display Options', 'charitable' ), 
                 'type'              => 'select', 
-                'priority'          => 4, 
+                'priority'          => 22, 
                 'default'           => 'separate_page',
                 'options'           => array(
                     'separate_page' => __( 'Show on a Separate Page', 'charitable' ), 
@@ -423,15 +398,12 @@ final class Charitable_Settings extends Charitable_Start_Object {
                 ), 
                 'help'              => __( 'Choose how you want a campaign\'s donation form to show.', 'charitable' )
             ),
-            'donation_form_fields'  => array(
-                'title'             => __( 'Donation Form Fields', 'charitable' ), 
-                'type'              => 'donation-form-fields',
-                'priority'          => 6,
-                'default'           => array(),
-                'options'           => array(),
-                'help'              => __( 'Choose the fields that you would like your donors to fill out when making a donation.', 'charitable' )
+            'section_pages'         => array(
+                'title'             => __( 'Pages', 'charitable' ), 
+                'type'              => 'heading', 
+                'priority'          => 30
             )
-        ); 
+        );
     }
 
     /**
@@ -511,26 +483,27 @@ final class Charitable_Settings extends Charitable_Start_Object {
     private function get_setting_submitted_value( $key, $field, $submitted ) {
         $value = null;        
 
-        /* No need to save headings :) */
-        if ( isset( $field[ 'type' ] ) && 'heading' == $field[ 'type' ] ) {
-            return $value;
+        $field_type = isset( $field[ 'type' ] ) ? $field[ 'type' ] : '';
+
+        switch( $field_type ) {            
+            case '' :  
+            case 'heading' : 
+                return $value;
+                break;
+
+            case 'checkbox' : 
+                $value = isset( $submitted[ $key ] );
+                break;
+
+            case 'multi-checkbox' : 
+                $value = isset( $submitted[ $key ] ) ? $submitted[ $key ] : array();
+                break;
+
+            default : 
+                $value = $submitted[ $key ];
         }
 
-        /* Checkbox fields need to be set to 0 when they're not in the submitted array */
-        if ( isset( $field[ 'type' ] ) && 'checkbox' == $field[ 'type' ] ) {
-
-            $value = isset( $submitted[ $key ] );
-            return apply_filters( 'charitable_sanitize_value', $value, $field, $submitted, $key );
-
-        }
-        elseif ( isset( $submitted[ $key ] ) ) {
-
-            $value = $submitted[ $key ];
-            return apply_filters( 'charitable_sanitize_value', $value, $field, $submitted, $key );
-
-        } 
-
-        return $value;
+        return apply_filters( 'charitable_sanitize_value', $value, $field, $submitted, $key );
     }
 
     /**
