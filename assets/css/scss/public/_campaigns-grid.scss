@@ -1,14 +1,19 @@
-.campaign-loop {
-    list-style: none;    
+.campaign-loop.campaign-list, 
+.campaign-loop.campaign-grid {
+    margin: 0 0 1em 0;
+    padding: 0;
+    list-style: none;        
 
     .campaign.hentry {     
         position: relative;   
         margin-left: 0;
         margin-right: 0;
         box-shadow: none;
+        box-sizing: border-box;
 
         h3 {
             margin-top: 0;
+            text-decoration: none;
         }
     } 
 
@@ -71,3 +76,4 @@
         margin-right: 0;
     }    
 }
+

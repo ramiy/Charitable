@@ -118,7 +118,7 @@ final class Charitable_Settings extends Charitable_Start_Object {
      */
     public function sanitize_settings( $values ) {
         $old_values = get_option( 'charitable_settings', array() );
-        $new_values = array();        
+        $new_values = array();
 
         if ( ! is_array( $values ) ) {
             $values = array();

@@ -266,7 +266,6 @@ class Charitable_Donation_Processor {
         /**
          * If we get this far, forward the user through to the donation page.
          */
-        echo '<pre>'; var_dump( charitable_get_permalink( 'campaign_donation_page', array( 'campaign_id' => $submitted[ 'campaign_id' ] ) ) ); echo '</pre>';
         wp_safe_redirect( charitable_get_permalink( 'campaign_donation_page', array( 'campaign_id' => $submitted[ 'campaign_id' ] ) ) );
         die();
     } 
@@ -306,6 +305,8 @@ class Charitable_Donation_Processor {
         do_action( 'charitable_before_save_donation', $this );
 
         $donation_id = wp_insert_post( $this->parse_donation_data() );
+
+        $this->set_donation_key();
 
         if ( is_wp_error( $donation_id ) ) {
             charitable_get_notices()->add_errors_from_wp_error( $donation_id );
@@ -368,7 +369,8 @@ class Charitable_Donation_Processor {
         $meta = apply_filters( 'charitable_donation_meta', array(
             'donation_gateway'  => $this->get_donation_data_value( 'gateway' ), 
             'donor'             => $this->get_donation_data_value( 'user' ), 
-            'test_mode'         => charitable_get_option( 'test_mode', 0 )
+            'test_mode'         => charitable_get_option( 'test_mode', 0 ), 
+            'donation_key'      => $this->get_donation_data_value( 'donation_key' )
         ), $donation_id, $this );
 
         foreach ( $meta as $meta_key => $value ) {  
@@ -491,6 +493,43 @@ class Charitable_Donation_Processor {
     }
 
     /**
+     * Return the IPN url.
+     *
+     * IPNs in Charitable are structured in this way: charitable-listener=gateway
+     *
+     * @param   string $gateway
+     * @return  string
+     * @access  public
+     * @since   1.0.0
+     */
+    public function get_ipn_url( $gateway ) {
+        return add_query_arg( 'charitable-listener', $gateway, home_url( 'index.php' ) );
+    }
+
+    /**
+     * Checks for calls to our IPN. 
+     *
+     * This method is called on the init hook.
+     *
+     * IPNs in Charitable are structured in this way: charitable-listener=gateway
+     *
+     * @return  boolean True if this is a call to our IPN. False otherwise.
+     * @access  public
+     * @static
+     * @since   1.0.0
+     */
+    public static function ipn_listener() {
+        if ( isset( $_GET[ 'charitable-listener' ] ) ) {
+
+            $gateway = $_GET[ 'charitable-listener' ];
+            do_action( 'charitable_process_ipn_' . $gateway );
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Validate user data passed to insert. 
      *
      * @return  boolean
@@ -574,6 +613,17 @@ class Charitable_Donation_Processor {
         $campaigns = array_column( $this->get_campaign_donations_data(), 'campaign_name' );
         return implode( ', ', $campaigns );
     }
+
+    /**
+     * Set a unique key for the donation. 
+     *
+     * @return  void
+     * @access  private
+     * @since   1.0.0
+     */
+    private function set_donation_key() {
+        $this->donation_data[ 'donation_key' ] = strtolower( md5( uniqid() ) );
+    }    
 }
 
 endif; // End class_exists check.

@@ -32,7 +32,7 @@ function charitable_get_campaign( $campaign_id ) {
  * @since   1.0.0
  */
 function charitable_get_current_campaign() {
-    return charitable_get_helper( 'request' )->get_current_campaign();
+    return charitable_get_request()->get_current_campaign();
 }
 
 /**
@@ -42,7 +42,7 @@ function charitable_get_current_campaign() {
  * @since   1.0.0
  */
 function charitable_get_current_campaign_id() {
-    return charitable_get_helper( 'request' )->get_current_campaign_id();
+    return charitable_get_request()->get_current_campaign_id();
 }
 
 /**

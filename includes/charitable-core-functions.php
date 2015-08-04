@@ -138,6 +138,15 @@ function charitable_get_session() {
 	return charitable_get_helper( 'session' );
 }
 
+/**
+ * Returns the current request helper object. 
+ *
+ * @return 	Charitable_Request
+ * @since 	1.0.0
+ */
+function charitable_get_request() {
+	return charitable()->get_request();
+}
 
 /**
  * Return the database table helper object. 

@@ -43,6 +43,7 @@ class Charitable_Donors_Widget extends WP_Widget {
      * @since   1.0.0
      */
     public function widget( $args, $instance ) {    
+        $instance = $this->get_parsed_args( $instance );
         $view_args = array_merge( $args, $instance );
         $view_args[ 'donors' ] = $this->get_widget_donors( $instance );
 
@@ -58,18 +59,7 @@ class Charitable_Donors_Widget extends WP_Widget {
      * @since   1.0.0
      */
     public function form( $instance ) {
-        $defaults = array(
-            'title'         => '',
-            'number'        => 10, 
-            'order'         => 'recent',
-            'campaign'      => 'all',
-            'show_location' => false,
-            'show_amount'   => false,
-            'show_name'     => false, 
-            'hide_if_no_donors' => false
-        );
-
-        $args = wp_parse_args( $instance, $defaults );
+        $args = $this->get_parsed_args( $instance );
         ?>
         <p>
             <label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ) ?>"><?php _e( 'Title', 'charitable' ) ?>:</label>
@@ -87,13 +77,13 @@ class Charitable_Donors_Widget extends WP_Widget {
             </select>
         </p>
         <p>
-            <label for="<?php echo esc_attr( $this->get_field_id( 'campaign' ) ) ?>"><?php _e( 'Show donors by campaign', 'charitable' ) ?>:</label>
-            <select name="<?php echo esc_attr( $this->get_field_name( 'campaign' ) ) ?>">
-                <option value="all" <?php selected( 'all', $args[ 'campaign' ] ) ?>><?php _e( 'Include all campaigns' ) ?></option>
-                <option value="current-campaign" <?php selected( 'current-campaign', $args[ 'campaign' ] ) ?>><?php _e( 'Campaign currently viewed', 'charitable' ) ?></option>
+            <label for="<?php echo esc_attr( $this->get_field_id( 'campaign_id' ) ) ?>"><?php _e( 'Show donors by campaign', 'charitable' ) ?>:</label>
+            <select name="<?php echo esc_attr( $this->get_field_name( 'campaign_id' ) ) ?>">
+                <option value="all" <?php selected( 'all', $args[ 'campaign_id' ] ) ?>><?php _e( 'Include all campaigns' ) ?></option>
+                <option value="current" <?php selected( 'current', $args[ 'campaign_id' ] ) ?>><?php _e( 'Campaign currently viewed', 'charitable' ) ?></option>
                 <optgroup label="<?php _e( 'Specific campaign', 'charitable' ) ?>">
                     <?php foreach ( Charitable_Campaigns::query()->posts as $campaign ) : ?>
-                        <option value="<?php echo intval( $campaign->ID ) ?>" <?php selected( $campaign->ID, $args[ 'campaign' ] ) ?>><?php echo $campaign->post_title ?></option>
+                        <option value="<?php echo intval( $campaign->ID ) ?>" <?php selected( $campaign->ID, $args[ 'campaign_id' ] ) ?>><?php echo $campaign->post_title ?></option>
                     <?php endforeach ?>
                 </optgroup>
             </select>                
@@ -131,7 +121,7 @@ class Charitable_Donors_Widget extends WP_Widget {
         $instance[ 'title' ]                = isset( $new_instance[ 'title' ] )             ? $new_instance[ 'title' ]              : $old_instance[ 'title' ];
         $instance[ 'number' ]               = isset( $new_instance[ 'number' ] )            ? intval( $new_instance[ 'number' ] )   : $old_instance[ 'number' ];
         $instance[ 'order' ]                = isset( $new_instance[ 'order' ] )             ? $new_instance[ 'order' ]              : $old_instance[ 'order' ];
-        $instance[ 'campaign' ]             = isset( $new_instance[ 'campaign' ] )          ? $new_instance[ 'campaign' ]           : $old_instance[ 'campaign' ];
+        $instance[ 'campaign_id' ]          = isset( $new_instance[ 'campaign_id' ] ) ? $new_instance[ 'campaign_id' ]           : $old_instance[ 'campaign_id' ];
         $instance[ 'show_location' ]        = isset( $new_instance[ 'show_location' ] ) && 'on' == $new_instance[ 'show_location' ];
         $instance[ 'show_amount' ]          = isset( $new_instance[ 'show_amount' ] ) && 'on' == $new_instance[ 'show_amount' ];
         $instance[ 'show_name' ]            = isset( $new_instance[ 'show_name' ] ) && 'on' == $new_instance[ 'show_name' ];
@@ -140,8 +130,32 @@ class Charitable_Donors_Widget extends WP_Widget {
     }   
 
     /**
+     * Return parsed array of arguments. 
+     *
+     * @param   mixed[] $instance
+     * @return  mixed[]
+     * @access  protected
+     * @since   1.0.0
+     */
+    protected function get_parsed_args( $instance ) {
+        $defaults = array(
+            'title'         => '',
+            'number'        => 10, 
+            'order'         => 'recent',
+            'campaign_id'   => 'all',
+            'show_location' => false,
+            'show_amount'   => false,
+            'show_name'     => false, 
+            'hide_if_no_donors' => false
+        );
+
+        return wp_parse_args( $instance, $defaults );
+    }
+
+    /**
      * Return the donors to display in the widget. 
      *
+     * @param   mixed[] $instance
      * @return  array
      * @access  protected
      * @since   1.0.0
@@ -155,16 +169,13 @@ class Charitable_Donors_Widget extends WP_Widget {
             $query_args[ 'orderby' ] = 'amount';
         }
 
-        if ( 'all' != $instance[ 'campaign' ] ) {
-
-            if ( 'current-campaign' == $instance[ 'campaign' ] ) {
-                $query_args[ 'campaign' ] = charitable_get_current_campaign_id();
-            }
-            else {
-                $query_args[ 'campaign' ] = intval( $instance[ 'campaign' ] );
-            }
+        if ( 'current' == $instance[ 'campaign_id' ] ) {
+            $query_args[ 'campaign' ] = charitable_get_current_campaign_id();
         }
-        
+        elseif ( 'all' != $instance[ 'campaign_id' ] ) {
+            $query_args[ 'campaign' ] = intval( $instance[ 'campaign_id' ] );
+        }
+
         $query_args = apply_filters( 'charitable_donors_widget_donor_query_args', $query_args, $instance );
 
         return new Charitable_Donors_Query( $query_args );

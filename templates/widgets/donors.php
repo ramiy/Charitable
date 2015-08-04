@@ -6,6 +6,12 @@
  * @since   1.0.0
  */
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
+if ( ! charitable_is_campaign_page() && 'current' == $view_args[ 'campaign_id' ] ) {
+    return;
+}
+
 $widget_title   = apply_filters( 'widget_title', $view_args['title'] );
 $donors         = $view_args[ 'donors' ];
 
@@ -23,7 +29,7 @@ endif;
 if ( $donors->count() ) : 
     ?>
     
-    <ul class="donors-list">
+    <ol class="donors-list">
 
         <?php foreach ( $donors as $donor ) : 
 
@@ -44,9 +50,9 @@ if ( $donors->count() ) :
 
                 endif;
 
-                if ( $view_args[ 'show_location' ] ) : ?>
+                if ( $view_args[ 'show_location' ] && strlen( $donor_object->get_location() ) ) : ?>
 
-                    <span clss="donor-location"><?php echo $donor_object->get_location() ?></span>
+                    <div class="donor-location"><?php echo $donor_object->get_location() ?></div>
 
                 <?php 
 
@@ -54,7 +60,7 @@ if ( $donors->count() ) :
 
                 if ( $view_args[ 'show_amount' ] ) : ?>
 
-                    <span clss="donor-donation-amount"><?php echo charitable_get_currency_helper()->get_monetary_amount( $donor->amount ) ?></span>
+                    <div class="donor-donation-amount"><?php echo charitable_get_currency_helper()->get_monetary_amount( $donor->amount ) ?></div>
 
                 <?php endif ?>
 
@@ -62,7 +68,7 @@ if ( $donors->count() ) :
 
         <?php endforeach ?>
 
-    </ul>
+    </ol>
 
 <?php
 else : 

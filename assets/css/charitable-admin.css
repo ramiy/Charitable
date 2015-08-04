@@ -535,6 +535,7 @@ select.charitable-settings-field {
   max-width: 400px; }
 
 .charitable-radio-list {
+  padding: 0;
   margin: 0;
   list-style: none; }
   .charitable-radio-list li {

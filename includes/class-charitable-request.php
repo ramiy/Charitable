@@ -108,7 +108,7 @@ final class Charitable_Request extends Charitable_Start_Object {
 	 * @since 	1.0.0
 	 */
 	public function get_current_campaign_id() {
-		if ( isset( $this->campaign ) ) {
+		if ( isset( $this->campaign ) && $this->campaign ) {
 
 			$this->campaign_id = $this->campaign->ID;
 

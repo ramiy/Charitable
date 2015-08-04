@@ -6,6 +6,12 @@
  * @since   1.0.0
  */
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
+if ( ! charitable_is_campaign_page() && 'current' == $view_args[ 'campaign_id' ] ) {
+    return;
+}
+
 $widget_title   = apply_filters( 'widget_title', $view_args['title'] );
 $campaign_id    = $view_args[ 'campaign_id' ] == 'current' ? get_the_ID() : $view_args[ 'campaign_id' ];
 $campaign       = new Charitable_Campaign( $campaign_id );

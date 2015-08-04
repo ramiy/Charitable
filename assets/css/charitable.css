@@ -176,6 +176,12 @@
       background-color: #f89d35;
       border-color: #f89d35; }
 
+.widget_charitable_donate_widget #charitable-donation-form {
+  padding-top: 0; }
+  .widget_charitable_donate_widget #charitable-donation-form .donation-amounts .donation-amount {
+    width: 100%;
+    margin-right: 0; }
+
 .charitable-hidden {
   display: none !important;
   visibility: hidden; }
@@ -215,25 +221,38 @@
     padding-bottom: 0; }
 
 /* Campaigns grid */
-.campaign-loop {
+.campaign-loop.campaign-list,
+.campaign-loop.campaign-grid {
+  margin: 0 0 1em 0;
+  padding: 0;
   list-style: none; }
-  .campaign-loop .campaign.hentry {
+  .campaign-loop.campaign-list .campaign.hentry,
+  .campaign-loop.campaign-grid .campaign.hentry {
     position: relative;
     margin-left: 0;
     margin-right: 0;
-    box-shadow: none; }
-    .campaign-loop .campaign.hentry h3 {
-      margin-top: 0; }
-  .campaign-loop .wp-post-image {
+    box-shadow: none;
+    box-sizing: border-box; }
+    .campaign-loop.campaign-list .campaign.hentry h3,
+    .campaign-loop.campaign-grid .campaign.hentry h3 {
+      margin-top: 0;
+      text-decoration: none; }
+  .campaign-loop.campaign-list .wp-post-image,
+  .campaign-loop.campaign-grid .wp-post-image {
     padding-bottom: 1em; }
-  .campaign-loop .campaign-progress-bar {
+  .campaign-loop.campaign-list .campaign-progress-bar,
+  .campaign-loop.campaign-grid .campaign-progress-bar {
     margin-bottom: 0.5em; }
-  .campaign-loop .campaign-donation-stats {
+  .campaign-loop.campaign-list .campaign-donation-stats,
+  .campaign-loop.campaign-grid .campaign-donation-stats {
     margin-bottom: 1em; }
-    .campaign-loop .campaign-donation-stats .amount,
-    .campaign-loop .campaign-donation-stats .goal-amount {
+    .campaign-loop.campaign-list .campaign-donation-stats .amount,
+    .campaign-loop.campaign-list .campaign-donation-stats .goal-amount,
+    .campaign-loop.campaign-grid .campaign-donation-stats .amount,
+    .campaign-loop.campaign-grid .campaign-donation-stats .goal-amount {
       font-weight: bolder; }
-  .campaign-loop .campaign-donation .button {
+  .campaign-loop.campaign-list .campaign-donation .button,
+  .campaign-loop.campaign-grid .campaign-donation .button {
     display: inline-block; }
 
 .campaign-loop.campaign-grid {
@@ -265,23 +284,51 @@
   margin-right: 0; }
 
 /* Widgets */
-.widget_charitable_campaigns_widget .campaigns {
+.widget.widget_charitable_campaigns_widget .campaigns {
   margin: 0 0 1em 0;
   padding: 0;
   list-style: none; }
-.widget_charitable_campaigns_widget .campaign {
+.widget.widget_charitable_campaigns_widget .campaign {
   list-style: none;
   padding: 1em 0;
   border-bottom-color: #e6e6e6;
   border-bottom-style: solid;
   border-bottom-width: 1px; }
-  .widget_charitable_campaigns_widget .campaign:first-child {
-    padding-top: 0; }
-.widget_charitable_campaigns_widget .campaign-title {
-  font-size: inherit;
-  font-weight: bolder; }
-.widget_charitable_campaigns_widget .campaign-time-left {
-  font-weight: normal; }
+  .widget.widget_charitable_campaigns_widget .campaign .wp-post-image {
+    padding: 0;
+    margin: 0 0 0.5em 0; }
+  .widget.widget_charitable_campaigns_widget .campaign .campaign-title {
+    padding: 0;
+    margin: 0 0 0.5em 0;
+    font-size: inherit;
+    font-weight: bolder; }
+  .widget.widget_charitable_campaigns_widget .campaign .campaign-time-left {
+    font-weight: normal; }
+
+.widget.widget_charitable_donors_widget .donors-list {
+  margin: 0 0 1em 0;
+  padding: 0;
+  list-style: none; }
+.widget.widget_charitable_donors_widget .donor {
+  *zoom: 1;
+  list-style: none;
+  padding: 1em 0;
+  border-bottom-color: #e6e6e6;
+  border-bottom-style: solid;
+  border-bottom-width: 1px; }
+  .widget.widget_charitable_donors_widget .donor:before, .widget.widget_charitable_donors_widget .donor:after {
+    content: " ";
+    display: table; }
+  .widget.widget_charitable_donors_widget .donor:after {
+    clear: both; }
+  .widget.widget_charitable_donors_widget .donor .avatar {
+    margin: 0; }
+  .widget.widget_charitable_donors_widget .donor .donor-name,
+  .widget.widget_charitable_donors_widget .donor .donor-location,
+  .widget.widget_charitable_donors_widget .donor .donor-donation-amount {
+    margin: 0.5em 0 0 0; }
+  .widget.widget_charitable_donors_widget .donor > *:first-child {
+    margin-top: 0; }
 
 /* Notices */
 .charitable-notice {

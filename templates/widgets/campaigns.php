@@ -54,3 +54,5 @@ endif;
 <?php
 
 echo $view_args[ 'after_widget' ];
+
+wp_reset_postdata();

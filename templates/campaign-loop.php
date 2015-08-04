@@ -22,7 +22,7 @@ endif;
 if ( $columns > 1 ) :
     $loop_class = sprintf( 'campaign-loop campaign-grid campaign-grid-%d', $columns );
 else : 
-    $loop_class = 'campaign-loop';
+    $loop_class = 'campaign-loop campaign-list';
 endif;
 
 /**
@@ -40,6 +40,8 @@ while( $campaigns->have_posts() ) :
     charitable_template( 'campaign-loop/campaign.php' );
 
 endwhile;
+
+wp_reset_postdata();
 ?>
 </ol>
 <?php
