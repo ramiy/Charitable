@@ -94,19 +94,6 @@ if ( ! function_exists( 'charitable_template_campaign_finished_notice' ) ) :
     }
 endif;
 
-if ( ! function_exists( 'charitable_template_campaign_video' ) ) :
-    /**
-     * Display the campaign video before the summary and after the description. 
-     *
-     * @param   Charitable_Campaign $campaign
-     * @return  void 
-     * @since   1.0.0
-     */
-    function charitable_template_campaign_video( $campaign ) {
-        charitable_template( 'campaign/video.php', array( 'campaign' => $campaign ) );
-    }
-endif;
-
 if ( ! function_exists( 'charitable_template_campaign_percentage_raised' ) ) :
     /**
      * Display the percentage that the campaign has raised in summary block. 
@@ -200,7 +187,7 @@ if ( ! function_exists( 'charitable_template_campaign_summary' ) ) :
      * @since   1.0.0
      */
     function charitable_template_campaign_summary( $campaign ) {
-        charitable_template( 'campaign/summary.php' );
+        charitable_template( 'campaign/summary.php', array( 'campaign' => $campaign ) );
     }
 endif;
 

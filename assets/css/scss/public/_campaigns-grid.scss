@@ -6,8 +6,9 @@
 
     .campaign.hentry {     
         position: relative;   
-        margin-left: 0;
-        margin-right: 0;
+        padding: 0;
+        margin: 0 0 1em 0;
+        list-style: none;
         box-shadow: none;
         box-sizing: border-box;
 
@@ -18,7 +19,7 @@
     } 
 
     .wp-post-image {
-        padding-bottom: 1em;
+        padding-bottom: 1em;            
     }
 
     .campaign-progress-bar {
@@ -41,10 +42,23 @@
     }
 }
 
+.campaign-loop.campaign-list {
+    .campaign.hentry {
+        padding: 0 0 1em 0;
+        margin: 0 0 1em 0;
+        border-bottom: 1px solid #e6e6e6;
+    }    
+}
+
 .campaign-loop.campaign-grid {
     margin: 0 0 1em 0;
     padding: 0;
     @include clearfix;
+
+    .wp-post-image {
+        max-width: 100%;
+        width: 100%;
+    }
 
     .campaign.hentry {
         list-style: none;

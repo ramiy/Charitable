@@ -15,7 +15,6 @@ $form           = $view_args[ 'form' ];
 $field          = $view_args[ 'field' ];
 $classes        = $view_args[ 'classes' ];
 $is_required    = isset( $field[ 'required' ] ) ? $field[ 'required' ] : false;
-$value          = isset( $field[ 'value' ] ) ? esc_attr( $field[ 'value' ] ) : '';
 $placeholder    = isset( $field[ 'placeholder' ] ) ? esc_attr( $field[ 'placeholder' ] ) : '';
 ?>
 <div id="charitable_field_<?php echo $field[ 'key' ] ?>" class="<?php echo $classes ?>">    
@@ -27,8 +26,9 @@ $placeholder    = isset( $field[ 'placeholder' ] ) ? esc_attr( $field[ 'placehol
             <?php endif ?>
         </label>
     <?php endif ?>
-    <?php if ( strlen( $value ) ) : ?>
-        <img src="<?php echo $value ?>" />
-    <?php endif ?>
-    <input type="file" name="<?php echo $field[ 'key' ] ?>" value="<?php echo $value ?>" /> 
+    <?php if ( strlen( $field[ 'value' ] ) ) : 
+        echo $field[ 'value' ]; 
+    endif; ?>
+        
+    <input type="file" name="<?php echo $field[ 'key' ] ?>" /> 
 </div>

@@ -91,9 +91,10 @@ class Charitable_Gateway_Paypal extends Charitable_Gateway {
         }
 
         $settings = charitable_get_option( 'gateways_paypal', array() );
+        $email = trim( $settings[ 'paypal_email' ] );
 
         /* Make sure that the keys are set. */
-        if ( empty( trim( $settings[ 'paypal_email' ] ) ) ) {
+        if ( empty( $email ) ) {
 
             charitable_get_notices()->add_error( __( 'Missing PayPal email address. Unable to proceed with payment.', 'charitable' ) );
             return false;
@@ -291,6 +292,17 @@ class Charitable_Gateway_Paypal extends Charitable_Gateway {
             }
 
             $donation->process_refund( $amount, $message );
+            return;
+
+        }
+
+        /* Mark a payment as failed. */
+        if ( in_array( $payment_status, array( 'declined', 'failed', 'denied', 'expired', 'voided' ) ) ) {
+
+            $message = sprintf( '%s: %s', __( 'The donation has failed with the following status', 'charitable' ), $payment_status );
+            Charitable_Donation::update_donation_log( $donation_id, $message );
+            $donation->update_status( 'charitable-failed' );
+            return;
 
         }
 
@@ -320,7 +332,7 @@ class Charitable_Gateway_Paypal extends Charitable_Gateway {
         }
 
         /* Process a completed donation. */
-        if ( 'completed' == $payment_status || charitable_get_option( 'test_mode' ) ) {
+        if ( 'completed' == $payment_status ) {
 
             $message = sprintf( '%s: %s', __( 'PayPal Transaction ID', 'charitable' ), $data[ 'txn_id' ] );
             Charitable_Donation::update_donation_log( $donation_id, $message );
@@ -330,12 +342,16 @@ class Charitable_Gateway_Paypal extends Charitable_Gateway {
         }
 
         /* If the donation is set to pending but has a pending_reason provided, save that to the log. */
-        if ( 'pending' == $payment_status && isset( $data['pending_reason'] ) ) {
+        if ( 'pending' == $payment_status ) {
 
-            $message = $gateway->get_pending_reason_note( strtolower( $data[ 'pending_reason' ] ) );
-            Charitable_Donation::update_donation_log( $donation_id, $message );
+            if ( isset( $data['pending_reason'] ) ) {
+
+                $message = $gateway->get_pending_reason_note( strtolower( $data[ 'pending_reason' ] ) );
+                Charitable_Donation::update_donation_log( $donation_id, $message );
+            
+            }
+
             $donation->update_status( 'charitable-pending' );
-            return;
 
         }
     }

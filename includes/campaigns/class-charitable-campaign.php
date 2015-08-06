@@ -602,29 +602,6 @@ class Charitable_Campaign {
     }
 
     /**
-     * Checks whether there is a campaign video. 
-     *
-     * @return  boolean
-     * @access  public
-     * @since   1.0.0
-     */
-    public function has_video() {
-        return strlen( $this->video );
-    }
-
-    /**
-     * Embed a video with WordPress' embed shortcode.
-     *
-     * @return  string
-     * @access  public
-     * @since   1.0.0
-     */
-    public function embed_video() {
-        $video_embed_args = apply_filters( 'charitable_campaign_video_embed_args', array() );
-        return wp_oembed_get( $this->video, $video_embed_args );
-    }
-
-    /**
      * Sanitize meta values before they are persisted to the database. 
      *
      * @param   mixed       $value

@@ -62,6 +62,10 @@
     #wp-post_content-editor-container {
         border: 1px solid #dedede;
     }
+
+    a:not(.button) {
+        color: #f89d35;
+    }
 }
 
 .charitable-gateway-fields {
@@ -95,10 +99,17 @@
     }
 }
 
-.charitable-fieldset {  
-    margin: 0 0 1em;
-    padding: 2em;
-    border: 1px solid #ebebeb;  
+.charitable-form-fields {
+    .charitable-fieldset {  
+        margin: 0 0 1em;
+        padding: 2em;
+        border: 1px solid #ebebeb;  
+
+        a:not(.button) {
+            color: #f89d35;
+        }
+    }
+
 }
 
 .charitable-form-header {

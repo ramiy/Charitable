@@ -92,13 +92,6 @@ final class Charitable_Campaign_Post_Type extends Charitable_Start_Object {
                 'context'       => 'campaign-advanced', 
                 'priority'      => 'high', 
                 'view'          => 'metaboxes/campaign-extended-description'
-            ), 
-            array( 
-                'id'            => 'campaign-video', 
-                'title'         => __( 'Video', 'charitable' ), 
-                'context'       => 'campaign-advanced',
-                'priority'      => 'high', 
-                'view'          => 'metaboxes/campaign-video'
             )
         );
 
@@ -251,8 +244,7 @@ final class Charitable_Campaign_Post_Type extends Charitable_Start_Object {
                 '_campaign_goal', 
                 '_campaign_suggested_donations',
                 '_campaign_allow_custom_donations',
-                '_campaign_description', 
-                '_campaign_video'
+                '_campaign_description'
             ) );            
 
             $submitted = $_POST;

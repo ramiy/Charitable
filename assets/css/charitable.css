@@ -107,6 +107,8 @@
     margin-bottom: 0.5em; }
   .charitable-form-field #wp-post_content-editor-container {
     border: 1px solid #dedede; }
+  .charitable-form-field a:not(.button) {
+    color: #f89d35; }
 
 .charitable-gateway-fields {
   padding-top: 1em; }
@@ -130,10 +132,12 @@
 #charitable_field_cc_expiration .year {
   margin-left: 2%; }
 
-.charitable-fieldset {
+.charitable-form-fields .charitable-fieldset {
   margin: 0 0 1em;
   padding: 2em;
   border: 1px solid #ebebeb; }
+  .charitable-form-fields .charitable-fieldset a:not(.button) {
+    color: #f89d35; }
 
 .charitable-form-header {
   margin: 0 0 1em;
@@ -229,8 +233,9 @@
   .campaign-loop.campaign-list .campaign.hentry,
   .campaign-loop.campaign-grid .campaign.hentry {
     position: relative;
-    margin-left: 0;
-    margin-right: 0;
+    padding: 0;
+    margin: 0 0 1em 0;
+    list-style: none;
     box-shadow: none;
     box-sizing: border-box; }
     .campaign-loop.campaign-list .campaign.hentry h3,
@@ -255,6 +260,11 @@
   .campaign-loop.campaign-grid .campaign-donation .button {
     display: inline-block; }
 
+.campaign-loop.campaign-list .campaign.hentry {
+  padding: 0 0 1em 0;
+  margin: 0 0 1em 0;
+  border-bottom: 1px solid #e6e6e6; }
+
 .campaign-loop.campaign-grid {
   margin: 0 0 1em 0;
   padding: 0;
@@ -264,6 +274,9 @@
     display: table; }
   .campaign-loop.campaign-grid:after {
     clear: both; }
+  .campaign-loop.campaign-grid .wp-post-image {
+    max-width: 100%;
+    width: 100%; }
   .campaign-loop.campaign-grid .campaign.hentry {
     list-style: none;
     float: left;

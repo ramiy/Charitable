@@ -28,12 +28,10 @@ add_filter( 'the_content', 'charitable_template_donation_receipt_content' );
  * Single campaign, before content.
  *
  * @see charitable_template_campaign_description
- * @see charitable_template_campaign_video
  * @see charitable_template_campaign_summary
  */
 add_action( 'charitable_campaign_content_before', 'charitable_template_campaign_description', 4 );
-add_action( 'charitable_campaign_content_before', 'charitable_template_campaign_video', 6 );
-add_action( 'charitable_campaign_content_before', 'charitable_template_campaign_summary', 8 );
+add_action( 'charitable_campaign_content_before', 'charitable_template_campaign_summary', 6 );
 
 /**
  * Single campaign, campaign summary. 

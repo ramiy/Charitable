@@ -45,9 +45,9 @@ final class Charitable_Public extends Charitable_Start_Object {
 	 * @since 	1.0.0
 	 */
 	private function attach_hooks_and_filters() {
-		add_action('charitable_start', array( 'Charitable_Session', 'charitable_start' ), 5 );
-		add_action('charitable_start', array( 'Charitable_Templates', 'charitable_start' ), 5 );
-		add_action('wp_enqueue_scripts', array( $this, 'wp_enqueue_scripts') );
+		add_action( 'charitable_start', array( 'Charitable_Session', 'charitable_start' ), 5 );
+		add_action( 'charitable_start', array( 'Charitable_Templates', 'charitable_start' ), 5 );
+		add_action( 'wp_enqueue_scripts', array( $this, 'wp_enqueue_scripts') );
 		add_filter( 'post_class', array( $this, 'campaign_post_class' ) );
 	}
 

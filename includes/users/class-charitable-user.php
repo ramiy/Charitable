@@ -328,33 +328,33 @@ class Charitable_User extends WP_User {
      * By default, this will return the gravatar, but it can 
      * be extended to add support for locally hosted avatars.
      *
-     * @param   int         $size
+     * @param   int $size
      * @return  string  
      * @access  public
      * @since   1.0.0
      */
     public function get_avatar( $size = 100 ) {     
-        /** If you use this filter, be sure to return just the source of the image, 
-            not the fully formatted <img> tag. */
-        $avatar = apply_filters( 'charitable_user_avatar', false, $this );
+        /** If you use this filter, return an attachment ID. */
+        $avatar_attachment_id = apply_filters( 'charitable_user_avatar', false, $this );
 
-        if ( $avatar ) {
-
-            $avatar = apply_filters( 'charitable_user_avatar_custom', sprintf( '<img src="%s" alt="%s" class="avatar photo" width="%s" height="%s" />', 
-                $avatar, 
-                esc_attr( $this->display_name ), 
-                $size,
-                $size
-            ), $avatar, $size, $this );
-
-        }
-        else {
-
-            $avatar = get_avatar( $this->ID, $size );
-
+        /* If we don't have an attachment ID, display the gravatar. */
+        if ( ! $avatar_attachment_id ) {
+            return get_avatar( $this->ID, $size );
         }
 
-        return $avatar;
+        $attachment_src = wp_get_attachment_image_src( $avatar_attachment_id, array( $size, $size ) );
+
+        /* No image for the given attachment ID? Fall back to the gravatar. */
+        if ( ! $attachment_src ) {
+            return get_avatar( $this->ID, $size );          
+        }
+
+        return apply_filters( 'charitable_user_avatar_custom', sprintf( '<img src="%s" alt="%s" class="avatar photo" width="%s" height="%s" />', 
+            $attachment_src[ 0 ] , 
+            esc_attr( $this->display_name ), 
+            $attachment_src[ 1 ],
+            $attachment_src[ 2 ]
+        ), $avatar_attachment_id, $size, $this );
     }
 
     /**
@@ -367,7 +367,7 @@ class Charitable_User extends WP_User {
      */
     public function get_avatar_src( $size = 100 ) {     
         /* If this returns something, we don't need to deal with the gravatar. */
-        $avatar = apply_filters( 'charitable_user_avatar', false, $this, $size );
+        $avatar = apply_filters( 'charitable_user_avatar_src', false, $this, $size );
 
         if ( false === $avatar ) {
 

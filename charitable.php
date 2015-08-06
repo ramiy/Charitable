@@ -3,7 +3,7 @@
  * Plugin Name:         Charitable
  * Plugin URI:          http://wpcharitable.com
  * Description:         Fundraise with WordPress.
- * Version:             1.0.0-20150804
+ * Version:             1.0.0-20150806
  * Author:              Studio 164a
  * Author URI:          https://164a.com
  * Requires at least:   4.1
@@ -33,7 +33,7 @@ class Charitable {
     /**
      * @var     string
      */
-    const VERSION = '1.0.0-20150804';
+    const VERSION = '1.0.0-20150806';
 
     /**
      * @var     string      A date in the format: YYYYMMDD
@@ -215,7 +215,7 @@ class Charitable {
         require_once( $includes_path . 'users/charitable-user-functions.php' );
         require_once( $includes_path . 'users/class-charitable-user.php' );
         require_once( $includes_path . 'users/class-charitable-roles.php' );        
-        require_once( $includes_path . 'class-charitable-donor-query.php' );
+        require_once( $includes_path . 'users/class-charitable-donor-query.php' );
 
         /* Gateways */
         require_once( $includes_path . 'gateways/class-charitable-gateways.php' );
@@ -228,7 +228,6 @@ class Charitable {
         include_once( $includes_path . 'emails/abstract-class-charitable-email.php' );
         include_once( $includes_path . 'emails/class-charitable-email-new-donation.php' );
         include_once( $includes_path . 'emails/class-charitable-email-donation-receipt.php' );
-        // include_once( $includes_path . 'emails/class-charitable-email-paypal.php' );        
             
         /* Database */
         require_once( $includes_path . 'db/abstract-class-charitable-db.php' );
@@ -242,8 +241,7 @@ class Charitable {
         require_once( $includes_path . 'public/class-charitable-session.php' );        
         require_once( $includes_path . 'public/class-charitable-template.php' );      
         require_once( $includes_path . 'public/class-charitable-template-part.php' );
-        require_once( $includes_path . 'public/class-charitable-templates.php' );            
-        require_once( $includes_path . 'public/class-charitable-campaign-template.php' );
+        require_once( $includes_path . 'public/class-charitable-templates.php' );
         require_once( $includes_path . 'public/class-charitable-ghost-page.php' );
 
         /* Shortcodes */
