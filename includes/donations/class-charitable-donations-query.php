@@ -22,14 +22,6 @@ if ( ! class_exists( 'Charitable_Donations_Query' ) ) :
 class Charitable_Donations_Query {
 
     /**
-     * description 
-     *
-     * @var     type
-     * @access  access
-     */
-    access $args;
-
-    /**
      * Create class object.
      * 
      * @access  public
@@ -46,13 +38,11 @@ class Charitable_Donations_Query {
             'orderby'         => 'ID',
             'order'           => 'DESC',
             'donor'           => null,
-            // 'status'          => edd_get_payment_status_keys(),
             'meta_key'        => null,
             'year'            => null,
             'month'           => null,
             'day'             => null,
             's'               => null,
-            // 'search_in_notes' => false,
             'children'        => false,
             'fields'          => null,
             'campaign'        => null
