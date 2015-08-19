@@ -366,12 +366,18 @@ class Charitable_Donation_Processor {
      * @since   1.0.0
      */
     public function save_donation_meta( $donation_id ) {
-        $meta = apply_filters( 'charitable_donation_meta', array(
+        $meta = array(
             'donation_gateway'  => $this->get_donation_data_value( 'gateway' ), 
             'donor'             => $this->get_donation_data_value( 'user' ), 
             'test_mode'         => charitable_get_option( 'test_mode', 0 ), 
             'donation_key'      => $this->get_donation_data_value( 'donation_key' )
-        ), $donation_id, $this );
+        );
+
+        if ( $this->get_donation_data_value( 'meta' ) ) {
+            $meta = array_merge( $meta, $this->get_donation_data_value( 'meta' ) );
+        }
+
+        $meta = apply_filters( 'charitable_donation_meta', $meta, $donation_id, $this );
 
         foreach ( $meta as $meta_key => $value ) {  
             $value = apply_filters( 'charitable_sanitize_donation_meta', $value, $meta_key );
@@ -451,7 +457,7 @@ class Charitable_Donation_Processor {
                 }
 
                 $this->campaign_donations_data[] = $campaign;
-            }    
+            }
         }
         
         return $this->campaign_donations_data;

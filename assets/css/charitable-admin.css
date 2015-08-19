@@ -297,6 +297,7 @@ body.post-type-campaign .postbox-container .empty-container {
       background: none;
       margin: 0;
       border: 0;
+      border-radius: 0;
       white-space: normal; }
     #charitable-campaign-advanced-metabox.ui-tabs .charitable-tabs.ui-tabs-nav a {
       display: block;
@@ -398,7 +399,8 @@ body.post-type-campaign .postbox-container .empty-container {
       padding: 0 0 24px; } }
 
 body.post-type-donation #post-body-content,
-body.post-type-donation #titlediv {
+body.post-type-donation #titlediv,
+body.post-type-donation .page-title-action {
   display: none; }
 body.post-type-donation .closed .inside {
   display: block; }
@@ -481,6 +483,7 @@ select.charitable-settings-field {
   width: auto; }
 
 .charitable-settings-object {
+  max-width: 860px;
   padding: 10px 20px;
   margin-bottom: 4px;
   border: 1px solid #e1e1e1;
@@ -503,6 +506,34 @@ select.charitable-settings-field {
   color: #f89d35; }
 .charitable-gateway .make-default-gateway {
   color: #777; }
+
+.charitable-licensed-product h4 {
+  width: 230px;
+  margin-right: 20px;
+  line-height: 40px; }
+.charitable-licensed-product .charitable-settings-field {
+  float: left;
+  width: 100%; }
+  @media (min-width: 68.125em) {
+    .charitable-licensed-product .charitable-settings-field {
+      width: 312px;
+      margin-right: 20px; } }
+.charitable-licensed-product .license-meta {
+  font-size: 12px;
+  line-height: 40px; }
+.charitable-licensed-product .license-active {
+  float: left; }
+.charitable-licensed-product .valid-license {
+  color: #f89d35;
+  font-weight: bold; }
+.charitable-licensed-product .license-deactivation {
+  float: left;
+  margin: 6px 0; }
+.charitable-licensed-product .license-invalid {
+  color: #f89d35; }
+.charitable-licensed-product .license-expiration-date {
+  float: right;
+  margin-left: 10px; }
 
 .charitable-help {
   display: block;

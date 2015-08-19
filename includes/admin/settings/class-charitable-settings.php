@@ -36,13 +36,8 @@ final class Charitable_Settings extends Charitable_Start_Object {
      * @since   1.0.0
      */
     protected function __construct() {            
-        add_action( 'admin_init', array( $this, 'register_settings' ) );      
-        
-        add_filter( 'charitable_sanitize_value', array( $this, 'sanitize_checkbox_value' ), 10, 2 );
-        add_filter( 'charitable_save_settings', array( $this, 'maybe_change_license_status' ) );
-        add_filter( 'charitable_settings_tab_fields_general', array( $this, 'add_general_settings_fields' ), 5 );
-        add_filter( 'charitable_settings_tab_fields_advanced', array( $this, 'add_advanced_settings_fields' ), 5);
-
+        add_action( 'admin_init', array( $this, 'register_settings' ) );        
+        add_filter( 'charitable_sanitize_value', array( $this, 'sanitize_checkbox_value' ), 10, 2 );            
         do_action( 'charitable_admin_settings_start', $this );
     }    
 
@@ -58,6 +53,7 @@ final class Charitable_Settings extends Charitable_Start_Object {
             'general'   => __( 'General', 'charitable' ), 
             'gateways'  => __( 'Payment Gateways', 'charitable' ), 
             'emails'    => __( 'Emails', 'charitable' ), 
+            'licenses'  => __( 'Licenses', 'charitable' ), 
             'advanced'  => __( 'Advanced', 'charitable' )
         ) );
     }
@@ -135,50 +131,6 @@ final class Charitable_Settings extends Charitable_Start_Object {
     }
 
     /**
-     * Checks for updated license and invalidates status field if not set. 
-     *
-     * @param   mixed[]
-     * @return  mixed[]
-     * @access  public
-     * @since   1.0.0
-     */
-    public function maybe_change_license_status( $values ) {
-        if ( isset( $values[ 'license_key' ] ) && $values[ 'license_key' ] != charitable_get_option( 'license_key' ) ) {
-            
-            $license = trim( $values[ 'license_key' ] );
-
-            /* Data to send in our API request */
-            $api_params = array(
-                'edd_action'=> 'activate_license',
-                'license'   => $license,
-                'item_name' => urlencode( 'charitable-pro' ), // the name of our product in EDD
-                'url'       => home_url()
-            );
-
-            /* Call the custom API */
-            $response = wp_remote_post( 'http://wpcharitable.com', array( 'timeout' => 15, 'sslverify' => false, 'body' => $api_params ) );
-
-            // echo '<pre>'; var_dump( $response ); echo '</pre>';
-            // die;
-
-            /* Make sure the response came back okay */
-            if ( is_wp_error( $response ) )
-                return false;
-
-            $license_data = json_decode( wp_remote_retrieve_body( $response ) );
-
-            /* $license_data->license will be either "valid" or "invalid" */
-            $values[ 'license_key_status' ] = $license_data->license;
-            // $values[ 'license_key_status' ] = 'valid';
-        }
-
-        // echo '<pre>'; var_dump( $values ); echo '</pre>';
-        // die;
-
-        return $values;
-    }
-
-    /**
      * Checkbox settings should always be either 1 or 0. 
      *
      * @param   mixed       $value     
@@ -240,6 +192,10 @@ final class Charitable_Settings extends Charitable_Start_Object {
      */
     private function register_field( $field, $keys ) {
         $section_id = 'charitable_settings_' . $keys[ 0 ];
+
+        if ( isset( $field[ 'render' ] ) && ! $field[ 'render' ] ) {
+            return;
+        }
 
         /* Drop the first key, which is the section identifier */            
         $field[ 'name' ] = implode( '][', $keys );
@@ -308,145 +264,6 @@ final class Charitable_Settings extends Charitable_Start_Object {
     }
 
     /**
-     * Return all the general fields.  
-     *
-     * @return  array[]
-     * @access  public
-     * @since   1.0.0
-     */
-    public function add_general_settings_fields() {
-        return array(
-            'section'               => array(
-                'title'             => '',
-                'type'              => 'hidden',
-                'priority'          => 10000,
-                'value'             => 'general'
-            ),
-            'section_locale'        => array(
-                'title'             => __( 'Currency & Location', 'charitable' ), 
-                'type'              => 'heading', 
-                'priority'          => 2
-            ),
-            'country'               => array(
-                'title'             => __( 'Base Country', 'charitable' ), 
-                'type'              => 'select', 
-                'priority'          => 4, 
-                'default'           => 'AU', 
-                'options'           => charitable()->get_location_helper()->get_countries()
-            ), 
-            'currency'              => array(
-                'title'             => __( 'Currency', 'charitable' ), 
-                'type'              => 'select', 
-                'priority'          => 10, 
-                'default'           => 'AUD',
-                'options'           => charitable()->get_currency_helper()->get_all_currencies()                        
-            ), 
-            'currency_format'       => array(
-                'title'             => __( 'Currency Format', 'charitable' ), 
-                'type'              => 'select', 
-                'priority'          => 12, 
-                'default'           => 'left',
-                'options'           => array(
-                    'left'              => '$23.00', 
-                    'right'             => '23.00$',
-                    'left-with-space'   => '$ 23.00',
-                    'right-with-space'  => '23.00 $'
-                )
-            ),
-            'decimal_separator'     => array(
-                'title'             => __( 'Decimal Separator', 'charitable' ), 
-                'type'              => 'select', 
-                'priority'          => 14, 
-                'default'           => '.',
-                'options'           => array(
-                    '.' => 'Period (12.50)',
-                    ',' => 'Comma (12,50)'                      
-                )
-            ), 
-            'thousands_separator'   => array(
-                'title'             => __( 'Thousands Separator', 'charitable' ), 
-                'type'              => 'select', 
-                'priority'          => 16, 
-                'default'           => ',',
-                'options'           => array(
-                    ',' => __( 'Comma (10,000)', 'charitable' ), 
-                    '.' => __( 'Period (10.000)', 'charitable' ), 
-                    ''  => __( 'None', 'charitable' )
-                )
-            ),
-            'decimal_count'         => array(
-                'title'             => __( 'Number of Decimals', 'charitable' ), 
-                'type'              => 'number', 
-                'priority'          => 18, 
-                'default'           => 2, 
-                'class'             => 'short'
-            ),
-            'section_donation_form' => array(
-                'title'             => __( 'Donation Form', 'charitable' ),
-                'type'              => 'heading',
-                'priority'          => 20
-            ), 
-            'donation_form_display' => array(
-                'title'             => __( 'Display Options', 'charitable' ), 
-                'type'              => 'select', 
-                'priority'          => 22, 
-                'default'           => 'separate_page',
-                'options'           => array(
-                    'separate_page' => __( 'Show on a Separate Page', 'charitable' ), 
-                    'same_page'     => __( 'Show on the Same Page', 'charitable' ),
-                    'modal'         => __( 'Reveal in a Modal', 'charitable' )
-                ), 
-                'help'              => __( 'Choose how you want a campaign\'s donation form to show.', 'charitable' )
-            ),
-            'section_pages'         => array(
-                'title'             => __( 'Pages', 'charitable' ), 
-                'type'              => 'heading', 
-                'priority'          => 30
-            )
-        );
-    }
-
-    /**
-     * Get the advanced settings tab fields.  
-     *
-     * @return  array
-     * @access  public
-     * @since   1.0.0
-     */
-    public function add_advanced_settings_fields() {
-        return array(
-            'section'               => array(
-                'title'             => '',
-                'type'              => 'hidden',
-                'priority'          => 10000,
-                'value'             => 'advanced'
-            ),
-            'section_licensing'     => array(
-                'title'             => __( 'Licensing', 'charitable' ),
-                'type'              => 'heading',
-                'priority'          => 2                
-            ),
-            'license_key'           => array(
-                'title'             => __( 'License Key', 'charitable' ), 
-                'type'              => 'text',
-                'priority'          => 4,
-                'help'              => __( 'Your Charitable Pro/Plus license key.', 'charitable' )
-            ),
-            'section_dangerous'     => array(
-                'title'             => __( 'Dangerous Settings', 'charitable' ), 
-                'type'              => 'heading', 
-                'priority'          => 100
-            ),
-            'delete_data_on_uninstall'  => array(
-                'label_for'         => __( 'Reset Data', 'charitable' ), 
-                'type'              => 'checkbox', 
-                'help'              => __( 'DELETE ALL DATA when uninstalling the plugin.', 'charitable' ), 
-                'priority'          => 105
-            )
-        );
-    }
-
-    /**
      * Return an array with all the fields & sections to be displayed. 
      *
      * @uses    charitable_settings_fields
@@ -482,6 +299,10 @@ final class Charitable_Settings extends Charitable_Start_Object {
      */
     private function get_setting_submitted_value( $key, $field, $submitted ) {
         $value = null;        
+
+        if ( isset( $field[ 'save' ] ) && ! $field[ 'save' ] ) {
+            return $value;
+        }
 
         $field_type = isset( $field[ 'type' ] ) ? $field[ 'type' ] : '';
 

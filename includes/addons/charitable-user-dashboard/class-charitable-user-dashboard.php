@@ -53,11 +53,7 @@ class Charitable_User_Dashboard implements Charitable_Addon_Interface {
      */
     private function load_dependencies() {
         require_once( 'charitable-user-dashboard-functions.php' );
-        require_once( 'charitable-user-dashboard-template-functions.php' );
-        require_once( 'class-charitable-profile-form.php' );
-        require_once( 'class-charitable-login-form.php' );
-        require_once( 'class-charitable-registration-form.php' );
-        require_once( 'class-charitable-user-dashboard-shortcodes.php' );
+        require_once( 'charitable-user-dashboard-template-functions.php' );        
     }
 
     /**
@@ -68,18 +64,12 @@ class Charitable_User_Dashboard implements Charitable_Addon_Interface {
      * @since   1.0.0
      */
     private function attach_hooks_and_filters() {        
-        add_action( 'charitable_user_dashboard_start',  array( 'Charitable_User_Dashboard_Shortcodes', 'start' ), 5 );
-        add_action( 'charitable_update_profile',        array( 'Charitable_Profile_Form', 'update_profile' ) );     
-        add_action( 'charitable_save_registration',     array( 'Charitable_Registration_Form', 'save_registration' ) );
         add_action( 'after_setup_theme',                array( $this, 'register_menu' ), 100 );
         add_action( 'template_include',                 array( $this, 'load_user_dashboard_template' ) );
         add_action( 'wp_update_nav_menu',               array( $this, 'flush_menu_object_cache' ) );
-        add_action( 'wp_update_nav_menu_item',          array( $this, 'flush_menu_object_cache' ) );
-        
+        add_action( 'wp_update_nav_menu_item',          array( $this, 'flush_menu_object_cache' ) );        
         add_filter( 'body_class',                       array( $this, 'add_body_class' ) );
-        add_filter( 'charitable_settings_tab_fields_general', array( $this, 'add_page_settings' ), 6 );
-        // add_filter( 'charitable_settings_fields_general', array( $this, 'add_page_settings' ) );     
-
+        
         do_action( 'charitable_user_dashboard_start', $this );   
     }
 
@@ -264,59 +254,6 @@ class Charitable_User_Dashboard implements Charitable_Addon_Interface {
         }
 
         return $classes;
-    }
-
-    /**
-     * Add page settings to the General settings tab in Charitable.
-     *
-     * @param   array[]
-     * @return  array[]
-     * @access  public
-     * @since   1.0.0
-     */
-    public function add_page_settings( $fields ) {
-        $new_fields = apply_filters( 'charitable_user_dashboard_settings', array(
-            'profile_page'  => array(
-                'title'     => __( 'Profile Page', 'charitable' ), 
-                'type'      => 'select', 
-                'priority'  => 34, 
-                'options'   => charitable_get_admin_settings()->get_pages(), 
-                'help'      => __( 'The static page should contain the <code>[charitable_profile]</code> shortcode.', 'charitable' )
-            ), 
-            'login_page'    => array(
-                'title'     => __( 'Login Page', 'charitable' ), 
-                'type'      => 'select', 
-                'priority'  => 34, 
-                'default'   => 'wp',
-                'options'   => array(
-                    'wp'            => __( 'Use WordPress Login', 'charitable' ), 
-                    'pages'         => array( 
-                        'options'   => charitable_get_admin_settings()->get_pages(), 
-                        'label'     => __( 'Choose a Static Page', 'charitable' )
-                    )
-                ), 
-                'help'      => __( 'Allow users to login via the normal WordPress login page or via a static page. The static page should contain the <code>[charitable_login]</code> shortcode.', 'charitable' )
-
-            ), 
-            'registration_page' => array(
-                'title'     => __( 'Registration Page', 'charitable' ), 
-                'type'      => 'select', 
-                'priority'  => 36, 
-                'default'   => 'wp',
-                'options'   => array(
-                    'wp'    => __( 'Use WordPress Registration Page', 'charitable' ),
-                    'pages' => array(
-                        'options'   => charitable_get_admin_settings()->get_pages(),
-                        'label'     => __( 'Choose a Static Page', 'charitable' )
-                    )
-                ),
-                'help'      => __( 'Allow users to register via the default WordPress login or via a static page. The static page should contain the <code>[charitable_registration]</code> shortcode.', 'charitable' )
-            )
-        ) );
-
-        $fields = array_merge( $fields, $new_fields );
-
-        return $fields;
     }
 
     /**

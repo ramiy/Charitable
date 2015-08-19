@@ -62,8 +62,6 @@ Developers can contribute to Charitable on our [Github repository](https://githu
 
 == Installation ==
 
-This section describes how to install the plugin and get it working.
-
 1. Upload `charitable.php` to the `/wp-content/plugins/` directory.
 1. Activate the plugin through the 'Plugins' menu in WordPress.
 1. Go to Charitable > Add Campaign to create your first campaign!

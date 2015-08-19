@@ -31,28 +31,25 @@ if ( $donors->count() ) :
     
     <ol class="donors-list">
 
-        <?php foreach ( $donors as $donor ) : 
-
-            $donor_object = Charitable_User::init_with_donor( $donor->donor_id );
-            ?>
+        <?php foreach ( $donors as $donor ) : ?>
 
             <li class="donor">  
 
                 <?php 
 
-                echo $donor_object->get_avatar();
+                echo $donor->get_avatar();
                 
                 if ( $view_args[ 'show_name'] ) : ?>
 
-                    <h6 class="donor-name"><?php printf( '%s %s', $donor->first_name, $donor->last_name ) ?></h6>
+                    <p class="donor-name"><?php echo $donor->get_name() ?></p>
 
                 <?php 
 
                 endif;
 
-                if ( $view_args[ 'show_location' ] && strlen( $donor_object->get_location() ) ) : ?>
+                if ( $view_args[ 'show_location' ] && strlen( $donor->get_location() ) ) : ?>
 
-                    <div class="donor-location"><?php echo $donor_object->get_location() ?></div>
+                    <div class="donor-location"><?php echo $donor->get_location() ?></div>
 
                 <?php 
 
@@ -60,7 +57,7 @@ if ( $donors->count() ) :
 
                 if ( $view_args[ 'show_amount' ] ) : ?>
 
-                    <div class="donor-donation-amount"><?php echo charitable_get_currency_helper()->get_monetary_amount( $donor->amount ) ?></div>
+                    <div class="donor-donation-amount"><?php echo charitable_get_currency_helper()->get_monetary_amount( $donor->get_amount() ) ?></div>
 
                 <?php endif ?>
 

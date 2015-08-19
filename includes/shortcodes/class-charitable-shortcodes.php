@@ -45,6 +45,9 @@ class Charitable_Shortcodes extends Charitable_Start_Object  {
     private function register_shortcodes() {
         add_shortcode( 'campaigns', array( 'Charitable_Campaigns_Shortcode', 'display' ) );
         add_shortcode( 'my_donations', array( 'Charitable_My_Donations_Shortcode', 'display' ) );
+        add_shortcode( 'charitable_login', array( 'Charitable_Login_Shortcode', 'display' ) );
+        add_shortcode( 'charitable_registration', array( 'Charitable_Registration_Shortcode', 'display' ) );
+        add_shortcode( 'charitable_profile', array( 'Charitable_Profile_Shortcode', 'display' ) );
     }
 }
 

@@ -336,6 +336,8 @@
     clear: both; }
   .widget.widget_charitable_donors_widget .donor .avatar {
     margin: 0; }
+  .widget.widget_charitable_donors_widget .donor .donor-name {
+    font-weight: bold; }
   .widget.widget_charitable_donors_widget .donor .donor-name,
   .widget.widget_charitable_donors_widget .donor .donor-location,
   .widget.widget_charitable_donors_widget .donor .donor-donation-amount {

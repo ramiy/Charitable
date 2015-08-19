@@ -3,14 +3,12 @@
  * The template used to display the login form. Provided here primarily as a way to make it easier to override using theme templates.
  *
  * @author  Studio 164a
- * @package Charitable/Templates/Accout
+ * @package Charitable/Templates/Account
  * @since   1.0.0
  * @version 1.0.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
-
-$form = $view_args[ 'form' ];
 
 ?>
 <div class="charitable-login-form">
@@ -21,7 +19,7 @@ $form = $view_args[ 'form' ];
      */
     do_action( 'charitable_login_form_before' );
 
-    wp_login_form( $form->get_login_form_args() );
+    wp_login_form( $view_args[ 'login_form_args' ] );
 
     ?>
     <p>

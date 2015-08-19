@@ -104,3 +104,13 @@ function charitable_get_timezone_id() {
     /* If we still haven't figured out the timezone, fall back to UTC */
     return 'UTC';
 }
+
+/**
+ * Ensure a number is a positive integer. 
+ *
+ * @return  int|false
+ * @since   1.0.0
+ */
+function charitable_validate_absint( $i ) {
+    return filter_var( $i, FILTER_VALIDATE_INT, array( 'min_range' => 1 ) );
+}

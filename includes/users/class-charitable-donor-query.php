@@ -2,7 +2,7 @@
 /**
  * The class responsible for querying donors.
  *
- * @package     Charitable/Classes/Charitable_Donors_Query
+ * @package     Charitable/Classes/Charitable_Donor_Query
  * @version     1.0.0
  * @author      Eric Daams
  * @copyright   Copyright (c) 2014, Studio 164a
@@ -12,446 +12,171 @@
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-if ( ! class_exists( 'Charitable_Donors_Query' ) ) : 
+if ( ! class_exists( 'Charitable_Donor_Query' ) ) : 
 
 /**
- * Charitable_Donors_Query
+ * Charitable_Donor_Query
  *
  * @since       1.0.0
  */
-class Charitable_Donors_Query implements Iterator {
-
-    /**
-     * User-defined arguments. 
-     *
-     * @var     array
-     * @access  protected
-     */
-    protected $args;
-
-    /**
-     * The parameters that will be passed as the second argument of WPDB's prepare() method. 
-     *
-     * @var     array
-     * @access  protected
-     */
-    protected $parameters;
-
-    /**
-     * Internal iterator position. 
-     *
-     * @var     int
-     * @access  protected
-     */
-    protected $position = 0;
-
-    /**
-     * Result set. 
-     *
-     * @var     object[]
-     * @access  protected
-     */
-    protected $results;
-
-    /**
-     * The parsed query. 
-     *
-     * @var     string
-     * @access  protected
-     */
-    protected $query;
+class Charitable_Donor_Query extends Charitable_Query {   
 
     /**
      * Create new query object. 
      *
+     * @param   array $args
      * @access  public
      * @since   1.0.0
      */
     public function __construct( $args = array() ) {
-        add_filter( 'charitable_donor_query_sanitize_argument', array( $this, 'sanitize_argument' ), 5, 2 );
-
-        $this->position = 0;
-        $this->parse_args( $args );
-        $this->init_query_parameters();
-        $this->results = $this->query();        
-    }
-
-    /**
-     * Sets query arguments by parsing passed arguments with defaults.
-     *
-     * @param   array   $args
-     * @return  array
-     * @access  protected
-     * @since   1.0.0
-     */
-    protected function parse_args( $args = array() ) {
-        $defaults = apply_filters( 'charitable_donor_query_default_args', array(            
-            'status'    => array( 'charitable-completed', 'charitable-preapproved' ), 
-            'orderby'   => 'date',
-            'order'     => 'DESC',
-            'number'    => 20,
-            'paged'     => 1, 
-            'fields'    => 'all', 
-            'campaign'  => 0,
-            'distinct'  => true
+        $defaults = apply_filters( 'charitable_donor_query_default_args', array(
+            'output'            => 'donors',
+            'status'            => array( 'charitable-completed', 'charitable-preapproved' ), 
+            'orderby'           => 'date',
+            'order'             => 'DESC',
+            'number'            => 20,
+            'paged'             => 1, 
+            'fields'            => 'all',
+            'campaign'          => 0,
+            'distinct_donors'   => true
         ) );
 
         $this->args = wp_parse_args( $args, $defaults );
 
-        foreach ( $this->args as $key => $value ) {
-            $this->args[ $key ] = apply_filters( 'charitable_donor_query_sanitize_argument', $value, $key );
-        }
+        $this->position = 0;
+        $this->prepare_query();
+        $this->results = $this->get_donors();        
     }
-
-    /**
-     * Return the query argument value for the given key. 
-     *
-     * @param   string  $key
-     * @return  mixed|null  Returns null if the argument is not found.  
-     * @access  public
-     * @since   1.0.0
-     */
-    public function get( $key ) {
-        return isset( $this->args[ $key ] ) ? $this->args[ $key ] : null;
-    }
-
-    /**
-     * Set the query argument for the given key. 
-     * 
-     * @param   string  $key
-     * @param   mixed   $value
-     * @return  void
-     * @access  public
-     * @since   1.0.0
-     */
-    public function set( $key, $value ) {
-        $this->args[ $key ] = apply_filters( 'charitable_donor_query_sanitize_argument', $value, $key );
-    }
-
-    /**
-     * Sanitize argument value when setting.  
-     *
-     * @param   mixed   $value
-     * @param   string  $key     
-     * @return  mixed
-     * @access  public
-     * @since   1.0.0
-     */
-    public function sanitize_argument( $value, $key ) {
-        switch ( $key ) {
-            case 'status' :
-                if ( ! is_array( $value ) ) {
-                    $value = array( $value );
-                }
-                $value = esc_sql( array_filter( $value, 'is_string' ) );
-                break;
-
-            case 'orderby' : 
-                $value = strval( $value );
-                break;
-
-            case 'order' : 
-                if ( ! in_array( $value, array( 'DESC', 'ASC' ) ) ) {
-                    $value = 'DESC';
-                }
-                break;           
-
-            case 'fields' :
-                if ( is_array( $value ) ) {
-                    $value = array_filter( $value, 'is_string' );
-                }
-                else  {
-                    $value = strval( $value );
-                }
-                break;
-
-            case 'campaign' :
-            case 'number' : 
-            case 'paged' : 
-                $value = intval( $value );
-                break;
-
-            case 'distinct' : 
-                $value = true == $value;
-                break;
-        }
-
-        return $value;
-    }
-
-    /**
-     * Set up query parameters. 
-     *
-     * @return  void
-     * @access  protected
-     * @since   1.0.0
-     */
-    protected function init_query_parameters() {
-        $this->parameters = $this->get( 'status' );
-    }
-
+ 
     /**
      * Return list of donor IDs together with the number of donations they have made.
      *
-     * @global  WPDB    $wpdb
-     * @param   array   $args
      * @return  object[]        
      * @access  public
      * @since   1.0.0
      */
-    public function query( $args = array() ) {
-        global $wpdb;                        
+    public function get_donors() {
+        $records = $this->query();
+
+        if ( 'donors' != $this->get( 'output' ) ) {
+            return $records;
+        }
+
+        $objects = array();
+
+        foreach ( $records as $row ) {
+
+            $donation_id = isset( $row->donation_id ) ? $row->donation_id : false;
+            $objects[] = new Charitable_Donor( $row->donor_id, $donation_id );
+
+        }         
         
-        $sql = "SELECT {$this->get_fields_clause()}
-                FROM {$wpdb->prefix}charitable_campaign_donations cd
-                INNER JOIN $wpdb->posts p ON p.ID = cd.donation_id
-                INNER JOIN {$wpdb->prefix}charitable_donors d ON cd.donor_id = d.donor_id
-                WHERE p.post_status IN ( {$this->get_status_placeholders()} )
-                {$this->get_where_clause()}                
-                {$this->get_group_clause()}
-                {$this->get_order_clause()}
-                {$this->get_limit_and_offset_clause()}";
-
-        $sql = apply_filters( 'charitable_donor_query', $sql, $args );
-
-        $this->query = $wpdb->prepare( $sql, $this->parameters );
-
-        $results = $wpdb->get_results( $this->query );
-
-        return $results;
+        return $objects;
     }
 
     /**
-     * Given a result object, returns a Charitable_User object. 
-     *
-     * @return  Charitable_User
-     * @access  public
-     * @since   1.0.0
-     */
-    public function get_user_object( $object ) {        
-        if ( ! isset( $object->ID ) ) {
-            return;
-        }
-
-        return new Charitable_User( $object->ID );
-    }
-
-    /**
-     * Return the where clause. 
-     *
-     * @return  string
-     * @access  protected
-     * @since   1.0.0
-     */
-    protected function get_where_clause() {
-        $where_clauses = array();
-
-        if ( $this->get( 'campaign' ) ) {
-            $where_clauses[] = "cd.campaign_id = %d";    
-            $this->parameters[] = $this->get( 'campaign' );
-        }
-
-        if ( empty( $where_clauses ) ) {
-            $sql = '';
-        }
-        else {
-            $sql = 'AND ' . implode( ' AND ', $where_clauses );
-        }
-
-        return apply_filters( 'charitable_donor_query_where_sql', $sql, $this );
-    }
-
-    /**
-     * Return group clause. 
-     *
-     * @return  string
-     * @access  protected
-     * @since   1.0.0
-     */
-    protected function get_group_clause() {
-        if ( ! $this->get( 'distinct' ) ) {
-            $sql = '';
-        }
-        else {
-            $sql = 'GROUP BY d.donor_id';
-        }
-
-        return apply_filters( 'charitable_donor_query_group_by_sql', $sql, $this );
-    }
-
-    /**
-     * Return order clause. 
-     *
-     * @return  string
-     * @access  protected
-     * @since   1.0.0
-     */
-    protected function get_order_clause() {    
-        $order = in_array( $this->get( 'order' ), array( 'DESC', 'ASC' ) ) ? $this->get( 'order' ) : 'DESC';
-
-        switch ( $this->get( 'orderby' ) ) {
-
-            case 'date' : 
-                $sql = "ORDER BY p.post_date $order";
-                break;
-
-            case 'donations' : 
-                $sql = "ORDER BY donations $order";
-                break;
-
-            case 'amount' : 
-                $sql = "ORDER BY SUM(cd.amount) $order";
-                break;
-
-            default : 
-                $sql = "";
-        }
-
-        return apply_filters( 'charitable_donor_query_order_sql', $sql, $this );
-    }
-
-    /**
-     * Return limit and offset clause. 
-     *
-     * @return  string
-     * @access  protected
-     * @since   1.0.0
-     */
-    protected function get_limit_and_offset_clause() {
-        /* If a negative number has been passed, we will return all results. */
-        if ( $this->get( 'number' ) < 0 ) {
-            return;
-        }
-
-        $sql = sprintf( "LIMIT %d ", $this->get( 'number' ) );
-
-        if ( $this->get( 'paged' ) > 1 ) {
-            $sql = sprintf( "OFFSET %d", ( $this->get( 'paged' ) - 1 ) * $this->get( 'number' ) );
-        }
-
-        return $sql;
-    }
-
-    /**
-     * Return field limiting clause. 
-     *
-     * @return  string
-     * @access  protected
-     * @since   1.0.0
-     */
-    protected function get_fields_clause() {
-        $select_fields = array( 'd.donor_id', 'd.user_id' );
-        
-        if ( is_array( $this->get( 'fields' ) ) ) {
-            if ( in_array( 'donations', $this->get( 'fields' ) && $this->get( 'distinct' ) ) ) {
-                $select_fields[] = 'COUNT(*) AS donations';
-            } 
-
-            if ( in_array( 'amount', $this->get( 'fields' ) && $this->get( 'distinct' ) ) ) {
-                $select_fields[] = 'SUM(cd.amount) AS amount';
-            }
-
-            if ( in_array( 'name', $this->get( 'fields' ) ) ) {
-                $select_fields[] = 'd.first_name';
-                $select_fields[] = 'd.last_name';
-            }            
-        }  
-        elseif ( 'all' == $this->get( 'fields' ) ) {
-
-            if ( $this->get( 'distinct' ) ) {
-                $select_fields[] = 'COUNT(*) AS donations';
-                $select_fields[] = 'SUM(cd.amount) AS amount';
-            }   
-            else {
-                $select_fields[] = 'cd.donation_id';
-                $select_fields[] = 'cd.amount';
-            }   
-
-            $select_fields[] = 'd.first_name';
-            $select_fields[] = 'd.last_name';
-        }  
-
-        $sql = implode( ', ', $select_fields );    
-        
-        return apply_filters( 'charitable_donor_query_fields_sql', $sql, $select_fields, $this );
-    }
-
-    /**
-     * Return string of %s repeated for as many statuses as we're accepting. 
-     *
-     * @return  string
-     * @access  protected
-     * @since   1.0.0
-     */
-    protected function get_status_placeholders() {
-        $status_placeholders = array_fill( 0, count( $this->get( 'status' ) ), '%s' );
-        return implode( ', ', $status_placeholders );
-    }
-
-    /**
-     * Return number of results. 
-     *
-     * @return  int
-     * @access  public
-     * @since   1.0.0
-     */
-    public function count() {
-        return count( $this->results );
-    }
-
-    /**
-     * Rewind to first result.
+     * Set up fields query argument. 
      *
      * @return  void
      * @access  public
      * @since   1.0.0
      */
-    public function rewind() {
-        $this->position = 0;
+    public function setup_fields() {
+        if ( ! $this->get( 'distinct_donors', true ) ) {
+            add_filter( 'charitable_query_fields', array( $this, 'donation_fields' ), 4 );
+        }
+
+        if ( 'all' == $this->get( 'fields', 'all' ) ) {
+            add_filter( 'charitable_query_fields', array( $this, 'donation_calc_fields' ), 5 );
+            add_filter( 'charitable_query_fields', array( $this, 'donor_fields' ), 6 );
+        }        
     }
 
     /**
-     * Return current element.
+     * Set up orderby query argument. 
      *
-     * @return  object
+     * @return  void
      * @access  public
      * @since   1.0.0
      */
-    public function current() {
-        return $this->results[ $this->position ];
+    public function setup_orderby() {
+        $orderby = $this->get( 'orderby', false );
+
+        if ( ! $orderby ) {
+            return;
+        }
+
+        switch( $orderby ) {
+            case 'date' : 
+                add_filter( 'charitable_query_orderby', array( $this, 'orderby_date' ) );
+                break;
+
+            case 'donations' : 
+                add_filter( 'charitable_query_orderby', array( $this, 'orderby_count' ) );
+                break;
+
+            case 'amount' : 
+                add_filter( 'charitable_query_orderby', array( $this, 'orderby_donation_amount' ) );
+                break;
+        }
     }
 
     /**
-     * Return current key.
+     * Set up query grouping.
      *
-     * @return  int
+     * @return  void
      * @access  public
      * @since   1.0.0
      */
-    public function key() {
-        return $this->position;
+    public function setup_grouping() {
+        if ( ! $this->get( 'distinct_donors', false ) ) {
+
+            add_filter( 'charitable_query_groupby', array( $this, 'groupby_ID' ) );
+            return;
+        }
+
+        add_filter( 'charitable_query_groupby', array( $this, 'groupby_donor_id' ) );
+    } 
+
+    /**
+     * Remove any hooks that have been attached by the class to prevent contaminating other queries. 
+     *
+     * @return  void
+     * @access  public
+     * @since   1.0.0
+     */
+    public function unhook_callbacks() {
+        remove_filter( 'charitable_query_fields', array( $this, 'donation_fields' ), 4 );
+        remove_filter( 'charitable_query_fields', array( $this, 'donation_calc_fields' ), 5 );
+        remove_filter( 'charitable_query_fields', array( $this, 'donor_fields' ), 6 );
+        remove_filter( 'charitable_query_join', array( $this, 'join_campaign_donations_table_on_donation' ), 5 );
+        remove_filter( 'charitable_query_join', array( $this, 'join_donors_table' ), 6 );
+        remove_filter( 'charitable_query_where', array( $this, 'where_status_is_in' ), 5 );
+        remove_filter( 'charitable_query_where', array( $this, 'where_campaign_is_in' ), 6 );        
+        remove_filter( 'charitable_query_groupby', array( $this, 'groupby_donor_id' ) );
+        remove_filter( 'charitable_query_orderby', array( $this, 'orderby_date' ) );
+        remove_filter( 'charitable_query_orderby', array( $this, 'orderby_count' ) );
+        remove_filter( 'charitable_query_orderby', array( $this, 'orderby_donation_amount' ) );
     }
 
     /**
-     * Advance to next item.
+     * Set up callbacks for WP_Query filters.  
      *
-     * @return  int
-     * @access  public
+     * @return  void
+     * @access  protected
      * @since   1.0.0
      */
-    public function next() {
-        ++$this->position;
-    }
+    protected function prepare_query() {
+        add_action( 'charitable_pre_query', array( $this, 'setup_fields' ) );
+        add_action( 'charitable_pre_query', array( $this, 'setup_orderby' ) );
+        add_action( 'charitable_pre_query', array( $this, 'setup_grouping' ) );
+                
+        add_filter( 'charitable_query_join', array( $this, 'join_campaign_donations_table_on_donation' ), 5 );
+        add_filter( 'charitable_query_join', array( $this, 'join_donors_table' ), 6 );
+        add_filter( 'charitable_query_where', array( $this, 'where_status_is_in' ), 5 );
+        add_filter( 'charitable_query_where', array( $this, 'where_campaign_is_in' ), 6 );    
 
-    /**
-     * Ensure that current position is valid.
-     *
-     * @return  boolean
-     * @access  public
-     * @since   1.0.0
-     */
-    public function valid() {
-        return isset( $this->results[ $this->position ] );
+        add_action( 'charitable_post_query', array( $this, 'unhook_callbacks' ) );    
     }
 }
 

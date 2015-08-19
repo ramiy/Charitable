@@ -56,8 +56,11 @@ final class Charitable_Admin extends Charitable_Start_Object {
 
 		/* Settings */
 		require_once( charitable()->get_path( 'admin' ) . 'settings/class-charitable-settings.php' );
+		require_once( charitable()->get_path( 'admin' ) . 'settings/class-charitable-general-settings.php' );
 		require_once( charitable()->get_path( 'admin' ) . 'settings/class-charitable-email-settings.php' );
 		require_once( charitable()->get_path( 'admin' ) . 'settings/class-charitable-gateway-settings.php' );
+		require_once( charitable()->get_path( 'admin' ) . 'settings/class-charitable-licenses-settings.php' );
+		require_once( charitable()->get_path( 'admin' ) . 'settings/class-charitable-advanced-settings.php' );
 	}
 
 	/**
@@ -70,8 +73,11 @@ final class Charitable_Admin extends Charitable_Start_Object {
 	private function attach_hooks_and_filters() {
 		add_action( 'charitable_start', array( 'Charitable_Admin_Pages', 'charitable_start' ) );
 		add_action( 'charitable_start', array( 'Charitable_Settings', 'charitable_start' ) );
+		add_action( 'charitable_start', array( 'Charitable_General_Settings', 'charitable_start' ) );
 		add_action( 'charitable_start', array( 'Charitable_Gateway_Settings', 'charitable_start' ) );
+		add_action( 'charitable_start', array( 'Charitable_Licenses_Settings', 'charitable_start' ) );
 		add_action( 'charitable_start', array( 'Charitable_Email_Settings', 'charitable_start' ) );
+		add_action( 'charitable_start', array( 'Charitable_Advanced_Settings', 'charitable_start' ) );
 		add_action( 'charitable_start', array( 'Charitable_Campaign_Post_Type', 'charitable_start' ) );
 		add_action( 'charitable_start', array( 'Charitable_Donation_Post_Type', 'charitable_start' ) );
 		// add_action( 'admin_init', 				array( $this, 'activate_license' ) );

@@ -33,18 +33,6 @@ function charitable_template( $template_name, array $args = array() ) {
 }
 
 /**
- * Displays a template. 
- *
- * @param 	string 	$slug
- * @param 	string 	$name 		Optional name.
- * @return 	Charitable_Template_Part
- * @since 	1.0.0
- */
-function charitable_template_part( $slug, $name = "" ) {
-	return new Charitable_Template_Part( $slug, $name );
-}
-
-/**
  * Return the template path if the template exists. Otherwise, return default.
  *
  * @param 	string 	$template

@@ -4,7 +4,7 @@
  *
  * There are several different user roles in Charitable, and one user 
  * may be more than one. People who make donations get the "donor" role;
- * people who create campaigns (via Charitable Frontend Submissions) get 
+ * people who create campaigns (via Charitable Ambassadors) get 
  * the "campaign_creator" role; people who create fundraisers for campaigns 
  * get the "fundraiser" role.
  *
@@ -185,7 +185,7 @@ class Charitable_User extends WP_User {
      * @since   1.0.0
      */
     public function get_email() {
-        return apply_filters( 'charitable_donor_email', $this->get_donor()->email, $this );
+        return apply_filters( 'charitable_user_email', $this->get_donor()->email, $this );
     }
 
     /**
@@ -202,7 +202,7 @@ class Charitable_User extends WP_User {
         else {
             $name = $this->display_name;
         }
-        return apply_filters( 'charitable_donor_name', $name, $this );
+        return apply_filters( 'charitable_user_name', $name, $this );
     }
 
     /**
@@ -232,7 +232,7 @@ class Charitable_User extends WP_User {
             $location = $country;
         }       
 
-        return apply_filters( 'charitable_donor_location', $location, $this );
+        return apply_filters( 'charitable_user_location', $location, $this );
     }
 
     /**
@@ -243,7 +243,7 @@ class Charitable_User extends WP_User {
      * @since   1.0.0
      */
     public function get_address_fields() {
-        return apply_filters( 'charitable_donor_address_fields', array(
+        return apply_filters( 'charitable_user_address_fields', array(
             'donor_address', 
             'donor_address_2', 
             'donor_city', 
@@ -261,7 +261,7 @@ class Charitable_User extends WP_User {
      * @since   1.0.0
      */
     public function get_address() {
-        $address_fields = apply_filters( 'charitable_donor_address_fields', array(
+        $address_fields = apply_filters( 'charitable_user_address_fields', array(
             'first_name'    => $this->get( 'first_name' ),
             'last_name'     => $this->get( 'last_name' ),
             'company'       => $this->get( 'donor_company' ),
@@ -461,7 +461,7 @@ class Charitable_User extends WP_User {
 
         $args = wp_parse_args( $args, $defaults );
 
-        $args = apply_filters( 'charitable_donor_activity_args', $args, $this );
+        $args = apply_filters( 'charitable_user_activity_args', $args, $this );
 
         return new WP_Query( $args );
     }
@@ -657,7 +657,7 @@ class Charitable_User extends WP_User {
         }
 
         if ( is_user_logged_in() ) {
-
+            return false;
         }
 
         $creds = array(

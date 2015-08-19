@@ -3,7 +3,7 @@
  * Plugin Name:         Charitable
  * Plugin URI:          http://wpcharitable.com
  * Description:         Fundraise with WordPress.
- * Version:             1.0.0-20150806
+ * Version:             1.0.0
  * Author:              Studio 164a
  * Author URI:          https://164a.com
  * Requires at least:   4.1
@@ -33,7 +33,7 @@ class Charitable {
     /**
      * @var     string
      */
-    const VERSION = '1.0.0-20150806';
+    const VERSION = '1.0.0-20150819';
 
     /**
      * @var     string      A date in the format: YYYYMMDD
@@ -183,15 +183,20 @@ class Charitable {
         require_once( $includes_path . 'charitable-core-functions.php' );                
         require_once( $includes_path . 'charitable-utility-functions.php' );
 
-        /* Base Classes & Interfaces */        
-        require_once( $includes_path . 'class-charitable-start-object.php' );
-        require_once( $includes_path . 'class-charitable-form.php' );
-        require_once( $includes_path . 'class-charitable-addons.php' );
+        /* Abstracts */
+        require_once( $includes_path . 'abstracts/class-charitable-form.php' );
+        require_once( $includes_path . 'abstracts/class-charitable-query.php' );
+        require_once( $includes_path . 'abstracts/class-charitable-start-object.php' );
+
+        /* Base Classes & Interfaces */                
         require_once( $includes_path . 'class-charitable-locations.php' );
         require_once( $includes_path . 'class-charitable-notices.php' );
         require_once( $includes_path . 'class-charitable-post-types.php' );
         require_once( $includes_path . 'class-charitable-request.php' );
-                
+        
+        /* Addons */
+        require_once( $includes_path . 'addons/class-charitable-addons.php' );
+
         /* Campaigns */
         require_once( $includes_path . 'campaigns/charitable-campaign-functions.php' );
         require_once( $includes_path . 'campaigns/class-charitable-campaign.php' );
@@ -213,9 +218,13 @@ class Charitable {
 
         /* Users */
         require_once( $includes_path . 'users/charitable-user-functions.php' );
+        require_once( $includes_path . 'users/charitable-user-hooks.php' );
         require_once( $includes_path . 'users/class-charitable-user.php' );
-        require_once( $includes_path . 'users/class-charitable-roles.php' );        
+        require_once( $includes_path . 'users/class-charitable-roles.php' );
+        require_once( $includes_path . 'users/class-charitable-donor.php' );     
         require_once( $includes_path . 'users/class-charitable-donor-query.php' );
+        require_once( $includes_path . 'users/class-charitable-registration-form.php' );
+        require_once( $includes_path . 'users/class-charitable-profile-form.php' );
 
         /* Gateways */
         require_once( $includes_path . 'gateways/class-charitable-gateways.php' );
@@ -234,6 +243,10 @@ class Charitable {
         require_once( $includes_path . 'db/class-charitable-campaign-donations-db.php' );
         require_once( $includes_path . 'db/class-charitable-donors-db.php' );
 
+        /* Licensing */
+        require_once( $includes_path . 'licensing/class-charitable-licenses.php' );
+        require_once( $includes_path . 'licensing/class-charitable-plugin-updater.php' );
+
         /* Public */
         require_once( $includes_path . 'public/charitable-page-functions.php' );
         require_once( $includes_path . 'public/charitable-template-functions.php' );
@@ -248,6 +261,9 @@ class Charitable {
         require_once( $includes_path . 'shortcodes/class-charitable-shortcodes.php' );
         require_once( $includes_path . 'shortcodes/class-charitable-campaigns-shortcode.php' );
         require_once( $includes_path . 'shortcodes/class-charitable-my-donations-shortcode.php' );
+        require_once( $includes_path . 'shortcodes/class-charitable-login-shortcode.php' );
+        require_once( $includes_path . 'shortcodes/class-charitable-registration-shortcode.php' );
+        require_once( $includes_path . 'shortcodes/class-charitable-profile-shortcode.php' );
 
         /* Widgets */
         require_once( $includes_path . 'widgets/class-charitable-widgets.php' );
@@ -268,6 +284,7 @@ class Charitable {
     private function attach_hooks_and_filters() {
         add_action('plugins_loaded',    array( $this, 'charitable_start' ), 100 );
 
+        add_action('charitable_start',  array( 'Charitable_Licenses', 'charitable_start' ), 3 );
         add_action('charitable_start',  array( 'Charitable_Post_Types', 'charitable_start' ), 3 );
         add_action('charitable_start',  array( 'Charitable_Widgets', 'charitable_start' ), 3 );
         add_action('charitable_start',  array( 'Charitable_Gateways', 'charitable_start' ), 3 ); 

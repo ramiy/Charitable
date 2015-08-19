@@ -18,6 +18,7 @@ select.charitable-settings-field {
 }
 
 .charitable-settings-object {    
+    max-width: 860px;
     padding: 10px 20px;
     margin-bottom: 4px;
     border: 1px solid #e1e1e1;
@@ -52,6 +53,52 @@ select.charitable-settings-field {
 
     .make-default-gateway {
         color: #777;
+    }
+}
+
+.charitable-licensed-product {
+    h4 {
+        width: 230px;
+        margin-right: 20px;
+        line-height: 40px;
+    }
+
+    .charitable-settings-field {
+        float: left;        
+        width: 100%;
+
+        @include bp( 1090 ) {
+            width: 312px;
+            margin-right: 20px;
+        }   
+    }
+
+    .license-meta {
+        font-size: 12px;
+        line-height: 40px;
+    }
+
+    .license-active {
+        float: left;
+    }
+
+    .valid-license {
+        color: #f89d35;
+        font-weight: bold;
+    }
+
+    .license-deactivation {
+        float: left;
+        margin: 6px 0;        
+    }
+
+    .license-invalid {
+        color: #f89d35;
+    }
+
+    .license-expiration-date {
+        float: right;
+        margin-left: 10px;
     }
 }
 

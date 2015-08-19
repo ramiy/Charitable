@@ -46,12 +46,18 @@ final class Charitable_Email_Settings extends Charitable_Start_Object {
                 'title'     => '',
                 'type'      => 'hidden',
                 'priority'  => 10000,
-                'value'     => 'emails'
+                'value'     => 'emails', 
+                'save'      => false
             ),
-            'emails' => array(
+            'section_emails' => array(
                 'title'     => __( 'Available Emails', 'charitable' ),
-                'callback'  => array( $this, 'render_emails_table' ), 
+                'type'      => 'heading',
                 'priority'  => 5
+            ), 
+            'emails' => array(
+                'title'     => false,
+                'callback'  => array( $this, 'render_emails_table' ), 
+                'priority'  => 7
             ), 
             'section_email_general' => array(
                 'title'     => __( 'General Email Settings', 'charitable' ), 

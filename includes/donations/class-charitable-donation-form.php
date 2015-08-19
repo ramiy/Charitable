@@ -479,7 +479,7 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
             return;
         }
 
-        charitable_template_part( 'donation-form/user-login-fields' );
+        charitable_template( 'donation-form/user-login-fields.php' );
     }
 
     /**

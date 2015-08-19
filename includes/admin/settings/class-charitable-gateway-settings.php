@@ -46,17 +46,23 @@ final class Charitable_Gateway_Settings extends Charitable_Start_Object {
                 'title'             => '',
                 'type'              => 'hidden',
                 'priority'          => 10000,
-                'value'             => 'gateways'
+                'value'             => 'gateways', 
+                'save'              => false
             ),
+            'section_emails' => array(
+                'title'             => __( 'Available Payment Gateways', 'charitable' ),
+                'type'              => 'heading',
+                'priority'          => 5
+            ), 
             'gateways' => array(
                 'title'             => false,
                 'callback'          => array( $this, 'render_gateways_table' ), 
-                'priority'          => 5
+                'priority'          => 10
             ),
             'test_mode' => array(
                 'title'             => __( 'Turn on Test Mode', 'charitable' ),
                 'type'              => 'checkbox',
-                'priority'          => 10
+                'priority'          => 15
             )
         );
     }
@@ -70,6 +76,10 @@ final class Charitable_Gateway_Settings extends Charitable_Start_Object {
      */
     public function add_individual_gateway_fields( $fields ) {
         foreach ( charitable_get_helper( 'gateways' )->get_active_gateways() as $gateway ) {
+            if ( ! class_exists( $gateway ) ) {
+                continue;
+            }
+
             $fields[ 'gateways_' . $gateway::ID ] = apply_filters( 'charitable_settings_fields_gateways_gateway', array(), new $gateway );
         }
 
@@ -85,12 +95,12 @@ final class Charitable_Gateway_Settings extends Charitable_Start_Object {
      * @since   1.0.0
      */
     public function add_gateway_settings_dynamic_groups( $groups ) {
-        foreach ( charitable_get_helper( 'gateways' )->get_active_gateways() as $gateway_key => $gateway_class ) {
-            if ( ! class_exists( $gateway_class ) ) {
+        foreach ( charitable_get_helper( 'gateways' )->get_active_gateways() as $gateway_key => $gateway ) {
+            if ( ! class_exists( $gateway ) ) {
                 continue;
             }
                 
-            $groups[ 'gateways_' . $gateway_key ] = apply_filters( 'charitable_settings_fields_gateways_gateway', array(), new $gateway_class );
+            $groups[ 'gateways_' . $gateway_key ] = apply_filters( 'charitable_settings_fields_gateways_gateway', array(), new $gateway );
         }
 
         return $groups;

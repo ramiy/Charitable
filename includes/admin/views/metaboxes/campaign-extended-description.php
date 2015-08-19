@@ -9,7 +9,7 @@
 global $post;
 
 $textarea_name = 'content';
-$textarea_rows = apply_filters( 'charitable_extended_description_rows', 10 );
+$textarea_rows = apply_filters( 'charitable_extended_description_rows', 40 );
 $textarea_placeholder = __( 'Enter description...', 'charitable' );
 $textarea_tab_index = isset( $view_args['tab_index'] ) ? $view_args['tab_index'] : 0;
 
