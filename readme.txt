@@ -2,8 +2,8 @@
 Contributors: WPCharitable, eric.daams
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paypal%40164a%2ecom
 Tags: donations, donate, donation plugin, fundraising, fundraising plugin, non-profit, non-profits, charity, churches, commerce, crowdfunding, paypal donations, paypal, stripe, stripe donations, campaigns, gifts, giving, wordpress fundraising, wordpress donations, wordpress donation plugin
-Requires at least: 4.0.0
-Tested up to: 4.2.3
+Requires at least: 4.1
+Tested up to: 4.3
 Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -38,17 +38,13 @@ Charitable is different. We won't charge you any transaction fees and you can us
 
 Charitable has been designed to work with any well-coded theme, including the default WordPress themes.
 
-Looking for something special? Check out [Reach](http://wpcharitable.com/reach/), a free WordPress fundraising theme designed especially to work with Charitable.
-
 = Extensions = 
 
 One size does *not* fit all. That's why we made Charitable an extendable platform. 
 
-* **Easy Digital Downloads Connect** - Raise money for your campaigns using Easy Digital Downloads. Allows you to use any Easy Digital Digital
-* **Stripe Payment Gateway** - Accept credit card donations directly on your website with Stripe.
 * **Anonymous Donations** - Allow people to make donations anonymously.
-* **Geolocation** - Running campaigns all over the place? Set up locations for your campaigns and display them on a Google Map. 
-* **Campaign Videos** - Add videos to your campaigns. 
+* **User Avatars** - Let your donors upload their own profile photo to your site, instead of using their Gravatar profile.
+* **Simple Updates** - Add updates about your fundraising campaigns.
 
 Looking for more? 
 
