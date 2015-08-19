@@ -32,7 +32,8 @@ module.exports = function(grunt) {
                     'templates', 
                     'templates/**', 
                     'charitable.php', 
-                    'readme.txt'
+                    'readme.txt', 
+                    'README.md'
                 ],
                 tasks: ['sync:dist']
             }     
@@ -67,7 +68,8 @@ module.exports = function(grunt) {
                             'templates', 
                             'templates/**', 
                             'charitable.php',
-                            'readme.txt'
+                            'readme.txt', 
+                            'README.md'
                         ], 
                         dest: '../../plugins/charitable'
                     }
