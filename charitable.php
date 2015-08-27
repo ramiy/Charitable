@@ -291,6 +291,7 @@ class Charitable {
         add_action('charitable_start', array( 'Charitable_Emails', 'charitable_start' ), 3 ); 
         add_action('charitable_start', array( 'Charitable_Request', 'charitable_start' ), 3 );
         add_action('charitable_start', array( 'Charitable_Shortcodes', 'charitable_start' ), 3 );
+        add_action('charitable_start', array( 'Charitable_User_Dashboard', 'charitable_start' ), 3 );
 
         /**
          * We do this on priority 20 so that any functionality that is loaded on init (such 
