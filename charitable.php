@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name:         Charitable
- * Plugin URI:          http://wpcharitable.com
+ * Plugin URI:          https://wpcharitable.com
  * Description:         Fundraise with WordPress.
  * Version:             1.0.1
  * Author:              WP Charitable
@@ -283,21 +283,24 @@ class Charitable {
      * @since   1.0.0
      */
     private function attach_hooks_and_filters() {
-        add_action('plugins_loaded',    array( $this, 'charitable_start' ), 100 );
+        add_action('plugins_loaded', array( $this, 'charitable_start' ), 100 );
+        add_action('charitable_start', array( 'Charitable_Licenses', 'charitable_start' ), 3 );
+        add_action('charitable_start', array( 'Charitable_Post_Types', 'charitable_start' ), 3 );
+        add_action('charitable_start', array( 'Charitable_Widgets', 'charitable_start' ), 3 );
+        add_action('charitable_start', array( 'Charitable_Gateways', 'charitable_start' ), 3 ); 
+        add_action('charitable_start', array( 'Charitable_Emails', 'charitable_start' ), 3 ); 
+        add_action('charitable_start', array( 'Charitable_Request', 'charitable_start' ), 3 );
+        add_action('charitable_start', array( 'Charitable_Shortcodes', 'charitable_start' ), 3 );
 
-        add_action('charitable_start',  array( 'Charitable_Licenses', 'charitable_start' ), 3 );
-        add_action('charitable_start',  array( 'Charitable_Post_Types', 'charitable_start' ), 3 );
-        add_action('charitable_start',  array( 'Charitable_Widgets', 'charitable_start' ), 3 );
-        add_action('charitable_start',  array( 'Charitable_Gateways', 'charitable_start' ), 3 ); 
-        add_action('charitable_start',  array( 'Charitable_Emails', 'charitable_start' ), 3 ); 
-        add_action('charitable_start',  array( 'Charitable_Request', 'charitable_start' ), 3 );
-        add_action('charitable_start',  array( 'Charitable_Shortcodes', 'charitable_start' ), 3 );
-        add_action('charitable_start',  array( 'Charitable_User_Dashboard', 'charitable_start' ), 3 );
-        add_action('init',              array( $this, 'do_charitable_actions' ) );
+        /**
+         * We do this on priority 20 so that any functionality that is loaded on init (such 
+         * as addons) has a chance to run before the event.
+         */
+        add_action('init', array( $this, 'do_charitable_actions' ), 20 );
 
         add_filter('charitable_sanitize_campaign_meta', array( 'Charitable_Campaign', 'sanitize_meta' ), 10, 3 );
         add_filter('charitable_sanitize_donation_meta', array( 'Charitable_Donation', 'sanitize_meta' ), 10, 2 );
-        add_filter('charitable_after_insert_user',      array( 'Charitable_User', 'signon' ), 10, 2 );
+        add_filter('charitable_after_insert_user', array( 'Charitable_User', 'signon' ), 10, 2 );
     }
 
     /**
@@ -657,7 +660,7 @@ class Charitable {
     }
 
     /**
-     * If a charitable_action event is triggered, delegate the event using do_action.
+     * If a charitable_action event is triggered, delegate the event using do_action.     
      *
      * @return  void
      * @access  public
@@ -668,7 +671,7 @@ class Charitable {
 
             $action = $_REQUEST[ 'charitable_action' ];
             
-            do_action( 'charitable_' . $action );
+            do_action( 'charitable_' . $action, 20 );
         }
     }
 
