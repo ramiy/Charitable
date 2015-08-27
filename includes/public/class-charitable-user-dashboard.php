@@ -1,11 +1,11 @@
 <?php
 /**
- * Main class for setting up the Charitable User Dashboard Addon, which is programatically activated by child themes.
+ * Main class for setting up the Charitable User Dashboard.
  *
  * @package     Charitable/Classes/Charitable_User_Dashboard
  * @version     1.0.0
  * @author      Eric Daams
- * @copyright   Copyright (c) 2014, Studio 164a
+ * @copyright   Copyright (c) 2015, Studio 164a
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License  
  */
 
@@ -19,51 +19,15 @@ if ( ! class_exists( 'Charitable_User_Dashboard' ) ) :
  *
  * @since       1.0.0
  */
-class Charitable_User_Dashboard implements Charitable_Addon_Interface {
-
-    /**
-     * Responsible for creating class instances. 
-     *
-     * @return  void
-     * @access  public
-     * @static
-     * @since   1.0.0
-     */
-    public static function load() {
-        charitable()->register_object( new Charitable_User_Dashboard() );
-    }
+class Charitable_User_Dashboard extends Charitable_Start_Object {
 
     /**
      * Create class instance. 
      *
-     * @access  private
+     * @access  protected
      * @since   1.0.0
      */
-    private function __construct() {        
-        $this->load_dependencies();
-        $this->attach_hooks_and_filters();      
-    }
-
-    /**
-     * Include required files. 
-     *
-     * @return  void
-     * @access  private
-     * @since   1.0.0
-     */
-    private function load_dependencies() {
-        require_once( 'charitable-user-dashboard-functions.php' );
-        require_once( 'charitable-user-dashboard-template-functions.php' );        
-    }
-
-    /**
-     * Set up hooks and filter. 
-     *
-     * @return  void
-     * @access  private
-     * @since   1.0.0
-     */
-    private function attach_hooks_and_filters() {        
+    protected function __construct() {        
         add_action( 'after_setup_theme',                array( $this, 'register_menu' ), 100 );
         add_action( 'template_include',                 array( $this, 'load_user_dashboard_template' ) );
         add_action( 'wp_update_nav_menu',               array( $this, 'flush_menu_object_cache' ) );
@@ -255,22 +219,6 @@ class Charitable_User_Dashboard implements Charitable_Addon_Interface {
 
         return $classes;
     }
-
-    /**
-     * Activate the addon. 
-     *
-     * @return  void
-     * @access  public
-     * @static
-     * @since   1.0.0
-     */
-    public static function activate() {         
-        /* This method should only be called on the charitable_activate_addon hook */
-        if ( 'charitable_activate_addon' !== current_filter() ) {
-            return false;
-        }
-
-    }   
 }
 
 endif; // End class_exists check

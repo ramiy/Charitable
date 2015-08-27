@@ -3,9 +3,9 @@
  * Plugin Name:         Charitable
  * Plugin URI:          http://wpcharitable.com
  * Description:         Fundraise with WordPress.
- * Version:             1.0.0
- * Author:              Studio 164a
- * Author URI:          https://164a.com
+ * Version:             1.0.1
+ * Author:              WP Charitable
+ * Author URI:          https://wpcharitable.com
  * Requires at least:   4.1
  * Tested up to:        4.3
  *
@@ -14,7 +14,7 @@
  *
  * @package             Charitable
  * @author              Eric Daams
- * @copyright           Copyright (c) 2014, Studio 164a
+ * @copyright           Copyright (c) 2015, Studio 164a
  * @license             http://opensource.org/licenses/gpl-2.0.php GNU Public License  
  */
 
@@ -26,7 +26,7 @@ if ( ! class_exists( 'Charitable' ) ) :
  * Main Charitable class
  *
  * @class       Charitable
- * @version     1.0.0
+ * @version     1.0.1
  */
 class Charitable {
 
@@ -256,6 +256,7 @@ class Charitable {
         require_once( $includes_path . 'public/class-charitable-template-part.php' );
         require_once( $includes_path . 'public/class-charitable-templates.php' );
         require_once( $includes_path . 'public/class-charitable-ghost-page.php' );
+        require_once( $includes_path . 'public/class-charitable-user-dashboard.php' );
 
         /* Shortcodes */
         require_once( $includes_path . 'shortcodes/class-charitable-shortcodes.php' );
@@ -291,6 +292,7 @@ class Charitable {
         add_action('charitable_start',  array( 'Charitable_Emails', 'charitable_start' ), 3 ); 
         add_action('charitable_start',  array( 'Charitable_Request', 'charitable_start' ), 3 );
         add_action('charitable_start',  array( 'Charitable_Shortcodes', 'charitable_start' ), 3 );
+        add_action('charitable_start',  array( 'Charitable_User_Dashboard', 'charitable_start' ), 3 );
         add_action('init',              array( $this, 'do_charitable_actions' ) );
 
         add_filter('charitable_sanitize_campaign_meta', array( 'Charitable_Campaign', 'sanitize_meta' ), 10, 3 );
