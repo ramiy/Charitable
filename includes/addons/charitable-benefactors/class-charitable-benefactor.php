@@ -52,7 +52,7 @@ abstract class Charitable_Benefactor {
 	 * @static
 	 * @since   1.0.0
 	 */
-	public function get_object( $benefactor, $extension ) {
+	public static function get_object( $benefactor, $extension ) {
 		$class = apply_filters( 'charitable_benefactor_class_' . $extension, false );
 
 		if ( ! class_exists( $class ) ) {
