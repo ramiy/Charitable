@@ -12,7 +12,7 @@ Charitable is a powerful, extendable fundraising plugin created to help non-prof
 
 == Description ==
 
-[Charitable](http://wpcharitable.com/) is the WordPress fundraising alternative for non-profits, built to help non-profits raise money on their own website. 
+[Charitable](https://wpcharitable.com/) is the WordPress fundraising alternative for non-profits, built to help non-profits raise money on their own website. 
 
 You can accept PayPal or offline donations right out of the box, with support for other gateways available as extensions.
 
@@ -48,11 +48,11 @@ One size does *not* fit all. That's why we made Charitable an extendable platfor
 
 Looking for more? 
 
-[View all extensions](http://wpcharitable.com). 
+[View all extensions](https://wpcharitable.com/extensions). 
 
 = Get involved =
 
-Join the community on [WP Charitable](http://wpcharitable.com). 
+Join the community on [WP Charitable](https://wpcharitable.com). 
 
 Developers can contribute to Charitable on our [Github repository](https://github.com/Charitable/Charitable).
 
@@ -66,7 +66,7 @@ Developers can contribute to Charitable on our [Github repository](https://githu
 
 = How do I add a grid of campaigns to my page? = 
 
-Easy. Just add `[campaigns]` into your page content. [Read more](http://wpcharitable.com/documentation/the-campaigns-shortcode/).
+Easy. Just add `[campaigns]` into your page content. [Read more](https://wpcharitable.com/documentation/the-campaigns-shortcode/).
 
 = Does Charitable support recurring donations? =
 
