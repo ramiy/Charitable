@@ -33,7 +33,7 @@ class Charitable {
     /**
      * @var     string
      */
-    const VERSION = '1.0.0-20150819';
+    const VERSION = '1.0.1';
 
     /**
      * @var     string      A date in the format: YYYYMMDD
@@ -273,6 +273,9 @@ class Charitable {
         require_once( $includes_path . 'widgets/class-charitable-donors-widget.php' );
         require_once( $includes_path . 'widgets/class-charitable-donate-widget.php' );
         require_once( $includes_path . 'widgets/class-charitable-donation-stats-widget.php' );
+
+        /* Deprecated */
+        require_once( $includes_path . 'deprecated/charitable-deprecated-functions.php' );
     }
 
     /**
@@ -283,6 +286,7 @@ class Charitable {
      * @since   1.0.0
      */
     private function attach_hooks_and_filters() {
+        add_action('plugins_loaded', array( $this, 'charitable_install' ), 100 );
         add_action('plugins_loaded', array( $this, 'charitable_start' ), 100 );
         add_action('charitable_start', array( 'Charitable_Licenses', 'charitable_start' ), 3 );
         add_action('charitable_start', array( 'Charitable_Post_Types', 'charitable_start' ), 3 );
@@ -297,7 +301,7 @@ class Charitable {
          * We do this on priority 20 so that any functionality that is loaded on init (such 
          * as addons) has a chance to run before the event.
          */
-        add_action('init', array( $this, 'do_charitable_actions' ), 20 );
+        add_action('init', array( $this, 'do_charitable_actions' ), 20 );        
 
         add_filter('charitable_sanitize_campaign_meta', array( 'Charitable_Campaign', 'sanitize_meta' ), 10, 3 );
         add_filter('charitable_sanitize_donation_meta', array( 'Charitable_Donation', 'sanitize_meta' ), 10, 2 );
@@ -364,6 +368,28 @@ class Charitable {
      */
     public function charitable_start() {        
         do_action( 'charitable_start', $this );     
+    }
+
+    /**
+     * Fires off an action right after Charitable is installed, allowing other 
+     * plugins/themes to do something at this point. 
+     *
+     * @return  void
+     * @access  public
+     * @since   1.0.1
+     */
+    public function charitable_install() {
+        $install = get_transient( 'charitable_install' );        
+
+        if ( ! $install ) {
+            return;
+        }
+
+        // add_action( 'init', 'flush_rewrite_rules' );
+
+        do_action( 'charitable_install' );
+
+        delete_transient( 'charitable_install' );
     }
 
     /**

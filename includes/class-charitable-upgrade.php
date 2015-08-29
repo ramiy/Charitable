@@ -41,7 +41,9 @@ class Charitable_Upgrade {
 	 * @var 	array
 	 * @access 	protected
 	 */
-	protected $upgrade_actions = array();
+	protected $upgrade_actions = array(
+		'1.0.1' => 'upgrade_1_0_1'
+	);
 
 	/**
 	 * Option key for upgrade log. 
@@ -68,7 +70,6 @@ class Charitable_Upgrade {
 	 * @since 	1.0.0
 	 */
 	public static function upgrade_from( $db_version, $edge_version ) {
-
 		if ( self::requires_upgrade( $db_version, $edge_version ) ) {
 
 			new Charitable_Upgrade( $db_version, $edge_version );
@@ -116,7 +117,7 @@ class Charitable_Upgrade {
 
 			if ( self::requires_upgrade( $this->db_version, $version ) ) {
 
-				call_user_func( $method );
+				call_user_func( array( $this, $method ) );
 
 			}
 		}
@@ -134,9 +135,7 @@ class Charitable_Upgrade {
 	 * @since 	1.0.0
 	 */
 	public static function requires_upgrade( $version_a, $version_b ) {
-
 		return $version_a === false || version_compare( $version_a, $version_b, '<' );
-
 	}	
 
 	/**
@@ -171,6 +170,19 @@ class Charitable_Upgrade {
 	 */
 	protected function update_db_version() {
 		update_option( $this->version_key, $this->edge_version );
+	}
+
+	/**
+	 * Upgrade to version 1.0.1.
+	 *
+	 * This just flushes the permalinks, since 1.0.0 did not correctly flush permalinks after installation. 
+	 *
+	 * @return  void
+	 * @access  public
+	 * @since   1.0.0
+	 */
+	public function upgrade_1_0_1() {
+		add_action( 'init', 'flush_rewrite_rules' );
 	}
 }
 
