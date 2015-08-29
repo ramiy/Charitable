@@ -83,5 +83,9 @@ Support for recurring donations will be added as an extension, but is not yet av
 
 == Changelog ==
 
+= 1.0.1 =
+* Improvement: Moved the user dashboard functionality into the core of the plugin, so that it is always available.
+* Fix: The installation routine now flushes permalinks correctly -- no more "Page not Found" problems!
+
 = 1.0.0 =
 * Initial release
