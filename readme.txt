@@ -1,10 +1,10 @@
 === Charitable ===
-Contributors: WPCharitable, eric.daams
+Contributors: WPCharitable, ericdaams
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paypal%40164a%2ecom
 Tags: donations, donate, donation plugin, fundraising, fundraising plugin, non-profit, non-profits, charity, churches, commerce, crowdfunding, paypal donations, paypal, stripe, stripe donations, campaigns, gifts, giving, wordpress fundraising, wordpress donations, wordpress donation plugin
 Requires at least: 4.1
 Tested up to: 4.3
-Stable tag: 1.0.1
+Stable tag: 1.0.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -82,6 +82,13 @@ Support for recurring donations will be added as an extension, but is not yet av
 6. Setting up Charitable: The Email settings area. 
 
 == Changelog ==
+
+= 1.0.3 =
+* Improvement: Using `wp_list_pluck` instead of `array_column` for compatibility with versions of PHP prior to 5.5.
+* PHP 5.2 Compatibility: Avoid T_PAAMAYIM_NEKUDOTAYIM error in older versions of PHP.
+
+= 1.0.2 =
+* Fix: Added missing file into the repo. 
 
 = 1.0.1 =
 * Improvement: Moved the user dashboard functionality into the core of the plugin, so that it is always available.
