@@ -98,7 +98,7 @@ abstract class Charitable_Email {
      * @since   1.0.0
      */
     public static function is_enabled() {
-        return charitable_get_helper( 'emails' )->is_enabled_email( self::ID );
+        return charitable_get_helper( 'emails' )->is_enabled_email( static::get_email_id() );
     }
 
     /**
@@ -447,9 +447,12 @@ abstract class Charitable_Email {
      * @access  public
      * @since   1.0.0
      */
-    public function add_preview_donation_content_fields( $fields ) {
+    public function add_preview_donation_content_fields( $fields ) {        
+        $fields[ 'donor' ]              = 'John Deere';
         $fields[ 'donor_first_name' ]   = 'John';
-        $fields[ 'donor_full_name' ]    = 'John Deere';
+        $fields[ 'donor_email' ]        = 'john@example.com';
+        $fields[ 'donation_id' ]        = 164;
+        $fields[ 'donation_summary' ]   = sprintf( 'Fake Campaign: $50.00%s', PHP_EOL );
         return $fields;
     }
 
@@ -475,6 +478,31 @@ abstract class Charitable_Email {
             'description'   => __( 'The email address of the campaign creator', 'charitable' ), 
             'callback'      => array( $this, 'get_campaign_creator_email' )
         );
+
+        $fields[ 'campaign_end_date' ] = array(
+            'description'   => __( 'The end date of the campaign', 'charitable' ), 
+            'callback'      => array( $this, 'get_campaign_end_date' ) 
+        );
+
+        $fields[ 'campaign_achieved_goal' ] = array(
+            'description'   => __( 'Display whether the campaign reached its goal. Add a `success` parameter as the message when the campaign was successful, and a `failure` parameter as the message when the campaign is not successful', 'charitable' ),
+            'callback'      => array( $this, 'get_campaign_achieved_goal' )
+        );
+
+        $fields[ 'campaign_donated_amount' ] = array(
+            'description'   => __( 'Display the total amount donated to the campaign', 'charitable' ),
+            'callback'      => array( $this, 'get_campaign_donated_amount' )
+        );
+
+        $fields[ 'campaign_donor_count' ] = array(
+            'description'   => __( 'Display the number of campaign donors', 'charitable' ),
+            'callback'      => array( $this, 'get_campaign_donor_count' )
+        );
+
+        $fields[ 'campaign_goal' ] = array(
+            'description'   => __( 'Display the campaign\'s fundraising goal', 'charitable' ),
+            'callback'      => array( $this, 'get_campaign_goal' )
+        );        
 
         return $fields;
     }    
@@ -525,13 +553,111 @@ abstract class Charitable_Email {
     }
 
     /**
+     * Return the campaign end date. 
+     *
+     * @return  string
+     * @access  public
+     * @since   1.1.0
+     */
+    public function get_campaign_end_date( $value, $field, $args ) {
+        if ( ! $this->has_valid_campaign() ) {
+            return '';            
+        }
+
+        return $this->campaign->get_end_date();
+    }
+
+    /**
+     * Display whether the campaign achieved its goal. 
+     *
+     * @return  string
+     * @access  public
+     * @since   1.1.0
+     */
+    public function get_campaign_achieved_goal( $value, $field, $args ) {
+        if ( ! $this->has_valid_campaign() ) {
+            return '';            
+        }
+
+        if ( ! $this->campaign->has_goal() ) {
+            return '';
+        }
+
+        $defaults = array(
+            'success' => __( 'The campaign achieved its fundraising goal.', 'charitable' ),
+            'failure' => __( 'The campaign did not reach its fundraising goal.', 'charitable' )
+        );
+
+        $args = wp_parse_args( $args, $defaults );
+
+        if ( $campaign->has_achieved_goal() ) {
+            return $args[ 'success' ];
+        }
+
+        return $args[ 'failure' ];
+    }
+
+    /**
+     * Display the total amount donated to the campaign.
+     *
+     * @return  string
+     * @access  public
+     * @since   1.1.0
+     */
+    public function get_campaign_donated_amount() {
+        if ( ! $this->has_valid_campaign() ) {
+            return '';            
+        }
+
+        return charitable()->get_currency_helper()->get_monetary_amount( $this->campaign->get_donated_amount() );
+    }
+
+    /**
+     * Display the number of donors to the campaign.
+     *
+     * @return  string
+     * @access  public
+     * @since   1.1.0
+     */
+    public function get_campaign_donor_count() {
+        if ( ! $this->has_valid_campaign() ) {
+            return '';            
+        }
+
+        return $this->campaign->get_donor_count();
+    }
+
+    /**
+     * Display the campaign's goal amount.
+     *
+     * @return  string
+     * @access  public
+     * @since   1.1.0
+     */
+    public function get_campaign_goal() {
+        if ( ! $this->has_valid_campaign() ) {
+            return '';            
+        }
+
+        return $this->campaign->get_monetary_goal();
+    }
+
+    /**
      * Add campaign content fields' fake data for previews.
      *
      * @return  array
      * @access  public
      * @since   1.0.0
      */
-    public function add_preview_campaign_content_fields( $fields ) {        
+    public function add_preview_campaign_content_fields( $fields ) {
+        $fields[ 'campaign_title' ]         = 'Fake Campaign';
+        $fields[ 'campaign_creator' ]       = 'Harry Ferguson';
+        $fields[ 'campaign_creator_email' ] = 'harry@example.com';
+        $fields[ 'campaign_end_date' ]      = date( get_option('date_format', 'd/m/Y') );
+        $fields[ 'campaign_achieved_goal' ] = 'The campaign achieved its fundraising goal.';
+        $fields[ 'campaign_donated_amount' ] = '$16,523';
+        $fields[ 'campaign_donor_count' ]   = 23;
+        $fields[ 'campaign_goal' ]          = '$15,000';
         return $fields;
     }
 
