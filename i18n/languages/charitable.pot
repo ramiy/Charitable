@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the Charitable package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Charitable 1.0.3\n"
+"Project-Id-Version: Charitable 1.1.1\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/charitable\n"
-"POT-Creation-Date: 2015-09-14 03:47:15+00:00\n"
+"POT-Creation-Date: 2015-09-18 04:26:30+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -5222,7 +5222,7 @@ msgid "This license is not valid"
 msgstr ""
 
 #: includes/campaigns/class-charitable-campaign.php:222
-#: includes/emails/class-charitable-email-campaign-end.php:131
+#: includes/emails/class-charitable-email-campaign-end.php:128
 msgid "Campaign has ended"
 msgstr ""
 
@@ -5912,7 +5912,7 @@ msgstr ""
 msgid "You cannot send this email without a donation!"
 msgstr ""
 
-#: includes/emails/abstract-class-charitable-email.php:917
+#: includes/emails/abstract-class-charitable-email.php:922
 msgid "You cannot this email without a campaign!"
 msgstr ""
 
@@ -5920,7 +5920,7 @@ msgstr ""
 msgid "Campaign Ended Notification"
 msgstr ""
 
-#: includes/emails/class-charitable-email-campaign-end.php:120
+#: includes/emails/class-charitable-email-campaign-end.php:117
 msgid "A campaign has finished"
 msgstr ""
 
@@ -6141,24 +6141,24 @@ msgstr ""
 msgid "This product is not valid or does not have a valid license key."
 msgstr ""
 
-#: includes/licensing/class-charitable-plugin-updater.php:178
+#: includes/licensing/class-charitable-plugin-updater.php:175
 msgid ""
 "There is a new version of %1$s available. <a target=\"_blank\" "
 "class=\"thickbox\" href=\"%2$s\">View version %3$s details</a>."
 msgstr ""
 
-#: includes/licensing/class-charitable-plugin-updater.php:185
+#: includes/licensing/class-charitable-plugin-updater.php:182
 msgid ""
 "There is a new version of %1$s available. <a target=\"_blank\" "
 "class=\"thickbox\" href=\"%2$s\">View version %3$s details</a> or <a "
 "href=\"%4$s\">update now</a>."
 msgstr ""
 
-#: includes/licensing/class-charitable-plugin-updater.php:325
+#: includes/licensing/class-charitable-plugin-updater.php:322
 msgid "You do not have permission to install plugin updates"
 msgstr ""
 
-#: includes/licensing/class-charitable-plugin-updater.php:325
+#: includes/licensing/class-charitable-plugin-updater.php:322
 msgid "Error"
 msgstr ""
 
@@ -6212,7 +6212,7 @@ msgstr ""
 msgid "Campaign Manager"
 msgstr ""
 
-#: includes/users/class-charitable-user.php:493
+#: includes/users/class-charitable-user.php:528
 msgid "Unable to add donor. Email not set for logged out user."
 msgstr ""
 

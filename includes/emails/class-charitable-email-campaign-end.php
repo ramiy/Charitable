@@ -90,9 +90,6 @@ class Charitable_Email_Campaign_End extends Charitable_Email {
             'campaign' => $campaign 
         ) );
 
-        echo '<pre>'; var_dump( $email ); echo '</pre>';
-        die;
-
         $email->send();
 
         return true;

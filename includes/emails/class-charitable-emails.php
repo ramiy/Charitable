@@ -210,7 +210,7 @@ class Charitable_Emails extends Charitable_Start_Object {
         if ( ! isset( $args[ 'show' ] ) ) {
             return '';
         }
-
+        
         return $this->current_email->get_value( $args[ 'show' ], $args );
     }
 

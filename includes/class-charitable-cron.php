@@ -28,10 +28,7 @@ class Charitable_Cron extends Charitable_Start_Object {
      * @since   1.1.0
      */
     protected function __construct() {
-        add_action( 'init', array( $this, 'schedule_events' ) );
         add_action( 'charitable_daily_scheduled_events', array( $this, 'check_expired_campaigns' ) );
-
-        add_action( 'init', array( $this, 'check_expired_campaigns' ) );
     }
 
     /**
@@ -39,11 +36,16 @@ class Charitable_Cron extends Charitable_Start_Object {
      *
      * @return  void
      * @access  public
+     * @static
      * @since   1.1.0
      */
-    public function schedule_events() {
+    public static function schedule_events() {        
+        // echo '1';
+
+        // echo '<pre>'; var_dump( wp_next_scheduled( 'charitable_daily_scheduled_events' ) ); echo '</pre>';
         if ( ! wp_next_scheduled( 'charitable_daily_scheduled_events' ) ) {
-            wp_schedule_event( current_time( 'timestamp' ), 'daily', 'charitable_daily_scheduled_events' );
+            echo '2';
+            wp_schedule_event( time(), 'daily', 'charitable_daily_scheduled_events' );
         }
     }
 

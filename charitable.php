@@ -3,7 +3,7 @@
  * Plugin Name:         Charitable
  * Plugin URI:          https://wpcharitable.com
  * Description:         Fundraise with WordPress.
- * Version:             1.0.3
+ * Version:             1.1.1
  * Author:              WP Charitable
  * Author URI:          https://wpcharitable.com
  * Requires at least:   4.1
@@ -26,14 +26,14 @@ if ( ! class_exists( 'Charitable' ) ) :
  * Main Charitable class
  *
  * @class       Charitable
- * @version     1.0.3
+ * @version     1.1.1
  */
 class Charitable {
 
     /**
      * @var     string
      */
-    const VERSION = '1.0.3';
+    const VERSION = '1.1.1';
 
     /**
      * @var     string      A date in the format: YYYYMMDD
@@ -191,7 +191,8 @@ class Charitable {
         require_once( $includes_path . 'class-charitable-notices.php' );
         require_once( $includes_path . 'class-charitable-post-types.php' );
         require_once( $includes_path . 'class-charitable-request.php' );
-        require_once( $includes_path . 'class-charitable-cron.php' );                
+        require_once( $includes_path . 'class-charitable-cron.php' );
+        require_once( $includes_path . 'class-charitable-i18n.php' );
         
         /* Addons */
         require_once( $includes_path . 'addons/class-charitable-addons.php' );
@@ -298,6 +299,7 @@ class Charitable {
         add_action('charitable_start', array( 'Charitable_Shortcodes', 'charitable_start' ), 3 );
         add_action('charitable_start', array( 'Charitable_User_Dashboard', 'charitable_start' ), 3 );
         add_action('charitable_start', array( 'Charitable_Cron', 'charitable_start' ), 3 );
+        add_action('charitable_start', array( 'Charitable_i18n', 'charitable_start' ), 3 );
 
         /**
          * We do this on priority 20 so that any functionality that is loaded on init (such 
@@ -386,8 +388,6 @@ class Charitable {
         if ( ! $install ) {
             return;
         }
-
-        // add_action( 'init', 'flush_rewrite_rules' );
 
         do_action( 'charitable_install' );
 

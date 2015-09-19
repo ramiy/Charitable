@@ -590,7 +590,7 @@ abstract class Charitable_Email {
 
         $args = wp_parse_args( $args, $defaults );
 
-        if ( $campaign->has_achieved_goal() ) {
+        if ( $this->campaign->has_achieved_goal() ) {
             return $args[ 'success' ];
         }
 
@@ -765,8 +765,8 @@ abstract class Charitable_Email {
      * @access  protected
      * @since   1.0.0
      */
-    protected function get_option( $key, $default ) {
-        return charitable_get_option( array( $this::ID, $key ), $default );
+    protected function get_option( $key, $default ) {        
+        return charitable_get_option( array( 'emails_' . $this::ID, $key ), $default );
     }
 
     /**
@@ -913,7 +913,12 @@ abstract class Charitable_Email {
      * @since   1.0.0
      */
     protected function has_valid_campaign() {
-        if ( is_null( $this->campaign ) || ! is_a( $this, 'Charitable_Campaign' ) ) {
+        // echo '<pre>'; var_dump( $this->campaign ); echo '</pre>';
+        // echo '<pre>'; var_dump( is_null( $this->campaign ) ); echo '</pre>';
+        // echo '<pre>'; var_dump( ! is_a( $this->campaign, 'Charitable_Campaign' ) ); echo '</pre>';
+        // echo '<pre>'; var_dump( get_class( $this ) ); echo '</pre>';
+
+        if ( is_null( $this->campaign ) || ! is_a( $this->campaign, 'Charitable_Campaign' ) ) {
             _doing_it_wrong( __METHOD__, __( 'You cannot this email without a campaign!', 'charitable' ), '1.0.0' );
             return false;
         }

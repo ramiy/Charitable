@@ -41,5 +41,3 @@ add_action( 'charitable_after_update_donation', array( 'Charitable_Email_New_Don
  * @see Charitable_Email_Campaign_End::send_with_campaign_id()
  */
 add_action( 'charitable_campaign_end', array( 'Charitable_Email_Campaign_End', 'send_with_campaign_id' ) );
-
-

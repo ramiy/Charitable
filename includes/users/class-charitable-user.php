@@ -206,6 +206,41 @@ class Charitable_User extends WP_User {
     }
 
     /**
+     * Returns the first name of the user.
+     *
+     * @return  string
+     * @access  public
+     * @since   1.1.0
+     */
+    public function get_first_name() {
+        if ( $this->is_donor() && $this->get_donor()->first_name ) {
+            $name = $this->get_donor()->first_name;
+        }        
+        else {
+            $name = $this->first_name;
+        }
+
+        return apply_filters( 'charitable_user_first_name', $name, $this );
+    }
+
+    /**
+     * Returns the last name of the user.
+     *
+     * @return  string
+     * @access  public
+     * @since   1.1.0
+     */
+    public function get_last_name() {
+        if ( $this->is_donor() && $this->get_donor()->last_name ) {
+            $name = $this->get_donor()->last_name;
+        }        
+        else {
+            $name = $this->last_name;
+        }
+        return apply_filters( 'charitable_user_last_name', $name, $this );
+    }
+
+    /**
      * Returns the user's location.  
      *
      * @return  string

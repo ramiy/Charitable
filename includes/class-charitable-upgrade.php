@@ -42,7 +42,8 @@ class Charitable_Upgrade {
 	 * @access 	protected
 	 */
 	protected $upgrade_actions = array(
-		'1.0.1' => 'upgrade_1_0_1'
+		'1.0.1' => 'upgrade_1_0_1', 
+		'1.1.0' => 'upgrade_1_1_0'
 	);
 
 	/**
@@ -179,10 +180,23 @@ class Charitable_Upgrade {
 	 *
 	 * @return  void
 	 * @access  public
-	 * @since   1.0.0
+	 * @since   1.0.1
 	 */
 	public function upgrade_1_0_1() {
 		add_action( 'init', 'flush_rewrite_rules' );
+	}
+
+	/**
+	 * Upgrade to version 1.1.0.
+	 *
+	 * This sets up the daily scheduled event.  
+	 *
+	 * @return  void
+	 * @access  public
+	 * @since   1.1.0
+	 */
+	public function upgrade_1_1_0() {
+		Charitable_Cron::schedule_events();
 	}
 }
 

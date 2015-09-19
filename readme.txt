@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paypa
 Tags: donations, donate, donation plugin, fundraising, fundraising plugin, non-profit, non-profits, charity, churches, commerce, crowdfunding, paypal donations, paypal, stripe, stripe donations, campaigns, gifts, giving, wordpress fundraising, wordpress donations, wordpress donation plugin
 Requires at least: 4.1
 Tested up to: 4.3
-Stable tag: 1.0.3
+Stable tag: 1.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -16,10 +16,6 @@ Charitable is a powerful, extendable fundraising plugin created to help non-prof
 
 You can accept PayPal or offline donations right out of the box, with support for other gateways available as extensions.
 
-= Easy to use =
-
-Install, activate and create your first fundraising campaign in less than 5 minutes. With Charitable, adding campaigns is a straightforward, intuitive process. Less time setting up campaigns means more time for you to raise awareness for your campaign.
-
 = Unlimited fundraising campaigns = 
 
 You can set up as many campaigns as you'd like with Charitable, and you can tailor them to your needs. You can set up suggested donation amounts, allow them to donate as much as they want, or do both.
@@ -27,6 +23,10 @@ You can set up as many campaigns as you'd like with Charitable, and you can tail
 Need to set a fundraising goal? No problem. 
 
 Running a time-sensitive campaign? Set an end date for your campaign and give it a sense of urgency.
+
+= Easy to use =
+
+Install, activate and create your first fundraising campaign in less than 5 minutes. With Charitable, adding campaigns is a straightforward, intuitive process. Less time setting up campaigns means more time for you to raise awareness for your campaign.
 
 = Skip the transaction fees = 
 
@@ -82,6 +82,14 @@ Support for recurring donations will be added as an extension, but is not yet av
 6. Setting up Charitable: The Email settings area. 
 
 == Changelog ==
+
+= 1.1.1 = 
+* Fix: Emails will now correctly be sent with the body, headline and subject you set, instead of the default. 
+
+= 1.1.0 = 
+* Enhancement: Added a new email that can be sent when a campaign has finished. 
+* Fix: Localization with the .po/.mo files now works correctly.
+* Fix: Chrome 45 bug when clicking directly on suggested amount inputs is resolved.
 
 = 1.0.3 =
 * Improvement: Using `wp_list_pluck` instead of `array_column` for compatibility with versions of PHP prior to 5.5.
