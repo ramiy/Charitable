@@ -49,7 +49,7 @@ class Charitable_User extends WP_User {
     /**
      * Create object using a donor ID. 
      *
-     * @param   int     $donor_id
+     * @param   int $donor_id
      * @return  Charitable_user
      * @access  public
      * @static
@@ -202,6 +202,7 @@ class Charitable_User extends WP_User {
         else {
             $name = $this->display_name;
         }
+        
         return apply_filters( 'charitable_user_name', $name, $this );
     }
 

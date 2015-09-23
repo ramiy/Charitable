@@ -24,31 +24,31 @@ class Charitable_i18n extends Charitable_Start_Object {
     /**
      * @var     string
      */
-    CONST TEXTDOMAIN = 'charitable';
+    protected $textdomain = 'charitable';
 
     /**
      * The path to the languages directory. 
      *
      * @var     string
-     * @access  private
+     * @access  protected
      */
-    private $languages_directory;
+    protected $languages_directory;
 
     /**
      * The site locale.
      *
      * @var     string
-     * @access  private
+     * @access  protected
      */
-    private $locale;
+    protected $locale;
 
     /**
      * The MO filename.
      *
      * @var     string
-     * @access  private
+     * @access  protected
      */
-    private $mofile;
+    protected $mofile;
 
     /**
      * Set up the class. 
@@ -57,9 +57,9 @@ class Charitable_i18n extends Charitable_Start_Object {
      * @since   1.1.2
      */
     protected function __construct() {
-        $this->languages_directory = apply_filters( 'charitable_languages_directory', charitable()->get_path( 'directory' ) . 'i18n/languages/' );
-        $this->locale = apply_filters( 'plugin_locale', get_locale(), self::TEXTDOMAIN );
-        $this->mofile = sprintf( '%1$s-%2$s.mo', self::TEXTDOMAIN, $this->locale );
+        $this->languages_directory = apply_filters( 'charitable_languages_directory', 'charitable/i18n/languages' );
+        $this->locale = apply_filters( 'plugin_locale', get_locale(), $this->textdomain );
+        $this->mofile = sprintf( '%1$s-%2$s.mo', $this->textdomain, $this->locale );
 
         $this->load_textdomain();
     }
@@ -80,10 +80,10 @@ class Charitable_i18n extends Charitable_Start_Object {
                 continue;
             }
          
-            load_textdomain( self::TEXTDOMAIN, $mofile_path );
+            load_textdomain( $this->textdomain, $mofile_path );
         }
 
-        load_plugin_textdomain( self::TEXTDOMAIN, false, $this->languages_directory );
+        load_plugin_textdomain( $this->textdomain, false, $this->languages_directory );
     }
 
     /**
@@ -96,7 +96,7 @@ class Charitable_i18n extends Charitable_Start_Object {
      */
     private function get_mofile_path( $source = 'local' ) {
         if ( 'global' == $source ) {
-            return WP_LANG_DIR . '/' . self::TEXTDOMAIN . '/' . $this->mofile;
+            return WP_LANG_DIR . '/' . $this->textdomain . '/' . $this->mofile;
         }
 
         return $this->languages_directory . $this->mofile;

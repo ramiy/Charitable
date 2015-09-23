@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the Charitable package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Charitable 1.1.1\n"
+"Project-Id-Version: Charitable 1.1.2\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/charitable\n"
-"POT-Creation-Date: 2015-09-18 04:26:30+00:00\n"
+"POT-Creation-Date: 2015-09-22 13:10:39+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -6409,6 +6409,14 @@ msgstr ""
 
 #: templates/donation-form/user-login-fields.php:24
 msgid "When you make your donation, a new donor account will be created for you."
+msgstr ""
+
+#: templates/donation-receipt/not-authorized.php:21
+msgid "You do not have access to this donation receipt."
+msgstr ""
+
+#: templates/donation-receipt/not-authorized.php:27
+msgid "You must be logged in to access your donation receipt."
 msgstr ""
 
 #: templates/donation-receipt/summary.php:23
