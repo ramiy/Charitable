@@ -378,7 +378,9 @@ class Charitable_User extends WP_User {
             return get_avatar( $this->ID, $size );
         }
 
-        $attachment_src = wp_get_attachment_image_src( $avatar_attachment_id, array( $size, $size ) );
+        $img_size = apply_filters( 'charitable_user_avatar_media_size', array( $size, $size ), $size );
+
+        $attachment_src = wp_get_attachment_image_src( $avatar_attachment_id, $img_size );
 
         /* No image for the given attachment ID? Fall back to the gravatar. */
         if ( ! $attachment_src ) {

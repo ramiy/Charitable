@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paypa
 Tags: donations, donate, donation plugin, fundraising, fundraising plugin, non-profit, non-profits, charity, churches, commerce, crowdfunding, paypal donations, paypal, stripe, stripe donations, campaigns, gifts, giving, wordpress fundraising, wordpress donations, wordpress donation plugin
 Requires at least: 4.1
 Tested up to: 4.3
-Stable tag: 1.1.1
+Stable tag: 1.1.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -72,6 +72,10 @@ Easy. Just add `[campaigns]` into your page content. [Read more](https://wpchari
 
 Support for recurring donations will be added as an extension, but is not yet available.
 
+= How do I get support? = 
+
+You can post in the [support forum](https://wordpress.org/support/plugin/charitable) or reach us via [our support form](http://wpcharitable.com/support/). 
+
 == Screenshots ==
 
 1. Creating a campaign.
@@ -82,6 +86,15 @@ Support for recurring donations will be added as an extension, but is not yet av
 6. Setting up Charitable: The Email settings area. 
 
 == Changelog ==
+
+= 1.1.3 = 
+* Enhancement: Added the ability to change the dimensions of the user avatars added using Charitable User Avatar, with a PHP filter function.
+* Fix: Permalinks updated to avoid problem where page called "Donate" or "Widget" will not display.
+* Fix: Small tweak to the WP Editor form field to prevent the text from being wrapped in HTML tags.
+
+= 1.1.2 = 
+* Security Fix: Prevent unauthorized users accessing your donation receipt.
+* Fix: Localization with the .po/.mo files now really does work correctly. For real this time.
 
 = 1.1.1 = 
 * Fix: Emails will now correctly be sent with the body, headline and subject you set, instead of the default. 

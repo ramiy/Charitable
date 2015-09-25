@@ -3,7 +3,7 @@
  * Plugin Name:         Charitable
  * Plugin URI:          https://wpcharitable.com
  * Description:         Fundraise with WordPress.
- * Version:             1.1.2
+ * Version:             1.1.3
  * Author:              WP Charitable
  * Author URI:          https://wpcharitable.com
  * Requires at least:   4.1
@@ -33,7 +33,7 @@ class Charitable {
     /**
      * @var     string
      */
-    const VERSION = '1.1.2';
+    const VERSION = '1.1.3';
 
     /**
      * @var     string      A date in the format: YYYYMMDD
