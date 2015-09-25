@@ -664,7 +664,7 @@ class Charitable_User extends WP_User {
 
             if ( isset( $submitted[ $field ] ) ) {
 
-                $meta_key = array_key_exists( $field, $mapped_keys ) ? $mapped_keys[ $field ] : $field;
+                $meta_key = array_key_exists( $field, $mapped_keys ) ? $mapped_keys[ $field ] : $field;                
 
                 $meta_value = sanitize_meta( $meta_key, $submitted[ $field ], 'user' );
 
@@ -678,7 +678,7 @@ class Charitable_User extends WP_User {
 
         return $updated;
     }
-
+    
     /**
      * Automatically sign on user after registration. 
      *
@@ -725,7 +725,8 @@ class Charitable_User extends WP_User {
             'postcode'      => 'donor_postcode',
             'zip'           => 'donor_postcode',
             'country'       => 'donor_country',
-            'phone'         => 'donor_phone',
+            'phone'         => 'donor_phone', 
+            'user_description' => 'description'
         ) );
     }
 
