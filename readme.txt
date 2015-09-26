@@ -38,6 +38,8 @@ Charitable is different. We won't charge you any transaction fees and you can us
 
 Charitable has been designed to work with any well-coded theme, including the default WordPress themes.
 
+
+
 = Extensions = 
 
 One size does *not* fit all. That's why we made Charitable an extendable platform. 
