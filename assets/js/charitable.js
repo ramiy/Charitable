@@ -167,7 +167,13 @@ CHARITABLE.SanitizeURL = function(input) {
     },
 
     init : function() {
-        var self = this;
+        var self = this, 
+            $selector = jQuery( '#charitable-gateway-selector input[name=gateway]' );
+
+        /* If there is only one gateway, we don't need to do anything else. */
+        if ( 0 === $selector.length ) {
+            return;
+        }
 
         self.hideInactiveMethods();
 

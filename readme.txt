@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paypa
 Tags: donations, donate, donation plugin, fundraising, fundraising plugin, non-profit, non-profits, charity, churches, commerce, crowdfunding, paypal donations, paypal, stripe, stripe donations, campaigns, gifts, giving, wordpress fundraising, wordpress donations, wordpress donation plugin
 Requires at least: 4.1
 Tested up to: 4.3
-Stable tag: 1.1.2
+Stable tag: 1.1.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -14,7 +14,7 @@ Charitable is a powerful, extendable fundraising plugin created to help non-prof
 
 [Charitable](https://wpcharitable.com/) is the WordPress fundraising alternative for non-profits, built to help non-profits raise money on their own website. 
 
-You can accept PayPal or offline donations right out of the box, with support for other gateways available as extensions.
+You can accept PayPal or offline donations right out of the box, with support for other gateways available as [extensions](https://wpcharitable.com/extensions).
 
 = Unlimited fundraising campaigns = 
 
@@ -28,6 +28,12 @@ Running a time-sensitive campaign? Set an end date for your campaign and give it
 
 Install, activate and create your first fundraising campaign in less than 5 minutes. With Charitable, adding campaigns is a straightforward, intuitive process. Less time setting up campaigns means more time for you to raise awareness for your campaign.
 
+= Accept credit card donations = 
+
+By coupling Charitable with our [Stripe extension](https://wpcharitable.com/extensions/charitable-stripe/), you can accept credit card donations directly on your website. Improve your donor conversion rates by keeping them on your website instead of redirecting them to PayPal.
+
+Want to use a different payment gateway? [https://wpcharitable.com/support/](Let us know). 
+
 = Skip the transaction fees = 
 
 Other fundraising software charges you for every donation you receive. 
@@ -38,15 +44,14 @@ Charitable is different. We won't charge you any transaction fees and you can us
 
 Charitable has been designed to work with any well-coded theme, including the default WordPress themes.
 
-
-
 = Extensions = 
 
 One size does *not* fit all. That's why we made Charitable an extendable platform. 
 
-* **Anonymous Donations** - Allow people to make donations anonymously.
-* **User Avatars** - Let your donors upload their own profile photo to your site, instead of using their Gravatar profile.
-* **Simple Updates** - Add updates about your fundraising campaigns.
+* **[Stripe](https://wpcharitable.com/extensions/charitable-stripe/)** - Accept credit card donations on your website.
+* **[Anonymous Donations](https://wpcharitable.com/extensions/charitable-anonymous-donations/)** - Allow people to make donations anonymously.
+* **[User Avatars](https://wpcharitable.com/extensions/charitable-user-avatar/)** - Let your donors upload their own profile photo to your site, instead of using their Gravatar profile.
+* **[Simple Updates](https://wpcharitable.com/extensions/charitable-simple-updates/)** - Add updates about your fundraising campaigns.
 
 Looking for more? 
 
@@ -91,8 +96,9 @@ You can post in the [support forum](https://wordpress.org/support/plugin/charita
 
 = 1.1.3 = 
 * Enhancement: Added the ability to change the dimensions of the user avatars added using Charitable User Avatar, with a PHP filter function.
-* Fix: Permalinks updated to avoid problem where page called "Donate" or "Widget" will not display.
-* Fix: Small tweak to the WP Editor form field to prevent the text from being wrapped in HTML tags.
+* Fixes an issue where only having one active gateway meant that those gateway's donation form fields would not show.
+* Fixes a problem with the permalinks structure that prevented you being able to create pages with slugs of "/donate/" or "/widget".
+* Fixes the WP Editor form field template to prevent the text from being wrapped in HTML tags.
 
 = 1.1.2 = 
 * Security Fix: Prevent unauthorized users accessing your donation receipt.
