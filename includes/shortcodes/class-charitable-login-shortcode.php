@@ -37,7 +37,7 @@ class Charitable_Login_Shortcode {
             'logged_in_message' => __( 'You are already logged in!', 'charitable' )
         );
 
-        $args = shortcode_atts( $defaults, $atts, 'charitable_login' );     
+        $args = shortcode_atts( $defaults, $atts, 'charitable_login' );    
 
         ob_start();
 
@@ -48,7 +48,7 @@ class Charitable_Login_Shortcode {
             return ob_get_clean();
         }
 
-        $args[ 'login_form_args' ] = self::get_login_form_args();
+        $args[ 'login_form_args' ] = self::get_login_form_args( $args );
 
         charitable_template( 'shortcodes/login.php', $args );
 
@@ -58,15 +58,16 @@ class Charitable_Login_Shortcode {
     /**
      * Return donations to display with the shortcode. 
      *
+     * @param   array $args 
      * @return  mixed[] $args
      * @access  protected
      * @static
      * @since   1.0.0
      */
-    protected static function get_login_form_args() {
+    protected static function get_login_form_args( $args ) {
         return apply_filters( 'charitable_login_form_args', array(
             'redirect' => esc_url( charitable_get_login_redirect_url() )
-        ) );
+        ), $args );
     }
 }
 
