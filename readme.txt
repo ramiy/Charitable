@@ -12,9 +12,9 @@ Charitable is a powerful, extendable fundraising plugin created to help non-prof
 
 == Description ==
 
-[Charitable](https://wpcharitable.com/) is the WordPress fundraising alternative for non-profits, built to help non-profits raise money on their own website. 
+[Charitable](https://wpcharitable.com?utm_campaign=readme&utm_medium=description_tab&utm_content=intro) is the WordPress fundraising alternative for non-profits, built to help non-profits raise money on their own website. 
 
-You can accept PayPal or offline donations right out of the box, with support for other gateways available as [extensions](https://wpcharitable.com/extensions).
+You can accept PayPal or offline donations right out of the box, with support for other gateways available as [extensions](https://wpcharitable.com/extensions?utm_campaign=readme&utm_medium=description_tab&utm_content=intro).
 
 = Unlimited fundraising campaigns = 
 
@@ -30,9 +30,9 @@ Install, activate and create your first fundraising campaign in less than 5 minu
 
 = Accept credit card donations = 
 
-By coupling Charitable with our [Stripe extension](https://wpcharitable.com/extensions/charitable-stripe/), you can accept credit card donations directly on your website. Improve your donor conversion rates by keeping them on your website instead of redirecting them to PayPal.
+By coupling Charitable with our [Stripe extension](https://wpcharitable.com/extensions/charitable-stripe?utm_campaign=readme&utm_medium=description_tab&utm_content=credit-card-donations), you can accept credit card donations directly on your website. Improve your donor conversion rates by keeping them on your website instead of redirecting them to PayPal.
 
-Want to use a different payment gateway? [https://wpcharitable.com/support/](Let us know). 
+Want to use a different payment gateway? [https://wpcharitable.com/support?utm_campaign=readme&utm_medium=description_tab&utm_content=credit-card-donations](Let us know). 
 
 = Skip the transaction fees = 
 
@@ -48,18 +48,18 @@ Charitable has been designed to work with any well-coded theme, including the de
 
 One size does *not* fit all. That's why we made Charitable an extendable platform. 
 
-* **[Stripe](https://wpcharitable.com/extensions/charitable-stripe/)** - Accept credit card donations on your website.
-* **[Anonymous Donations](https://wpcharitable.com/extensions/charitable-anonymous-donations/)** - Allow people to make donations anonymously.
-* **[User Avatars](https://wpcharitable.com/extensions/charitable-user-avatar/)** - Let your donors upload their own profile photo to your site, instead of using their Gravatar profile.
-* **[Simple Updates](https://wpcharitable.com/extensions/charitable-simple-updates/)** - Add updates about your fundraising campaigns.
+* **[Stripe](https://wpcharitable.com/extensions/charitable-stripe?utm_campaign=readme&utm_medium=description_tab&utm_content=extensions)** - Accept credit card donations on your website.
+* **[Anonymous Donations](https://wpcharitable.com/extensions/charitable-anonymous-donations?utm_campaign=readme&utm_medium=description_tab&utm_content=extensions)** - Allow people to make donations anonymously.
+* **[User Avatars](https://wpcharitable.com/extensions/charitable-user-avatar?utm_campaign=readme&utm_medium=description_tab&utm_content=extensions)** - Let your donors upload their own profile photo to your site, instead of using their Gravatar profile.
+* **[Simple Updates](https://wpcharitable.com/extensions/charitable-simple-updates?utm_campaign=readme&utm_medium=description_tab&utm_content=extensions)** - Add updates about your fundraising campaigns.
 
 Looking for more? 
 
-[View all extensions](https://wpcharitable.com/extensions). 
+[View all extensions](https://wpcharitable.com/extensions?utm_campaign=readme&utm_medium=description_tab&utm_content=extensions). 
 
 = Get involved =
 
-Join the community on [WP Charitable](https://wpcharitable.com). 
+Join the community on [WP Charitable](https://wpcharitable.com?utm_campaign=readme&utm_medium=description_tab&utm_content=get-involved). 
 
 Developers can contribute to Charitable on our [Github repository](https://github.com/Charitable/Charitable).
 
@@ -73,7 +73,7 @@ Developers can contribute to Charitable on our [Github repository](https://githu
 
 = How do I add a grid of campaigns to my page? = 
 
-Easy. Just add `[campaigns]` into your page content. [Read more](https://wpcharitable.com/documentation/the-campaigns-shortcode/).
+Easy. Just add `[campaigns]` into your page content. [Read more](https://wpcharitable.com/documentation/the-campaigns-shortcode/?utm_campaign=readme&utm_medium=faq_tab&utm_content=campaigns-shortcode).
 
 = Does Charitable support recurring donations? =
 
@@ -81,7 +81,7 @@ Support for recurring donations will be added as an extension, but is not yet av
 
 = How do I get support? = 
 
-You can post in the [support forum](https://wordpress.org/support/plugin/charitable) or reach us via [our support form](http://wpcharitable.com/support/). 
+You can post in the [support forum](https://wordpress.org/support/plugin/charitable) or reach us via [our support form](http://wpcharitable.com/support?utm_campaign=readme&utm_medium=faq_tab&utm_content=support). 
 
 == Screenshots ==
 
