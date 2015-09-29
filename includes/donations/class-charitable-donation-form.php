@@ -453,7 +453,9 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
             return $fields;
         }
 
-        $fields[ 'gateway' ] = key( $gateways );
+        $gateway_keys = array_keys( $gateways );
+
+        $fields[ 'gateway' ] = $gateway_keys[ 0 ];
 
         return $fields;
     }
