@@ -6,7 +6,7 @@
  * @since 	1.0.0
  */
 
-$campaign = charitable_get_current_campaign();
+$campaign = $view_args[ 'campaign' ];
 
 /**
  * @hook charitable_campaign_summary_before

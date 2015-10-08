@@ -120,6 +120,10 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
      * @since   1.0.0
      */
     public function get_user_value( $key ) {
+        if ( isset( $_POST[ $key ] ) ) {
+            return $_POST[ $key ];
+        }
+
         if ( ! $this->get_user() ) {
             return '';
         }
@@ -453,7 +457,9 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
             return $fields;
         }
 
-        $fields[ 'gateway' ] = key( $gateways );
+        $gateway_keys = array_keys( $gateways );
+
+        $fields[ 'gateway' ] = $gateway_keys[ 0 ];
 
         return $fields;
     }
@@ -493,7 +499,18 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
             return false;
         }
 
-        return apply_filters( 'charitable_validate_donation_form_submission', $this->check_required_fields( $this->get_fields() ), $this );
+        $has_required_fields = $this->check_required_fields( $this->get_merged_fields() );
+
+        if ( ! $has_required_fields ) {
+            return false;
+        }
+
+        if ( self::get_donation_amount() <= 0 && ! apply_filters( 'charitable_permit_0_donation', false ) ) {
+            charitable_get_notices()->add_error( sprintf( __( 'You must donate more than %s.', 'charitable' ), charitable_format_money( '0' ) ) );
+            return false;
+        }
+
+        return apply_filters( 'charitable_validate_donation_form_submission', true, $this );
     }   
 
     /**
@@ -512,7 +529,7 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
             'campaigns' => array(
                 array(
                     'campaign_id'   => $submitted[ 'campaign_id' ],
-                    'amount'        => self::get_donation_amount( $submitted )
+                    'amount'        => self::get_donation_amount()
                 )
             )
         );

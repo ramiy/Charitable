@@ -57,12 +57,15 @@ module.exports = function(grunt) {
                     // includes files within path
                     {
                         src: [ 
-                            'admin/', 
-                            'admin/**', 
-                            'assets/',
-                            'assets/**',                    
-                            'includes', 
-                            'includes/**', 
+                            'admin/',
+                            'admin/**',
+                            'assets/css/*.css',
+                            'assets/css/**/*.css',
+                            'assets/js/**',
+                            'assets/fonts/**',
+                            'assets/images/**',
+                            'includes',
+                            'includes/**',
                             'i18n', 
                             'i18n/**', 
                             'templates', 
