@@ -4,7 +4,7 @@
  *
  * @author 	Studio 164a
  * @since 	1.0.0
- * @version 1.0.0
+ * @version 1.2.0
  */
 
 if ( ! isset( $view_args[ 'form' ] ) || ! isset( $view_args[ 'field' ] ) ) {
