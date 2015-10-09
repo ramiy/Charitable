@@ -265,12 +265,10 @@ class Charitable_Donation {
      */
     public function get_gateway_label() {
         $gateway = $this->get_gateway_object();
+        
+        $label = $gateway ? $gateway->get_label() : $this->get_gateway();
 
-        if ( ! $gateway ) {
-            return '';
-        } 
-
-        return $gateway->get_label();
+        return apply_filters( 'charitable_donation_gateway_label', $label, $this );
     }
 
     /**

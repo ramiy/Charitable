@@ -388,7 +388,7 @@ class Charitable_Campaign {
      * @since   1.0.0
      */
     public function get_status_tag() {
-        $ending_soon_threshold = apply_filters( 'charitable_campaign_ending_soon_threshold', 604800 );
+        $ending_soon_threshold = apply_filters( 'charitable_campaign_ending_soon_threshold', WEEK_IN_SECONDS );
         $show_achievement = apply_filters( 'charitable_campaign_show_achievement_status_tag', true );
         $show_active_tag = apply_filters( 'charitable_campaign_show_active_status_tag', false );
         $tag = "";
@@ -450,7 +450,7 @@ class Charitable_Campaign {
             set_transient( self::get_donation_amount_cache_key( $this->ID ), $this->donated_amount, 0 );
         }
 
-        return $this->donated_amount;
+        return apply_filters( 'charitable_campaign_donated_amount', $this->donated_amount, $this );
     }
 
     /**

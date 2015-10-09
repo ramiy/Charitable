@@ -248,13 +248,15 @@ class Charitable_Donations_Table extends WP_List_Table {
     public function column_donation( $donation ) {        
         $donation = charitable_get_donation( $donation->ID );
         $donor = $donation->get_donor();
-        $value = sprintf( '<a href="%s">#%s</a> %s %s<br />%s',
-            esc_url( add_query_arg( array( 'post' => $donation->ID, 'action' => 'edit' ), admin_url( 'post.php' ) ) ),
-            $donation->get_number(),
-            _x( 'by', 'donation by donor', 'charitable' ),
-            $donor, 
-            $donor->get_email()
+        $admin_donation_url = esc_url( add_query_arg( array( 'post' => $donation->ID, 'action' => 'edit' ), admin_url( 'post.php' ) ) );        
+
+        $value = sprintf( 
+            // Translators: %1$s is the ID of the donation preceded by a # sign. %2$s is the donor's email address.
+            _x( '%1$s by %2$s', 'donation by donor', 'charitable' ),
+            "<a href=\"{$admin_donation_url}\">#{$donation->get_number()}</a>", 
+            "<br />{$donor->get_email()}"
         );
+
         return apply_filters( 'charitable_donations_table_column', $value, $donation->ID, 'donation' );
     }
 

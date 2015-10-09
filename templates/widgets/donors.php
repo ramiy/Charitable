@@ -26,7 +26,7 @@ if ( ! empty( $widget_title ) ) :
     echo $view_args['before_title'] . $widget_title . $view_args['after_title'];
 endif;
 
-if ( $donors->count() ) : 
+if ( $donors->count() ) :
     ?>
     
     <ol class="donors-list">

@@ -155,7 +155,7 @@ class Charitable_Donor {
      * @since   1.0.0
      */
     public function get_avatar( $size = 100 ) {
-        return $this->get_user()->get_avatar();
+        return apply_filters( 'charitable_donor_avatar', $this->get_user()->get_avatar(), $this );
     }
 
     /**

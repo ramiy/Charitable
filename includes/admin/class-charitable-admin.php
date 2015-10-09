@@ -84,12 +84,13 @@ final class Charitable_Admin extends Charitable_Start_Object {
 		// add_action( 'admin_init', 				array( $this, 'licensing' ) );
 		add_action( 'admin_enqueue_scripts', 	array( $this, 'admin_enqueue_scripts' ) );
 		add_filter( 'plugin_action_links_' . plugin_basename( charitable()->get_path() ), 	array( $this, 'add_plugin_action_links' ) );
+		add_filter( 'plugin_row_meta', array( $this, 'add_plugin_row_meta' ), 10, 2 );
 	}
 
 	/**
 	 * Loads admin-only scripts and stylesheets. 
 	 *
-	 * @global 	WP_Scripts 		$wp_scripts
+	 * @global 	WP_Scripts $wp_scripts
 	 * @return 	void
 	 * @access 	public
 	 * @since 	1.0.0
@@ -123,13 +124,40 @@ final class Charitable_Admin extends Charitable_Start_Object {
 	/**
 	 * Add custom links to the plugin actions. 
 	 *
-	 * @param 	array 		$links
-	 * @return 	array
+	 * @param 	string[] $links
+	 * @return 	string[]
 	 * @access  public
 	 * @since 	1.0.0
 	 */
 	public function add_plugin_action_links( $links ) {
 		$links[] = '<a href="' . admin_url( 'admin.php?page=charitable-settings' ) . '">' . __( 'Settings', 'charitable' ) . '</a>';
+		return $links;
+	}
+
+	/**
+	 * Add Extensions link to the plugin row meta. 
+	 *
+	 * @param 	string[] $links
+	 * @param 	string $file 		The plugin file 
+	 * @return  string[] $links
+	 * @access  public
+	 * @since   1.2.0
+	 */
+	public function add_plugin_row_meta( $links, $file ) {
+		if ( plugin_basename( charitable()->get_path() ) != $file ) {
+			return $links;	
+		}
+		
+		$extensions_link = esc_url( add_query_arg( array(
+			'utm_source'   => 'plugins-page',
+			'utm_medium'   => 'plugin-row',
+			'utm_campaign' => 'admin' 
+			), 
+			'https://wpcharitable.com/extensions/' 
+		) );
+
+		$links[] = '<a href="' . $extensions_link . '">' . __( 'Extensions', 'charitable' ) . '</a>';
+
 		return $links;
 	}
 
