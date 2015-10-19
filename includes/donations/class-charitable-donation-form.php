@@ -511,7 +511,7 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
         }
 
         return apply_filters( 'charitable_validate_donation_form_submission', true, $this );
-    }   
+    }
 
     /**
      * Return the donation values. 

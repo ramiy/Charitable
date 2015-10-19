@@ -616,7 +616,7 @@ class Charitable_Campaign {
         add_filter( 'charitable_sanitize_campaign_meta_campaign_goal', array( 'Charitable_Campaign', 'sanitize_campaign_goal' ) );
         add_filter( 'charitable_sanitize_campaign_meta_campaign_end_date', array( 'Charitable_Campaign', 'sanitize_campaign_end_date' ) );
         add_filter( 'charitable_sanitize_campaign_meta_campaign_suggested_donations', array( 'Charitable_Campaign', 'sanitize_campaign_suggested_donations' ) );
-        add_filter( 'charitable_sanitize_campaign_meta_campaign_allow_custom_donations', array( 'Charitable_Campaign', 'sanitize_campaign_allow_custom_donations' ) );
+        add_filter( 'charitable_sanitize_campaign_meta_campaign_allow_custom_donations', array( 'Charitable_Campaign', 'sanitize_checkbox' ) );
         add_filter( 'charitable_sanitize_campaign_meta_campaign_description', array( 'Charitable_Campaign', 'sanitize_campaign_description' ) );
         return apply_filters( 'charitable_sanitize_campaign_meta' . $key, $value, $submitted );
     }
@@ -691,7 +691,7 @@ class Charitable_Campaign {
     }
 
     /**
-     * Sanitize the allow custom donations checkbox value. 
+     * Sanitize any checkbox value.
      *
      * @param   mixed   $value
      * @return  boolean
@@ -699,7 +699,7 @@ class Charitable_Campaign {
      * @static
      * @since   1.0.0
      */
-    public static function sanitize_campaign_allow_custom_donations( $value ) {
+    public static function sanitize_checkbox( $value ) {
         return true == $value || 'on' == $value;
     }    
 

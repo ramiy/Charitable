@@ -354,12 +354,29 @@ class Charitable_User extends WP_User {
     /**
      * Return the total amount donated by the donor.
      *
+     * @param   int $campaign_id    Optional. If set, returns total donated to this particular campaign.
      * @return  float
      * @access  public
      * @since   1.0.0
      */
-    public function get_total_donated() {
-        return (float) charitable_get_table( 'campaign_donations' )->get_total_donated_by_donor( $this->get_donor_id() );
+    public function get_total_donated( $campaign_id = false ) {
+        $amount = wp_cache_get( $this->get_donor_id(), 'charitable_donor_total_donation_amount_' . $campaign_id );
+
+        if ( false === $amount ) {
+            $query = new Charitable_Donor_Query( array(
+                'output' => 'raw',
+                'donor_id' => $this->get_donor_id(),
+                'distinct_donors' => true, 
+                'fields' => 'amount', 
+                'campaign' => (int) $campaign_id
+            ) );
+            
+            $amount = $query->current()->amount;
+
+            wp_cache_set( $this->get_donor_id(), $amount, 'charitable_donor_total_donation_amount_' . $campaign_id );
+        }
+
+        return (float) $amount;
     }
 
     /**

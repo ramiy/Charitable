@@ -50,19 +50,12 @@
     .charitable-metabox {
 
         .charitable-metabox-wrap {
-            margin-bottom: 12px;    
-        }
-
-        .charitable-metabox-title {
-            margin-bottom: 12px;
-            padding: 4px 0 12px 0; 
-            border-bottom: 1px solid #e5e5e5;
+            margin-bottom: 24px;    
         }
 
         label {
             display: block;
-            margin-bottom: 6px;
-            font-weight: bold;          
+            margin-bottom: 6px;         
         }
 
         .widefat {
@@ -89,7 +82,12 @@
 
         label {
             margin-bottom: 0;
+            font-weight: bold;
         }
+    }
+
+    .charitable-metabox-header {
+        margin: 24px 0;
     }
 }
 

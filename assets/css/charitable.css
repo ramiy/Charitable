@@ -110,6 +110,9 @@
   .charitable-form-field a:not(.button) {
     color: #f89d35; }
 
+.charitable-form-content {
+  margin-bottom: 1em; }
+
 .charitable-gateway-fields {
   padding-top: 1em; }
 

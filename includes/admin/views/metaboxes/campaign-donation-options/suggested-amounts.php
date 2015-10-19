@@ -72,7 +72,7 @@ if ( ! $suggested_donations ) {
 		</tbody>
 		<tfoot>
 			<tr>
-				<td colspan="2"><a class="button" href="#" data-charitable-add-row="suggested-amount"><?php _e( 'Add a suggested amount', 'charitable' ) ?></a></td>
+				<td colspan="2"><a class="button" href="#" data-charitable-add-row="suggested-amount"><?php _e( '+ Add a Suggested Amount', 'charitable' ) ?></a></td>
 			</tr>
 		</tfoot>
 	</table>	

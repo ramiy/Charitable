@@ -19,7 +19,16 @@ if ( ! class_exists( 'Charitable_Settings' ) ) :
  * @final
  * @since      1.0.0
  */
-final class Charitable_Settings extends Charitable_Start_Object {    
+final class Charitable_Settings {    
+
+    /**
+     * The single instance of this class.  
+     *
+     * @var     Charitable_Settings|null
+     * @access  private
+     * @static
+     */
+    private static $instance = null;
 
     /**
      * Current field. Used to access field args from the views.      
@@ -32,14 +41,27 @@ final class Charitable_Settings extends Charitable_Start_Object {
     /**
      * Create object instance. 
      *
-     * @access  protected
+     * @access  private
      * @since   1.0.0
      */
-    protected function __construct() {            
-        add_action( 'admin_init', array( $this, 'register_settings' ) );        
-        add_filter( 'charitable_sanitize_value', array( $this, 'sanitize_checkbox_value' ), 10, 2 );            
+    private function __construct() {
         do_action( 'charitable_admin_settings_start', $this );
-    }    
+    }
+    
+    /**
+     * Returns and/or create the single instance of this class.  
+     *
+     * @return  Charitable_Settings
+     * @access  public
+     * @since   1.2.0
+     */
+    public static function get_instance() {
+        if ( is_null( self::$instance ) ) {
+            self::$instance = new Charitable_Settings();
+        }
+
+        return self::$instance;
+    }
 
     /**
      * Return the array of tabs used on the settings page.  
@@ -66,6 +88,10 @@ final class Charitable_Settings extends Charitable_Start_Object {
      * @since   1.0.0
      */
     public function register_settings() {
+        if ( ! charitable_is_settings_view() ) {
+            return;
+        }
+
         register_setting( 'charitable_settings', 'charitable_settings', array( $this, 'sanitize_settings' ) );
 
         $fields = $this->get_fields();
@@ -398,11 +424,6 @@ final class Charitable_Settings extends Charitable_Start_Object {
      * @since   1.0.0
      */
     private function get_composite_key( $section, $submitted ) {
-        // echo '<pre>';
-        // var_dump( $section );
-        // var_dump( $submitted );
-        // var_dump( current( $submitted ) );
-        // die;
         if ( ! is_array( current( $submitted ) ) ) {
             return false;
         }

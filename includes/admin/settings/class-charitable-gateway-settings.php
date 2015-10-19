@@ -19,18 +19,39 @@ if ( ! class_exists( 'Charitable_Gateway_Settings' ) ) :
  * @final
  * @since      1.0.0
  */
-final class Charitable_Gateway_Settings extends Charitable_Start_Object {
+final class Charitable_Gateway_Settings {
+
+    /**
+     * The single instance of this class.  
+     *
+     * @var     Charitable_Gateway_Settings|null
+     * @access  private
+     * @static
+     */
+    private static $instance = null;
 
     /**
      * Create object instance. 
      *
-     * @access  protected
+     * @access  private
      * @since   1.0.0
      */
-    protected function __construct() {
-        add_filter( 'charitable_settings_tab_fields_gateways', array( $this, 'add_gateway_fields' ), 5 );
-        add_filter( 'charitable_settings_tab_fields', array( $this, 'add_individual_gateway_fields' ), 5 );
-        add_filter( 'charitable_dynamic_groups', array( $this, 'add_gateway_settings_dynamic_groups' ) );
+    private function __construct() {
+    }
+
+    /**
+     * Returns and/or create the single instance of this class.  
+     *
+     * @return  Charitable_Gateway_Settings
+     * @access  public
+     * @since   1.2.0
+     */
+    public static function get_instance() {
+        if ( is_null( self::$instance ) ) {
+            self::$instance = new Charitable_Gateway_Settings();
+        }
+
+        return self::$instance;
     }
 
     /**
@@ -41,6 +62,10 @@ final class Charitable_Gateway_Settings extends Charitable_Start_Object {
      * @since   1.0.0
      */
     public function add_gateway_fields() {
+        if ( ! charitable_is_settings_view( 'gateways' ) ) {
+            return array();
+        }
+
         return array(
             'section' => array(
                 'title'             => '',
@@ -49,7 +74,7 @@ final class Charitable_Gateway_Settings extends Charitable_Start_Object {
                 'value'             => 'gateways', 
                 'save'              => false
             ),
-            'section_emails' => array(
+            'section_gateways' => array(
                 'title'             => __( 'Available Payment Gateways', 'charitable' ),
                 'type'              => 'heading',
                 'priority'          => 5
@@ -100,7 +125,7 @@ final class Charitable_Gateway_Settings extends Charitable_Start_Object {
                 continue;
             }
                 
-            $groups[ 'gateways_' . $gateway_key ] = apply_filters( 'charitable_settings_fields_gateways_gateway', array(), new $gateway );
+            $groups[ 'gateways_' . $gateway_key ] = apply_filters( 'charitable_gateway_settings_fields_gateways_gateway', array(), new $gateway );
         }
 
         return $groups;

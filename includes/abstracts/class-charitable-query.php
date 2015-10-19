@@ -267,6 +267,18 @@ abstract class Charitable_Query implements Iterator {
     }
 
     /**
+     * Select total amount field.
+     *
+     * @return  string $select_statement
+     * @access  public
+     * @since   1.2.0
+     */
+    public function donation_amount_sum_field( $select_statement ) {
+        $select_statement .= ", SUM(cd.amount) AS amount";
+        return $select_statement;
+    }
+
+    /**
      * Filter query by campaign receiving the donation. 
      *
      * @param   string $where_statement
@@ -324,6 +336,38 @@ abstract class Charitable_Query implements Iterator {
         $this->add_parameters( $status );
 
         $where_statement .= " AND {$wpdb->posts}.post_status IN ({$placeholders})";
+        return $where_statement;
+    }
+
+    /**
+     * Filter query by donor ID. 
+     *
+     * @global  WPBD $wpdb
+     * @param   string $where_statement
+     * @return  string
+     * @access  public
+     * @since   1.0.0
+     */
+    public function where_donor_id_is_in( $where_statement ) {
+        global $wpdb;
+
+        $donor_id = $this->get( 'donor_id', false );
+
+        if ( ! $donor_id ) {
+            return $where_statement;
+        }
+
+        if ( ! is_array( $donor_id ) ) {
+            $donor_id = array( $donor_id );
+        }        
+
+        $donor_id = array_filter( $donor_id, 'charitable_validate_absint' );
+
+        $placeholders = $this->get_placeholders( count( $donor_id ), '%d' );
+
+        $this->add_parameters( $donor_id );
+
+        $where_statement .= " AND cd.donor_id IN ({$placeholders})";
         return $where_statement;
     }
 

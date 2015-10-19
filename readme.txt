@@ -107,6 +107,12 @@ You can post in the [support forum](https://wordpress.org/support/plugin/charita
 
 == Changelog ==
 
+= 1.2.0 = 
+* You can now change the campaign creator via the Campaign management page.
+* Fixes bugs in the Donation Stats and Donors widget that causes them to include pending donations in the total.
+* Fixes a bug in the Benefactors addon that caused fixed contribution amounts to not be saved.
+* Major performance improvements in the WordPress dashboard.
+
 = 1.1.5 = 
 * Fixes a bug that allowed people to make a donation without entering required details, or with an amount of $0 or less.
 

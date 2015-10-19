@@ -4,6 +4,7 @@
  *
  * @since 		1.0.0
  * @author 		Eric Daams
+ * @package 	Charitable/Admin Views/Metaboxes
  * @copyright 	Copyright (c) 2015, Studio 164a 
  */
 global $post;
@@ -16,11 +17,11 @@ if ( ! isset( $view_args['extension'] ) ) {
 $extension		= $view_args['extension'];
 $benefactors 	= charitable_get_table( 'benefactors' )->get_campaign_benefactors_by_extension( $post->ID, $extension );
 ?>
-<div class="charitable-metabox">
+<div class="charitable-metabox charitable-metabox-wrap">
 	<?php 
 	if ( empty( $benefactors ) ) : ?>
 		
-		<p><?php _e( 'No benefactor relationships have been set up yet.', 'charitable' ) ?></p>
+		<p><?php _e( 'You have not added any contribution rules yet.', 'charitable' ) ?></p>
 
 	<?php else :
 		foreach ( $benefactors as $benefactor ) :
@@ -34,5 +35,5 @@ $benefactors 	= charitable_get_table( 'benefactors' )->get_campaign_benefactors_
 	
 	charitable_admin_view( 'metaboxes/campaign-benefactors/form', array( 'benefactor' => null, 'extension' => $extension ) ); 
 	?>
-	<p><a href="#" class="button" data-charitable-toggle="campaign_benefactor_0"><?php _e( '+ Create Relationship', 'charitable' ) ?></a></p>	
+	<p><a href="#" class="button" data-charitable-toggle="campaign_benefactor_0"><?php _e( '+ Add New Contribution Rule', 'charitable' ) ?></a></p>	
 </div>

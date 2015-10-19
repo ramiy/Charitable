@@ -44,23 +44,34 @@ final class Charitable_Admin extends Charitable_Start_Object {
 	 * @since 	1.0.0
 	 */
 	private function load_dependencies() {
-		require_once( charitable()->get_path( 'admin' ) . 'charitable-core-admin-functions.php' );					
-		require_once( charitable()->get_path( 'admin' ) . 'class-charitable-meta-box-helper.php' );
-		require_once( charitable()->get_path( 'admin' ) . 'class-charitable-admin-pages.php' );
+		$admin_dir = charitable()->get_path( 'admin' );
+
+		require_once( $admin_dir . 'charitable-core-admin-functions.php' );					
+		require_once( $admin_dir . 'class-charitable-meta-box-helper.php' );
+		require_once( $admin_dir . 'class-charitable-admin-pages.php' );
 
 		/* Campaigns */
-		require_once( charitable()->get_path( 'admin' ) . 'campaigns/class-charitable-campaign-post-type.php' );
+		require_once( $admin_dir . 'campaigns/class-charitable-campaign-post-type.php' );
 		
 		/* Donations */
-		require_once( charitable()->get_path( 'admin' ) . 'donations/class-charitable-donation-post-type.php' );		
+		require_once( $admin_dir . 'donations/class-charitable-donation-post-type.php' );		
 
-		/* Settings */
-		require_once( charitable()->get_path( 'admin' ) . 'settings/class-charitable-settings.php' );
-		require_once( charitable()->get_path( 'admin' ) . 'settings/class-charitable-general-settings.php' );
-		require_once( charitable()->get_path( 'admin' ) . 'settings/class-charitable-email-settings.php' );
-		require_once( charitable()->get_path( 'admin' ) . 'settings/class-charitable-gateway-settings.php' );
-		require_once( charitable()->get_path( 'admin' ) . 'settings/class-charitable-licenses-settings.php' );
-		require_once( charitable()->get_path( 'admin' ) . 'settings/class-charitable-advanced-settings.php' );
+		/* Settings */		
+		require_once( $admin_dir . 'settings/class-charitable-settings.php' );
+		require_once( $admin_dir . 'settings/class-charitable-general-settings.php' );
+		require_once( $admin_dir . 'settings/class-charitable-email-settings.php' );
+		require_once( $admin_dir . 'settings/class-charitable-gateway-settings.php' );
+		require_once( $admin_dir . 'settings/class-charitable-licenses-settings.php' );
+		require_once( $admin_dir . 'settings/class-charitable-advanced-settings.php' );
+		require_once( $admin_dir . 'settings/charitable-settings-admin-hooks.php' );
+
+		/**
+		 * We are registering this object only for backwards compatibility. It
+		 * will be removed in or after Charitable 1.3.
+		 *
+		 * @deprecated
+		 */
+		charitable()->register_object( Charitable_Settings::get_instance() );
 	}
 
 	/**
@@ -71,18 +82,10 @@ final class Charitable_Admin extends Charitable_Start_Object {
 	 * @since 	1.0.0
 	 */
 	private function attach_hooks_and_filters() {
-		add_action( 'charitable_start', array( 'Charitable_Admin_Pages', 'charitable_start' ) );
-		add_action( 'charitable_start', array( 'Charitable_Settings', 'charitable_start' ) );
-		add_action( 'charitable_start', array( 'Charitable_General_Settings', 'charitable_start' ) );
-		add_action( 'charitable_start', array( 'Charitable_Gateway_Settings', 'charitable_start' ) );
-		add_action( 'charitable_start', array( 'Charitable_Licenses_Settings', 'charitable_start' ) );
-		add_action( 'charitable_start', array( 'Charitable_Email_Settings', 'charitable_start' ) );
-		add_action( 'charitable_start', array( 'Charitable_Advanced_Settings', 'charitable_start' ) );
+		add_action( 'charitable_start', array( 'Charitable_Admin_Pages', 'charitable_start' ) );		
 		add_action( 'charitable_start', array( 'Charitable_Campaign_Post_Type', 'charitable_start' ) );
-		add_action( 'charitable_start', array( 'Charitable_Donation_Post_Type', 'charitable_start' ) );
-		// add_action( 'admin_init', 				array( $this, 'activate_license' ) );
-		// add_action( 'admin_init', 				array( $this, 'licensing' ) );
-		add_action( 'admin_enqueue_scripts', 	array( $this, 'admin_enqueue_scripts' ) );
+		add_action( 'charitable_start', array( 'Charitable_Donation_Post_Type', 'charitable_start' ) );		
+		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 		add_filter( 'plugin_action_links_' . plugin_basename( charitable()->get_path() ), 	array( $this, 'add_plugin_action_links' ) );
 		add_filter( 'plugin_row_meta', array( $this, 'add_plugin_row_meta' ), 10, 2 );
 	}

@@ -166,17 +166,28 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 	 * Get the total amount donated, ever.
 	 *
 	 * @global 	$wpdb
+	 * @param 	string[] $statuses
 	 * @return 	float
 	 * @access  public
 	 * @since 	1.0.0
 	 */
-	public function get_total() {
+	public function get_total( $statuses = array() ) {
 		global $wpdb;
 
-		$sql = "SELECT SUM(amount) 
-				FROM $this->table_name";
+		if ( empty( $statuses ) ) {
+			$statuses = Charitable_Donation::get_approval_statuses();
+		}
 
-		return $wpdb->get_var( $sql );
+		list( $status_clause, $parameters ) = $this->get_donation_status_clause( $statuses );
+
+		$sql = "SELECT SUM(cd.amount) 
+				FROM $this->table_name cd
+				INNER JOIN $wpdb->posts p
+				ON p.ID = cd.donation_id
+				WHERE 1 = 1
+				$status_clause";
+
+		return $wpdb->get_var( $wpdb->prepare( $sql, $parameters ) );
 	}
 
 	/**

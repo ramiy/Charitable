@@ -4,6 +4,7 @@
  *
  * @author  Studio 164a
  * @since   1.0.0
+ * @version 1.2.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
@@ -14,6 +15,16 @@ if ( ! charitable_is_campaign_page() && 'current' == $view_args[ 'campaign_id' ]
 
 $widget_title   = apply_filters( 'widget_title', $view_args['title'] );
 $donors         = $view_args[ 'donors' ];
+
+$campaign_id = $view_args[ 'campaign_id' ];
+
+if ( 'all' == $view_args[ 'campaign_id' ] ) {
+    $campaign_id = false;
+}
+
+if ( 'current' == $view_args[ 'campaign_id' ] ) {
+    $campaign_id = get_the_ID();
+}
 
 /* If there are no donors and the widget is configured to hide when empty, return now. */
 if ( ! $donors->count() && $view_args[ 'hide_if_no_donors' ] ) {
@@ -57,7 +68,7 @@ if ( $donors->count() ) :
 
                 if ( $view_args[ 'show_amount' ] ) : ?>
 
-                    <div class="donor-donation-amount"><?php echo charitable_get_currency_helper()->get_monetary_amount( $donor->get_amount() ) ?></div>
+                    <div class="donor-donation-amount"><?php echo charitable_format_money( $donor->get_amount( $campaign_id ) ) ?></div>
 
                 <?php endif ?>
 

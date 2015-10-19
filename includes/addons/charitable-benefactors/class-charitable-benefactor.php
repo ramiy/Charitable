@@ -70,8 +70,7 @@ abstract class Charitable_Benefactor {
 	 * @since 	1.0.0
 	 */
 	public function __toString() {
-		$summary = apply_filters( 'charitable_benefactor_summary', sprintf( "%s %s.", $this->get_contribution_amount(), $this->get_contribution_type() ), $this );
-		return $summary;
+		return apply_filters( 'charitable_benefactor_summary', $this->get_contribution_description(), $this );
 	}
 
 	/**
@@ -97,6 +96,16 @@ abstract class Charitable_Benefactor {
 		return $this->benefactor;
 	}
 
+    /**
+     * Return a one-line description of the contribution.   
+     *
+     * @return  string
+     * @access  public
+     * @abstract     
+     * @since   1.0.0
+     */
+    abstract public function get_contribution_description();
+
 	/**
 	 * Return the contribution as a nicely formatted amount. 
 	 *
@@ -115,17 +124,17 @@ abstract class Charitable_Benefactor {
 		return $amount;
 	}
 
-	/**
-	 * Return the type of the contribution. Either per purchase or per  
-	 *
-	 * @return 	string
-	 * @access  public
-	 * @since 	1.0.0
-	 */
-	public function get_contribution_type() {
-		$type = $this->benefactor->contribution_amount_is_per_item ? __( 'per item', 'charitable' ) : __( 'per purchase', 'charitable' );
-		return apply_filters( 'charitable_benefactor_contribution_type', $type, $this->benefactor->contribution_amount_is_per_item, $this );
-	}
+	// /**
+	//  * Return the type of the contribution. Either per purchase or per  
+	//  *
+	//  * @return 	string
+	//  * @access  public
+	//  * @since 	1.0.0
+	//  */
+	// public function get_contribution_type() {
+	// 	$type = $this->benefactor->contribution_amount_is_per_item ? __( 'per item', 'charitable' ) : __( 'per purchase', 'charitable' );
+	// 	return apply_filters( 'charitable_benefactor_contribution_type', $type, $this->benefactor->contribution_amount_is_per_item, $this );
+	// }
 
     /**
      * Return the benefit amount of a product based on the price, quantity and percent going to benefit. 

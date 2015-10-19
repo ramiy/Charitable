@@ -92,6 +92,13 @@ final class Charitable_Campaign_Post_Type extends Charitable_Start_Object {
                 'context'       => 'campaign-advanced', 
                 'priority'      => 'high', 
                 'view'          => 'metaboxes/campaign-extended-description'
+            ), 
+            array(
+                'id'            => 'campaign-creator',
+                'title'         => __( 'Campaign Creator', 'charitable' ), 
+                'context'       => 'campaign-advanced',
+                'priority'      => 'high',
+                'view'          => 'metaboxes/campaign-creator'
             )
         );
 

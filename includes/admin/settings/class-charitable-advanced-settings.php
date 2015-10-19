@@ -19,16 +19,39 @@ if ( ! class_exists( 'Charitable_Advanced_Settings' ) ) :
  * @final
  * @since      1.0.0
  */
-final class Charitable_Advanced_Settings extends Charitable_Start_Object {
+final class Charitable_Advanced_Settings {
+
+    /**
+     * The single instance of this class.  
+     *
+     * @var     Charitable_Advanced_Settings|null
+     * @access  private
+     * @static
+     */
+    private static $instance = null;
 
     /**
      * Create object instance. 
      *
-     * @access  protected
+     * @access  private
      * @since   1.0.0
      */
-    protected function __construct() {
-        add_filter( 'charitable_settings_tab_fields_advanced', array( $this, 'add_advanced_fields' ), 5 );
+    private function __construct() {
+    }
+
+    /**
+     * Returns and/or create the single instance of this class.  
+     *
+     * @return  Charitable_Advanced_Settings
+     * @access  public
+     * @since   1.2.0
+     */
+    public static function get_instance() {
+        if ( is_null( self::$instance ) ) {
+            self::$instance = new Charitable_Advanced_Settings();
+        }
+
+        return self::$instance;
     }
 
     /**
@@ -39,6 +62,10 @@ final class Charitable_Advanced_Settings extends Charitable_Start_Object {
      * @since   1.0.0
      */
     public function add_advanced_fields() {
+        if ( ! charitable_is_settings_view( 'advanced' ) ) {
+            return array();
+        }
+
         return array(
             'section'               => array(
                 'title'             => '',

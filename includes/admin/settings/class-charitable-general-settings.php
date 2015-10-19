@@ -19,16 +19,39 @@ if ( ! class_exists( 'Charitable_General_Settings' ) ) :
  * @final
  * @since      1.0.0
  */
-final class Charitable_General_Settings extends Charitable_Start_Object {
+final class Charitable_General_Settings {
+
+    /**
+     * The single instance of this class.  
+     *
+     * @var     Charitable_General_Settings|null
+     * @access  private
+     * @static
+     */
+    private static $instance = null;
 
     /**
      * Create object instance. 
      *
-     * @access  protected
+     * @access  private
      * @since   1.0.0
      */
-    protected function __construct() {
-        add_filter( 'charitable_settings_tab_fields_general', array( $this, 'add_general_fields' ), 5 );
+    private function __construct() {
+    }
+
+    /**
+     * Returns and/or create the single instance of this class.  
+     *
+     * @return  Charitable_General_Settings
+     * @access  public
+     * @since   1.2.0
+     */
+    public static function get_instance() {
+        if ( is_null( self::$instance ) ) {
+            self::$instance = new Charitable_General_Settings();
+        }
+
+        return self::$instance;
     }
 
     /**
@@ -40,6 +63,10 @@ final class Charitable_General_Settings extends Charitable_Start_Object {
      * @since   1.0.0
      */
     public function add_general_fields( $fields = array() ) {
+        if ( ! charitable_is_settings_view( 'general' ) ) {
+            return array();
+        }
+
         $general_fields = array(
             'section'               => array(
                 'title'             => '',

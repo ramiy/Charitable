@@ -36,8 +36,8 @@ else {
 	<fieldset class="charitable-benefactor-contribution-amount">		
 		<input type="text" id="<?php echo $args['id_base'] ?>_contribution_amount" class="contribution-amount" name="<?php echo $args['name_base'] ?>[contribution_amount]" value="<?php echo $args['contribution_amount'] ?>" placeholder="<?php _e( 'Enter amount. e.g. 10%, $2', 'charitable' ) ?>" />		
 		<select id="<?php echo $args['id_base'] ?>_contribution_amount_is_per_item" class="contribution-type" name="<?php echo $args['name_base'] ?>[contribution_amount_is_per_item]">
-			<option value="1" <?php selected( 1, $args['contribution_amount_is_per_item'] ) ?>><?php _e( 'Every matching item', 'charitable' ) ?></option>
-			<option value="0" <?php selected( 0, $args['contribution_amount_is_per_item'] ) ?>><?php _e( 'Once per purchase', 'charitable' ) ?></option>
+			<option value="1" <?php selected( 1, $args['contribution_amount_is_per_item'] ) ?>><?php _e( 'Apply to every matching item', 'charitable' ) ?></option>
+			<option value="0" <?php selected( 0, $args['contribution_amount_is_per_item'] ) ?>><?php _e( 'Apply only once per purchase', 'charitable' ) ?></option>
 		</select>
 	</fieldset>
 	<?php 

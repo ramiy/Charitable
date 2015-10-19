@@ -47,7 +47,40 @@ function charitable_admin_view( $view, $view_args = array() ) {
  * @since 	1.0.0
  */
 function charitable_get_admin_settings() {
-	return charitable_get_helper( 'settings' );
+	return Charitable_Settings::get_instance();
+}
+
+/**
+ * Returns whether we are currently viewing the Charitable settings area. 
+ *
+ * @param   string $tab     Optional. If passed, the function will also check that we are on the given tab.
+ * @return  boolean
+ * @since   1.2.0
+ */
+function charitable_is_settings_view( $tab = "" ) {
+    if ( ! empty( $_POST ) ) {
+
+        $is_settings = isset( $_POST[ 'charitable_settings' ] );
+
+        if ( ! $is_settings || empty( $tab ) ) {
+            return $is_settings;
+        }
+
+        return array_key_exists( $tab, $_POST[ 'charitable_settings' ] );
+    }
+
+    $is_settings = isset( $_GET[ 'page' ] ) && 'charitable-settings' == $_GET[ 'page' ];
+
+    if ( ! $is_settings || empty( $tab ) ) {
+        return $is_settings;
+    }
+
+    /* The general tab can be loaded when tab is not set. */
+    if ( 'general' == $tab ) {
+        return ! isset( $_GET[ 'tab' ] ) || 'general' == $_GET[ 'tab' ];
+    }
+
+    return isset( $_GET[ 'tab' ] ) && $tab == $_GET[ 'tab' ];
 }
 
 /**

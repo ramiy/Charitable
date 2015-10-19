@@ -19,18 +19,39 @@ if ( ! class_exists( 'Charitable_Licenses_Settings' ) ) :
  * @final
  * @since      1.0.0
  */
-final class Charitable_Licenses_Settings extends Charitable_Start_Object {
+final class Charitable_Licenses_Settings {
+
+    /**
+     * The single instance of this class.  
+     *
+     * @var     Charitable_Licenses_Settings|null
+     * @access  private
+     * @static
+     */
+    private static $instance = null;
 
     /**
      * Create object instance. 
      *
-     * @access  protected
+     * @access  private
      * @since   1.0.0
      */
-    protected function __construct() {
-        add_filter( 'charitable_settings_tab_fields_licenses', array( $this, 'add_licenses_fields' ), 5 );
-        add_filter( 'charitable_dynamic_groups', array( $this, 'add_licenses_group' ) );
-        add_filter( 'charitable_save_settings', array( $this, 'save_license' ), 10, 2 );
+    private function __construct() {
+    }
+
+    /**
+     * Returns and/or create the single instance of this class.  
+     *
+     * @return  Charitable_Licenses_Settings
+     * @access  public
+     * @since   1.2.0
+     */
+    public static function get_instance() {
+        if ( is_null( self::$instance ) ) {
+            self::$instance = new Charitable_Licenses_Settings();
+        }
+
+        return self::$instance;
     }
 
     /**
@@ -41,6 +62,10 @@ final class Charitable_Licenses_Settings extends Charitable_Start_Object {
      * @since   1.0.0
      */
     public function add_licenses_fields() {
+        if ( ! charitable_is_settings_view( 'licenses' ) ) {
+            return array();
+        }
+
         $fields = array(
             'section' => array(
                 'title'     => '',
