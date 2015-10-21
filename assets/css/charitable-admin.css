@@ -354,6 +354,10 @@ body.post-type-campaign .postbox-container .empty-container {
   .charitable-benefactor-wrap select {
     width: 100%; }
 
+.charitable-benefactor-form-cancel {
+  float: right;
+  margin-top: 10px; }
+
 .charitable-benefactor-contribution-amount {
   margin-bottom: 10px; }
   .charitable-benefactor-contribution-amount .contribution-amount {

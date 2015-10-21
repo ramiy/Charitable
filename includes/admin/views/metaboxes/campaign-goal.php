@@ -16,6 +16,6 @@ $goal 			= ! $goal ? '' : charitable()->get_currency_helper()->get_monetary_amou
 ?>
 <div id="charitable-campaign-goal-metabox-wrap" class="charitable-metabox-wrap">
 	<label class="screen-reader-text" for="campaign_goal"><?php echo $title ?></label>
-	<input type="text" id="campaign_goal" name="_campaign_goal"  placeholder="&#8734;" tabindex="2" value="<?php echo $goal ?>" />
+	<input type="text" id="campaign_goal" name="_campaign_goal"  placeholder="&#8734;" value="<?php echo $goal ?>" />
 	<?php echo $description ?>
 </div>

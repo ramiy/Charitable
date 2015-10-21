@@ -124,17 +124,16 @@ abstract class Charitable_Benefactor {
 		return $amount;
 	}
 
-	// /**
-	//  * Return the type of the contribution. Either per purchase or per  
-	//  *
-	//  * @return 	string
-	//  * @access  public
-	//  * @since 	1.0.0
-	//  */
-	// public function get_contribution_type() {
-	// 	$type = $this->benefactor->contribution_amount_is_per_item ? __( 'per item', 'charitable' ) : __( 'per purchase', 'charitable' );
-	// 	return apply_filters( 'charitable_benefactor_contribution_type', $type, $this->benefactor->contribution_amount_is_per_item, $this );
-	// }
+    /**
+     * Returns whether the benefit rule is active. 
+     *
+     * @return  boolean
+     * @access  public
+     * @since   1.2.0
+     */
+    public function is_active() {
+        return is_null( $this->benefactor->date_deactivated ) || strtotime( $this->benefactor->date_deactivated ) > time();
+    }
 
     /**
      * Return the benefit amount of a product based on the price, quantity and percent going to benefit. 

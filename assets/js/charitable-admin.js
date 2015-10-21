@@ -1,3 +1,27 @@
+var $ = jQuery.noConflict();
+
+CHARITABLE_ADMIN = {};
+
+CHARITABLE_ADMIN.SetupDatepicker = function( $el ) {
+	$el.datepicker( {
+		dateFormat 	: 'MM d, yy', 
+		minDate 	: $(this).data('min-date') || '',
+		beforeShow	: function( input, inst ) {
+			$('#ui-datepicker-div').addClass('charitable-datepicker-table');
+		}
+	} );
+
+	$el.each( function(){				
+		if ( $(this).data('date') ) {
+			$(this).datepicker( 'setDate', $(this).data('date') );
+		}
+
+		if ( $(this).data('min-date') ) {
+			$(this).datepicker( 'option', 'minDate', $(this).data('min-date') );
+		}
+	});
+};
+
 ( function($){
 
 	var setup_charitable_ajax = function() {
@@ -21,7 +45,13 @@
 
 	var setup_charitable_toggle = function() {
 		$( '[data-charitable-toggle]' ).on( 'click', function( e ){
-			var toggle_id 	= $(this).data( 'charitable-toggle' );
+			var toggle_id = $(this).data( 'charitable-toggle' ), 
+				toggle_text = $(this).attr( 'data-charitable-toggle-text' );
+
+			if ( toggle_text.length ) {
+				$(this).attr( 'data-charitable-toggle-text', $(this).text() );
+				$(this).text( toggle_text );
+			}
 
 			$('#' + toggle_id).toggle();
 
@@ -65,24 +95,7 @@
 	$(document).ready( function(){
 
 		if ( $.fn.datepicker ) {
-
-			$('.charitable-datepicker').datepicker( {
-				dateFormat 	: 'MM d, yy', 
-				minDate 	: $(this).data('min-date') || '',
-				beforeShow	: function( input, inst ) {
-					$('#ui-datepicker-div').addClass('charitable-datepicker-table');
-				}
-			} );
-
-			$('.charitable-datepicker').each( function(){				
-				if ( $(this).data('date') ) {
-					$(this).datepicker( 'setDate', $(this).data('date') );
-				}
-
-				if ( $(this).data('min-date') ) {
-					$(this).datepicker( 'option', 'minDate', $(this).data('min-date') );
-				}
-			});
+			CHARITABLE_ADMIN.SetupDatepicker( $('.charitable-datepicker') );			
 		}
 
 		$('body.post-type-campaign .handlediv, body.post-type-donation .handlediv').remove();

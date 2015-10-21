@@ -86,17 +86,19 @@ class Charitable_Profile_Form extends Charitable_Form {
     /**
      * Returns the value of a particular key.   
      *
+     * @param   string $key
+     * @param   string $default     Optional. The value that will be used if none is set.
      * @return  mixed
      * @access  public
      * @since   1.0.0
      */
-    public function get_user_value( $key ) {
+    public function get_user_value( $key, $default = "" ) {
         if ( isset( $_POST[ $key ] ) ) {
             return $_POST[ $key ];
         }
 
         $user = $this->get_user();
-        $value = "";
+        $value = $default;
 
         if ( $user ) {      
             switch ( $key ) {
@@ -104,8 +106,10 @@ class Charitable_Profile_Form extends Charitable_Form {
                     $value = $user->description;
                     break;
                 
-                default :                   
-                    $value = $user->__get( $key );
+                default :    
+                    if ( $user->has_prop( $key ) ) {
+                        $value = $user->get( $key );
+                    }                    
             }
         }
         
@@ -213,7 +217,7 @@ class Charitable_Profile_Form extends Charitable_Form {
                 'options'   => charitable_get_location_helper()->get_countries(), 
                 'priority'  => 32, 
                 'required'  => false, 
-                'value'     => $this->get_user_value( 'country' )
+                'value'     => $this->get_user_value( 'country', charitable_get_option( 'country' ) )
             ),
             'phone' => array( 
                 'label'     => __( 'Phone', 'charitable' ),                 

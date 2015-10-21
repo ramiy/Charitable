@@ -114,20 +114,21 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
     /**
      * Returns the set value for a particular user field. 
      *
-     * @param   string  $key
+     * @param   string $key
+     * @param   string $default     Optional. The value that will be used if none is set.
      * @return  mixed
      * @access  public
      * @since   1.0.0
      */
-    public function get_user_value( $key ) {
+    public function get_user_value( $key, $default = "" ) {
         if ( isset( $_POST[ $key ] ) ) {
             return $_POST[ $key ];
         }
 
-        if ( ! $this->get_user() ) {
-            return '';
+        if ( ! $this->get_user() || ! $this->get_user()->has_prop( $key ) ) {
+            return $default;
         }
-
+        
         return $this->get_user()->get( $key );
     }
 
@@ -217,7 +218,7 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
                 'type'      => 'select', 
                 'options'   => charitable_get_location_helper()->get_countries(), 
                 'priority'  => 20, 
-                'value'     => $this->get_user_value( 'donor_country' ), 
+                'value'     => $this->get_user_value( 'donor_country', charitable_get_option( 'country' ) ), 
                 'required'  => false,
                 'requires_registration' => true,
                 'data_type' => 'user'

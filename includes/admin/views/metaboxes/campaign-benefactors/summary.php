@@ -12,7 +12,7 @@ $benefactor 	= $view_args[ 'benefactor' ];
 <div class="charitable-benefactor-summary">
 	<span class="summary"><?php echo $benefactor ?></span>
 	<span class="alignright">
-		<a href="#" data-charitable-toggle="campaign_benefactor_<?php echo $benefactor->campaign_benefactor_id  ?>"><?php _e( 'Edit', 'charitable' ) ?></a>&nbsp;&nbsp;&nbsp;
+		<a href="#" data-charitable-toggle="campaign_benefactor_<?php echo $benefactor->campaign_benefactor_id  ?>" data-charitable-toggle-text="<?php _e( 'Close', 'charitable' ) ?>"><?php _e( 'Edit', 'charitable' ) ?></a>&nbsp;&nbsp;&nbsp;
 		<a href="#" data-campaign-benefactor-delete="<?php echo $benefactor->campaign_benefactor_id  ?>" data-nonce="<?php echo wp_create_nonce( 'charitable-deactivate-benefactor' ); ?>"><?php _e( 'Delete', 'charitable' ) ?></a>
 	</span>
 </div>
