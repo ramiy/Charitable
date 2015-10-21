@@ -86,6 +86,7 @@ final class Charitable_Admin extends Charitable_Start_Object {
 		add_action( 'charitable_start', array( 'Charitable_Campaign_Post_Type', 'charitable_start' ) );
 		add_action( 'charitable_start', array( 'Charitable_Donation_Post_Type', 'charitable_start' ) );		
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+		add_filter( 'media_buttons_context', array( $this, 'remove_jquery_ui_styles_nf' ), 20 );
 		add_filter( 'plugin_action_links_' . plugin_basename( charitable()->get_path() ), 	array( $this, 'add_plugin_action_links' ) );
 		add_filter( 'plugin_row_meta', array( $this, 'add_plugin_row_meta' ), 10, 2 );
 	}
@@ -120,7 +121,8 @@ final class Charitable_Admin extends Charitable_Start_Object {
 				'suggested_amount_placeholder' 				=> __( 'Amount', 'charitable' ),
 				'suggested_amount_description_placeholder'	=> __( 'Optional Description', 'charitable' )
 			) );
-			wp_localize_script( 'charitable-admin', 'CHARITABLE', $localized_vars );
+
+			wp_localize_script( 'charitable-admin', 'CHARITABLE', $localized_vars );			
 		}
 	}
 
@@ -165,6 +167,18 @@ final class Charitable_Admin extends Charitable_Start_Object {
 	}
 
 	/**
+	 * Remove the jQuery UI styles added by Ninja Forms. 
+	 *
+	 * @return  void
+	 * @access  public
+	 * @since   1.2.0
+	 */
+	public function remove_jquery_ui_styles_nf( $context ) {
+		wp_dequeue_style( 'jquery-smoothness' );
+		return $context;
+	}
+
+	/**
 	 * Returns an array of screen IDs where the Charitable scripts should be loaded. 
 	 *
 	 * @uses charitable_admin_screens
@@ -180,7 +194,7 @@ final class Charitable_Admin extends Charitable_Start_Object {
 			'charitable_page_charitable-settings',
 			'charitable_page_charitable-donations-table'
 		) );
-	}
+	}	
 }
 
 endif;

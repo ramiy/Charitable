@@ -16,6 +16,8 @@ $field 			= $view_args[ 'field' ];
 $classes 		= esc_attr( $view_args[ 'classes' ] );
 $is_required 	= isset( $field[ 'required' ] ) ? $field[ 'required' ] : false;
 $value			= isset( $field[ 'value' ] ) ? esc_attr( $field[ 'value' ] ) : '';
+$min_date		= isset( $field[ 'min_date' ] ) ? esc_attr( $field[ 'min_date' ] ) : '';
+$max_date		= isset( $field[ 'max_date' ] ) ? esc_attr( $field[ 'max_date' ] ) : '';
 ?>
 <div id="charitable_field_<?php echo $field['key'] ?>" class="<?php echo $classes ?>">
 	<?php if ( isset( $field['label'] ) ) : ?>
