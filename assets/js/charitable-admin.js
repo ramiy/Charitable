@@ -48,7 +48,7 @@ CHARITABLE_ADMIN.SetupDatepicker = function( $el ) {
 			var toggle_id = $(this).data( 'charitable-toggle' ), 
 				toggle_text = $(this).attr( 'data-charitable-toggle-text' );
 
-			if ( toggle_text.length ) {
+			if ( toggle_text && toggle_text.length ) {
 				$(this).attr( 'data-charitable-toggle-text', $(this).text() );
 				$(this).text( toggle_text );
 			}

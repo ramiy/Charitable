@@ -52,7 +52,7 @@ $ended = charitable_get_campaign( $post->ID )->has_ended();
     
     if ( ! $ended ) :
     ?>
-        <p><a href="#" class="button" data-charitable-toggle="campaign_benefactor_0"><?php _e( '+ Add New Contribution Rule', 'charitable' ) ?></a></p> 
+        <p><a href="#" class="button" data-charitable-toggle="campaign_benefactor__0"><?php _e( '+ Add New Contribution Rule', 'charitable' ) ?></a></p> 
     <?php 
     endif;
     ?>    

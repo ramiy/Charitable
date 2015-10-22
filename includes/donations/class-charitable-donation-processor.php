@@ -286,7 +286,7 @@ class Charitable_Donation_Processor {
     public function save_donation( array $values ) {
         /**
          * @hook charitable_donation_values
-         */
+         */        
         $this->donation_data = apply_filters( 'charitable_donation_values', $values );
 
         if ( ! $this->get_campaign_donations_data() ) {

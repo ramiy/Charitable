@@ -149,16 +149,20 @@ class Charitable_Benefactors implements Charitable_Addon_Interface {
 
         foreach ( $benefactors as $campaign_benefactor_id => $data ) {
 
-            $data['contribution_amount'] = $currency_helper->sanitize_monetary_amount( $data['contribution_amount'] );
-
-            /* If the contribution amount is set to zero, we won't create a benefactor object. */
-            if ( 0 == $data['contribution_amount'] ) {
+            /* If the contribution amount was not set, we won't create a benefactor object. */
+            if ( empty( $data[ 'contribution_amount' ] ) ) {
                 continue;
             }
 
             $data['campaign_id'] = $post->ID;
             $data['contribution_amount_is_percentage'] = intval( false !== strpos( $data['contribution_amount'], '%' ) );
-            
+            $data['contribution_amount'] = $currency_helper->sanitize_monetary_amount( $data['contribution_amount'] );
+
+            /* If the contribution amount was set to 0, we won't create a benefactor object. */
+            if ( 0 == $data['contribution_amount'] ) {
+                continue;
+            }
+
             if ( isset( $data['date_created'] ) && strlen( $data['date_created'] ) ) {
                 $data['date_created'] = date( 'Y-m-d 00:00:00', strtotime( $data['date_created'] ) );
             }
