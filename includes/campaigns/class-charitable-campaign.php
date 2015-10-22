@@ -93,7 +93,7 @@ class Charitable_Campaign {
      */
     public function get( $meta_name, $single = true ) {
         $meta_name = '_campaign_' . $meta_name; 
-        return get_post_meta( $this->post->ID, $meta_name, $single );       
+        return apply_filters( 'charitable_campaign_get_meta_value', get_post_meta( $this->post->ID, $meta_name, $single ), $meta_name, $single, $this );
     }   
 
     /**
