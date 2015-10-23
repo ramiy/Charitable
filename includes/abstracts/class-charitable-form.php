@@ -77,7 +77,7 @@ abstract class Charitable_Form {
 		add_action( 'charitable_form_before_fields',	array( $this, 'render_error_notices' ) ); 
 		add_action( 'charitable_form_before_fields',	array( $this, 'add_hidden_fields' ) ); 
 		add_action( 'charitable_form_field', 			array( $this, 'render_field' ), 10, 5 );
-		add_filter( 'charitable_form_field_increment', 	array( $this, 'increment_index' ), 10, 4 );
+		add_filter( 'charitable_form_field_increment', 	array( $this, 'increment_index' ), 10, 2 );
 	}
 
 	/**
@@ -169,15 +169,13 @@ abstract class Charitable_Form {
 	/**
 	 * Set how much the index should be incremented by. 
 	 *
-	 * @param 	int 		$index
-	 * @param 	array 		$field
-	 * @param 	string 		$key
-	 * @param 	Charitable_Form 	$form	 
+	 * @param 	int $increment
+	 * @param 	array $field
 	 * @return  int
 	 * @access  public
 	 * @since   1.0.0
 	 */
-	public function increment_index( $increment, $field, $key, $form ) {
+	public function increment_index( $increment, $field ) {
 		if ( in_array( $field[ 'type' ], array( 'hidden', 'paragraph' ) )
 			|| ( isset( $field[ 'fullwidth'] ) && $field[ 'fullwidth' ] ) ) {
 			$increment = 0;
@@ -467,8 +465,8 @@ abstract class Charitable_Form {
 	/**
 	 * Returns the submitted value for a particular field. 
 	 *
-	 * @param 	string 	$key
-	 * @return  mixed 	Submitted value if set. NULL if value was not set.
+	 * @param 	string $key
+	 * @return  mixed Submitted value if set. NULL if value was not set.
 	 * @access  public
 	 * @since   1.0.0
 	 */
@@ -478,10 +476,54 @@ abstract class Charitable_Form {
 	}
 
 	/**
+	 * Uploads a file and attaches it to the given post.
+	 *
+	 * @param 	string $file_key
+	 * @param 	int $post_id
+	 * @param 	array $post_data
+	 * @param 	array $overrides
+	 * @return 	int|WP_Error 	ID of the attachment or a WP_Error object on failure.
+	 * @access  public
+	 * @since   1.0.0
+	 */
+	public function upload_post_attachment( $file_key, $post_id, $post_data = array(), $overrides = array() ) {
+		require_once( ABSPATH . 'wp-admin/includes/image.php' );
+		require_once( ABSPATH . 'wp-admin/includes/file.php' );
+		require_once( ABSPATH . 'wp-admin/includes/media.php' );
+
+		$overrides 	= $this->get_file_overrides( $file_key, $overrides );
+
+		return media_handle_upload( $file_key, $post_id, $post_data, $overrides );
+	}
+
+    /**
+     * Upload a file. 
+     *
+     * @param 	string $file_key
+     * @param 	array $overrides
+     * @return  array|WP_Error  On success, returns an associative array of file attributes. On failure, returns
+     *                          $overrides['upload_error_handler'](&$file, $message ) or array( 'error'=>$message ).
+     * @access  public
+     * @since   1.0.0
+     */
+    public function upload_file( $file_key, $overrides = array() ) {
+        require_once( ABSPATH . 'wp-admin/includes/file.php' );
+
+        $overrides  = $this->get_file_overrides( $file_key, $overrides );
+        $file       = wp_handle_upload( $_FILES[ $file_key ], $overrides );
+
+        if ( isset( $file[ 'error' ] ) ) {
+            return new WP_Error( 'upload_error', $file[ 'error' ] );        
+        }
+
+        return $file;
+    }
+
+	/**
 	 * Return overrides array for use with upload_file() and upload_post_attachment() methods. 
 	 *
-	 * @param 	string 		$file_key
-	 * @param 	array 		$overrides 
+	 * @param 	string $file_key
+	 * @param 	array $overrides 
 	 * @param 	
 	 * @return  array
 	 * @access  protected
@@ -504,48 +546,6 @@ abstract class Charitable_Form {
 
 		return $overrides;
 	}
-
-	/**
-	 * Uploads a file and attaches it to the given post.
-	 *
-	 * @return 	int|WP_Error 	ID of the attachment or a WP_Error object on failure.
-	 * @access  public
-	 * @since   1.0.0
-	 */
-	public function upload_post_attachment( $file_key, $post_id, $post_data = array(), $overrides = array() ) {
-
-		/* Load dependencies */
-		require_once( ABSPATH . 'wp-admin/includes/image.php' );
-		require_once( ABSPATH . 'wp-admin/includes/file.php' );
-		require_once( ABSPATH . 'wp-admin/includes/media.php' );
-
-		$overrides 	= $this->get_file_overrides( $file_key, $overrides );
-
-		return media_handle_upload( $file_key, $post_id, $post_data, $overrides );
-	}
-
-    /**
-     * Upload a file. 
-     *
-     * @param 	string 	$key
-     * @param 	array 	$mimes 	
-     * @return  array|WP_Error  On success, returns an associative array of file attributes. On failure, returns
-     *                          $overrides['upload_error_handler'](&$file, $message ) or array( 'error'=>$message ).
-     * @access  public
-     * @since   1.0.0
-     */
-    public function upload_file( $file_key, $overrides = array() ) {
-        require_once( ABSPATH . 'wp-admin/includes/file.php' );
-
-        $overrides  = $this->get_file_overrides( $file_key, $overrides );
-        $file       = wp_handle_upload( $_FILES[ $file_key ], $overrides );
-
-        if ( isset( $file[ 'error' ] ) ) {
-            return new WP_Error( 'upload_error', $file[ 'error' ] );        
-        }
-
-        return $file;
-    }
 
     /**
      * Checks whether a template is valid. 
