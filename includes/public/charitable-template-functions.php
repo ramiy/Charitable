@@ -441,6 +441,8 @@ if ( ! function_exists( 'charitable_template_donation_receipt_content' ) ) :
             return ob_get_clean();
 
         }
+
+        do_action( 'charitable_donation_receipt_page', $donation );
         
         charitable_template( 'content-donation-receipt.php', array( 'content' => $content, 'donation' => $donation ) );        
 
