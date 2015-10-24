@@ -151,6 +151,39 @@ function charitable_get_donation_receipt_page_permalink( $url, $args = array() )
 add_filter( 'charitable_permalink_donation_receipt_page', 'charitable_get_donation_receipt_page_permalink', 2, 2 );       
 
 /**
+ * Returns the URL for the campaign donation page. 
+ *
+ * This is used when you call charitable_get_permalink( 'donation_processing_page' ). In
+ * general, you should use charitable_get_permalink() instead since it will
+ * take into account permalinks that have been filtered by plugins/themes.
+ *
+ * @global  WP_Rewrite $wp_rewrite
+ * @param   string $url
+ * @param   array $args
+ * @return  string
+ * @since   1.2.0
+ */
+function charitable_get_donation_processing_page_permalink( $url, $args = array() ) {    
+    global $wp_rewrite;
+
+    $donation_id = isset( $args[ 'donation_id' ] ) ? $args[ 'donation_id' ] : get_the_ID();
+
+    if ( $wp_rewrite->using_permalinks() ) {
+        $url = sprintf( '%s/donation-processing/%d', untrailingslashit( site_url() ), $donation_id );
+    }
+    else {
+        $url = esc_url_raw( add_query_arg( array( 
+            'donation_processing' => 1, 
+            'donation_id' => $donation_id
+        ), site_url() ) );
+    }
+    
+    return $url;
+}   
+
+add_filter( 'charitable_permalink_donation_processing_page', 'charitable_get_donation_processing_page_permalink', 2, 2 );       
+
+/**
  * Returns the url of the widget page. 
  *
  * This is used when you call charitable_get_permalink( 'campaign_widget_page' ). In
@@ -247,6 +280,30 @@ function charitable_is_donation_receipt_page( $ret = false, $args = array()  ) {
 }
 
 add_filter( 'charitable_is_page_donation_receipt_page', 'charitable_is_donation_receipt_page', 2, 2 );
+
+/**
+ * Checks whether the current request is for the donation receipt page.
+ *
+ * This is used when you call charitable_is_page( 'donation_processing_page' ). 
+ * In general, you should use charitable_is_page() instead since it will
+ * take into account any filtering by plugins/themes.
+ *
+ * @global  WP_Query    $wp_query
+ * @param   string      $page
+ * @param   array       $args 
+ * @return  boolean
+ * @since   1.0.0
+ */
+function charitable_is_donation_processing_page( $ret = false, $args = array()  ) {        
+    global $wp_query;
+
+    $ret = is_main_query() && isset ( $wp_query->query_vars[ 'donation_processing' ] ) && isset ( $wp_query->query_vars[ 'donation_id' ] );
+
+    return $ret;
+}
+
+add_filter( 'charitable_is_page_donation_processing_page', 'charitable_is_donation_processing_page', 2, 2 );
+
 
 /**
  * Checks whether the current request is for an email preview.

@@ -105,7 +105,7 @@ class Charitable_Gateway_Paypal extends Charitable_Gateway {
     }
 
 	/**
-     * Process the donation with the gateway, seamlessly over the Stripe API.
+     * Process the donation with PayPal.
      *   
      * @param   int $donation_id
      * @param   Charitable_Donation_Processor $processor

@@ -3,7 +3,7 @@
  * Plugin Name:         Charitable
  * Plugin URI:          https://wpcharitable.com
  * Description:         Fundraise with WordPress.
- * Version:             1.2.0-beta4
+ * Version:             1.2.0-beta5
  * Author:              WP Charitable
  * Author URI:          https://wpcharitable.com
  * Requires at least:   4.1
@@ -33,7 +33,7 @@ class Charitable {
     /**
      * @var     string
      */
-    const VERSION = '1.2.0-beta4';
+    const VERSION = '1.2.0-beta5';
 
     /**
      * @var     string      A date in the format: YYYYMMDD
@@ -72,25 +72,7 @@ class Charitable {
      * @var     string      Directory path for the includes folder of the plugin.
      * @access  private
      */
-    private $includes_path;    
-
-    /**
-     * @var     string      Directory path for the assets folder. 
-     * @access  private
-     */
-    private $assets_path;
-
-    /**
-     * @var     string      Directory path for the templates folder in themes.
-     * @access  private
-     */
-    private $theme_template_path;    
-
-    /**
-     * @var     string      Directory path for the templates folder the plugin.
-     * @access  private
-     */
-    private $plugin_template_path;        
+    private $includes_path;          
 
     /**
      * @var     array       Store of registered objects.  
@@ -152,7 +134,7 @@ class Charitable {
 
         $this->maybe_start_public();        
 
-        $this->maybe_start_ajax();
+        $this->maybe_start_ajax();        
 
         Charitable_Addons::load( $this );
     }
@@ -240,6 +222,7 @@ class Charitable {
         /* Public */
         require_once( $includes_path . 'public/charitable-page-functions.php' );
         require_once( $includes_path . 'public/charitable-template-functions.php' );
+        require_once( $includes_path . 'public/charitable-template-helpers.php' );
         require_once( $includes_path . 'public/charitable-template-hooks.php' );
         require_once( $includes_path . 'public/class-charitable-session.php' );        
         require_once( $includes_path . 'public/class-charitable-template.php' );      
@@ -263,6 +246,9 @@ class Charitable {
         require_once( $includes_path . 'widgets/class-charitable-donors-widget.php' );
         require_once( $includes_path . 'widgets/class-charitable-donate-widget.php' );
         require_once( $includes_path . 'widgets/class-charitable-donation-stats-widget.php' );
+
+        /* Customizer */
+        require_once( $includes_path . 'admin/customizer/class-charitable-customizer.php' );
 
         /* Deprecated */
         require_once( $includes_path . 'deprecated/charitable-deprecated-functions.php' );
@@ -288,6 +274,7 @@ class Charitable {
         add_action('charitable_start', array( 'Charitable_User_Dashboard', 'charitable_start' ), 3 );
         add_action('charitable_start', array( 'Charitable_Cron', 'charitable_start' ), 3 );
         add_action('charitable_start', array( 'Charitable_i18n', 'charitable_start' ), 3 );
+        add_action( 'setup_theme', array( 'Charitable_Customizer', 'start' ) );
 
         /**
          * We do this on priority 20 so that any functionality that is loaded on init (such 

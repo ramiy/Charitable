@@ -33,6 +33,7 @@ class Charitable_Templates extends Charitable_Start_Object {
 	 */
 	protected function __construct() {		
 		add_filter( 'template_include', array( $this, 'donation_receipt_template' ) );
+		add_filter( 'template_include', array( $this, 'donation_processing_template' ) );
 		add_filter( 'template_include', array( $this, 'donate_template' ) );
 		add_filter( 'template_include', array( $this, 'widget_template' ) );
 		add_filter( 'template_include', array( $this, 'email_template' ) );
@@ -60,6 +61,30 @@ class Charitable_Templates extends Charitable_Start_Object {
 			) );
 
 			$new_template = apply_filters( 'charitable_donation_receipt_page_template', array( 'donation-receipt-page.php', 'page.php', 'index.php' ) );
+
+			$template = charitable_get_template_path( $new_template, $template );
+		}
+
+		return $template;
+	}
+
+	/**
+	 * Load the donation processing template if we're looking at the donation processing page. 
+	 *
+	 * @param 	string $template
+	 * @return 	string
+	 * @access  public
+	 * @since 	1.2.0
+	 */
+	public function donation_processing_template( $template ) {		
+		if ( charitable_is_page( 'donation_processing_page' ) ) {
+
+			new Charitable_Ghost_Page( 'donation-processing-page', array(
+				'title' 	=> __( 'Thank you for your donation', 'charitable' ),
+				'content' 	=> sprintf( '<p>%s</p>', __( 'You will shortly be redirected to the payment gateway to complete your donation.', 'charitable' ) )
+			) );
+
+			$new_template = apply_filters( 'charitable_donation_processing_page_template', array( 'donation-processing-page.php', 'page.php', 'index.php' ) );
 
 			$template = charitable_get_template_path( $new_template, $template );
 		}
