@@ -62,10 +62,6 @@
     #wp-post_content-editor-container {
         border: 1px solid #dedede;
     }
-
-    a:not(.button) {
-        color: #f89d35;
-    }
 }
 
 .charitable-form-content {
@@ -108,12 +104,7 @@
         margin: 0 0 1em;
         padding: 2em;
         border: 1px solid #ebebeb;  
-
-        a:not(.button) {
-            color: #f89d35;
-        }
     }
-
 }
 
 .charitable-form-header {
@@ -165,8 +156,6 @@
 
         .donation-amount.selected {
             color: #fff;
-            background-color: #f89d35;
-            border-color: #f89d35;
         }
     }
 }

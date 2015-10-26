@@ -288,6 +288,7 @@ final class Charitable_Post_Types extends Charitable_Start_Object {
 		add_rewrite_endpoint( 'donate', EP_PERMALINK );
 		add_rewrite_endpoint( 'widget', EP_PERMALINK );
 		add_rewrite_endpoint( 'donation_receipt', EP_ROOT );
+		add_rewrite_endpoint( 'donation_processing', EP_ROOT );
 	}
 
 	/**
@@ -310,6 +311,7 @@ final class Charitable_Post_Types extends Charitable_Start_Object {
 	 */
 	public function add_rewrite_rule() {
 		add_rewrite_rule( 'donation-receipt/([0-9]+)/?$', 'index.php?donation_id=$matches[1]&donation_receipt=1', 'top' );
+		add_rewrite_rule( 'donation-processing/([0-9]+)/?$', 'index.php?donation_id=$matches[1]&donation_processing=1', 'top' );
 	}		
 }
 

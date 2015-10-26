@@ -257,6 +257,18 @@ class Charitable_Donation {
     }
 
     /**
+     * Return the donor data.
+     *
+     * @return  array The donor data.
+     * @access  public
+     * @since   1.2.0
+     */
+    public function get_donor_data() {
+        return get_post_meta( $this->donation_id, 'donor', true );
+    }
+
+
+    /**
      * The public label of the gateway used to process the donation. 
      *
      * @return  string

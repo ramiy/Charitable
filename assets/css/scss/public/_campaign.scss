@@ -31,8 +31,7 @@
     .campaign-figures .amount {
         display: block;
         font-size: 1.5em;
-        font-weight: bolder;
-        color: #f89d35;
+        font-weight: bolder;        
     }
 
     .campaign-donors {
@@ -42,7 +41,6 @@
     .donors-count, 
     .time-left {
         font-weight: bolder;
-        color: #f89d35;
     }
 
     .campaign-donation {
@@ -75,7 +73,6 @@
     .bar {
         display: block;
         height: 100%;
-        background-color: #f89d35;
     }   
 }
 
@@ -84,6 +81,5 @@
 .donate-button {
     padding: 6px 24px;
     border: none;
-    background-color: #f89d35;
     color: #fff;   
 }

@@ -13,6 +13,38 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
+/***********************************************/ 
+/* HEAD OUTPUT
+/***********************************************/ 
+
+if ( ! function_exists( 'charitable_template_custom_styles' ) ) : 
+    /**
+     * Add custom styles to the <head> section.
+     *
+     * This is used on the wp_head action.
+     *
+     * @return  void
+     * @since   1.2.0
+     */
+    function charitable_template_custom_styles() {
+        $styles = get_transient( 'charitable_custom_styles' );
+
+        if ( false === $styles ) {
+
+            ob_start();
+
+            charitable_template( 'custom-styles.css.php' );
+
+            $styles = ob_get_clean();
+
+            $styles = charitable_compress_css( $styles );
+
+            set_transient( 'charitable_custom_styles', $styles, 0 );
+        }
+
+        echo $styles;
+    }
+endif;
 
 /**********************************************/ 
 /* SINGLE CAMPAIGN CONTENT
@@ -353,31 +385,6 @@ if ( ! function_exists( 'charitable_template_campaign_loop_donate_link' ) ) :
 endif;
 
 /**********************************************/
-/* DONATION FORM
-/**********************************************/
-
-if ( ! function_exists( 'charitable_template_donation_form_content' ) ) :
-    /**
-     * Display the donation form. This is used with the_content filter.
-     *
-     * @param   string  $content
-     * @return  string
-     * @since   1.0.0
-     */
-    function charitable_template_donation_form_content( $content ) {
-        if ( charitable_is_page( 'campaign_donation_page' ) ) {
-            ob_start();
-            
-            charitable_template( 'content-donation-form.php' );
-
-            $content = ob_get_clean();
-        }
-
-        return $content;
-    }
-endif;
-
-/**********************************************/
 /* DONATION RECEIPT
 /**********************************************/
 
@@ -409,6 +416,8 @@ if ( ! function_exists( 'charitable_template_donation_receipt_content' ) ) :
             return ob_get_clean();
 
         }
+
+        do_action( 'charitable_donation_receipt_page', $donation );
         
         charitable_template( 'content-donation-receipt.php', array( 'content' => $content, 'donation' => $donation ) );        
 
@@ -464,6 +473,27 @@ endif;
 /**********************************************/
 /* DONATION FORM
 /**********************************************/
+
+if ( ! function_exists( 'charitable_template_donation_form_content' ) ) :
+    /**
+     * Display the donation form. This is used with the_content filter.
+     *
+     * @param   string  $content
+     * @return  string
+     * @since   1.0.0
+     */
+    function charitable_template_donation_form_content( $content ) {
+        if ( charitable_is_page( 'campaign_donation_page' ) ) {
+            ob_start();
+            
+            charitable_template( 'content-donation-form.php' );
+
+            $content = ob_get_clean();
+        }
+
+        return $content;
+    }
+endif;
 
 if ( ! function_exists( 'charitable_template_donation_form_login' ) ) :
     /**
@@ -534,5 +564,34 @@ if ( ! function_exists( 'charitable_template_donation_form_donor_fields_hidden_w
         }
 
         charitable_template( 'donation-form/donor-fields/hidden-fields-wrapper-end.php' );
+    }
+endif;
+
+/**********************************************/
+/* DONATION PROCESSING PAGE
+/**********************************************/
+
+if ( ! function_exists( 'charitable_template_donation_processing_content' ) ) : 
+    /**
+     * Render the content of the donation processing page.
+     *
+     * @param   string $content
+     * @return  string
+     * @since   1.2.0
+     */
+    function charitable_template_donation_processing_content( $content ) {
+        if ( ! charitable_is_page( 'donation_processing_page' ) ) {
+            return $content;
+        }
+
+        $donation = charitable_get_current_donation();        
+
+        if ( ! $donation ) {
+            return $content;
+        }
+
+        $content = apply_filters( 'charitable_processing_donation_' . $donation->get_gateway(), $content, $donation );
+
+        return $content;
     }
 endif;

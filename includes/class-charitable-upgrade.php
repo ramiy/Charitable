@@ -44,7 +44,8 @@ class Charitable_Upgrade {
 	protected $upgrade_actions = array(
 		'1.0.1' => 'flush_permalinks', 
 		'1.1.0' => 'upgrade_1_1_0', 
-		'1.1.3' => 'flush_permalinks'
+		'1.1.3' => 'flush_permalinks', 
+		'1.2.0'	=> 'flush_permalinks'
 	);
 
 	/**

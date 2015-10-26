@@ -217,7 +217,7 @@ class Charitable_Gateways extends Charitable_Start_Object {
 	public function register_gateway_settings( $settings, Charitable_Gateway $gateway ) {		
 		add_filter( 'charitable_settings_fields_gateways_gateway_' . $gateway->get_gateway_id(), array( $gateway, 'default_gateway_settings' ), 5 );
         add_filter( 'charitable_settings_fields_gateways_gateway_' . $gateway->get_gateway_id(), array( $gateway, 'gateway_settings' ), 15 );
-        return apply_filters( 'charitable_settings_fields_gateways_gateway_' . $gateway::get_gateway_id(), $settings );
+        return apply_filters( 'charitable_settings_fields_gateways_gateway_' . $gateway->get_gateway_id(), $settings );
 	}
 
 	/**

@@ -1,8 +1,7 @@
 .charitable-notice {
     padding: 1em;
     margin-bottom: 1em;
-    color: #f89d35;
-    border: 1px solid #f89d35;
+    border: 1px solid;
 
     .errors {
         padding: 0;
@@ -11,10 +10,6 @@
 
         li {
             list-style: none;
-
-            a {
-                color: #f89d35;
-            }
         }        
     }
 }

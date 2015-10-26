@@ -14,15 +14,24 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 /**
+ * Add custom CSS to the <head>.
+ *
+ * @see charitable_template_custom_styles
+ */
+add_filter( 'wp_head', 'charitable_template_custom_styles' );
+
+/**
  * Modifying the output of the_content(). 
  *
  * @see charitable_template_campaign_content
  * @see charitable_template_donation_form_content
  * @see charitable_template_donation_receipt_content
+ * @see charitable_template_donation_processing_content
  */
 add_filter( 'the_content', 'charitable_template_campaign_content' );
 add_filter( 'the_content', 'charitable_template_donation_form_content' );
 add_filter( 'the_content', 'charitable_template_donation_receipt_content' );
+add_filter( 'the_content', 'charitable_template_donation_processing_content' );
 
 /**
  * Single campaign, before content.

@@ -28,14 +28,12 @@
   .campaign-summary .campaign-figures .amount {
     display: block;
     font-size: 1.5em;
-    font-weight: bolder;
-    color: #f89d35; }
+    font-weight: bolder; }
   .campaign-summary .campaign-donors {
     clear: left; }
   .campaign-summary .donors-count,
   .campaign-summary .time-left {
-    font-weight: bolder;
-    color: #f89d35; }
+    font-weight: bolder; }
   .campaign-summary .campaign-donation {
     float: left;
     width: 100%;
@@ -56,14 +54,12 @@
   background-color: #e6e6e6; }
   .campaign-progress-bar .bar {
     display: block;
-    height: 100%;
-    background-color: #f89d35; }
+    height: 100%; }
 
 /* Donate Button */
 .donate-button {
   padding: 6px 24px;
   border: none;
-  background-color: #f89d35;
   color: #fff; }
 
 /* Forms */
@@ -107,8 +103,6 @@
     margin-bottom: 0.5em; }
   .charitable-form-field #wp-post_content-editor-container {
     border: 1px solid #dedede; }
-  .charitable-form-field a:not(.button) {
-    color: #f89d35; }
 
 .charitable-form-content {
   margin-bottom: 1em; }
@@ -139,8 +133,6 @@
   margin: 0 0 1em;
   padding: 2em;
   border: 1px solid #ebebeb; }
-  .charitable-form-fields .charitable-fieldset a:not(.button) {
-    color: #f89d35; }
 
 .charitable-form-header {
   margin: 0 0 1em;
@@ -183,9 +175,7 @@
         vertical-align: middle;
         z-index: -1; }
     #charitable-donation-form .donation-amounts .donation-amount.selected {
-      color: #fff;
-      background-color: #f89d35;
-      border-color: #f89d35; }
+      color: #fff; }
 
 .widget_charitable_donate_widget #charitable-donation-form {
   padding-top: 0; }
@@ -356,15 +346,12 @@
 .charitable-notice {
   padding: 1em;
   margin-bottom: 1em;
-  color: #f89d35;
-  border: 1px solid #f89d35; }
+  border: 1px solid; }
   .charitable-notice .errors {
     padding: 0;
     margin: 0;
     list-style: none; }
     .charitable-notice .errors li {
       list-style: none; }
-      .charitable-notice .errors li a {
-        color: #f89d35; }
 
 /*# sourceMappingURL=charitable.css.map */
