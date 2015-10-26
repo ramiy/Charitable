@@ -7,7 +7,9 @@
  * @since   1.2.0
  */
 
+$notice_type = isset( $view_args[ 'notice_type' ] ) ? $view_args[ 'notice_type' ] : 'error';
+
 ?>
-<div class="charitable-notice">
-    <?php echo $view_args[ 'content' ] ?>
+<div class="notice <?php echo $notice_type ?>">
+    <p><?php echo $view_args[ 'content' ] ?></p>
 </div>

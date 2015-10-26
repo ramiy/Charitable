@@ -2,6 +2,8 @@
 /**
  * Displays the donate button to be displayed within campaign loops. 
  *
+ * Override this template by copying it to yourtheme/charitable/campaign-loop/donation-link.php
+ *
  * @author  Studio 164a
  * @since   1.0.0
  */

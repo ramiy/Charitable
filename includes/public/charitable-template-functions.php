@@ -385,31 +385,6 @@ if ( ! function_exists( 'charitable_template_campaign_loop_donate_link' ) ) :
 endif;
 
 /**********************************************/
-/* DONATION FORM
-/**********************************************/
-
-if ( ! function_exists( 'charitable_template_donation_form_content' ) ) :
-    /**
-     * Display the donation form. This is used with the_content filter.
-     *
-     * @param   string  $content
-     * @return  string
-     * @since   1.0.0
-     */
-    function charitable_template_donation_form_content( $content ) {
-        if ( charitable_is_page( 'campaign_donation_page' ) ) {
-            ob_start();
-            
-            charitable_template( 'content-donation-form.php' );
-
-            $content = ob_get_clean();
-        }
-
-        return $content;
-    }
-endif;
-
-/**********************************************/
 /* DONATION RECEIPT
 /**********************************************/
 
@@ -498,6 +473,27 @@ endif;
 /**********************************************/
 /* DONATION FORM
 /**********************************************/
+
+if ( ! function_exists( 'charitable_template_donation_form_content' ) ) :
+    /**
+     * Display the donation form. This is used with the_content filter.
+     *
+     * @param   string  $content
+     * @return  string
+     * @since   1.0.0
+     */
+    function charitable_template_donation_form_content( $content ) {
+        if ( charitable_is_page( 'campaign_donation_page' ) ) {
+            ob_start();
+            
+            charitable_template( 'content-donation-form.php' );
+
+            $content = ob_get_clean();
+        }
+
+        return $content;
+    }
+endif;
 
 if ( ! function_exists( 'charitable_template_donation_form_login' ) ) :
     /**
