@@ -208,15 +208,15 @@ class Charitable_Gateways extends Charitable_Start_Object {
 	/**
 	 * Provide default gateway settings fields.
 	 *
-	 * @param 	array 	$settings
-	 * @param 	Charitable_Gateway	$gateway 	The gateway's helper object.
+	 * @param 	array $settings
+	 * @param 	Charitable_Gateway $gateway 	The gateway's helper object.
 	 * @return  array
 	 * @access  public
 	 * @since   1.0.0
 	 */
-	public function register_gateway_settings( $settings, Charitable_Gateway $gateway ) {
-		add_filter( 'charitable_settings_fields_gateways_gateway_' . $gateway::get_gateway_id(), array( $gateway, 'default_gateway_settings' ), 5 );
-        add_filter( 'charitable_settings_fields_gateways_gateway_' . $gateway::get_gateway_id(), array( $gateway, 'gateway_settings' ), 15 );
+	public function register_gateway_settings( $settings, Charitable_Gateway $gateway ) {		
+		add_filter( 'charitable_settings_fields_gateways_gateway_' . $gateway->get_gateway_id(), array( $gateway, 'default_gateway_settings' ), 5 );
+        add_filter( 'charitable_settings_fields_gateways_gateway_' . $gateway->get_gateway_id(), array( $gateway, 'gateway_settings' ), 15 );
         return apply_filters( 'charitable_settings_fields_gateways_gateway_' . $gateway::get_gateway_id(), $settings );
 	}
 

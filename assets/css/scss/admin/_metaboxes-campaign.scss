@@ -179,6 +179,17 @@
     }
 }
 
+.charitable-benefactor-expired {
+    background-color: #f5f5f5;
+ 
+    .summary span {
+        font-weight: bold;
+        text-transform: uppercase;
+        padding-right: 8px;
+        color: #f89d35;
+    }
+}
+
 /* --- Campaign Creator --- */
 
 #campaign-creator {
