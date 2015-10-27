@@ -54,6 +54,14 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
     protected $form_action = 'make_donation';
 
     /**
+     * Value to indicate whether the user has all required fields filled out.
+     *
+     * @var     bool
+     * @access  protected
+     */
+    protected $user_has_required_fields;
+
+    /**
      * Create a donation form object.
      *
      * @param   Charitable_Campaign $campaign
@@ -608,7 +616,7 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
      * @access  public
      * @since   1.2.0
      */
-    public function user_has_required_fields() {
+    public function user_has_required_fields() {        
         if ( ! isset( $this->user_has_required_fields ) ) {
 
             foreach ( $this->get_user_fields() as $field ) {

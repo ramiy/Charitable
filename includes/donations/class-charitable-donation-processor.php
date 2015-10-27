@@ -358,9 +358,6 @@ class Charitable_Donation_Processor {
             }
         }
 
-        var_dump( $campaigns );
-        printf( '%sCAMPAIGN DONATIONS INSERTED: %d', PHP_EOL, count( $campaigns ) );
-
         return count( $campaigns );
     }
 
