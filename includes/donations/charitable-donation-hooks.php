@@ -64,6 +64,13 @@ foreach ( Charitable_Donation::get_valid_donation_statuses() as $status => $labe
 }
 
 /**
+ * Delete a donation.
+ *
+ * @see Charitable_Campaign_Donations_DB::delete_donation()
+ */
+add_action( 'deleted_post', array( 'Charitable_Campaign_Donations_DB', 'delete_donation_records' ) );
+
+/**
  * IPN listener. 
  *
  * @see Charitable_Donation_Processor::ipn_listener()

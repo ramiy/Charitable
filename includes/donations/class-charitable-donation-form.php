@@ -602,6 +602,34 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
     }
     
     /**
+     * Checks whether the user has all required fields. 
+     *
+     * @return  boolean
+     * @access  public
+     * @since   1.2.0
+     */
+    public function user_has_required_fields() {
+        if ( ! isset( $this->user_has_required_fields ) ) {
+
+            foreach ( $this->get_user_fields() as $field ) {
+                
+                if ( ! isset( $field[ 'required' ] ) || false == $field[ 'required' ] ) {
+                    continue;
+                }
+
+                if ( empty( $field[ 'value' ] ) ) {
+                    $this->user_has_required_fields = false;
+                    return $this->user_has_required_fields;
+                }
+            }
+
+            $this->user_has_required_fields = true;
+        }        
+
+        return $this->user_has_required_fields;
+    }
+
+    /**
      * Return the donation amount.  
      *
      * @return  float

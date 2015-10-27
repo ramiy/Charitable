@@ -155,11 +155,11 @@ class Charitable_Donations_Table extends WP_List_Table {
     }
 
     /**
-     * Retrieve the view types
+     * Retrieve the view types.
      *
-     * @access public
-     * @since 1.0.0
-     * @return array $views All the views available
+     * @access  public
+     * @since   1.0.0
+     * @return  array $views All the views available
      */
     public function get_views() {
         $current = isset( $_GET[ 'post_status' ] ) ? $_GET[ 'post_status' ] : '';
@@ -215,7 +215,6 @@ class Charitable_Donations_Table extends WP_List_Table {
     public function get_sortable_columns() {
         $columns = array(
             'donation'  => array( 'ID', true ),
-            // 'amount'    => array( 'amount', false ),
             'date'      => array( 'date', false )
         );
         return apply_filters( 'charitable_donations_table_sortable_columns', $columns );
@@ -361,11 +360,11 @@ class Charitable_Donations_Table extends WP_List_Table {
     public function get_bulk_actions() {
         $actions = array();
         
-        // $actions = array( 'delete' => __( 'Delete', 'charitable' ) );
-
         foreach ( $this->donation_statuses as $status_key => $label ) {
-            $actions[ 'set-' . $status_key ] = sprintf( '%s %s', _x( 'Set To', 'Set To Pending', 'charitable' ), $label );
+            $actions[ 'set-' . $status_key ] = sprintf( _x( 'Set to %s', 'set donation status to x', 'charitable' ), $label );
         }
+
+        $actions[ 'delete' ] = __( 'Delete', 'charitable' );
 
         return apply_filters( 'charitable_donations_table_bulk_actions', $actions );
     }
@@ -388,6 +387,9 @@ class Charitable_Donations_Table extends WP_List_Table {
         /* Bulk delete donations */
         if ( 'delete' == $action ) {
 
+            foreach ( $ids as $id ) {
+                wp_delete_post( $id );                
+            }
         }
 
         /* Check for status change */

@@ -38,7 +38,7 @@ class Charitable_Customizer {
     private function __construct() {
         add_action('customize_save_after', array( $this, 'customize_save_after' ) );
         add_action('customize_register', array( $this, 'register_customizer_fields' ) );     
-        // add_action('customize_preview_init', array( $this, 'load_theme_customizer_script' ) );
+        add_action('customize_preview_init', array( $this, 'load_customizer_script' ) );
     }
 
     /**
@@ -216,7 +216,7 @@ class Charitable_Customizer {
 
             $setting_control = $setting[ 'control' ];
             $setting_control[ 'section' ] = $section_id;
-            $setting_control[ 'type' ] = $setting[ 'type' ];
+            // $setting_control[ 'type' ] = $setting[ 'control' ][ 'type' ];
 
             if ( isset( $setting_control[ 'control_type' ] ) ) {
 
@@ -243,7 +243,7 @@ class Charitable_Customizer {
      * @since   1.2.0
      */
     public function load_customizer_script() {
-        wp_register_script( 'charitable-customizer', charitable()->get_path( 'assets', false ) . '/js/admin/charitable-customizer.js', array( 'jquery', 'customize-preview' ), '1.2.0-beta4', true );
+        wp_register_script( 'charitable-customizer', charitable()->get_path( 'assets', false ) . 'js/charitable-customizer.js', array( 'jquery', 'customize-preview' ), '1.2.0-beta5', true );
         wp_enqueue_script( 'charitable-customizer' );
     }
 }

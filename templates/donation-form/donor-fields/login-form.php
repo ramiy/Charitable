@@ -10,15 +10,6 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-/**
- * @var Charitable_User
- */
-$user = $view_args[ 'user' ];
-
-if ( ! $user ) {
-    return;
-}
-
 ?>
 <p class="login-prompt">
 	<a href="#" data-charitable-toggle="charitable-donation-login-form"><?php _e( 'Donated before? Log in before continuing.', 'charitable' ) ?></a>

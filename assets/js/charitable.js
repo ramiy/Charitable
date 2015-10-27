@@ -38,9 +38,6 @@ CHARITABLE.DonationSelection = {
         var $input = $el.find( 'input[type=radio]' ), 
             checked = ! $input.is( ':checked' );
 
-        console.log( $input );
-        console.log( checked );
-
         $input.prop( 'checked', checked ); 
 
         if ( $el.hasClass( 'selected' ) ) {

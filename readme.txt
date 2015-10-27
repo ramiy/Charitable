@@ -109,6 +109,9 @@ You can post in the [support forum](https://wordpress.org/support/plugin/charita
 
 = 1.2.0 = 
 * You can now change the campaign creator via the Campaign management page.
+* Adds a login link to the donation form when donors are not logged in.
+* When a user is logged in but has not filled out all required fields, they are presented with all the user fields.
+* Fixes a bug that redirected donors to a "Page Not Found" page after donating on sites where the WordPress address and site address are not the same.
 * Fixes bugs in the Donation Stats and Donors widget that causes them to include pending donations in the total.
 * Fixes a bug in the Benefactors addon that caused fixed contribution amounts to not be saved.
 * Major performance improvements in the WordPress dashboard.

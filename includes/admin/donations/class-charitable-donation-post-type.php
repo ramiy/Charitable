@@ -203,14 +203,13 @@ final class Charitable_Donation_Post_Type extends Charitable_Start_Object {
      * @since   1.0.0
      */
     private function get_donation( $post_id ) {
-        $key = 'charitable_donation_' . $post_id;
-        $donation = wp_cache_get( $key );
+        $donation = wp_cache_get( $post_id, 'charitable_donation' );
 
         if ( false === $donation ) {
 
             $donation = new Charitable_Donation( $post_id );
 
-            wp_cache_set( $key, $donation );
+            wp_cache_set( $post_id, $donation, 'charitable_donation' );
 
         }
 

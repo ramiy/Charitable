@@ -34,7 +34,7 @@ class Test_Charitable_User extends WP_UnitTestCase {
 		) );
 
 		/* Create a campaign wth a donation from James Gordon */
-		Charitable_Donation::add_donation( array(
+		Charitable_Donation_Helper::create_donation( array(
 			'user_id'			=> $this->james_gordon->ID, 
 			'campaigns'			=> array(
 				array( 

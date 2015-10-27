@@ -98,7 +98,8 @@ module.exports = function(grunt) {
             dist: {
                 files: {
                     'assets/js/charitable-admin.min.js' : 'assets/js/charitable-admin.js', 
-                    'assets/js/charitable-admin-benefactors.min.js' : 'assets/js/charitable-admin-benefactors.js'
+                    'assets/js/charitable-admin-benefactors.min.js' : 'assets/js/charitable-admin-benefactors.js',
+                    'assets/js/charitable-customizer.min.js' : 'assets/js/charitable-customizer.js', 
                 }
             }
         },

@@ -305,7 +305,7 @@ abstract class Charitable_Email {
                         add_query_arg( array( 
                             'charitable_action' => 'preview_email',
                             'email_id' => $this::ID
-                        ), site_url() ) 
+                        ), home_url() ) 
                     ), 
                     __( 'Preview email in your browser', 'charitable' ),
                     __( 'Preview email', 'charitable' )

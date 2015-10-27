@@ -139,10 +139,10 @@ function charitable_get_donation_receipt_page_permalink( $url, $args = array() )
     $donation_id = isset( $args[ 'donation_id' ] ) ? $args[ 'donation_id' ] : get_the_ID();
 
     if ( $wp_rewrite->using_permalinks() ) {
-        $url = sprintf( '%s/donation-receipt/%d', untrailingslashit( site_url() ), $donation_id );
+        $url = sprintf( '%s/donation-receipt/%d', untrailingslashit( home_url() ), $donation_id );
     }
     else {
-        $url = esc_url_raw( add_query_arg( array( 'donation_receipt' => 1, 'donation_id' => $donation_id ), site_url() ) );
+        $url = esc_url_raw( add_query_arg( array( 'donation_receipt' => 1, 'donation_id' => $donation_id ), home_url() ) );
     }
     
     return $url;
@@ -169,13 +169,13 @@ function charitable_get_donation_processing_page_permalink( $url, $args = array(
     $donation_id = isset( $args[ 'donation_id' ] ) ? $args[ 'donation_id' ] : get_the_ID();
 
     if ( $wp_rewrite->using_permalinks() ) {
-        $url = sprintf( '%s/donation-processing/%d', untrailingslashit( site_url() ), $donation_id );
+        $url = sprintf( '%s/donation-processing/%d', untrailingslashit( home_url() ), $donation_id );
     }
     else {
         $url = esc_url_raw( add_query_arg( array( 
             'donation_processing' => 1, 
             'donation_id' => $donation_id
-        ), site_url() ) );
+        ), home_url() ) );
     }
     
     return $url;
@@ -523,7 +523,7 @@ function charitable_user_can_access_receipt( Charitable_Donation $donation ) {
         $redirect = charitable_get_permalink( 'profile_page' );
     }
     else {
-        $redirect = site_url();
+        $redirect = home_url();
     }
 
     return apply_filters( 'charitable_signon_redirect_url', $redirect );

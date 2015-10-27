@@ -151,7 +151,7 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 	/**
 	 * Delete a row identified by the primary key.
 	 *
-	 * @param 	int 		$row_id
+	 * @param 	int $row_id
 	 * @access  public
 	 * @since   1.0.0
 	 * @return  bool
@@ -160,6 +160,23 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 		Charitable_Campaign::flush_donations_cache( $row_id );
 
 		return parent::delete( $row_id );
+	}
+
+	/**
+	 * Delete all campaign donation records for a given donation.
+	 *
+	 * @param 	int $donation_id
+	 * @access 	public
+	 * @static
+	 * @since 	1.2.0	 
+	 * @return 	bool
+	 */
+	public static function delete_donation_records( $donation_id ) {
+		foreach ( self::get_campaigns_for_donation( $donation_id ) as $campaign_id ) {
+			Charitable_Campaign::flush_donations_cache( $campaign_id );	
+		}
+
+		return parent::delete_by( 'donation_id', $donation_id );
 	}
 
 	/**
@@ -225,6 +242,24 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 				WHERE donation_id = %d;";
 
 		return $wpdb->get_var( $wpdb->prepare( $sql, intval( $donation_id ) ) );
+	}
+
+	/**
+	 * Return an array of 
+	 *
+	 * @global 	WPDB $wpdb
+	 * @return 	object
+	 * @access  public
+	 * @since 	1.2.0
+	 */
+	public function get_campaigns_for_donation( $donation_id ) {
+		global $wpdb;
+
+		$sql = "SELECT DISTINCT campaign_id 
+				FROM $this->table_name 
+				WHERE donation_id = %d;";
+
+		return $wpdb->get_col( $wpdb->prepare( $sql, intval( $donation_id ) ) );				
 	}
 
 	/**

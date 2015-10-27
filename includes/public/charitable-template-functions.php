@@ -510,7 +510,7 @@ if ( ! function_exists( 'charitable_template_donation_form_login' ) ) :
             return;
         }
 
-        charitable_template( 'donation-form/donor-fields/login-form.php', array( 'user' => $user ) );
+        charitable_template( 'donation-form/donor-fields/login-form.php' );
     }
 endif;
 
@@ -523,9 +523,10 @@ if ( ! function_exists( 'charitable_template_donation_form_donor_details' ) ) :
      * @since   1.0.0
      */
     function charitable_template_donation_form_donor_details( Charitable_Form $form ) {
-        $user = $form->get_user();
+        $user = $form->get_user();        
 
-        if ( ! $user ) {
+        /* Verify that the user is logged in and has all required fields filled out */
+        if ( ! $user || ! $form->user_has_required_fields() ) {
             return;
         }
 
@@ -542,7 +543,8 @@ if ( ! function_exists( 'charitable_template_donation_form_donor_fields_hidden_w
      * @since   1.0.0
      */
     function charitable_template_donation_form_donor_fields_hidden_wrapper_start( Charitable_Form $form ) {
-        if ( ! $form->get_user() ) {
+        /* Verify that the user is logged in and has all required fields filled out */
+        if ( ! $form->get_user()  || ! $form->user_has_required_fields() ) {
             return;
         }
 
@@ -559,7 +561,8 @@ if ( ! function_exists( 'charitable_template_donation_form_donor_fields_hidden_w
      * @since   1.0.0
      */
     function charitable_template_donation_form_donor_fields_hidden_wrapper_end( Charitable_Form $form ) {
-        if ( ! $form->get_user() ) {
+        /* Verify that the user is logged in and has all required fields filled out */
+        if ( ! $form->get_user()  || ! $form->user_has_required_fields() ) {
             return;
         }
 

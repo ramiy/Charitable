@@ -213,6 +213,7 @@ abstract class Charitable_DB {
 	/**
 	 * Update a row
 	 *
+	 * @global 	WPDB $wpdb
 	 * @param 	int 	$row_id
 	 * @param 	array 	$data
 	 * @param 	string 	$where 	Column used in where argument.
@@ -221,7 +222,6 @@ abstract class Charitable_DB {
 	 * @return  bool
 	 */
 	public function update( $row_id, $data = array(), $where = '' ) {
-
 		global $wpdb;
 
 		// Row ID must be positive integer
@@ -264,9 +264,6 @@ abstract class Charitable_DB {
 	 * @return  bool
 	 */
 	public function delete( $row_id = 0 ) {
-
-		global $wpdb;
-
 		// Row ID must be positive integer
 		$row_id = absint( $row_id );
 
@@ -274,11 +271,25 @@ abstract class Charitable_DB {
 			return false;
 		}
 
-		if ( false === $wpdb->query( $wpdb->prepare( "DELETE FROM $this->table_name WHERE $this->primary_key = %d", $row_id ) ) ) {
-			return false;
-		}
+		return $this->delete_by( $this->primary_key, $row_id );
+	}
 
-		return true;
+	/**
+	 * Delete a row identified by a specific column.
+	 *
+	 * @global 	WPDB $wpdb
+	 * @param 	string $column
+	 * @param 	mixed $row_id
+	 * @access  public
+	 * @since   1.2.0
+	 * @return  bool
+	 */
+	public function delete_by( $column, $row_id = 0 ) {
+		global $wpdb;
+
+		$result = $wpdb->query( $wpdb->prepare( "DELETE FROM $this->table_name WHERE $column = {$this->get_column_format($column)}", $row_id ) );
+
+		return false !== $result;
 	}
 
     /**

@@ -56,67 +56,6 @@ class Test_Charitable_Donation extends WP_UnitTestCase {
 	/**
 	 * @depends test_add_donation
 	 */
-	public function test_add_campaign_donations() {
-		$campaigns = array(
-			array( 
-				'campaign_id' 	=> $this->campaign_1->ID,
-				'campaign_name'	=> 'Test Campaign', 
-				'amount'		=> 10
-			)
-		);
-
-		$inserted = Charitable_Donation::add_campaign_donations( $campaigns, $this->user_id, $this->donor_id );
-
-		$this->assertEquals( 1, $inserted );
-	}
-
-	/**
-	 * @depends test_add_donation
-	 */
-	public function test_get_donor_id_for_donation() {
-		$args = array(
-			'donor_id' => $this->donor_id
-		);
-
-		$this->assertEquals( $this->donor_id, Charitable_Donation::get_donor_id_for_donation( $args ) );
-	}
-
-	/**
-	 * @depends test_add_donation
-	 * @depends test_get_donor_id_for_donation
-	 */
-	public function test_get_donor_id_for_donation_with_user_id() {
-		$args = array(
-			'user_id' => $this->user_id
-		);
-
-		$this->assertEquals( $this->donor_id, Charitable_Donation::get_donor_id_for_donation( $args ) );
-	}
-
-	/**
-	 * @depends test_add_donation
-	 * @depends test_get_donor_id_for_donation
-	 */
-	public function test_get_donor_id_for_donation_with_email() {
-		$args = array(
-			'email' => 'john.henry@example.com'
-		);
-
-		$this->assertGreaterThan( 0, Charitable_Donation::get_donor_id_for_donation( $args ) );
-	}
-
-	/**
-	 * @depends test_add_donation
-	 * @depends test_get_donor_id_for_donation
-	 * @expectedIncorrectUsage	Charitable_User::add_donor
-	 */
-	public function test_get_donor_id_for_donation_failure() {
-		Charitable_Donation::get_donor_id_for_donation( array() );
-	}	
-
-	/**
-	 * @depends test_add_campaign_donations
-	 */
 	public function test_get_ID() {
 		$donation_id = Charitable_Donation_Helper::create_donation( array(
 			'campaigns' => array(
@@ -134,7 +73,7 @@ class Test_Charitable_Donation extends WP_UnitTestCase {
 	}	
 
 	/**
-	 * @depends test_add_campaign_donations
+	 * @depends test_add_donation
 	 */
 	public function test_get_gateway() {
 		$donation_id = Charitable_Donation_Helper::create_donation( array(
@@ -154,7 +93,7 @@ class Test_Charitable_Donation extends WP_UnitTestCase {
 	}
 
 	/**
-	 * @depends test_add_campaign_donations
+	 * @depends test_add_donation
 	 */
 	public function test_get_total_donation_amount() {
 		$donation_id = Charitable_Donation_Helper::create_donation( array(
@@ -173,7 +112,7 @@ class Test_Charitable_Donation extends WP_UnitTestCase {
 	}
 
 	/**
-	 * @depends test_add_campaign_donations
+	 * @depends test_add_donation
 	 * @depends test_get_total_donation_amount
 	 */
 	public function test_get_total_donation_amount_multi_donation() {
@@ -198,7 +137,7 @@ class Test_Charitable_Donation extends WP_UnitTestCase {
 	}
 
 	/**
-	 * @depends test_add_campaign_donations
+	 * @depends test_add_donation
 	 * @depends test_get_total_donation_amount
 	 */
 	public function test_get_campaign_donations() {
@@ -218,7 +157,7 @@ class Test_Charitable_Donation extends WP_UnitTestCase {
 	}
 
 	/**
-	 * @depends test_add_campaign_donations
+	 * @depends test_add_donation
 	 * @depends test_get_total_donation_amount
 	 * @depends test_get_campaign_donations
 	 */
@@ -244,7 +183,7 @@ class Test_Charitable_Donation extends WP_UnitTestCase {
 	}	
 
 	/**
-	 * @depends test_add_campaign_donations
+	 * @depends test_add_donation
 	 */
 	public function test_get_notes() {
 		$donation_id = Charitable_Donation_Helper::create_donation( array(
@@ -264,7 +203,7 @@ class Test_Charitable_Donation extends WP_UnitTestCase {
 	}
 
 	/**
-	 * @depends test_add_campaign_donations
+	 * @depends test_add_donation
 	 */
 	public function test_get_status() {
 		$donation_id = Charitable_Donation_Helper::create_donation( array(
@@ -284,7 +223,7 @@ class Test_Charitable_Donation extends WP_UnitTestCase {
 	}
 
 	/**
-	 * @depends test_add_campaign_donations
+	 * @depends test_add_donation
 	 */
 	public function test_get_donor() {
 		$donation_id = Charitable_Donation_Helper::create_donation( array(
@@ -304,7 +243,7 @@ class Test_Charitable_Donation extends WP_UnitTestCase {
 	}
 
 	/**
-	 * @depends test_add_campaign_donations
+	 * @depends test_add_donation
 	 */
 	public function test_get_donation_log() {
 		$donation_id = Charitable_Donation_Helper::create_donation( array(
@@ -322,7 +261,7 @@ class Test_Charitable_Donation extends WP_UnitTestCase {
 	}	
 
 	/**
-	 * @depends test_add_campaign_donations
+	 * @depends test_add_donation
 	 * @depends test_get_donation_log
 	 */
 	public function test_update_donation_log() {
@@ -343,7 +282,7 @@ class Test_Charitable_Donation extends WP_UnitTestCase {
 	}		
 
 	/**
-	 * @depends test_add_campaign_donations
+	 * @depends test_add_donation
 	 */
 	public function test_update_status() {
 		$donation_id = Charitable_Donation_Helper::create_donation( array(
