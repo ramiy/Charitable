@@ -99,7 +99,7 @@ class Charitable_Campaigns {
 	/**
 	 * A method used to join the campaign donations table on the campaigns query. 
 	 *
-	 * @param 	string 	$join_statement
+	 * @param 	string $join_statement
 	 * @return  string
 	 * @access  public
 	 * @static
@@ -107,7 +107,17 @@ class Charitable_Campaigns {
 	 */
 	public static function join_campaign_donations_table( $join_statement ) {
 		global $wpdb;
-		$join_statement .= " LEFT JOIN {$wpdb->prefix}charitable_campaign_donations cd ON cd.campaign_id = $wpdb->posts.ID ";
+
+		$statuses = Charitable_Donation::get_approval_statuses();
+		$statuses = array_filter( $statuses, array( 'Charitable_Donation', 'is_valid_donation_status' ) );
+		$statuses = "'" . implode( "','", $statuses ) . "'";
+
+		$join_statement .= " LEFT JOIN ( SELECT cd1.campaign_donation_id, cd1.donation_id, cd1.donor_id, cd1.amount, cd1.campaign_id
+			FROM {$wpdb->prefix}charitable_campaign_donations cd1 
+			INNER JOIN $wpdb->posts po1 ON cd1.donation_id = po1.ID
+			WHERE po1.post_status IN ( $statuses )
+		) cd ON cd.campaign_id = $wpdb->posts.ID";
+
 		return $join_statement;
 	}
 
@@ -121,6 +131,7 @@ class Charitable_Campaigns {
 	 */
 	public static function groupby_campaign_id() {
 		global $wpdb;
+
 		return "$wpdb->posts.ID";
 	}
 
@@ -132,7 +143,7 @@ class Charitable_Campaigns {
 	 * @static
 	 * @since   1.0.0
 	 */
-	public static function orderby_campaign_donation_amount() {
+	public static function orderby_campaign_donation_amount() {		
 		return "COALESCE(SUM(cd.amount), 0) DESC";
 	}
 }

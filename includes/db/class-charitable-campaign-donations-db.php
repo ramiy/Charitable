@@ -172,7 +172,7 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 	 * @return 	bool
 	 */
 	public static function delete_donation_records( $donation_id ) {
-		foreach ( self::get_campaigns_for_donation( $donation_id ) as $campaign_id ) {
+		foreach ( charitable_get_table( 'campaign_donations' )->get_campaigns_for_donation( $donation_id ) as $campaign_id ) {
 			Charitable_Campaign::flush_donations_cache( $campaign_id );	
 		}
 
@@ -272,13 +272,12 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 	 */
 	public function get_donations_on_campaign( $campaign_id ){
 		global $wpdb;
-		return $wpdb->get_results( 
-			$wpdb->prepare( 
-				"SELECT * 
+
+		$sql = "SELECT * 
 				FROM $this->table_name 
-				WHERE campaign_id = %d;", 
-				$campaign_id 
-			), OBJECT_K);
+				WHERE campaign_id = %d;";
+
+		return $wpdb->get_results( $wpdb->prepare( $sql, $campaign_id ), OBJECT_K );
 	}
 
 	/**
@@ -484,10 +483,10 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 	 *
 	 * @param 	boolean $include_all 	If true, will return a blank string. 
 	 * @return  string
-	 * @access  private
+	 * @access  public
 	 * @since   1.0.0
 	 */
-	private function get_donation_status_clause( $statuses = array() ) {
+	public function get_donation_status_clause( $statuses = array() ) {
 		if ( empty( $statuses ) ) {
 			return array( "", array() );
 		}
@@ -502,6 +501,6 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 
 		return $clause;
 	}
-}	
+}
 
 endif;
