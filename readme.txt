@@ -109,6 +109,7 @@ You can post in the [support forum](https://wordpress.org/support/plugin/charita
 
 = 1.2.0 = 
 * Change the highlight colour via the WordPress Customizer. You can preview your changes as you make them. 
+* All donation data is now displayed in the admin donation page.
 * You can now change the campaign creator via the Campaign management page.
 * Adds a login link to the donation form when donors are not logged in.
 * When a user is logged in but has not filled out all required fields, they are presented with all the user fields.

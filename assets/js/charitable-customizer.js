@@ -8,9 +8,9 @@
             .append( "#charitable-donation-form .donation-amount.selected, .charitable-notice { border-color: " + colour + ";}" );
     };    
 
-    wp.customize( 'charitable_highlight_colour', function( value ) {
+    wp.customize( 'charitable_settings[highlight_colour]', function( value ) {
         value.bind( function( newval ) {
-            update_highlight_colour( newval, 'charitable_highlight_colour' );
+            update_highlight_colour( newval );
         });
     });
 

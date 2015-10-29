@@ -87,6 +87,7 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
         
         add_filter( 'charitable_form_field_template', array( $this, 'use_custom_templates' ), 10, 2 );
         add_filter( 'charitable_donation_form_gateway_fields', array( $this, 'add_credit_card_fields' ), 10, 2 );        
+        add_filter( 'charitable_donation_form_user_fields', array( $this, 'hide_non_required_user_fields' ) );
         add_action( 'charitable_donation_form_after_user_fields', array( $this, 'add_password_field' ) );        
 
         $this->setup_payment_fields();
@@ -245,6 +246,29 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
         uasort( $user_fields, 'charitable_priority_sort' );
 
         return $user_fields;
+    }
+
+    /**
+     * Only show the required user fields if that option was enabled by the site admin. 
+     *
+     * @return  array[]
+     * @access  public
+     * @since   1.2.0
+     */
+    public function hide_non_required_user_fields( $fields ) {
+        if ( ! charitable_get_option( 'donation_form_minimal_fields', false ) ) {
+            return $fields;
+        }
+
+        foreach ( $fields as $key => $field ) {
+            if ( isset( $field[ 'required' ] ) && $field[ 'required' ] ) {
+                continue;
+            }
+
+            unset( $fields[ $key ] );
+        }
+
+        return $fields;
     }
 
     /**

@@ -87,13 +87,13 @@ class Charitable_Customizer {
         $fields = apply_filters( 'charitable_customizer_fields', array(
             'title'     => __( 'Charitable', 'charitable' ), 
             'priority'  => 1000,
-            'capability'=> 'edit_theme_options',
-            'sections'  => array(
+            'capability'=> 'manage_charitable_settings',
+            'sections'  => array(                
                 'charitable_design' => array(
-                    'title'     => __( 'Design', 'charitable' ), 
-                    'priority'  => 1100,            
-                    'settings'  => array(
-                        'charitable_highlight_colour' => array(
+                    'title'     => __( 'Design Options', 'charitable' ),
+                    'priority'  => 1010,
+                    'settings'  => array(                
+                        'highlight_colour' => array(
                             'setting'   => array(
                                 'transport'         => 'postMessage', 
                                 'default'           => $highlight_colour,
@@ -106,11 +106,60 @@ class Charitable_Customizer {
                             )
                         )
                     )
-                )                
-            )            
+                ), 
+                'charitable_donation_form' => array(
+                    'title'     => __( 'Donation Form', 'charitable' ), 
+                    'priority'  => 1020,
+                    'settings'  => array(
+                        'donation_form_display' => array(
+                            'setting' => array(
+                                'transport'         => 'refresh', 
+                                'default'           => 'separate_page',
+                                'sanitize_callback' => array( $this, 'sanitize_donation_form_display_option' )
+                            ),
+                            'control' => array(
+                                'type'              => 'select',
+                                'label'             => __( 'How do you want a campaign\'s donation form to show?', 'charitable' ),
+                                'priority'          => 1022,
+                                'choices'           => array(
+                                    'separate_page' => __( 'Show on a Separate Page', 'charitable' ), 
+                                    'same_page'     => __( 'Show on the Same Page', 'charitable' ),
+                                    'modal'         => __( 'Reveal in a Modal', 'charitable' )
+                                )                                
+                            )
+                        ),
+                        'donation_form_minimal_fields' => array(
+                            'setting' => array(
+                                'transport'         => 'refresh',
+                                'default'           => 0
+                            ),
+                            'control' => array(
+                                'type'              => 'radio',
+                                'label'             => __( 'Only show required fields', 'charitable' ),
+                                'priority'          => 1024,
+                                'choices'           => array(
+                                    1 => __( 'Yes', 'charitable' ), 
+                                    0 => __( 'No', 'charitable' )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
         ) );
 
         $this->add_panel( 'charitable', $fields );
+    }
+
+    /**
+     * Make sure the donation form display option is valid. 
+     *
+     * @return  boolean
+     * @access  public
+     * @since   1.2.0
+     */
+    public function sanitize_donation_form_display_option( $option ) {
+        return in_array( $option, array( 'separate_page', 'same_page', 'modal' ) );
     }
 
     /**
@@ -210,7 +259,9 @@ class Charitable_Customizer {
         foreach ( $settings as $setting_id => $setting ) {
             if ( ! isset( $setting[ 'setting' ][ 'type' ] ) ) {
                 $setting[ 'setting' ][ 'type' ] = 'option';
-            }            
+            }
+
+            $setting_id = "charitable_settings[$setting_id]";
 
             $wp_customize->add_setting( $setting_id, $setting[ 'setting' ] );        
 

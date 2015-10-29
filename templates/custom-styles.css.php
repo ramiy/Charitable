@@ -12,7 +12,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-$highlight_colour = get_option( 'charitable_highlight_colour', apply_filters( 'charitable_default_highlight_colour', '#f89d35' ) );
+$highlight_colour = charitable_get_option( 'highlight_colour', apply_filters( 'charitable_default_highlight_colour', '#f89d35' ) );
 
 ?>
 <style id="charitable-highlight-colour-styles">
