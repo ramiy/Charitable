@@ -44,7 +44,6 @@ final class Charitable_Donation_Post_Type extends Charitable_Start_Object {
 
         add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
         add_action( 'add_meta_boxes', array( $this, 'remove_meta_boxes' ), 20 );
-        // add_action( 'save_post_' . Charitable::DONATION_POST_TYPE, array( $this, 'save_donation' ) );
         add_action( 'transition_post_status', array( $this, 'handle_donation_status_change' ), 10, 3 );
 
         // Add fields to the dashboard listing of donations.
@@ -133,12 +132,24 @@ final class Charitable_Donation_Post_Type extends Charitable_Start_Object {
      */
     private function get_meta_boxes() {
         $meta_boxes = array(
-            'donation-details'  => array( 
-                'title'         => __( 'Donation Details', 'charitable' ), 
+            'donation-overview'  => array( 
+                'title'         => __( 'Donation Overview', 'charitable' ), 
                 'context'       => 'normal', 
                 'priority'      => 'high', 
-                'view'          => 'metaboxes/donation-details'
-            )
+                'view'          => 'metaboxes/donation/donation-overview'
+            ),             
+            'donation-details'     => array(
+                'title'         => __( 'Donation Details', 'charitable' ), 
+                'context'       => 'side',
+                'priority'      => 'high',
+                'view'          => 'metaboxes/donation/donation-details'
+            ), 
+            'donation-log'      => array(
+                'title'         => __( 'Donation Log', 'charitable' ), 
+                'context'       => 'normal',
+                'priority'      => 'low',
+                'view'          => 'metaboxes/donation/donation-log'
+            ), 
         );
 
         return apply_filters( 'charitable_donation_meta_boxes', $meta_boxes );  

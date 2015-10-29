@@ -12,7 +12,7 @@ body.post-type-donation {
     }
 }
 
-#donation-details {    
+#donation-overview {    
 
     .charitable-metabox {
         @include clearfix;
@@ -61,7 +61,7 @@ body.post-type-donation {
         font-weight: bolder;
     }
 
-    table#details {
+    table#overview {
         float: left;
         width: 100%;
         border-spacing: 0;
@@ -107,4 +107,36 @@ body.post-type-donation {
             text-align: right;
         }
     }
+}
+
+#donation-details, 
+#donation-log {
+    padding: 12px 8px;
+}
+
+#donation-details {
+    dt {
+        font-weight: bold;
+        margin-bottom: 0.5em;
+    }
+
+    dd {
+        margin: 0 0 1em;
+        padding-bottom: 1em;
+        border-bottom: 1px solid #e5e5e5;
+        &:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+    }
+}
+
+#donation-log {
+    thead th {
+        background: #f8f8f8;
+    }
+
+    tbody td {
+        border-bottom: 1px solid #e5e5e5;
+    }    
 }

@@ -296,22 +296,30 @@ class Charitable_User extends WP_User {
     /**
      * Returns printable address of donor. 
      *
+     * @param   $donation_id Optional. If set, will return the address provided for the specific donation. Otherwise, returns the current address for the user. 
      * @return  string
      * @access  public
      * @since   1.0.0
      */
-    public function get_address() {
-        $address_fields = apply_filters( 'charitable_user_address_fields', array(
-            'first_name'    => $this->get( 'first_name' ),
-            'last_name'     => $this->get( 'last_name' ),
-            'company'       => $this->get( 'donor_company' ),
-            'address'       => $this->get( 'donor_address' ),
-            'address_2'     => $this->get( 'donor_address_2' ),
-            'city'          => $this->get( 'donor_city' ),
-            'state'         => $this->get( 'donor_state' ),
-            'postcode'      => $this->get( 'donor_postcode' ),
-            'country'       => $this->get( 'donor_country' )
-        ), $this );
+    public function get_address( $donation_id = "" ) {
+        if ( $donation_id ) {            
+            $address_fields = get_post_meta( $donation_id, 'donor', true );
+        }
+        else {
+            $address_fields = array(
+                'first_name'    => $this->get( 'first_name' ),
+                'last_name'     => $this->get( 'last_name' ),
+                'company'       => $this->get( 'donor_company' ),
+                'address'       => $this->get( 'donor_address' ),
+                'address_2'     => $this->get( 'donor_address_2' ),
+                'city'          => $this->get( 'donor_city' ),
+                'state'         => $this->get( 'donor_state' ),
+                'postcode'      => $this->get( 'donor_postcode' ),
+                'country'       => $this->get( 'donor_country' )
+            );
+        }
+
+        $address_fields = apply_filters( 'charitable_user_address_fields', $address_fields, $this, $donation_id );
 
         return charitable_get_location_helper()->get_formatted_address( $address_fields );
     }

@@ -78,13 +78,13 @@ class Charitable_Donation {
      */
     public function __construct( $donation ) {
         if ( is_a( $donation, 'WP_Post' ) ) {
-            $this->donation_id          = $donation->ID;
-            $this->donation_data        = $donation;    
+            $this->donation_id = $donation->ID;
+            $this->donation_data = $donation;    
         }
         else {
-            $this->donation_id          = $donation;
-            $this->donation_data        = get_post( $donation );        
-        }       
+            $this->donation_id = $donation;
+            $this->donation_data = get_post( $donation );
+        }
     }
 
     /**
@@ -365,6 +365,68 @@ class Charitable_Donation {
         }
 
         return $this->donor;
+    }
+
+    /**
+     * Returns the donor address. 
+     *
+     * @return  string
+     * @access  public
+     * @since   1.2.0
+     */
+    public function get_donor_address() {
+        return $this->get_donor()->get_address( $this->donation_id );
+    }
+
+    /**
+     * Return an array of meta relating to the donation.  
+     *
+     * @return  mixed[]
+     * @access  public
+     * @since   1.2.0
+     */
+    public function get_donation_meta() {
+        $donor = $this->get_donor_data();
+        $date_format = get_option( 'date_format' );
+        $time_format = get_option( 'time_format' );
+        $date_time_format = "$date_format - $time_format";
+
+        $meta = array(
+            'date_time' => array(
+                'label' => __( 'Date &amp; Time', 'charitable' ),
+                'value' => date_i18n( $date_time_format, strtotime( $this->__get( 'post_date' ) ) )
+            ),
+            'donor' => array(
+                'label' => __( 'Donor', 'charitable' ),
+                'value' => rtrim( sprintf( '%s %s', $donor[ 'first_name' ], $donor[ 'last_name' ] ) )
+            ), 
+            'donor_email' => array(
+                'label' => __( 'Email', 'charitable' ), 
+                'value' => $donor[ 'email' ]
+            ), 
+            'donor_address' => array(
+                'label' => __( 'Address', 'charitable' ), 
+                'value' => $this->get_donor_address()
+            ),
+            'donor_phone' => array(
+                'label' => __( 'Phone Number', 'charitable' ), 
+                'value' => $donor[ 'phone' ]
+            ),
+            'gateway' => array(
+                'label' => __( 'Payment Method', 'charitable' ), 
+                'value' => $this->get_gateway_label()
+            ),
+            'donation_key' => array(
+                'label' => __( 'Donation Key', 'charitable' ), 
+                'value' => $this->get_donation_key()
+            ), 
+            'test_mode_donation' => array(
+                'label' => __( 'Donation made in test mode?', 'charitable' ), 
+                'value' => get_post_meta( $this->donation_id, 'test_mode', true ) ? 'Yes' : 'No'
+            )
+        );
+
+        return apply_filters( 'charitable_donation_admin_meta', $meta, $this );
     }
     
     /**

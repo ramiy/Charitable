@@ -11,7 +11,7 @@ $donation = new Charitable_Donation( $post );
 $donor = $donation->get_donor();
 
 ?>
-<div id="charitable-donation-details-metabox" class="charitable-metabox">
+<div id="charitable-donation-overview-metabox" class="charitable-metabox">
     <div id="donor" class="charitable-media-block">
         <div class="donor-avatar charitable-media-image">
             <?php echo $donor->get_avatar( 80 ) ?>
@@ -36,7 +36,7 @@ $donor = $donation->get_donor();
             __( 'Status', 'charitable' ), 
             $donation->get_status( true ) ) ?></span>
     </div>
-    <table id="details">
+    <table id="overview">
         <thead>
             <tr>
                 <th class="col-campaign-name"><?php _e( 'Campaign', 'charitable' ) ?></th>
