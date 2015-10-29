@@ -39,7 +39,7 @@ final class Charitable_Campaign_Post_Type extends Charitable_Start_Object {
         add_action( 'add_meta_boxes',                               array( $this, 'add_meta_boxes' ), 10);
         add_action( 'add_meta_boxes_campaign',                      array( $this, 'wrap_editor' ) );
         add_action( 'edit_form_after_title',                        array( $this, 'campaign_form_top' ) );
-        add_action( 'save_post',                                    array( $this, 'save_post' ), 10, 2);
+        add_action( 'save_post_' . Charitable::CAMPAIGN_POST_TYPE, array( $this, 'save_campaign' ), 10, 2);
         add_action( 'charitable_campaign_donation_options_metabox', array( $this, 'campaign_donation_options_metabox' ));
         add_filter( 'enter_title_here',                             array( $this, 'campaign_enter_title' ), 10, 2 );
         add_filter( 'get_user_option_meta-box-order_campaign',      '__return_false' );
@@ -237,38 +237,39 @@ final class Charitable_Campaign_Post_Type extends Charitable_Start_Object {
     /**
      * Save meta for the campaign. 
      * 
-     * @param   int         $post_id    Post ID.
-     * @param   WP_Post     $post       Post object.
+     * @param   int $campaign_id
+     * @param   WP_Post $post
      * @return  void
      * @access  public 
      * @since   1.0.0
      */
-    public function save_post( $post_id, WP_Post $post ) {
-        if ( $this->meta_box_helper->user_can_save( $post ) ) {
-                    
-            $meta_keys = apply_filters( 'charitable_campaign_meta_keys', array(
-                '_campaign_end_date', 
-                '_campaign_goal', 
-                '_campaign_suggested_donations',
-                '_campaign_allow_custom_donations',
-                '_campaign_description'
-            ) );            
-
-            $submitted = $_POST;
-
-            foreach ( $meta_keys as $key ) {
-
-                $value = isset( $submitted[ $key ] ) ? $submitted[ $key ] : false;
-
-                $value = apply_filters( 'charitable_sanitize_campaign_meta', $value, $key, $submitted );
-
-                update_post_meta( $post_id, $key, $value );
-
-            }
-
-            /* Hook for plugins to do something else with the posted data */
-            do_action( 'charitable_campaign_save', $post );
+    public function save_campaign( $campaign_id, WP_Post $post ) {
+        if ( ! $this->meta_box_helper->user_can_save( $campaign_id ) ) {
+            return;
         }
+            
+        $meta_keys = apply_filters( 'charitable_campaign_meta_keys', array(
+            '_campaign_end_date', 
+            '_campaign_goal', 
+            '_campaign_suggested_donations',
+            '_campaign_allow_custom_donations',
+            '_campaign_description'
+        ) );            
+
+        $submitted = $_POST;
+
+        foreach ( $meta_keys as $key ) {
+
+            $value = isset( $submitted[ $key ] ) ? $submitted[ $key ] : false;
+
+            $value = apply_filters( 'charitable_sanitize_campaign_meta', $value, $key, $submitted );
+
+            update_post_meta( $campaign_id, $key, $value );
+
+        }
+
+        /* Hook for plugins to do something else with the posted data */
+        do_action( 'charitable_campaign_save', $post );
     }   
 
     /**

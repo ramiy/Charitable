@@ -43,7 +43,9 @@ final class Charitable_Donation_Post_Type extends Charitable_Start_Object {
         $this->meta_box_helper = new Charitable_Meta_Box_Helper( 'charitable-donation' );
 
         add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
-        add_action( 'add_meta_boxes', array( $this, 'remove_meta_boxes' ), 20 );       
+        add_action( 'add_meta_boxes', array( $this, 'remove_meta_boxes' ), 20 );
+        // add_action( 'save_post_' . Charitable::DONATION_POST_TYPE, array( $this, 'save_donation' ) );
+        add_action( 'transition_post_status', array( $this, 'handle_donation_status_change' ), 10, 3 );
 
         // Add fields to the dashboard listing of donations.
         add_filter( 'manage_edit-donation_columns',         array( $this, 'dashboard_columns' ), 11, 1 );
@@ -95,6 +97,31 @@ final class Charitable_Donation_Post_Type extends Charitable_Start_Object {
                 }                
             }
         }
+    }
+    
+    /**
+     * Respond to changes in donation status. 
+     *
+     * @param   string $new_status
+     * @param   string $old_status
+     * @param   WP_Post $post
+     * @return  void
+     * @access  public
+     * @since   1.2.0
+     */
+    public function handle_donation_status_change( $new_status, $old_status, $post ) {
+        if ( Charitable::DONATION_POST_TYPE != $post->post_type ) {
+            return;
+        }
+
+        $valid_statuses = Charitable_Donation::get_valid_donation_statuses();
+
+        $message = sprintf( __( 'Donation status updated from %s to %s.', 'charitable' ), 
+            $valid_statuses[$old_status], 
+            $valid_statuses[$new_status] 
+        );
+
+        Charitable_Donation::update_donation_log( $post->ID, $message );
     }
 
     /**

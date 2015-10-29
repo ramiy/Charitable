@@ -497,8 +497,6 @@ class Charitable_Donation {
             }
         }
 
-        $valid_statuses = self::get_valid_donation_statuses();
-
         $old_status = $this->get_status();      
 
         if ( $old_status == $new_status ) {
@@ -507,11 +505,8 @@ class Charitable_Donation {
 
         /* This actually updates the post status */
         $this->donation_data->post_status = $new_status;
-        $donation_id = wp_update_post( $this->donation_data );
 
-        self::update_donation_log( $donation_id, sprintf( __( 'Donation status updated from %s to %s.', 'charitable' ), $valid_statuses[$old_status], $valid_statuses[$new_status] ) );
-
-        do_action( 'charitable_after_update_donation', $donation_id, $new_status );
+        $donation_id = wp_update_post( $this->donation_data );                
 
         return $donation_id;
     }

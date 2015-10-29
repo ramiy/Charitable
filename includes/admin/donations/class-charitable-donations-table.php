@@ -312,11 +312,15 @@ class Charitable_Donations_Table extends WP_List_Table {
      */
     public function column_amount( $donation ) {
         $donation = charitable_get_donation( $donation->ID );
-        $value = sprintf( '%s<span class="meta">%s %s</span>', 
-            charitable()->get_currency_helper()->get_monetary_amount( $donation->get_total_donation_amount() ),
-            _x( 'via', 'paid via method', 'charitable' ),
-            $donation->get_gateway_object() ? $donation->get_gateway_object()->get_name() : $donation->get_gateway()
+
+        $gateway = $donation->get_gateway_object() ? $donation->get_gateway_object()->get_name() : $donation->get_gateway();
+        $method = sprintf( _x( 'via %s', 'via payment method', 'charitable' ), $gateway );
+
+        $value = sprintf( '%s<span class="meta">%s</span>', 
+            charitable_format_money( $donation->get_total_donation_amount() ),
+            $method
         );
+        
         return apply_filters( 'charitable_donations_table_column', $value, $donation->ID, 'amount' );
     }
 

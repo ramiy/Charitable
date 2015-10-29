@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  * @see Charitable_Email_Donation_Receipt::send_with_donation_id()
  */
 add_action( 'charitable_after_save_donation', array( 'Charitable_Email_Donation_Receipt', 'send_with_donation_id' ) );
-add_action( 'charitable_after_update_donation', array( 'Charitable_Email_Donation_Receipt', 'send_with_donation_id' ) );
+add_action( 'save_post_' . Charitable::DONATION_POST_TYPE, array( 'Charitable_Email_Donation_Receipt', 'send_with_donation_id' ) );
 
 /**
  * Send the Donation Notification email. 
@@ -31,7 +31,7 @@ add_action( 'charitable_after_update_donation', array( 'Charitable_Email_Donatio
  * @see Charitable_Email_New_Donation::send_with_donation_id()
  */
 add_action( 'charitable_after_save_donation', array( 'Charitable_Email_New_Donation', 'send_with_donation_id' ) );
-add_action( 'charitable_after_update_donation', array( 'Charitable_Email_New_Donation', 'send_with_donation_id' ) );
+add_action( 'save_post_' . Charitable::DONATION_POST_TYPE, array( 'Charitable_Email_New_Donation', 'send_with_donation_id' ) );
 
 /**
  * Send the Campaign Ended email.

@@ -53,15 +53,11 @@ add_action( 'wp_ajax_nopriv_add_donation', array( 'Charitable_Donation_Processor
 add_action( 'charitable_make_donation_streamlined', array( 'Charitable_Donation_Processor', 'make_donation_streamlined' ) );
 
 /**
- * Donation status change.
+ * Donation update.
  * 
  * @see Charitable_Donation::flush_campaigns_donation_cache
  */
-add_action( 'charitable_after_update_donation', array( 'Charitable_Donation', 'flush_campaigns_donation_cache' ) );
-
-foreach ( Charitable_Donation::get_valid_donation_statuses() as $status => $label ) {
-    add_action( $status . '_donation', array( 'Charitable_Donation', 'flush_campaigns_donation_cache' ) );
-}
+add_action( 'save_post_' . Charitable::DONATION_POST_TYPE, array( 'Charitable_Donation', 'flush_campaigns_donation_cache' ) );
 
 /**
  * Delete a donation.
