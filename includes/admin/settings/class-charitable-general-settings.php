@@ -190,6 +190,20 @@ final class Charitable_General_Settings {
                     )
                 ),
                 'help'              => __( 'Allow users to register via the default WordPress login or via a static page. The static page should contain the <code>[charitable_registration]</code> shortcode.', 'charitable' )
+            ), 
+            'donation_receipt_page' => array(
+                'title'             => __( 'Donation Receipt Page', 'charitable' ), 
+                'type'              => 'select', 
+                'priority'          => 38, 
+                'default'           => 'auto',
+                'options'           => array(
+                    'auto'          => __( 'Automatic', 'charitable' ),
+                    'pages'         => array(
+                        'options'   => charitable_get_admin_settings()->get_pages(),
+                        'label'     => __( 'Choose a Static Page', 'charitable' )
+                    )
+                ),
+                'help'              => __( 'Choose the page that users will be redirected to after donating. Leave it set to automatic to use the built-in Charitable receipt. If you choose a static page, it should contain the <code>[donation_receipt]</code> shortcode.', 'charitable' )
             )
         );
 

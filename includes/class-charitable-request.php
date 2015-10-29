@@ -178,7 +178,7 @@ final class Charitable_Request extends Charitable_Start_Object {
 			$this->donation = $donation_id ? new Charitable_Donation( $donation_id ) : false;
 
 		}
-		
+	
 		return $this->donation;
 	}
 
@@ -190,7 +190,13 @@ final class Charitable_Request extends Charitable_Start_Object {
 	 * @since   1.0.0
 	 */
 	public function get_current_donation_id() {
-		return get_query_var( 'donation_id', 0 );
+		$donation_id = get_query_var( 'donation_id', 0 );
+
+		if ( ! $donation_id && isset( $_GET[ 'donation_id' ] ) ) {
+			$donation_id = $_GET[ 'donation_id' ];
+		}
+
+		return $donation_id;
 	}
 }
 

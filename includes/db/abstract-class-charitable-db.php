@@ -286,7 +286,7 @@ abstract class Charitable_DB {
 	 */
 	public function delete_by( $column, $row_id = 0 ) {
 		global $wpdb;
-
+		
 		$result = $wpdb->query( $wpdb->prepare( "DELETE FROM $this->table_name WHERE $column = {$this->get_column_format($column)}", $row_id ) );
 
 		return false !== $result;

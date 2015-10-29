@@ -232,12 +232,13 @@ class Charitable {
         require_once( $includes_path . 'public/class-charitable-user-dashboard.php' );
 
         /* Shortcodes */
-        require_once( $includes_path . 'shortcodes/class-charitable-shortcodes.php' );
         require_once( $includes_path . 'shortcodes/class-charitable-campaigns-shortcode.php' );
         require_once( $includes_path . 'shortcodes/class-charitable-my-donations-shortcode.php' );
+        require_once( $includes_path . 'shortcodes/class-charitable-donation-receipt-shortcode.php' );
         require_once( $includes_path . 'shortcodes/class-charitable-login-shortcode.php' );
         require_once( $includes_path . 'shortcodes/class-charitable-registration-shortcode.php' );
         require_once( $includes_path . 'shortcodes/class-charitable-profile-shortcode.php' );
+        require_once( $includes_path . 'shortcodes/charitable-shortcodes-hooks.php' );
 
         /* Widgets */
         require_once( $includes_path . 'widgets/class-charitable-widgets.php' );
@@ -270,7 +271,6 @@ class Charitable {
         add_action('charitable_start', array( 'Charitable_Gateways', 'charitable_start' ), 3 ); 
         add_action('charitable_start', array( 'Charitable_Emails', 'charitable_start' ), 3 ); 
         add_action('charitable_start', array( 'Charitable_Request', 'charitable_start' ), 3 );
-        add_action('charitable_start', array( 'Charitable_Shortcodes', 'charitable_start' ), 3 );
         add_action('charitable_start', array( 'Charitable_User_Dashboard', 'charitable_start' ), 3 );
         add_action('charitable_start', array( 'Charitable_Cron', 'charitable_start' ), 3 );
         add_action('charitable_start', array( 'Charitable_i18n', 'charitable_start' ), 3 );

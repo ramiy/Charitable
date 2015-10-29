@@ -136,7 +136,13 @@ add_filter( 'charitable_permalink_campaign_donation_page', 'charitable_get_campa
 function charitable_get_donation_receipt_page_permalink( $url, $args = array() ) {    
     global $wp_rewrite;
 
+    $receipt_page = charitable_get_option( 'donation_receipt_page', 'auto' );    
+
     $donation_id = isset( $args[ 'donation_id' ] ) ? $args[ 'donation_id' ] : get_the_ID();
+
+    if ( 'auto' != $receipt_page ) {
+        return esc_url_raw( add_query_arg( array( 'donation_id' => $donation_id ), get_permalink( $receipt_page ) ) );
+    }
 
     if ( $wp_rewrite->using_permalinks() ) {
         $url = sprintf( '%s/donation-receipt/%d', untrailingslashit( home_url() ), $donation_id );
@@ -273,6 +279,14 @@ add_filter( 'charitable_is_page_campaign_widget_page', 'charitable_is_campaign_w
  */
 function charitable_is_donation_receipt_page( $ret = false, $args = array()  ) {		
 	global $wp_query;
+
+    $receipt_page = charitable_get_option( 'donation_receipt_page', 'auto' );
+
+    if ( 'auto' != $receipt_page ) {    
+
+        return is_page( $receipt_page );
+        
+    }
 
 	$ret = is_main_query() && isset ( $wp_query->query_vars[ 'donation_receipt' ] ) && isset ( $wp_query->query_vars[ 'donation_id' ] );
 

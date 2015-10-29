@@ -172,11 +172,13 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 	 * @return 	bool
 	 */
 	public static function delete_donation_records( $donation_id ) {
-		foreach ( charitable_get_table( 'campaign_donations' )->get_campaigns_for_donation( $donation_id ) as $campaign_id ) {
+		$table = charitable_get_table( 'campaign_donations' );
+
+		foreach ( $table->get_campaigns_for_donation( $donation_id ) as $campaign_id ) {
 			Charitable_Campaign::flush_donations_cache( $campaign_id );	
 		}
 
-		return parent::delete_by( 'donation_id', $donation_id );
+		return $table->delete_by( 'donation_id', $donation_id );
 	}
 
 	/**

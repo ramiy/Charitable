@@ -401,7 +401,25 @@ if ( ! function_exists( 'charitable_template_donation_receipt_content' ) ) :
             return $content;
         }
 
-        $donation = charitable_get_current_donation();        
+        /* If we are NOT using the automatic option, this is a static page with the shortcode, so don't filter again. */
+        if ( 'auto' != charitable_get_option( 'donation_receipt_page', 'auto' ) ) {
+            return $content;
+        }
+
+        return charitable_template_donation_receipt_output( $content );
+    }
+endif;
+
+if ( ! function_exists( 'charitable_template_donation_receipt_output' ) ) :
+    /**
+     * Render the donation receipt. This can be used by the [donation_receipt] shortcode or through `the_content` filter.
+     *
+     * @param   string  $content
+     * @return  string
+     * @since   1.0.0
+     */
+    function charitable_template_donation_receipt_output( $content ) {
+        $donation = charitable_get_current_donation();
 
         if ( ! $donation ) {
             return $content;

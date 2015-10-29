@@ -55,6 +55,10 @@ class Charitable_Templates extends Charitable_Start_Object {
 	public function donation_receipt_template( $template ) {		
 		if ( charitable_is_page( 'donation_receipt_page' ) ) {
 
+			if ( 'auto' != charitable_get_option( 'donation_receipt_page', 'auto' ) ) {
+				return $template;
+			}
+
 			new Charitable_Ghost_Page( 'donation-receipt-page', array(
 				'title' 	=> __( 'Your Receipt', 'charitable' ),
 				'content' 	=> sprintf( '<p>%s</p>', __( 'Thank you for your donation!', 'charitable' ) )
