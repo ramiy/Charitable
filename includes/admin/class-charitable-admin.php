@@ -63,7 +63,11 @@ final class Charitable_Admin extends Charitable_Start_Object {
         require_once( $admin_dir . 'settings/class-charitable-gateway-settings.php' );
         require_once( $admin_dir . 'settings/class-charitable-licenses-settings.php' );
         require_once( $admin_dir . 'settings/class-charitable-advanced-settings.php' );
-        require_once( $admin_dir . 'settings/charitable-settings-admin-hooks.php' );        
+        require_once( $admin_dir . 'settings/charitable-settings-admin-hooks.php' );
+
+        /* Dashboard widgets */
+        require_once( $admin_dir . 'dashboard-widgets/class-charitable-donations-dashboard-widget.php' );
+        require_once( $admin_dir . 'dashboard-widgets/charitable-dashboard-widgets-hooks.php' );
 
         /**
          * We are registering this object only for backwards compatibility. It
@@ -192,7 +196,8 @@ final class Charitable_Admin extends Charitable_Start_Object {
             'campaign', 
             'donation', 
             'charitable_page_charitable-settings',
-            'charitable_page_charitable-donations-table'
+            'charitable_page_charitable-donations-table', 
+            'dashboard'
         ) );
     }   
 }

@@ -657,4 +657,57 @@ select.charitable-settings-field {
 #charitable-donation-date-filters {
   margin-left: 11px; }
 
+#charitable_dashboard_donations .hide-if-no-js {
+  padding: 10px 0;
+  text-align: center; }
+#charitable_dashboard_donations .inside {
+  margin: 0;
+  padding: 0; }
+#charitable_dashboard_donations .charitable-donation-statistics {
+  *zoom: 1;
+  margin-bottom: 20px; }
+  #charitable_dashboard_donations .charitable-donation-statistics:before, #charitable_dashboard_donations .charitable-donation-statistics:after {
+    content: " ";
+    display: table; }
+  #charitable_dashboard_donations .charitable-donation-statistics:after {
+    clear: both; }
+#charitable_dashboard_donations .cell {
+  box-sizing: border-box;
+  float: left;
+  width: 50%;
+  padding: 10px 0;
+  border-right: 1px solid #e5e5e5;
+  border-bottom: 1px solid #e5e5e5;
+  text-align: center; }
+  #charitable_dashboard_donations .cell .amount {
+    color: #f89d35;
+    font-size: 28px;
+    font-weight: normal;
+    padding-bottom: 0; }
+#charitable_dashboard_donations .summary {
+  margin-top: 0;
+  color: #777; }
+#charitable_dashboard_donations .summary .time-period {
+  font-weight: bold;
+  color: #444; }
+#charitable_dashboard_donations .recent-donations {
+  margin: 0 11px; }
+  #charitable_dashboard_donations .recent-donations table {
+    width: 100%;
+    border-collapse: collapse; }
+  #charitable_dashboard_donations .recent-donations caption {
+    text-align: left; }
+    #charitable_dashboard_donations .recent-donations caption h3 {
+      padding-left: 0; }
+  #charitable_dashboard_donations .recent-donations td {
+    padding: 10px 0;
+    border-top: 1px solid #e5e5e5; }
+  #charitable_dashboard_donations .recent-donations tr:last-child td {
+    border-bottom: 1px solid #e5e5e5; }
+  #charitable_dashboard_donations .recent-donations .donation-total {
+    text-align: right;
+    font-weight: bold; }
+  #charitable_dashboard_donations .recent-donations .donation-id {
+    width: 80px; }
+
 /*# sourceMappingURL=charitable-admin.css.map */

@@ -47,10 +47,7 @@ class Charitable_Donations_Query {
             'fields'          => null,
             'campaign'        => null
         );    
-
-        // 'post_type'      => array( 'donation' ),
-        // 'posts_per_page' => get_option( 'posts_per_page' )
-
+        
         $this->args = wp_parse_args( $args, $defaults );
 
         $this->init();

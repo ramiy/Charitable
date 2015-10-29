@@ -479,6 +479,28 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 	}
 
 	/**
+	 * Return a count and sum of donations for a given period. 
+	 *
+	 * @global 	WPDB $wpdb
+	 * @param 	string $period
+	 * @return  array
+	 * @access  public
+	 * @since   1.2.0
+	 */
+	public function get_donations_summary_by_period( $period = "" ) {
+		global $wpdb;
+
+		$sql = "SELECT COALESCE( SUM( cd.amount ), 0 ) as amount, COUNT( cd.donation_id ) as count
+				FROM {$wpdb->prefix}charitable_campaign_donations cd
+				INNER JOIN $wpdb->posts po ON po.ID = cd.donation_id
+				WHERE po.post_date LIKE %s;";
+
+		$results = $wpdb->get_results( $wpdb->prepare( $sql, $period ) );
+
+		return $results[0];
+	}
+
+	/**
 	 * Returns the donation status clause. 
 	 *
 	 * @param 	boolean $include_all 	If true, will return a blank string. 

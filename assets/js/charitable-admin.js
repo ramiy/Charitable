@@ -92,6 +92,25 @@ CHARITABLE_ADMIN.SetupDatepicker = function( $el ) {
 		$table.append( row );
 	};	
 
+	var setup_dashboard_widgets = function() {
+		var $widget = $( '#charitable_dashboard_donations' );
+
+		console.log( $widget.length );
+
+		if ( $widget.length ) {
+			$.ajax({
+				type: "GET",
+				data: {
+					action: 'charitable_load_dashboard_donations_widget'
+				},
+				url: ajaxurl,
+				success: function (response) {
+					$widget.find( '.inside' ).html( response );
+				}
+			});
+		}
+	};
+
 	$(document).ready( function(){
 
 		if ( $.fn.datepicker ) {
@@ -105,6 +124,7 @@ CHARITABLE_ADMIN.SetupDatepicker = function( $el ) {
 
 		setup_charitable_ajax();	
 		setup_charitable_toggle();	
+		setup_dashboard_widgets();
 
 		$('[data-charitable-add-row]').on( 'click', function() {
 			var type = $( this ).data( 'charitable-add-row' );
