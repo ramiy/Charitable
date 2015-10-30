@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paypa
 Tags: donations, donate, donation plugin, fundraising, fundraising plugin, non-profit, non-profits, charity, churches, commerce, crowdfunding, crowd funding, paypal donations, paypal, stripe, stripe donations, campaigns, gifts, giving, wordpress fundraising, wordpress donations, wordpress donation plugin, peer to peer fundraising, peer to peer fundraiser, peer fundraising, social fundraising
 Requires at least: 4.1
 Tested up to: 4.3.1
-Stable tag: 1.1.5
+Stable tag: 1.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -108,11 +108,14 @@ You can post in the [support forum](https://wordpress.org/support/plugin/charita
 == Changelog ==
 
 = 1.2.0 = 
-* Change the highlight colour via the WordPress Customizer. You can preview your changes as you make them. 
-* All donation data is now displayed in the admin donation page.
-* You can now change the campaign creator via the Campaign management page.
-* Adds a login link to the donation form when donors are not logged in.
-* When a user is logged in but has not filled out all required fields, they are presented with all the user fields.
+* NEW: Change the highlight colour via the WordPress Customizer. You can preview your changes as you make them. 
+* NEW: There is a shiny new dashboard widget when you log into the WordPress dashboard to highlight your donation stats. 
+* NEW: You can now limit the donation form to only display required user fields. 
+* NEW: Create a static page with the [donation_receipt] shortcode to customize your donation receipt.
+* NEW: All donation data is now displayed in the admin donation page.
+* NEW: You can now change the campaign creator via the Campaign management page.
+* NEW: Adds a login link to the donation form when donors are not logged in.
+* NEW: When a user is logged in but has not filled out all required fields, they are presented with all the user fields.
 * Removed the 'charitable_after_update_donation' hook. To respond to updates to a donation, use the 'save_post_donation'.
 * Fixed a bug that resulted in `[campaigns orderby=popular]` to include non-complete donations when determining the order of campaigns.
 * Fixed a bug that prevented donors from receiving their donation receipt after a donation is updated directly on the donation page.
@@ -120,6 +123,7 @@ You can post in the [support forum](https://wordpress.org/support/plugin/charita
 * Fixes bugs in the Donation Stats and Donors widget that causes them to include pending donations in the total.
 * Fixes a bug in the Benefactors addon that caused fixed contribution amounts to not be saved.
 * Major performance improvements in the WordPress dashboard.
+* Better PHP 5.2 compatibility.
 
 = 1.1.5 = 
 * Fixes a bug that allowed people to make a donation without entering required details, or with an amount of $0 or less.

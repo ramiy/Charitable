@@ -19,7 +19,16 @@ if ( ! class_exists( 'Charitable_i18n' ) ) :
  *
  * @since       1.1.2
  */
-class Charitable_i18n extends Charitable_Start_Object {
+class Charitable_i18n {
+    
+    /**
+     * The single instance of this class.  
+     *
+     * @var     Charitable_i18n|null
+     * @access  private
+     * @static
+     */
+    private static $instance = null;    
 
     /**
      * @var     string
@@ -53,16 +62,31 @@ class Charitable_i18n extends Charitable_Start_Object {
     /**
      * Set up the class. 
      *
-     * @access  protected
+     * @access  private
      * @since   1.1.2
      */
-    protected function __construct() {
+    private function __construct() {
         $this->languages_directory = apply_filters( 'charitable_languages_directory', 'charitable/i18n/languages' );
         $this->locale = apply_filters( 'plugin_locale', get_locale(), $this->textdomain );
         $this->mofile = sprintf( '%1$s-%2$s.mo', $this->textdomain, $this->locale );
 
         $this->load_textdomain();
     }
+
+    /**
+     * Returns and/or create the single instance of this class.  
+     *
+     * @return  Charitable_i18n
+     * @access  public
+     * @since   1.2.0
+     */
+    public static function get_instance() {
+        if ( is_null( self::$instance ) ) {
+            self::$instance = new Charitable_i18n();
+        }
+
+        return self::$instance;
+    }    
 
     /**
      * Create class object.
@@ -101,6 +125,26 @@ class Charitable_i18n extends Charitable_Start_Object {
 
         return $this->languages_directory . $this->mofile;
     }
+
+    /**
+     * Instantiate the class, but only during the start phase.
+     *
+     * This method is officially deprecated as of 1.2.0 since we are removing
+     * the need for Charitable_Start_Object. It has been left intact for extensions
+     * that have not been updated yet.
+     *
+     * Expect full removal in Charitable 1.3 or after.
+     *
+     * @deprecated     
+     */
+    public static function charitable_start( Charitable $charitable ) {
+        if ( ! $charitable->is_start() ) {
+            return;
+        }
+
+        $class = get_called_class();
+        $charitable->register_object( new $class );
+    }    
 }
 
 endif; // End class_exists check

@@ -199,7 +199,20 @@ final class Charitable_Settings {
         $pages = wp_cache_get( 'filtered_static_pages', 'charitable' );
 
         if ( false === $pages ) {
-            $pages = array_reduce( get_pages(), array( $this, 'filter_page' ), array() );
+
+            $all_pages = get_pages();
+
+            if ( ! $all_pages ) {
+                $all_pages = array();
+            }
+
+            $pages = array();
+
+            foreach ( $all_pages as $page ) {
+
+                $pages[ $page->ID ] = $page->post_title;
+
+            }
 
             wp_cache_set( 'filtered_static_pages', $pages, 'charitable' );
         }
@@ -351,20 +364,6 @@ final class Charitable_Settings {
         }
 
         return apply_filters( 'charitable_sanitize_value', $value, $field, $submitted, $key );
-    }
-
-    /**
-     * Used by array_reduce to return an associative array with the page ID for the key and title for the value.
-     *
-     * @param   string[]        $result
-     * @param   WP_Post         $page
-     * @return  string[]        $result
-     * @access  private
-     * @since   1.0.0
-     */
-    private function filter_page( $result, $page ) {
-        $result[ $page->ID ] = $page->post_title;
-        return $result;
     }
 
     /**

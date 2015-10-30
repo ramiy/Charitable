@@ -1,9 +1,9 @@
 <?php
 /**
  * Plugin Name:         Charitable
- * Plugin URI:          https://wpcharitable.com
- * Description:         Fundraise with WordPress.
- * Version:             1.2.0-beta6
+ * Plugin URI:          https://www.wpcharitable.com
+ * Description:         The WordPress fundraising alternative for non-profits, created to help non-profits raise money on their own website. 
+ * Version:             1.2.0
  * Author:              WP Charitable
  * Author URI:          https://wpcharitable.com
  * Requires at least:   4.1
@@ -33,7 +33,7 @@ class Charitable {
     /**
      * @var     string
      */
-    const VERSION = '1.2.0-beta6';
+    const VERSION = '1.2.0';
 
     /**
      * @var     string      A date in the format: YYYYMMDD
@@ -126,15 +126,15 @@ class Charitable {
         // Set static instance
         self::$instance = $this;        
 
+        $this->maybe_start_ajax();
+
         $this->maybe_upgrade();
 
         $this->attach_hooks_and_filters();
 
         $this->maybe_start_admin();      
 
-        $this->maybe_start_public();        
-
-        $this->maybe_start_ajax();        
+        $this->maybe_start_public();                
 
         Charitable_Addons::load( $this );
     }
@@ -197,6 +197,7 @@ class Charitable {
         require_once( $includes_path . 'users/class-charitable-profile-form.php' );
 
         /* Gateways */
+        include_once( $includes_path . 'gateways/interface-charitable-gateway.php' );        
         require_once( $includes_path . 'gateways/class-charitable-gateways.php' );
         include_once( $includes_path . 'gateways/abstract-class-charitable-gateway.php' );
         include_once( $includes_path . 'gateways/class-charitable-gateway-offline.php' );
@@ -204,6 +205,7 @@ class Charitable {
 
         /* Emails */
         include_once( $includes_path . 'emails/charitable-email-hooks.php' );
+        include_once( $includes_path . 'emails/interface-charitable-email.php' );        
         require_once( $includes_path . 'emails/class-charitable-emails.php' ); 
         include_once( $includes_path . 'emails/abstract-class-charitable-email.php' );
         include_once( $includes_path . 'emails/class-charitable-email-new-donation.php' );
@@ -253,6 +255,22 @@ class Charitable {
 
         /* Deprecated */
         require_once( $includes_path . 'deprecated/charitable-deprecated-functions.php' );
+
+        /**
+         * We are registering this object only for backwards compatibility. It
+         * will be removed in or after Charitable 1.3.
+         *
+         * @deprecated
+         */
+        $this->register_object( Charitable_Emails::get_instance() );
+        $this->register_object( Charitable_Request::get_instance() );
+        $this->register_object( Charitable_Gateways::get_instance() );
+        $this->register_object( Charitable_i18n::get_instance() );
+        $this->register_object( Charitable_Post_Types::get_instance() );
+        $this->register_object( Charitable_Cron::get_instance() );
+        $this->register_object( Charitable_Widgets::get_instance() );
+        $this->register_object( Charitable_Licenses::get_instance() );
+        $this->register_object( Charitable_User_Dashboard::get_instance() );
     }
 
     /**
@@ -265,15 +283,6 @@ class Charitable {
     private function attach_hooks_and_filters() {
         add_action('plugins_loaded', array( $this, 'charitable_install' ), 100 );
         add_action('plugins_loaded', array( $this, 'charitable_start' ), 100 );
-        add_action('charitable_start', array( 'Charitable_Licenses', 'charitable_start' ), 3 );
-        add_action('charitable_start', array( 'Charitable_Post_Types', 'charitable_start' ), 3 );
-        add_action('charitable_start', array( 'Charitable_Widgets', 'charitable_start' ), 3 );
-        add_action('charitable_start', array( 'Charitable_Gateways', 'charitable_start' ), 3 ); 
-        add_action('charitable_start', array( 'Charitable_Emails', 'charitable_start' ), 3 ); 
-        add_action('charitable_start', array( 'Charitable_Request', 'charitable_start' ), 3 );
-        add_action('charitable_start', array( 'Charitable_User_Dashboard', 'charitable_start' ), 3 );
-        add_action('charitable_start', array( 'Charitable_Cron', 'charitable_start' ), 3 );
-        add_action('charitable_start', array( 'Charitable_i18n', 'charitable_start' ), 3 );
         add_action( 'setup_theme', array( 'Charitable_Customizer', 'start' ) );
 
         /**
@@ -300,8 +309,14 @@ class Charitable {
         }
 
         require_once( $this->get_path( 'admin' ) . 'class-charitable-admin.php' );
-
-        add_action('charitable_start', array( 'Charitable_Admin', 'charitable_start' ), 3 );
+        
+        /**
+         * We are registering this object only for backwards compatibility. It
+         * will be removed in or after Charitable 1.3.
+         *
+         * @deprecated
+         */
+        $this->register_object( Charitable_Admin::get_instance() );
     }
 
     /**
@@ -318,7 +333,13 @@ class Charitable {
 
         require_once( $this->get_path( 'public' ) . 'class-charitable-public.php' );
 
-        add_action('charitable_start', array( 'Charitable_Public', 'charitable_start' ), 3 );
+        /**
+         * We are registering this object only for backwards compatibility. It
+         * will be removed in or after Charitable 1.3.
+         *
+         * @deprecated
+         */
+        $this->register_object( Charitable_Public::get_instance() );
     }
 
     /**
@@ -333,7 +354,13 @@ class Charitable {
             return;
         }
 
-        add_action('charitable_start', array( 'Charitable_Session', 'charitable_start' ), 1 );
+        /**
+         * We are registering this object only for backwards compatibility. It
+         * will be removed in or after Charitable 1.3.
+         *
+         * @deprecated
+         */
+        $this->register_object( Charitable_Session::get_instance() );
     }
 
     /**
@@ -520,24 +547,6 @@ class Charitable {
     }
 
     /**
-     * Returns the location helper. 
-     *
-     * @return  Charitable_Locations
-     * @access  public
-     * @since   1.0.0
-     */
-    public function get_location_helper() {
-        $location_helper = $this->get_registered_object('Charitable_Locations');
-
-        if ( false === $location_helper ) {
-            $location_helper = new Charitable_Locations();
-            $this->register_object( $location_helper );
-        }
-
-        return $location_helper;
-    }
-
-    /**
      * Return the current request object. 
      *
      * @return  Charitable_Request
@@ -701,7 +710,14 @@ class Charitable {
      */
     public function __wakeup() {
         _doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'charitable' ), '1.0.0' );
-    }   
+    } 
+
+    /**
+     * @deprecated
+     */
+    public function get_location_helper() {
+        return charitable_get_location_helper();
+    }      
 }
 
 $charitable = new Charitable();

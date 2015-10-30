@@ -19,7 +19,16 @@ if ( ! class_exists( 'Charitable_Session' ) ) :
  *
  * @since 		1.0.0
  */
-class Charitable_Session extends Charitable_Start_Object {
+class Charitable_Session {
+
+	/**
+     * The single instance of this class.  
+     *
+     * @var     Charitable_Session|null
+     * @access  private
+     * @static
+     */
+    private static $instance = null;    
 
 	/**
 	 * Holds our session data
@@ -30,13 +39,28 @@ class Charitable_Session extends Charitable_Start_Object {
 	 */
 	private $session;
 
+    /**
+     * Returns and/or create the single instance of this class.  
+     *
+     * @return  Charitable_Session
+     * @access  public
+     * @since   1.2.0
+     */
+    public static function get_instance() {
+        if ( is_null( self::$instance ) ) {
+            self::$instance = new Charitable_Session();
+        }
+
+        return self::$instance;
+    }
+
 	/**
 	 * Instantiate session object. Private constructor.
 	 *
-	 * @access 	protected
+	 * @access 	private
 	 * @since 	1.0.0
 	 */
-	protected function __construct() {	
+	private function __construct() {	
 		if ( ! defined( 'WP_SESSION_COOKIE' ) )
 			define( 'WP_SESSION_COOKIE', 'charitable_session' );
 

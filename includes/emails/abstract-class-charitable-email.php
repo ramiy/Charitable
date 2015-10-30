@@ -19,7 +19,7 @@ if ( ! class_exists( 'Charitable_Email' ) ) :
  * @abstract
  * @since       1.0.0
  */
-abstract class Charitable_Email {    
+abstract class Charitable_Email implements Charitable_Email_Interface {    
 
     /**
      * @var     string  The email's unique identifier.
@@ -74,45 +74,12 @@ abstract class Charitable_Email {
         $this->donation = isset( $objects[ 'donation' ] ) ? $objects[ 'donation' ] : null;
         $this->campaign = isset( $objects[ 'campaign' ] ) ? $objects[ 'campaign' ] : null;
 
-        if ( $this->has_recipient_field ) {
-            add_filter( 'charitable_settings_fields_emails_email_' . $this::ID, array( $this, 'add_recipients_field' ) );
-        }
-
-        if ( in_array( 'donation', $this->object_types ) ) {
-            add_filter( 'charitable_email_content_fields', array( $this, 'add_donation_content_fields' ), 10, 2 );
-            add_filter( 'charitable_email_preview_content_fields', array( $this, 'add_preview_donation_content_fields' ), 10, 2 );
-        }
-
-        if ( in_array( 'campaign', $this->object_types ) ) {
-            add_filter( 'charitable_email_content_fields', array( $this, 'add_campaign_content_fields' ), 10, 2 );
-            add_filter( 'charitable_email_preview_content_fields', array( $this, 'add_preview_campaign_content_fields' ), 10, 2 );   
-        }
+        add_filter( 'charitable_email_content_fields', array( $this, 'add_donation_content_fields' ), 10, 2 );
+        add_filter( 'charitable_email_preview_content_fields', array( $this, 'add_preview_donation_content_fields' ), 10, 2 );
+        add_filter( 'charitable_email_content_fields', array( $this, 'add_campaign_content_fields' ), 10, 2 );
+        add_filter( 'charitable_email_preview_content_fields', array( $this, 'add_preview_campaign_content_fields' ), 10, 2 );
     }
-
-    /**
-     * Checks whether this email is enabled. 
-     *
-     * @return  boolean
-     * @access  public
-     * @static
-     * @since   1.0.0
-     */
-    public static function is_enabled() {
-        return charitable_get_helper( 'emails' )->is_enabled_email( static::get_email_id() );
-    }
-
-    /**
-     * Returns the current email's ID.  
-     *
-     * @return  string
-     * @access  public
-     * @static
-     * @since   1.0.3
-     */
-    public static function get_email_id() {
-        return static::ID;
-    }
-
+    
     /**
      * Return the email name.
      *
@@ -265,7 +232,7 @@ abstract class Charitable_Email {
      * @since   1.0.0
      */
     public function email_settings( $settings ) {
-        $email_settings = apply_filters( 'charitable_settings_fields_emails_email_' . $this::ID, array(
+        $email_settings = apply_filters( 'charitable_settings_fields_emails_email_' . $this->get_email_id(), array(
             'section_email' => array(
                 'type'      => 'heading',
                 'title'     => $this->get_name(),
@@ -304,7 +271,7 @@ abstract class Charitable_Email {
                     esc_url( 
                         add_query_arg( array( 
                             'charitable_action' => 'preview_email',
-                            'email_id' => $this::ID
+                            'email_id' => $this->get_email_id()
                         ), home_url() ) 
                     ), 
                     __( 'Preview email in your browser', 'charitable' ),
@@ -326,6 +293,10 @@ abstract class Charitable_Email {
      * @since   1.0.0
      */
     public function add_recipients_field( $settings ) {
+        if ( ! $this->has_recipient_field ) {
+            return $settings;
+        }
+
         $settings[ 'recipient' ] = array(
             'type'      => 'text',
             'title'     => __( 'Recipients', 'charitable' ), 
@@ -345,7 +316,11 @@ abstract class Charitable_Email {
      * @access  public
      * @since   1.0.0
      */
-    public function add_donation_content_fields( $fields ) {   
+    public function add_donation_content_fields( $fields ) { 
+        if ( ! in_array( 'donation', $this->object_types ) ) {
+            return $fields;
+        }
+
         $fields[ 'donor' ] = array(
             'description'   => __( 'The full name of the donor', 'charitable' ),
             'callback'      => array( $this, 'get_donor_full_name' )
@@ -447,7 +422,11 @@ abstract class Charitable_Email {
      * @access  public
      * @since   1.0.0
      */
-    public function add_preview_donation_content_fields( $fields ) {        
+    public function add_preview_donation_content_fields( $fields ) {  
+        if ( ! in_array( 'donation', $this->object_types ) ) {
+            return $fields;
+        }
+
         $fields[ 'donor' ]              = 'John Deere';
         $fields[ 'donor_first_name' ]   = 'John';
         $fields[ 'donor_email' ]        = 'john@example.com';
@@ -464,6 +443,10 @@ abstract class Charitable_Email {
      * @since   1.0.0
      */
     public function add_campaign_content_fields( $fields ) {
+        if ( ! in_array( 'campaign', $this->object_types ) ) {
+            return $fields;
+        }
+
         $fields[ 'campaign_title' ] = array(
             'description'   => __( 'The title of the campaign', 'charitable' ), 
             'callback'      => array( $this, 'get_campaign_title' )
@@ -650,6 +633,10 @@ abstract class Charitable_Email {
      * @since   1.0.0
      */
     public function add_preview_campaign_content_fields( $fields ) {
+        if ( ! in_array( 'campaign', $this->object_types ) ) {
+            return $fields;
+        }
+
         $fields[ 'campaign_title' ]         = 'Fake Campaign';
         $fields[ 'campaign_creator' ]       = 'Harry Ferguson';
         $fields[ 'campaign_creator_email' ] = 'harry@example.com';
@@ -766,7 +753,7 @@ abstract class Charitable_Email {
      * @since   1.0.0
      */
     protected function get_option( $key, $default ) {        
-        return charitable_get_option( array( 'emails_' . $this::ID, $key ), $default );
+        return charitable_get_option( array( 'emails_' . $this->get_email_id(), $key ), $default );
     }
 
     /**

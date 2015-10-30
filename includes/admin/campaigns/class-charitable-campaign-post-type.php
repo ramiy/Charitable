@@ -19,7 +19,16 @@ if ( ! class_exists( 'Charitable_Campaign_Post_Type' ) ) :
  * @final
  * @since       1.0.0
  */
-final class Charitable_Campaign_Post_Type extends Charitable_Start_Object {
+final class Charitable_Campaign_Post_Type {
+
+    /**
+     * The single instance of this class.  
+     *
+     * @var     Charitable_Campaign_Post_Type|null
+     * @access  private
+     * @static
+     */
+    private static $instance = null;
 
     /**
      * @var     Charitable_Meta_Box_Helper $meta_box_helper
@@ -30,10 +39,10 @@ final class Charitable_Campaign_Post_Type extends Charitable_Start_Object {
     /**
      * Create object instance. 
      *
-     * @access  protected
+     * @access  private
      * @since   1.0.0
      */
-    protected function __construct() {    
+    private function __construct() {    
         $this->meta_box_helper = new Charitable_Meta_Box_Helper( 'charitable-campaign' );
 
         add_action( 'add_meta_boxes',                               array( $this, 'add_meta_boxes' ), 10);
@@ -44,6 +53,21 @@ final class Charitable_Campaign_Post_Type extends Charitable_Start_Object {
         add_filter( 'enter_title_here',                             array( $this, 'campaign_enter_title' ), 10, 2 );
         add_filter( 'get_user_option_meta-box-order_campaign',      '__return_false' );
     }
+
+    /**
+     * Returns and/or create the single instance of this class.  
+     *
+     * @return  Charitable_Campaign_Post_Type
+     * @access  public
+     * @since   1.2.0
+     */
+    public static function get_instance() {
+        if ( is_null( self::$instance ) ) {
+            self::$instance = new Charitable_Campaign_Post_Type();
+        }
+
+        return self::$instance;
+    }    
 
     /**
      * Add meta boxes.

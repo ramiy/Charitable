@@ -18,7 +18,16 @@ if ( ! class_exists( 'Charitable_Gateways' ) ) :
  *
  * @since 		1.0.0
  */
-class Charitable_Gateways extends Charitable_Start_Object {
+class Charitable_Gateways {
+
+    /**
+     * The single instance of this class.  
+     *
+     * @var     Charitable_Gateways|null
+     * @access  private
+     * @static
+     */
+    private static $instance = null;
 
 	/**
 	 * All available payment gateways. 
@@ -39,33 +48,46 @@ class Charitable_Gateways extends Charitable_Start_Object {
 	 * @since 	1.0.0
 	 */
 	protected function __construct() {
-		$this->attach_hooks_and_filters();		
-
-		/**
-		 * To register a new gateway, you need to hook into this filter and 
-		 * give Charitable the name of your gateway class.
-		 */
-		$this->gateways = apply_filters( 'charitable_payment_gateways', array(
-			'offline' 	=> 'Charitable_Gateway_Offline', 
-			'paypal'	=> 'Charitable_Gateway_Paypal'
-		) );
-	}
-
-	/**
-	 * Attach callbacks to hooks and filters.  
-	 *
-	 * @return 	void
-	 * @access  private
-	 * @since 	1.0.0
-	 */
-	private function attach_hooks_and_filters() {
+		add_action( 'init', array( $this, 'register_gateways' ) );
 		add_action( 'charitable_make_default_gateway', array( $this, 'handle_gateway_settings_request' ) );
 		add_action( 'charitable_enable_gateway', array( $this, 'handle_gateway_settings_request' ) );
 		add_action( 'charitable_disable_gateway', array( $this, 'handle_gateway_settings_request' ) );
 		add_filter( 'charitable_settings_fields_gateways_gateway', array( $this, 'register_gateway_settings' ), 10, 2 );		
 
-		do_action( 'charitable_gateway_start', $this );		
-	}	
+		do_action( 'charitable_gateway_start', $this );	
+	}
+
+    /**
+     * Returns and/or create the single instance of this class.  
+     *
+     * @return  Charitable_Gateways
+     * @access  public
+     * @since   1.2.0
+     */
+    public static function get_instance() {
+        if ( is_null( self::$instance ) ) {
+            self::$instance = new Charitable_Gateways();
+        }
+
+        return self::$instance;
+    }
+
+    /**
+     * Register gateways. 
+     * 
+     * To register a new gateway, you need to hook into the `charitable_payment_gateways` 
+     * hook and give Charitable the name of your gateway class.
+     *
+     * @return  string[]
+     * @access  public
+     * @since   1.2.0
+     */
+    public function register_gateways() {		
+		$this->gateways = apply_filters( 'charitable_payment_gateways', array(
+			'offline' 	=> 'Charitable_Gateway_Offline', 
+			'paypal'	=> 'Charitable_Gateway_Paypal'
+		) );
+    }
 
 	/**
 	 * Receives a request to enable or disable a payment gateway and validates it before passing it off.

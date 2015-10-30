@@ -54,6 +54,14 @@ abstract class Charitable_Query implements Iterator {
     protected $results;
 
     /**
+     * Parameters to pass to the query. 
+     *
+     * @var     mixed[]
+     * @access  protected
+     */
+    protected $parameters = array();
+
+    /**
      * Return the query argument value for the given key. 
      *
      * @param   string $key

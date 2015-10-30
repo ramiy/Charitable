@@ -31,15 +31,6 @@ final class Charitable_Email_Settings {
     private static $instance = null;
 
     /**
-     * Create object instance. 
-     *
-     * @access  private
-     * @since   1.0.0
-     */
-    private function __construct() {
-    }
-
-    /**
      * Returns and/or create the single instance of this class.  
      *
      * @return  Charitable_Email_Settings
@@ -52,6 +43,15 @@ final class Charitable_Email_Settings {
         }
 
         return self::$instance;
+    }
+
+    /**
+     * Create object instance. 
+     *
+     * @access  private
+     * @since   1.0.0
+     */
+    private function __construct() {
     }
 
     /**
@@ -115,7 +115,8 @@ final class Charitable_Email_Settings {
      */
     public function add_individual_email_fields( $fields ) {
         foreach ( charitable_get_helper( 'emails' )->get_available_emails() as $email ) {
-            $fields[ 'emails_' . $email::get_email_id() ] = apply_filters( 'charitable_settings_fields_emails_email', array(), new $email );
+            $email = new $email;
+            $fields[ 'emails_' . $email->get_email_id() ] = apply_filters( 'charitable_settings_fields_emails_email', array(), $email );
         }
 
         return $fields;

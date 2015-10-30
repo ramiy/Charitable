@@ -19,37 +19,53 @@ if ( ! class_exists( 'Charitable_Public' ) ) :
  * @final
  * @since 	    1.0.0
  */
-final class Charitable_Public extends Charitable_Start_Object {
+final class Charitable_Public {
+
+    /**
+     * The single instance of this class.  
+     *
+     * @var     Charitable_Public|null
+     * @access  private
+     * @static
+     */
+    private static $instance = null;    
+
+    /**
+     * Returns and/or create the single instance of this class.  
+     *
+     * @return  Charitable_Public
+     * @access  public
+     * @since   1.2.0
+     */
+    public static function get_instance() {
+        if ( is_null( self::$instance ) ) {
+            self::$instance = new Charitable_Public();
+        }
+
+        return self::$instance;
+    }
 
 	/**
 	 * Set up the class. 
-	 * 
-	 * Note that the only way to instantiate an object is with the start method, 
-	 * which can only be called during the start phase. In other words, don't try 
-	 * to instantiate this object. 
 	 *
-	 * @access 	protected
-	 * @since 	1.0.0
-	 */
-	protected function __construct() {		
-		$this->attach_hooks_and_filters();
-
-		do_action( 'charitable_public_start', $this );
-	}
-
-	/**
-	 * Sets up hook and filter callback functions for public facing functionality.
-	 * 
-	 * @return 	void
 	 * @access 	private
 	 * @since 	1.0.0
 	 */
-	private function attach_hooks_and_filters() {
-		add_action( 'charitable_start', array( 'Charitable_Session', 'charitable_start' ), 5 );
-		add_action( 'charitable_start', array( 'Charitable_Templates', 'charitable_start' ), 5 );
-		add_action( 'wp_enqueue_scripts', array( $this, 'wp_enqueue_scripts') );
-		add_filter( 'post_class', array( $this, 'campaign_post_class' ) );
-	}
+	private function __construct() {				
+        add_action( 'wp_enqueue_scripts', array( $this, 'wp_enqueue_scripts') );
+        add_filter( 'post_class', array( $this, 'campaign_post_class' ) );
+
+        /**
+         * We are registering this object only for backwards compatibility. It
+         * will be removed in or after Charitable 1.3.
+         *
+         * @deprecated
+         */
+        charitable()->register_object( Charitable_Session::get_instance() );
+        charitable()->register_object( Charitable_Templates::get_instance() );
+
+		do_action( 'charitable_public_start', $this );
+	}    
 
 	/**
 	 * Loads public facing scripts and stylesheets. 

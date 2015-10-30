@@ -19,7 +19,31 @@ if ( ! class_exists( 'Charitable_Templates' ) ) :
  * @since 		1.0.0
  */
 
-class Charitable_Templates extends Charitable_Start_Object {
+class Charitable_Templates {
+
+	/**
+     * The single instance of this class.  
+     *
+     * @var     Charitable_Templates|null
+     * @access  private
+     * @static
+     */
+    private static $instance = null;    
+
+    /**
+     * Returns and/or create the single instance of this class.  
+     *
+     * @return  Charitable_Templates
+     * @access  public
+     * @since   1.2.0
+     */
+    public static function get_instance() {
+        if ( is_null( self::$instance ) ) {
+            self::$instance = new Charitable_Templates();
+        }
+
+        return self::$instance;
+    }
 
 	/**
 	 * Set up the class. 
@@ -28,10 +52,10 @@ class Charitable_Templates extends Charitable_Start_Object {
 	 * which can only be called during the start phase. In other words, don't try 
 	 * to instantiate this object. 
 	 *
-	 * @access 	protected
+	 * @access 	private
 	 * @since 	1.0.0
 	 */
-	protected function __construct() {		
+	private function __construct() {		
 		add_filter( 'template_include', array( $this, 'donation_receipt_template' ) );
 		add_filter( 'template_include', array( $this, 'donation_processing_template' ) );
 		add_filter( 'template_include', array( $this, 'donate_template' ) );

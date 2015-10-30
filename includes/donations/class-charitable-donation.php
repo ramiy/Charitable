@@ -402,7 +402,7 @@ class Charitable_Donation {
             ), 
             'donor_email' => array(
                 'label' => __( 'Email', 'charitable' ), 
-                'value' => $donor[ 'email' ]
+                'value' => isset( $donor[ 'email' ] ) ? $donor[ 'email' ] : '-'
             ), 
             'donor_address' => array(
                 'label' => __( 'Address', 'charitable' ), 
@@ -410,7 +410,7 @@ class Charitable_Donation {
             ),
             'donor_phone' => array(
                 'label' => __( 'Phone Number', 'charitable' ), 
-                'value' => $donor[ 'phone' ]
+                'value' => isset( $donor[ 'phone' ] ) ? $donor[ 'phone' ] : '-'
             ),
             'gateway' => array(
                 'label' => __( 'Payment Method', 'charitable' ), 

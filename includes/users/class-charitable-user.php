@@ -185,7 +185,14 @@ class Charitable_User extends WP_User {
      * @since   1.0.0
      */
     public function get_email() {
-        return apply_filters( 'charitable_user_email', $this->get_donor()->email, $this );
+        if ( $this->get_donor() ) {
+            $email = $this->get_donor()->email;
+        }
+        else {
+            $email = $this->get( 'user_email' );
+        }
+
+        return apply_filters( 'charitable_user_email', $email, $this );
     }
 
     /**

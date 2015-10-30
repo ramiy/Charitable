@@ -19,7 +19,7 @@ if ( ! class_exists( 'Charitable_Gateway' ) ) :
  * @abstract
  * @since		1.0.0
  */
-abstract class Charitable_Gateway {	
+abstract class Charitable_Gateway implements Charitable_Gateway_Interface {	
 	
     /**
      * @var     string  The gateway's unique identifier.
@@ -102,7 +102,7 @@ abstract class Charitable_Gateway {
      * @since   1.0.0
      */
     public function get_settings() {
-        return charitable_get_option( 'gateways_' . self::get_gateway_id(), array() );
+        return charitable_get_option( 'gateways_' . $this->get_gateway_id(), array() );
     }
 
     /**
@@ -182,18 +182,6 @@ abstract class Charitable_Gateway {
                 'data_type' => 'gateway'
             )
         ), $this );
-    }
-
-    /**
-     * Returns the current gateway's ID.  
-     *
-     * @return  string
-     * @access  public
-     * @static
-     * @since   1.0.0
-     */
-    public static function get_gateway_id() {
-        return static::ID;
     }
 
     /**

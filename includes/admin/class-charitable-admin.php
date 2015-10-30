@@ -19,7 +19,16 @@ if ( ! class_exists( 'Charitable_Admin' ) ) :
  * @final
  * @since       1.0.0
  */
-final class Charitable_Admin extends Charitable_Start_Object {
+final class Charitable_Admin {
+
+    /**
+     * The single instance of this class.  
+     *
+     * @var     Charitable_Admin|null
+     * @access  private
+     * @static
+     */
+    private static $instance = null;
 
     /**
      * Set up the class. 
@@ -35,6 +44,21 @@ final class Charitable_Admin extends Charitable_Start_Object {
         $this->load_dependencies();
         $this->attach_hooks_and_filters();
     }
+
+    /**
+     * Returns and/or create the single instance of this class.  
+     *
+     * @return  Charitable_Admin
+     * @access  public
+     * @since   1.2.0
+     */
+    public static function get_instance() {
+        if ( is_null( self::$instance ) ) {
+            self::$instance = new Charitable_Admin();
+        }
+
+        return self::$instance;
+    } 
 
     /**
      * Include admin-only files.
@@ -76,6 +100,9 @@ final class Charitable_Admin extends Charitable_Start_Object {
          * @deprecated
          */
         charitable()->register_object( Charitable_Settings::get_instance() );
+        charitable()->register_object( Charitable_Campaign_Post_Type::get_instance() );
+        charitable()->register_object( Charitable_Donation_Post_Type::get_instance() );
+        charitable()->register_object( Charitable_Admin_Pages::get_instance() );
     }
 
     /**
@@ -86,9 +113,6 @@ final class Charitable_Admin extends Charitable_Start_Object {
      * @since   1.0.0
      */
     private function attach_hooks_and_filters() {
-        add_action( 'charitable_start', array( 'Charitable_Admin_Pages', 'charitable_start' ) );        
-        add_action( 'charitable_start', array( 'Charitable_Campaign_Post_Type', 'charitable_start' ) );
-        add_action( 'charitable_start', array( 'Charitable_Donation_Post_Type', 'charitable_start' ) );
         add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
         add_filter( 'media_buttons_context', array( $this, 'remove_jquery_ui_styles_nf' ), 20 );
         add_filter( 'plugin_action_links_' . plugin_basename( charitable()->get_path() ),   array( $this, 'add_plugin_action_links' ) );

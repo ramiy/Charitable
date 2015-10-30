@@ -19,7 +19,16 @@ if ( ! class_exists( 'Charitable_Request' ) ) :
  * @since		1.0.0
  * @final
  */
-final class Charitable_Request extends Charitable_Start_Object {
+final class Charitable_Request {
+
+    /**
+     * The single instance of this class.  
+     *
+     * @var     Charitable_Request|null
+     * @access  private
+     * @static
+     */
+    private static $instance = null;
 
 	/**
 	 * @var 	Charitable_Campaign
@@ -46,13 +55,27 @@ final class Charitable_Request extends Charitable_Start_Object {
 	 * which can only be called during the start phase. In other words, don't try 
 	 * to instantiate this object. 
 	 *
-	 * @param 	Charitable 		$charitable
-	 * @access 	protected
+	 * @access 	private
 	 * @since 	1.0.0
 	 */
-	protected function __construct() {	
+	private function __construct() {	
 		add_action( 'the_post', array( $this, 'set_current_campaign' ) );
 	}
+
+    /**
+     * Returns and/or create the single instance of this class.  
+     *
+     * @return  Charitable_Request
+     * @access  public
+     * @since   1.2.0
+     */
+    public static function get_instance() {
+        if ( is_null( self::$instance ) ) {
+            self::$instance = new Charitable_Request();
+        }
+
+        return self::$instance;
+    }
 
 	/**
 	 * When the_post is set, sets the current campaign to the current post if it is a campaign.

@@ -125,7 +125,7 @@ function charitable_get_donation_processor() {
  * @since 	1.0.0
  */
 function charitable_get_location_helper() {
-	return charitable()->get_location_helper();
+	return Charitable_Locations::get_instance();
 }
 
 /**
@@ -135,7 +135,7 @@ function charitable_get_location_helper() {
  * @since 	1.0.0
  */
 function charitable_get_session() {
-	return charitable_get_helper( 'session' );
+	return Charitable_Session::get_instance();
 }
 
 /**
@@ -145,7 +145,7 @@ function charitable_get_session() {
  * @since 	1.0.0
  */
 function charitable_get_request() {
-	return charitable()->get_request();
+	return Charitable_Request::get_instance();
 }
 
 /**
@@ -155,7 +155,7 @@ function charitable_get_request() {
  * @since 	1.0.0
  */
 function charitable_get_user_dashboard() {
-	return charitable()->get_registered_object( 'Charitable_User_Dashboard' );
+	return Charitable_User_Dashboard::get_instance();
 }
 
 /**

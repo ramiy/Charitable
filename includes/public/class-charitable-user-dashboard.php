@@ -19,15 +19,39 @@ if ( ! class_exists( 'Charitable_User_Dashboard' ) ) :
  *
  * @since       1.0.0
  */
-class Charitable_User_Dashboard extends Charitable_Start_Object {
+class Charitable_User_Dashboard {
 
+    /**
+     * The single instance of this class.  
+     *
+     * @var     Charitable_User_Dashboard|null
+     * @access  private
+     * @static
+     */
+    private static $instance = null;  
+
+    /**
+     * Returns and/or create the single instance of this class.  
+     *
+     * @return  Charitable_User_Dashboard
+     * @access  public
+     * @since   1.2.0
+     */
+    public static function get_instance() {
+        if ( is_null( self::$instance ) ) {
+            self::$instance = new Charitable_User_Dashboard();
+        }
+
+        return self::$instance;
+    }
+    
     /**
      * Create class instance. 
      *
-     * @access  protected
+     * @access  private
      * @since   1.0.0
      */
-    protected function __construct() {        
+    private function __construct() {        
         add_action( 'after_setup_theme',                array( $this, 'register_menu' ), 100 );
         add_action( 'template_include',                 array( $this, 'load_user_dashboard_template' ) );
         add_action( 'wp_update_nav_menu',               array( $this, 'flush_menu_object_cache' ) );

@@ -21,6 +21,15 @@ if ( ! class_exists( 'Charitable_Locations' ) ) :
 class Charitable_Locations {
 
 	/**
+	 * The single instance of this class.  
+	 *
+	 * @var 	Charitable_Locations|null
+	 * @access  private
+	 * @static
+	 */
+	private static $instance = null;
+
+	/**
 	 * List of countries in country_code=>name format.
 	 *
 	 * @var 	string[]	$countries
@@ -44,7 +53,30 @@ class Charitable_Locations {
 	 * @var 	string[]
 	 * @access  private
 	 */
-	private $address_formats;
+	private $address_formats;	      
+
+    /**
+     * Returns and/or create the single instance of this class.  
+     *
+     * @return  Charitable_Locations
+     * @access  public
+     * @since   1.2.0
+     */
+    public static function get_instance() {
+        if ( is_null( self::$instance ) ) {
+            self::$instance = new Charitable_Locations();
+        }
+
+        return self::$instance;
+    } 
+
+    /**
+     * Set up the class. 
+     *
+     * @access  private
+     * @since   1.2.0
+     */
+    private function __construct() {}
 
 	/** 
 	 * Return an array with all the countries supported by Charitable. 

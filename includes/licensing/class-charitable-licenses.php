@@ -19,8 +19,17 @@ if ( ! class_exists( 'Charitable_Licenses' ) ) :
  *
  * @since       1.0.0
  */
-class Charitable_Licenses extends Charitable_Start_Object {
+class Charitable_Licenses {
 
+    /**
+     * The single instance of this class.  
+     *
+     * @var     Charitable_Licenses|null
+     * @access  private
+     * @static
+     */
+    private static $instance = null;  
+    
     /**
      * All the registered products requiring licensing. 
      *
@@ -38,32 +47,32 @@ class Charitable_Licenses extends Charitable_Start_Object {
     private $licenses;
 
     /**
-     * Create class object.
+     * Returns and/or create the single instance of this class.  
      *
-     * Note that the only way to instantiate an object is with the charitable_start method, 
-     * which can only be called during the start phase. In other words, don't try 
-     * to instantiate this object. 
-     * 
-     * @access  protected
-     * @since   1.0.0
+     * @return  Charitable_Licenses
+     * @access  public
+     * @since   1.2.0
      */
-    protected function __construct() {
-        $this->products = array();
+    public static function get_instance() {
+        if ( is_null( self::$instance ) ) {
+            self::$instance = new Charitable_Licenses();
+        }
 
-        $this->attach_hooks_and_filters();
+        return self::$instance;
     }
 
     /**
-     * Attach callbacks to hooks and filters.  
-     *
-     * @return  void
+     * Create class object.
+     * 
      * @access  private
      * @since   1.0.0
      */
-    private function attach_hooks_and_filters() {        
+    private function __construct() {
+        $this->products = array();
+
         add_action( 'admin_init', array( $this, 'update_products' ), 0 );
         add_action( 'charitable_deactivate_license', array( $this, 'deactivate_license' ) );
-    }   
+    }
 
     /**
      * Check for updates for any licensed products. 

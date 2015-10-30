@@ -19,7 +19,16 @@ if ( ! class_exists( 'Charitable_Admin_Pages' ) ) :
  *
  * @since       1.0.0
  */
-final class Charitable_Admin_Pages extends Charitable_Start_Object {
+final class Charitable_Admin_Pages {
+
+    /**
+     * The single instance of this class.  
+     *
+     * @var     Charitable_Admin_Pages|null
+     * @access  private
+     * @static
+     */
+    private static $instance = null;
 
     /**
      * The page to use when registering sections and fields.
@@ -40,15 +49,30 @@ final class Charitable_Admin_Pages extends Charitable_Start_Object {
     /**
      * Create class object.
      * 
-     * @access  protected
+     * @access  private
      * @since   1.0.0
      */
-    protected function __construct() {
+    private function __construct() {
         $this->admin_menu_capability = apply_filters( 'charitable_admin_menu_capability', 'manage_options' );
         $this->admin_menu_parent_page = 'charitable';
 
         add_action( 'admin_menu', array( $this, 'add_menu' ), 5 );
     }
+
+    /**
+     * Returns and/or create the single instance of this class.  
+     *
+     * @return  Charitable_Admin_Pages
+     * @access  public
+     * @since   1.2.0
+     */
+    public static function get_instance() {
+        if ( is_null( self::$instance ) ) {
+            self::$instance = new Charitable_Admin_Pages();
+        }
+
+        return self::$instance;
+    } 
 
     /**
      * Add Settings menu item under the Campaign menu tab.

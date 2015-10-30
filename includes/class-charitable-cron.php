@@ -19,15 +19,39 @@ if ( ! class_exists( 'Charitable_Cron' ) ) :
  *
  * @since       1.1.0
  */
-class Charitable_Cron extends Charitable_Start_Object {
+class Charitable_Cron {
+
+    /**
+     * The single instance of this class.  
+     *
+     * @var     Charitable_Cron|null
+     * @access  private
+     * @static
+     */
+    private static $instance = null;  
+
+    /**
+     * Returns and/or create the single instance of this class.  
+     *
+     * @return  Charitable_Cron
+     * @access  public
+     * @since   1.2.0
+     */
+    public static function get_instance() {
+        if ( is_null( self::$instance ) ) {
+            self::$instance = new Charitable_Cron();
+        }
+
+        return self::$instance;
+    }
 
     /**
      * Create class object.
      * 
-     * @access  protected
+     * @access  private
      * @since   1.1.0
      */
-    protected function __construct() {
+    private function __construct() {
         add_action( 'charitable_daily_scheduled_events', array( $this, 'check_expired_campaigns' ) );
     }
 
@@ -40,11 +64,7 @@ class Charitable_Cron extends Charitable_Start_Object {
      * @since   1.1.0
      */
     public static function schedule_events() {        
-        // echo '1';
-
-        // echo '<pre>'; var_dump( wp_next_scheduled( 'charitable_daily_scheduled_events' ) ); echo '</pre>';
         if ( ! wp_next_scheduled( 'charitable_daily_scheduled_events' ) ) {
-            echo '2';
             wp_schedule_event( time(), 'daily', 'charitable_daily_scheduled_events' );
         }
     }

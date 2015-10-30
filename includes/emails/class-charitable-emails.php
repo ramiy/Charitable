@@ -18,7 +18,16 @@ if ( ! class_exists( 'Charitable_Emails' ) ) :
  *
  * @since       1.0.0
  */
-class Charitable_Emails extends Charitable_Start_Object {
+class Charitable_Emails {
+
+    /**
+     * The single instance of this class.  
+     *
+     * @var     Charitable_Emails|null
+     * @access  private
+     * @static
+     */
+    private static $instance = null;
 
     /**
      * All available emails. 
@@ -41,22 +50,11 @@ class Charitable_Emails extends Charitable_Start_Object {
      * which can only be called during the start phase. In other words, don't try 
      * to instantiate this object. 
      *
-     * @access  protected
-     * @since   1.0.0
-     */
-    protected function __construct() {                
-        $this->attach_hooks_and_filters();
-    }
-
-    /**
-     * Attach callbacks to hooks and filters.  
-     *
-     * @return  void
      * @access  private
      * @since   1.0.0
      */
-    private function attach_hooks_and_filters() {
-        add_action( 'plugins_loaded', array( $this, 'register_emails' ), 500 );
+    private function __construct() {                
+        add_action( 'init', array( $this, 'register_emails' ) );
         add_action( 'charitable_enable_email', array( $this, 'handle_email_settings_request' ) );
         add_action( 'charitable_disable_email', array( $this, 'handle_email_settings_request' ) );
         add_action( 'charitable_before_send_email', array( $this, 'set_current_email' ) );
@@ -68,6 +66,21 @@ class Charitable_Emails extends Charitable_Start_Object {
         
         /* 3rd party hook for overriding anything we've done above. */
         do_action( 'charitable_emails_start', $this );     
+    }
+
+    /**
+     * Returns and/or create the single instance of this class.  
+     *
+     * @return  Charitable_Emails
+     * @access  public
+     * @since   1.2.0
+     */
+    public static function get_instance() {
+        if ( is_null( self::$instance ) ) {
+            self::$instance = new Charitable_Emails();
+        }
+
+        return self::$instance;
     }
 
     /**
@@ -177,6 +190,8 @@ class Charitable_Emails extends Charitable_Start_Object {
      * @since   1.0.0
      */
     public function register_email_settings( $settings, Charitable_Email $email ) {
+        add_filter( 'charitable_settings_fields_emails_email_' . $email->get_email_id(), array( $email, 'add_recipients_field' ) );
+
         return $email->email_settings( $settings );
     }
 

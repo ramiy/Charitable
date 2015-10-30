@@ -19,10 +19,19 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
  * @final
  * @since       1.0.0
  */
-final class Charitable_Donation_Post_Type extends Charitable_Start_Object {
+final class Charitable_Donation_Post_Type {
 
     /**
-     * @var     Charitable      $charitable
+     * The single instance of this class.  
+     *
+     * @var     Charitable_Donation_Post_Type|null
+     * @access  private
+     * @static
+     */
+    private static $instance = null;
+
+    /**
+     * @var     Charitable $charitable
      * @access  private
      */
     private $charitable;
@@ -36,10 +45,10 @@ final class Charitable_Donation_Post_Type extends Charitable_Start_Object {
     /**
      * Create object instance. 
      *
-     * @access  protected
+     * @access  private
      * @since   1.0.0
      */
-    protected function __construct() {
+    private function __construct() {
         $this->meta_box_helper = new Charitable_Meta_Box_Helper( 'charitable-donation' );
 
         add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
@@ -53,6 +62,21 @@ final class Charitable_Donation_Post_Type extends Charitable_Start_Object {
 
         do_action( 'charitable_admin_donation_post_type_start', $this );
     }
+
+    /**
+     * Returns and/or create the single instance of this class.  
+     *
+     * @return  Charitable_Donation_Post_Type
+     * @access  public
+     * @since   1.2.0
+     */
+    public static function get_instance() {
+        if ( is_null( self::$instance ) ) {
+            self::$instance = new Charitable_Donation_Post_Type();
+        }
+
+        return self::$instance;
+    } 
 
     /**
      * Sets up the meta boxes to display on the donation admin page.     

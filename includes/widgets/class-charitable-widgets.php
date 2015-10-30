@@ -21,19 +21,39 @@ if ( ! class_exists( 'Charitable_Widgets' ) ) :
  * @final
  * @since 		1.0.0
  */
-final class Charitable_Widgets extends Charitable_Start_Object {
+final class Charitable_Widgets {
 
+    /**
+     * The single instance of this class.  
+     *
+     * @var     Charitable_Widgets|null
+     * @access  private
+     * @static
+     */
+    private static $instance = null;  
+
+    /**
+     * Returns and/or create the single instance of this class.  
+     *
+     * @return  Charitable_Widgets
+     * @access  public
+     * @since   1.2.0
+     */
+    public static function get_instance() {
+        if ( is_null( self::$instance ) ) {
+            self::$instance = new Charitable_Widgets();
+        }
+
+        return self::$instance;
+    }
+    
 	/**
-	 * Set up the class. 
-	 * 
-	 * Note that the only way to instantiate an object is with the on_start method, 
-	 * which can only be called during the start phase. In other words, don't try 
-	 * to instantiate this object. 
+	 * Set up the class. This can only be loaded with the get_instance() method. 
 	 *
-	 * @access 	protected
+	 * @access 	private
 	 * @since 	1.0.0
 	 */
-	protected function __construct() {
+	private function __construct() {
 		add_action( 'widgets_init', array( $this, 'register_widgets' ) );
 	}
 
