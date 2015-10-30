@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paypa
 Tags: donations, donate, donation plugin, fundraising, fundraising plugin, non-profit, non-profits, charity, churches, commerce, crowdfunding, crowd funding, paypal donations, paypal, stripe, stripe donations, campaigns, gifts, giving, wordpress fundraising, wordpress donations, wordpress donation plugin, peer to peer fundraising, peer to peer fundraiser, peer fundraising, social fundraising
 Requires at least: 4.1
 Tested up to: 4.3.1
-Stable tag: 1.2.0
+Stable tag: 1.2.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -12,9 +12,9 @@ Charitable is a powerful, extendable fundraising plugin that gives you full cont
 
 == Description ==
 
-**[Charitable](https://wpcharitable.com/?utm_source=readme&utm_medium=description_tab&utm_content=intro&utm_campaign=plugin_page_referrals)** is the WordPress fundraising alternative for non-profits, built to help non-profits raise money on their own website. 
+**[Charitable](https://wpcharitable.com/?utm_source=readme&utm_medium=description-tab&utm_content=intro&utm_campaign=plugin-page-referrals)** is the WordPress fundraising alternative for non-profits, built to help non-profits raise money on their own website. 
 
-You can accept PayPal or offline donations right out of the box, with support for other gateways available as [extensions](https://wpcharitable.com/extensions?utm_source=readme&utm_medium=description_tab&utm_content=intro&utm_campaign=plugin_page_referrals).
+You can accept PayPal or offline donations right out of the box, with support for other gateways available as [extensions](https://wpcharitable.com/extensions?utm_source=readme&utm_medium=description-tab&utm_content=intro&utm_campaign=plugin-page-referrals).
 
 = Unlimited fundraising campaigns = 
 
@@ -30,13 +30,13 @@ Install, activate and create your first fundraising campaign in less than 5 minu
 
 = Accept credit card donations = 
 
-By coupling Charitable with our [Stripe extension](https://wpcharitable.com/extensions/charitable-stripe?utm_source=readme&utm_medium=description_tab&utm_content=credit_card_donations&utm_campaign=plugin_page_referrals), you can accept credit card donations directly on your website. Improve your donor conversion rates by keeping them on your website instead of redirecting them to PayPal.
+By coupling Charitable with our [Stripe extension](https://wpcharitable.com/extensions/charitable-stripe?utm_source=readme&utm_medium=description-tab&utm_content=credit-card-donations&utm_campaign=plugin-page-referrals), you can accept credit card donations directly on your website. Improve your donor conversion rates by keeping them on your website instead of redirecting them to PayPal.
 
-Want to use a different payment gateway? [Let us know](https://wpcharitable.com/support?utm_source=readme&utm_medium=description_tab&utm_content=credit_card_donations&utm_campaign=plugin_page_referrals).
+Want to use a different payment gateway? [Let us know](https://wpcharitable.com/support?utm_source=readme&utm_medium=description-tab&utm_content=credit-card-donations&utm_campaign=plugin-page-referrals).
 
 = Use Peer-to-Peer Fundraising to expand your reach = 
 
-With our [Charitable Ambassadors extension](https://wpcharitable.com/extensions/charitable-ambassadors?utm_source=readme&utm_medium=description_tab&utm_content=peer_to_peer_fundraising&utm_campaign=plugin_page_referrals), you can use peer-to-peer fundraising to leverage your supporters’ network of friends and family. 
+With our [Charitable Ambassadors extension](https://wpcharitable.com/extensions/charitable-ambassadors?utm_source=readme&utm_medium=description-tab&utm_content=peer-to-peer-fundraising&utm_campaign=plugin-page-referrals), you can use peer-to-peer fundraising to leverage your supporters’ network of friends and family. 
 
 Ambassadors also supports people creating fundraisers for personal causes, allowing you to create a crowdfunding platform powered by Charitable Ambassadors.
 
@@ -54,19 +54,19 @@ Charitable has been designed to work with any well-coded theme, including the de
 
 One size does *not* fit all. That's why we made Charitable an extendable platform. 
 
-* **[Ambassadors](https://wpcharitable.com/extensions/charitable-ambassadors?utm_source=readme&utm_medium=description_tab&utm_content=extensions&utm_campaign=plugin_page_referrals)** - Add peer-to-peer fundraising or crowdfunding to your website.
-* **[Stripe](https://wpcharitable.com/extensions/charitable-stripe?utm_source=readme&utm_medium=description_tab&utm_content=extensions&utm_campaign=plugin_page_referrals)** - Accept credit card donations on your website.
-* **[Anonymous Donations](https://wpcharitable.com/extensions/charitable-anonymous-donations?utm_source=readme&utm_medium=description_tab&utm_content=extensions&utm_campaign=plugin_page_referrals)** - Allow people to make donations anonymously.
-* **[User Avatars](https://wpcharitable.com/extensions/charitable-user-avatar?utm_source=readme&utm_medium=description_tab&utm_content=extensions&utm_campaign=plugin_page_referrals)** - Let your donors upload their own profile photo to your site, instead of using their Gravatar profile.
-* **[Simple Updates](https://wpcharitable.com/extensions/charitable-simple-updates?utm_source=readme&utm_medium=description_tab&utm_content=extensions&utm_campaign=plugin_page_referrals)** - Add updates about your fundraising campaigns.
+* **[Ambassadors](https://wpcharitable.com/extensions/charitable-ambassadors?utm_source=readme&utm_medium=description-tab&utm_content=extensions&utm_campaign=plugin-page-referrals)** - Add peer-to-peer fundraising or crowdfunding to your website.
+* **[Stripe](https://wpcharitable.com/extensions/charitable-stripe?utm_source=readme&utm_medium=description-tab&utm_content=extensions&utm_campaign=plugin-page-referrals)** - Accept credit card donations on your website.
+* **[Anonymous Donations](https://wpcharitable.com/extensions/charitable-anonymous-donations?utm_source=readme&utm_medium=description-tab&utm_content=extensions&utm_campaign=plugin-page-referrals)** - Allow people to make donations anonymously.
+* **[User Avatars](https://wpcharitable.com/extensions/charitable-user-avatar?utm_source=readme&utm_medium=description-tab&utm_content=extensions&utm_campaign=plugin-page-referrals)** - Let your donors upload their own profile photo to your site, instead of using their Gravatar profile.
+* **[Simple Updates](https://wpcharitable.com/extensions/charitable-simple-updates?utm_source=readme&utm_medium=description-tab&utm_content=extensions&utm_campaign=plugin-page-referrals)** - Add updates about your fundraising campaigns.
 
 Looking for more? 
 
-[View all extensions](https://wpcharitable.com/extensions?utm_source=readme&utm_medium=description_tab&utm_content=extensions&utm_campaign=plugin_page_referrals). 
+[View all extensions](https://wpcharitable.com/extensions?utm_source=readme&utm_medium=description-tab&utm_content=extensions&utm_campaign=plugin-page-referrals). 
 
 = Get involved =
 
-Join the community on [WP Charitable](https://wpcharitable.com/?utm_source=readme&utm_medium=description_tab&utm_content=get_involved&utm_campaign=plugin_page_referrals). 
+Join the community on [WP Charitable](https://wpcharitable.com/?utm_source=readme&utm_medium=description-tab&utm_content=get-involved&utm_campaign=plugin-page-referrals). 
 
 Developers can contribute to Charitable on our [Github repository](https://github.com/Charitable/Charitable).
 
@@ -82,11 +82,11 @@ Developers can contribute to Charitable on our [Github repository](https://githu
 
 You can accept donations with the Offline Donations gateway, which allows your donors to create a donation and make the payment via cheque or bank transfer (you can display your payment details to them).
 
-You can also accept credit card donations with the [Stripe extension](https://wpcharitable.com/extensions/charitable-stripe?utm_source=readme&utm_medium=faq_tab&utm_content=avoid_paypal&utm_campaign=plugin_page_referrals). If you want to use a different payment gateway, [let us know](https://wpcharitable.com/support?utm_source=readme&utm_medium=faq_tab&utm_content=avoid_paypal&utm_campaign=plugin_page_referrals).
+You can also accept credit card donations with the [Stripe extension](https://wpcharitable.com/extensions/charitable-stripe?utm_source=readme&utm_medium=faq-tab&utm_content=avoid-paypal&utm_campaign=plugin-page-referrals). If you want to use a different payment gateway, [let us know](https://wpcharitable.com/support?utm_source=readme&utm_medium=faq-tab&utm_content=avoid-paypal&utm_campaign=plugin-page-referrals).
 
 = How do I add a grid of campaigns to my page? = 
 
-Easy. Just add `[campaigns]` into your page content. [Read more](https://wpcharitable.com/documentation/the-campaigns-shortcode?utm_source=readme&utm_medium=faq_tab&utm_content=campaigns_shortcode&utm_campaign=plugin_page_referrals).
+Easy. Just add `[campaigns]` into your page content. [Read more](https://wpcharitable.com/documentation/the-campaigns-shortcode?utm_source=readme&utm_medium=faq-tab&utm_content=campaigns-shortcode&utm_campaign=plugin-page-referrals).
 
 = Does Charitable support recurring donations? =
 
@@ -94,7 +94,7 @@ Support for recurring donations will be added as an extension, but is not yet av
 
 = How do I get support? = 
 
-You can post in the [support forum](https://wordpress.org/support/plugin/charitable) or reach us via [our support form](http://wpcharitable.com/support?utm_source=readme&utm_medium=faq_tab&utm_content=support&utm_campaign=plugin_page_referrals). 
+You can post in the [support forum](https://wordpress.org/support/plugin/charitable) or reach us via [our support form](http://wpcharitable.com/support?utm_source=readme&utm_medium=faq-tab&utm_content=support&utm_campaign=plugin-page-referrals). 
 
 == Screenshots ==
 
@@ -107,7 +107,11 @@ You can post in the [support forum](https://wordpress.org/support/plugin/charita
 
 == Changelog ==
 
+= 1.2.1 = 
+* Including missing files from 1.2.0 release.
+
 = 1.2.0 = 
+* [Read the full release notes](https://www.wpcharitable.com/charitable-1-2-0-is-ready-to-download/?utm_source=readme&utm_medium=changelog-tab&utm_campaign=plugin-page-referrals&utm_content=1-2-0-release-notes).
 * NEW: Change the highlight colour via the WordPress Customizer. You can preview your changes as you make them. 
 * NEW: There is a shiny new dashboard widget when you log into the WordPress dashboard to highlight your donation stats. 
 * NEW: You can now limit the donation form to only display required user fields. 
