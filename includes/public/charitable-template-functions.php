@@ -515,7 +515,7 @@ endif;
 
 if ( ! function_exists( 'charitable_template_donation_form_login' ) ) :
     /**
-     * Display the login form before the user fields within a donation form.
+     * Display a prompt to login at the start of the user fields block.
      *
      * @param   Charitable_Form $form
      * @return  void

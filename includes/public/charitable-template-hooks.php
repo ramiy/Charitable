@@ -98,8 +98,16 @@ add_action( 'charitable_donation_receipt', 'charitable_template_donation_receipt
  * Footer, right before the closing body tag.
  *
  * @see charitable_template_campaign_modal_donation_window
+ * @see charitable_template_donation_form_login_modal()
  */
 add_action( 'wp_footer', 'charitable_template_campaign_modal_donation_window' );
+
+/**
+ * Add the login form before the donation form, outside the <form> tags
+ *
+ * @see charitable_template_donation_form_login
+ */
+add_action( 'charitable_donation_form_before', 'charitable_template_donation_form_login', 4 );
 
 /**
  * Donation form, before the donor fields. 
@@ -108,7 +116,6 @@ add_action( 'wp_footer', 'charitable_template_campaign_modal_donation_window' );
  * @see charitable_template_donation_form_donor_details
  * @see charitable_template_donation_form_donor_fields_hidden_wrapper_start
  */
-add_action( 'charitable_donation_form_donor_fields_before', 'charitable_template_donation_form_login', 4 );
 add_action( 'charitable_donation_form_donor_fields_before', 'charitable_template_donation_form_donor_details', 6 );
 add_action( 'charitable_donation_form_donor_fields_before', 'charitable_template_donation_form_donor_fields_hidden_wrapper_start', 8 );
 

@@ -17,6 +17,7 @@ $user = wp_get_current_user();
 if ( ! $form ) {
     return;
 }
+
 ?>
 <form method="post" id="charitable-donation-form" class="charitable-form">
     <?php 
