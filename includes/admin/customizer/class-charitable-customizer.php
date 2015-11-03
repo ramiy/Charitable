@@ -82,31 +82,11 @@ class Charitable_Customizer {
      * @return  void
      */
     public function register_customizer_fields($wp_customize) {
-        $highlight_colour = apply_filters( 'charitable_default_highlight_colour', '#f89d35' );
-
-        $fields = apply_filters( 'charitable_customizer_fields', array(
+        $fields = array(
             'title'     => __( 'Charitable', 'charitable' ), 
             'priority'  => 1000,
-            'capability'=> 'manage_charitable_settings',
-            'sections'  => array(                
-                'charitable_design' => array(
-                    'title'     => __( 'Design Options', 'charitable' ),
-                    'priority'  => 1010,
-                    'settings'  => array(                
-                        'highlight_colour' => array(
-                            'setting'   => array(
-                                'transport'         => 'postMessage', 
-                                'default'           => $highlight_colour,
-                                'sanitize_callback' => 'sanitize_hex_color'
-                            ),
-                            'control'   => array(
-                                'control_type'      => 'WP_Customize_Color_Control',
-                                'priority'          => 1110,
-                                'label'             => __( 'Highlight Colour', 'charitable' )
-                            )
-                        )
-                    )
-                ), 
+            'capability'=> 'manage_charitable_settings', 
+            'sections'  => array(
                 'charitable_donation_form' => array(
                     'title'     => __( 'Donation Form', 'charitable' ), 
                     'priority'  => 1020,
@@ -146,7 +126,32 @@ class Charitable_Customizer {
                     )
                 )
             )
-        ) );
+        );
+
+        if ( apply_filters( 'charitable_add_custom_styles', true ) ) {
+            $highlight_colour = apply_filters( 'charitable_default_highlight_colour', '#f89d35' );
+
+            $fields[ 'sections' ][ 'charitable_design' ] = array(
+                'title'     => __( 'Design Options', 'charitable' ),
+                'priority'  => 1010,
+                'settings'  => array(                
+                    'highlight_colour' => array(
+                        'setting'   => array(
+                            'transport'         => 'postMessage', 
+                            'default'           => $highlight_colour,
+                            'sanitize_callback' => 'sanitize_hex_color'
+                        ),
+                        'control'   => array(
+                            'control_type'      => 'WP_Customize_Color_Control',
+                            'priority'          => 1110,
+                            'label'             => __( 'Highlight Colour', 'charitable' )
+                        )
+                    )
+                )
+            );
+        }
+
+        $fields = apply_filters( 'charitable_customizer_fields', $fields );
 
         $this->add_panel( 'charitable', $fields );
     }

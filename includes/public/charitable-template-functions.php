@@ -27,6 +27,10 @@ if ( ! function_exists( 'charitable_template_custom_styles' ) ) :
      * @since   1.2.0
      */
     function charitable_template_custom_styles() {
+        if ( ! apply_filters( 'charitable_add_custom_styles', true ) ) {
+            return;
+        }
+
         $styles = get_transient( 'charitable_custom_styles' );
 
         if ( false === $styles ) {
