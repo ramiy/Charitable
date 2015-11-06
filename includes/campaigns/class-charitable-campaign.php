@@ -635,7 +635,7 @@ class Charitable_Campaign {
             return 0;
         }
         
-        return charitable()->get_currency_helper()->sanitize_monetary_amount( $value );        
+        return charitable_get_currency_helper()->sanitize_monetary_amount( $value );        
     }
 
     /**
@@ -669,7 +669,17 @@ class Charitable_Campaign {
             return array();
         }
                 
-        return array_filter( $value, array( 'Charitable_Campaign', 'filter_suggested_donation' ) );                
+        $value = array_filter( $value, array( 'Charitable_Campaign', 'filter_suggested_donation' ) );                
+
+        if ( empty( $value ) ) {
+            return $value;
+        }
+
+        foreach ( $value as $key => $suggestion ) {
+            $value[ $key ][ 'amount' ] = charitable_get_currency_helper()->sanitize_monetary_amount( $suggestion[ 'amount' ] );
+        }
+
+        return $value;
     }
 
     /**
