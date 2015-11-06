@@ -572,14 +572,7 @@ class Charitable {
      * @since   1.0.0
      */
     public function get_currency_helper() {
-        $currency_helper = $this->get_registered_object('Charitable_Currency');
-
-        if ( false === $currency_helper ) {
-            $currency_helper = new Charitable_Currency();
-            $this->register_object( $currency_helper );
-        }
-
-        return $currency_helper;
+        return Charitable_Currency::get_instance();
     }
 
     /**

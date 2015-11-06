@@ -21,11 +21,14 @@ if ( ! class_exists( 'Charitable_Currency' ) ) :
  */
 final class Charitable_Currency {
 
-	/**
-	 * @var 	Charitable 	$charitable
-	 * @access private
-	 */
-	private $charitable;
+    /**
+     * The single instance of this class.  
+     *
+     * @var     Charitable_Currency|null
+     * @access  private
+     * @static
+     */
+    private static $instance = null;
 
 	/**
 	 * @var 	string 		$currency_format 	The format that the current currency will take.
@@ -41,6 +44,30 @@ final class Charitable_Currency {
 	 * @var 	string 		$currency 			The currency in use on the site.
 	 */
 	private $currency;
+
+	/**
+     * Create class object. A private constructor, so this is used in a singleton context. 
+     * 
+     * @access  private
+     * @since   1.2.3
+     */
+    private function __construct() {
+    }
+
+    /**
+     * Returns and/or create the single instance of this class.  
+     *
+     * @return  Charitable_Currency
+     * @access  public
+     * @since   1.2.3
+     */
+    public static function get_instance() {
+        if ( is_null( self::$instance ) ) {
+            self::$instance = new Charitable_Currency();
+        }
+
+        return self::$instance;
+    }
 
 	/**
 	 * Return an amount as a monetary string.
@@ -64,7 +91,9 @@ final class Charitable_Currency {
 	}
 
 	/**
-	 * Receives unfiltered monetary amount and sanitizes it, returning it as a float.  
+	 * Receives unfiltered monetary amount and sanitizes it, returning it as a float.
+	 *
+	 * $50.00 -> 50.00 
 	 *
 	 * @param 	string 		$amount
 	 * @return 	float

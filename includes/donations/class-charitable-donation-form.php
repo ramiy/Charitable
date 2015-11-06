@@ -670,19 +670,13 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
      * @since   1.0.0
      */
     public static function get_donation_amount() {
-        $suggested  = isset( $_POST[ 'donation_amount' ] ) ? $_POST[ 'donation_amount' ] : 0;
-        $custom     = isset( $_POST[ 'custom_donation_amount' ] ) ? $_POST[ 'custom_donation_amount' ] : 0;
+        $amount = isset( $_POST[ 'donation_amount' ] ) ? $_POST[ 'donation_amount' ] : 0;
 
-        if ( 0 === $suggested || 'custom' === $suggested ) {
-
-            $amount = $custom;
-
-        } 
-        else {
-
-            $amount = $suggested;
-
+        if ( 0 == $amount || 'custom' == $amount ) {
+            $amount = isset( $_POST[ 'custom_donation_amount' ] ) ? $_POST[ 'custom_donation_amount' ] : 0;
         }
+
+        $amount = charitable_get_currency_helper()->sanitize_monetary_amount( $amount );
 
         return $amount;
     }

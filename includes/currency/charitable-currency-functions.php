@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  * @since   1.0.0
  */
 function charitable_get_currency_helper() {
-    return charitable()->get_currency_helper();
+    return Charitable_Currency::get_instance();
 }
 
 /**

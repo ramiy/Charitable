@@ -64,7 +64,6 @@ class Charitable_Donation_Processor {
     /**
      * Create class object. A private constructor, so this is used in a singleton context. 
      * 
-     * @return  void
      * @access  private
      * @since   1.0.0
      */
