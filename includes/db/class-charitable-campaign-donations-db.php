@@ -283,6 +283,24 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 	}
 
 	/**
+	 * Get an array of all donation ids for a campaign.
+	 *
+	 * @global 	wpdb 	$wpdb
+	 * @param 	int 	$campaign_id
+	 * @return 	object
+	 * @since 	1.0.0
+	 */
+	public function get_donation_ids_for_campaign( $campaign_id ){
+		global $wpdb;
+
+		$sql = "SELECT DISTINCT donation_id 
+				FROM $this->table_name 
+				WHERE campaign_id = %d;";
+
+		return $wpdb->get_col( $wpdb->prepare( $sql, intval( $campaign_id ) ) );
+	}
+
+	/**
 	 * Get total amount donated to a campaign.
 	 *
 	 * @global 	wpdb 	$wpdb
@@ -320,15 +338,14 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 	 */
 	public function get_campaign_donors( $campaign_id ) {
 		global $wpdb;
-		return $wpdb->get_results( 
-			$wpdb->prepare( 
-				"SELECT DISTINCT p.post_author as donor_id
+
+		$sql = "SELECT DISTINCT p.post_author as donor_id
 				FROM $this->table_name c
 				INNER JOIN {$wpdb->prefix}posts p
 				ON c.donation_id = p.ID
-				WHERE c.campaign_id = %d;", 
-				$campaign_id
-			), OBJECT_K );
+				WHERE c.campaign_id = %d;";
+
+		return $wpdb->get_results( $wpdb->prepare( $sql, $campaign_id ), OBJECT_K );
 	} 	 
 
 	 /**

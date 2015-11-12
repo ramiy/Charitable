@@ -108,6 +108,12 @@ You can post in the [support forum](https://wordpress.org/support/plugin/charita
 
 == Changelog ==
 
+= 1.2.3 = 
+* Added method to retrieve all donation IDs for a particular campaign.
+* Fixes a bug that prevented template functions from being "pluggable" in themes.
+* Fixes a bug that stopped the profile form from displaying the user's saved address fields.
+* Fixes a bug that prevent form submission validating when submitting a value of 0 for required fields.
+
 = 1.2.2 = 
 * Fixes a bug that prevented the donation form from working correctly when the donor is not logged in.
 

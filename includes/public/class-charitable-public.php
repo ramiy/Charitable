@@ -52,6 +52,7 @@ final class Charitable_Public {
 	 * @since 	1.0.0
 	 */
 	private function __construct() {				
+        add_action( 'after_setup_theme', array( $this, 'load_template_files' ) );
         add_action( 'wp_enqueue_scripts', array( $this, 'wp_enqueue_scripts') );
         add_filter( 'post_class', array( $this, 'campaign_post_class' ) );
 
@@ -66,6 +67,19 @@ final class Charitable_Public {
 
 		do_action( 'charitable_public_start', $this );
 	}    
+
+    /**
+     * Load the template functions after theme is loaded. 
+     *
+     * This gives themes time to override the functions. 
+     *
+     * @return  void
+     * @access  public
+     * @since   1.2.3
+     */
+    public function load_template_files() {
+        require_once( 'charitable-template-functions.php' );        
+    }
 
 	/**
 	 * Loads public facing scripts and stylesheets. 

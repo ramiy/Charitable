@@ -106,7 +106,7 @@ class Charitable_Profile_Form extends Charitable_Form {
                     $value = $user->description;
                     break;
                 
-                default :    
+                default : 
                     if ( $user->has_prop( $key ) ) {
                         $value = $user->get( $key );
                     }                    
@@ -181,35 +181,35 @@ class Charitable_Profile_Form extends Charitable_Form {
                 'type'      => 'text', 
                 'priority'  => 22, 
                 'required'  => false, 
-                'value'     => $this->get_user_value( 'address' )
+                'value'     => $this->get_user_value( 'donor_address' )
             ),
             'address_2' => array( 
                 'label'     => __( 'Address 2', 'charitable' ), 
                 'type'      => 'text', 
                 'priority'  => 24, 
                 'required'  => false,           
-                'value'     => $this->get_user_value( 'address_2' )
+                'value'     => $this->get_user_value( 'donor_address_2' )
             ),
             'city' => array( 
                 'label'     => __( 'City', 'charitable' ),          
                 'type'      => 'text', 
                 'priority'  => 26, 
                 'required'  => false, 
-                'value'     => $this->get_user_value( 'city' )
+                'value'     => $this->get_user_value( 'donor_city' )
             ),
             'state' => array( 
                 'label'     => __( 'State', 'charitable' ),                 
                 'type'      => 'text', 
                 'priority'  => 28, 
                 'required'  => false, 
-                'value'     => $this->get_user_value( 'state' )
+                'value'     => $this->get_user_value( 'donor_state' )
             ),
             'postcode' => array( 
                 'label'     => __( 'Postcode / ZIP code', 'charitable' ),               
                 'type'      => 'text', 
                 'priority'  => 30, 
                 'required'  => false, 
-                'value'     => $this->get_user_value( 'postcode' )
+                'value'     => $this->get_user_value( 'donor_postcode' )
             ),
             'country' => array( 
                 'label'     => __( 'Country', 'charitable' ),               
@@ -217,14 +217,14 @@ class Charitable_Profile_Form extends Charitable_Form {
                 'options'   => charitable_get_location_helper()->get_countries(), 
                 'priority'  => 32, 
                 'required'  => false, 
-                'value'     => $this->get_user_value( 'country', charitable_get_option( 'country' ) )
+                'value'     => $this->get_user_value( 'donor_country', charitable_get_option( 'country' ) )
             ),
             'phone' => array( 
                 'label'     => __( 'Phone', 'charitable' ),                 
                 'type'      => 'text', 
                 'priority'  => 34, 
                 'required'  => false, 
-                'value'     => $this->get_user_value( 'phone' )
+                'value'     => $this->get_user_value( 'donor_phone' )
             )
         ), $this );
 

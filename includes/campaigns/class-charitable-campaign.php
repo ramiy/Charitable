@@ -404,7 +404,7 @@ class Charitable_Campaign {
                 $tag = __( 'Unsuccessful', 'charitable' );
             }            
         }
-        elseif ( $this->get_seconds_left() < $ending_soon_threshold ) {
+        elseif ( ! $this->is_endless() && $this->get_seconds_left() < $ending_soon_threshold ) {
             $tag = __( 'Ending Soon', 'charitable' );
         }
         elseif ( $show_active_tag ) {

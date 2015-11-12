@@ -222,9 +222,8 @@ class Charitable {
         require_once( $includes_path . 'licensing/class-charitable-plugin-updater.php' );
 
         /* Public */
-        require_once( $includes_path . 'public/charitable-page-functions.php' );
-        require_once( $includes_path . 'public/charitable-template-functions.php' );
-        require_once( $includes_path . 'public/charitable-template-helpers.php' );
+        require_once( $includes_path . 'public/charitable-page-functions.php' );        
+        require_once( $includes_path . 'public/charitable-template-helpers.php' );        
         require_once( $includes_path . 'public/charitable-template-hooks.php' );
         require_once( $includes_path . 'public/class-charitable-session.php' );        
         require_once( $includes_path . 'public/class-charitable-template.php' );      
@@ -281,19 +280,19 @@ class Charitable {
      * @since   1.0.0
      */
     private function attach_hooks_and_filters() {
-        add_action('plugins_loaded', array( $this, 'charitable_install' ), 100 );
-        add_action('plugins_loaded', array( $this, 'charitable_start' ), 100 );
+        add_action( 'plugins_loaded', array( $this, 'charitable_install' ), 100 );
+        add_action( 'plugins_loaded', array( $this, 'charitable_start' ), 100 );
         add_action( 'setup_theme', array( 'Charitable_Customizer', 'start' ) );
 
         /**
          * We do this on priority 20 so that any functionality that is loaded on init (such 
          * as addons) has a chance to run before the event.
          */
-        add_action('init', array( $this, 'do_charitable_actions' ), 20 );        
+        add_action( 'init', array( $this, 'do_charitable_actions' ), 20 );        
 
-        add_filter('charitable_sanitize_campaign_meta', array( 'Charitable_Campaign', 'sanitize_meta' ), 10, 3 );
-        add_filter('charitable_sanitize_donation_meta', array( 'Charitable_Donation', 'sanitize_meta' ), 10, 2 );
-        add_filter('charitable_after_insert_user', array( 'Charitable_User', 'signon' ), 10, 2 );
+        add_filter( 'charitable_sanitize_campaign_meta', array( 'Charitable_Campaign', 'sanitize_meta' ), 10, 3 );
+        add_filter( 'charitable_sanitize_donation_meta', array( 'Charitable_Donation', 'sanitize_meta' ), 10, 2 );
+        add_filter( 'charitable_after_insert_user', array( 'Charitable_User', 'signon' ), 10, 2 );
     }
 
     /**
@@ -461,8 +460,8 @@ class Charitable {
     /**
      * Returns a registered object.
      * 
-     * @param   string      $class          The type of class you want to retrieve.
-     * @return  mixed       The object if its registered. Otherwise false.
+     * @param   string $class   The type of class you want to retrieve.
+     * @return  mixed           The object if its registered. Otherwise false.
      * @access  public
      * @since   1.0.0
      */
@@ -473,8 +472,8 @@ class Charitable {
     /**
      * Returns plugin paths. 
      *
-     * @param   string      $type           If empty, returns the path to the plugin.
-     * @param   bool        $absolute_path  If true, returns the file system path. If false, returns it as a URL.
+     * @param   string $type        If empty, returns the path to the plugin.
+     * @param   bool $absolute_path If true, returns the file system path. If false, returns it as a URL.
      * @return  string
      * @since   1.0.0
      */
@@ -578,7 +577,7 @@ class Charitable {
     /**
      * Returns the model for one of Charitable's database tables. 
      *
-     * @param   string          $table
+     * @param   string $table
      * @return  Charitable_DB
      * @access  public
      * @since   1.0.0
