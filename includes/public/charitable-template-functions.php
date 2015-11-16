@@ -342,8 +342,7 @@ if ( ! function_exists( 'charitable_template_campaign_loop' ) ) :
         if ( ! $campaigns ) {
             global $wp_query;
             $campaigns = $wp_query;
-        }
-        
+        }        
 
         charitable_template( 'campaign-loop.php', array( 'campaigns' => $campaigns, 'columns' => $columns ) );
     }
