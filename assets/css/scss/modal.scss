@@ -1,0 +1,30 @@
+#lean_overlay {
+    position: fixed;
+    z-index:100;
+    top: 0px;
+    left: 0px;
+    height:100%;
+    width:100%;
+    background: #000;
+    display: none;
+}
+
+.charitable-modal {
+    max-width: 600px;
+    padding: 2em;
+    background-color: #fff;
+    overflow-y: auto;
+
+    #charitable-donation-form {
+        padding-top: 0;
+    }
+
+    .charitable-fieldset {
+        padding: 0 0 1em;
+        border-width: 0 0 1px 0;
+
+        &:last-of-type {
+            border: none;
+        }
+    }
+}

@@ -2,6 +2,8 @@
 /**
  * Display a widget with donation stats.
  *
+ * Override this template by copying it to yourtheme/charitable/widgets/donation-stats.php
+ *
  * @author  Studio 164a
  * @since   1.0.0
  */

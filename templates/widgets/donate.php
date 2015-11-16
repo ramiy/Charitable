@@ -2,6 +2,8 @@
 /**
  * Display a widget with a link to donate to a campaign.
  *
+ * Override this template by copying it to yourtheme/charitable/widgets/donate.php
+ *
  * @author  Studio 164a
  * @since   1.0.0
  */

@@ -2,6 +2,8 @@
 /**
  * Display a widget with donors, either for a specific campaign or sitewide.
  *
+ * Override this template by copying it to yourtheme/charitable/widgets/donors.php
+ *
  * @author  Studio 164a
  * @since   1.0.0
  * @version 1.2.0

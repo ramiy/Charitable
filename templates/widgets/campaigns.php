@@ -2,6 +2,8 @@
 /**
  * Display a list of campaigns.
  *
+ * Override this template by copying it to yourtheme/charitable/widgets/campaigns.php
+ *
  * @author  Studio 164a
  * @since   1.0.0
  */
