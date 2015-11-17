@@ -2,6 +2,8 @@
 /**
  * Displays the campaign description. 
  *
+ * Override this template by copying it to yourtheme/charitable/campaign/description.php
+ *
  * @author  Studio 164a
  * @since   1.0.0
  */

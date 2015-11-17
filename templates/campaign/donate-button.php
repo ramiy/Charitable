@@ -2,6 +2,8 @@
 /**
  * Displays the donate button to be displayed on campaign pages. 
  *
+ * Override this template by copying it to yourtheme/charitable/campaign/donate-button.php
+ *
  * @author 	Studio 164a
  * @since 	1.0.0
  */

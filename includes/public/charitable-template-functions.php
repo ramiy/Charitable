@@ -388,7 +388,7 @@ if ( ! function_exists( 'charitable_template_campaign_loop_donate_link' ) ) :
             return;
         }
 
-        charitable_template( 'campaign-loop/donation-link.php', array( 'campaign' => $campaign ) );
+        $campaign->donate_button_loop_template();
     }
 endif;
 
@@ -407,6 +407,32 @@ if ( ! function_exists( 'charitable_template_campaign_loop_more_link' ) ) :
         }
 
         charitable_template( 'campaign-loop/more-link.php', array( 'campaign' => $campaign ) );
+    }
+endif;
+
+if ( ! function_exists( 'charitable_template_campaign_loop_add_modal' ) ) : 
+    /**
+     * Checks if the modal option is enabled and hooks the modal template up to wp_footer if it is.
+     *
+     * @return  void
+     * @since   1.2.3
+     */
+    function charitable_template_campaign_loop_add_modal() {
+        if ( 'modal' == charitable_get_option( 'donation_form_display', 'separate_page' ) ) {
+            add_action( 'wp_footer', 'charitable_template_campaign_loop_modal_donation_window' );            
+        }
+    }    
+endif;
+
+if ( ! function_exists( 'charitable_template_campaign_loop_modal_donation_window' ) ) : 
+    /**
+     * Adds the modal donation window to the campaign loop.
+     *
+     * @return  void
+     * @since   1.2.3
+     */
+    function charitable_template_campaign_loop_modal_donation_window() {
+        charitable_template( 'campaign-loop/donate-modal-window.php' );
     }
 endif;
 

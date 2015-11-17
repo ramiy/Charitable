@@ -95,8 +95,6 @@ CHARITABLE_ADMIN.SetupDatepicker = function( $el ) {
 	var setup_dashboard_widgets = function() {
 		var $widget = $( '#charitable_dashboard_donations' );
 
-		console.log( $widget.length );
-
 		if ( $widget.length ) {
 			$.ajax({
 				type: "GET",

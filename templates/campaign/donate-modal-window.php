@@ -2,6 +2,8 @@
 /**
  * Displays the donate button to be displayed on campaign pages. 
  *
+ * Override this template by copying it to yourtheme/charitable/campaign/donate-modal-window.php
+ * 
  * @author  Studio 164a
  * @since   1.0.0
  */
@@ -21,10 +23,3 @@ wp_enqueue_style( 'lean-modal-css' );
     <a class="modal-close"></a>
     <?php $campaign->get_donation_form()->render() ?>
 </div>
-<script type="text/javascript">
-( function( $ ) {
-    // $('[data-trigger-modal]').leanModal({
-    //     closeButton : ".modal-close"
-    // });
-})( jQuery );
-</script>

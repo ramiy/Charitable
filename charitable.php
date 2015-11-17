@@ -353,6 +353,9 @@ class Charitable {
             return;
         }
 
+        require_once( $this->get_path( 'includes' ) . 'ajax/charitable-ajax-functions.php' );
+        require_once( $this->get_path( 'includes' ) . 'ajax/charitable-ajax-hooks.php' );
+
         /**
          * We are registering this object only for backwards compatibility. It
          * will be removed in or after Charitable 1.3.

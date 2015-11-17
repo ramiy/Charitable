@@ -2,6 +2,8 @@
 /**
  * Displays the campaign's donor summary. 
  *
+ * Override this template by copying it to yourtheme/charitable/campaign/summary-donors.php
+ * 
  * @author  Studio 164a
  * @since   1.0.0
  */

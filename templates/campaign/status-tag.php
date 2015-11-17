@@ -2,6 +2,8 @@
 /**
  * Displays the campaign status tag.
  *
+ * Override this template by copying it to yourtheme/charitable/campaign/status-tag.php
+ *
  * @author  Studio 164a
  * @since   1.0.0
  * @version 1.0.0
