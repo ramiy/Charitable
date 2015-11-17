@@ -109,10 +109,13 @@ You can post in the [support forum](https://wordpress.org/support/plugin/charita
 == Changelog ==
 
 = 1.2.3 = 
+* NEW: The `[campaigns]` widget now supports a new `button` argument, so you can specify whether you would like to show a "Read more" link, a "Donate" button, or nothing at all. [See the documentation](https://www.wpcharitable.com/documentation/the-campaigns-shortcode/?utm_source=readme&utm_medium=changelog-tab&utm_campaign=plugin-page-referrals&utm_content=1-2-3-release) for details on how to use the new argument.
+* Improved styling for the modal donation form.
 * Added method to retrieve all donation IDs for a particular campaign.
+* Fixes a bug that blocked donations with a dollar sign in the amount field.
 * Fixes a bug that prevented template functions from being "pluggable" in themes.
 * Fixes a bug that stopped the profile form from displaying the user's saved address fields.
-* Fixes a bug that prevent form submission validating when submitting a value of 0 for required fields.
+* Fixes a bug that prevented form submission validating when submitting a value of 0 for required fields.
 
 = 1.2.2 = 
 * Fixes a bug that prevented the donation form from working correctly when the donor is not logged in.
