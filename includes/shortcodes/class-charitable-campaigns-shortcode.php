@@ -38,11 +38,12 @@ class Charitable_Campaigns_Shortcode {
             'creator' => '', 
             'exclude' => '',
             'include_inactive' => false,
-            'columns' => 2
+            'columns' => 2,
+            'button' => 'donate'
         );
 
-        $args = shortcode_atts( $default, $atts, 'campaigns' );
-        $args[ 'campaigns' ] = self::get_campaigns( $args );
+        $args = shortcode_atts( $default, $atts, 'campaigns' );        
+        $args[ 'campaigns' ] = self::get_campaigns( $args );        
 
         /* Allows extensions/themes to plug in their own template objects here. */
         $template = apply_filters( 'charitable_campaigns_shortcode_template', false, $args );
@@ -58,7 +59,8 @@ class Charitable_Campaigns_Shortcode {
 
         $view_args = apply_filters( 'charitable_campaigns_shortcode_view_args', array(
             'campaigns' => $args[ 'campaigns' ],
-            'columns'   => $args[ 'columns' ]
+            'columns'   => $args[ 'columns' ], 
+            'button'    => $args[ 'button' ]
         ), $args );
 
         $template->set_view_args( $view_args );

@@ -13,13 +13,14 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 $campaign = charitable_get_current_campaign();
+
 ?>
 <li id="campaign-<?php echo get_the_ID() ?>" <?php post_class() ?>>
 <?php 
     /**
      * @hook charitable_campaign_content_loop_before
      */
-    do_action( 'charitable_campaign_content_loop_before', $campaign ); 
+    do_action( 'charitable_campaign_content_loop_before', $campaign, $view_args ); 
     
     ?>
     <a href="<?php the_permalink() ?>"> 
@@ -27,7 +28,7 @@ $campaign = charitable_get_current_campaign();
             /**
              * @hook charitable_campaign_content_loop_before_title
              */
-            do_action( 'charitable_campaign_content_loop_before_title', $campaign );
+            do_action( 'charitable_campaign_content_loop_before_title', $campaign, $view_args );
         ?>
         
         <h3><?php the_title() ?></h3>
@@ -36,7 +37,7 @@ $campaign = charitable_get_current_campaign();
             /**
              * @hook charitable_campaign_content_loop_after_title
              */
-            do_action( 'charitable_campaign_content_loop_after_title', $campaign );
+            do_action( 'charitable_campaign_content_loop_after_title', $campaign, $view_args );
         ?>
     </a>
     <?php
@@ -44,6 +45,6 @@ $campaign = charitable_get_current_campaign();
     /**
      * @hook charitable_campaign_content_loop_after
      */
-    do_action( 'charitable_campaign_content_loop_after', $campaign );
+    do_action( 'charitable_campaign_content_loop_after', $campaign, $view_args );
 ?>
 </li>

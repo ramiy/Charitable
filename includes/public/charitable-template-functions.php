@@ -379,11 +379,34 @@ if ( ! function_exists( 'charitable_template_campaign_loop_donate_link' ) ) :
      * Output the campaign donation status on campaigns displayed within the loop.
      *
      * @param   Charitable_Campaign $campaign
+     * @param   mixed[] $args
      * @return  void
      * @since   1.0.0
      */
-    function charitable_template_campaign_loop_donate_link( $campaign ) {
+    function charitable_template_campaign_loop_donate_link( $campaign, $args = array() ) {        
+        if ( isset( $args[ 'button' ] ) && 'donate' != $args[ 'button' ] ) {
+            return;
+        }
+
         charitable_template( 'campaign-loop/donation-link.php', array( 'campaign' => $campaign ) );
+    }
+endif;
+
+if ( ! function_exists( 'charitable_template_campaign_loop_more_link' ) ) : 
+    /**
+     * Output the read more link on campaigns displayed within the loop.
+     *
+     * @param   Charitable_Campaign $campaign
+     * @param   mixed[] $args
+     * @return  void
+     * @since   1.2.3
+     */
+    function charitable_template_campaign_loop_more_link( $campaign, $args = array() ) {
+        if ( ! isset( $args[ 'button' ] ) || 'details' != $args[ 'button' ] ) {
+            return;
+        }
+
+        charitable_template( 'campaign-loop/more-link.php', array( 'campaign' => $campaign ) );
     }
 endif;
 

@@ -36,3 +36,21 @@ function charitable_compress_css( $css ) {
 
     return $css;
 }
+
+/**
+ * Provides arguments passed to campaigns within the loop.
+ *
+ * @param   mixed[] $view_args  Optional. If called by the shortcode, this will contain 
+ *                              the arguments passed to the shortcode.
+ * @return  mixed[]
+ * @since   1.2.3
+ */
+function charitable_campaign_loop_args( $view_args = array() ) {
+    $defaults = array(
+        'button' => 'donate'
+    );
+
+    $args = wp_parse_args( $view_args, $defaults );
+    
+    return apply_filters( 'charitable_campaign_loop_args', $args );
+}
