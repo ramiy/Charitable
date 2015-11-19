@@ -138,13 +138,13 @@ class Charitable_Donation_Processor {
             return;
         }
 
+        /* Validate the form submission and retrieve the values. */
+        $form = $campaign->get_donation_form();
+
         /**
          * @hook charitable_before_process_donation_form
          */
-        do_action( 'charitable_before_process_donation_form', $processor );
-
-        /* Validate the form submission and retrieve the values. */
-        $form = $campaign->get_donation_form();
+        do_action( 'charitable_before_process_donation_form', $processor, $form );
 
         if ( ! $form->validate_submission() ) {
             return;
@@ -241,13 +241,13 @@ class Charitable_Donation_Processor {
             return;
         }
 
+        /* Validate the form submission and retrieve the values. */
+        $form = new Charitable_Donation_Amount_Form( $campaign );
+
         /**
          * @hook charitable_before_process_donation_amount_form
          */
-        do_action( 'charitable_before_process_donation_amount_form', $processor );
-
-        /* Validate the form submission and retrieve the values. */
-        $form = new Charitable_Donation_Amount_Form( $campaign );
+        do_action( 'charitable_before_process_donation_amount_form', $processor, $form );        
 
         if ( ! $form->validate_submission() ) {
             return;

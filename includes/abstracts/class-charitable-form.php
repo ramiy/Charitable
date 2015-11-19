@@ -390,8 +390,18 @@ abstract class Charitable_Form {
 				continue;
 			}
 
-			$exists = isset( $submitted[ $key ] ) && strlen( $submitted[ $key ] );
-			$exists = $exists || ( 'picture' == $field[ 'type' ] && isset( $_FILES[ $key ] ) && ! empty( $_FILES[ $key ][ 'name' ] ) );
+			$exists = isset( $submitted[ $key ] );
+
+			/* Verify that a value was provided. */
+			if ( $exists ) {
+				$exists = ! empty( $exists ) || ( is_string( $exists ) && strlen( $exists ) );
+			}
+
+			/* If a value was not provided, check if it's in the $_FILES array. */
+			if ( ! $exists ) {
+				$exists = ( 'picture' == $field[ 'type' ] && isset( $_FILES[ $key ] ) && ! empty( $_FILES[ $key ][ 'name' ] ) );
+			}
+
 			$exists = apply_filters( 'charitable_required_field_exists', $exists, $key, $field, $submitted, $this );
 
 			if ( ! $exists ) {
