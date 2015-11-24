@@ -354,6 +354,21 @@ body.post-type-campaign .postbox-container .empty-container {
   .charitable-benefactor-wrap select {
     width: 100%; }
 
+.charitable-benefactor-summary {
+  *zoom: 1; }
+  .charitable-benefactor-summary:before, .charitable-benefactor-summary:after {
+    content: " ";
+    display: table; }
+  .charitable-benefactor-summary:after {
+    clear: both; }
+  .charitable-benefactor-summary .summary {
+    float: left;
+    width: 82%; }
+  .charitable-benefactor-summary .alignright {
+    float: right;
+    width: 18%;
+    text-align: right; }
+
 .charitable-benefactor-form-cancel {
   float: right;
   margin-top: 10px; }
@@ -462,8 +477,9 @@ body.post-type-donation .closed .inside {
 #donation-overview .donor-name {
   font-weight: normal; }
 #donation-overview h3 {
-  font-size: 18px;
-  padding: 0 0 6px; }
+  margin: 0 0 0.5em;
+  padding: 0;
+  font-size: 1.3em; }
 #donation-overview #donation-summary {
   float: right;
   padding: 20px 20px 40px 0;
@@ -480,7 +496,7 @@ body.post-type-donation .closed .inside {
   width: 100%;
   border-spacing: 0; }
   #donation-overview table#overview thead th {
-    padding: 0 0 10px; }
+    padding: 0 0 0.8em; }
   #donation-overview table#overview .col-campaign-name {
     padding-left: 20px;
     text-align: left; }
@@ -488,7 +504,7 @@ body.post-type-donation .closed .inside {
     padding-right: 20px;
     text-align: right; }
   #donation-overview table#overview tbody td {
-    padding: 40px 0;
+    padding: 2em 0;
     border-top: 1px solid #e5e5e5; }
   #donation-overview table#overview tbody tr:last-child td {
     border-bottom: 1px solid #e5e5e5; }
@@ -501,7 +517,7 @@ body.post-type-donation .closed .inside {
     text-align: right; }
   #donation-overview table#overview tfoot td,
   #donation-overview table#overview tfoot th {
-    padding: 10px 20px 10px 0;
+    padding: 0.8em 20px 0.8em 0;
     background-color: #f8f8f8;
     text-align: right; }
 
@@ -675,7 +691,7 @@ select.charitable-settings-field {
   box-sizing: border-box;
   float: left;
   width: 50%;
-  padding: 10px 0;
+  padding: 23px 0 10px;
   border-right: 1px solid #e5e5e5;
   border-bottom: 1px solid #e5e5e5;
   text-align: center; }

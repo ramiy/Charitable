@@ -123,6 +123,20 @@
     }
 }
 
+.charitable-benefactor-summary {    
+    @include clearfix;
+    .summary {
+        float: left;
+        width: 82%;
+    }
+
+    .alignright {
+        float: right;
+        width: 18%;
+        text-align: right;   
+    }
+}
+
 .charitable-benefactor-form-cancel {
     float: right;
     margin-top: 10px;

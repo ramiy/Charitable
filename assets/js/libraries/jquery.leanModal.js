@@ -102,8 +102,6 @@
                     'top' : offset + "px"
                 };
 
-            console.log( modal_height );
-
             if ( modal_is_too_tall ) {
                 if ( available_offset > 0 ) {
                     var v_offset = available_offset / 2;

@@ -357,7 +357,7 @@ abstract class Charitable_Email implements Charitable_Email_Interface {
      * @since   1.0.0
      */
     public function get_donor_first_name() {        
-        return $this->return_value_if_has_valid_donation( $this->donation->get_donor()->first_name );
+        return $this->return_value_if_has_valid_donation( $this->donation->get_donor()->get_value( 'first_name' ) );
     }
 
     /**

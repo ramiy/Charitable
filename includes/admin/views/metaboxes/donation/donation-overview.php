@@ -17,7 +17,7 @@ $donor = $donation->get_donor();
             <?php echo $donor->get_avatar( 80 ) ?>
         </div>
         <div class="donor-facts charitable-media-body">
-            <h3 class="donor-name"><?php echo $donor->display_name ?></h3>
+            <h3 class="donor-name"><?php echo $donor->get_name() ?></h3>
             <span class="donor-email"><?php echo $donor->get_email() ?></span>
             <?php 
             /**

@@ -82,6 +82,18 @@ class Charitable_Donor {
     }
 
     /**
+     * A thin wrapper around the Charitable_User::get() method. 
+     *
+     * @param   string $key
+     * @return  mixed
+     * @access  public
+     * @since   1.2.4
+     */
+    public function get( $key ) {
+        return $this->get_user()->get( $key );
+    }
+
+    /**
      * Return the Charitable_User object for this donor.
      *
      * @return  Charitable_User
@@ -127,6 +139,24 @@ class Charitable_Donor {
     }
 
     /**
+     * Return a value from the donor meta.
+     *
+     * @param   string $key
+     * @return  mixed
+     * @access  public
+     * @since   1.2.4
+     */
+    public function get_value( $key ) {
+        $meta = $this->get_donor_meta();
+
+        if ( ! $meta || ! isset( $meta[ $key ] ) ) {
+            return '';
+        }
+
+        return $meta[ $key ];
+    }
+
+    /**
      * Return the donor's name stored for the particular donation. 
      *
      * @return  string
@@ -144,6 +174,28 @@ class Charitable_Donor {
         $name = trim( sprintf( '%s %s', $first_name, $last_name ) );
 
         return apply_filters( 'charitable_donor_name', $name, $this );
+    }
+
+    /**
+     * Return the donor's email address. 
+     *
+     * @return  string
+     * @access  public
+     * @since   1.2.4
+     */
+    public function get_email() {
+        return $this->get_value( 'email' );
+    }
+
+    /**
+     * Return the donor's address. 
+     *
+     * @return  string
+     * @access  public
+     * @since   1.2.4
+     */
+    public function get_address() {
+        return $this->get_user()->get_address( $this->donation_id );
     }
 
     /**
