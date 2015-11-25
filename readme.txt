@@ -108,6 +108,10 @@ You can post in the [support forum](https://wordpress.org/support/plugin/charita
 
 == Changelog ==
 
+= 1.2.4 = 
+* Improves the API for dealing with the donation processor. Both the `charitable_before_process_donation_form` and `charitable_before_process_donation_amount_form` hooks now pass the donation form object as a second parameter.
+* Fixes a bug in the form submission handler.
+
 = 1.2.3 = 
 * NEW: The `[campaigns]` widget now supports a new `button` argument, so you can specify whether you would like to show a "Read more" link, a "Donate" button, or nothing at all. [See the documentation](https://www.wpcharitable.com/documentation/the-campaigns-shortcode/?utm_source=readme&utm_medium=changelog-tab&utm_campaign=plugin-page-referrals&utm_content=1-2-3-release) for details on how to use the new argument.
 * Improved styling for the modal donation form.
