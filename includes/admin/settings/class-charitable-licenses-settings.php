@@ -135,6 +135,10 @@ final class Charitable_Licenses_Settings {
         $licenses = $new_values[ 'licenses' ];
 
         foreach ( $licenses as $product_key => $license ) {
+            if ( ! strlen( $license ) ) {
+                continue;
+            }
+
             $license_data = charitable_get_helper( 'licenses' )->verify_license( $product_key, $license );
 
             if ( empty( $license_data ) ) {

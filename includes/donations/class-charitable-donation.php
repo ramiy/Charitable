@@ -62,9 +62,9 @@ class Charitable_Donation {
     private $campaign_donations;
 
     /**
-     * The WP_User object of the person who donated. 
+     * The Charitable_Donor object of the person who donated. 
      * 
-     * @var     WP_User 
+     * @var     Charitable_Donor
      * @access  private
      */
     private $donor;
@@ -266,8 +266,7 @@ class Charitable_Donation {
     public function get_donor_data() {
         return get_post_meta( $this->donation_id, 'donor', true );
     }
-
-
+    
     /**
      * The public label of the gateway used to process the donation. 
      *
@@ -355,13 +354,14 @@ class Charitable_Donation {
     /**
      * Returns the donor who made this donation.
      *
-     * @return  Charitable_User
+     * @return  Charitable_Donor
      * @access  public
      * @since   1.0.0
      */
     public function get_donor() {
         if ( ! isset( $this->donor ) ) {
-            $this->donor = Charitable_User::init_with_donor( $this->get_donor_id() );
+            // $this->donor = Charitable_User::init_with_donor( $this->get_donor_id() );
+            $this->donor = new Charitable_Donor( $this->get_donor_id(), $this->ID );
         }
 
         return $this->donor;
@@ -375,7 +375,7 @@ class Charitable_Donation {
      * @since   1.2.0
      */
     public function get_donor_address() {
-        return $this->get_donor()->get_address( $this->donation_id );
+        return $this->get_donor()->get_address();
     }
 
     /**

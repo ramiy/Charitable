@@ -239,7 +239,7 @@ class Test_Charitable_Donation extends WP_UnitTestCase {
 		
 		$donation = new Charitable_Donation( $donation_id );
 
-		$this->assertInstanceOf( 'Charitable_User', $donation->get_donor() );
+		$this->assertInstanceOf( 'Charitable_Donor', $donation->get_donor() );
 	}
 
 	/**

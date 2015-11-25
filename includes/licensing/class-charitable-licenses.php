@@ -111,7 +111,7 @@ class Charitable_Licenses {
      * @access  public
      * @since   1.0.0
      */
-    public function register_licensed_product( $item_name, $author, $version, $file, $url = 'http://wpcharitable.com' ) {
+    public function register_licensed_product( $item_name, $author, $version, $file, $url = 'https://www.wpcharitable.com' ) {
         $this->products[ $this->get_item_key( $item_name ) ] = array(
             'name'      => $item_name, 
             'author'    => $author, 
