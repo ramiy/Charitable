@@ -164,7 +164,11 @@ class Charitable_Customizer {
      * @since   1.2.0
      */
     public function sanitize_donation_form_display_option( $option ) {
-        return in_array( $option, array( 'separate_page', 'same_page', 'modal' ) );
+        if ( ! in_array( $option, array( 'separate_page', 'same_page', 'modal' ) ) ) {
+            $option = 'separate_page';
+        }
+
+        return $option;
     }
 
     /**
