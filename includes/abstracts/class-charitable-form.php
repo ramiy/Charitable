@@ -381,6 +381,8 @@ abstract class Charitable_Form {
 			$submitted = $this->get_submitted_values();
 		}
 		
+		$ret = true;
+
 		$missing = array();
 
 		foreach ( $this->get_required_fields( $fields ) as $key => $field ) {
@@ -421,10 +423,10 @@ abstract class Charitable_Form {
 				$missing_fields
 			) );
 
-			return false;
+			$ret = false;
 		}
 
-		return true;
+		return apply_filters( 'charitable_form_has_required_fields', $ret, $this, $fields, $submitted );
 	}
 
 	/**
