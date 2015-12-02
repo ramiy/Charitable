@@ -76,21 +76,27 @@ class Charitable_Notices {
 	/**
 	 * Adds a notice message. 
 	 *
-	 * @param 	string 		$message
-	 * @param 	string 		$type
+	 * @param 	string $message
+	 * @param 	string $type
+	 * @param 	string $key 	Optional. If not set, next numeric key is used.
 	 * @return 	void
 	 * @access  public
 	 * @since 	1.0.0
 	 */
-	public function add_notice( $message, $type ) {
-		$this->notices[ $type ][] = $message; 
+	public function add_notice( $message, $type, $key = false ) {
+		if ( false === $key ) {
+			$this->notices[ $type ][] = $message; 
+		}
+		else {
+			$this->notices[ $type ][ $key ] = $message; 
+		}		
 	}
 
 	/**
 	 * Add multiple notices at once.  
 	 *
-	 * @param 	array		$messages
-	 * @param 	string 		$type
+	 * @param 	array $messages
+	 * @param 	string $type
 	 * @return  void
 	 * @access  public
 	 * @since   1.0.0
@@ -106,49 +112,53 @@ class Charitable_Notices {
 	/**
 	 * Adds an error message. 
 	 *
-	 * @param 	string 		$message
+	 * @param 	string $message
+	 * @param 	string $key 	Optional. If not set, next numeric key is used.
 	 * @return 	void
 	 * @access  public
 	 * @since 	1.0.0
 	 */
-	public function add_error( $message ) {
-		$this->add_notice( $message, 'error' );
+	public function add_error( $message, $key = false ) {
+		$this->add_notice( $message, 'error', $key );
 	}
 
 	/**
 	 * Adds a warning message. 
 	 *
-	 * @param 	string 		$message
+	 * @param 	string $message
+	 * @param 	string $key 	Optional. If not set, next numeric key is used.
 	 * @return 	void
 	 * @access  public
 	 * @since 	1.0.0
 	 */
-	public function add_warning( $message ) {
-		$this->add_notice( $message, 'warning' );
+	public function add_warning( $message, $key = false ) {
+		$this->add_notice( $message, 'warning', $key );
 	}
 
 	/**
 	 * Adds a success message. 
 	 *
-	 * @param 	string 		$message
+	 * @param 	string $message
+	 * @param 	string $key 	Optional. If not set, next numeric key is used.
 	 * @return 	void
 	 * @access  public
 	 * @since 	1.0.0
 	 */
-	public function add_success( $message ) {
-		$this->add_notice( $message, 'success' );
+	public function add_success( $message, $key = false ) {
+		$this->add_notice( $message, 'success', $key );
 	}
 
 	/**
 	 * Adds an info message. 
 	 *
-	 * @param 	string 		$message
+	 * @param 	string $message
+	 * @param 	string $key 	Optional. If not set, next numeric key is used.
 	 * @return 	void
 	 * @access  public
 	 * @since 	1.0.0
 	 */
-	public function add_info( $message ) {
-		$this->add_notice( $message, 'info' );
+	public function add_info( $message, $key = false ) {
+		$this->add_notice( $message, 'info', $key );
 	}
 
 	/**

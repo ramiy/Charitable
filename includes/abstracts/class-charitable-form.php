@@ -396,7 +396,8 @@ abstract class Charitable_Form {
 
 			/* Verify that a value was provided. */
 			if ( $exists ) {
-				$exists = ! empty( $exists ) || ( is_string( $exists ) && strlen( $exists ) );
+				$value = $submitted[ $key ];
+				$exists = ! empty( $value ) || ( is_string( $value ) && strlen( $value ) );
 			}
 
 			/* If a value was not provided, check if it's in the $_FILES array. */
@@ -415,6 +416,8 @@ abstract class Charitable_Form {
 
 		}
 
+		$missing = apply_filters( 'charitable_form_missing_fields', $missing, $this, $fields, $submitted );
+
 		if ( count( $missing ) ) {
 
 			$missing_fields = implode( '</li><li>', $missing );			
@@ -426,7 +429,7 @@ abstract class Charitable_Form {
 			$ret = false;
 		}
 
-		return apply_filters( 'charitable_form_has_required_fields', $ret, $this, $fields, $submitted );
+		return $ret;
 	}
 
 	/**
