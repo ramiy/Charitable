@@ -121,7 +121,7 @@ class Charitable_Campaign {
             $value = array();
         }
 
-        return $value;
+        return apply_filters( 'charitable_campaign_suggested_donations', $value, $this );
     }
 
     /**
@@ -683,7 +683,7 @@ class Charitable_Campaign {
     /**
      * Sanitize the campaign suggested donations. 
      *
-     * @param   string  $value
+     * @param   array $value
      * @return  array
      * @access  public
      * @static
@@ -720,9 +720,8 @@ class Charitable_Campaign {
         if ( is_array( $donation ) ) {
             return isset( $donation[ 'amount' ] ) && ! empty( $donation[ 'amount' ] );
         }
-        else {
-            return ! empty( $donation[ 'amount' ] );
-        }
+        
+        return ! empty( $donation[ 'amount' ] );
     }
 
     /**

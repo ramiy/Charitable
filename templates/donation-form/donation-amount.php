@@ -65,7 +65,7 @@ if ( $donation_amount ) : ?>
                 <input type="radio" name="donation_amount" value="<?php echo $suggestion[ 'amount' ] ?>" <?php echo $checked ?> /><?php 
                 printf( '<span class="amount">%s</span> <span class="description">%s</span>', 
                     $currency_helper->get_monetary_amount( $suggestion[ 'amount' ] ), 
-                    strlen( $suggestion[ 'description' ] ) ? $suggestion[ 'description' ] : ''
+                    isset( $suggestion[ 'description' ] ) ? $suggestion[ 'description' ] : ''
                 ) ?>
             </li>
 

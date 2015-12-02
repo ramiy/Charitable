@@ -8,6 +8,11 @@
 
 global $post;
 
+if ( ! isset( $view_args[ 'fields' ] ) || empty( $view_args[ 'fields' ] ) ) {
+	return;
+}
+
+$fields					= $view_args['fields'];
 $title 					= isset( $view_args['label'] ) 		? $view_args['label'] 	: '';
 $tooltip 				= isset( $view_args['tooltip'] )	? '<span class="tooltip"> '. $view_args['tooltip'] . '</span>'	: '';
 $description			= isset( $view_args['description'] )? '<span class="charitable-helper">' . $view_args['description'] . '</span>' 	: '';
@@ -21,58 +26,56 @@ if ( ! $suggested_donations ) {
 	<table id="charitable-campaign-suggested-donations" class="widefat">
 		<thead>
 			<tr class="table-header">
-				<th colspan="2"><label for="campaign_suggested_donations"><?php echo $title ?></label></th>
+				<th colspan="<?php echo count( $fields ) ?>"><label for="campaign_suggested_donations"><?php echo $title ?></label></th>
 			</tr>
 			<tr>
-				<th class="amount-col"><?php _e( 'Amount', 'charitable' ) ?></th>
-				<th class="description-col"><?php _e( 'Description (optional)', 'charitable' ) ?></th>
+				<?php foreach ( $fields as $key => $field ) : ?>
+					<th class="<?php echo $key ?>-col"><?php echo $field[ 'column_header' ] ?></th>
+				<?php endforeach ?>				
 			</tr>
 		</thead>		
 		<tbody>
-			<?php 
+		<?php 
 			if ( $suggested_donations ) : 
-
 				foreach ( $suggested_donations as $i => $donation ) : 
-
-					$amount = is_array( $donation ) ? $donation[ 'amount' ] : $donation; 
-					$description = is_array( $donation ) ? $donation[ 'description' ] : ''; 
-					
-					?>
+				?>
 					<tr data-index="<?php echo $i ?>">
-						<td class="amount-col"><input 
-							type="text" 
-							id="campaign_suggested_donations_<?php echo $i ?>" 
-							name="_campaign_suggested_donations[<?php echo $i ?>][amount]" 
-							value="<?php echo $amount ?>" 
-							placeholder="<?php _e( 'Amount', 'charitable' ) ?>" />
-						</td>
-						<td class="description-col"><input 
-							type="text" 
-							id="campaign_suggested_donations_<?php echo $i ?>" 
-							name="_campaign_suggested_donations[<?php echo $i ?>][description]" 
-							value="<?php echo $description ?>" 
-							placeholder="<?php _e( 'Optional Description', 'charitable' ) ?>" />
-						</td>
+						<?php foreach ( $fields as $key => $field ) : 
+
+							if ( is_array( $donation ) && isset( $donation[ $key ] ) ) {
+								$value = $donation[ $key ];
+							}
+							elseif ( 'amount' == $key ) {
+								$value = $donation;
+							}
+							else {
+								$value = '';
+							}
+
+							?>
+							<td class="<?php echo $key ?>-col"><input 
+								type="text" 
+								id="campaign_suggested_donations_<?php echo $i ?>" 
+								name="_campaign_suggested_donations[<?php echo $i ?>][<?php echo $key ?>]" 
+								value="<?php echo esc_attr( $value ) ?>" 
+								placeholder="<?php echo esc_attr( $field[ 'placeholder' ] ) ?>" />
+							</td>
+						<?php endforeach ?>						
 					</tr>
-					<?php 
-
+				<?php 
 				endforeach;
-
 			else : 
-
 			?>
-			<tr class="no-suggested-amounts">
-				<td colspan="2"><?php _e( 'No suggested amounts have been created yet.', 'charitable' ) ?></td>
-			</tr>
+				<tr class="no-suggested-amounts">
+					<td colspan="<?php echo count( $fields ) ?>"><?php _e( 'No suggested amounts have been created yet.', 'charitable' ) ?></td>
+				</tr>
 			<?php 
-
 			endif;
-
-			?>
+		?>
 		</tbody>
 		<tfoot>
 			<tr>
-				<td colspan="2"><a class="button" href="#" data-charitable-add-row="suggested-amount"><?php _e( '+ Add a Suggested Amount', 'charitable' ) ?></a></td>
+				<td colspan="<?php echo count( $fields ) ?>"><a class="button" href="#" data-charitable-add-row="suggested-amount"><?php _e( '+ Add a Suggested Amount', 'charitable' ) ?></a></td>
 			</tr>
 		</tfoot>
 	</table>	

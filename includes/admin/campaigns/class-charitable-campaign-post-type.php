@@ -238,24 +238,31 @@ final class Charitable_Campaign_Post_Type {
      * @since   1.0.0
      */
     public function campaign_donation_options_metabox() {
-        /** Get the array of fields to be displayed within the 
-            campaign donations metabox. **/
-        $fields = apply_filters( 'charitable_campaign_donation_options_fields', 
-            array(
-                'donations'     => array(
-                    'priority'  => 4, 
-                    'view'      => 'metaboxes/campaign-donation-options/suggested-amounts', 
-                    'label'     => __( 'Suggested Donation Amounts', 'charitable' )
-                ), 
-                'permit_custom' => array(
-                    'priority'  => 6, 
-                    'view'      => 'metaboxes/campaign-donation-options/permit-custom', 
-                    'label'     => __( 'Allow Custom Donations', 'charitable' ) 
-                )
-            ) 
+        /* Get the array of fields to be displayed within the campaign donations metabox. */
+        $fields = array(
+            'donations'     => array(
+                'priority'  => 4, 
+                'view'      => 'metaboxes/campaign-donation-options/suggested-amounts', 
+                'label'     => __( 'Suggested Donation Amounts', 'charitable' ), 
+                'fields'    => apply_filters( 'charitable_campaign_donation_suggested_amounts_fields', array(
+                    'amount'    => array(
+                        'column_header' => __( 'Amount', 'charitable' ), 
+                        'placeholder'   => __( 'Amount', 'charitable' )
+                    ), 
+                    'description'   => array(
+                        'column_header' => __( 'Description (optional)', 'charitable' ), 
+                        'placeholder'   => __( 'Optional Description', 'charitable' )
+                    )
+                ) )
+            ), 
+            'permit_custom' => array(
+                'priority'  => 6, 
+                'view'      => 'metaboxes/campaign-donation-options/permit-custom', 
+                'label'     => __( 'Allow Custom Donations', 'charitable' ) 
+            )
         );
 
-        $this->meta_box_helper->display_fields( $fields );
+        $this->meta_box_helper->display_fields( apply_filters( 'charitable_campaign_donation_options_fields', $fields ) );
     }
 
     /**

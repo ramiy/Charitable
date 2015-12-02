@@ -58,82 +58,84 @@ module.exports = function(grunt) {
                     '__ngettext_noop:1,2,3d',
                     '_c:1,2d',
                     '_nc:1,2,4c,5d'
-                    ]
-                },
-                files: {
-                    src: [
-                        '**/*.php', // Include all files
-                        '!node_modules/**', // Exclude node_modules/
-                        '!build/.*'// Exclude build/
-                        ],
-                    expand: true
-                }
+                ]
             },
+            files: {
+                src: [
+                    '**/*.php', // Include all files
+                    '!node_modules/**', // Exclude node_modules/
+                    '!build/.*'// Exclude build/
+                ],
+                expand: true
+            }
+        },
 
-            makepot: {
-                target: {
-                    options: {
-                        domainPath: '/i18n/languages/',    // Where to save the POT file.
-                        exclude: ['build/.*'],
-                        mainFile: 'charitable.php',    // Main project file.
-                        potFilename: 'charitable.pot',    // Name of the POT file.
-                        potHeaders: {
-                            poedit: true,                 // Includes common Poedit headers.
-                            'x-poedit-keywordslist': true // Include a list of all possible gettext functions.
-                                    },
-                        type: 'wp-plugin',    // Type of project (wp-plugin or wp-theme).
-                        updateTimestamp: true,    // Whether the POT-Creation-Date should be updated without other changes.
-                        processPot: function( pot, options ) {
-                            pot.headers['report-msgid-bugs-to'] = 'https://www.wpcharitable.com/';
-                            pot.headers['last-translator'] = 'WP-Translations (http://wp-translations.org/)';
-                            pot.headers['language-team'] = 'WP-Translations <wpt@wp-translations.org>';
-                            pot.headers['language'] = 'en_US';
-                            var translation, // Exclude meta data from pot.
-                                excluded_meta = [
-                                    'Plugin Name of the plugin/theme',
-                                    'Plugin URI of the plugin/theme',
-                                    'Author of the plugin/theme',
-                                    'Author URI of the plugin/theme'
-                                    ];
-                                        for ( translation in pot.translations[''] ) {
-                                            if ( 'undefined' !== typeof pot.translations[''][ translation ].comments.extracted ) {
-                                                if ( excluded_meta.indexOf( pot.translations[''][ translation ].comments.extracted ) >= 0 ) {
-                                                    console.log( 'Excluded meta: ' + pot.translations[''][ translation ].comments.extracted );
-                                                        delete pot.translations[''][ translation ];
-                                                    }
-                                                }
-                                            }
-                            return pot;
-                        }
+        makepot: {
+            target: {
+                options: {
+                    domainPath: '/i18n/languages/',    // Where to save the POT file.
+                    exclude: ['build/.*'],
+                    mainFile: 'charitable.php',    // Main project file.
+                    potFilename: 'charitable.pot',    // Name of the POT file.
+                    potHeaders: {
+                        poedit: true,                 // Includes common Poedit headers.
+                        'x-poedit-keywordslist': true // Include a list of all possible gettext functions.
+                                },
+                    type: 'wp-plugin',    // Type of project (wp-plugin or wp-theme).
+                    updateTimestamp: true,    // Whether the POT-Creation-Date should be updated without other changes.
+                    processPot: function( pot, options ) {
+                        pot.headers['report-msgid-bugs-to'] = 'https://www.wpcharitable.com/';
+                        pot.headers['last-translator'] = 'WP-Translations (http://wp-translations.org/)';
+                        pot.headers['language-team'] = 'WP-Translations <wpt@wp-translations.org>';
+                        pot.headers['language'] = 'en_US';
+                        var translation, // Exclude meta data from pot.
+                            excluded_meta = [
+                                'Plugin Name of the plugin/theme',
+                                'Plugin URI of the plugin/theme',
+                                'Author of the plugin/theme',
+                                'Author URI of the plugin/theme'
+                            ];
+                            
+                            for ( translation in pot.translations[''] ) {
+                                if ( 'undefined' !== typeof pot.translations[''][ translation ].comments.extracted ) {
+                                    if ( excluded_meta.indexOf( pot.translations[''][ translation ].comments.extracted ) >= 0 ) {
+                                        console.log( 'Excluded meta: ' + pot.translations[''][ translation ].comments.extracted );
+                                            delete pot.translations[''][ translation ];
+                                    }
+                                }
+                            }
+
+                        return pot;
                     }
                 }
-            },
+            }
+        },
 
-            exec: {
-                txpull: { // Pull Transifex translation - grunt exec:txpull
-                    cmd: 'tx pull -a -f --minimum-perc=1' // Change the percentage with --minimum-perc=yourvalue
+        exec: {
+            txpull: { // Pull Transifex translation - grunt exec:txpull
+                cmd: 'tx pull -a -f --minimum-perc=1' // Change the percentage with --minimum-perc=yourvalue
+            },
+            txpush_s: { // Push pot to Transifex - grunt exec:txpush_s
+                cmd: 'tx push -s'
+            },
+        },
+
+        dirs: {
+            lang: 'i18n/languages',
+        },
+
+        potomo: {
+            dist: {
+                options: {
+                    poDel: true
                 },
-                txpush_s: { // Push pot to Transifex - grunt exec:txpush_s
-                    cmd: 'tx push -s'
-                },
-            },
-
-            dirs: {
-                lang: 'i18n/languages',
-            },
-
-            potomo: {
-                dist: {
-                    options: {
-                        poDel: true
-                    },
-                    files: [{
-                        expand: true,
-                        cwd: '<%= dirs.lang %>',
-                        src: ['*.po'],
-                        dest: '<%= dirs.lang %>',
-                        ext: '.mo',
-                        nonull: true
+                files: [{
+                    expand: true,
+                    cwd: '<%= dirs.lang %>',
+                    src: ['*.po'],
+                    dest: '<%= dirs.lang %>',
+                    ext: '.mo',
+                    nonull: true
                 }]
             }
         },
@@ -193,19 +195,24 @@ module.exports = function(grunt) {
             main: {
                 src:  [
                     '**',
+                    '!bin/**',
+                    '!composer.json',
+                    '!composer.lock', 
+                    '!phpunit.xml',
                     '!node_modules/**',
                     '!build/**',
                     '!.git/**',
                     '!Gruntfile.js',
                     '!package.json',
                     '!.gitignore',
-                    '!.gitmodules',
                     '!.tx/**',
                     '!tests/**',
                     '!**/Gruntfile.js',
                     '!**/package.json',
                     '!**/README.md',
-                    '!**/*~'
+                    '!**/*~', 
+                    '!assets/css/scss/**',
+                    '!assets/css/*.map'
                 ],
                 dest: 'build/<%= pkg.name %>/'
             }
@@ -216,7 +223,7 @@ module.exports = function(grunt) {
             main: {
                 options: {
                     mode: 'zip',
-                    archive: './build/<%= pkg.name %>.zip'
+                    archive: './build/<%= pkg.name %>-<%= pkg.version %>.zip'
                 },
                 expand: true,
                 cwd: 'build/<%= pkg.name %>/',
