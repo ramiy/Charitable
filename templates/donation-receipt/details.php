@@ -29,8 +29,17 @@ $donation = $view_args[ 'donation' ];
     <tbody>
     <?php foreach ( $donation->get_campaign_donations() as $campaign_donation ) : ?>
         <tr>
-            <td><?php echo $campaign_donation->campaign_name ?></td>
-            <td><?php echo charitable_get_currency_helper()->get_monetary_amount( $campaign_donation->amount ) ?></td>
+            <td class="campaign-name"><?php                 
+                echo $campaign_donation->campaign_name; 
+
+                /**
+                 * @hook charitable_donation_receipt_after_campaign_name
+                 */
+                do_action( 'charitable_donation_receipt_after_campaign_name', $campaign_donation, $donation );
+                
+                ?>
+            </td>
+            <td class="donation-amount"><?php echo charitable_get_currency_helper()->get_monetary_amount( $campaign_donation->amount ) ?></td>
         </tr>
     <?php endforeach ?>
     </tbody>

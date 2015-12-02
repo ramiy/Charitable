@@ -45,9 +45,10 @@ class Charitable_Donations_Dashboard_Widget {
      *
      * @return  void
      * @access  public
+     * @static
      * @since   1.2.0
      */
-    public function display() {
+    public static function display() {
         $http = is_ssl() ? 'https' : 'http';
 ?>        
         <p class="hide-if-no-js">
@@ -62,9 +63,10 @@ class Charitable_Donations_Dashboard_Widget {
      *
      * @return  void
      * @access  public
+     * @static
      * @since   1.2.0
      */
-    public function get_content() {    
+    public static function get_content() {    
         charitable_admin_view( 'dashboard-widgets/donations-widget' );        
         die();
     }

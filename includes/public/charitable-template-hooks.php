@@ -120,7 +120,6 @@ add_action( 'charitable_donation_form_before', 'charitable_template_donation_for
 /**
  * Donation form, before the donor fields. 
  *
- * @see     charitable_template_donation_form_login
  * @see     charitable_template_donation_form_donor_details
  * @see     charitable_template_donation_form_donor_fields_hidden_wrapper_start
  */

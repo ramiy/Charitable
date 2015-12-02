@@ -57,15 +57,15 @@ CHARITABLE.DonationSelection = {
     
     init : function() {
         var self = this;
-        jQuery( '.donation-amount input:checked' ).each( function(){
+        jQuery( '.donation-amount input:checked' ).each( function() {
             jQuery( this ).parent().addClass( 'selected' );
         });
 
-        jQuery( '.donation-amount' ).on( 'click', function( event ) {
+        jQuery( 'body' ).on( 'click', '.donation-amount', function( event ) {
             self.selectOption( jQuery(this) );
         });
 
-        jQuery( '[name=donation_amount]' ).on( 'change', function( event ) {
+        jQuery( 'body' ).on( 'change', '[name=donation_amount]', function( event ) {
             jQuery(this).prop( 'checked', ! jQuery(this).is( ':checked' ) );
             return false;
         });
@@ -130,24 +130,25 @@ CHARITABLE.SanitizeURL = function(input) {
     }
 };
 
-
 /**
  * Set up Lean Modal
  */
- CHARITABLE.Modal = {
+CHARITABLE.Modal = {
     init : function() {
         if ( jQuery.fn.leanModal ) {
             jQuery('[data-trigger-modal]').leanModal({
                 closeButton : ".modal-close"
             });
-        }       
+        }
     }
- }
+};
 
 /**
  * Payment method selection
  */
  CHARITABLE.PaymentMethodSelection = {
+
+    loaded : false,
 
     getActiveMethod : function( $el ) {
         return jQuery( '#charitable-gateway-selector input[name=gateway]:checked' ).val();
@@ -165,7 +166,7 @@ CHARITABLE.SanitizeURL = function(input) {
 
     init : function() {
         var self = this, 
-            $selector = jQuery( '#charitable-gateway-selector input[name=gateway]' );
+            $selector = jQuery( '#charitable-gateway-selector input[name=gateway]' );        
 
         /* If there is only one gateway, we don't need to do anything else. */
         if ( 0 === $selector.length ) {
@@ -174,10 +175,16 @@ CHARITABLE.SanitizeURL = function(input) {
 
         self.hideInactiveMethods();
 
-        jQuery( '#charitable-gateway-selector input[name=gateway]' ).on( 'change', function() {
+        if ( self.loaded ) {
+            return;
+        }
+
+        jQuery( 'body' ).on( 'change', '#charitable-gateway-selector input[name=gateway]', function() {
             self.hideInactiveMethods();
             self.showActiveMethod( jQuery(this).val() );
         });
+
+        self.loaded = true;
     }
  };
 

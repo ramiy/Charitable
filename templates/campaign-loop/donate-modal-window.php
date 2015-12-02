@@ -49,7 +49,11 @@ wp_enqueue_style( 'lean-modal-css' );
             success: function ( response ) {
                 if ( response.success ) {
                     $wrapper.html( response.data );
-                    resize_modal();
+                    
+                    CHARITABLE.PaymentMethodSelection.init();
+
+                    resize_modal();                    
+
                     return;
                 }
 

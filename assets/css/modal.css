@@ -9,11 +9,15 @@
   display: none; }
 
 .charitable-modal {
+  width: 80%;
   max-width: 600px;
   padding: 2em;
   background-color: #fff;
   overflow-y: auto; }
+  .charitable-modal .donation-form-wrapper {
+    text-align: center; }
   .charitable-modal #charitable-donation-form {
+    text-align: left;
     padding-top: 0; }
   .charitable-modal .charitable-fieldset {
     padding: 0 0 1em;

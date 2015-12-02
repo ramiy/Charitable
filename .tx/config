@@ -1,0 +1,8 @@
+[main]
+host = https://www.transifex.com
+
+[charitable.charitable]
+file_filter = i18n/languages/charitable-<lang>.po
+source_file = i18n/languages/charitable.pot
+source_lang = en_US
+type = PO

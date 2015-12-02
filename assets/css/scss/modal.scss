@@ -10,12 +10,18 @@
 }
 
 .charitable-modal {
+    width: 80%;
     max-width: 600px;
     padding: 2em;
     background-color: #fff;
     overflow-y: auto;
 
+    .donation-form-wrapper {
+        text-align: center;
+    }
+
     #charitable-donation-form {
+        text-align: left;
         padding-top: 0;
     }
 

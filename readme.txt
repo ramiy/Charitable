@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paypa
 Tags: donations, donate, donation plugin, fundraising, fundraising plugin, non-profit, non-profits, charity, churches, commerce, crowdfunding, crowd funding, paypal donations, paypal, stripe, stripe donations, campaigns, gifts, giving, wordpress fundraising, wordpress donations, wordpress donation plugin, peer to peer fundraising, peer to peer fundraiser, peer fundraising, social fundraising
 Requires at least: 4.1
 Tested up to: 4.4
-Stable tag: 1.2.3
+Stable tag: 1.2.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -38,7 +38,7 @@ Want to use a different payment gateway? [Let us know](https://wpcharitable.com/
 
 With our [Charitable Ambassadors extension](https://wpcharitable.com/extensions/charitable-ambassadors?utm_source=readme&utm_medium=description-tab&utm_content=peer-to-peer-fundraising&utm_campaign=plugin-page-referrals), you can use peer-to-peer fundraising to leverage your supporters’ network of friends and family. 
 
-Ambassadors also supports people creating fundraisers for personal causes, allowing you to create a crowdfunding platform powered by Charitable Ambassadors.
+Ambassadors adds a frontend campaign submission form. People can create fundraisers for your cause or personal causes, allowing you to create a crowdfunding platform powered by Charitable Ambassadors.
 
 = Skip the transaction fees = 
 
@@ -54,7 +54,9 @@ Charitable has been designed to work with any well-coded theme, including the de
 
 One size does *not* fit all. That's why we made Charitable an extendable platform. 
 
-* **[Ambassadors](https://wpcharitable.com/extensions/charitable-ambassadors?utm_source=readme&utm_medium=description-tab&utm_content=extensions&utm_campaign=plugin-page-referrals)** - Add peer-to-peer fundraising or crowdfunding to your website.
+* **[Ambassadors](https://wpcharitable.com/extensions/charitable-ambassadors?utm_source=readme&utm_medium=description-tab&utm_content=extensions&utm_campaign=plugin-page-referrals)** - Add peer-to-peer fundraising or crowdfunding to your website, with front-end campaign submission.
+* **[Easy Digital Downloads](https://www.wpcharitable.com/extensions/charitable-easy-digital-downloads-connect/?utm_source=readme&utm_medium=description-tab&utm_content=extensions&utm_campaign=plugin-page-referrals)** - 
+Accept donations with Easy Digital Downloads. Compatible with any EDD payment gateway.
 * **[Stripe](https://wpcharitable.com/extensions/charitable-stripe?utm_source=readme&utm_medium=description-tab&utm_content=extensions&utm_campaign=plugin-page-referrals)** - Accept credit card donations on your website.
 * **[PayUMoney](https://www.wpcharitable.com/extensions/charitable-payu-money/?utm_source=readme&utm_medium=description-tab&utm_content=extensions&utm_campaign=plugin-page-referrals)** - Take donations with PayUMoney, a payment gateway for Indian non-profits and organizations.
 * **[Anonymous Donations](https://wpcharitable.com/extensions/charitable-anonymous-donations?utm_source=readme&utm_medium=description-tab&utm_content=extensions&utm_campaign=plugin-page-referrals)** - Allow people to make donations anonymously.
@@ -108,8 +110,11 @@ You can post in the [support forum](https://wordpress.org/support/plugin/charita
 
 == Changelog ==
 
-= 1.2.4 = 
+= 1.2.4 =  
+* Updated for compatibility with WordPress 4.4.
 * Improves the API for dealing with the donation processor. Both the `charitable_before_process_donation_form` and `charitable_before_process_donation_amount_form` hooks now pass the donation form object as a second parameter.
+* Fixes a bug that prevented you from being able to select the donation amount inside a modal opened via AJAX.
+* Fixes a bug that prevented the donation form display option from being set correctly when changed via the Customizer.
 * Fixes a bug in the form submission handler.
 
 = 1.2.3 = 

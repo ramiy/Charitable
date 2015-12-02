@@ -20,28 +20,30 @@
                  
             options = $.extend( defaults, options );
 
-            this.each(function() {
+            this.each( function() {
             
                 var o = options,
                     window_height = $(window).height(); 
                
-                offset = o.verticalOffset;
+                offset = parseInt( o.verticalOffset );
 
-                $(this).click(function(e) {
+                $(this).on( 'click', function(e) {
               
                     var modal_id = $(this).attr( "href" ), 
-                        $modal = $( modal_id );
+                        $modal = $( modal_id ), 
+                        modal_height, 
+                        modal_width;
 
-                    $("#lean_overlay").click(function() { 
+                    $( "#lean_overlay" ).on( 'click', function() { 
                         methods.close( $modal );                    
                     });
                     
-                    $(o.closeButton).click(function() { 
+                    $( o.closeButton ).on( 'click', function() { 
                         methods.close( $modal );                    
                     });
                                 
-                    var modal_height = $modal.outerHeight();
-                    var modal_width = $modal.outerWidth();
+                    $modal.outerHeight();
+                    $modal.outerWidth();
 
                     $('#lean_overlay').css({ 'display' : 'block', opacity : 0 });
 
@@ -62,7 +64,7 @@
                         
                 });
              
-            })
+            });
         }, 
 
         /**
@@ -71,12 +73,13 @@
         close : function( $modal ) {
             $( "#lean_overlay" ).fadeOut(200);
             $modal.css({ 'display' : 'none' });
+            methods.reset( $modal );
         }, 
 
         /**
          * Reset modal CSS
          */
-        reset : function( $modal ) {
+        reset : function( $modal ) {            
             $modal.css({
                 'bottom' : 'auto', 
                 'overflowY' : 'auto'
@@ -86,15 +89,14 @@
         /**
          * Resize modal
          */
-        resize : function( $modal ) {
-            methods.reset( $modal );
-
+        resize : function( $modal ) {            
             var window_height = $(window).height(),            
                 modal_width = $modal.outerWidth(),
                 modal_height = $modal.outerHeight()
                 available_offset = window_height - modal_height, 
                 modal_is_too_tall = ( function() {
-                    return window_height < modal_height + ( 2 * offset );
+                    var modal_calc_height = modal_height + ( 2 * offset );
+                    return window_height < modal_calc_height;
                 })(), 
                 modal_css = {
                     'left' : 50 + '%',
