@@ -1,8 +1,8 @@
-var $ = jQuery.noConflict();
-
 CHARITABLE_ADMIN = {};
 
 CHARITABLE_ADMIN.SetupDatepicker = function( $el ) {
+	var $ = jQuery.noConflict();
+
 	$el.datepicker( {
 		dateFormat 	: 'MM d, yy', 
 		minDate 	: $(this).data('min-date') || '',

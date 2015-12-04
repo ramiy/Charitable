@@ -111,35 +111,6 @@ module.exports = function(grunt) {
             }
         },
 
-        exec: {
-            txpull: { // Pull Transifex translation - grunt exec:txpull
-                cmd: 'tx pull -a -f --minimum-perc=1' // Change the percentage with --minimum-perc=yourvalue
-            },
-            txpush_s: { // Push pot to Transifex - grunt exec:txpush_s
-                cmd: 'tx push -s'
-            },
-        },
-
-        dirs: {
-            lang: 'i18n/languages',
-        },
-
-        potomo: {
-            dist: {
-                options: {
-                    poDel: true
-                },
-                files: [{
-                    expand: true,
-                    cwd: '<%= dirs.lang %>',
-                    src: ['*.po'],
-                    dest: '<%= dirs.lang %>',
-                    ext: '.mo',
-                    nonull: true
-                }]
-            }
-        },
-
         // javascript linting with jshint
         jshint: {
             options: {
@@ -237,15 +208,9 @@ module.exports = function(grunt) {
 
     // Default task. - grunt watch
     grunt.registerTask( 'default', 'watch' );
-
-    // Makepot and push it on Transifex task(s).
-    grunt.registerTask( 'tx-push', [ 'makepot', 'exec:txpush_s' ] );
-
-    // Pull from Transifex and create .mo task(s).
-    grunt.registerTask( 'tx-pull', [ 'exec:txpull', 'potomo' ] );
-
+    
     // Build task(s).
-    grunt.registerTask( 'build', [ 'clean', 'copy', 'compress' ] );
+    grunt.registerTask( 'build', [ 'makepot', 'clean', 'copy', 'compress' ] );
 
     // grunt.registerTask('default', ['watch']);
     // grunt.registerTask('build', ['sync', 'jshint', 'uglify', 'makepot']);

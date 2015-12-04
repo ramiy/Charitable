@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Charitable 1.2.4\n"
 "Report-Msgid-Bugs-To: https://www.wpcharitable.com/\n"
-"POT-Creation-Date: 2015-12-01 02:13:36+00:00\n"
+"POT-Creation-Date: 2015-12-04 21:37:19+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -4679,7 +4679,7 @@ msgstr ""
 msgid "Unable to submit form. Please try again."
 msgstr ""
 
-#: includes/abstracts/class-charitable-form.php:420
+#: includes/abstracts/class-charitable-form.php:425
 msgid ""
 "There were problems with your form submission. The following required "
 "fields were not filled out:"
@@ -4725,15 +4725,31 @@ msgstr ""
 msgid "Campaign Creator"
 msgstr ""
 
-#: includes/admin/campaigns/class-charitable-campaign-post-type.php:248
+#: includes/admin/campaigns/class-charitable-campaign-post-type.php:246
 msgid "Suggested Donation Amounts"
 msgstr ""
 
+#: includes/admin/campaigns/class-charitable-campaign-post-type.php:249
+#: includes/admin/campaigns/class-charitable-campaign-post-type.php:250
+#: includes/admin/class-charitable-admin.php:149
+#: includes/admin/donations/class-charitable-donations-table.php:200
+msgid "Amount"
+msgstr ""
+
 #: includes/admin/campaigns/class-charitable-campaign-post-type.php:253
+msgid "Description (optional)"
+msgstr ""
+
+#: includes/admin/campaigns/class-charitable-campaign-post-type.php:254
+#: includes/admin/class-charitable-admin.php:150
+msgid "Optional Description"
+msgstr ""
+
+#: includes/admin/campaigns/class-charitable-campaign-post-type.php:261
 msgid "Allow Custom Donations"
 msgstr ""
 
-#: includes/admin/campaigns/class-charitable-campaign-post-type.php:310
+#: includes/admin/campaigns/class-charitable-campaign-post-type.php:317
 msgid "Enter campaign title"
 msgstr ""
 
@@ -4761,18 +4777,6 @@ msgstr ""
 #: includes/admin/class-charitable-admin-pages.php:153
 #: includes/admin/class-charitable-admin.php:166
 msgid "Settings"
-msgstr ""
-
-#: includes/admin/class-charitable-admin.php:149
-#: includes/admin/donations/class-charitable-donations-table.php:200
-#: includes/admin/views/metaboxes/campaign-donation-options/suggested-amounts.php:27
-#: includes/admin/views/metaboxes/campaign-donation-options/suggested-amounts.php:47
-msgid "Amount"
-msgstr ""
-
-#: includes/admin/class-charitable-admin.php:150
-#: includes/admin/views/metaboxes/campaign-donation-options/suggested-amounts.php:54
-msgid "Optional Description"
 msgstr ""
 
 #: includes/admin/class-charitable-admin.php:192
@@ -4828,7 +4832,7 @@ msgstr ""
 msgid "Charitable Donation Statistics"
 msgstr ""
 
-#: includes/admin/dashboard-widgets/class-charitable-donations-dashboard-widget.php:55
+#: includes/admin/dashboard-widgets/class-charitable-donations-dashboard-widget.php:56
 #: templates/campaign-loop/donate-modal-window.php:34
 msgid "Loading&hellip;"
 msgstr ""
@@ -5258,15 +5262,11 @@ msgstr ""
 msgid "Enter a short description of your campaign"
 msgstr ""
 
-#: includes/admin/views/metaboxes/campaign-donation-options/suggested-amounts.php:28
-msgid "Description (optional)"
-msgstr ""
-
-#: includes/admin/views/metaboxes/campaign-donation-options/suggested-amounts.php:65
+#: includes/admin/views/metaboxes/campaign-donation-options/suggested-amounts.php:70
 msgid "No suggested amounts have been created yet."
 msgstr ""
 
-#: includes/admin/views/metaboxes/campaign-donation-options/suggested-amounts.php:75
+#: includes/admin/views/metaboxes/campaign-donation-options/suggested-amounts.php:78
 msgid "+ Add a Suggested Amount"
 msgstr ""
 
@@ -5297,7 +5297,7 @@ msgstr ""
 #: includes/admin/views/metaboxes/donation/donation-overview.php:43
 #: includes/admin/views/metaboxes/donation/donation-overview.php:56
 #: templates/donation-receipt/details.php:26
-#: templates/donation-receipt/details.php:39
+#: templates/donation-receipt/details.php:48
 msgid "Total"
 msgstr ""
 
@@ -6745,13 +6745,8 @@ msgctxt "go to campaign"
 msgid "Go to"
 msgstr ""
 
-#: templates/campaign/donate-link.php:19
+#: templates/campaign/donate-link.php:19 templates/campaign/donate-modal.php:16
 #: templates/campaign-loop/donate-link.php:24
-msgctxt "make a donation to campaign"
-msgid "Make a donation to"
-msgstr ""
-
-#: templates/campaign/donate-modal.php:16
 #: templates/campaign-loop/donate-modal.php:19
 msgctxt "make a donation to campaign"
 msgid "Make a donation to %s"

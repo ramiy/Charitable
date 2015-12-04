@@ -110,6 +110,10 @@ You can post in the [support forum](https://wordpress.org/support/plugin/charita
 
 == Changelog ==
 
+= 1.3.0 = 
+* Fixes a Javascript bug that prevented the $ variable (jQuery) from being defined in certain cases in the admin scripts. 
+* Fixes a clash with Cart66.
+
 = 1.2.4 =  
 * Updated for compatibility with WordPress 4.4.
 * Improves the API for dealing with the donation processor. Both the `charitable_before_process_donation_form` and `charitable_before_process_donation_amount_form` hooks now pass the donation form object as a second parameter.
