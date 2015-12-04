@@ -111,6 +111,7 @@ You can post in the [support forum](https://wordpress.org/support/plugin/charita
 == Changelog ==
 
 = 1.3.0 = 
+* NEW: Dutch & French translations! Major props to @ElStupid (Dutch translation) and @altatof (French translation).
 * Fixes a Javascript bug that prevented the $ variable (jQuery) from being defined in certain cases in the admin scripts. 
 * Fixes a clash with Cart66.
 
