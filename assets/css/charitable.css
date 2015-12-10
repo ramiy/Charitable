@@ -101,7 +101,7 @@
       padding-left: 0; }
   .charitable-form-field .wp-media-buttons {
     margin-bottom: 0.5em; }
-  .charitable-form-field #wp-post_content-editor-container {
+  .charitable-form-field .wp-editor-container {
     border: 1px solid #dedede; }
 
 .charitable-form-content {
