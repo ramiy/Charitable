@@ -16,11 +16,6 @@ wp_enqueue_style( 'lean-modal-css', charitable()->get_path( 'assets', false ) . 
 
 $modal_class = apply_filters( 'charitable_modal_window_class', 'charitable-modal' );
 
-/**
- * @var     Charitable_Donations_Table
- */
-$table = $view_args[ 'table' ];
-
 $start_date = isset( $_GET['start_date'] ) ? sanitize_text_field( $_GET['start_date'] ) : null;
 $end_date   = isset( $_GET['end_date'] ) ? sanitize_text_field( $_GET['end_date'] ) : null;
 $post_status = isset( $_GET[ 'post_status' ] ) ? $_GET[ 'post_status' ] : 'all';
@@ -52,6 +47,7 @@ $post_status = isset( $_GET[ 'post_status' ] ) ? $_GET[ 'post_status' ] : 'all';
                 <option value="<?php echo $campaign->ID ?>"><?php echo get_the_title( $campaign->ID ) ?></option>
             <?php endforeach ?>
         </select>
+        <?php do_action( 'charitable_export_donations_form' ) ?>
         <button name="charitable-export-donations" class="button button-primary"><?php _e( 'Export', 'charitable' ) ?></button>
     </form>
 </div>
