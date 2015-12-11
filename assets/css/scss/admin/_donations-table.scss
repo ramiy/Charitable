@@ -204,11 +204,6 @@
 }
 
 @include bp(480, false) {    
-    // .charitable-clear-filters.button-secondary {   
-    //     float: left;     
-    //     margin: 0 0 11px 11px;
-    // }
-
     #charitable-donation-filters .charitable-donations-export {
         float: left;
         margin: 11px 11px 0 11px;

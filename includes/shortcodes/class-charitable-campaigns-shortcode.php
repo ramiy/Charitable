@@ -32,6 +32,7 @@ class Charitable_Campaigns_Shortcode {
      */
     public static function display( $atts ) {
         $default = array(
+            'id' => '',
             'orderby' => 'post_date',
             'number' => get_option( 'posts_per_page' ), 
             'category' => '',
@@ -85,6 +86,11 @@ class Charitable_Campaigns_Shortcode {
         $query_args = array(
             'posts_per_page' => $args[ 'number' ]
         );
+
+        /* Specific campaign IDs */
+        if ( ! empty( $args[ 'id' ] ) ) {
+            $query_args[ 'post__in' ] = explode( ',', $args[ 'id' ] );
+        }
 
         /* Pagination */
         if ( ! empty( $args[ 'paged' ] ) ) {
