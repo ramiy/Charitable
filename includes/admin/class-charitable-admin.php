@@ -42,7 +42,6 @@ final class Charitable_Admin {
      */
     protected function __construct() {
         $this->load_dependencies();
-        $this->attach_hooks_and_filters();
     }
 
     /**
@@ -103,20 +102,6 @@ final class Charitable_Admin {
         charitable()->register_object( Charitable_Campaign_Post_Type::get_instance() );
         charitable()->register_object( Charitable_Donation_Post_Type::get_instance() );
         charitable()->register_object( Charitable_Admin_Pages::get_instance() );
-    }
-
-    /**
-     * Sets up hook and filter callback functions for admin-only functionality.
-     * 
-     * @return  void
-     * @access  private
-     * @since   1.0.0
-     */
-    private function attach_hooks_and_filters() {
-        add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
-        add_filter( 'media_buttons_context', array( $this, 'remove_jquery_ui_styles_nf' ), 20 );
-        add_filter( 'plugin_action_links_' . plugin_basename( charitable()->get_path() ),   array( $this, 'add_plugin_action_links' ) );
-        add_filter( 'plugin_row_meta', array( $this, 'add_plugin_row_meta' ), 10, 2 );
     }
 
     /**
@@ -204,6 +189,32 @@ final class Charitable_Admin {
     public function remove_jquery_ui_styles_nf( $context ) {
         wp_dequeue_style( 'jquery-smoothness' );
         return $context;
+    }
+
+    /**
+     * Export donations. 
+     *
+     * @return  void
+     * @access  public
+     * @since   1.3.0
+     */
+    public function export_donations() {
+        if ( ! wp_verify_nonce( $_GET[ '_charitable_export_nonce' ], 'charitable_export_donations' ) ) {
+            return false;
+        }        
+
+        require_once( charitable()->get_path( 'admin' ) . 'reports/class-charitable-export-donations.php' );
+        
+        $export_args = apply_filters( 'charitable_donations_export_args', array(
+            'start_date'    => $_GET[ 'start_date' ], 
+            'end_date'      => $_GET[ 'end_date' ],
+            'status'        => $_GET[ 'post_status' ], 
+            'campaign_id'   => $_GET[ 'campaign_id' ]
+        ) );
+
+        new Charitable_Export_Donations( $export_args );
+
+        exit();   
     }
 
     /**

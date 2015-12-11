@@ -28,8 +28,190 @@
     margin: 12px 0;    
     border: 1px solid #dfdfdf;    
     background-color: #fafafa;
+
+    label {
+        display: inline-block;
+        padding: 0;
+    }
+
+    .charitable-donations-export,
+    .search-box {
+        float: right;
+        margin-right: 11px;
+    }
+
+    .charitable-donations-export {
+        &:before {
+            content: '\f316';
+            float: left;
+            font-family: dashicons;
+            font-size: 16px;
+            speak: none;
+            margin: 1px 2px 1px 0;
+            text-align: center;            
+            color: #777;
+            -webkit-font-smoothing: antialiased !important;
+            -moz-osx-font-smoothing: grayscale;
+        }
+    }
 }
 
 #charitable-donation-date-filters {
+    display: inline-block;
     margin-left: 11px;
+
+    input {
+        margin-right: 4px;
+    }    
+}
+
+#charitable-donations-export-modal {
+    max-width: 400px;
+    background-color: #f1f1f1;
+
+    .modal-close {
+        position: absolute;
+        top: 2px;
+        right: 2px;
+        z-index: 10;
+        cursor: pointer;
+
+        &::before {
+            content: "\f158";
+            display: block !important;
+            font: normal 20px/1 dashicons;
+            speak: none;
+            height: 22px;
+            margin: 2px 0;
+            text-align: center;
+            width: 22px;
+            color: #777;
+            -webkit-font-smoothing: antialiased !important;
+            -moz-osx-font-smoothing: grayscale;
+        }    
+    }
+
+    h3 {
+        margin-top: 0;
+        font-size: 23px; 
+        line-height: 29px;
+        font-weight: 400;
+        text-align: center;
+    }
+
+    .charitable-donations-export-form {
+        width: 80%;
+        padding: 22px 10%;
+        font-size: 14px;
+        background-color: #fff;   
+
+        legend, 
+        label,
+        input[type=text], 
+        select, 
+        button {
+            display: block;
+        }
+
+        input[type=text] {
+            width: 320px;
+            max-width: 100%;
+        }
+
+        input[type=text], 
+        select {
+            max-width: 100%;
+            margin-bottom: 22px;
+            padding-top: 11px;
+            padding-bottom: 11px;
+        }
+
+        legend, 
+        label, 
+        #charitable-export-start-date {
+            margin-bottom: 6px;
+        }
+    }
+}
+
+@include bp(1190, false) { 
+    #charitable-donation-date-filters {
+        float: left;
+        display: block;
+
+        label {
+            float: left;
+            margin-right: 2px;
+        }
+
+        input {
+            display: block;
+        }
+
+        .button-secondary {
+            float: left;
+            margin-top: 17px;
+        }
+    }
+
+    #charitable-donation-filters {
+        .search-box, 
+        .charitable-donations-export {
+            margin-top: 17px;
+        }
+    }
+}
+
+@include bp(1080, false) {
+    #charitable-donation-filters {
+        .search-box {
+            margin-top: 6px;
+            clear: right;
+        }
+
+        .charitable-donations-export {
+            margin-top: 0;
+        }
+    }
+}
+
+@include bp(840, false) {
+    #charitable-donation-date-filters {
+        width: 265px;
+
+        label {
+            width: 100%;
+            margin-bottom: 4px;
+            line-height: 27px;
+            clear: both;
+        }
+
+        input {
+            display: inline-block;
+            float: right;
+            margin-right: 0;
+        }
+
+        .button-secondary {
+            margin: 0 11px 0 0;
+            clear: left;
+
+            &.charitable-clear-filters {
+                clear: none;
+            }
+        }
+    }
+}
+
+@include bp(480, false) {    
+    // .charitable-clear-filters.button-secondary {   
+    //     float: left;     
+    //     margin: 0 0 11px 11px;
+    // }
+
+    #charitable-donation-filters .charitable-donations-export {
+        float: left;
+        margin: 11px 11px 0 11px;
+        clear: both;        
+    }
 }

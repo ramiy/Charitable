@@ -308,6 +308,7 @@ class Charitable {
         }
 
         require_once( $this->get_path( 'admin' ) . 'class-charitable-admin.php' );
+        require_once( $this->get_path( 'admin' ) . 'charitable-admin-hooks.php' );
         
         /**
          * We are registering this object only for backwards compatibility. It

@@ -474,15 +474,30 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 
 		$parameters = array();
 		$sql_where = "";
-		$sql_where_clauses = array();		
+		$sql_where_clauses = array();				
 
 		if ( isset( $args[ 'campaign_id' ] ) ) {
 			$sql_where_clauses[] = "cd.campaign_id = %d";
 			$parameters[] = intval( $args[ 'campaign_id' ] );
 		}
 
+		if ( isset( $args[ 'status' ] ) ) {
+			$sql_where_clauses[] = "p.post_status = %s";
+			$parameters[] = $args[ 'status' ];
+		}
+
+		if ( isset( $args[ 'start_date' ] ) ) {
+			$sql_where_clauses[] = "p.post_date >= %s";
+			$parameters[] = $args[ 'start_date' ];
+		}
+
+		if ( isset( $args[ 'end_date' ] ) ) {
+			$sql_where_clauses[] = "p.post_date <= %s";
+			$parameters[] = $args[ 'end_date' ];
+		}
+
 		if ( ! empty( $sql_where_clauses ) ) {
-			$sql_where = "WHERE " . implode( " OR ", $sql_where_clauses );
+			$sql_where = "WHERE " . implode( " AND ", $sql_where_clauses );
 		}
 
 		/* This is our base SQL query */
@@ -492,7 +507,7 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 				ON d.donor_id = cd.donor_id
 				INNER JOIN $wpdb->posts p
 				ON p.ID = cd.donation_id
-				$sql_where";		
+				$sql_where";
 
 		return $wpdb->get_results( $wpdb->prepare( $sql, $parameters ) );
 	}

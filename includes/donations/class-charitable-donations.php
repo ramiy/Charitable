@@ -63,18 +63,53 @@ class Charitable_Donations {
 	/**
 	 * Return count of donations grouped by status. 
 	 *
-	 * @global 	WPDB 		$wpdb
+	 * @global 	WPDB $wpdb
+	 * @param 	array $args
 	 * @return 	array
 	 * @access  public
 	 * @static
 	 * @since 	1.0.0
 	 */
-	public static function count_by_status() {
+	public static function count_by_status( $args = array() ) {
 		global $wpdb;
+
+		$defaults = array(
+			's'          => null,
+			'start_date' => null,
+			'end_date'   => null,
+		);
+
+		$args = wp_parse_args( $args, $defaults );
+
+		$where_clause = "post_type = 'donation'";
+
+		if ( ! empty( $args[ 's' ] ) ) {
+			$where_clause .= "AND ((p.post_title LIKE '%{$args['s']}%') OR (p.post_content LIKE '%{$args['s']}%'))";
+		}
+
+		if ( ! empty( $args[ 'start_date' ] ) ) {
+			$year 		= $args[ 'start_date' ][ 'year' ];
+			$month 		= $args[ 'start_date' ][ 'month' ];
+			$day 		= $args[ 'start_date' ][ 'day' ];
+
+			if ( false !== checkdate( $month, $day, $year ) ) {
+				$where_clause .= $wpdb->prepare( " AND post_date >= '%s'", date( 'Y-m-d', mktime( 0, 0, 0, $month, $day, $year ) ) );
+			}
+		}
+
+		if ( ! empty( $args[ 'end_date' ] ) ) {
+			$year 		= $args[ 'end_date' ][ 'year' ];
+			$month 		= $args[ 'end_date' ][ 'month' ];
+			$day 		= $args[ 'end_date' ][ 'day' ];
+
+			if ( false !== checkdate( $month, $day, $year ) ) {
+				$where_clause .= $wpdb->prepare( " AND post_date <= '%s'", date( 'Y-m-d', mktime( 0, 0, 0, $month, $day, $year ) ) );
+			}			
+		}
 
 		$sql = "SELECT post_status, COUNT( * ) AS num_donations
 				FROM $wpdb->posts	
-				WHERE post_type = 'donation'			
+				WHERE $where_clause
 				GROUP BY post_status";
 
 		return $wpdb->get_results( $sql, OBJECT_K );

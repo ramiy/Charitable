@@ -176,7 +176,7 @@ final class Charitable_Admin_Pages {
      * @since   1.0.0
      */
     public function render_donations_page() {
-        charitable_admin_view( 'donations-page' );
+        charitable_admin_view( 'donations-page/page' );
     }
 }
 

@@ -9,7 +9,7 @@
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License  
  */
 
-// Exit if accessed directly
+/* Exit if accessed directly */
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 if ( ! class_exists( 'Charitable_Export_Donations' ) ) : 
@@ -32,6 +32,23 @@ class Charitable_Export_Donations extends Charitable_Export {
     const EXPORT_TYPE = 'donations';
 
     /**
+     * @var     mixed[] Array of default arguments.
+     * @access  protected
+     */
+    protected $defaults = array(
+        'start_date'    => '', 
+        'end_date'      => '',
+        'campaign_id'   => 'all',
+        'status'        => 'all'
+    );
+
+    /**
+     * @var     string[] List of donation statuses.
+     * @access  protected
+     */
+    protected $statuses;
+
+    /**
      * Create class object.
      * 
      * @param   mixed[] $args
@@ -39,6 +56,8 @@ class Charitable_Export_Donations extends Charitable_Export {
      * @since   1.0.0
      */
     public function __construct( $args ) {
+        $this->statuses = Charitable_Donation::get_valid_donation_statuses();
+
         add_filter( 'charitable_export_data_key_value', array( $this, 'set_custom_field_data' ), 10, 3 );
 
         parent::__construct( $args );
@@ -67,6 +86,12 @@ class Charitable_Export_Donations extends Charitable_Export {
                     $value = mysql2date( 'H:i A', $data[ 'post_date' ] );
                 }
                 break;
+
+            case 'status' : 
+                if ( isset( $data[ 'post_status' ] ) ) {
+                    $value = $this->statuses[ $data[ 'post_status' ] ];
+                }
+                break;
         }
 
         return $value;
@@ -92,7 +117,7 @@ class Charitable_Export_Donations extends Charitable_Export {
             'amount'        => __( 'Donation Amount', 'charitable' ), 
             'date'          => __( 'Date of Donation', 'charitable' ),
             'time'          => __( 'Time of Donation', 'charitable' ), 
-            'post_content'  => __( 'Donor Note', 'charitable' )
+            'status'        => __( 'Donation Status', 'charitable' )
         );
 
         return apply_filters( 'charitable_export_donations_columns', $columns, $this->args );
@@ -108,8 +133,20 @@ class Charitable_Export_Donations extends Charitable_Export {
     protected function get_data() {
         $query_args = array();
 
-        if ( isset( $this->args[ 'campaign_id' ] ) ) {
+        if ( strlen( $this->args[ 'start_date' ] ) ) {
+            $query_args[ 'start_date' ] = date( 'Y-m-d 00:00:00', strtotime( $this->args[ 'start_date' ] ) );
+        }
+
+        if ( strlen( $this->args[ 'end_date' ] ) ) {
+            $query_args[ 'end_date' ] = date( 'Y-m-d 00:00:00', strtotime( $this->args[ 'end_date' ] ) );
+        }
+
+        if ( 'all' != $this->args[ 'campaign_id' ] ) {
             $query_args[ 'campaign_id' ] = $this->args[ 'campaign_id' ];
+        }
+
+        if ( 'all' != $this->args[ 'status' ] ) {
+            $query_args[ 'status' ] = $this->args[ 'status' ];
         }
 
         return charitable_get_table( 'campaign_donations' )->get_donations_report( $query_args );

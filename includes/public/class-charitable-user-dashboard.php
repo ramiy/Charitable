@@ -9,7 +9,7 @@
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License  
  */
 
-// Exit if accessed directly
+/* Exit if accessed directly */
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 if ( ! class_exists( 'Charitable_User_Dashboard' ) ) : 
@@ -198,7 +198,7 @@ class Charitable_User_Dashboard {
     /**
      * Loads the user dashboard template. 
      *
-     * @param   string      $template
+     * @param   string $template
      * @return  string
      * @access  public
      * @since   1.0.0

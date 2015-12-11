@@ -99,61 +99,6 @@ class Charitable_Donations_Table extends WP_List_Table {
         $this->process_bulk_action();    
     }
 
-    public function advanced_filters() {
-        $start_date = isset( $_GET['start-date'] )  ? sanitize_text_field( $_GET['start-date'] ) : null;
-        $end_date   = isset( $_GET['end-date'] )    ? sanitize_text_field( $_GET['end-date'] )   : null;
-        $status     = isset( $_GET['status'] )      ? $_GET['status'] : '';
-?>
-        <div id="edd-payment-filters">
-            <span id="edd-payment-date-filters">
-                <label for="start-date"><?php _e( 'Start Date:', 'charitable' ); ?></label>
-                <input type="text" id="start-date" name="start-date" class="edd_datepicker" value="<?php echo $start_date; ?>" placeholder="mm/dd/yyyy"/>
-                <label for="end-date"><?php _e( 'End Date:', 'charitable' ); ?></label>
-                <input type="text" id="end-date" name="end-date" class="edd_datepicker" value="<?php echo $end_date; ?>" placeholder="mm/dd/yyyy"/>
-                <input type="submit" class="button-secondary" value="<?php _e( 'Apply', 'charitable' ); ?>"/>
-            </span>
-            <?php if( ! empty( $status ) ) : ?>
-                <input type="hidden" name="status" value="<?php echo esc_attr( $status ); ?>"/>
-            <?php endif; ?>
-            <?php if( ! empty( $start_date ) || ! empty( $end_date ) ) : ?>
-                <a href="<?php echo admin_url( 'edit.php?post_type=download&page=edd-payment-history' ); ?>" class="button-secondary"><?php _e( 'Clear Filter', 'charitable' ); ?></a>
-            <?php endif; ?>
-            <?php $this->search_box( __( 'Search', 'charitable' ), 'edd-donations' ); ?>
-        </div>
-<?php
-    }
-
-    /**
-     * Show the search field
-     *
-     * @since 1.0.0
-     * @access public
-     *
-     * @param string $text Label for the search box
-     * @param string $input_id ID of the search box
-     *
-     * @return void
-     */
-    public function search_box( $text, $input_id ) {
-        if ( empty( $_REQUEST['s'] ) && !$this->has_items() )
-            return;
-
-        $input_id = $input_id . '-search-input';
-
-        if ( ! empty( $_REQUEST['orderby'] ) )
-            echo '<input type="hidden" name="orderby" value="' . esc_attr( $_REQUEST['orderby'] ) . '" />';
-        if ( ! empty( $_REQUEST['order'] ) )
-            echo '<input type="hidden" name="order" value="' . esc_attr( $_REQUEST['order'] ) . '" />';
-?>
-        <p class="search-box">
-            <?php do_action( 'edd_payment_history_search' ); ?>
-            <label class="screen-reader-text" for="<?php echo $input_id ?>"><?php echo $text; ?>:</label>
-            <input type="search" id="<?php echo $input_id ?>" name="s" value="<?php _admin_search_query(); ?>" />
-            <?php submit_button( $text, 'button', false, false, array('ID' => 'search-submit') ); ?><br/>
-        </p>
-<?php
-    }
-
     /**
      * Retrieve the view types.
      *
@@ -426,15 +371,15 @@ class Charitable_Donations_Table extends WP_List_Table {
     public function prepare_items() {
         wp_reset_vars( array( 'action', 'donation', 'orderby', 'order', 's' ) );
 
-        $total = $this->get_current_status_total_items();
+        $donations = $this->get_donations();
 
         $this->set_pagination_args( array(
-            'total_items' => $total,
+            'total_items' => $donations->found_posts,
             'per_page'    => $this->per_page,
-            'total_pages' => ceil( $total / $this->per_page )
+            'total_pages' => ceil( $donations->found_posts / $this->per_page )
         ) );
 
-        $this->items = $this->get_donations();        
+        $this->items = $donations->posts;
         $this->_column_headers = array( $this->get_columns(), array(), $this->get_sortable_columns() );
     }
 
@@ -446,7 +391,21 @@ class Charitable_Donations_Table extends WP_List_Table {
      * @since   1.0.0     
      */
     protected function prepare_donation_counts() {
-        $counts = Charitable_Donations::count_by_status();
+        $args = array();
+
+        if ( ! empty( $_GET[ 'start_date' ] ) ) {
+            $args[ 'start_date' ] = $this->get_parsed_date( $_GET[ 'start_date' ] );
+        }
+
+        if ( ! empty( $_GET[ 'end_date' ] ) ) {
+            $args[ 'end_date' ] = $this->get_parsed_date( $_GET[ 'end_date' ] );
+        }
+
+        if ( isset( $_GET[ 's' ] ) ) {
+            $args[ 's' ] = urldecode( $_GET[ 's' ] );
+        }
+
+        $counts = Charitable_Donations::count_by_status( $args );
 
         foreach ( $this->donation_statuses as $status_key => $label ) {            
 
@@ -460,7 +419,7 @@ class Charitable_Donations_Table extends WP_List_Table {
     /**
      * Retrieve the donations to be displayed. 
      *
-     * @return  WP_Post[]
+     * @return  WP_Query
      * @access  protected
      * @since   1.0.0
      */
@@ -485,15 +444,15 @@ class Charitable_Donations_Table extends WP_List_Table {
         }
 
         /* Set up date query */
-        if ( isset( $_GET[ 'start-date' ] ) && ! empty( $_GET[ 'start-date' ] ) ) {
-            $start_date = $this->get_parsed_date( $_GET[ 'start-date' ] );
+        if ( isset( $_GET[ 'start_date' ] ) && ! empty( $_GET[ 'start_date' ] ) ) {
+            $start_date = $this->get_parsed_date( $_GET[ 'start_date' ] );            
             
-            if ( ! isset( $_GET[ 'end-date' ] ) || empty( $_GET[ 'start_date' ] ) || $_GET[ 'end-date' ] == $_GET[ 'start-date' ] ) {
-                $args[ 'm' ] = intval( $start_date[ 'year' ] . $start_date[ 'month' ] );
-                $args[ 'day' ] = intval( $start_date[ 'day' ] );
+            if ( $this->is_single_date_query( $_GET[ 'start_date' ] ) ) {
+                $args[ 'm' ] = $start_date[ 'year' ] . $start_date[ 'month' ];
+                $args[ 'day' ] = $start_date[ 'day' ];
             }
             else {
-                $end_date = $this->get_parsed_date( $_GET[ 'end-date' ] );
+                $end_date = $this->get_parsed_date( $_GET[ 'end_date' ] );
                 
                 $args[ 'date_query' ] = array(
                     'after' => array(
@@ -505,14 +464,15 @@ class Charitable_Donations_Table extends WP_List_Table {
                         'year' => $end_date[ 'year' ],
                         'month' => $end_date[ 'month' ],
                         'day' => $end_date[ 'day' ]
-                    )
+                    ),
+                    'inclusive' => true
                 );
             }
         }
 
         $args = array_filter( $args, array( $this, 'remove_null_query_args' ) );
 
-        return get_posts( $args );
+        return new WP_Query( $args );
     }
 
     /**
@@ -546,6 +506,28 @@ class Charitable_Donations_Table extends WP_List_Table {
     }
 
     /**
+     * Returns whether the current query is for a single date. 
+     *
+     * @param   string $start_date
+     * @return  boolean
+     * @access  protected
+     * @since   1.3.0
+     */
+    protected function is_single_date_query( $start_date = '' ) {
+        if ( empty( $start_date ) ) {
+            return false;
+        }
+
+        if ( ! isset( $_GET[ 'end_date' ] ) ) {
+            return false;
+        }
+
+        $end_date = $_GET[ 'end_date' ];
+
+        return empty( $end_date ) || $start_date == $end_date;
+    }
+
+    /**
      * Given a date, returns an array containing the date, month and year. 
      *
      * @return  string[]
@@ -554,6 +536,7 @@ class Charitable_Donations_Table extends WP_List_Table {
      */
     protected function get_parsed_date( $date ) {
         $time = strtotime( $date );
+
         return array(
             'year' => date( 'Y', $time ),
             'month' => date( 'm', $time ),

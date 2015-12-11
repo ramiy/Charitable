@@ -37,7 +37,13 @@ abstract class Charitable_Export {
      * @var     mixed[] Optional array of arguments.
      * @access  protected
      */
-    protected $args;    
+    protected $args;
+
+    /**
+     * @var     mixed[] Array of default arguments.
+     * @access  protected
+     */
+    protected $defaults = array();
 
     /**
      * Create class object.
@@ -48,7 +54,7 @@ abstract class Charitable_Export {
      */
     public function __construct( $args = array() ) {
         $this->columns = $this->get_csv_columns();
-        $this->args = $args;
+        $this->args = wp_parse_args( $args, $this->defaults );
 
         $this->export();
     }
