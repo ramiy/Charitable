@@ -204,15 +204,20 @@ final class Charitable_Admin {
         }        
 
         require_once( charitable()->get_path( 'admin' ) . 'reports/class-charitable-export-donations.php' );
-        
+       
+        $report_type = $_GET[ 'report_type' ];
+
         $export_args = apply_filters( 'charitable_donations_export_args', array(
             'start_date'    => $_GET[ 'start_date' ], 
             'end_date'      => $_GET[ 'end_date' ],
             'status'        => $_GET[ 'post_status' ], 
-            'campaign_id'   => $_GET[ 'campaign_id' ]
+            'campaign_id'   => $_GET[ 'campaign_id' ], 
+            'report_type'   => $report_type
         ) );
 
-        new Charitable_Export_Donations( $export_args );
+        $export_class = apply_filters( 'charitable_donations_export_class', 'Charitable_Export_Donations', $report_type, $export_args );
+
+        new $export_class( $export_args );
 
         exit();   
     }

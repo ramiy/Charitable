@@ -8,6 +8,11 @@
  */
 
 /**
+ * @var     Charitable_Donations_Table
+ */
+$table = $view_args[ 'table' ];
+
+/**
  * Set up the scripts & styles used for the modal. 
  */
 wp_register_script( 'lean-modal', charitable()->get_path( 'assets', false ) . 'js/libraries/jquery.leanModal.js', array( 'jquery' ), charitable()->get_version() );
@@ -16,9 +21,11 @@ wp_enqueue_style( 'lean-modal-css', charitable()->get_path( 'assets', false ) . 
 
 $modal_class = apply_filters( 'charitable_modal_window_class', 'charitable-modal' );
 
-$start_date = isset( $_GET['start_date'] ) ? sanitize_text_field( $_GET['start_date'] ) : null;
-$end_date   = isset( $_GET['end_date'] ) ? sanitize_text_field( $_GET['end_date'] ) : null;
+$start_date = isset( $_GET[ 'start_date' ] ) ? sanitize_text_field( $_GET[ 'start_date' ] ) : null;
+$end_date   = isset( $_GET[ 'end_date' ] ) ? sanitize_text_field( $_GET[ 'end_date' ] ) : null;
 $post_status = isset( $_GET[ 'post_status' ] ) ? $_GET[ 'post_status' ] : 'all';
+$report_type = isset( $_GET[ 'report_type' ] ) ? $_GET[ 'report_type' ] : 'donations';
+$report_types = $table->get_report_types();
 
 ?>
 <div id="charitable-donations-export-modal" style="display: none;" class="<?php echo esc_attr( $modal_class ) ?>">
@@ -47,6 +54,16 @@ $post_status = isset( $_GET[ 'post_status' ] ) ? $_GET[ 'post_status' ] : 'all';
                 <option value="<?php echo $campaign->ID ?>"><?php echo get_the_title( $campaign->ID ) ?></option>
             <?php endforeach ?>
         </select>
+        <?php if ( count( $report_types ) > 1 ) : ?>
+            <label for="charitable-donations-export-report-type"><?php _e( 'Type of Report', 'charitable' ) ?></label>
+            <select id="charitable-donations-export-report-type" name="report_type">
+            <?php foreach ( $report_types as $key => $report_label ) : ?>
+                <option value="<?php echo esc_attr( $key ) ?>"><?php echo $report_label ?></option>
+            <?php endforeach; ?>
+            </select>
+        <?php else : ?>
+            <input type="hidden" name="report_type" value="<?php echo esc_attr( key( $report_types ) ) ?>" />
+        <?php endif ?>
         <?php do_action( 'charitable_export_donations_form' ) ?>
         <button name="charitable-export-donations" class="button button-primary"><?php _e( 'Export', 'charitable' ) ?></button>
     </form>
