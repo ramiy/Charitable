@@ -21,11 +21,7 @@
     .wp-post-image {
         padding-bottom: 1em;            
     }
-
-    .campaign-progress-bar {
-        margin-bottom: 0.5em;
-    }
-
+    
     .campaign-donation-stats {
         margin-bottom: 1em;
 
@@ -40,6 +36,11 @@
             display: inline-block;
         }
     }
+}
+
+.campaign-progress-bar {
+    margin-bottom: 0.5em;
+    overflow: hidden;
 }
 
 .campaign-loop.campaign-list {

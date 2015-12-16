@@ -242,9 +242,6 @@
   .campaign-loop.campaign-list .wp-post-image,
   .campaign-loop.campaign-grid .wp-post-image {
     padding-bottom: 1em; }
-  .campaign-loop.campaign-list .campaign-progress-bar,
-  .campaign-loop.campaign-grid .campaign-progress-bar {
-    margin-bottom: 0.5em; }
   .campaign-loop.campaign-list .campaign-donation-stats,
   .campaign-loop.campaign-grid .campaign-donation-stats {
     margin-bottom: 1em; }
@@ -256,6 +253,10 @@
   .campaign-loop.campaign-list .campaign-donation .button,
   .campaign-loop.campaign-grid .campaign-donation .button {
     display: inline-block; }
+
+.campaign-progress-bar {
+  margin-bottom: 0.5em;
+  overflow: hidden; }
 
 .campaign-loop.campaign-list .campaign.hentry {
   padding: 0 0 1em 0;
