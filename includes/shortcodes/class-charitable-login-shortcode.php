@@ -30,7 +30,7 @@ class Charitable_Login_Shortcode {
      * @static
      * @since   1.0.0
      */
-    public static function display( $atts ) {
+    public static function display( $atts = array() ) {
         global $wp;        
 
         $defaults = array(

@@ -50,7 +50,7 @@ $report_types = $table->get_report_types();
         <label for="charitable-donations-export-campaign"><?php _e( 'Filter by Campaign', 'charitable' ) ?></label>
         <select id="charitable-donations-export-campaign" name="campaign_id">
             <option value="all"><?php _e( 'All Campaigns', 'charitable' ) ?></option>
-            <?php foreach ( get_posts( array( 'post_type' => 'campaign', 'post_status' => 'any' ) ) as $campaign ) : ?>
+            <?php foreach ( get_posts( array( 'post_type' => 'campaign', 'post_status' => 'any', 'posts_per_page' => -1 ) ) as $campaign ) : ?>
                 <option value="<?php echo $campaign->ID ?>"><?php echo get_the_title( $campaign->ID ) ?></option>
             <?php endforeach ?>
         </select>

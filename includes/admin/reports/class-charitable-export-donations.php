@@ -92,6 +92,10 @@ class Charitable_Export_Donations extends Charitable_Export {
                     $value = $this->statuses[ $data[ 'post_status' ] ];
                 }
                 break;
+
+            case 'address' : 
+                $value = str_replace( '<br/>', PHP_EOL, charitable_get_donation( $data[ 'donation_id' ] )->get_donor_address() );
+                break;
         }
 
         return $value;
@@ -108,15 +112,16 @@ class Charitable_Export_Donations extends Charitable_Export {
      */
     protected function get_csv_columns() {
         $columns = array( 
-            'donation_id'   => __( 'Donation ID', 'charitable' ), 
-            'campaign_id'   => __( 'Campaign ID', 'charitable' ), 
-            'campaign_name' => __( 'Campaign Title', 'charitable' ), 
-            'first_name'    => __( 'Donor First Name', 'charitable' ), 
-            'last_name'     => __( 'Donor Last Name', 'charitable' ), 
-            'email'         => __( 'Donor Email', 'charitable' ), 
-            'amount'        => __( 'Donation Amount', 'charitable' ), 
+            'donation_id'   => __( 'Donation ID', 'charitable' ),
+            'campaign_id'   => __( 'Campaign ID', 'charitable' ),
+            'campaign_name' => __( 'Campaign Title', 'charitable' ),
+            'first_name'    => __( 'Donor First Name', 'charitable' ),
+            'last_name'     => __( 'Donor Last Name', 'charitable' ),
+            'email'         => __( 'Donor Email', 'charitable' ),
+            'address'       => __( 'Donor Address', 'charitable' ),
+            'amount'        => __( 'Donation Amount', 'charitable' ),
             'date'          => __( 'Date of Donation', 'charitable' ),
-            'time'          => __( 'Time of Donation', 'charitable' ), 
+            'time'          => __( 'Time of Donation', 'charitable' ),
             'status'        => __( 'Donation Status', 'charitable' )
         );
 
