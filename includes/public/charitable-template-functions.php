@@ -50,6 +50,62 @@ if ( ! function_exists( 'charitable_template_custom_styles' ) ) :
     }
 endif;
 
+if ( ! function_exists( 'charitable_hide_admin_bar' ) ) : 
+    /**
+     * Hides the admin bar from header. 
+     *
+     * This is designed to be used when viewing the campaign widget. 
+     *
+     * @return  void
+     * @since   1.3.0
+     */
+    function charitable_hide_admin_bar() {
+        ?>
+<style type="text/css" media="screen">
+html { margin-top: 0 !important; }
+* html body { margin-top: 0 !important; }
+</style>
+        <?php 
+    }
+endif;
+
+/**********************************************/ 
+/* BODY CLASSES
+/**********************************************/
+
+if ( ! function_exists( 'charitable_add_body_classes' ) ) : 
+    /**
+     * Adds custom body classes to certain templates.
+     *
+     * @param   string[] $classes
+     * @return  string[]
+     * @since   1.3.0
+     */
+    function charitable_add_body_classes( $template ) {
+        if ( charitable_is_page( 'donation_receipt_page' ) ) {
+            $classes[] = 'campaign-donation-receipt';
+        }
+
+        if ( charitable_is_page( 'donation_processing_page' ) ) {
+            $classes[] = 'campaign-donation-processing';
+        }
+
+        if ( charitable_is_page( 'campaign_donation_page' ) ) {
+            $classes[] = 'campaign-donation-page';
+        }
+
+        if ( charitable_is_page( 'campaign_widget_page' ) ) {
+            $classes[] = 'campaign-widget';
+        }
+
+        if ( charitable_is_page( 'email_preview' ) ) {
+            $classes[] = 'email-preview';
+        }
+
+        return $classes;
+    }
+endif;
+
 /**********************************************/ 
 /* SINGLE CAMPAIGN CONTENT
 /**********************************************/

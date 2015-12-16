@@ -111,7 +111,12 @@ You can post in the [support forum](https://wordpress.org/support/plugin/charita
 == Changelog ==
 
 = 1.3.0 = 
+* NEW: Export donations to CSV via the WordPress dashboard. Go to Charitable > Donations and click on the Export button to generate your report.
+* NEW: Added a `campaign_id` parameter to the `[campaigns]` shortcode to show just a single campaign's widget.
 * NEW: Dutch & French translations! Major props to @ElStupid (Dutch translation) and @altatof (French translation).
+* NEW: Added custom body classes for the following templates: donation receipt, donation processing and email preview. All body classes are added via a single function: `charitable_add_body_classes()`.
+* Removed `charitable_templates_start` hook and deprecated all methods in the `Charitable_Templates` class. If you were calling any of these directly or using the `charitable_templates_start` hook, update your application code. All templates are now loaded via a single method: `Charitable_Templates::template_loader()`. All custom body classes are added via `charitable_add_body_classes()`. `Charitable_Templates::remove_admin_bar_from_widget_template()` has been replaced with `charitable_hide_admin_bar()`. 
+* Fixes a styling bug that caused the progress bar to extend beyond the campaign widget when more than 100% of a campaign's has been raised. [See issue](https://github.com/Charitable/Charitable/issues/47)
 * Fixes a Javascript bug that prevented the $ variable (jQuery) from being defined in certain cases in the admin scripts. 
 * Fixes a clash with Cart66.
 
