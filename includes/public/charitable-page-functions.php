@@ -14,8 +14,8 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 /**
  * Displays a template. 
  *
- * @param 	string|array 	$template_name 		A single template name or an ordered array of template
- * @param 	arary 			$args 				Optional array of arguments to pass to the view.
+ * @param 	string|string[] $template_name A single template name or an ordered array of template.
+ * @param 	mixed[] $args 				   Optional array of arguments to pass to the view.
  * @return 	Charitable_Template
  * @since 	1.0.0
  */
@@ -35,8 +35,8 @@ function charitable_template( $template_name, array $args = array() ) {
 /**
  * Return the template path if the template exists. Otherwise, return default.
  *
- * @param 	string 	$template
- * @return  string 				The template path if the template exists. Otherwise, return default.
+ * @param 	string|string[] $template
+ * @return  string The template path if the template exists. Otherwise, return default.
  * @since   1.0.0
  */
 function charitable_get_template_path( $template, $default = "" ) {

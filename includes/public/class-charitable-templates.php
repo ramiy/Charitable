@@ -69,23 +69,27 @@ class Charitable_Templates {
      */
     public function template_loader( $template ) {
         if ( charitable_is_page( 'donation_receipt_page' ) ) {
-            return get_donation_receipt_template( $template );
+            return $this->get_donation_receipt_template( $template );
         }
 
         if ( charitable_is_page( 'donation_processing_page' ) ) {
-            return get_donation_processing_template( $template );
+            return $this->get_donation_processing_template( $template );
         }
 
         if ( charitable_is_page( 'campaign_donation_page' ) ) {
-            return get_donate_template( $template );
+            return $this->get_donate_template( $template );
         }
 
         if ( charitable_is_page( 'campaign_widget_page' ) ) {
-            return get_widget_template( $template );
+            return $this->get_widget_template( $template );
         }
 
         if ( charitable_is_page( 'email_preview' ) ) {
-            return get_email_template( $template );
+            return $this->get_email_template( $template );
+        }
+
+        if ( is_post_type_archive( Charitable::CAMPAIGN_POST_TYPE ) ) {
+            return $this->get_campaign_archive_template( $template );
         }
 
         return $template;
@@ -181,6 +185,17 @@ class Charitable_Templates {
         return charitable_get_template_path( 'emails/preview.php' );
     }
 
+    /**
+     * Get the default template for the campaign archive. 
+     *
+     * @param   string|string[] $template
+     * @return  string
+     * @access  protected
+     * @since   1.3.0
+     */
+    protected function get_campaign_archive_template( $template ) {
+        return charitable_get_template_path( 'archive-campaign.php' );
+    }
 
     /***********************************************/ 
     /* HERE BE DEPRECATED METHODS

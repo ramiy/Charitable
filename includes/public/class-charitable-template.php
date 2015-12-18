@@ -26,14 +26,9 @@ class Charitable_Template {
 	protected $theme_template_path;
 
 	/**
-	 * @var 	array Template names to be loaded. 
+	 * @var 	string[] Template names to be loaded. 
 	 */
 	protected $template_names;
-
-	/**
-	 * @var 	array Template name options. 
-	 */
-	protected $theme_template_options;
 
 	/**
 	 * @var 	bool Whether to load template file if it is found. 
@@ -68,8 +63,7 @@ class Charitable_Template {
 		$this->theme_template_path 		= $this->get_theme_template_path();
         $this->base_template_path 		= $this->get_base_template_path();		
 		$this->template_names 			= apply_filters( 'charitable_template_name', (array) $template_name );
-		$this->view_args 				= array();
-		$this->theme_template_options 	= $this->get_theme_template_options();
+		$this->view_args 				= array();	
 
 		if ( $this->load ) {
 			$this->render( $require_once );
@@ -119,25 +113,7 @@ class Charitable_Template {
 	 */
 	public function set_view_arg( $key, $value ) {
 		$this->view_args[ $key ] = $value;
-	}	
-
-	/**
-	 * Return the theme template options. 
-	 *
-	 * @return 	array
-	 * @access 	protected
-	 * @since 	1.0.0
-	 */
-	protected function get_theme_template_options() {
-		$options = array();
-
-		foreach ( $this->template_names as $template_name ) {
-			$options[] = $this->theme_template_path . $template_name;
-			$options[] = $template_name;
-		} 
-
-		return $options;
-	}	
+	}		
 
 	/**
 	 * Renders the template. 
@@ -182,7 +158,7 @@ class Charitable_Template {
 	 */
 	public function locate_template() {
 		/* Template options are first checked in the theme/child theme using locate_template. */
-		$template = locate_template( $this->theme_template_options, false );	
+		$template = locate_template( $this->get_theme_template_options(), false );	
 
 		/* No templates found in the theme/child theme, so use the plugin's default template. */
 		if ( ! $template ) {
@@ -206,6 +182,24 @@ class Charitable_Template {
 		}
 
 		return file_exists( $template );
+	}
+
+	/**
+	 * Return the theme template options for a specific template.
+	 *
+	 * @return 	string[]
+	 * @access 	protected
+	 * @since 	1.0.0
+	 */
+	protected function get_theme_template_options() {
+		$options = array();
+
+		foreach ( $this->template_names as $template_name ) {
+			$options[] = $this->theme_template_path . $template_name;
+			$options[] = $template_name;
+		} 
+		
+		return $options;
 	}
 }
 

@@ -81,7 +81,7 @@ if ( ! function_exists( 'charitable_add_body_classes' ) ) :
      * @return  string[]
      * @since   1.3.0
      */
-    function charitable_add_body_classes( $template ) {
+    function charitable_add_body_classes( $classes ) {
         if ( charitable_is_page( 'donation_receipt_page' ) ) {
             $classes[] = 'campaign-donation-receipt';
         }
@@ -103,6 +103,53 @@ if ( ! function_exists( 'charitable_add_body_classes' ) ) :
         }
 
         return $classes;
+    }
+endif;
+
+/**********************************************/
+/* GLOBAL TEMPLATES
+/**********************************************/ 
+
+if ( ! function_exists( 'charitable_template_wrapper_start' ) ) : 
+    /**
+     * Add wrapper before the main template content.
+     *
+     * @return  void
+     * @since   1.3.0
+     */
+    function charitable_template_wrapper_start() {
+        charitable_template( 'global/wrapper-start.php' );
+    }
+endif;
+
+if ( ! function_exists( 'charitable_template_wrapper_end' ) ) : 
+    /**
+     * Add wrapper after the main template content.
+     *
+     * @return  void
+     * @since   1.3.0
+     */
+    function charitable_template_wrapper_end() {
+        charitable_template( 'global/wrapper-end.php' );
+    }
+endif;
+
+if ( ! function_exists( 'charitable_template_header' ) ) :
+    /**
+     * Add wrapper after the main template content.
+     *
+     * @param   string $template
+     * @return  void
+     * @since   1.3.0
+     */
+    function charitable_template_header( $template ) {
+        switch( $template ) {
+            case 'archive-campaign' :
+                $our_template = 'campaign-loop/archive-header.php';
+                break;
+        }
+
+        charitable_template( $our_template );
     }
 endif;
 

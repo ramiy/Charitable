@@ -3,7 +3,7 @@
  * Plugin Name:         Charitable
  * Plugin URI:          https://www.wpcharitable.com
  * Description:         The WordPress fundraising alternative for non-profits, created to help non-profits raise money on their own website. 
- * Version:             1.3.0-beta20151211
+ * Version:             1.3.0-beta20151216
  * Author:              WP Charitable
  * Author URI:          https://wpcharitable.com
  * Requires at least:   4.1
@@ -33,7 +33,7 @@ class Charitable {
     /**
      * @var     string
      */
-    const VERSION = '1.3.0-beta20151211';
+    const VERSION = '1.3.0-beta20151216';
 
     /**
      * @var     string      A date in the format: YYYYMMDD
@@ -222,15 +222,15 @@ class Charitable {
         require_once( $includes_path . 'licensing/class-charitable-plugin-updater.php' );
 
         /* Public */
-        require_once( $includes_path . 'public/charitable-page-functions.php' );        
-        require_once( $includes_path . 'public/charitable-template-helpers.php' );        
-        require_once( $includes_path . 'public/charitable-template-hooks.php' );
-        require_once( $includes_path . 'public/class-charitable-session.php' );        
-        require_once( $includes_path . 'public/class-charitable-template.php' );      
+        require_once( $includes_path . 'public/charitable-page-functions.php' );
+        require_once( $includes_path . 'public/charitable-template-helpers.php' );
+        require_once( $includes_path . 'public/class-charitable-session.php' );
+        require_once( $includes_path . 'public/class-charitable-template.php' );
         require_once( $includes_path . 'public/class-charitable-template-part.php' );
         require_once( $includes_path . 'public/class-charitable-templates.php' );
         require_once( $includes_path . 'public/class-charitable-ghost-page.php' );
         require_once( $includes_path . 'public/class-charitable-user-dashboard.php' );
+        require_once( $includes_path . 'public/charitable-template-hooks.php' );
 
         /* Shortcodes */
         require_once( $includes_path . 'shortcodes/class-charitable-campaigns-shortcode.php' );
