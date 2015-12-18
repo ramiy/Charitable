@@ -35,21 +35,6 @@ add_filter( 'wp_head', 'charitable_template_custom_styles' );
 add_filter( 'body_class', 'charitable_add_body_classes' );
 
 /**
- * Generic template, before loop.
- *
- * @see     charitable_template_wrapper_start()
- */
-add_action( 'charitable_template_loop_before', 'charitable_template_wrapper_start', 4 );
-add_action( 'charitable_template_loop_before', 'charitable_template_header', 8 );
-
-/**
- * Generic template, after loop.
- *
- * @see     charitable_template_wrapper_end()
- */
-add_action( 'charitable_template_loop_after', 'charitable_template_wrapper_end', 14 );
-
-/**
  * Modifying the output of the_content(). 
  *
  * @see     charitable_template_campaign_content()
