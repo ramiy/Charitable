@@ -88,10 +88,6 @@ class Charitable_Templates {
             return $this->get_email_template( $template );
         }
 
-        if ( is_post_type_archive( Charitable::CAMPAIGN_POST_TYPE ) ) {
-            return $this->get_campaign_archive_template( $template );
-        }
-
         return $template;
     }
     
@@ -183,18 +179,6 @@ class Charitable_Templates {
         do_action( 'charitable_email_preview' );
         
         return charitable_get_template_path( 'emails/preview.php' );
-    }
-
-    /**
-     * Get the default template for the campaign archive. 
-     *
-     * @param   string|string[] $template
-     * @return  string
-     * @access  protected
-     * @since   1.3.0
-     */
-    protected function get_campaign_archive_template( $template ) {
-        return charitable_get_template_path( 'archive-campaign.php' );
     }
 
     /***********************************************/ 
