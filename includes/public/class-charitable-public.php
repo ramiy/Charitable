@@ -88,12 +88,22 @@ final class Charitable_Public {
 	 * @access 	public
 	 * @since 	1.0.0
 	 */
-	public function wp_enqueue_scripts() {						
+	public function wp_enqueue_scripts() {					
+        
 		$vars = apply_filters( 'charitable_javascript_vars', array( 
-			'ajaxurl' => admin_url( 'admin-ajax.php' )
+			'ajaxurl' => admin_url( 'admin-ajax.php' ),
+            'currency_format_num_decimals'  => esc_attr( charitable_get_option( 'decimal_count', 2 ) ),
+            'currency_format_decimal_sep'   => esc_attr( charitable_get_option( 'decimal_separator', '.' ) ),
+            'currency_format_thousand_sep'  => esc_attr( charitable_get_option( 'thousands_separator', ',' ) ),
+            'currency_format'               => esc_attr( $this->get_currency_format() ), // For accounting.js
 		) );
 
-		wp_register_script( 'charitable-script', charitable()->get_path( 'assets', false ) . 'js/charitable.js', array( 'jquery' ), charitable()->get_version() );
+        $suffix = defined( 'SCRIPT_DEBUG' )  && SCRIPT_DEBUG ? '.min' : '';
+
+        wp_register_script( 'accounting', charitable()->get_path( 'assets', false ) . 'js/libraries/accounting'. $suffix . '.js', array( 'jquery' ), charitable()->get_version(), true );
+        wp_enqueue_script( 'accounting' );
+
+		wp_register_script( 'charitable-script', charitable()->get_path( 'assets', false ) . 'js/charitable.js', array( 'jquery' ), charitable()->get_version(), true );
         wp_localize_script( 'charitable-script', 'CHARITABLE_VARS', $vars );
         wp_enqueue_script( 'charitable-script' );
 
@@ -106,6 +116,38 @@ final class Charitable_Public {
 			wp_register_style( 'lean-modal-css', charitable()->get_path( 'assets', false ) . 'css/modal.css', array(), charitable()->get_version() );
 		}
 	}
+
+    /**
+     * Get the currency format for accounting.js
+     *
+     * @return  void
+     * @access  public
+     * @since   1.3.0
+     */
+    public function get_currency_format() {                  
+
+        $option = charitable_get_option( 'currency_format', 'left' );
+
+        switch( $option ){
+            case 'right':
+                $format = "%v%s";
+            break;
+            case 'left-with-space':
+                $format = "%s %v";
+            break;
+            case 'right-with-space':
+                $format = "%v %s";
+            break;
+            default:
+                $format = "%s%v";
+            break;
+        }
+        $format = "%s%v";
+
+        return $format;
+
+    }
+
 
     /**
      * Adds custom post classes when viewing campaign. 
