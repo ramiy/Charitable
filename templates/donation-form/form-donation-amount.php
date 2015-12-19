@@ -5,7 +5,7 @@
  * @author  Studio 164a
  * @package Charitable/Templates/Donation Form
  * @since   1.0.0
- * @version 1.0.0
+ * @version 1.3.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
@@ -49,6 +49,6 @@ if ( ! $form ) {
 
     ?>
     <div class="charitable-form-field charitable-submit-field">
-        <input class="button button-primary" type="submit" name="donate" value="<?php esc_attr_e( 'Donate', 'charitable' ) ?>" />
+        <button class="button button-primary" type="submit" name="donate"><?php esc_attr_e( 'Donate', 'charitable' ) ?></button>
     </div>    
 </form>

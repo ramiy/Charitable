@@ -5,7 +5,7 @@
  * @author  Studio 164a
  * @package Charitable/Templates/Account
  * @since   1.0.0
- * @version 1.0.0
+ * @version 1.3.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
@@ -51,7 +51,7 @@ do_action('charitable_user_registration_before');
 
     ?>
     <div class="charitable-form-field charitable-submit-field">
-        <button class="button button-primary" name="register"><?php esc_attr_e( 'Register', 'charitable' ) ?></button>
+        <button class="button button-primary" type="submit" name="register"><?php esc_attr_e( 'Register', 'charitable' ) ?></button>
     </div>
 </form>
 <?php

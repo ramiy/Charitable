@@ -5,7 +5,7 @@
  * @author 	Studio 164a
  * @package Charitable/Templates/Account
  * @since 	1.0.0
- * @version 1.0.0
+ * @version 1.3.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
@@ -52,7 +52,7 @@ do_action('charitable_user_profile_before');
 
 	?>
 	<div class="charitable-form-field charitable-submit-field">
-		<input class="button button-primary" type="submit" name="update-profile" value="<?php esc_attr_e( 'Update', 'charitable' ) ?>" />
+		<button class="button button-primary" type="submit" name="update-profile"><?php esc_attr_e( 'Update', 'charitable' ) ?></button>
 	</div>
 </form>
 <?php
