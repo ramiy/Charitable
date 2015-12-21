@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the Charitable package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Charitable 1.3.0-beta20151211\n"
+"Project-Id-Version: Charitable 1.3.0-beta20151221\n"
 "Report-Msgid-Bugs-To: https://www.wpcharitable.com/\n"
-"POT-Creation-Date: 2015-12-12 13:50:22+00:00\n"
+"POT-Creation-Date: 2015-12-21 07:43:26+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -4780,6 +4780,7 @@ msgid "Settings"
 msgstr ""
 
 #: includes/admin/class-charitable-admin.php:177
+#: includes/admin/settings/class-charitable-settings.php:106
 msgid "Extensions"
 msgstr ""
 
@@ -4923,43 +4924,47 @@ msgstr ""
 msgid "Donations"
 msgstr ""
 
-#: includes/admin/reports/class-charitable-export-donations.php:111
+#: includes/admin/reports/class-charitable-export-donations.php:115
 msgid "Donation ID"
 msgstr ""
 
-#: includes/admin/reports/class-charitable-export-donations.php:112
+#: includes/admin/reports/class-charitable-export-donations.php:116
 msgid "Campaign ID"
 msgstr ""
 
-#: includes/admin/reports/class-charitable-export-donations.php:113
+#: includes/admin/reports/class-charitable-export-donations.php:117
 msgid "Campaign Title"
 msgstr ""
 
-#: includes/admin/reports/class-charitable-export-donations.php:114
+#: includes/admin/reports/class-charitable-export-donations.php:118
 msgid "Donor First Name"
 msgstr ""
 
-#: includes/admin/reports/class-charitable-export-donations.php:115
+#: includes/admin/reports/class-charitable-export-donations.php:119
 msgid "Donor Last Name"
 msgstr ""
 
-#: includes/admin/reports/class-charitable-export-donations.php:116
+#: includes/admin/reports/class-charitable-export-donations.php:120
 msgid "Donor Email"
 msgstr ""
 
-#: includes/admin/reports/class-charitable-export-donations.php:117
+#: includes/admin/reports/class-charitable-export-donations.php:121
+msgid "Donor Address"
+msgstr ""
+
+#: includes/admin/reports/class-charitable-export-donations.php:122
 msgid "Donation Amount"
 msgstr ""
 
-#: includes/admin/reports/class-charitable-export-donations.php:118
+#: includes/admin/reports/class-charitable-export-donations.php:123
 msgid "Date of Donation"
 msgstr ""
 
-#: includes/admin/reports/class-charitable-export-donations.php:119
+#: includes/admin/reports/class-charitable-export-donations.php:124
 msgid "Time of Donation"
 msgstr ""
 
-#: includes/admin/reports/class-charitable-export-donations.php:120
+#: includes/admin/reports/class-charitable-export-donations.php:125
 msgid "Donation Status"
 msgstr ""
 
@@ -6127,7 +6132,7 @@ msgid "Donation Receipt"
 msgstr ""
 
 #: includes/emails/class-charitable-email-donation-receipt.php:110
-#: includes/public/class-charitable-templates.php:111
+#: includes/public/class-charitable-templates.php:127
 msgid "Thank you for your donation"
 msgstr ""
 
@@ -6361,15 +6366,15 @@ msgstr ""
 msgid "Error"
 msgstr ""
 
-#: includes/public/class-charitable-templates.php:87
+#: includes/public/class-charitable-templates.php:108
 msgid "Your Receipt"
 msgstr ""
 
-#: includes/public/class-charitable-templates.php:88
+#: includes/public/class-charitable-templates.php:109
 msgid "Thank you for your donation!"
 msgstr ""
 
-#: includes/public/class-charitable-templates.php:112
+#: includes/public/class-charitable-templates.php:128
 msgid ""
 "You will shortly be redirected to the payment gateway to complete your "
 "donation."
