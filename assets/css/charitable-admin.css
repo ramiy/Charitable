@@ -139,6 +139,8 @@
     font-weight: bold; }
 .charitable-metabox .charitable-metabox-header {
   margin: 24px 0; }
+.charitable-metabox .inside > .charitable-metabox-header:first-child {
+  margin-top: 0; }
 
 .charitable-metabox-block {
   padding: 10px;
@@ -268,6 +270,11 @@ body.post-type-campaign .postbox-container .empty-container {
 #campaign-end-date .charitable-metabox-header,
 #campaign-description .charitable-metabox-header {
   margin: 24px 0; }
+#campaign-title .inside > .charitable-metabox-header:first-child,
+#campaign-goal .inside > .charitable-metabox-header:first-child,
+#campaign-end-date .inside > .charitable-metabox-header:first-child,
+#campaign-description .inside > .charitable-metabox-header:first-child {
+  margin-top: 0; }
 
 /* --- Advanced Metabox --- */
 #charitable-campaign-advanced-metabox.ui-tabs {

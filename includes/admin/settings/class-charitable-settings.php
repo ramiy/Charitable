@@ -81,6 +81,39 @@ final class Charitable_Settings {
     }
 
     /**
+     * Optionally add the extensions tab. 
+     *
+     * @param   string[] $tabs
+     * @return  string[]
+     * @access  public
+     * @since   1.3.0
+     */
+    public function maybe_add_extensions_tab( $tabs ) {
+        $actual_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'general';
+
+        /* Set the tab to 'extensions' */ 
+        $_GET[ 'tab' ] = 'extensions';
+
+        $settings = apply_filters( 'charitable_settings_tab_fields_extensions', array() );        
+
+        /* Set the tab back to whatever it actually is */ 
+        $_GET[ 'tab' ] = $actual_tab;
+
+        if ( ! empty( $settings ) ) {
+            $tabs = charitable_add_settings_tab( 
+                $tabs,
+                'extensions', 
+                __( 'Extensions', 'charitable' ), 
+                array(
+                    'index' => 3
+                ) 
+            );
+        }        
+
+        return $tabs;
+    }
+
+    /**
      * Register setting.
      *
      * @return  void

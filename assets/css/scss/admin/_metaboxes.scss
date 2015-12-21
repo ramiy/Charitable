@@ -89,6 +89,10 @@
     .charitable-metabox-header {
         margin: 24px 0;
     }
+
+    .inside > .charitable-metabox-header:first-child {
+        margin-top: 0;
+    }
 }
 
 .charitable-metabox {

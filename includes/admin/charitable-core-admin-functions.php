@@ -135,3 +135,29 @@ function charitable_do_settings_fields( $page, $section ) {
         echo '</tr>';
     }
 }
+
+/**
+ * Add new tab to the Charitable settings area. 
+ *
+ * @param   string[] $tabs
+ * @param   string $key
+ * @param   string $name
+ * @param   mixed[] $args
+ * @return  string[]
+ * @since   1.3.0
+ */
+function charitable_add_settings_tab( $tabs, $key, $name, $args = array() ) {
+    $defaults = array(
+        'index' => 3
+    );
+
+    $args = wp_parse_args( $args, $defaults );
+
+    $keys   = array_keys( $tabs );
+    $values = array_values( $tabs );
+
+    array_splice( $keys, $args[ 'index' ], 0, $key );
+    array_splice( $values, $args[ 'index' ], 0, $name );
+    
+    return array_combine( $keys, $values );
+}
