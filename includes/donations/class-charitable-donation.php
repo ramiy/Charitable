@@ -181,7 +181,7 @@ class Charitable_Donation {
     /**
      * Return a comma separated list of the campaigns that were donated to. 
      *
-     * @param   boolean     $linked         Whether to return the campaigns with links to the campaign pages.
+     * @param   boolean $linked Whether to return the campaigns with links to the campaign pages.
      * @return  string
      * @access  public
      * @since   1.0.0
@@ -229,7 +229,7 @@ class Charitable_Donation {
     public function get_date( $format = '' ) {
         if ( empty( $format ) ) {
             $format = get_option( 'date_format' );
-        }
+        }        
 
         return date_i18n( $format, strtotime( $this->donation_data->post_date ) );
     }

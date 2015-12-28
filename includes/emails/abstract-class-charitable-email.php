@@ -79,7 +79,7 @@ abstract class Charitable_Email implements Charitable_Email_Interface {
         add_filter( 'charitable_email_content_fields', array( $this, 'add_campaign_content_fields' ), 10, 2 );
         add_filter( 'charitable_email_preview_content_fields', array( $this, 'add_preview_campaign_content_fields' ), 10, 2 );
     }
-    
+
     /**
      * Return the email name.
      *
@@ -89,6 +89,39 @@ abstract class Charitable_Email implements Charitable_Email_Interface {
      */
     public function get_name() {
         return $this->name;
+    }
+
+    /**
+     * Return the types of objects. 
+     *
+     * @return  string[]
+     * @access  public
+     * @since   1.3.0
+     */
+    public function get_object_types() {
+        return $this->object_types;
+    }
+
+    /**
+     * Return the donation object. 
+     *
+     * @return  null|Charitable_Donation
+     * @access  public
+     * @since   1.3.0
+     */
+    public function get_donation() {
+        return $this->donation;
+    }
+
+    /**
+     * Return the campaign object. 
+     *
+     * @return  null|Charitable_Campaign
+     * @access  public
+     * @since   1.3.0
+     */
+    public function get_campaign() {
+        return $this->campaign;
     }
 
     /**
@@ -189,7 +222,7 @@ abstract class Charitable_Email implements Charitable_Email_Interface {
 
         add_filter( 'charitable_email_content_field_value_' . $field, $fields[ $field ][ 'callback' ], 10, 3 );
 
-        return apply_filters( 'charitable_email_content_field_value_' . $field, '', $field, $args );
+        return apply_filters( 'charitable_email_content_field_value_' . $field, '', $args, $this );
     }
 
     /**
@@ -312,7 +345,7 @@ abstract class Charitable_Email implements Charitable_Email_Interface {
     /**
      * Add donation content fields.   
      *
-     * @return  array
+     * @return  array[]
      * @access  public
      * @since   1.0.0
      */
@@ -344,6 +377,11 @@ abstract class Charitable_Email implements Charitable_Email_Interface {
         $fields[ 'donation_summary' ] = array(
             'description'   => __( 'A summary of the donation', 'charitable' ), 
             'callback'      => array( $this, 'get_donation_summary' )
+        );
+
+        $fields[ 'donation_date' ] = array(
+            'description'   => __( 'The date the donation was made', 'charitable' ),
+            'callback'      => array( $this, 'get_donation_date' )
         );
 
         return $fields;
@@ -396,23 +434,41 @@ abstract class Charitable_Email implements Charitable_Email_Interface {
     /**
      * Returns a summary of the donation, including all the campaigns that were donated to.  
      *
+     * @param   string $value
+     * @param   mixed[] $args
+     * @param   Charitable_Email $email
      * @return  string
      * @access  public
      * @since   1.0.0
      */
-    public function get_donation_summary() {
+    public function get_donation_summary( $value, $args, $email ) {
         if ( ! $this->has_valid_donation() ) {
-            return '';            
+            return $value;
         }
 
         $output = "";
 
         foreach ( $this->donation->get_campaign_donations() as $campaign_donation ) {
             $line_item = sprintf( '%s: %s%s', $campaign_donation->campaign_name, charitable_get_currency_helper()->get_monetary_amount( $campaign_donation->amount ), PHP_EOL );
-            $output .= apply_filters( 'charitable_donation_summary_line_item_email', $line_item, $campaign_donation );
+            $output .= apply_filters( 'charitable_donation_summary_line_item_email', $line_item, $campaign_donation, $args, $email );
         }
 
         return $output;
+    }
+
+    /**
+     * Returns the date the donation was made. 
+     *
+     * @param   string $value
+     * @param   mixed[] $args
+     * @return  string
+     * @access  public
+     * @since   1.3.0
+     */
+    public function get_donation_date( $value, $args ) {
+        $format = isset( $args[ 'format' ] ) ? $args[ 'format' ] : get_option( 'date_format' );
+
+        return $this->return_value_if_has_valid_donation( $this->donation->get_date( $format ) );
     }
 
     /**
@@ -432,6 +488,7 @@ abstract class Charitable_Email implements Charitable_Email_Interface {
         $fields[ 'donor_email' ]        = 'john@example.com';
         $fields[ 'donation_id' ]        = 164;
         $fields[ 'donation_summary' ]   = sprintf( 'Fake Campaign: $50.00%s', PHP_EOL );
+        $fields[ 'donation_date' ]      = date_i18n( get_option( 'date_format' ) );
         return $fields;
     }
 
@@ -542,7 +599,7 @@ abstract class Charitable_Email implements Charitable_Email_Interface {
      * @access  public
      * @since   1.1.0
      */
-    public function get_campaign_end_date( $value, $field, $args ) {
+    public function get_campaign_end_date() {
         if ( ! $this->has_valid_campaign() ) {
             return '';            
         }
@@ -553,11 +610,13 @@ abstract class Charitable_Email implements Charitable_Email_Interface {
     /**
      * Display whether the campaign achieved its goal. 
      *
+     * @param   string $value
+     * @param   mixed[] $args
      * @return  string
      * @access  public
      * @since   1.1.0
      */
-    public function get_campaign_achieved_goal( $value, $field, $args ) {
+    public function get_campaign_achieved_goal( $value, $args ) {
         if ( ! $this->has_valid_campaign() ) {
             return '';            
         }
@@ -880,10 +939,10 @@ abstract class Charitable_Email implements Charitable_Email_Interface {
      * Checks whether the email has a valid donation object set. 
      *
      * @return  boolean
-     * @access  protected
+     * @access  public
      * @since   1.0.0
      */
-    protected function has_valid_donation() {
+    public function has_valid_donation() {
         if ( is_null( $this->donation ) || ! is_a( $this->donation, 'Charitable_Donation' ) ) {
             _doing_it_wrong( __METHOD__, __( 'You cannot send this email without a donation!', 'charitable' ), '1.0.0' );
             return false;
@@ -896,15 +955,10 @@ abstract class Charitable_Email implements Charitable_Email_Interface {
      * Checks whether the email has a valid donation object set. 
      *
      * @return  boolean
-     * @access  protected
+     * @access  public
      * @since   1.0.0
      */
-    protected function has_valid_campaign() {
-        // echo '<pre>'; var_dump( $this->campaign ); echo '</pre>';
-        // echo '<pre>'; var_dump( is_null( $this->campaign ) ); echo '</pre>';
-        // echo '<pre>'; var_dump( ! is_a( $this->campaign, 'Charitable_Campaign' ) ); echo '</pre>';
-        // echo '<pre>'; var_dump( get_class( $this ) ); echo '</pre>';
-
+    public function has_valid_campaign() {
         if ( is_null( $this->campaign ) || ! is_a( $this->campaign, 'Charitable_Campaign' ) ) {
             _doing_it_wrong( __METHOD__, __( 'You cannot this email without a campaign!', 'charitable' ), '1.0.0' );
             return false;

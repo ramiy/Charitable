@@ -214,7 +214,7 @@ class Charitable_Emails {
     /**
      * Handles the parsing of the [charitable_email] shortcode. 
      *
-     * @param   array   $atts
+     * @param   mixed[] $atts
      * @return  string
      * @access  public
      * @since   1.0.0

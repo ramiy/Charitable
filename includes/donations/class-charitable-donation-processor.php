@@ -176,6 +176,7 @@ class Charitable_Donation_Processor {
          * If we get this far, forward the user through to the receipt page.
          */
         wp_safe_redirect( charitable_get_permalink( 'donation_receipt_page', array( 'donation_id' => $donation_id ) ) );
+        
         die();
     }
 
