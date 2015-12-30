@@ -33,7 +33,7 @@ class Charitable {
     /**
      * @var     string
      */
-    const VERSION = '1.3.0-beta20151221';
+    const VERSION = '1.3.0-beta20151230';
 
     /**
      * @var     string      A date in the format: YYYYMMDD
@@ -203,14 +203,14 @@ class Charitable {
         include_once( $includes_path . 'gateways/class-charitable-gateway-offline.php' );
         include_once( $includes_path . 'gateways/class-charitable-gateway-paypal.php' );        
 
-        /* Emails */
-        include_once( $includes_path . 'emails/charitable-email-hooks.php' );
+        /* Emails */        
         include_once( $includes_path . 'emails/interface-charitable-email.php' );        
         require_once( $includes_path . 'emails/class-charitable-emails.php' ); 
         include_once( $includes_path . 'emails/abstract-class-charitable-email.php' );
         include_once( $includes_path . 'emails/class-charitable-email-new-donation.php' );
         include_once( $includes_path . 'emails/class-charitable-email-donation-receipt.php' );
         include_once( $includes_path . 'emails/class-charitable-email-campaign-end.php' );
+        include_once( $includes_path . 'emails/charitable-email-hooks.php' );
             
         /* Database */
         require_once( $includes_path . 'db/abstract-class-charitable-db.php' );

@@ -384,6 +384,11 @@ abstract class Charitable_Email implements Charitable_Email_Interface {
             'callback'      => array( $this, 'get_donation_date' )
         );
 
+        $fields[ 'donation_status' ] = array(
+            'description'   => __( 'The status of the donation (pending, paid, etc.)', 'charitable' ),
+            'callback'      => array( $this, 'get_donation_status' )
+        );
+
         return $fields;
     }
 
@@ -472,6 +477,17 @@ abstract class Charitable_Email implements Charitable_Email_Interface {
     }
 
     /**
+     * Returns the status of the donation. 
+     *
+     * @return  string
+     * @access  public
+     * @since   1.3.0
+     */
+    public function get_donation_status() {
+        return $this->return_value_if_has_valid_donation( $this->donation->get_status( true ) );
+    }
+
+    /**
      * Add donation content fields' fake data for previews.
      *
      * @return  array
@@ -487,8 +503,10 @@ abstract class Charitable_Email implements Charitable_Email_Interface {
         $fields[ 'donor_first_name' ]   = 'John';
         $fields[ 'donor_email' ]        = 'john@example.com';
         $fields[ 'donation_id' ]        = 164;
-        $fields[ 'donation_summary' ]   = sprintf( 'Fake Campaign: $50.00%s', PHP_EOL );
+        $fields[ 'donation_summary' ]   = __( 'Fake Campaign: $50.00', 'charitable' ) . PHP_EOL;
         $fields[ 'donation_date' ]      = date_i18n( get_option( 'date_format' ) );
+        $fields[ 'donation_status' ]    = __( 'Paid', 'charitable' );
+
         return $fields;
     }
 

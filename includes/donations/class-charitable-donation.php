@@ -302,7 +302,7 @@ class Charitable_Donation {
     /**
      * The status of this donation.
      *
-     * @param   boolean     $label  Whether to return the label. If not, returns the key.
+     * @param   boolean $label Whether to return the label. If not, returns the key.
      * @return  string
      * @access  public
      * @since   1.0.0

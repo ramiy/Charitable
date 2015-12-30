@@ -53,14 +53,7 @@ class Charitable_Emails {
      * @access  private
      * @since   1.0.0
      */
-    private function __construct() {                
-        add_action( 'init', array( $this, 'register_emails' ) );
-        add_action( 'charitable_enable_email', array( $this, 'handle_email_settings_request' ) );
-        add_action( 'charitable_disable_email', array( $this, 'handle_email_settings_request' ) );
-        add_action( 'charitable_before_send_email', array( $this, 'set_current_email' ) );
-        add_action( 'charitable_before_preview_email', array( $this, 'set_current_email' ) );
-        add_filter( 'charitable_settings_fields_emails_email', array( $this, 'register_email_settings' ), 10, 2 );        
-
+    private function __construct() {
         /* Register email shortcode */
         add_shortcode( 'charitable_email', array( $this, 'email_shortcode' ) );
         
