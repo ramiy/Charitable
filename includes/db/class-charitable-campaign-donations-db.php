@@ -37,6 +37,15 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 	public $primary_key = 'campaign_donation_id';
 
 	/**
+	 * Stores whether the site is using commas for decimals in amounts. 
+	 *
+	 * @var 	boolean
+	 * @access  private
+	 * @since 	1.3.0
+	 */
+	private $comma_decimal;
+
+	/**
 	 * Set up the database table name. 
 	 *
 	 * @return 	void
@@ -206,7 +215,13 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 				WHERE 1 = 1
 				$status_clause";
 
-		return $wpdb->get_var( $wpdb->prepare( $sql, $parameters ) );
+		$total = $wpdb->get_var( $wpdb->prepare( $sql, $parameters ) );
+
+		if ( $this->is_comma_decimal() ) {
+			$total = Charitable_Currency::get_instance()->sanitize_database_amount( $total );
+		}
+
+		return $total;
 	}
 
 	/**
@@ -224,7 +239,13 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 				FROM $this->table_name 
 				WHERE donation_id = %d;";
 
-		return $wpdb->get_results( $wpdb->prepare( $sql, intval( $donation_id ) ), OBJECT_K );				
+		$records = $wpdb->get_results( $wpdb->prepare( $sql, intval( $donation_id ) ), OBJECT_K );
+
+		if ( $this->is_comma_decimal() ) {
+            $records = array_map( array( $this, 'sanitize_amounts' ), $records );
+        }            
+
+		return $records;
 	}
 
 	/**
@@ -243,7 +264,13 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 				FROM $this->table_name 
 				WHERE donation_id = %d;";
 
-		return $wpdb->get_var( $wpdb->prepare( $sql, intval( $donation_id ) ) );
+		$total = $wpdb->get_var( $wpdb->prepare( $sql, intval( $donation_id ) ) );
+
+		if ( $this->is_comma_decimal() ) {
+			$total = Charitable_Currency::get_instance()->sanitize_database_amount( $total );
+		}
+
+		return $total;
 	}
 
 	/**
@@ -279,7 +306,13 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 				FROM $this->table_name 
 				WHERE campaign_id = %d;";
 
-		return $wpdb->get_results( $wpdb->prepare( $sql, $campaign_id ), OBJECT_K );
+		$records = $wpdb->get_results( $wpdb->prepare( $sql, $campaign_id ), OBJECT_K );
+
+		if ( $this->is_comma_decimal() ) {
+            $records = array_map( array( $this, 'sanitize_amounts' ), $records );
+        }        
+
+		return $records;
 	}
 
 	/**
@@ -325,7 +358,13 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 				WHERE cd.campaign_id = %d
 				$status_clause;";
 
-		return $wpdb->get_var( $wpdb->prepare( $sql, $parameters ) );
+		$total = $wpdb->get_var( $wpdb->prepare( $sql, $parameters ) );
+
+		if ( $this->is_comma_decimal() ) {
+			$total = Charitable_Currency::get_instance()->sanitize_database_amount( $total );
+		}
+
+		return $total;
 	}	
 
 	/**
@@ -399,7 +438,13 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 				FROM $this->table_name cd
 				WHERE cd.donor_id = %d;";
 
-		return $wpdb->get_results( $wpdb->prepare( $sql, $donor_id ), OBJECT_K );
+		$results = $wpdb->get_results( $wpdb->prepare( $sql, $donor_id ), OBJECT_K );
+
+		if ( $this->is_comma_decimal() ) {
+			$results = array_map( array( $this, 'sanitize_amounts' ), $results );
+		}
+
+		return $results;
 	}
 
 	/**
@@ -418,7 +463,13 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 				FROM $this->table_name cd
 				WHERE cd.donor_id = %d;";
 
-		return $wpdb->get_var( $wpdb->prepare( $sql, $donor_id ) );
+		$total = $wpdb->get_var( $wpdb->prepare( $sql, $donor_id ) );
+
+		if ( $this->is_comma_decimal() ) {
+			$total = Charitable_Currency::get_instance()->sanitize_database_amount( $total );
+		}
+
+		return $total;
 	}
 
 	/**
@@ -509,7 +560,13 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 				ON p.ID = cd.donation_id
 				$sql_where";
 
-		return $wpdb->get_results( $wpdb->prepare( $sql, $parameters ) );
+		$results = $wpdb->get_results( $wpdb->prepare( $sql, $parameters ) );
+
+		if ( $this->is_comma_decimal() ) {
+			$results = array_map( array( $this, 'sanitize_amounts' ), $results );
+		}
+
+		return $results;
 	}
 
 	/**
@@ -531,18 +588,24 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 
 		$results = $wpdb->get_results( $wpdb->prepare( $sql, $period ) );
 
-		return $results[0];
+		$result = $results[0];
+
+		if ( $this->is_comma_decimal() ) {
+			$result = $this->sanitize_amounts( $result );
+		}
+
+		return $result;
 	}
 
 	/**
 	 * Returns the donation status clause. 
 	 *
-	 * @param 	boolean $include_all 	If true, will return a blank string. 
+	 * @param 	boolean $include_all If true, will return a blank string. 
 	 * @return  string
-	 * @access  public
+	 * @access  private
 	 * @since   1.0.0
 	 */
-	public function get_donation_status_clause( $statuses = array() ) {
+	private function get_donation_status_clause( $statuses = array() ) {
 		if ( empty( $statuses ) ) {
 			return array( "", array() );
 		}
@@ -557,6 +620,34 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 
 		return $clause;
 	}
+
+	/**
+	 * Checks whether we are using commas for decimals. 
+	 *
+	 * @return  boolean
+	 * @access  private
+	 * @since   1.3.0
+	 */
+	private function is_comma_decimal() {
+		if ( ! isset( $this->comma_decimal ) ) {
+			$this->comma_decimal = Charitable_Currency::get_instance()->is_comma_decimal();
+		}
+
+		return $this->comma_decimal;
+	}
+
+    /**
+     * Sanitize amounts retrieved from the database. 
+     *
+     * @param   Object $campaign_donation
+     * @return  Object
+     * @access  private
+     * @since   1.3.0
+     */
+    private function sanitize_amounts( $campaign_donation ) {
+        $campaign_donation->amount = Charitable_Currency::get_instance()->sanitize_database_amount( $campaign_donation->amount );
+        return $campaign_donation;
+    }
 }
 
 endif;

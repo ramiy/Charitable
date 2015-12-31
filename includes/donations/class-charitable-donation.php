@@ -138,7 +138,13 @@ class Charitable_Donation {
      * @since   1.0.0
      */
     public function get_total_donation_amount() {
-        return $this->get_campaign_donations_db()->get_donation_total_amount( $this->donation_id );
+        $total = $this->get_campaign_donations_db()->get_donation_total_amount( $this->donation_id );
+
+        if ( Charitable_Currency::get_instance()->is_comma_decimal() ) {
+            $total = Charitable_Currency::get_instance()->sanitize_database_amount( $total );
+        }
+
+        return $total;
     }
 
     /**
@@ -150,7 +156,7 @@ class Charitable_Donation {
      */
     public function get_campaign_donations() {
         if ( ! isset( $this->campaign_donations ) ) {
-            $this->campaign_donations = $this->get_campaign_donations_db()->get_donation_records( $this->donation_id );
+            $this->campaign_donations = $this->get_campaign_donations_db()->get_donation_records( $this->donation_id );            
         }
 
         return $this->campaign_donations;

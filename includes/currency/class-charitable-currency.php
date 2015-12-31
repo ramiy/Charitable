@@ -86,7 +86,14 @@ final class Charitable_Currency {
 		}
 		
 		$amount = $this->sanitize_monetary_amount( strval( $amount ) );
-		$amount = number_format( $amount, $decimal_count, charitable_get_option( 'decimal_separator', '.' ), charitable_get_option( 'thousands_separator', ',' ) );
+
+		$amount = number_format( 
+			$amount, 
+			$decimal_count, 
+			charitable_get_option( 'decimal_separator', '.' ), 
+			charitable_get_option( 'thousands_separator', ',' ) 
+		);
+
 		return sprintf( $this->get_currency_format(), $this->get_currency_symbol(), $amount );
 	}
 
@@ -118,6 +125,22 @@ final class Charitable_Currency {
 		}
 
 		return floatval( filter_var( $amount, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION ) );
+	}
+
+	/**
+	 * Turns a database amount into an amount formatted for the currency that the site is in. 
+	 *
+	 * @param 	string $amount
+	 * @return  string
+	 * @access  public
+	 * @since   1.3.0
+	 */
+	public function sanitize_database_amount( $amount ) {
+		if ( $this->is_comma_decimal() ) { 		
+			$amount = str_replace( '.', ',', $amount );			
+		}
+
+		return $amount;	
 	}
 
 	/**
