@@ -142,20 +142,6 @@ module.exports = function(grunt) {
             }
         },        
 
-        // make POT file
-        // makepot: {
-        //     target: {
-        //         options: {
-        //             cwd: '',                        // Directory of files to internationalize.
-        //             domainPath: '/i18n/languages',  // Where to save the POT file.                    
-        //             mainFile: 'charitable.php',     // Main project file.
-        //             potFilename: 'charitable.pot',  // Name of the POT file.
-        //             type: 'wp-plugin',              // Type of project (wp-plugin or wp-theme).
-        //             updateTimestamp: true           // Whether the POT-Creation-Date should be updated without other changes.
-        //         }
-        //     }
-        // },
-
         // Clean up build directory
         clean: {
             main: ['build/<%= pkg.name %>']
@@ -182,8 +168,7 @@ module.exports = function(grunt) {
                     '!**/package.json',
                     '!**/README.md',
                     '!**/*~', 
-                    '!assets/css/scss/**',
-                    '!assets/css/*.map'
+                    '!assets/css/scss/**'
                 ],
                 dest: 'build/<%= pkg.name %>/'
             }
