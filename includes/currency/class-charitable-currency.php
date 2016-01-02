@@ -175,6 +175,37 @@ final class Charitable_Currency {
 		return $format;
 	}
 
+    /**
+     * Get the currency format for accounting.js
+     *
+     * @return  void
+     * @access  public
+     * @since   1.3.0
+     */
+    public function get_accounting_js_format() {                  
+
+        $option = charitable_get_option( 'currency_format', 'left' );
+
+        switch( $option ){
+            case 'right':
+                $format = "%v%s";
+            break;
+            case 'left-with-space':
+                $format = "%s %v";
+            break;
+            case 'right-with-space':
+                $format = "%v %s";
+            break;
+            default:
+                $format = "%s%v";
+            break;
+        }
+        $format = "%s%v";
+
+        return $format;
+
+    }
+    
 	/**
 	 * Return every currency symbol used with the 
 	 *

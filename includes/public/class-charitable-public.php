@@ -95,7 +95,7 @@ final class Charitable_Public {
             'currency_format_num_decimals'  => esc_attr( charitable_get_option( 'decimal_count', 2 ) ),
             'currency_format_decimal_sep'   => esc_attr( charitable_get_option( 'decimal_separator', '.' ) ),
             'currency_format_thousand_sep'  => esc_attr( charitable_get_option( 'thousands_separator', ',' ) ),
-            'currency_format'               => esc_attr( $this->get_currency_format() ), // For accounting.js
+            'currency_format'               => esc_attr( charitable_get_currency_helper()->get_accounting_js_format() ), // For accounting.js
 		) );
 
         $suffix = defined( 'SCRIPT_DEBUG' )  && SCRIPT_DEBUG ? '.min' : '';
@@ -116,38 +116,6 @@ final class Charitable_Public {
 			wp_register_style( 'lean-modal-css', charitable()->get_path( 'assets', false ) . 'css/modal.css', array(), charitable()->get_version() );
 		}
 	}
-
-    /**
-     * Get the currency format for accounting.js
-     *
-     * @return  void
-     * @access  public
-     * @since   1.3.0
-     */
-    public function get_currency_format() {                  
-
-        $option = charitable_get_option( 'currency_format', 'left' );
-
-        switch( $option ){
-            case 'right':
-                $format = "%v%s";
-            break;
-            case 'left-with-space':
-                $format = "%s %v";
-            break;
-            case 'right-with-space':
-                $format = "%v %s";
-            break;
-            default:
-                $format = "%s%v";
-            break;
-        }
-        $format = "%s%v";
-
-        return $format;
-
-    }
-
 
     /**
      * Adds custom post classes when viewing campaign. 
