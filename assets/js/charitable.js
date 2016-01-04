@@ -188,6 +188,42 @@ CHARITABLE.Modal = {
     }
  };
 
+
+/**
+ * Donation amount selection
+ */
+CHARITABLE.Accounting = {
+
+    format_currency : function( price, currency_symbol ){
+
+        if ( typeof currency_symbol === 'undefined' )
+            currency_symbol = '';
+
+        return accounting.formatMoney( price, {
+                symbol : currency_symbol,
+                decimal : CHARITABLE_VARS.currency_format_decimal_sep,
+                thousand: CHARITABLE_VARS.currency_format_thousand_sep,
+                precision : CHARITABLE_VARS.currency_format_num_decimals,
+                format: CHARITABLE_VARS.currency_format  
+        }).trim();
+
+    },
+
+    unformat_currency : function( price ){
+        return Math.abs( parseFloat( accounting.unformat( price, CHARITABLE_VARS.currency_format_decimal_sep ) ) );
+    },
+    
+    init : function() {
+        var self = this;
+
+        jQuery( 'body' ).on( 'blur', '[name=custom_donation_amount]', function( event ) {
+            var value_now = self.unformat_currency( jQuery( this ).val() );
+            var formatted_total = self.format_currency( value_now );
+            jQuery( this ).val( formatted_total );
+        });
+    }
+};
+
 (function() {
     jQuery( document ).ready( function() {
         CHARITABLE.Toggle.init();
@@ -199,5 +235,7 @@ CHARITABLE.Modal = {
         CHARITABLE.PaymentMethodSelection.init();
 
         CHARITABLE.Modal.init();
+
+        CHARITABLE.Accounting.init();
     });
 })();

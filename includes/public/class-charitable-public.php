@@ -88,12 +88,22 @@ final class Charitable_Public {
 	 * @access 	public
 	 * @since 	1.0.0
 	 */
-	public function wp_enqueue_scripts() {						
+	public function wp_enqueue_scripts() {					
+        
 		$vars = apply_filters( 'charitable_javascript_vars', array( 
-			'ajaxurl' => admin_url( 'admin-ajax.php' )
+			'ajaxurl' => admin_url( 'admin-ajax.php' ),
+            'currency_format_num_decimals'  => esc_attr( charitable_get_option( 'decimal_count', 2 ) ),
+            'currency_format_decimal_sep'   => esc_attr( charitable_get_option( 'decimal_separator', '.' ) ),
+            'currency_format_thousand_sep'  => esc_attr( charitable_get_option( 'thousands_separator', ',' ) ),
+            'currency_format'               => esc_attr( charitable_get_currency_helper()->get_accounting_js_format() ), // For accounting.js
 		) );
 
-		wp_register_script( 'charitable-script', charitable()->get_path( 'assets', false ) . 'js/charitable.js', array( 'jquery' ), charitable()->get_version() );
+        $suffix = defined( 'SCRIPT_DEBUG' )  && SCRIPT_DEBUG ? '.min' : '';
+
+        wp_register_script( 'accounting', charitable()->get_path( 'assets', false ) . 'js/libraries/accounting'. $suffix . '.js', array( 'jquery' ), charitable()->get_version(), true );
+        wp_enqueue_script( 'accounting' );
+
+		wp_register_script( 'charitable-script', charitable()->get_path( 'assets', false ) . 'js/charitable.js', array( 'jquery' ), charitable()->get_version(), true );
         wp_localize_script( 'charitable-script', 'CHARITABLE_VARS', $vars );
         wp_enqueue_script( 'charitable-script' );
 
