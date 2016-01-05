@@ -139,8 +139,7 @@ abstract class Charitable_Form {
 		if ( ! empty( $errors ) ) {
 
 			charitable_template( 'form-fields/errors.php', array(
-				'form' 		=> $form, 
-				'errors' 	=> $errors
+				'errors' => $errors
 			) );
 
 		}

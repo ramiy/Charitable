@@ -207,6 +207,25 @@ abstract class Charitable_Gateway implements Charitable_Gateway_Interface {
     }
 
     /**
+     * Redirect the donation to the processing page.
+     *   
+     * @param   mixed $result
+     * @param   int $donation_id
+     * @return  array
+     * @access  public
+     * @static
+     * @since   1.0.0
+     */
+    public static function redirect_to_processing( $result, $donation_id ) {
+        return array(
+            'redirect' => charitable_get_permalink( 'donation_processing_page', array( 
+                'donation_id' => $donation_id ) 
+            ), 
+            'safe' => true
+        );        
+    }
+
+    /**
      * Register gateway settings. 
      *
      * @param   array   $settings
