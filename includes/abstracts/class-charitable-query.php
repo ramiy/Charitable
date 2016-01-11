@@ -193,7 +193,7 @@ abstract class Charitable_Query implements Iterator {
      */
     public function orderby() {
         global $wpdb;
-        return apply_filters( 'charitable_query_orderby', 'ORDER BY {$wpdb->posts}.ID', $this );
+        return apply_filters( 'charitable_query_orderby', "ORDER BY {$wpdb->posts}.ID", $this );
     }
 
     /**
