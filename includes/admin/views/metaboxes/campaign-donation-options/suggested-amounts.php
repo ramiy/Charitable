@@ -21,26 +21,36 @@ $suggested_donations 	= get_post_meta( $post->ID, '_campaign_suggested_donations
 if ( ! $suggested_donations ) {
 	$suggested_donations = array();
 }
+// add a default empty row to the end. we will use this as our clone model
+$default = array_fill_keys( array_keys( $fields ), '');
+array_push( $suggested_donations, $default );
 ?>
 <div id="charitable-campaign-suggested-donations-metabox-wrap" class="charitable-metabox-wrap">
 	<table id="charitable-campaign-suggested-donations" class="widefat">
 		<thead>
 			<tr class="table-header">
-				<th colspan="<?php echo count( $fields ) ?>"><label for="campaign_suggested_donations"><?php echo $title ?></label></th>
+				<th colspan="<?php echo count( $fields ) + 2 ?>"><label for="campaign_suggested_donations"><?php echo $title ?></label></th>
 			</tr>
 			<tr>
+				<th class="re-order-col"><?php _e( 'Re-order', 'charitable' );?></th>
 				<?php foreach ( $fields as $key => $field ) : ?>
 					<th class="<?php echo $key ?>-col"><?php echo $field[ 'column_header' ] ?></th>
-				<?php endforeach ?>				
+				<?php endforeach ?>		
+				<th class="re-order-col"><?php _e( 'Remove', 'charitable' );?></th>		
 			</tr>
 		</thead>		
 		<tbody>
+			<tr class="no-suggested-amounts <?php echo ( count($suggested_donations) > 1 )? "hidden" : "";?>">
+					<td colspan="<?php echo count( $fields ) ?>"><?php _e( 'No suggested amounts have been created yet.', 'charitable' ) ?></td>
+			</tr>
 		<?php 
-			if ( $suggested_donations ) : 
-				foreach ( $suggested_donations as $i => $donation ) : 
+			foreach ( $suggested_donations as $i => $donation ) : 
 				?>
-					<tr data-index="<?php echo $i ?>">
-						<?php foreach ( $fields as $key => $field ) : 
+					<tr data-index="<?php echo $i ?>" class="<?php echo ($donation === end($suggested_donations)) ? 'to-copy hidden' : 'default'; ?>">
+
+						<td class="reorder-col"><span class="dashicons-before dashicons-sort handle"></span></td>
+
+						<?php foreach ( $fields as $key => $field ) :
 
 							if ( is_array( $donation ) && isset( $donation[ $key ] ) ) {
 								$value = $donation[ $key ];
@@ -55,27 +65,24 @@ if ( ! $suggested_donations ) {
 							?>
 							<td class="<?php echo $key ?>-col"><input 
 								type="text" 
-								id="campaign_suggested_donations_<?php echo $i ?>" 
+								class="campaign_suggested_donations" 
 								name="_campaign_suggested_donations[<?php echo $i ?>][<?php echo $key ?>]" 
 								value="<?php echo esc_attr( $value ) ?>" 
 								placeholder="<?php echo esc_attr( $field[ 'placeholder' ] ) ?>" />
 							</td>
-						<?php endforeach ?>						
+						<?php endforeach ?>	
+
+						<td class="remove-col"><span class="dashicons-before dashicons-dismiss" data-charitable-delete-row="suggested-amount"></span></td>
+
 					</tr>
 				<?php 
 				endforeach;
-			else : 
-			?>
-				<tr class="no-suggested-amounts">
-					<td colspan="<?php echo count( $fields ) ?>"><?php _e( 'No suggested amounts have been created yet.', 'charitable' ) ?></td>
-				</tr>
-			<?php 
-			endif;
+
 		?>
 		</tbody>
 		<tfoot>
 			<tr>
-				<td colspan="<?php echo count( $fields ) ?>"><a class="button" href="#" data-charitable-add-row="suggested-amount"><?php _e( '+ Add a Suggested Amount', 'charitable' ) ?></a></td>
+				<td colspan="<?php echo count( $fields ) + 2 ?>"><a class="button" href="#" data-charitable-add-row="suggested-amount"><?php _e( '+ Add a Suggested Amount', 'charitable' ) ?></a></td>
 			</tr>
 		</tfoot>
 	</table>	
