@@ -115,6 +115,8 @@ final class Charitable_Admin {
     public function admin_enqueue_scripts() {       
         global $wp_scripts;
 
+        $suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+
         /* Menu styles are loaded everywhere in the Wordpress dashboard. */
         wp_register_style( 'charitable-admin-menu', charitable()->get_path( 'assets', false ) . 'css/charitable-admin-menu.css', array(), charitable()->get_version() );
         wp_enqueue_style( 'charitable-admin-menu' );
@@ -124,10 +126,11 @@ final class Charitable_Admin {
 
         if ( in_array( $screen->id, $this->get_charitable_screens() ) ) {       
         
-            wp_register_style( 'charitable-admin', charitable()->get_path( 'assets', false ) . 'css/charitable-admin.css', array(), charitable()->get_version() );
+            wp_register_style( 'charitable-admin', charitable()->get_path( 'assets', false ) . 'css/charitable-admin' . $suffix . '.css', array(), charitable()->get_version() );
             wp_enqueue_style( 'charitable-admin' );
 
-            wp_register_script( 'charitable-admin', charitable()->get_path( 'assets', false ) . 'js/charitable-admin.js', array( 'jquery-ui-datepicker', 'jquery-ui-tabs' ), charitable()->get_version(), false );      
+            wp_register_script( 'charitable-admin', charitable()->get_path( 'assets', false ) . 'js/charitable-admin' . $suffix . '.js', array( 'jquery-ui-datepicker', 'jquery-ui-tabs', 'jquery-ui-sortable' ), charitable()->get_version(), false );      
+
             wp_enqueue_script( 'charitable-admin' );
 
             $localized_vars = apply_filters( 'charitable_localized_javascript_vars', array(
