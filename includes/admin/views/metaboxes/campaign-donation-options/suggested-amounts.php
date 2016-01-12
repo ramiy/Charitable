@@ -26,7 +26,7 @@ $default = array_fill_keys( array_keys( $fields ), '');
 array_push( $suggested_donations, $default );
 ?>
 <div id="charitable-campaign-suggested-donations-metabox-wrap" class="charitable-metabox-wrap">
-	<table id="charitable-campaign-suggested-donations" class="widefat">
+	<table id="charitable-campaign-suggested-donations" class="widefat charitable-campaign-suggested-donations">
 		<thead>
 			<tr class="table-header">
 				<th colspan="<?php echo count( $fields ) + 2 ?>"><label for="campaign_suggested_donations"><?php echo $title ?></label></th>
@@ -72,7 +72,7 @@ array_push( $suggested_donations, $default );
 							</td>
 						<?php endforeach ?>	
 
-						<td class="remove-col"><span class="dashicons-before dashicons-dismiss" data-charitable-delete-row="suggested-amount"></span></td>
+						<td class="remove-col"><span class="dashicons-before dashicons-dismiss charitable-delete-row"></span></td>
 
 					</tr>
 				<?php 
