@@ -37,6 +37,11 @@ class Charitable_Gateway_Paypal extends Charitable_Gateway {
         $this->defaults = array(
             'label' => __( 'PayPal', 'charitable' )
         );
+
+        $this->supports = array(
+            'recurring'
+        );
+        
     }
 
     /**
