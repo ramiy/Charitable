@@ -98,12 +98,12 @@ final class Charitable_Public {
             'currency_format'               => esc_attr( charitable_get_currency_helper()->get_accounting_js_format() ), // For accounting.js
 		) );
 
-        $suffix = defined( 'SCRIPT_DEBUG' )  && SCRIPT_DEBUG ? '.min' : '';
+        $suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
         wp_register_script( 'accounting', charitable()->get_path( 'assets', false ) . 'js/libraries/accounting'. $suffix . '.js', array( 'jquery' ), charitable()->get_version(), true );
         wp_enqueue_script( 'accounting' );
 
-		wp_register_script( 'charitable-script', charitable()->get_path( 'assets', false ) . 'js/charitable.js', array( 'jquery' ), charitable()->get_version(), true );
+		wp_register_script( 'charitable-script', charitable()->get_path( 'assets', false ) . 'js/charitable'. $suffix . '.js', array( 'jquery' ), charitable()->get_version(), true );
         wp_localize_script( 'charitable-script', 'CHARITABLE_VARS', $vars );
         wp_enqueue_script( 'charitable-script' );
 

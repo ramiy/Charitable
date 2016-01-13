@@ -124,12 +124,21 @@ module.exports = function(grunt) {
 
         // uglify to concat, minify, and make source maps
         uglify: {
-            dist: {
-                files: {
-                    'assets/js/charitable-admin.min.js' : 'assets/js/charitable-admin.js', 
-                    'assets/js/charitable-admin-benefactors.min.js' : 'assets/js/charitable-admin-benefactors.js',
-                    'assets/js/charitable-customizer.min.js' : 'assets/js/charitable-customizer.js', 
-                }
+            options: {
+                compress: {
+                    global_defs: {
+                        "EO_SCRIPT_DEBUG": false
+                    },
+                    dead_code: true
+                    },
+                banner: '/*! <%= pkg.title %> <%= pkg.version %> <%= grunt.template.today("yyyy-mm-dd HH:MM") %> */\n'
+            },
+            build: {
+                files: [{
+                    expand: true,   // Enable dynamic expansion.
+                    src: ['assets/js/*.js', '!assets/js/*.min.js', '!assets/js/libraries/*.js'], // Actual pattern(s) to match.
+                    ext: '.min.js',   // Dest filepaths will have this extension.
+                }]
             }
         },
 
