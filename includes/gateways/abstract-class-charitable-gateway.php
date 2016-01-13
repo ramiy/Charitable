@@ -41,11 +41,10 @@ abstract class Charitable_Gateway implements Charitable_Gateway_Interface {
     protected $defaults;
 
     /**
-     * @var     boolean  Flags whether the gateway requires credit card fields added to the donation form.
-     * @access  protected
-     * @since   1.0.0
+     * Supported features such as 'credit-card', and 'recurring' donations
+     * @var array
      */
-    protected $credit_card_form = false;
+    public $supports = array();
 
     /**
      * Return the gateway name.
@@ -137,8 +136,23 @@ abstract class Charitable_Gateway implements Charitable_Gateway_Interface {
      * @since   1.0.0
      */
     public function requires_credit_card_form() {
-        return $this->credit_card_form;
+        _doing_it_wrong( __METHOD__, sprintf( "Use supports('credit-card') method" ), '1.3.0' );
+        return $this->supports( 'credit-card' );
     }
+
+    /**
+     * Check if a gateway supports a given feature.
+     *
+     * Gateways should override this to declare support (or lack of support) for a feature.
+     *
+     * @param string $feature string The name of a feature to test support for.
+     * @return bool True if the gateway supports the feature, false otherwise.
+     * @since 1.3.0
+     */
+    public function supports( $feature ) {
+        return apply_filters( 'charitable_payment_gateway_supports', in_array( $feature, $this->supports ) ? true : false, $feature, $this );
+    }
+
 
     /**
      * Returns an array of credit card fields.
