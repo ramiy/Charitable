@@ -84,6 +84,10 @@
                     cursor: move; 
                 }
             }
+            .ui-sortable-helper {
+                border: 1px solid #ddd;
+                background: #efefef;
+            }
 
         }
 
