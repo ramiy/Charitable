@@ -647,6 +647,13 @@ class Charitable_User extends WP_User {
                 $values[ 'user_login' ] = $values[ 'user_email' ];
             }       
 
+            /**
+             * `wp_insert_user` calls `sanitize_user` internally - make the
+             * same call here so `$values[ 'user_login' ]` matches what is
+             * eventually saved to the database
+             */
+            $values[ 'user_login' ] = sanitize_user( $values[ 'user_login' ], true );
+
             $user_id = wp_insert_user( $values );
 
             if ( is_wp_error( $user_id ) ) {

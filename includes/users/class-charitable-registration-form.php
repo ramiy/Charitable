@@ -135,7 +135,7 @@ class Charitable_Registration_Form extends Charitable_Form {
 
         if ( isset( $submitted[ 'user_pass' ] ) ) {
             $creds = array();
-            $creds['user_login'] = isset( $submitted[ 'user_login' ] ) ? $submitted[ 'user_login' ] : $user->user_login; 
+            $creds['user_login'] = $user->user_login;
             $creds['user_password'] = $submitted[ 'user_pass' ];
             $creds['remember'] = true;
             $result = wp_signon( $creds, false );
