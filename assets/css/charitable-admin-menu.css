@@ -25,6 +25,9 @@
 .icon-campaign-creator:before {
   content: "\e602"; }
 
+.icon-donations-grab:before {
+  content: "\e603"; }
+
 #adminmenu .menu-icon-campaign div.wp-menu-image:before {
   font-family: charitable !important;
   content: "\e601"; }

@@ -32,11 +32,11 @@ array_push( $suggested_donations, $default );
 				<th colspan="<?php echo count( $fields ) + 2 ?>"><label for="campaign_suggested_donations"><?php echo $title ?></label></th>
 			</tr>
 			<tr>
-				<th class="re-order-col"><?php _e( 'Re-order', 'charitable' );?></th>
 				<?php foreach ( $fields as $key => $field ) : ?>
 					<th class="<?php echo $key ?>-col"><?php echo $field[ 'column_header' ] ?></th>
 				<?php endforeach ?>		
-				<th class="re-order-col"><?php _e( 'Remove', 'charitable' );?></th>		
+				<th class="reorder-col"><?php _e( 'Re-order', 'charitable' );?></th>
+				<th class="remove-col"><?php _e( 'Remove', 'charitable' );?></th>		
 			</tr>
 		</thead>		
 		<tbody>
@@ -47,8 +47,6 @@ array_push( $suggested_donations, $default );
 			foreach ( $suggested_donations as $i => $donation ) : 
 				?>
 					<tr data-index="<?php echo $i ?>" class="<?php echo ($donation === end($suggested_donations)) ? 'to-copy hidden' : 'default'; ?>">
-
-						<td class="reorder-col"><span class="dashicons-before dashicons-sort handle"></span></td>
 
 						<?php foreach ( $fields as $key => $field ) :
 
@@ -72,6 +70,7 @@ array_push( $suggested_donations, $default );
 							</td>
 						<?php endforeach ?>	
 
+						<td class="reorder-col"><span class="icon-donations-grab handle"></span></td>
 						<td class="remove-col"><span class="dashicons-before dashicons-dismiss charitable-delete-row"></span></td>
 
 					</tr>
