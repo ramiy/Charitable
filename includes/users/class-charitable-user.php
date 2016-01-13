@@ -639,8 +639,9 @@ class Charitable_User extends WP_User {
         /* Insert the user */
         if ( 0 == $this->ID ) {         
     
-            if ( ! isset( $values[ 'user_pass' ] ) ) {
-                $values[ 'user_pass' ] = wp_generate_password();
+            if ( ! isset( $values[ 'user_pass' ] ) || strlen( $values[ 'user_pass' ] ) == 0 ) {
+              charitable_get_notices()->add_error( '<strong>ERROR:</strong> Password field is required.' );
+              return 0;
             }       
 
             if ( ! isset( $values[ 'user_login' ] ) ) {
