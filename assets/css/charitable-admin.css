@@ -130,17 +130,24 @@
   width: 33%;
   border-right: 1px solid #e1e1e1;
   background: #f5f5f5; }
-.charitable-metabox .charitable-metabox .widefat .remove-col, .charitable-metabox .charitable-metabox .widefat .reorder-col {
+.charitable-metabox .charitable-metabox .widefat .remove-col,
+.charitable-metabox .charitable-metabox .widefat .reorder-col {
   vertical-align: middle;
   max-width: 14px;
   text-align: center; }
-  .charitable-metabox .charitable-metabox .widefat .remove-col span, .charitable-metabox .charitable-metabox .widefat .reorder-col span {
+  .charitable-metabox .charitable-metabox .widefat .remove-col span,
+  .charitable-metabox .charitable-metabox .widefat .reorder-col span {
+    font-size: 20px;
     cursor: pointer;
     color: #aaa; }
-    .charitable-metabox .charitable-metabox .widefat .remove-col span:hover, .charitable-metabox .charitable-metabox .widefat .reorder-col span:hover {
+    .charitable-metabox .charitable-metabox .widefat .remove-col span:hover,
+    .charitable-metabox .charitable-metabox .widefat .reorder-col span:hover {
       color: #444; }
-.charitable-metabox .charitable-metabox .widefat .reorder-col span {
-  cursor: move; }
+.charitable-metabox .charitable-metabox .widefat .reorder-col {
+  width: 10px;
+  padding-right: 0; }
+  .charitable-metabox .charitable-metabox .widefat .reorder-col span {
+    cursor: move; }
 .charitable-metabox .charitable-metabox .widefat .ui-sortable-helper {
   border: 1px solid #ddd;
   background: #efefef; }
@@ -263,7 +270,8 @@ body.post-type-campaign .postbox-container .empty-container {
   width: 33%;
   border-right: 1px solid #e1e1e1;
   background: #f5f5f5; }
-#campaign-title .charitable-metabox .widefat .remove-col, #campaign-title .charitable-metabox .widefat .reorder-col,
+#campaign-title .charitable-metabox .widefat .remove-col,
+#campaign-title .charitable-metabox .widefat .reorder-col,
 #campaign-goal .charitable-metabox .widefat .remove-col,
 #campaign-goal .charitable-metabox .widefat .reorder-col,
 #campaign-end-date .charitable-metabox .widefat .remove-col,
@@ -273,16 +281,19 @@ body.post-type-campaign .postbox-container .empty-container {
   vertical-align: middle;
   max-width: 14px;
   text-align: center; }
-  #campaign-title .charitable-metabox .widefat .remove-col span, #campaign-title .charitable-metabox .widefat .reorder-col span,
+  #campaign-title .charitable-metabox .widefat .remove-col span,
+  #campaign-title .charitable-metabox .widefat .reorder-col span,
   #campaign-goal .charitable-metabox .widefat .remove-col span,
   #campaign-goal .charitable-metabox .widefat .reorder-col span,
   #campaign-end-date .charitable-metabox .widefat .remove-col span,
   #campaign-end-date .charitable-metabox .widefat .reorder-col span,
   #campaign-description .charitable-metabox .widefat .remove-col span,
   #campaign-description .charitable-metabox .widefat .reorder-col span {
+    font-size: 20px;
     cursor: pointer;
     color: #aaa; }
-    #campaign-title .charitable-metabox .widefat .remove-col span:hover, #campaign-title .charitable-metabox .widefat .reorder-col span:hover,
+    #campaign-title .charitable-metabox .widefat .remove-col span:hover,
+    #campaign-title .charitable-metabox .widefat .reorder-col span:hover,
     #campaign-goal .charitable-metabox .widefat .remove-col span:hover,
     #campaign-goal .charitable-metabox .widefat .reorder-col span:hover,
     #campaign-end-date .charitable-metabox .widefat .remove-col span:hover,
@@ -290,11 +301,17 @@ body.post-type-campaign .postbox-container .empty-container {
     #campaign-description .charitable-metabox .widefat .remove-col span:hover,
     #campaign-description .charitable-metabox .widefat .reorder-col span:hover {
       color: #444; }
-#campaign-title .charitable-metabox .widefat .reorder-col span,
-#campaign-goal .charitable-metabox .widefat .reorder-col span,
-#campaign-end-date .charitable-metabox .widefat .reorder-col span,
-#campaign-description .charitable-metabox .widefat .reorder-col span {
-  cursor: move; }
+#campaign-title .charitable-metabox .widefat .reorder-col,
+#campaign-goal .charitable-metabox .widefat .reorder-col,
+#campaign-end-date .charitable-metabox .widefat .reorder-col,
+#campaign-description .charitable-metabox .widefat .reorder-col {
+  width: 10px;
+  padding-right: 0; }
+  #campaign-title .charitable-metabox .widefat .reorder-col span,
+  #campaign-goal .charitable-metabox .widefat .reorder-col span,
+  #campaign-end-date .charitable-metabox .widefat .reorder-col span,
+  #campaign-description .charitable-metabox .widefat .reorder-col span {
+    cursor: move; }
 #campaign-title .charitable-metabox .widefat .ui-sortable-helper,
 #campaign-goal .charitable-metabox .widefat .ui-sortable-helper,
 #campaign-end-date .charitable-metabox .widefat .ui-sortable-helper,
