@@ -74,29 +74,32 @@
                 vertical-align: middle;
                 max-width: 14px;
                 text-align: center;
+
                 span {
                     font-size: 20px;
                     cursor: pointer;
                     color: #aaa;
+                    
                     &:hover { 
                         color: #444;
                     }
                 }
             }
+
             .reorder-col {
                 width: 10px;
                 padding-right: 0;
+
                 span {
                     cursor: move; 
                 }
             }
+
             .ui-sortable-helper {
                 border: 1px solid #ddd;
                 background: #efefef;
             }
-
         }
-
     }
 
     .charitable-checkbox-wrap {
