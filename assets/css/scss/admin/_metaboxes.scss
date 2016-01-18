@@ -72,12 +72,10 @@
             .remove-col, 
             .reorder-col {                
                 vertical-align: middle;
-                max-width: 14px;
                 text-align: center;
 
                 span {
-                    font-size: 20px;
-                    cursor: pointer;
+                    font-size: 20px;                    
                     color: #aaa;
                     
                     &:hover { 
@@ -92,6 +90,15 @@
 
                 span {
                     cursor: move; 
+                }
+            }
+
+            .remove-col {
+                width: 20px;
+                padding-left: 0;
+
+                span {
+                    cursor: pointer;
                 }
             }
 
