@@ -211,8 +211,10 @@ CHARITABLE.Accounting = {
 
         jQuery( 'body' ).on( 'blur', '[name=custom_donation_amount]', function( event ) {
             var value_now = self.unformat_currency( jQuery( this ).val() );
-            var formatted_total = self.format_currency( value_now );
-            jQuery( this ).val( formatted_total );
+            if( value_now.trim() != '' ){
+                var formatted_total = self.format_currency( value_now );
+                jQuery( this ).val( formatted_total );
+            }
         });
     }
 };
