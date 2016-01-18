@@ -107,14 +107,15 @@ class Charitable_Gateway_Paypal extends Charitable_Gateway {
 	/**
      * Process the donation with PayPal.
      *   
+     * @param   boolean|array $return
      * @param   int $donation_id
      * @param   Charitable_Donation_Processor $processor
-     * @return  void
+     * @return  array
      * @access  public
      * @static
      * @since   1.0.0
      */
-    public static function process_donation( $donation_id, $processor ) {
+    public static function process_donation( $return, $donation_id, $processor ) {
         $gateway = new Charitable_Gateway_Paypal();
 
         $user_data = $processor->get_donation_data_value( 'user' );
@@ -160,8 +161,10 @@ class Charitable_Gateway_Paypal extends Charitable_Gateway {
         /**
          * Redirect to PayPal
          */
-        wp_redirect( $paypal_redirect );
-        exit;
+        return array(
+            'redirect' => $paypal_redirect, 
+            'safe' => false
+        );
 	}
 
     /**

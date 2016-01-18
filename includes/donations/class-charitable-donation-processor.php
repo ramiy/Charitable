@@ -160,10 +160,10 @@ class Charitable_Donation_Processor {
         }
 
         $values = $form->get_donation_values();
-
-        /* Validate the gateway values */
+        
         $gateway = $values[ 'gateway' ];
-    
+
+        /* Validate the gateway values */    
         if ( ! apply_filters( 'charitable_validate_donation_form_submission_gateway', true, $gateway, $values ) ) {
             return false;
         }
@@ -647,7 +647,7 @@ class Charitable_Donation_Processor {
          * If the gateway processing returned an array with a directive to NOT
          * use wp_safe_redirect, use wp_redirect instead.
          */
-        if ( true == $gateway_processing ) {
+        if ( isset( $gateway_processing[ 'safe' ] ) && false == $gateway_processing[ 'safe' ] ) {
             wp_redirect( $redirect_url );
             die();
         }        
