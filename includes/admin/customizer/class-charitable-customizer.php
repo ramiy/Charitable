@@ -303,7 +303,8 @@ class Charitable_Customizer {
      * @since   1.2.0
      */
     public function load_customizer_script() {
-        wp_register_script( 'charitable-customizer', charitable()->get_path( 'assets', false ) . 'js/charitable-customizer.js', array( 'jquery', 'customize-preview' ), '1.2.0-beta5', true );
+        $suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+        wp_register_script( 'charitable-customizer', charitable()->get_path( 'assets', false ) . 'js/charitable-customizer' . $suffix . '.js', array( 'jquery', 'customize-preview' ), '1.2.0-beta5', true );
         wp_enqueue_script( 'charitable-customizer' );
     }
 }

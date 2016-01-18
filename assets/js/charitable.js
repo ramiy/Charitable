@@ -57,6 +57,8 @@ CHARITABLE.DonationSelection = {
     
     init : function() {
         var self = this;
+        jQuery( '.donation-amount input[type=radio]' ).css( 'z-index', -1 );
+
         jQuery( '.donation-amount input:checked' ).each( function() {
             jQuery( this ).parent().addClass( 'selected' );
         });

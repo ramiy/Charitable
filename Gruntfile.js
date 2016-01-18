@@ -124,12 +124,21 @@ module.exports = function(grunt) {
 
         // uglify to concat, minify, and make source maps
         uglify: {
-            dist: {
-                files: {
-                    'assets/js/charitable-admin.min.js' : 'assets/js/charitable-admin.js', 
-                    'assets/js/charitable-admin-benefactors.min.js' : 'assets/js/charitable-admin-benefactors.js',
-                    'assets/js/charitable-customizer.min.js' : 'assets/js/charitable-customizer.js', 
-                }
+            options: {
+                compress: {
+                    global_defs: {
+                        "EO_SCRIPT_DEBUG": false
+                    },
+                    dead_code: true
+                    },
+                banner: '/*! <%= pkg.title %> <%= pkg.version %> <%= grunt.template.today("yyyy-mm-dd HH:MM") %> */\n'
+            },
+            build: {
+                files: [{
+                    expand: true,   // Enable dynamic expansion.
+                    src: ['assets/js/*.js', '!assets/js/*.min.js', '!assets/js/libraries/*.js'], // Actual pattern(s) to match.
+                    ext: '.min.js',   // Dest filepaths will have this extension.
+                }]
             }
         },
 
@@ -141,20 +150,6 @@ module.exports = function(grunt) {
                 }
             }
         },        
-
-        // make POT file
-        // makepot: {
-        //     target: {
-        //         options: {
-        //             cwd: '',                        // Directory of files to internationalize.
-        //             domainPath: '/i18n/languages',  // Where to save the POT file.                    
-        //             mainFile: 'charitable.php',     // Main project file.
-        //             potFilename: 'charitable.pot',  // Name of the POT file.
-        //             type: 'wp-plugin',              // Type of project (wp-plugin or wp-theme).
-        //             updateTimestamp: true           // Whether the POT-Creation-Date should be updated without other changes.
-        //         }
-        //     }
-        // },
 
         // Clean up build directory
         clean: {
@@ -182,8 +177,7 @@ module.exports = function(grunt) {
                     '!**/package.json',
                     '!**/README.md',
                     '!**/*~', 
-                    '!assets/css/scss/**',
-                    '!assets/css/*.map'
+                    '!assets/css/scss/**'
                 ],
                 dest: 'build/<%= pkg.name %>/'
             }
