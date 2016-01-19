@@ -204,7 +204,7 @@ module.exports = function(grunt) {
     grunt.registerTask( 'default', 'watch' );
     
     // Build task(s).
-    grunt.registerTask( 'build', [ 'makepot', 'clean', 'copy', 'compress' ] );
+    grunt.registerTask( 'build', [ 'uglify', 'makepot', 'clean', 'copy', 'compress' ] );
 
     // grunt.registerTask('default', ['watch']);
     // grunt.registerTask('build', ['sync', 'jshint', 'uglify', 'makepot']);
