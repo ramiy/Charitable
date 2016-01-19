@@ -5,25 +5,32 @@
   font-weight: normal;
   font-style: normal; }
 [class^="icon-"], [class*=" icon-"] {
-  font-family: 'charitable';
   speak: none;
   font-style: normal;
   font-weight: normal;
   font-variant: normal;
   text-transform: none;
   line-height: 1;
+  font-size: 20px;
   /* Better Font Rendering =========== */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; }
 
 .icon-donations:before {
-  content: "\e600"; }
+  content: "\e600";
+  font-family: 'charitable'; }
 
 .icon-charitable:before {
-  content: "\e601"; }
+  content: "\e601";
+  font-family: 'charitable'; }
 
 .icon-campaign-creator:before {
-  content: "\e602"; }
+  content: "\e602";
+  font-family: 'charitable'; }
+
+.icon-donations-grab:before {
+  content: "\e603";
+  font-family: 'charitable'; }
 
 #adminmenu .menu-icon-campaign div.wp-menu-image:before {
   font-family: charitable !important;

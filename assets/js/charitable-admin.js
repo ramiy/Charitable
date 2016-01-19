@@ -71,26 +71,45 @@ CHARITABLE_ADMIN.SetupDatepicker = function( $el ) {
 		});
 	};
 
-	var add_suggested_amount_row = function() {
-		var $table = $( '#charitable-campaign-suggested-donations tbody' ),
-			index = function() {
-				var $rows = $table.find( '[data-index]' ), 
-					index = 0;
+	var setup_sortable_suggested_donations = function(){
+		$('.charitable-campaign-suggested-donations tbody').sortable({
+			items: "tr:not(.to-copy)",
+			handle: ".handle",
+			stop: function( event, ui ) {
+				reindex_rows();
+			}
 
-				if ( $rows.length ) {
-					index = parseInt( $rows.last().data( 'index' ), 10 ) + 1;
-				}
-
-				return index;
-			}(),
-			row = '<tr data-index="' + index + '">'
-				+ '<td><input type="text" id="campaign_suggested_donations_' + index + '" name="_campaign_suggested_donations[' + index + '][amount]" placeholder="' + CHARITABLE.suggested_amount_placeholder + '" />'
-				+ '<td><input type="text" id="campaign_suggested_donations_' + index + '" name="_campaign_suggested_donations[' + index + '][description]" placeholder="' + CHARITABLE.suggested_amount_description_placeholder + '" />'
-				+ '</tr>';
-
+	    });
+	}
+		
+	var add_suggested_amount_row = function( $button ) {
+		var $table = $button.closest( '.charitable-campaign-suggested-donations' ).find('tbody');
+		var $clone = $table.find('tr.to-copy').clone().removeClass('to-copy hidden');
 		$table.find( '.no-suggested-amounts' ).hide();
-		$table.append( row );
+		$table.append( $clone );
+		reindex_rows();
 	};	
+
+	var delete_suggested_amount_row = function($button) {
+		console.log($button);
+		$button.closest( 'tr' ).remove();
+		var $table = $button.closest('.charitable-campaign-suggested-donations').find('tbody');
+		if( $table.find( 'tr:not(.to-copy)' ).length == 1 ){
+			$table.find( '.no-suggested-amounts' ).removeClass('hidden').show();
+		}
+		reindex_rows();
+	};	
+
+	var reindex_rows = function(){
+		$('.charitable-campaign-suggested-donations tbody').each(function(){
+			$(this).children('tr').not('.no-suggested-amounts .to-copy').each(function(index) {
+				$(this).data('index', index );
+				$(this).find('input').each(function(i) {
+					this.name = this.name.replace(/(\[\d\])/, '[' + index + ']');
+				});
+			});
+		}); 
+	};
 
 	var setup_dashboard_widgets = function() {
 		var $widget = $( '#charitable_dashboard_donations' );
@@ -119,6 +138,7 @@ CHARITABLE_ADMIN.SetupDatepicker = function( $el ) {
 		$('body.post-type-campaign .hndle, body.post-type-donation .hndle').removeClass( 'hndle ui-sortable-handle' ).addClass( 'postbox-title' );
 
 		setup_advanced_meta_box();
+		setup_sortable_suggested_donations();
 
 		setup_charitable_ajax();	
 		setup_charitable_toggle();	
@@ -128,9 +148,14 @@ CHARITABLE_ADMIN.SetupDatepicker = function( $el ) {
 			var type = $( this ).data( 'charitable-add-row' );
 
 			if ( 'suggested-amount' === type ) {
-				add_suggested_amount_row();
+				add_suggested_amount_row($(this));
 			}
 
+			return false; 
+		});
+
+		$('.charitable-campaign-suggested-donations').on( 'click', '.charitable-delete-row', function() { console.log('clicked');
+			delete_suggested_amount_row( $(this) );
 			return false;
 		});
 
