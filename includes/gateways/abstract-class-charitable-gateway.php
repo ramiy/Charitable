@@ -152,7 +152,8 @@ abstract class Charitable_Gateway implements Charitable_Gateway_Interface {
      * @since 1.3.0
      */
     public function supports( $feature ) {
-        return apply_filters( 'charitable_payment_gateway_supports', in_array( $feature, $this->supports ) ? true : false, $feature, $this );
+        $supported = in_array( $feature, $this->supports ) ? true : false;
+        return apply_filters( 'charitable_payment_gateway_supports', $supported, $feature, $this );
     }
 
 
