@@ -35,21 +35,14 @@ CHARITABLE.Toggle = {
 CHARITABLE.DonationSelection = {
 
     selectOption : function( $el ) {
-        var $input = $el.find( 'input[type=radio]' ), 
-            checked = ! $input.is( ':checked' );
+        var $li = $el.closest('li');
+        var $form = $el.closest('.charitable-form');
 
-        $input.prop( 'checked', checked ); 
+        $form.find('.donation-amount.selected').removeClass( 'selected' );
+        $li.addClass( 'selected' );
 
-        if ( $el.hasClass( 'selected' ) ) {
-            $el.removeClass( 'selected' );
-            return false;
-        }
-
-        jQuery( '.donation-amount.selected ').removeClass( 'selected' );
-        $el.addClass( 'selected' );
-
-        if ( $el.hasClass( 'custom-donation-amount' ) ) {               
-            $el.siblings( 'input[name=custom_donation_amount]' ).focus();
+        if ( $li.hasClass( 'custom-donation-amount ' ) ) {         
+            $li.closest('donation_amount').find( 'input.custom-donation-input' ).focus();
         }
 
         return false;
@@ -57,19 +50,17 @@ CHARITABLE.DonationSelection = {
     
     init : function() {
         var self = this;
-        jQuery( '.donation-amount input[type=radio]' ).css( 'z-index', -1 );
 
         jQuery( '.donation-amount input:checked' ).each( function() {
-            jQuery( this ).parent().addClass( 'selected' );
+            jQuery( this ).closest('li').addClass( 'selected' );
         });
 
-        jQuery( 'body' ).on( 'click', '.donation-amount', function( event ) {
+        jQuery( '.charitable-form' ).on( 'change', '.donation-amount', function( event ) {
             self.selectOption( jQuery(this) );
         });
 
-        jQuery( 'body' ).on( 'change', '[name=donation_amount]', function( event ) {
-            jQuery(this).prop( 'checked', ! jQuery(this).is( ':checked' ) );
-            return false;
+        jQuery( '.charitable-form' ).on( 'focus', 'input[name=custom_donation_amount]', function( event ) {
+            jQuery(this).closest('li').find('input[name=donation_amount]').prop('checked', true).trigger('change');
         });
     }
 };
@@ -220,8 +211,10 @@ CHARITABLE.Accounting = {
 
         jQuery( 'body' ).on( 'blur', '[name=custom_donation_amount]', function( event ) {
             var value_now = self.unformat_currency( jQuery( this ).val() );
-            var formatted_total = self.format_currency( value_now );
-            jQuery( this ).val( formatted_total );
+            if( value_now.trim() != '' ){
+                var formatted_total = self.format_currency( value_now );
+                jQuery( this ).val( formatted_total );
+            }
         });
     }
 };
