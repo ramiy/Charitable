@@ -71,11 +71,11 @@ if ( $donation_amount ) : ?>
             endif; ?>
 
             <li class="donation-amount suggested-donation-amount">
-                <input type="radio" name="donation_amount" value="<?php echo $suggestion[ 'amount' ] ?>" <?php echo $checked ?> /><?php 
+                <label for="form-<?php echo $view_args[ 'form' ]->get_form_identifier() . '-field-' . $suggestion['amount']; ?>"><input id="form-<?php echo $view_args[ 'form' ]->get_form_identifier() . '-field-' . $suggestion['amount']; ?>" type="radio" name="donation_amount" value="<?php echo $suggestion[ 'amount' ] ?>" <?php echo $checked ?> /><?php 
                 printf( '<span class="amount">%s</span> <span class="description">%s</span>', 
                     $currency_helper->get_monetary_amount( $suggestion[ 'amount' ] ), 
                     isset( $suggestion[ 'description' ] ) ? $suggestion[ 'description' ] : ''
-                ) ?>
+                ) ?></label>
             </li>
 
         <?php endforeach;
@@ -84,10 +84,12 @@ if ( $donation_amount ) : ?>
 
             $has_custom_donation_amount = ! $donation_amount_is_suggestion && $donation_amount; ?>
 
-            <li class="donation-amount custom-donation-amount">                
-                <input type="radio" name="donation_amount" value="custom" <?php checked( $has_custom_donation_amount ) ?> />
+            <li class="donation-amount custom-donation-amount">  
+                <label for="form-<?php echo $view_args[ 'form' ]->get_form_identifier();?>-field-custom-amount">             
+                <input id="form-<?php echo $view_args[ 'form' ]->get_form_identifier();?>-field-custom-amount" type="radio" name="donation_amount" value="custom" <?php checked( $has_custom_donation_amount ) ?> />
                 <span class="description"><?php _e( 'Custom amount', 'charitable' ) ?></span>
-                <input type="text" name="custom_donation_amount" value="<?php if ( $has_custom_donation_amount ) echo $donation_amount ?>" />
+                <input type="text" class="custom-donation-amount" name="custom_donation_amount" value="<?php if ( $has_custom_donation_amount ) echo $donation_amount ?>" />
+                </label>
             </li>
 
         <?php endif ?>
