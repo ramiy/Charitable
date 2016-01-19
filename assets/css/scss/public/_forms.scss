@@ -138,6 +138,8 @@
             label { 
                 width: 100%;
                 padding: 0.5em 1em;
+                margin: 0;
+                font-size: 1em;
                 cursor: pointer;
             }
 
@@ -150,7 +152,6 @@
             }
 
             input[type=radio] {
-                position: relative;
                 margin: 0 6px 0 0;
                 vertical-align: middle;
             }

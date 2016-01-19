@@ -165,13 +165,14 @@
       #charitable-donation-form .donation-amounts .donation-amount label {
         width: 100%;
         padding: 0.5em 1em;
+        margin: 0;
+        font-size: 1em;
         cursor: pointer; }
       #charitable-donation-form .donation-amounts .donation-amount .amount {
         font-weight: bolder; }
       #charitable-donation-form .donation-amounts .donation-amount:nth-child(2n+2) {
         margin-right: 0; }
       #charitable-donation-form .donation-amounts .donation-amount input[type=radio] {
-        position: relative;
         margin: 0 6px 0 0;
         vertical-align: middle; }
     #charitable-donation-form .donation-amounts .donation-amount.selected {
