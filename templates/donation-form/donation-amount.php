@@ -45,6 +45,15 @@ if ( $donation_amount ) : ?>
 
 <div id="charitable-donation-options-<?php echo $view_args[ 'form' ]->get_form_identifier() ?>">
 
+    <?php
+
+    /**
+      * @hook    charitable_donation_form_before_donation_amounts
+      */
+    do_action( 'charitable_donation_form_before_donation_amounts', $view_args[ 'form' ] );
+    ?>
+
+
 <?php if ( count( $suggested_donations ) ) : 
 
     $donation_amount_is_suggestion = false; ?>
@@ -92,6 +101,13 @@ if ( $donation_amount ) : ?>
     </div>
 
 <?php endif ?>
+
+<?php
+   /**
+    * @hook    charitable_donation_form_after_donation_amounts
+    */
+    do_action( 'charitable_donation_form_after_donation_amounts', $view_args[ 'form' ] );
+?>
 
 </div><!-- #charitable-donation-options-<?php echo $view_args[ 'form' ]->get_form_identifier() ?> -->
 
