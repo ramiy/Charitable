@@ -138,7 +138,7 @@ abstract class Charitable_Gateway implements Charitable_Gateway_Interface {
      * @since   1.0.0
      */
     public function requires_credit_card_form() {
-        _doing_it_wrong( __METHOD__, sprintf( "Use supports('credit-card') method" ), '1.3.0' );
+        _deprecated_function( __METHOD__, sprintf( "Use supports('credit-card') method" ), '1.3.0' );
         return $this->supports( 'credit-card' );
     }
 
