@@ -44,7 +44,7 @@ abstract class Charitable_Gateway implements Charitable_Gateway_Interface {
      * Supported features such as 'credit-card', and 'recurring' donations
      * @var array
      */
-    public $supports = array();
+    protected $supports = array();
 
     /**
      * Return the gateway name.
