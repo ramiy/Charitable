@@ -36,13 +36,19 @@ CHARITABLE.DonationSelection = {
 
     selectOption : function( $el ) {
         var $li = $el.closest('li');
+
+        // already selected, quit early to prevent focus/change loop
+        if( $li.hasClass( 'selected' ) ){
+            return false; 
+        }
+
         var $form = $el.closest('.charitable-form');
 
         $form.find('.donation-amount.selected').removeClass( 'selected' );
         $li.addClass( 'selected' );
 
-        if ( $li.hasClass( 'custom-donation-amount ' ) ) {         
-            $li.closest('donation_amount').find( 'input.custom-donation-input' ).focus();
+        if ( $li.hasClass( 'custom-donation-amount' ) ) {
+            $li.find( 'input.custom-donation-input' ).focus();
         }
 
         return false;
@@ -59,7 +65,7 @@ CHARITABLE.DonationSelection = {
             self.selectOption( jQuery(this) );
         });
 
-        jQuery( '.charitable-form' ).on( 'focus', 'input[name=custom_donation_amount]', function( event ) {
+        jQuery( '.charitable-form' ).on( 'focus', 'input.custom-donation-input', function( event ) {
             jQuery(this).closest('li').find('input[name=donation_amount]').prop('checked', true).trigger('change');
         });
     }
@@ -209,7 +215,7 @@ CHARITABLE.Accounting = {
     init : function() {
         var self = this;
 
-        jQuery( 'body' ).on( 'blur', '[name=custom_donation_amount]', function( event ) {
+        jQuery( 'body' ).on( 'blur', '.custom-donation-input', function( event ) {
             var value_now = self.unformat_currency( jQuery( this ).val() );
             if ( jQuery.trim( value_now ) > 0 ) {
                 var formatted_total = self.format_currency( value_now );
