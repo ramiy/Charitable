@@ -116,7 +116,7 @@ CHARITABLE.AJAXDonate = {
 CHARITABLE.SanitizeURL = function(input) {
     var url = input.value.toLowerCase();
 
-    if ( !/^https?:\/\//i.test( url ) ) {
+    if ( !/^https?:\/\//i.test( url ) && url.length > 0 ) {
         url = 'http://' + url;
 
         input.value = url;
