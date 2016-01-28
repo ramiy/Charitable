@@ -78,7 +78,8 @@ final class Charitable_Public {
      * @since   1.2.3
      */
     public function load_template_files() {
-        require_once( 'charitable-template-functions.php' );        
+        require_once( 'charitable-template-functions.php' );
+        require_once( 'charitable-template-hooks.php' );
     }
 
 	/**
@@ -88,8 +89,7 @@ final class Charitable_Public {
 	 * @access 	public
 	 * @since 	1.0.0
 	 */
-	public function wp_enqueue_scripts() {					
-        
+	public function wp_enqueue_scripts() {        
 		$vars = apply_filters( 'charitable_javascript_vars', array( 
 			'ajaxurl' => admin_url( 'admin-ajax.php' ),
             'currency_format_num_decimals'  => esc_attr( charitable_get_option( 'decimal_count', 2 ) ),
