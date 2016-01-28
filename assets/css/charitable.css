@@ -301,6 +301,11 @@
 .campaign-grid-3 .campaign.hentry:nth-child(3n+3) {
   margin-right: 0; }
 
+.campaign-grid-4 .campaign.hentry {
+  width: 23.5%; }
+.campaign-grid-4 .campaign.hentry:nth-child(4n+4) {
+  margin-right: 0; }
+
 /* Widgets */
 .widget.widget_charitable_campaigns_widget .campaigns {
   margin: 0 0 1em 0;
