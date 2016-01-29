@@ -25,7 +25,7 @@ else {
 }
 ?>
 <div id="charitable_field_<?php echo $field[ 'key' ] ?>" class="<?php echo $classes ?>">	
-	<input type="checkbox" name="<?php echo $field[ 'key' ] ?>" value="<?php echo $value ?>" <?php checked( $checked ) ?> />
+	<input type="checkbox" name="<?php echo $field[ 'key' ] ?>" value="<?php echo $value ?>" <?php checked( $checked ) ?> <?php echo charitable_get_arbitrary_attributes( $field ) ?>/>
 	<?php if ( isset( $field[ 'label' ] ) ) : ?>
 		<label for="charitable_field_<?php echo $field[ 'key' ] ?>">
 			<?php echo $field[ 'label' ] ?>			

@@ -30,5 +30,5 @@ $step 			= isset( $field['step'] ) ? 'step="' . esc_attr( $field['step'] ) . '"'
             <?php endif ?>
 		</label>
 	<?php endif ?>
-	<input type="number" name="<?php echo $field[ 'key' ] ?>" value="<?php echo $value ?>" <?php printf( "%s %s %s", $min, $max, $step ) ?> />	
+	<input type="number" name="<?php echo $field[ 'key' ] ?>" value="<?php echo $value ?>" <?php printf( "%s %s %s", $min, $max, $step ) ?> <?php echo charitable_get_arbitrary_attributes( $field ) ?>/>	
 </div>

@@ -29,5 +29,5 @@ $pattern        = isset( $field[ 'pattern' ] ) ? 'pattern="' . esc_attr( $field[
             <?php endif ?>
         </label>
     <?php endif ?>
-    <input type="<?php echo esc_attr( $field_type ) ?>" name="<?php echo $field[ 'key' ] ?>" value="<?php echo esc_attr( stripslashes( $value ) ) ?>" placeholder="<?php echo $placeholder ?>" <?php echo $pattern ?> />
+    <input type="<?php echo esc_attr( $field_type ) ?>" name="<?php echo $field[ 'key' ] ?>" value="<?php echo esc_attr( stripslashes( $value ) ) ?>" placeholder="<?php echo $placeholder ?>" <?php echo $pattern ?> <?php echo charitable_get_arbitrary_attributes( $field ) ?>/>
 </div>

@@ -28,5 +28,5 @@ $rows 			= isset( $field[ 'rows' ] ) 		? $field[ 'rows' ] 			: 4;
 			<?php endif ?>
 		</label>
 	<?php endif ?>
-	<textarea name="<?php echo esc_attr( $field['key'] ) ?>" placeholder="<?php echo esc_attr( $placeholder ) ?>" rows="<?php echo intval( $rows ) ?>"><?php echo esc_textarea( stripslashes( $value ) ) ?></textarea>
+	<textarea name="<?php echo esc_attr( $field['key'] ) ?>" placeholder="<?php echo esc_attr( $placeholder ) ?>" rows="<?php echo intval( $rows ) ?>" <?php echo charitable_get_arbitrary_attributes( $field ) ?>><?php echo esc_textarea( stripslashes( $value ) ) ?></textarea>
 </div>
