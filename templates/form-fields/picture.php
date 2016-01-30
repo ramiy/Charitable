@@ -15,7 +15,7 @@ $form           = $view_args[ 'form' ];
 $field          = $view_args[ 'field' ];
 $classes        = $view_args[ 'classes' ];
 $is_required    = isset( $field[ 'required' ] ) ? $field[ 'required' ] : false;
-$placeholder    = isset( $field[ 'placeholder' ] ) ? esc_attr( $field[ 'placeholder' ] ) : '';
+
 ?>
 <div id="charitable_field_<?php echo $field[ 'key' ] ?>" class="<?php echo $classes ?>">    
     <?php if ( isset( $field[ 'label' ] ) ) : ?>

@@ -187,7 +187,9 @@ abstract class Charitable_Gateway implements Charitable_Gateway_Interface {
                 'type'      => 'text',
                 'required'  => true,
                 'priority'  => 4,
-                'pattern'   => '[0-9]{13,16}',
+                'attrs'     => array(
+                    'pattern'   => '[0-9]{13,16}'
+                ),
                 'data_type' => 'gateway'
             ),
             'cc_cvc' => array(
