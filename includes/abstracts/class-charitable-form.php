@@ -207,6 +207,11 @@ abstract class Charitable_Form {
 		$input_name = is_null( $namespace ) ? $key : $namespace . '[' . $key . ']';
 		$field[ 'key' ] = apply_filters( 'charitable_form_field_key', $input_name, $key, $namespace, $form, $index );
 
+		/* Set default attributes array. */
+		if ( ! isset( $field[ 'attrs' ] ) ) {
+			$field[ 'attrs' ] = array();
+		}
+
 		/* Allows extensions/themes to plug in their own template objects here. */
 		$template = apply_filters( 'charitable_form_field_template', false, $field, $form, $index );
 
