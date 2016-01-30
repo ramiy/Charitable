@@ -45,7 +45,8 @@ if ( empty( $options ) ) {
                     id="<?php echo $field[ 'key' ] . '-' . $option ?>" 
                     name="<?php echo $field[ 'key' ] ?>"
                     value="<?php echo esc_attr( $option ) ?>"
-                    <?php checked( $value, $option ) ?> />
+                    <?php checked( $value, $option ) ?>
+                    <?php echo charitable_get_arbitrary_attributes( $field ) ?> />
                 <?php echo $label ?>
             </li>
 

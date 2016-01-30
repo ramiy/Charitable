@@ -23,5 +23,5 @@ $placeholder 	= isset( $field[ 'placeholder' ] ) 	? $field[ 'placeholder' ] 	: '
 			<?php echo $field[ 'label' ] ?>			
 		</label>
 	<?php endif ?>
-	<input type="file" name="<?php echo $field[ 'key' ] ?>" value="<?php echo $value ?>" />	
+	<input type="file" name="<?php echo $field[ 'key' ] ?>" value="<?php echo $value ?>" <?php echo charitable_get_arbitrary_attributes( $field ) ?>/>
 </div>

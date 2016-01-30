@@ -30,5 +30,5 @@ $placeholder    = isset( $field[ 'placeholder' ] ) ? esc_attr( $field[ 'placehol
         echo $field[ 'value' ]; 
     endif; ?>
         
-    <input type="file" name="<?php echo $field[ 'key' ] ?>" /> 
+    <input type="file" name="<?php echo $field[ 'key' ] ?>" <?php echo charitable_get_arbitrary_attributes( $field ) ?> />
 </div>

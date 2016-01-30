@@ -27,5 +27,5 @@ $placeholder    = isset( $field[ 'placeholder' ] ) ? esc_attr( $field[ 'placehol
             <?php endif ?>
         </label>
     <?php endif ?>
-    <input type="url" name="<?php echo $field[ 'key' ] ?>" value="<?php echo esc_attr( stripslashes( $value ) ) ?>" placeholder="<?php echo $placeholder ?>" pattern="https?://.+" onblur="CHARITABLE.SanitizeURL(this)" />
+    <input type="url" name="<?php echo $field[ 'key' ] ?>" value="<?php echo esc_attr( stripslashes( $value ) ) ?>" placeholder="<?php echo $placeholder ?>" pattern="https?://.+" onblur="CHARITABLE.SanitizeURL(this)" <?php echo charitable_get_arbitrary_attributes( $field ) ?>/>
 </div>
