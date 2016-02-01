@@ -147,15 +147,20 @@ abstract class Charitable_Gateway implements Charitable_Gateway_Interface {
      *
      * Gateways should override this to declare support (or lack of support) for a feature.
      *
-     * @param string $feature string The name of a feature to test support for.
-     * @return bool True if the gateway supports the feature, false otherwise.
-     * @since 1.3.0
+     * @param   string $feature string The name of a feature to test support for.
+     * @return  bool True if the gateway supports the feature, false otherwise.
+     * @since   1.3.0
      */
     public function supports( $feature ) {
         $supported = in_array( $feature, $this->supports ) ? true : false;
+
+        /* Provide backwards compatibility for gateways that have not been updated. */
+        if ( ! $supported && 'credit-card' == $feature && isset( $this->credit_card_form ) ) {
+            $supported = $this->credit_card_form;
+        }
+
         return apply_filters( 'charitable_payment_gateway_supports', $supported, $feature, $this );
     }
-
 
     /**
      * Returns an array of credit card fields.
