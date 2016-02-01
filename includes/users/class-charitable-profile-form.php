@@ -147,7 +147,7 @@ class Charitable_Profile_Form extends Charitable_Form {
                 'value'     => $this->get_user_value( 'user_email' )
             ),
             'organisation' => array(
-                'label'     => __( 'Organisation', 'charitable' ),              
+                'label'     => __( 'Organization', 'charitable' ),              
                 'type'      => 'text', 
                 'priority'  => 10, 
                 'required'  => false, 
