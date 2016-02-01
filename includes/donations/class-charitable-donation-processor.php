@@ -62,6 +62,14 @@ class Charitable_Donation_Processor {
     private $donor_id;
 
     /**
+     * The donoration ID for the current donation. 
+     *
+     * @var     int
+     * @access  private
+     */
+    private $donation_id;
+
+    /**
      * Create class object. A private constructor, so this is used in a singleton context. 
      * 
      * @access  private
@@ -123,14 +131,15 @@ class Charitable_Donation_Processor {
     }
 
     /**
-     * Save a donation.
+     * Process the donation. 
      *
-     * @return  void
+     * This is used by all donation form submissions, AJAX or not.  
+     *
+     * @return  mixed
      * @access  public
-     * @static
-     * @since   1.0.0
+     * @since   1.3.0
      */
-    public static function process_donation_form_submission() {
+    public function process_donation( ) {
         $processor = self::get_instance();
         $campaign = $processor->get_campaign();
 
@@ -147,7 +156,7 @@ class Charitable_Donation_Processor {
         do_action( 'charitable_before_process_donation_form', $processor, $form );
 
         if ( ! $form->validate_submission() ) {
-            return;
+            return false;
         }
 
         $values = $form->get_donation_values();
@@ -156,28 +165,71 @@ class Charitable_Donation_Processor {
         $gateway = $values[ 'gateway' ];
     
         if ( ! apply_filters( 'charitable_validate_donation_form_submission_gateway', true, $gateway, $values ) ) {
-            return;
+            return false;
         }
         
-        $donation_id = $processor->save_donation( $values );
+        $this->donation_id = $processor->save_donation( $values );
 
         /**
          * Fire a hook for payment gateways to process the donation.
          *
-         * Depending on the gateway, execution may be terminated at this point, 
-         * as the donor is redirected to a gateway or some other action takes 
-         * place. 
-         *
-         * @hook charitable_process_donation_$gateway
+         * In Charitable 1.3 this was changed into a filter, instead of an action.
+         * All gateway extensions should be updated before 1.3 comes out, but 
+         * since we can't be sure that people will have updated the plugin ahead
+         * of time, we retain support for the old method in 1.3.
          */
-        do_action( 'charitable_process_donation_' . $gateway, $donation_id, $processor );
+        $hook = 'charitable_process_donation_' . $gateway;
 
-        /**
-         * If we get this far, forward the user through to the receipt page.
-         */
-        wp_safe_redirect( charitable_get_permalink( 'donation_receipt_page', array( 'donation_id' => $donation_id ) ) );
-        
-        die();
+        if ( has_filter( $hook ) || ! has_action( $hook ) ) {
+            /**
+             * Fire a hook for payment gateways to process the donation.
+             *
+             * In Charitable 1.3 this was changed into a filter, instead of an action.
+             * Callbacks should return one of the following values: 
+             *
+             * - TRUE :  If the donation was processed successfully and the user should 
+             *           be redirected to the donation receipt.
+             * - FALSE : If the donation could not be processed successfully and the user
+             *           should be redirected back to the donation form.
+             * - ARRAY : If the user needs to be redirected somewhere other than the donation
+             *           receipt or donation form. Array should contain two values: 
+             *           `redirect` : The url to be redirected to.
+             *           `safe` : Whether to use wp_safe_redirect. If unset, will default to true.
+             *
+             * @hook charitable_process_donation_$gateway
+             */            
+            return apply_filters( $hook, true, $this->donation_id, $processor );
+
+        }
+        else {
+            /**
+             * A fallback for payment gateways that have not been updated. 
+             */
+            do_action( $hook, $this->donation_id, $processor );
+
+            /**
+             * If we get this far, forward the user through to the receipt page.
+             */
+            wp_safe_redirect( charitable_get_permalink( 'donation_receipt_page', array( 'donation_id' => $this->donation_id ) ) );
+            
+            die();
+        }      
+    }
+
+    /**
+     * Save a donation submitted through a page reload (i.e. not AJAX).
+     *
+     * @return  void
+     * @access  public
+     * @static
+     * @since   1.0.0
+     */
+    public static function process_donation_form_submission() {
+        $processor = self::get_instance();
+
+        $result = $processor->process_donation();
+
+        $processor->redirect_after_gateway_processing( $result );
     }
 
     /**
@@ -186,44 +238,77 @@ class Charitable_Donation_Processor {
      * @return  json
      * @access  public
      * @static
-     * @since   1.0.0
+     * @since   1.3.0
      */
-    public static function ajax_make_donation() {  
+    public static function ajax_process_donation_form_submission() {  
         if ( ! isset( $_POST[ 'campaign_id' ] ) ) {
             wp_send_json_error( new WP_Error( 'missing_campaign_id', __( 'Campaign ID was not found. Unable to create donation.', 'charitable' ) ) );
         }
 
-        $form_action = isset( $_POST[ 'form_action' ] ) ? $_POST[ 'form_action' ] : 'make_donation';
+        $processor = self::get_instance();
 
-        $campaign = new Charitable_Campaign( $_POST[ 'campaign_id' ] );
-        
-        /**
-         * @hook    charitable_before_save_ajax_donation
-         */
-        do_action( 'charitable_before_save_ajax_donation', $campaign );
+        $result = $processor->process_donation();
 
-        if ( 'make_donation_streamlined' == $form_action ) {
-
-            $form = new Charitable_Donation_Amount_Form( $campaign );
-            $donation_id = $form->save_donation();
-
+        if ( $result ) {
+            $response = array(
+                'success' => true,
+                'redirect_to' => $processor->get_redirection_after_gateway_processing( $result )
+            );
         }
         else {
+            $errors = charitable_get_notices()->get_errors();
 
-            $form = $campaign->get_donation_form();
-            $donation_id = $campaign->get_donation_form()->save_donation();
+            if ( empty( $errors ) ) {
+                $errors = array( __( 'Unable to process donation.', 'charitable' ) );
+            }
+
+            ob_start();
+            
+            charitable_template( 'form-fields/errors.php', array(
+                'errors' => $errors
+            ) );
+
+            $errors = ob_get_clean(); 
+            
+            $response = array(
+                'success' => false,
+                'errors' => $errors
+            );
         }
 
-        /**
-         * @hook    charitable_after_save_ajax_donation
-         */
-        do_action( 'charitable_after_save_ajax_donation', $donation_id, $campaign, $form );
+        wp_send_json( $response );
 
-        $data = apply_filters( 'charitable_ajax_make_donation_data', array(
-            'donation_id' => $donation_id
-        ), $donation_id, $campaign );
+        // $form_action = isset( $_POST[ 'form_action' ] ) ? $_POST[ 'form_action' ] : 'make_donation';
 
-        wp_send_json_success( $data );      
+        // $campaign = new Charitable_Campaign( $_POST[ 'campaign_id' ] );
+        
+        // /**
+        //  * @hook    charitable_before_save_ajax_donation
+        //  */
+        // do_action( 'charitable_before_save_ajax_donation', $campaign );
+
+        // if ( 'make_donation_streamlined' == $form_action ) {
+
+        //     $form = new Charitable_Donation_Amount_Form( $campaign );
+        //     $donation_id = $form->save_donation();
+
+        // }
+        // else {
+
+        //     $form = $campaign->get_donation_form();
+        //     $donation_id = $campaign->get_donation_form()->save_donation();
+        // }
+
+        // /**
+        //  * @hook    charitable_after_save_ajax_donation
+        //  */
+        // do_action( 'charitable_after_save_ajax_donation', $donation_id, $campaign, $form );
+
+        // $data = apply_filters( 'charitable_ajax_make_donation_data', array(
+        //     'donation_id' => $donation_id
+        // ), $donation_id, $campaign );
+
+        // wp_send_json_success( $data );      
     }
 
     /**
@@ -537,6 +622,69 @@ class Charitable_Donation_Processor {
         }
 
         return false;
+    }
+
+    /**
+     * Redirect the user after the gateway has processed the donation. 
+     *
+     * @uses    Charitable_Donation_Processor::get_redirection_after_gateway_processing()
+     * @param   mixed $gateway_processing
+     * @return  void
+     * @access  private
+     * @since   1.3.0
+     */
+    private function redirect_after_gateway_processing( $gateway_processing ) {
+        $redirect_url = $this->get_redirection_after_gateway_processing( $gateway_processing );
+
+        /** 
+         * If the gateway processing failed, add the error notices to the session. 
+         */
+        if ( false == $gateway_processing ) {
+            charitable_get_session()->add_notices();
+        }
+
+        /** 
+         * If the gateway processing returned an array with a directive to NOT
+         * use wp_safe_redirect, use wp_redirect instead.
+         */
+        if ( true == $gateway_processing ) {
+            wp_redirect( $redirect_url );
+            die();
+        }        
+
+        wp_safe_redirect( $redirect_url );
+
+        die();
+    }
+
+    /**
+     * Return the URL that the donor should be redirected to.
+     *
+     * @param   mixed $gateway_processing
+     * @param   int $donation_id
+     * @return  string
+     * @access  private
+     * @since   1.3.0
+     */
+    private function get_redirection_after_gateway_processing( $gateway_processing ) {
+        if ( false == $gateway_processing ) {
+            
+            $redirect_url = esc_url( add_query_arg( array( 'donation_id' => $this->donation_id ), wp_get_referer() ) );            
+
+        }
+        elseif ( is_array( $gateway_processing ) && isset( $gateway_processing[ 'redirect' ] ) ) {
+
+            $redirect_url = $gateway_processing[ 'redirect' ];
+
+        }
+        else {
+
+            /* Fall back to returning the donation receipt URL. */
+            $redirect_url = charitable_get_permalink( 'donation_receipt_page', array( 'donation_id' => $this->donation_id ) );
+
+        }
+        
+        return $redirect_url;
     }
 
     /**

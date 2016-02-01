@@ -70,16 +70,23 @@ CHARITABLE.DonationSelection = {
  */
 CHARITABLE.AJAXDonate = {
 
-    onClick : function( event ) {
-        var data = jQuery( event.target.form ).serializeArray().reduce( function( obj, item ) {
+    onClick : function( form ) {
+        var $form = jQuery( form );
+        var data = $form.serializeArray().reduce( function( obj, item ) {
             obj[ item.name ] = item.value;
             return obj;
-        }, {} );            
+        }, {} );
+        var coordinates = $form.position();
+        var $modal = $form.parent( '#charitable-donation-form-modal' );
+
+        $form.find( '.charitable-form-processing' ).show();        
 
         /* Cancel the default Charitable action, but pass it along as the form_action variable */       
-        data.action = 'add_donation';
+        data.action = 'make_donation';
         data.form_action = data.charitable_action;          
         delete data.charitable_action;
+
+        console.log( data );
 
         jQuery.ajax({
             type: "POST",
@@ -90,11 +97,32 @@ CHARITABLE.AJAXDonate = {
                 withCredentials: true
             },
             success: function (response) {
+                if ( response.success ) {
+                    window.location.href = response.redirect_to;
+                }
+
+                $form.find( '.charitable-form-processing' ).hide();
+
+                if ( $form.find( '.charitable-form-errors').length ) {
+                    $form.find( '.charitable-form-errors' ).remove(); 
+                }
+                
+                $form.prepend( response.errors );    
+                
+                if ( $modal.length ) {
+                    $modal.scrollTop( 0 );
+                }
+                else {
+                    window.scrollTo( coordinates.left, coordinates.top );
+                }                
             }
         }).fail(function (response) {
             if ( window.console && window.console.log ) {
                 console.log( response );
             }
+
+            window.scrollTo( coordinates.left, coordinates.top );
+
         }).done(function (response) {
 
         });
@@ -104,8 +132,8 @@ CHARITABLE.AJAXDonate = {
 
     init : function() {
         var self = this;
-        jQuery( '[data-charitable-ajax-donate]' ).on ( 'click', function( event ) {
-            return self.onClick( event );
+        jQuery( 'body' ).on ( 'submit', '#charitable-donation-form', function( event ) {            
+            return self.onClick( this );
         });
     }
 };

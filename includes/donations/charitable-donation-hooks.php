@@ -34,12 +34,12 @@ add_action( 'charitable_start_donation', array( 'Charitable_Donation_Processor',
 add_action( 'charitable_make_donation', array( 'Charitable_Donation_Processor', 'process_donation_form_submission' ) );
 
 /**
- * AJAX hook to make a donation.
+ * AJAX hook to process a donation.
  *
- * @see Charitable_Donation_Processor::ajax_make_donation()
+ * @see Charitable_Donation_Processor::ajax_process_donation_form_submission()
  */
-add_action( 'wp_ajax_add_donation', array( 'Charitable_Donation_Processor', 'ajax_make_donation' ) );
-add_action( 'wp_ajax_nopriv_add_donation', array( 'Charitable_Donation_Processor', 'ajax_make_donation' ) );
+add_action( 'wp_ajax_make_donation', array( 'Charitable_Donation_Processor', 'ajax_process_donation_form_submission' ) );
+add_action( 'wp_ajax_nopriv_make_donation', array( 'Charitable_Donation_Processor', 'ajax_process_donation_form_submission' ) );
 
 /**
  * Make a streamlined donation. 
