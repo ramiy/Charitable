@@ -433,7 +433,7 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
      * @since   1.0.0
      */
     public function add_credit_card_fields( $fields, Charitable_Gateway $gateway ) {
-        if ( $gateway->requires_credit_card_form() ) {
+        if ( $gateway->supports( 'credit-card' ) ) {
             $fields = array_merge( $fields, $gateway->get_credit_card_fields() );
         }
 
