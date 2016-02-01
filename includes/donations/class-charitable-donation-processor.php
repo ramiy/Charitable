@@ -180,6 +180,9 @@ class Charitable_Donation_Processor {
          */
         $hook = 'charitable_process_donation_' . $gateway;
 
+        /**
+         * @todo has_filter won't work. Check for `supports` array on gateway instead.
+         */
         if ( has_filter( $hook ) || ! has_action( $hook ) ) {
             /**
              * Fire a hook for payment gateways to process the donation.
