@@ -26,6 +26,15 @@ class Charitable_Gateway_Offline extends Charitable_Gateway {
     CONST ID = 'offline';
 
     /**
+     * Whether the gateway supports Charitable 1.3.0. 
+     *
+     * @var     boolean
+     * @access  protected
+     * @since   1.3.0
+     */
+    protected $supports_130 = false;
+
+    /**
      * Instantiate the gateway class, defining its key values.
      *
      * @access  public
@@ -37,6 +46,10 @@ class Charitable_Gateway_Offline extends Charitable_Gateway {
         $this->defaults = array(
             'label' => __( 'Offline Donation', 'charitable' ),
             'instructions' => __( 'Thank you for your donation. We will contact you shortly for payment.', 'charitable' )
+        );
+
+        $this->supports = array(
+            '1.3.0'
         );
     }
 

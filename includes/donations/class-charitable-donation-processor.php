@@ -182,8 +182,8 @@ class Charitable_Donation_Processor {
 
         /**
          * @todo has_filter won't work. Check for `supports` array on gateway instead.
-         */
-        if ( has_filter( $hook ) || ! has_action( $hook ) ) {
+         */        
+        if ( $this->gateway_is_130_compatible( $gateway ) ) { 
             /**
              * Fire a hook for payment gateways to process the donation.
              *
@@ -783,7 +783,19 @@ class Charitable_Donation_Processor {
      */
     private function set_donation_key() {
         $this->donation_data[ 'donation_key' ] = strtolower( md5( uniqid() ) );
-    }    
+    }
+
+    /**
+     * Checks whether the given gateway has been updated for compatibility with 1.3.
+     *
+     * @param   string $gateway
+     * @return  boolean
+     * @access  private
+     * @since   1.3.0
+     */
+    private function gateway_is_130_compatible( $gateway ) {
+        return Charitable_Gateways::get_instance()->get_gateway_object( $gateway )->supports( '1.3.0' );
+    }
 }
 
 endif; // End class_exists check.

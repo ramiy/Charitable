@@ -86,8 +86,6 @@ CHARITABLE.AJAXDonate = {
         data.form_action = data.charitable_action;          
         delete data.charitable_action;
 
-        console.log( data );
-
         jQuery.ajax({
             type: "POST",
             data: data,
@@ -132,7 +130,8 @@ CHARITABLE.AJAXDonate = {
 
     init : function() {
         var self = this;
-        jQuery( 'body' ).on ( 'submit', '#charitable-donation-form', function( event ) {            
+        jQuery( 'body' ).on ( 'submit', '#charitable-donation-form[data-use-ajax=1]', function( event ) {                        
+            console.log( 'yes' );
             return self.onClick( this );
         });
     }
