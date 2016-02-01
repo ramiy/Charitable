@@ -39,9 +39,9 @@ class Charitable_Gateway_Paypal extends Charitable_Gateway {
         );
 
         $this->supports = array(
-            'recurring'
-        );
-        
+            'recurring', 
+            '1.3.0'
+        );    
     }
 
     /**

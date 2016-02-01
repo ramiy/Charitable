@@ -254,6 +254,28 @@ class Charitable_Gateways {
 		return apply_filters( 'charitable_in_test_mode', $enabled );
 	}
 
+    /**
+     * Checks whether all of the active gateways support AJAX. 
+     *
+     * If ANY gateway doesn't support AJAX, this returns false.
+     *
+     * @return  boolean
+     * @access  public
+     * @since   1.3.0
+     */
+    public function gateways_support_ajax() {
+    	foreach ( $this->get_active_gateways() as $gateway_id => $gateway_class ) {
+    		
+    		$gateway_object = new $gateway_class;
+
+    		if ( false === $gateway_object->supports( '1.3.0' ) ) {
+    			return false;
+    		}
+    	}
+
+    	return true;
+    }
+
 	/**
 	 * Sets the default gateway. 
 	 *

@@ -22,19 +22,19 @@ if ( ! class_exists( 'Charitable_Gateway' ) ) :
 abstract class Charitable_Gateway implements Charitable_Gateway_Interface {	
 	
     /**
-     * @var     string  The gateway's unique identifier.
+     * @var     string The gateway's unique identifier.
      */
     const ID = '';
 
     /**
-     * @var     string  Name of the payment gateway.
+     * @var     string Name of the payment gateway.
      * @access  protected
      * @since   1.0.0
      */
     protected $name;
 
     /**
-     * @var     array   The default values for all settings added by the gateway.
+     * @var     array The default values for all settings added by the gateway.
      * @access  protected
      * @since   1.0.0
      */
@@ -42,7 +42,8 @@ abstract class Charitable_Gateway implements Charitable_Gateway_Interface {
 
     /**
      * Supported features such as 'credit-card', and 'recurring' donations
-     * @var array
+     *
+     * @var     string[]
      * @access  protected
      * @since   1.3.0
      */
