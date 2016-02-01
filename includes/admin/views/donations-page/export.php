@@ -12,12 +12,14 @@
  */
 $table = $view_args[ 'table' ];
 
+$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+
 /**
  * Set up the scripts & styles used for the modal. 
  */
-wp_register_script( 'lean-modal', charitable()->get_path( 'assets', false ) . 'js/libraries/jquery.leanModal.js', array( 'jquery' ), charitable()->get_version() );
+wp_register_script( 'lean-modal', charitable()->get_path( 'assets', false ) . 'js/libraries/jquery.leanModal' . $suffix . '.js', array( 'jquery' ), charitable()->get_version() );
 wp_print_scripts( 'lean-modal' );
-wp_enqueue_style( 'lean-modal-css', charitable()->get_path( 'assets', false ) . 'css/modal.css', array(), charitable()->get_version() );
+wp_enqueue_style( 'lean-modal-css', charitable()->get_path( 'assets', false ) . 'css/modal' . $suffix . '.css', array(), charitable()->get_version() );
 
 $modal_class = apply_filters( 'charitable_modal_window_class', 'charitable-modal' );
 

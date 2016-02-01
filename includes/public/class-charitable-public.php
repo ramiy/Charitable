@@ -107,13 +107,13 @@ final class Charitable_Public {
         wp_localize_script( 'charitable-script', 'CHARITABLE_VARS', $vars );
         wp_enqueue_script( 'charitable-script' );
 
-		wp_register_style( 'charitable-styles', charitable()->get_path( 'assets', false ) . 'css/charitable.css', array(), charitable()->get_version() );
+		wp_register_style( 'charitable-styles', charitable()->get_path( 'assets', false ) . 'css/charitable' . $suffix .'.css', array(), charitable()->get_version() );
 		wp_enqueue_style( 'charitable-styles' );
 
 		/* Lean Modal is registered but NOT enqueued yet. */
 		if ( 'modal' == charitable_get_option( 'donation_form_display', 'separate_page' ) ) {
-			wp_register_script( 'lean-modal', charitable()->get_path( 'assets', false ) . 'js/libraries/jquery.leanModal.js', array( 'jquery' ), charitable()->get_version() );
-			wp_register_style( 'lean-modal-css', charitable()->get_path( 'assets', false ) . 'css/modal.css', array(), charitable()->get_version() );
+			wp_register_script( 'lean-modal', charitable()->get_path( 'assets', false ) . 'js/libraries/jquery.leanModal' . $suffix . '.js', array( 'jquery' ), charitable()->get_version() );
+			wp_register_style( 'lean-modal-css', charitable()->get_path( 'assets', false ) . 'css/modal' . $suffix .'.css', array(), charitable()->get_version() );
 		}
 	}
 

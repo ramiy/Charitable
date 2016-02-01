@@ -118,7 +118,7 @@ final class Charitable_Admin {
         $suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
         /* Menu styles are loaded everywhere in the Wordpress dashboard. */
-        wp_register_style( 'charitable-admin-menu', charitable()->get_path( 'assets', false ) . 'css/charitable-admin-menu.css', array(), charitable()->get_version() );
+        wp_register_style( 'charitable-admin-menu', charitable()->get_path( 'assets', false ) . 'css/charitable-admin-menu' .$suffix . '.css', array(), charitable()->get_version() );
         wp_enqueue_style( 'charitable-admin-menu' );
 
         /* The following styles are only loaded on Charitable screens. */
