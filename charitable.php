@@ -33,7 +33,7 @@ class Charitable {
     /**
      * @var     string
      */
-    const VERSION = '1.3.0-beta20151230';
+    const VERSION = '1.3.0-beta20160201';
 
     /**
      * @var     string      A date in the format: YYYYMMDD
@@ -523,7 +523,13 @@ class Charitable {
      * @since   1.0.0
      */
     public function get_version() {
-        return self::VERSION;
+        $version = self::VERSION;
+        
+        if ( false !== strpos( $version, '-' ) ) {
+            list( $version, $build ) = explode( '-', $version );
+        }
+
+        return $version;
     }
 
     /**
