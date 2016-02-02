@@ -78,7 +78,7 @@ class Charitable_Email_New_Donation extends Charitable_Email {
             return false;
         }
         
-        if ( ! Charitable_Donation::is_approved_status( get_post_status( $donation_id ) ) ) {
+        if ( ! charitable_is_approved_status( get_post_status( $donation_id ) ) ) {
             return false;
         }
 

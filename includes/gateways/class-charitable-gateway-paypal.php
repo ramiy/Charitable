@@ -264,7 +264,7 @@ class Charitable_Gateway_Paypal extends Charitable_Gateway {
         if ( strcasecmp( $business_email, trim( $gateway->get_value( 'paypal_email' ) ) ) != 0 ) {
             
             $message = sprintf( '%s %s', __( 'Invalid Business email in the IPN response. IPN data:', 'charitable' ), json_encode( $data ) );
-            Charitable_Donation::update_donation_log( $donation_id, $message );
+            $donation->update_donation_log( $message );
             $donation->update_status( 'charitable-failed' );
             return;
 
@@ -274,7 +274,7 @@ class Charitable_Gateway_Paypal extends Charitable_Gateway {
         if ( $currency_code != charitable_get_currency() ) {
 
             $message = sprintf( '%s %s', __( 'The currency in the IPN response does not match the site currency. IPN data:', 'charitable' ), json_encode( $data ) );
-            Charitable_Donation::update_donation_log( $donation_id, $message );
+            $donation->update_donation_log( $message );
             $donation->update_status( 'charitable-failed' );
             return;
 
@@ -308,7 +308,7 @@ class Charitable_Gateway_Paypal extends Charitable_Gateway {
         if ( in_array( $payment_status, array( 'declined', 'failed', 'denied', 'expired', 'voided' ) ) ) {
 
             $message = sprintf( '%s: %s', __( 'The donation has failed with the following status', 'charitable' ), $payment_status );
-            Charitable_Donation::update_donation_log( $donation_id, $message );
+            $donation->update_donation_log( $message );
             $donation->update_status( 'charitable-failed' );
             return;
 
@@ -323,7 +323,7 @@ class Charitable_Gateway_Paypal extends Charitable_Gateway {
         if ( $donation_key != $donation->get_donation_key() ) {
                     
             $message = sprintf( '%s %s', __( 'Donation key in the IPN response does not match the donation. IPN data:', 'charitable' ), json_encode( $data ) );
-            Charitable_Donation::update_donation_log( $donation_id, $message );
+            $donation->update_donation_log( $message );
             $donation->update_status( 'charitable-failed' );
             return;
 
@@ -333,7 +333,7 @@ class Charitable_Gateway_Paypal extends Charitable_Gateway {
         if ( $amount < $donation->get_total_donation_amount( true ) ) {
 
             $message = sprintf( '%s %s', __( 'The amount in the IPN response does not match the expected donation amount. IPN data:', 'charitable' ), json_encode( $data ) );
-            Charitable_Donation::update_donation_log( $donation_id, $message );
+            $donation->update_donation_log( $message );
             $donation->update_status( 'charitable-failed' );
             return;
 
@@ -343,7 +343,7 @@ class Charitable_Gateway_Paypal extends Charitable_Gateway {
         if ( 'completed' == $payment_status ) {
 
             $message = sprintf( '%s: %s', __( 'PayPal Transaction ID', 'charitable' ), $data[ 'txn_id' ] );
-            Charitable_Donation::update_donation_log( $donation_id, $message );
+            $donation->update_donation_log( $message );
             $donation->update_status( 'charitable-completed' );
             return;
 
@@ -355,7 +355,7 @@ class Charitable_Gateway_Paypal extends Charitable_Gateway {
             if ( isset( $data['pending_reason'] ) ) {
 
                 $message = $gateway->get_pending_reason_note( strtolower( $data[ 'pending_reason' ] ) );
-                Charitable_Donation::update_donation_log( $donation_id, $message );
+                $donation->update_donation_log( $message );
             
             }
 

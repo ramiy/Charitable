@@ -137,7 +137,7 @@ final class Charitable_Donation_Post_Type {
             return;
         }
 
-        $valid_statuses = Charitable_Donation::get_valid_donation_statuses();
+        $valid_statuses = charitable_get_valid_donation_statuses();
 
         if( $old_status == 'new' ){
             $message = sprintf( __( 'Donation status set to %s.', 'charitable' ), 
@@ -150,7 +150,9 @@ final class Charitable_Donation_Post_Type {
             );
         }
 
-        Charitable_Donation::update_donation_log( $post->ID, $message );
+        $donation = charitable_get_donation( $post );
+
+       $donation->update_donation_log( $message );
     }
 
     /**
@@ -295,7 +297,7 @@ final class Charitable_Donation_Post_Type {
     public function view_options( $views ) {
 
         $current        = isset( $_GET['post-status'] ) ? $_GET['post-status'] : '';
-        $statuses       = Charitable_Donation::get_valid_donation_statuses();
+        $statuses       = charitable_get_valid_donation_statuses();
         $donations      = new Charitable_Donations();
         $status_count   = $donations->count_by_status();
 

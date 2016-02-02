@@ -286,8 +286,8 @@ class Charitable {
          * We do this on priority 20 so that any functionality that is loaded on init (such 
          * as addons) has a chance to run before the event.
          */
-        add_action( 'init', array( $this, 'do_charitable_actions' ), 20 );                
-        add_filter( 'charitable_sanitize_donation_meta', array( 'Charitable_Donation', 'sanitize_meta' ), 10, 2 );        
+        add_action( 'init', array( $this, 'do_charitable_actions' ), 20 );        
+        add_filter( 'charitable_sanitize_donation_meta', 'charitable_sanitize_donation_meta', 10, 2 );
     }
 
     /**
