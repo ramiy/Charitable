@@ -203,7 +203,7 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 		global $wpdb;
 
 		if ( empty( $statuses ) ) {
-			$statuses = Charitable_Donation::get_approval_statuses();
+			$statuses = charitable_get_approval_statuses();
 		}
 
 		list( $status_clause, $parameters ) = $this->get_donation_status_clause( $statuses );
@@ -370,7 +370,7 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 	public function get_campaign_donated_amount( $campaign_id, $include_all = false ) {
 		global $wpdb;
 
-		$statuses = $include_all ? array() : Charitable_Donation::get_approval_statuses();
+		$statuses = $include_all ? array() : charitable_get_approval_statuses();
 
 		list( $status_clause, $status_parameters ) = $this->get_donation_status_clause( $statuses );
 
@@ -428,7 +428,7 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 	public function count_campaign_donors( $campaign_id, $include_all = false ) {
 		global $wpdb;
 
-		$statuses = $include_all ? array() : Charitable_Donation::get_approval_statuses();
+		$statuses = $include_all ? array() : charitable_get_approval_statuses();
 
 		list( $status_clause, $status_parameters ) = $this->get_donation_status_clause( $statuses );
 
@@ -643,7 +643,7 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 
 		$statuses = array_filter( $statuses, array( 'Charitable_Donation', 'is_valid_donation_status' ) );
 
-		$in = $this->get_in_clause( $statuses, '%s' );		
+		$in = $this->get_in_clause( $statuses, '%s' );
 
 		$sql = "AND p.post_status IN ( $in )";
 

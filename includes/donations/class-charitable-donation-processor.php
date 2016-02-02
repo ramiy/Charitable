@@ -478,14 +478,8 @@ class Charitable_Donation_Processor {
      * @since   1.0.0
      */
     public function update_donation_log( $donation_id, $message ) {
-        $log = Charitable_Donation::get_donation_log( $donation_id );
-
-        $log[] = array( 
-            'time'      => time(), 
-            'message'   => $message
-        );
-
-        update_post_meta( $donation_id, '_donation_log', $log );
+        $donation = charitable_get_donation( $donation_id );
+        $donation->update_donation_log( $message );
     }
 
     /**
@@ -717,7 +711,7 @@ class Charitable_Donation_Processor {
     protected function get_donation_status() {
         $status = $this->get_donation_data_value( 'status', 'charitable-pending' );
 
-        if ( ! Charitable_Donation::is_valid_donation_status( $status ) ) {
+        if ( ! charitable_is_valid_donation_status( $status ) ) {
             $status = 'charitable-pending';
         }
 

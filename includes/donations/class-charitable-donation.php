@@ -321,7 +321,7 @@ class Charitable_Donation {
             return $status;
         }
 
-        $statuses = self::get_valid_donation_statuses();
+        $statuses = charitable_get_valid_donation_statuses();
         return $statuses[ $status ];
     } 
 
@@ -437,80 +437,28 @@ class Charitable_Donation {
     }
     
     /**
-     * Return array of valid donations statuses. 
-     *
-     * @return  array
-     * @access  public
-     * @static
-     * @since   1.0.0
-     */
-    public static function get_valid_donation_statuses() {
-        return apply_filters( 'charitable_donation_statuses', array( 
-            'charitable-completed'  => __( 'Paid', 'charitable' ),
-            'charitable-pending'    => __( 'Pending', 'charitable' ),           
-            'charitable-failed'     => __( 'Failed', 'charitable' ),
-            'charitable-cancelled'  => __( 'Cancelled', 'charitable' ),
-            'charitable-refunded'   => __( 'Refunded', 'charitable' )
-        ) );
-    }   
-
-    /**
-     * Returns whether the donation status is valid. 
-     *
-     * @return  boolean
-     * @access  public
-     * @static
-     * @since   1.0.0
-     */
-    public static function is_valid_donation_status( $status ) {
-        return array_key_exists( $status, self::get_valid_donation_statuses() );
-    }
-
-    /**
-     * Returns the donation statuses that signify a donation was complete. 
-     *
-     * By default, this is just 'charitable-completed'. However, 'charitable-preapproval' 
-     * is also counted. 
-     *
-     * @return  string[]
-     * @access  public
-     * @static
-     * @since   1.0.0
-     */
-    public static function get_approval_statuses() {
-        return apply_filters( 'charitable_approval_donation_statuses', array( 'charitable-completed' ) );
-    }
-
-    /**
-     * Returns whether the passed status is an confirmed status. 
-     *
-     * @return  boolean
-     * @access  public
-     * @static
-     * @since   1.0.0
-     */
-    public static function is_approved_status( $status ) {
-        return in_array( $status, self::get_approval_statuses() );
-    }
-
-    /**
      * Add a message to the donation log. 
      *
      * @param   string      $message
      * @return  void
      * @access  public
-     * @static
      * @since   1.0.0
+     * @deprecated 1.3.0
      */
-    public static function update_donation_log( $donation_id, $message ) {
-        $log = self::get_donation_log( $donation_id );
+    public function update_donation_log( $message, $deprecated_message = null ) {
+        if( is_int( $message ) ){
+            _deprecated_argument( __METHOD__, '1.3.0', '$donation_id no longer required as get_donation_log() is used in object context. Use $donation->update_donation_log($message)' );
+            $message = $deprecated_message;
+        }
+        
+        $log = $this->get_donation_log();
 
         $log[] = array( 
             'time'      => time(), 
             'message'   => $message
         );
 
-        update_post_meta( $donation_id, '_donation_log', $log );
+        update_post_meta( $this->donation_id, '_donation_log', $log );
     }
 
     /**
@@ -518,33 +466,16 @@ class Charitable_Donation {
      *
      * @return  array
      * @access  public
-     * @static
      * @since   1.0.0
+     * @deprecated 1.3.0
      */
-    public static function get_donation_log( $donation_id ) {
-        $log = get_post_meta( $donation_id, '_donation_log', true );;
+    public function get_donation_log( $donation_id = null ) {
+        if(  $donation_id ){
+            _deprecated_argument( __METHOD__, '1.3.0', '$donation_id no longer required as get_donation_log() is used in object context. Use $donation->get_donation_log()' );
+        }
+        $log = get_post_meta( $this->donation_id, '_donation_log', true );;
 
         return is_array( $log ) ? $log : array();
-    }
-
-    /**
-     * Sanitize meta values before they are persisted to the database. 
-     *
-     * @param   mixed   $value
-     * @param   string  $key
-     * @return  mixed
-     * @access  public
-     * @static
-     * @since   1.0.0
-     */
-    public static function sanitize_meta( $value, $key ) {
-        if ( 'donation_gateway' == $key ) {         
-            if ( empty( $value ) || ! $value ) {
-                $value = 'manual';
-            }           
-        }
-
-        return apply_filters( 'charitable_sanitize_donation_meta-' . $key, $value );
     }
 
     /**
@@ -555,10 +486,11 @@ class Charitable_Donation {
      * @return  int|WP_Error                    The value 0 or WP_Error on failure. The donation ID on success.
      * @access  public
      * @since   1.0.0
+     * @deprecated 1.3.0
      */
     public function update_status( $new_status ) {
-        if ( false === self::is_valid_donation_status( $new_status ) ) {
-            $new_status = array_search( $new_status, self::get_valid_donation_statuses() );
+        if ( false === charitable_is_valid_donation_status( $new_status ) ) {
+            $new_status = array_search( $new_status, charitable_get_valid_donation_statuses() );
 
             if ( false === $new_status ) {
                 _doing_it_wrong( __METHOD__, sprintf( '%s is not a valid donation status.', $new_status ), '1.0.0' );
@@ -643,21 +575,91 @@ class Charitable_Donation {
         $this->update_status( 'charitable-refunded' );
     }
 
+
+    /**
+     * Deprecated Methods
+     */
+
+    /**
+     * Return array of valid donations statuses. 
+     *
+     * @return  array
+     * @access  public
+     * @since   1.0.0
+     * @deprecated 1.3.0
+     */
+    public function get_valid_donation_statuses() {
+        _deprecated_function( __METHOD__, '1.3.0', 'charitable_get_valid_donation_statuses' );
+        return charitable_get_valid_donation_statuses();
+    }   
+
+    /**
+     * Returns whether the donation status is valid. 
+     *
+     * @return  boolean
+     * @access  public
+     * @since   1.0.0
+     * @deprecated 1.3.0
+     */
+    public function is_valid_donation_status( $status ) {
+        _deprecated_function( __METHOD__, '1.3.0', 'charitable_is_valid_donation_status' );
+        return charitable_is_valid_donation_status();
+    }
+
+    /**
+     * Returns the donation statuses that signify a donation was complete. 
+     *
+     * By default, this is just 'charitable-completed'. However, 'charitable-preapproval' 
+     * is also counted. 
+     *
+     * @return  string[]
+     * @access  public
+     * @since   1.0.0
+     * @deprecated 1.3.0
+     */
+    public function get_approval_statuses() {
+        _deprecated_function( __METHOD__, '1.3.0', 'charitable_get_approval_statuses' );
+        return charitable_get_approval_statuses();
+    }
+
+    /**
+     * Returns whether the passed status is an confirmed status. 
+     *
+     * @return  boolean
+     * @access  public
+     * @since   1.0.0
+     * @deprecated 1.3.0
+     */
+    public function is_approved_status( $status ) {
+        _deprecated_function( __METHOD__, '1.3.0', 'charitable_is_approved_status' );
+        return charitable_is_approved_status( $status );
+    }
+    /**
+     * Sanitize meta values before they are persisted to the database. 
+     *
+     * @param   mixed   $value
+     * @param   string  $key
+     * @return  mixed
+     * @access  public
+     * @since   1.0.0
+     * @deprecated 1.3.0
+     */
+    public function sanitize_meta( $value, $key ) {
+        _deprecated_function( __METHOD__, '1.3.0', 'charitable_sanitize_donation_meta()' );
+        return charitable_sanitize_donation_meta( $value, $key );
+    }
+
     /**
      * Flush the donations cache for every campaign receiving a donation. 
      *
      * @param   int $donation_id
      * @return  void
      * @access  public
-     * @static
      * @since   1.0.0
      */
-    public static function flush_campaigns_donation_cache( $donation_id ) {
-        $campaign_donations = charitable_get_table( 'campaign_donations' )->get_donation_records( $donation_id );
-
-        foreach ( $campaign_donations as $campaign_donation ) {
-            Charitable_Campaign::flush_donations_cache( $campaign_donation->campaign_id );
-        }
+    public function flush_campaigns_donation_cache( $donation_id ) {
+        _deprecated_function( __METHOD__, '1.3.0', 'charitable_sanitize_donation_meta()' );
+        return charitable_flush_campaigns_donation_cache( $donation_id );
     }
 }
 

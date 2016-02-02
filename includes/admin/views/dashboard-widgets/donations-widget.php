@@ -7,7 +7,7 @@
  * @since   1.2.0
  */
 
-$statuses = Charitable_Donation::get_valid_donation_statuses();
+$statuses = charitable_get_valid_donation_statuses();
 
 $donations = get_posts( array( 
     'post_type' => Charitable::DONATION_POST_TYPE,

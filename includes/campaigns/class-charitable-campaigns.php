@@ -108,8 +108,8 @@ class Charitable_Campaigns {
 	public static function join_campaign_donations_table( $join_statement ) {
 		global $wpdb;
 
-		$statuses = Charitable_Donation::get_approval_statuses();
-		$statuses = array_filter( $statuses, array( 'Charitable_Donation', 'is_valid_donation_status' ) );
+		$statuses = charitable_get_approval_statuses();
+		$statuses = array_filter( $statuses, 'charitable_is_valid_donation_status' );
 		$statuses = "'" . implode( "','", $statuses ) . "'";
 
 		$join_statement .= " LEFT JOIN ( SELECT cd1.campaign_donation_id, cd1.donation_id, cd1.donor_id, cd1.amount, cd1.campaign_id
