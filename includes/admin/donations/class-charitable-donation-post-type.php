@@ -150,9 +150,7 @@ final class Charitable_Donation_Post_Type {
             );
         }
 
-        $donation = charitable_get_donation( $post->ID );
-
-        $donation->update_donation_log( $message );
+        charitable_update_donation_log( $post->ID, $message );
     }
 
     /**
