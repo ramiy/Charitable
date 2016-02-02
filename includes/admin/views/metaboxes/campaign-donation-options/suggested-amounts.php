@@ -33,9 +33,11 @@ array_push( $suggested_donations, $default );
             </tr>
             <tr>
                 <th class="reorder-col"></th>
+                <?php $i = 1; ?>
                 <?php foreach ( $fields as $key => $field ) : ?>
-                    <th class="<?php echo $key ?>-col"><?php echo $field[ 'column_header' ] ?></th>
-                <?php endforeach ?>     
+                    <th <?php echo $i == 1 ? 'colspan="2"' : ''; ?> class="<?php echo $key ?>-col"><?php echo $field[ 'column_header' ] ?></th>
+                <?php $i++; ?>
+                <?php endforeach ?>    
                 <th class="remove-col"></th>        
             </tr>
         </thead>        
