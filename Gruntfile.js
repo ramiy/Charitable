@@ -144,12 +144,16 @@ module.exports = function(grunt) {
 
         // minify CSS
         cssmin: {
-            minify: {
-                files: {
-                    'assets/css/charitable.min.css' : 'assets/css/charitable.css'
-                }
-            }
-        },        
+          target: {
+            files: [{
+              expand: true,
+              cwd: 'assets/css',
+              dest: 'assets/css',
+              src: ['*.css', '!*.min.css'],
+              ext: '.min.css'
+            }]
+          }
+        },
 
         // Clean up build directory
         clean: {
@@ -204,7 +208,7 @@ module.exports = function(grunt) {
     grunt.registerTask( 'default', 'watch' );
     
     // Build task(s).
-    grunt.registerTask( 'build', [ 'uglify', 'makepot', 'clean', 'copy', 'compress' ] );
+    grunt.registerTask( 'build', [ 'uglify', 'cssmin', 'makepot', 'clean', 'copy', 'compress' ] );
 
     // grunt.registerTask('default', ['watch']);
     // grunt.registerTask('build', ['sync', 'jshint', 'uglify', 'makepot']);
