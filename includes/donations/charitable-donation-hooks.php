@@ -55,9 +55,9 @@ add_action( 'charitable_make_donation_streamlined', array( 'Charitable_Donation_
 /**
  * Donation update.
  * 
- * @see     Charitable_Donation::flush_campaigns_donation_cache
+ * @see charitable_flush_campaigns_donation_cache()
  */
-add_action( 'save_post_' . Charitable::DONATION_POST_TYPE, array( 'Charitable_Donation', 'flush_campaigns_donation_cache' ) );
+add_action( 'save_post_' . Charitable::DONATION_POST_TYPE, 'charitable_flush_campaigns_donation_cache' );
 
 /**
  * Delete a donation.
