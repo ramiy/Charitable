@@ -43,7 +43,7 @@ if ( $donation_amount ) : ?>
 
 <?php endif; ?>
 
-<div id="charitable-donation-options-<?php echo $view_args[ 'form' ]->get_form_identifier() ?>">
+<div id="charitable-donation-options-<?php echo $view_args[ 'form' ]->get_form_identifier() ?>" class="charitable-donation-options">
 
     <?php
 
