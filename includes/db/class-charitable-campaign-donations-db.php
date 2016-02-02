@@ -643,7 +643,7 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 
 		$statuses = array_filter( $statuses, array( 'Charitable_Donation', 'is_valid_donation_status' ) );
 
-		$in = $this->get_in_clause( $statuses, '%s' );		
+		$in = $this->get_in_clause( $statuses, '%s' );
 
 		$sql = "AND p.post_status IN ( $in )";
 
