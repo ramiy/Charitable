@@ -171,24 +171,12 @@ class Charitable_Donation_Processor {
         $this->donation_id = $processor->save_donation( $values );
 
         /**
-         * Fire a hook for payment gateways to process the donation.
-         *
-         * In Charitable 1.3 this was changed into a filter, instead of an action.
-         * All gateway extensions should be updated before 1.3 comes out, but 
-         * since we can't be sure that people will have updated the plugin ahead
-         * of time, we retain support for the old method in 1.3.
-         */
-        $hook = 'charitable_process_donation_' . $gateway;
-
-        /**
-         * @todo has_filter won't work. Check for `supports` array on gateway instead.
+         * We check whether the gateway is compatible with version 1.3, since Charitable 1.3
+         * change the hook into a filter (instead of an action).
          */        
         if ( $this->gateway_is_130_compatible( $gateway ) ) { 
             /**
              * Fire a hook for payment gateways to process the donation.
-             *
-             * In Charitable 1.3 this was changed into a filter, instead of an action.
-             * Callbacks should return one of the following values: 
              *
              * - TRUE :  If the donation was processed successfully and the user should 
              *           be redirected to the donation receipt.
@@ -201,13 +189,13 @@ class Charitable_Donation_Processor {
              *
              * @hook charitable_process_donation_$gateway
              */            
-            return apply_filters( $hook, true, $this->donation_id, $processor );
+            return apply_filters( 'charitable_process_donation_' . $gateway, true, $this->donation_id, $processor );
         }
         else {
             /**
              * A fallback for payment gateways that have not been updated. 
              */
-            do_action( $hook, $this->donation_id, $processor );
+            do_action( 'charitable_process_donation_' . $gateway, $this->donation_id, $processor );
 
             /**
              * If we get this far, forward the user through to the receipt page.
