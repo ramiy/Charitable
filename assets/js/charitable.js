@@ -114,7 +114,7 @@ CHARITABLE.AJAXDonate = {
                     window.scrollTo( coordinates.left, coordinates.top );
                 }                
             }
-        }).fail(function (response) {
+        }).fail(function (response, textStatus, errorThrown) {
             if ( window.console && window.console.log ) {
                 console.log( response );
             }

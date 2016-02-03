@@ -25,33 +25,41 @@ class Charitable_Donor {
      * The donor ID. 
      *
      * @var     int
-     * @access  private
+     * @access  protected
      */
-    private $donor_id;
+    protected $donor_id;
 
     /**
      * The donation ID. 
      *
      * @var     int
-     * @access  private
+     * @access  protected
      */
-    private $donation_id;    
+    protected $donation_id;    
 
     /**
      * User object. 
      *
      * @var     Charitable_User
-     * @access  private
+     * @access  protected
      */
-    private $user;
+    protected $user;
 
     /**
      * Donation object. 
      *
      * @var     Charitable_Donation|null
-     * @access  private
+     * @access  protected
      */
-    private $donation = null;
+    protected $donation = null;
+
+    /**
+     * Donor meta. 
+     *
+     * @var     mixed[] 
+     * @access  protected
+     */
+    protected $donor_meta;
 
     /**
      * Create class object.
@@ -126,16 +134,25 @@ class Charitable_Donor {
     /**
      * Return the donor meta stored for the particular donation. 
      *
+     * @param   string $key Optional key passed to return a particular meta field.
      * @return  array|false
      * @access  public
      * @since   1.0.0
      */
-    public function get_donor_meta() {
+    public function get_donor_meta( $key = '' ) {
         if ( ! $this->get_donation() ) {
             return false;
         }
 
-        return get_post_meta( $this->donation_id, 'donor', true );
+        if ( ! isset( $this->donor_meta ) ) {
+            $this->donor_meta = get_post_meta( $this->donation_id, 'donor', true );
+        }
+
+        if ( empty( $key ) ) {
+            return $this->donor_meta;
+        }
+
+        return isset( $this->donor_meta[ $key ] ) ? $this->donor_meta[ $key ] : '';
     }
 
     /**

@@ -175,6 +175,7 @@ class Charitable_Donation_Processor {
          * change the hook into a filter (instead of an action).
          */        
         if ( $this->gateway_is_130_compatible( $gateway ) ) { 
+
             /**
              * Fire a hook for payment gateways to process the donation.
              *
@@ -188,8 +189,8 @@ class Charitable_Donation_Processor {
              *           `safe` : Whether to use wp_safe_redirect. If unset, will default to true.
              *
              * @hook charitable_process_donation_$gateway
-             */            
-            return apply_filters( 'charitable_process_donation_' . $gateway, true, $this->donation_id, $processor );
+             */                        
+            return apply_filters( 'charitable_process_donation_' . $gateway, true, $this->donation_id, $processor );            
         }
         else {
             /**
