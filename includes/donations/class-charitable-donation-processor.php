@@ -202,7 +202,6 @@ class Charitable_Donation_Processor {
              * @hook charitable_process_donation_$gateway
              */            
             return apply_filters( $hook, true, $this->donation_id, $processor );
-
         }
         else {
             /**
@@ -264,6 +263,7 @@ class Charitable_Donation_Processor {
             if ( empty( $errors ) ) {
                 $errors = array( __( 'Unable to process donation.', 'charitable' ) );
             }
+<<<<<<< 2e2360dfc131bff81edb1eda104c984ecb6ab01d
 
             ob_start();
             
@@ -271,6 +271,15 @@ class Charitable_Donation_Processor {
                 'errors' => $errors
             ) );
 
+=======
+
+            ob_start();
+            
+            charitable_template( 'form-fields/errors.php', array(
+                'errors' => $errors
+            ) );
+
+>>>>>>> Merging in changes from master.
             $errors = ob_get_clean(); 
             
             $response = array(
@@ -289,6 +298,7 @@ class Charitable_Donation_Processor {
         //  * @hook    charitable_before_save_ajax_donation
         //  */
         // do_action( 'charitable_before_save_ajax_donation', $campaign );
+<<<<<<< 2e2360dfc131bff81edb1eda104c984ecb6ab01d
 
         // if ( 'make_donation_streamlined' == $form_action ) {
 
@@ -307,6 +317,26 @@ class Charitable_Donation_Processor {
         //  */
         // do_action( 'charitable_after_save_ajax_donation', $donation_id, $campaign, $form );
 
+=======
+
+        // if ( 'make_donation_streamlined' == $form_action ) {
+
+        //     $form = new Charitable_Donation_Amount_Form( $campaign );
+        //     $donation_id = $form->save_donation();
+
+        // }
+        // else {
+
+        //     $form = $campaign->get_donation_form();
+        //     $donation_id = $campaign->get_donation_form()->save_donation();
+        // }
+
+        // /**
+        //  * @hook    charitable_after_save_ajax_donation
+        //  */
+        // do_action( 'charitable_after_save_ajax_donation', $donation_id, $campaign, $form );
+
+>>>>>>> Merging in changes from master.
         // $data = apply_filters( 'charitable_ajax_make_donation_data', array(
         //     'donation_id' => $donation_id
         // ), $donation_id, $campaign );
