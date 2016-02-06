@@ -612,8 +612,10 @@ class Charitable_Donation_Processor {
          * use wp_safe_redirect, use wp_redirect instead.
          */
         if ( isset( $gateway_processing[ 'safe' ] ) && false == $gateway_processing[ 'safe' ] ) {
+
             wp_redirect( $redirect_url, $status );
             die();
+
         }        
 
         wp_safe_redirect( $redirect_url, $status );
