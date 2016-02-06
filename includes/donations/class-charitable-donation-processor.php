@@ -602,16 +602,21 @@ class Charitable_Donation_Processor {
             charitable_get_session()->add_notices();
         }
 
+        /**
+         * Set the redirect status to use.
+         */
+        $status = isset( $gateway_processing[ 'status' ] ) ? $gateway_processing[ 'status' ] : 302;
+
         /** 
          * If the gateway processing returned an array with a directive to NOT
          * use wp_safe_redirect, use wp_redirect instead.
          */
         if ( isset( $gateway_processing[ 'safe' ] ) && false == $gateway_processing[ 'safe' ] ) {
-            wp_redirect( $redirect_url );
+            wp_redirect( $redirect_url, $status );
             die();
         }        
 
-        wp_safe_redirect( $redirect_url );
+        wp_safe_redirect( $redirect_url, $status );
 
         die();
     }
