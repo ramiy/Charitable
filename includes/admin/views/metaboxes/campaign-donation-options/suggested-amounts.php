@@ -31,12 +31,11 @@ array_push( $suggested_donations, $default );
             <tr class="table-header">
                 <th colspan="<?php echo count( $fields ) + 2 ?>"><label for="campaign_suggested_donations"><?php echo $title ?></label></th>
             </tr>
-            <tr>
-                <th class="reorder-col"></th>
+            <tr>                
                 <?php $i = 1; ?>
                 <?php foreach ( $fields as $key => $field ) : ?>
                     <th <?php echo $i == 1 ? 'colspan="2"' : ''; ?> class="<?php echo $key ?>-col"><?php echo $field[ 'column_header' ] ?></th>
-                <?php $i++; ?>
+                    <?php $i++; ?>
                 <?php endforeach ?>    
                 <th class="remove-col"></th>        
             </tr>
