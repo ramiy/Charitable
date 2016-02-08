@@ -33,49 +33,49 @@ class Charitable_Donation_Processor {
      * The campaign receiving a donation. 
      *
      * @var     Charitable_Campaign|false
-     * @access  private
+     * @access  protected
      */
-    private $campaign;
+    protected $campaign;
 
     /**
      * The donation data. 
      *
      * @var     mixed[]
-     * @access  private
+     * @access  protected
      */
-    private $donation_data;
+    protected $donation_data;
 
     /**
      * The campaign donations array.  
      *
      * @var     array
-     * @access  private
+     * @access  protected
      */
-    private $campaign_donations_data;
+    protected $campaign_donations_data;
 
     /**
      * The donor ID for the current donation. 
      *
      * @var     int
-     * @access  private
+     * @access  protected
      */
-    private $donor_id;
+    protected $donor_id;
 
     /**
      * The donoration ID for the current donation. 
      *
      * @var     int
-     * @access  private
+     * @access  protected
      */
-    private $donation_id;
+    protected $donation_id;
 
     /**
-     * Create class object. A private constructor, so this is used in a singleton context. 
+     * Create class object. A protected constructor, so this is used in a singleton context. 
      * 
-     * @access  private
+     * @access  protected
      * @since   1.0.0
      */
-    private function __construct() {
+    protected function __construct() {
         $this->campaign = charitable_get_current_campaign();
     }
 
@@ -657,10 +657,10 @@ class Charitable_Donation_Processor {
      * Validate user data passed to insert. 
      *
      * @return  boolean
-     * @access  private
+     * @access  protected
      * @since   1.0.0
      */
-    private function is_valid_user_data() {
+    protected function is_valid_user_data() {
         $ret = $this->get_donation_data_value( 'user_id' ) || $this->get_donation_data_value( 'donor_id' );
 
         if ( ! $ret ) {
@@ -675,10 +675,10 @@ class Charitable_Donation_Processor {
      * Parse the donation data, based on the passed $values array. 
      *
      * @return  array
-     * @access  private
+     * @access  protected
      * @since   1.0.0
      */
-    private function parse_donation_data() {        
+    protected function parse_donation_data() {        
         $core_values = array(
             'post_type'     => 'donation', 
             'post_author'   => $this->get_donation_data_value( 'user_id', get_current_user_id() ), 
@@ -697,10 +697,10 @@ class Charitable_Donation_Processor {
      * Returns the donation status. Defaults to charitable-pending.
      *
      * @return  string
-     * @access  private
+     * @access  protected
      * @since   1.0.0
      */
-    private function get_donation_status() {
+    protected function get_donation_status() {
         $status = $this->get_donation_data_value( 'status', 'charitable-pending' );
 
         if ( ! Charitable_Donation::is_valid_donation_status( $status ) ) {
@@ -714,10 +714,10 @@ class Charitable_Donation_Processor {
      * Returns the name of the donor. 
      *
      * @return  string
-     * @access  private
+     * @access  protected
      * @since   1.0.0
      */
-    private function get_donor_name() {
+    protected function get_donor_name() {
         $user = new WP_User( $this->get_donation_data_value( 'user_id', 0 ) );
         $user_data = $this->get_donation_data_value( 'user' );
         $first_name = isset( $user_data[ 'first_name' ] ) ? $user_data[ 'first_name' ] : $user->get( 'first_name' );
@@ -729,10 +729,10 @@ class Charitable_Donation_Processor {
      * Returns a comma separated list of the campaigns that are being donated to. 
      *
      * @return  string
-     * @access  private
+     * @access  protected
      * @since   1.0.0
      */
-    private function get_campaign_names() {
+    protected function get_campaign_names() {
         $campaigns = wp_list_pluck( $this->get_campaign_donations_data(), 'campaign_name' );
         return implode( ', ', $campaigns );
     }
@@ -741,10 +741,10 @@ class Charitable_Donation_Processor {
      * Set a unique key for the donation. 
      *
      * @return  void
-     * @access  private
+     * @access  protected
      * @since   1.0.0
      */
-    private function set_donation_key() {
+    protected function set_donation_key() {
         $this->donation_data[ 'donation_key' ] = strtolower( md5( uniqid() ) );
     }
 
