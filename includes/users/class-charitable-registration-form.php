@@ -135,10 +135,15 @@ class Charitable_Registration_Form extends Charitable_Form {
 
         if ( isset( $submitted[ 'user_pass' ] ) ) {
             $creds = array();
-            $creds['user_login'] = isset( $submitted[ 'user_login' ] ) ? $submitted[ 'user_login' ] : $user->user_login; 
+            $creds['user_login'] = $user->user_login;
             $creds['user_password'] = $submitted[ 'user_pass' ];
             $creds['remember'] = true;
-            wp_signon( $creds, false );
+            $result = wp_signon( $creds, false );
+
+            if ( is_wp_error( $result ) ) {
+              charitable_get_notices()->add_errors_from_wp_error( $result );
+              return 0;
+            }
         }
 
         wp_safe_redirect( charitable_get_login_redirect_url() );
