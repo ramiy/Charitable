@@ -25,49 +25,49 @@ class Charitable_Donation {
      * The donation ID. 
      *
      * @var     int 
-     * @access  private
+     * @access  protected
      */
-    private $donation_id;
+    protected $donation_id;
 
     /**
      * The database record for this donation from the Posts table.
      * 
      * @var     Object 
-     * @access  private 
+     * @access  protected 
      */
-    private $donation_data;
+    protected $donation_data;
 
     /**
      * The Campaign Donations table.
      *
      * @var     Charitable_Campaign_Donations_DB
-     * @access  private
+     * @access  protected
      */
-    private $campaign_donations_db; 
+    protected $campaign_donations_db; 
 
     /**
      * The payment gateway used to process the donation.
      *
      * @var     Charitable_Gateway_Interface
-     * @access  private
+     * @access  protected
      */
-    private $gateway;
+    protected $gateway;
 
     /**
      * The campaign donations made as part of this donation. 
      *
      * @var     Object
-     * @access  private
+     * @access  protected
      */
-    private $campaign_donations;
+    protected $campaign_donations;
 
     /**
      * The Charitable_Donor object of the person who donated. 
      * 
      * @var     Charitable_Donor
-     * @access  private
+     * @access  protected
      */
-    private $donor;
+    protected $donor;
 
     /**
      * Instantiate a new donation object based off the ID.

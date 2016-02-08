@@ -43,7 +43,7 @@ if ( $donation_amount ) : ?>
 
 <?php endif; ?>
 
-<div id="charitable-donation-options-<?php echo $view_args[ 'form' ]->get_form_identifier() ?>">
+<div id="charitable-donation-options-<?php echo $view_args[ 'form' ]->get_form_identifier() ?>" class="charitable-donation-options">
 
     <?php
 
@@ -88,7 +88,7 @@ if ( $donation_amount ) : ?>
                 <label for="form-<?php echo $view_args[ 'form' ]->get_form_identifier();?>-field-custom-amount">             
                 <input id="form-<?php echo $view_args[ 'form' ]->get_form_identifier();?>-field-custom-amount" type="radio" name="donation_amount" value="custom" <?php checked( $has_custom_donation_amount ) ?> />
                 <span class="description"><?php _e( 'Custom amount', 'charitable' ) ?></span>
-                <input type="text" class="custom-donation-amount" name="custom_donation_amount" value="<?php if ( $has_custom_donation_amount ) echo $donation_amount ?>" />
+                <input type="text" class="custom-donation-input" name="custom_donation_amount" value="<?php if ( $has_custom_donation_amount ) echo $donation_amount ?>" />
                 </label>
             </li>
 

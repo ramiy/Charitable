@@ -678,7 +678,8 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
 
         $amount = charitable_get_currency_helper()->sanitize_monetary_amount( $amount );
 
-        return $amount;
+        return apply_filters( 'charitable_donation_form_amount', $amount );
+
     }
 
     /**
