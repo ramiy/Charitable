@@ -131,24 +131,17 @@ class Charitable_Registration_Form extends Charitable_Form {
         $submitted = apply_filters( 'charitable_registration_values', $_POST, $fields, $form );        
 
         $user = new Charitable_User();
-        $user->update_profile( $submitted, array_keys( $fields ) );
+        $user_id = $user->update_profile( $submitted, array_keys( $fields ) );
 
-        if ( isset( $submitted[ 'user_pass' ] ) ) {
-            $creds = array();
-            $creds['user_login'] = $user->user_login;
-            $creds['user_password'] = $submitted[ 'user_pass' ];
-            $creds['remember'] = true;
-            $result = wp_signon( $creds, false );
-
-            if ( is_wp_error( $result ) ) {
-              charitable_get_notices()->add_errors_from_wp_error( $result );
-              return 0;
-            }
+        /**
+         * If the user was successfully created, redirect to the login redirect URL. 
+         * If there was a problem, this simply falls through and keeps the user on the 
+         * registration page.
+         */
+        if ( $user_id ) {        
+            wp_safe_redirect( charitable_get_login_redirect_url() );
+            exit();
         }
-
-        wp_safe_redirect( charitable_get_login_redirect_url() );
-
-        exit();
     }
 }
 

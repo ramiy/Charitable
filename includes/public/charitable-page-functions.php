@@ -529,7 +529,7 @@ function charitable_user_can_access_receipt( Charitable_Donation $donation ) {
  * @return  string
  * @since   1.0.0
  */
- function charitable_get_login_redirect_url() {
+ function charitable_get_login_redirect_url() {    
     if ( isset( $_REQUEST[ 'redirect_to' ] ) ) {
         $redirect = $_REQUEST[ 'redirect_to' ];
     }

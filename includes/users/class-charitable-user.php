@@ -600,9 +600,18 @@ class Charitable_User extends WP_User {
             $keys = array_keys( $submitted );
         }
 
-        $this->update_core_user( $submitted );
+        $user_id = $this->update_core_user( $submitted );
+
+        /**
+         * If there were problems with creating the user, stop here.
+         */
+        if ( ! $user_id ) {
+            return $user_id;
+        }
 
         $this->update_user_meta( $submitted, $keys );
+
+        return $user_id;
     }
 
     /**
@@ -640,9 +649,9 @@ class Charitable_User extends WP_User {
         if ( 0 == $this->ID ) {         
     
             if ( ! isset( $values[ 'user_pass' ] ) || strlen( $values[ 'user_pass' ] ) == 0 ) {
-              charitable_get_notices()->add_error( '<strong>ERROR:</strong> Password field is required.' );
-              return 0;
-            }       
+                charitable_get_notices()->add_error( '<strong>ERROR:</strong> Password field is required.' );
+                return false;
+            }
 
             if ( ! isset( $values[ 'user_login' ] ) ) {
                 $values[ 'user_login' ] = $values[ 'user_email' ];
@@ -658,13 +667,18 @@ class Charitable_User extends WP_User {
             $user_id = wp_insert_user( $values );
 
             if ( is_wp_error( $user_id ) ) {
-
                 charitable_get_notices()->add_errors_from_wp_error( $user_id );
-                return 0;
-
+                return false;
             }
 
             $this->init( self::get_data_by( 'id', $user_id ) );       
+
+            $signon = Charitable_User::signon( $values[ 'user_login' ], $values[ 'user_pass' ] );
+
+            if ( is_wp_error( $signon ) ) {
+                charitable_get_notices()->add_errors_from_wp_error( $result );
+                return false;
+            }
 
             do_action( 'charitable_after_insert_user', $user_id, $values );
 
@@ -681,6 +695,7 @@ class Charitable_User extends WP_User {
         if ( is_wp_error( $user_id ) ) {
 
             charitable_get_notices()->add_errors_from_wp_error( $user_id );
+            return false;
 
         }
 
@@ -724,17 +739,17 @@ class Charitable_User extends WP_User {
     }
     
     /**
-     * Automatically sign on user after registration. 
+     * Log a user is with their username and password.
      *
-     * @param   int     $user_id
-     * @param   array   $values
+     * @param   string $username
+     * @param   string $password
      * @return  WP_User|WP_Error|false WP_User on login, WP_Error on failure. False if feature is disabled.
      * @access  public
      * @static
      * @since   1.0.0
      */
-    public static function signon( $user_id, $values ) {
-        if ( ! apply_filters( 'charitable_auto_login_after_registration', true, $user_id ) ) {
+    public static function signon( $username, $password ) {
+        if ( ! apply_filters( 'charitable_auto_login_after_registration', true, $username ) ) {
             return false;
         }
 
@@ -743,11 +758,11 @@ class Charitable_User extends WP_User {
         }
 
         $creds = array(
-            'user_login'    => $values[ 'user_login' ], 
-            'user_password' => $values[ 'user_pass' ], 
-            'remember'      => true
+            'user_login' => $username, 
+            'user_password' => $password, 
+            'remember' => true
         );
-        
+
         return wp_signon( $creds, false );
     }
 
