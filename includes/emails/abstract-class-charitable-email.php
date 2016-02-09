@@ -562,6 +562,11 @@ abstract class Charitable_Email implements Charitable_Email_Interface {
             'callback'      => array( $this, 'get_campaign_goal' )
         );        
 
+        $fields[ 'campaign_url' ] = array(
+          'description'     => __( 'Display the campaign\'s URL', 'charitable' ),
+          'callback'        => array( $this, 'get_campaign_url' )
+        );
+
         return $fields;
     }    
 
@@ -703,6 +708,21 @@ abstract class Charitable_Email implements Charitable_Email_Interface {
     }
 
     /**
+     * Display the campaign's URL
+     *
+     * @return  string
+     * @access  public
+     * @since   1.3.0
+     */
+    public function get_campaign_url() {
+        if ( ! $this->has_valid_campaign() ) {
+            return '';
+        }
+
+        return get_permalink( $this->campaign->ID );
+    }
+
+    /**
      * Add campaign content fields' fake data for previews.
      *
      * @return  array
@@ -722,6 +742,7 @@ abstract class Charitable_Email implements Charitable_Email_Interface {
         $fields[ 'campaign_donated_amount' ] = '$16,523';
         $fields[ 'campaign_donor_count' ]   = 23;
         $fields[ 'campaign_goal' ]          = '$15,000';
+        $fields[ 'campaign_url' ]           = 'http://www.example.com/campaigns/fake-campaign';
         return $fields;
     }
 
