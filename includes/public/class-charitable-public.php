@@ -55,6 +55,7 @@ final class Charitable_Public {
         add_action( 'after_setup_theme', array( $this, 'load_template_files' ) );
         add_action( 'wp_enqueue_scripts', array( $this, 'wp_enqueue_scripts') );
         add_filter( 'post_class', array( $this, 'campaign_post_class' ) );
+        add_filter( 'comments_open', array( $this, 'disable_comments_on_application_pages' ), 10, 2 );
 
         /**
          * We are registering this object only for backwards compatibility. It
@@ -136,6 +137,27 @@ final class Charitable_Public {
         return $classes;
     }
 
+    /**
+     * Disable comments on application pages like the donation page.
+     *
+     * @param   boolean $open
+     * @param   int $post_id
+     * @return  boolean
+     * @access  public
+     * @since   1.3.0
+     */
+    public function disable_comments_on_application_pages( $open, $post_id ) {
+        /* If open is already false, just hit return. */
+        if ( ! $open ) {
+            return $open;
+        }
+
+        if ( charitable_get_permalink( 'donation_receipt_page' ) || charitable_get_permalink( 'campaign_donation_page' ) ) {
+            return false;
+        }
+
+        return $open;
+    }
 }
 
 endif;
