@@ -136,7 +136,12 @@ module.exports = function(grunt) {
             build: {
                 files: [{
                     expand: true,   // Enable dynamic expansion.
-                    src: ['assets/js/*.js', '!assets/js/*.min.js', '!assets/js/libraries/*.js'], // Actual pattern(s) to match.
+                    src: [ 
+                        'assets/js/*.js',                         
+                        '!assets/js/*.min.js', 
+                        '!assets/js/libraries/*.js',
+                        'assets/js/libraries/leanModal.js'
+                    ], // Actual pattern(s) to match.
                     ext: '.min.js',   // Dest filepaths will have this extension.
                 }]
             }

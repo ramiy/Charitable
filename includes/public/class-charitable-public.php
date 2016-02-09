@@ -113,7 +113,7 @@ final class Charitable_Public {
 
 		/* Lean Modal is registered but NOT enqueued yet. */
 		if ( 'modal' == charitable_get_option( 'donation_form_display', 'separate_page' ) ) {
-			wp_register_script( 'lean-modal', charitable()->get_path( 'assets', false ) . 'js/libraries/jquery.leanModal' . $suffix . '.js', array( 'jquery' ), charitable()->get_version() );
+			wp_register_script( 'lean-modal', charitable()->get_path( 'assets', false ) . 'js/libraries/leanModal' . $suffix . '.js', array( 'jquery' ), charitable()->get_version() );
 			wp_register_style( 'lean-modal-css', charitable()->get_path( 'assets', false ) . 'css/modal' . $suffix .'.css', array(), charitable()->get_version() );
 		}
 	}

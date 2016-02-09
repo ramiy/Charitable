@@ -61,7 +61,7 @@ CHARITABLE.DonationSelection = {
             jQuery( this ).closest('li').addClass( 'selected' );
         });
 
-        jQuery( '.charitable-form' ).on( 'change', '.donation-amount', function( event ) {
+        jQuery( '.charitable-form' ).on( 'click', '.donation-amount', function( event ) {
             self.selectOption( jQuery(this) );
         });
 
