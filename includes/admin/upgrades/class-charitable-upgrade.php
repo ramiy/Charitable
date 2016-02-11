@@ -331,13 +331,6 @@ class Charitable_Upgrade {
 			foreach ( $donations as $donation ) {
 
 				/**
-				 * If the dates are the same, the locale is 0 so continue.
-				 */
-				if ( $donation->post_date == $donation->post_date_gmt ) {
-					continue;
-				}
-
-				/**
 				 * Thankfully, we store the timestamp of the donation in the log,
 				 * so we can use that to correct any incorrect post_date/post_date_gmt
 				 * values.
