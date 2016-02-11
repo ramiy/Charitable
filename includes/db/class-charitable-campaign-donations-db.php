@@ -70,14 +70,14 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 
         $charset_collate = $wpdb->get_charset_collate();
 
-		$sql = "CREATE TABLE IF NOT EXISTS {$this->table_name} (
-				`campaign_donation_id` bigint(20) NOT NULL AUTO_INCREMENT,
-				`donation_id` bigint(20) NOT NULL,
-				`donor_id` bigint(20) NOT NULL,
-				`campaign_id` bigint(20) NOT NULL,
-				`campaign_name` text NOT NULL,
-				`amount` float NOT NULL,
-				PRIMARY KEY (campaign_donation_id),
+		$sql = "CREATE TABLE {$this->table_name} (
+				campaign_donation_id bigint(20) NOT NULL AUTO_INCREMENT,
+				donation_id bigint(20) NOT NULL,
+				donor_id bigint(20) NOT NULL,
+				campaign_id bigint(20) NOT NULL,
+				campaign_name text NOT NULL,
+				amount decimal(13, 4) NOT NULL,
+				PRIMARY KEY  (campaign_donation_id),
 				KEY donation (donation_id),
 				KEY campaign (campaign_id)
 				) $charset_collate;";

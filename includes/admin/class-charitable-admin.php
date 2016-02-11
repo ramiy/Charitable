@@ -92,6 +92,11 @@ final class Charitable_Admin {
         require_once( $admin_dir . 'dashboard-widgets/class-charitable-donations-dashboard-widget.php' );
         require_once( $admin_dir . 'dashboard-widgets/charitable-dashboard-widgets-hooks.php' );
 
+        /* Upgrades */
+        require_once( $admin_dir . 'upgrades/class-charitable-upgrade.php' );
+        require_once( $admin_dir . 'upgrades/class-charitable-upgrade-page.php' );
+        require_once( $admin_dir . 'upgrades/charitable-upgrade-hooks.php' );
+
         /**
          * We are registering this object only for backwards compatibility. It
          * will be removed in or after Charitable 1.3.

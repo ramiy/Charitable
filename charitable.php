@@ -3,7 +3,7 @@
  * Plugin Name:         Charitable
  * Plugin URI:          https://www.wpcharitable.com
  * Description:         The WordPress fundraising alternative for non-profits, created to help non-profits raise money on their own website. 
- * Version:             1.3.0-beta20151221
+ * Version:             1.3.0-beta20160211
  * Author:              WP Charitable
  * Author URI:          https://wpcharitable.com
  * Requires at least:   4.1
@@ -33,20 +33,20 @@ class Charitable {
     /**
      * @var     string
      */
-    const VERSION = '1.3.0-beta20160201';
+    const VERSION = '1.3.0-beta20160211';
 
     /**
-     * @var     string      A date in the format: YYYYMMDD
+     * @var     string A date in the format: YYYYMMDD
      */
     const DB_VERSION = '20150615';  
 
     /**
-     * @var     string      The Campaign post type.
+     * @var     string The Campaign post type.
      */
     const CAMPAIGN_POST_TYPE = 'campaign';
 
     /**
-     * @var     string      The Donation post type.
+     * @var     string The Donation post type.
      */
     const DONATION_POST_TYPE = 'donation';
 
@@ -128,7 +128,7 @@ class Charitable {
 
         $this->maybe_start_ajax();
 
-        $this->maybe_upgrade();
+        // $this->maybe_upgrade();
 
         $this->attach_hooks_and_filters();
 
@@ -661,16 +661,16 @@ class Charitable {
      * @access  private
      * @since   1.0.0
      */
-    private function maybe_upgrade() {
-        $db_version = get_option( 'charitable_version' );
+    // private function maybe_upgrade() {
+    //     $db_version = get_option( 'charitable_version' );
 
-        if ( $db_version !== self::VERSION ) {      
+    //     if ( $db_version !== self::VERSION ) {      
 
-            require_once( $this->get_path( 'includes' ) . 'class-charitable-upgrade.php' );
+    //         require_once( $this->get_path( 'admin' ) . 'upgrades/class-charitable-upgrade.php' );
 
-            Charitable_Upgrade::upgrade_from( $db_version, self::VERSION );
-        }
-    }
+    //         Charitable_Upgrade::upgrade_from( $db_version, self::VERSION );
+    //     }
+    // }
 
     /**
      * If a charitable_action event is triggered, delegate the event using do_action.     

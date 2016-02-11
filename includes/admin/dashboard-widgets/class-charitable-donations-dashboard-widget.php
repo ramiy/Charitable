@@ -52,7 +52,6 @@ class Charitable_Donations_Dashboard_Widget {
         $http = is_ssl() ? 'https' : 'http';
 ?>        
         <p class="hide-if-no-js">
-
             <img src="<?php echo charitable()->get_path( 'assets', false ) ?>/images/charitable-loading.gif" width="60" height="60" alt="<?php esc_attr_e( 'Loading&hellip;', 'charitable' ) ?>" />
         </p>
 <?php

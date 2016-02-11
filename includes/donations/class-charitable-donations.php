@@ -24,7 +24,7 @@ class Charitable_Donations {
 	/**
 	 * Return WP_Query object with predefined defaults to query only donations. 
 	 *
-	 * @param 	array 		$args
+	 * @param 	array $args
 	 * @return 	WP_Query
 	 * @static
 	 * @access  public

@@ -680,15 +680,16 @@ class Charitable_Donation_Processor {
      */
     protected function parse_donation_data() {        
         $core_values = array(
-            'post_type'     => 'donation', 
+            'post_type'     => Charitable::DONATION_POST_TYPE, 
             'post_author'   => $this->get_donation_data_value( 'user_id', get_current_user_id() ), 
             'post_status'   => $this->get_donation_status(),
             'post_content'  => $this->get_donation_data_value( 'note', '' ), 
             'post_parent'   => $this->get_donation_data_value( 'donation_plan', 0 ),
-            'post_date'     => $this->get_donation_data_value( 'date', date('Y-m-d h:i:s') ),
+            'post_date_gmt' => $this->get_donation_data_value( 'date_gmt', current_time( 'mysql', true ) ),
             'post_title'    => sprintf( '%s &ndash; %s', $this->get_donor_name(), $this->get_campaign_names() )
-        );                      
-        $core_values[ 'post_date_gmt' ] = get_gmt_from_date( $core_values[ 'post_date' ] );
+        );
+
+        $core_values[ 'post_date' ] = get_date_from_gmt( $core_values[ 'post_date_gmt' ] );
 
         return apply_filters( 'charitable_donation_values_core', $core_values, $this );
     }

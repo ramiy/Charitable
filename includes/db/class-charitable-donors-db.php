@@ -61,16 +61,16 @@ class Charitable_Donors_DB extends Charitable_DB {
 
         $charset_collate = $wpdb->get_charset_collate();
 
-        $sql = "CREATE TABLE IF NOT EXISTS {$this->table_name} (
-                `donor_id` bigint(20) NOT NULL AUTO_INCREMENT,
-                `user_id` bigint(20) NOT NULL,              
-                `email` varchar(100) NOT NULL,
-                `first_name` varchar(255) default '',
-                `last_name` varchar(255) default '',
-                `date_joined` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-                PRIMARY KEY (`donor_id`),
-                KEY `user_id` (`user_id`),                     
-                KEY `email` (`email`)
+        $sql = "CREATE TABLE {$this->table_name} (
+                donor_id bigint(20) NOT NULL AUTO_INCREMENT,
+                user_id bigint(20) NOT NULL,              
+                email varchar(100) NOT NULL,
+                first_name varchar(255) default '',
+                last_name varchar(255) default '',
+                date_joined datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+                PRIMARY KEY  (donor_id),
+                KEY user_id (user_id),                     
+                KEY email (email)
                 ) $charset_collate;";
 
         $this->_create_table( $sql );
