@@ -326,32 +326,43 @@ class Charitable_Upgrade {
 			'post_status' => array_keys( Charitable_Donation::get_valid_donation_statuses() )
 		) );
 
-		// echo '<pre>'; var_dump( $donations ); echo '</pre>';
-		// die;
-
 		if ( count( $donations ) ) {
 
 			foreach ( $donations as $donation ) {
 
-				$date = $donation->post_date;
-				$date_gmt = $donation->post_date_gmt;
-
 				/**
-				 * If both dates are the same, the locale is 0 so continue.
+				 * If the dates are the same, the locale is 0 so continue.
 				 */
-				if ( $date == $date_gmt ) {
+				if ( $donation->post_date == $donation->post_date_gmt ) {
 					continue;
 				}
 
 				/**
-				 * The date & GMT date match, so this looks fine.
+				 * Thankfully, we store the timestamp of the donation in the log,
+				 * so we can use that to correct any incorrect post_date/post_date_gmt
+				 * values.
 				 */
-				if ( $date == get_date_from_gmt( $date_gmt ) ) {
+				$donation_log = get_post_meta( $donation->ID, '_donation_log', true );
+
+				if ( empty( $donation_log ) ) {
 					continue;
 				}
 
+				$time = $donation_log[ 0 ][ 'time' ];
 				
-				// $post_date = get_gmt_from_date();
+				$date_gmt = gmdate( 'Y-m-d H:i:s', $time );				
+
+				if ( $date_gmt == $donation->post_date_gmt ) {
+					continue;
+				}
+
+				$date = get_date_from_gmt( $date_gmt );
+
+				wp_update_post( array(
+					'ID' => $donation->ID,
+					'post_date' => $date,
+					'post_date_gmt' => $date_gmt
+				) );
 			}
 
 			$step++;
