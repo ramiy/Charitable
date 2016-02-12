@@ -269,14 +269,14 @@ class Charitable_Donor {
      * the total donated with this particular donation. Otherwise, this will
      * return the total amount ever donated by the donor.
      *
-     * @param   int $campaign_id    Optional. If set, returns total donated to this particular campaign.
-     * @return  float
+     * @param   int $campaign_id Optional. If set, returns total donated to this particular campaign.
+     * @return  decimal
      * @access  public
      * @since   1.0.0
      */
     public function get_amount( $campaign_id = false ) {
         if ( $this->get_donation() ) {
-            return $this->get_donation_amount();            
+            return $this->get_donation_amount( $campaign_id );            
         }
 
         return $this->get_user()->get_total_donated( $campaign_id );
@@ -285,13 +285,13 @@ class Charitable_Donor {
     /**
      * Return the amount of the donation. 
      *
-     * @param   int $campaign_id
-     * @return  float
+     * @param   int $campaign_id Optional. If set, returns the amount donated to the campaign.
+     * @return  decimal
      * @access  public
      * @since   1.2.0
      */
-    public function get_donation_amount() {
-        return charitable_get_table( 'campaign_donations' )->get_donation_total_amount( $this->donation_id );
+    public function get_donation_amount( $campaign_id = "" ) {
+        return charitable_get_table( 'campaign_donations' )->get_donation_amount( $this->donation_id, $campaign_id );
     }
 }
 

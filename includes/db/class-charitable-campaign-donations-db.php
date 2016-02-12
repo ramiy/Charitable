@@ -249,22 +249,31 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 	}
 
 	/**
-	 * Get the total amount donated in a single donation. 
+	 * Get the amount donated in a single donation. 
 	 *
 	 * @global 	$wpdb
-	 * @param 	int 	$donation_id
-	 * @return 	float
+	 * @param 	int $donation_id
+	 * @param 	int $campaign_id Optional. If set, this will only return the total donated to that campaign.
+	 * @return 	decimal
 	 * @access  public
-	 * @since 	1.0.0
+	 * @since 	1.3.0
 	 */
-	public function get_donation_total_amount( $donation_id ) {
+	public function get_donation_amount( $donation_id, $campaign_id = "" ) {
 		global $wpdb;
+
+		$where_clause = "donation_id = %d";
+		$parameters = array( intval( $donation_id ) );
+
+		if ( ! empty( $campaign_id ) ) {
+			$where_clause .= " AND campaign_id = %d";
+			$parameters[] = intval( $campaign_id );
+		}
 
 		$sql = "SELECT SUM(amount) 
 				FROM $this->table_name 
-				WHERE donation_id = %d;";
+				WHERE $where_clause;";
 
-		$total = $wpdb->get_var( $wpdb->prepare( $sql, intval( $donation_id ) ) );
+		$total = $wpdb->get_var( $wpdb->prepare( $sql, $parameters ) );
 
 		if ( $this->is_comma_decimal() ) {
 			$total = Charitable_Currency::get_instance()->sanitize_database_amount( $total );
@@ -272,6 +281,18 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 
 		return $total;
 	}
+
+	/**
+	 * Get the total amount donated in a single donation. 
+	 *
+	 * @param 	int $donation_id
+	 * @return 	decimal
+	 * @access  public
+	 * @since 	1.0.0
+	 */
+	public function get_donation_total_amount( $donation_id ) {
+		return $this->get_donation_amount( $donation_id );		
+	}	
 
 	/**
 	 * Return an array of 
