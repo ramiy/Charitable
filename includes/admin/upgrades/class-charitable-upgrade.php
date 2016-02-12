@@ -240,48 +240,17 @@ class Charitable_Upgrade {
 		}
 
 		/**
-		 * Deal with old upgrades.
-		 */
-		$log = get_option( $this->upgrade_log_key, false );
-		$last_log = ! is_array( $log ) ? false : end( $log );
-
-		/**
-		 * If we're upgrading from prior to 1.1.0, we'll schedule events and flush rewrite rules.
-		 */
-		if ( false === $last_log || version_compare( $last_log[ 'to' ], '1.1.0', '<' ) ) {
-			Charitable_Cron::schedule_events(); // 1.1.0 upgrade
-			flush_rewrite_rules(); // 1.2.0 upgrade
-		}
-		/**
-		 * If we're upgrade from prior to 1.2.0, we'll just flush the rewrite rules. 
-		 */
-		elseif ( version_compare( $last_log[ 'to' ], '1.2.0', '<' ) ) {
-			flush_rewrite_rules(); // 1.2.0 upgrade
-		}
-
-		/** 
-		 * Update the upgrade log and save all old logs as 'legacy_logs'.
-		 */
-		if ( is_array( $log ) ) {
-			$new_log = array( 'legacy_logs' => array(
-				'time' => time(),
-				'version' => charitable()->get_version(),
-				'logs' => $log
-			) );
-
-			update_option( $this->upgrade_log_key, $new_log );
-		}
-
-		/**
-		 * Next we're going to update the campaign donations table to use DECIMAL for amounts.
+		 * Update the campaign donations table to use DECIMAL for amounts.
 		 *
 		 * @see 	https://github.com/Charitable/Charitable/issues/56
 		 */
 		$table = new Charitable_Campaign_Donations_DB();
 		$table->create_table();
 
+		$this->upgrade_logs();
+
 		$this->finish_upgrade( 'update_upgrade_system' );
-	}
+	}	
 
 	/**
 	 * Fix the donation dates. 
@@ -379,7 +348,64 @@ class Charitable_Upgrade {
 			exit;
 		}
 
+		$this->upgrade_logs();
+
 		$this->finish_upgrade( 'fix_donation_dates' );
+	}
+
+	/**
+	 * Upgrade the logs structure. 
+	 *
+	 * This upgrade routine was added in 1.3.0.
+	 *
+	 * @see  	Charitable_Upgrade::update_upgrade_system()
+	 * @see 	Charitable_upgrade::fix_donation_dates()
+	 *
+	 * @return  void
+	 * @access  public
+	 * @since   1.3.0
+	 */
+	public function upgrade_logs() {
+		/**
+		 * Deal with old upgrades.
+		 */
+		$log = get_option( $this->upgrade_log_key, false );
+
+		/**
+		 * Both of the 1.3 upgrades call this, so we need to make sure it hasn't run yet.
+		 */
+		if ( is_array( $log ) && isset( $log[ 'legacy_logs' ] ) ) {
+			return;
+		}
+
+		$last_log = ! is_array( $log ) ? false : end( $log );
+
+		/**
+		 * If we're upgrading from prior to 1.1.0, we'll schedule events and flush rewrite rules.
+		 */
+		if ( false === $last_log || version_compare( $last_log[ 'to' ], '1.1.0', '<' ) ) {
+			Charitable_Cron::schedule_events(); // 1.1.0 upgrade
+			flush_rewrite_rules(); // 1.2.0 upgrade
+		}
+		/**
+		 * If we're upgrade from prior to 1.2.0, we'll just flush the rewrite rules. 
+		 */
+		elseif ( version_compare( $last_log[ 'to' ], '1.2.0', '<' ) ) {
+			flush_rewrite_rules(); // 1.2.0 upgrade
+		}
+
+		/** 
+		 * Update the upgrade log and save all old logs as 'legacy_logs'.
+		 */
+		if ( is_array( $log ) ) {
+			$new_log = array( 'legacy_logs' => array(
+				'time' => time(),
+				'version' => charitable()->get_version(),
+				'logs' => $log
+			) );
+
+			update_option( $this->upgrade_log_key, $new_log );
+		}
 	}
 
 	/**
