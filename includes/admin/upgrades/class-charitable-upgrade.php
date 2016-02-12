@@ -328,6 +328,12 @@ class Charitable_Upgrade {
 
 		if ( count( $donations ) ) {
 
+			/**
+			 * Prevent donation receipt & admin notifications from getting resent.
+			 */
+			remove_action( 'save_post_' . Charitable::DONATION_POST_TYPE, array( 'Charitable_Email_Donation_Receipt', 'send_with_donation_id' ) );
+			remove_action( 'save_post_' . Charitable::DONATION_POST_TYPE, array( 'Charitable_Email_New_Donation', 'send_with_donation_id' ) );
+
 			foreach ( $donations as $donation ) {
 
 				/**
