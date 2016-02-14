@@ -242,6 +242,7 @@ final class Charitable_Currency {
 			$this->currencies = apply_filters( 'charitable_currencies', array(
 				'AED'	=> sprintf( __( 'Emirati Dirham (%s)', 'charitable' ), $this->get_currency_symbol( 'AED' ) ),
 				'AUD'	=> sprintf( __( 'Australian Dollars (%s)', 'charitable' ), $this->get_currency_symbol( 'AUD' ) ),
+				'ARS'	=> sprintf( __( 'Argentinian Peso (%s)', 'charitable' ), $this->get_currency_symbol( 'ARS' ) ),
 				'BDT'	=> sprintf( __( 'Bangladeshi Taka (%s)', 'charitable' ), $this->get_currency_symbol( 'BDT' ) ),
 				'BRL'	=> sprintf( __( 'Brazilian Real (%s)', 'charitable' ), $this->get_currency_symbol( 'BRL' ) ),
 				'BGN'	=> sprintf( __( 'Bulgarian Lev (%s)', 'charitable' ), $this->get_currency_symbol( 'BGN' ) ),			
@@ -315,6 +316,7 @@ final class Charitable_Currency {
 				$currency_symbol = '&#1083;&#1074;.';
 				break;
 			case 'AUD' :
+			case 'ARS' :
 			case 'CAD' :
 			case 'CLP' :
 			case 'MXN' :
