@@ -71,7 +71,7 @@ final class Charitable_Admin {
 
         require_once( $admin_dir . 'charitable-core-admin-functions.php' );                 
         require_once( $admin_dir . 'class-charitable-meta-box-helper.php' );
-        require_once( $admin_dir . 'class-charitable-admin-pages.php' );
+        require_once( $admin_dir . 'class-charitable-admin-pages.php' );        
 
         /* Campaigns */
         require_once( $admin_dir . 'campaigns/class-charitable-campaign-post-type.php' );
@@ -96,6 +96,10 @@ final class Charitable_Admin {
         require_once( $admin_dir . 'upgrades/class-charitable-upgrade.php' );
         require_once( $admin_dir . 'upgrades/class-charitable-upgrade-page.php' );
         require_once( $admin_dir . 'upgrades/charitable-upgrade-hooks.php' );
+
+        /* Welcome */
+        require_once( $admin_dir . 'welcome-page/class-charitable-welcome-page.php' );
+        require_once( $admin_dir . 'welcome-page/charitable-welcome-page-hooks.php' );
 
         /**
          * We are registering this object only for backwards compatibility. It
@@ -122,9 +126,12 @@ final class Charitable_Admin {
 
         $suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
-        /* Menu styles are loaded everywhere in the Wordpress dashboard. */
+        /* Menu styles are loaded everywhere in the WordPress dashboard. */
         wp_register_style( 'charitable-admin-menu', charitable()->get_path( 'assets', false ) . 'css/charitable-admin-menu' .$suffix . '.css', array(), charitable()->get_version() );
         wp_enqueue_style( 'charitable-admin-menu' );
+
+        /* Admin page styles are registered but only enqueued when necessary. */
+        wp_register_style( 'charitable-admin-pages', charitable()->get_path( 'assets', false ) . 'css/charitable-admin-pages' .$suffix . '.css', array(), charitable()->get_version() );
 
         /* The following styles are only loaded on Charitable screens. */
         $screen = get_current_screen();
