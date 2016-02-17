@@ -171,6 +171,7 @@ class Charitable {
         require_once( $includes_path . 'campaigns/charitable-campaign-functions.php' );
         require_once( $includes_path . 'campaigns/class-charitable-campaign.php' );
         require_once( $includes_path . 'campaigns/class-charitable-campaigns.php' );
+        require_once( $includes_path . 'campaigns/charitable-campaign-hooks.php' );
 
         /* Currency */
         require_once( $includes_path . 'currency/charitable-currency-functions.php' );
@@ -288,8 +289,7 @@ class Charitable {
          * as addons) has a chance to run before the event.
          */
         add_action( 'init', array( $this, 'do_charitable_actions' ), 20 );        
-
-        add_filter( 'charitable_sanitize_campaign_meta', array( 'Charitable_Campaign', 'sanitize_meta' ), 10, 3 );
+        
         add_filter( 'charitable_sanitize_donation_meta', array( 'Charitable_Donation', 'sanitize_meta' ), 10, 2 );        
     }
 

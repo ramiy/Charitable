@@ -381,8 +381,6 @@ class Charitable_Campaign {
     /**
      * Return the campaign status tag. 
      *
-     *  
-     *
      * @return  string
      * @access  public
      * @since   1.0.0
@@ -637,12 +635,7 @@ class Charitable_Campaign {
      * @static
      * @since   1.0.0
      */
-    public static function sanitize_meta( $value, $key, $submitted ) {        
-        add_filter( 'charitable_sanitize_campaign_meta_campaign_goal', array( 'Charitable_Campaign', 'sanitize_campaign_goal' ) );
-        add_filter( 'charitable_sanitize_campaign_meta_campaign_end_date', array( 'Charitable_Campaign', 'sanitize_campaign_end_date' ) );
-        add_filter( 'charitable_sanitize_campaign_meta_campaign_suggested_donations', array( 'Charitable_Campaign', 'sanitize_campaign_suggested_donations' ) );
-        add_filter( 'charitable_sanitize_campaign_meta_campaign_allow_custom_donations', array( 'Charitable_Campaign', 'sanitize_checkbox' ) );
-        add_filter( 'charitable_sanitize_campaign_meta_campaign_description', array( 'Charitable_Campaign', 'sanitize_campaign_description' ) );
+    public static function sanitize_meta( $value, $key, $submitted ) {
         return apply_filters( 'charitable_sanitize_campaign_meta' . $key, $value, $submitted );
     }
 
@@ -747,6 +740,8 @@ class Charitable_Campaign {
      * @since   1.0.0
      */
     public static function sanitize_campaign_description( $value ) {
+        echo '<pre>'; var_dump( $value ); echo '</pre>';
+        die;
         return sanitize_text_field( $value );
     }
 
