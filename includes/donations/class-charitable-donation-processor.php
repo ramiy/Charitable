@@ -93,6 +93,21 @@ class Charitable_Donation_Processor {
 
         return self::$instance;
     }
+    
+    /**
+     * Destroy the Charitable_Donation_Processor instance.
+     *
+     * This is primarily useful for testing purposes, as it allows you to 
+     * create multiple donations in a single request. 
+     *
+     * @return  void
+     * @access  public
+     * @static
+     * @since   1.3.0
+     */
+    public static function destroy() {
+        self::$instance = null;
+    }
 
     /**
      * Return the current campaign. 
