@@ -135,7 +135,10 @@ final class Charitable_Licenses_Settings {
         $licenses = $new_values[ 'licenses' ];
 
         foreach ( $licenses as $product_key => $license ) {
-            if ( ! strlen( $license ) ) {
+            $license = trim( $license );
+
+            if ( empty( $license ) ) {
+                $values[ 'licenses' ][ $product_key ] = "";
                 continue;
             }
 
