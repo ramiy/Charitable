@@ -127,6 +127,36 @@ class Charitable_Upgrade {
 	}
 
 	/**
+	 * Populate the upgrade log when first installing the plugin. 
+	 *
+	 * @return  void
+	 * @access  public
+	 * @since   1.3.0
+	 */
+	public function populate_upgrade_log_on_install() {
+		/**
+		 * If the log already exists, don't change it.
+		 */
+		if ( get_option( $this->upgrade_log_key ) ) {
+			return;
+		}
+
+		$log = array(
+			'install' => array(
+				'version' => Charitable::VERSION,
+				'message' => __( 'Charitable was installed.', 'charitable' )
+			)
+		);
+
+		foreach ( $this->upgrade_actions as $key => $notes ) {
+			$notes[ 'install' ] = true;
+			$log[ $key ] = $notes;
+		}
+
+		add_option( $this->upgrade_log_key, $log );
+	}
+
+	/**
 	 * Check if there is an upgrade that needs to happen and if so, displays a notice to begin upgrading.
 	 *
 	 * @return  void
@@ -283,9 +313,7 @@ class Charitable_Upgrade {
 		 * If there are no donations to update, go ahead and wrap it up right now.
 		 */
 		if ( ! $total ) {
-
 			$this->finish_upgrade( 'fix_donation_dates' );
-
 		}
 
 		$donations = get_posts( array(
