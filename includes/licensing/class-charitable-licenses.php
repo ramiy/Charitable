@@ -84,7 +84,7 @@ class Charitable_Licenses {
     public function update_products() {
         foreach ( $this->get_licenses() as $product_key => $license_details ) {
 
-            if ( empty( $license_details ) ) {
+            if ( ! is_array( $license_details ) ) {
                 continue;
             }
 
