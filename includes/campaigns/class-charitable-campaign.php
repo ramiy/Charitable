@@ -740,8 +740,6 @@ class Charitable_Campaign {
      * @since   1.0.0
      */
     public static function sanitize_campaign_description( $value ) {
-        echo '<pre>'; var_dump( $value ); echo '</pre>';
-        die;
         return sanitize_text_field( $value );
     }
 
