@@ -22,7 +22,7 @@ $install = isset( $_GET[ 'install' ] ) && $_GET[ 'install' ];
         <sup class="version"><?php echo charitable()->get_version() ?></sup>
     </h1>
     <div class="badge">
-        <a href="https://www.wpcharitable.com/?utm_source=welcome-page&utm_medium=wordpress-dashboard&utm_campaign=home&utm_content=icon" target="_blank"><i class="icon-charitable"></i></a>
+        <a href="https://www.wpcharitable.com/?utm_source=welcome-page&amp;utm_medium=wordpress-dashboard&amp;utm_campaign=home&amp;utm_content=icon" target="_blank"><i class="icon-charitable"></i></a>
     </div>
     <div class="intro">
         <?php 
@@ -89,7 +89,7 @@ $install = isset( $_GET[ 'install' ] ) && $_GET[ 'install' ];
         <div class="upgrade">
             <h2><?php _e( 'Upgrade for a price you can afford', 'charitable' ) ?></h2>
             <p><?php _e( 'With Charitable, <strong>you choose how much you pay</strong> to upgrade. Why? Because we think that every great organization deserves awesome fundraising software, regardless of the size of its budget.', 'charitable' ) ?></p>
-            <p><a href="https://www.wpcharitable.com/packages/?utm_source=welcome-page&utm_medium=wordpress-dashboard&utm_campaign=pwyw-packages" class="button-primary">Unlock more features</a></p>
+            <p><a href="https://www.wpcharitable.com/packages/?utm_source=welcome-page&amp;utm_medium=wordpress-dashboard&amp;utm_campaign=pwyw-packages" class="button-primary">Unlock more features</a></p>
         </div>
     </div>
     <div class="column-right">
@@ -97,7 +97,7 @@ $install = isset( $_GET[ 'install' ] ) && $_GET[ 'install' ];
             <img src="<?php echo charitable()->get_path( 'assets', false ) ?>images/reach-mockup.png" alt="<?php _e( 'Screenshot of Reach, a WordPress fundraising theme designed to complement Charitable', 'charitable' ) ?>" title="<?php _e( 'Reach is a WordPress fundraising theme designed to complement Charitable', 'charitable' ) ?>" style="margin-bottom: 21px;" />
             <h2><?php _e( 'Try Reach, a free theme designed for fundraising', 'charitable' ) ?></h2>
             <p><?php _e( 'We built Reach to help non-profits &amp; social entrepreneurs run beautiful online fundraising campaigns. Whether you’re creating a website for your organisation’s peer-to-peer fundraising event or building an online crowdfunding platform, Reach is the perfect starting point.', 'charitable' ) ?></p>
-            <p><a href="#" class="button-primary" style="margin-right: 8px;"><?php _e( 'Download it free', 'charitable' ) ?></a><a href="#" class="button-secondary"><?php _e( 'View demo', 'charitable' ) ?></a></p>
+            <p><a href="https://www.wpcharitable.com/download-reach/?utm_source=welcome-page&amp;utm_medium=wordpress-dashboard&amp;utm_campaign=reach" class="button-primary" style="margin-right: 8px;" target="_blank"><?php _e( 'Download it free', 'charitable' ) ?></a><a href="http://demo.wpcharitable.com/reach/?utm_source=welcome-page&amp;utm_medium=wordpress-dashboard&amp;utm_campaign=reach" class="button-secondary" target="_blank"><?php _e( 'View demo', 'charitable' ) ?></a></p>
             <hr />
             <h2><?php _e( 'Contribute to Charitable', 'charitable' ) ?></h2>
             <p><?php printf( 
