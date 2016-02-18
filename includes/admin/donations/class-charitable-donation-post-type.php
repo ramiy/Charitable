@@ -139,10 +139,16 @@ final class Charitable_Donation_Post_Type {
 
         $valid_statuses = Charitable_Donation::get_valid_donation_statuses();
 
-        $message = sprintf( __( 'Donation status updated from %s to %s.', 'charitable' ), 
-            $valid_statuses[$old_status], 
-            $valid_statuses[$new_status] 
-        );
+        if( $old_status == 'new' ){
+            $message = sprintf( __( 'Donation status set to %s.', 'charitable' ), 
+                $valid_statuses[$new_status] 
+            );
+        } else {
+            $message = sprintf( __( 'Donation status updated from %s to %s.', 'charitable' ), 
+                $valid_statuses[$old_status], 
+                $valid_statuses[$new_status] 
+            );
+        }
 
         Charitable_Donation::update_donation_log( $post->ID, $message );
     }
