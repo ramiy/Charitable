@@ -1,10 +1,10 @@
-=== Charitable - Fundraising & Crowdfunding ===
+=== Charitable - Donation Plugin ===
 Contributors: WPCharitable, ericdaams
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paypal%40164a%2ecom
 Tags: donations, donate, donation plugin, fundraising, fundraising plugin, non-profit, non-profits, charity, churches, commerce, crowdfunding, crowd funding, paypal donations, paypal, stripe, stripe donations, campaigns, gifts, giving, wordpress fundraising, wordpress donations, wordpress donation plugin, peer to peer fundraising, peer to peer fundraiser, peer fundraising, social fundraising
 Requires at least: 4.1
-Tested up to: 4.4
-Stable tag: 1.2.4
+Tested up to: 4.5
+Stable tag: 1.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -12,9 +12,9 @@ Charitable is a powerful, extendable fundraising plugin that gives you full cont
 
 == Description ==
 
-**[Charitable](https://wpcharitable.com/?utm_source=readme&utm_medium=description-tab&utm_content=intro&utm_campaign=plugin-page-referrals)** is the WordPress fundraising alternative for non-profits, built to help non-profits raise money on their own website. 
+**[Charitable](https://www.wpcharitable.com/?utm_source=readme&utm_medium=description-tab&utm_content=intro&utm_campaign=plugin-page-referrals)** is the WordPress fundraising alternative for non-profits, built to help non-profits raise money on their own website. 
 
-You can accept PayPal or offline donations right out of the box, with support for other gateways available as [extensions](https://wpcharitable.com/extensions?utm_source=readme&utm_medium=description-tab&utm_content=intro&utm_campaign=plugin-page-referrals).
+You can accept PayPal or offline donations right out of the box, with support for other gateways available as [extensions](https://www.wpcharitable.com/extensions?utm_source=readme&utm_medium=description-tab&utm_content=intro&utm_campaign=plugin-page-referrals).
 
 = Unlimited fundraising campaigns = 
 
@@ -30,13 +30,13 @@ Install, activate and create your first fundraising campaign in less than 5 minu
 
 = Accept credit card donations = 
 
-By coupling Charitable with our [Stripe extension](https://wpcharitable.com/extensions/charitable-stripe?utm_source=readme&utm_medium=description-tab&utm_content=credit-card-donations&utm_campaign=plugin-page-referrals), you can accept credit card donations directly on your website. Improve your donor conversion rates by keeping them on your website instead of redirecting them to PayPal.
+By coupling Charitable with our [Stripe extension](https://www.wpcharitable.com/extensions/charitable-stripe?utm_source=readme&utm_medium=description-tab&utm_content=credit-card-donations&utm_campaign=plugin-page-referrals), you can accept credit card donations directly on your website. Improve your donor conversion rates by keeping them on your website instead of redirecting them to PayPal.
 
-Want to use a different payment gateway? [Let us know](https://wpcharitable.com/support?utm_source=readme&utm_medium=description-tab&utm_content=credit-card-donations&utm_campaign=plugin-page-referrals).
+Want to use a different payment gateway? [Let us know](https://www.wpcharitable.com/support?utm_source=readme&utm_medium=description-tab&utm_content=credit-card-donations&utm_campaign=plugin-page-referrals).
 
 = Use Peer-to-Peer Fundraising to expand your reach = 
 
-With our [Charitable Ambassadors extension](https://wpcharitable.com/extensions/charitable-ambassadors?utm_source=readme&utm_medium=description-tab&utm_content=peer-to-peer-fundraising&utm_campaign=plugin-page-referrals), you can use peer-to-peer fundraising to leverage your supporters’ network of friends and family. 
+With our [Charitable Ambassadors extension](https://www.wpcharitable.com/extensions/charitable-ambassadors?utm_source=readme&utm_medium=description-tab&utm_content=peer-to-peer-fundraising&utm_campaign=plugin-page-referrals), you can use peer-to-peer fundraising to leverage your supporters’ network of friends and family. 
 
 Ambassadors adds a frontend campaign submission form. People can create fundraisers for your cause or personal causes, allowing you to create a crowdfunding platform powered by Charitable Ambassadors.
 
@@ -54,22 +54,23 @@ Charitable has been designed to work with any well-coded theme, including the de
 
 One size does *not* fit all. That's why we made Charitable an extendable platform. 
 
-* **[Ambassadors](https://wpcharitable.com/extensions/charitable-ambassadors?utm_source=readme&utm_medium=description-tab&utm_content=extensions&utm_campaign=plugin-page-referrals)** - Add peer-to-peer fundraising or crowdfunding to your website, with front-end campaign submission.
+* **[Ambassadors](https://www.wpcharitable.com/extensions/charitable-ambassadors?utm_source=readme&utm_medium=description-tab&utm_content=extensions&utm_campaign=plugin-page-referrals)** - Add peer-to-peer fundraising or crowdfunding to your website, with front-end campaign submission.
 * **[Easy Digital Downloads](https://www.wpcharitable.com/extensions/charitable-easy-digital-downloads-connect/?utm_source=readme&utm_medium=description-tab&utm_content=extensions&utm_campaign=plugin-page-referrals)** - 
 Accept donations with Easy Digital Downloads. Compatible with any EDD payment gateway.
-* **[Stripe](https://wpcharitable.com/extensions/charitable-stripe?utm_source=readme&utm_medium=description-tab&utm_content=extensions&utm_campaign=plugin-page-referrals)** - Accept credit card donations on your website.
+* **[Stripe](https://www.wpcharitable.com/extensions/charitable-stripe?utm_source=readme&utm_medium=description-tab&utm_content=extensions&utm_campaign=plugin-page-referrals)** - Accept credit card donations on your website.
+* **[Authorize.Net](https://www.wpcharitable.com/extensions/charitable-authorize-net?utm_source=readme&utm_medium=description-tab&utm_content=extensions&utm_campaign=plugin-page-referrals)** - Accept credit card donations with Authorize.Net.
 * **[PayUMoney](https://www.wpcharitable.com/extensions/charitable-payu-money/?utm_source=readme&utm_medium=description-tab&utm_content=extensions&utm_campaign=plugin-page-referrals)** - Take donations with PayUMoney, a payment gateway for Indian non-profits and organizations.
-* **[Anonymous Donations](https://wpcharitable.com/extensions/charitable-anonymous-donations?utm_source=readme&utm_medium=description-tab&utm_content=extensions&utm_campaign=plugin-page-referrals)** - Allow people to make donations anonymously.
-* **[User Avatars](https://wpcharitable.com/extensions/charitable-user-avatar?utm_source=readme&utm_medium=description-tab&utm_content=extensions&utm_campaign=plugin-page-referrals)** - Let your donors upload their own profile photo to your site, instead of using their Gravatar profile.
-* **[Simple Updates](https://wpcharitable.com/extensions/charitable-simple-updates?utm_source=readme&utm_medium=description-tab&utm_content=extensions&utm_campaign=plugin-page-referrals)** - Add updates about your fundraising campaigns.
+* **[Anonymous Donations](https://www.wpcharitable.com/extensions/charitable-anonymous-donations?utm_source=readme&utm_medium=description-tab&utm_content=extensions&utm_campaign=plugin-page-referrals)** - Allow people to make donations anonymously.
+* **[User Avatars](https://www.wpcharitable.com/extensions/charitable-user-avatar?utm_source=readme&utm_medium=description-tab&utm_content=extensions&utm_campaign=plugin-page-referrals)** - Let your donors upload their own profile photo to your site, instead of using their Gravatar profile.
+* **[Simple Updates](https://www.wpcharitable.com/extensions/charitable-simple-updates?utm_source=readme&utm_medium=description-tab&utm_content=extensions&utm_campaign=plugin-page-referrals)** - Add updates about your fundraising campaigns.
 
 Looking for more? 
 
-[View all extensions](https://wpcharitable.com/extensions?utm_source=readme&utm_medium=description-tab&utm_content=extensions&utm_campaign=plugin-page-referrals). 
+[View all extensions](https://www.wpcharitable.com/extensions?utm_source=readme&utm_medium=description-tab&utm_content=extensions&utm_campaign=plugin-page-referrals). 
 
 = Get involved =
 
-Join the community on [WP Charitable](https://wpcharitable.com/?utm_source=readme&utm_medium=description-tab&utm_content=get-involved&utm_campaign=plugin-page-referrals). 
+Join the community on [WP Charitable](https://www.wpcharitable.com/?utm_source=readme&utm_medium=description-tab&utm_content=get-involved&utm_campaign=plugin-page-referrals). 
 
 Developers can contribute to Charitable on our [Github repository](https://github.com/Charitable/Charitable).
 
@@ -85,11 +86,11 @@ Developers can contribute to Charitable on our [Github repository](https://githu
 
 You can accept donations with the Offline Donations gateway, which allows your donors to create a donation and make the payment via cheque or bank transfer (you can display your payment details to them).
 
-You can also accept credit card donations with the [Stripe extension](https://wpcharitable.com/extensions/charitable-stripe?utm_source=readme&utm_medium=faq-tab&utm_content=avoid-paypal&utm_campaign=plugin-page-referrals). If you want to use a different payment gateway, [let us know](https://wpcharitable.com/support?utm_source=readme&utm_medium=faq-tab&utm_content=avoid-paypal&utm_campaign=plugin-page-referrals).
+You can also accept credit card donations with the [Stripe extension](https://www.wpcharitable.com/extensions/charitable-stripe?utm_source=readme&utm_medium=faq-tab&utm_content=avoid-paypal&utm_campaign=plugin-page-referrals). If you want to use a different payment gateway, [let us know](https://www.wpcharitable.com/support?utm_source=readme&utm_medium=faq-tab&utm_content=avoid-paypal&utm_campaign=plugin-page-referrals).
 
 = How do I add a grid of campaigns to my page? = 
 
-Easy. Just add `[campaigns]` into your page content. [Read more](https://wpcharitable.com/documentation/the-campaigns-shortcode?utm_source=readme&utm_medium=faq-tab&utm_content=campaigns-shortcode&utm_campaign=plugin-page-referrals).
+Easy. Just add `[campaigns]` into your page content. [Read more](https://www.wpcharitable.com/documentation/the-campaigns-shortcode?utm_source=readme&utm_medium=faq-tab&utm_content=campaigns-shortcode&utm_campaign=plugin-page-referrals).
 
 = Does Charitable support recurring donations? =
 
@@ -111,15 +112,21 @@ You can post in the [support forum](https://wordpress.org/support/plugin/charita
 == Changelog ==
 
 = 1.3.0 = 
+* **THANK YOU**: A massive thank you to the following contributors who have contributed to Charitable 1.3: [@helgatheviking](https://github.com/helgatheviking), [@rafecolton](https://github.com/rafecolton), [@ciegovolador](https://github.com/ciegovolador), [@ElStupid](https://github.com/ElStupid) and [@altatof](httsp://github.com/altatof). 
 * NEW: Export donations to CSV via the WordPress dashboard. Go to Charitable > Donations and click on the Export button to generate your report.
+* NEW: Donations are now processed via AJAX, which results in a smoother donation flow, particularly if you're using modal donations. [See issue](https://github.com/Charitable/Charitable/issues/41)
 * NEW: Added an `id` parameter to the `[campaigns]` shortcode to show just a single campaign's widget.
 * NEW: Dutch & French translations! Major props to @ElStupid (Dutch translation) and @altatof (French translation).
 * NEW: Added custom body classes for the following templates: donation receipt, donation processing and email preview. All body classes are added via a single function: `charitable_add_body_classes()`.
-* Fixed a bug that prevented donations with cents from being stored/displayed correctly when using commas for the currency decimal.
+* Added ARS currency.
+* Fixed a bug that prevented donations with cents from being stored/displayed correctly when using commas for the currency decimal. [See issue](https://github.com/Charitable/Charitable/issues/57)
+* Fixed a bug that let to donations being saved with the incorrect donation time. Run the upgrade routines to fix this in all your existing donations.
 * Removed `charitable_templates_start` hook and deprecated all methods in the `Charitable_Templates` class. If you were calling any of these directly or using the `charitable_templates_start` hook, update your application code. All templates are now loaded via a single method: `Charitable_Templates::template_loader()`. All custom body classes are added via `charitable_add_body_classes()`. `Charitable_Templates::remove_admin_bar_from_widget_template()` has been replaced with `charitable_hide_admin_bar()`. 
 * Fixes a styling bug that caused the progress bar to extend beyond the campaign widget when more than 100% of a campaign's has been raised. [See issue](https://github.com/Charitable/Charitable/issues/47)
 * Fixes a Javascript bug that prevented the $ variable (jQuery) from being defined in certain cases in the admin scripts. 
 * Fixes a clash with Cart66.
+* Fixed a bug in modal donation window. [See issue](https://github.com/Charitable/Charitable/issues/43)
+* Changed the `amount` column in the `wp_charitable_campaign_donations` table to a DECIMAL, instead of FLOAT. [See issue](https://github.com/Charitable/Charitable/issues/56)
 
 = 1.2.4 =  
 * Updated for compatibility with WordPress 4.4.
