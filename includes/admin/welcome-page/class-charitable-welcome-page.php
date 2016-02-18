@@ -132,21 +132,6 @@ class Charitable_Welcome_Page {
 
         return isset( $_GET[ 'is-upgrade' ] ) && $_GET[ 'is-upgrade' ];
     }
-
-    /**
-     * Return the page title. 
-     *
-     * @return  string
-     * @access  public
-     * @since   1.3.0
-     */
-    public function get_page_title() {
-        if ( $this->is_after_upgrade() ) {
-            return __( 'Thanks for Upgrading Charitable', 'charitable' );
-        }   
-
-        return __( 'Thanks for Installing Charitable', 'charitable' );
-    }
 }
 
 endif; // End class_exists check

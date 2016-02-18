@@ -150,6 +150,29 @@ class Charitable_Emails {
     }
 
     /**
+     * Returns a list of the names of currently enabled emails. 
+     *
+     * @return  string[]
+     * @access  public
+     * @since   1.3.0
+     */
+    public function get_enabled_emails_names() {
+        $emails = array();
+
+        foreach ( $this->get_enabled_emails() as $class ) {
+
+            if ( ! class_exists( $class ) ) {
+                continue;
+            }
+
+            $email = new $class;
+            $emails[] = $email->get_name();
+        }
+
+        return $emails;
+    }
+
+    /**
      * Return the email class name for a given email.    
      *
      * @param   string  $email

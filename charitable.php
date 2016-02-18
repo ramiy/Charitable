@@ -653,25 +653,7 @@ class Charitable {
         require_once( $this->get_path( 'includes' ) . 'class-charitable-uninstall.php' );
         new Charitable_Uninstall();
     }
-
-    /**
-     * Perform upgrade routine if necessary. 
-     *
-     * @return  void
-     * @access  private
-     * @since   1.0.0
-     */
-    // private function maybe_upgrade() {
-    //     $db_version = get_option( 'charitable_version' );
-
-    //     if ( $db_version !== self::VERSION ) {      
-
-    //         require_once( $this->get_path( 'admin' ) . 'upgrades/class-charitable-upgrade.php' );
-
-    //         Charitable_Upgrade::upgrade_from( $db_version, self::VERSION );
-    //     }
-    // }
-
+    
     /**
      * If a charitable_action event is triggered, delegate the event using do_action.     
      *

@@ -180,6 +180,24 @@ class Charitable_Gateways {
 	}
 
 	/**
+	 * Returns a text description of the active gateways. 
+	 *
+	 * @return  string[]
+	 * @access  public
+	 * @since   1.3.0
+	 */
+	public function get_active_gateways_names() {
+		$gateways = array();
+
+		foreach ( $this->get_active_gateways() as $id => $class ) {
+			$gateway = new $class;
+			$gateways[] = $gateway->get_name();
+		}
+
+		return $gateways;
+	}
+
+	/**
 	 * Return the gateway class name for a given gateway.	 
 	 *
 	 * @param 	string 	$gateway

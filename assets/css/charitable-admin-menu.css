@@ -32,7 +32,10 @@
   content: "\e603";
   font-family: 'charitable'; }
 
-#adminmenu .menu-icon-campaign div.wp-menu-image:before {
+#adminmenu .menu-icon-campaign .wp-menu-image:before {
+  font-family: charitable !important;
+  content: "\e601"; }
+#adminmenu .toplevel_page_charitable .wp-menu-image:before {
   font-family: charitable !important;
   content: "\e601"; }
 
@@ -51,9 +54,5 @@
 #available-widgets [class*="charitable_campaign_terms_widget"] .widget-title:before {
   content: "\f318";
   top: -4px; }
-
-.toplevel_page_charitable div.wp-menu-image:before {
-  font-family: charitable !important;
-  content: "\e601"; }
 
 /*# sourceMappingURL=charitable-admin-menu.css.map */
