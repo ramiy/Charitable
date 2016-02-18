@@ -55,8 +55,6 @@ final class Charitable_Admin_Pages {
     private function __construct() {
         $this->admin_menu_capability = apply_filters( 'charitable_admin_menu_capability', 'manage_options' );
         $this->admin_menu_parent_page = 'charitable';
-
-        add_action( 'admin_menu', array( $this, 'add_menu' ), 5 );
     }
 
     /**
@@ -153,6 +151,29 @@ final class Charitable_Admin_Pages {
                 'function'      => array( $this, 'render_settings_page' )
             ), 
         ) );
+    }
+
+    /**
+     * Set up the redirect to the welcome page. 
+     *
+     * @return  void
+     * @access  public
+     * @since   1.3.0
+     */
+    public function setup_welcome_redirect() {
+        add_action( 'admin_init', array( self::get_instance(), 'redirect_to_welcome' ) );
+    }
+
+    /**
+     * Redirect to the welcome page. 
+     *
+     * @return  void
+     * @access  public
+     * @since   1.3.0
+     */
+    public function redirect_to_welcome() {
+        wp_safe_redirect( admin_url( 'admin.php?page=charitable&install=true' ) ); 
+        exit;
     }
 
     /**

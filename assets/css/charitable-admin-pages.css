@@ -22,10 +22,10 @@
     text-decoration: none; }
   .charitable-wrap .badge i {
     font-size: 40px; }
-.charitable-wrap .review {
+.charitable-wrap .intro {
   margin-bottom: 21px;
   color: #777; }
-  .charitable-wrap .review .dashicons {
+  .charitable-wrap .intro .dashicons {
     display: inline;
     font-size: 11px; }
 .charitable-wrap .checklist {
@@ -33,7 +33,9 @@
   .charitable-wrap .checklist li {
     margin-bottom: 12px; }
     .charitable-wrap .checklist li::before {
-      margin: 0 4px 0 -4px;
+      position: relative;
+      left: -4px;
+      bottom: -2px;
       font-family: dashicons;
       font-size: 21px;
       vertical-align: bottom; }

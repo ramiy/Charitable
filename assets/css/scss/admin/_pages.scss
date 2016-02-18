@@ -37,7 +37,7 @@
         }
     }
 
-    .review {
+    .intro {
         margin-bottom: 21px;
         color: #777;
 
@@ -53,7 +53,9 @@
         li {
             margin-bottom: 12px;
             &::before {
-                margin: 0 4px 0 -4px;
+                position: relative;
+                left: -4px;
+                bottom: -2px;
                 font-family: dashicons;
                 font-size: 21px;
                 vertical-align: bottom;

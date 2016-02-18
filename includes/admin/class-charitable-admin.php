@@ -97,10 +97,6 @@ final class Charitable_Admin {
         require_once( $admin_dir . 'upgrades/class-charitable-upgrade-page.php' );
         require_once( $admin_dir . 'upgrades/charitable-upgrade-hooks.php' );
 
-        /* Welcome */
-        require_once( $admin_dir . 'welcome-page/class-charitable-welcome-page.php' );
-        require_once( $admin_dir . 'welcome-page/charitable-welcome-page-hooks.php' );
-
         /**
          * We are registering this object only for backwards compatibility. It
          * will be removed in or after Charitable 1.3.

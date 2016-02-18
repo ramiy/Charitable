@@ -13,6 +13,7 @@ $gateways = Charitable_Gateways::get_instance()->get_active_gateways_names();
 $campaigns = wp_count_posts( 'campaign' );
 $campaigns_count = $campaigns->publish + $campaigns->draft + $campaigns->future + $campaigns->pending + $campaigns->private;
 $emails = charitable_get_helper( 'emails' )->get_enabled_emails_names();
+$install = isset( $_GET[ 'install' ] ) && $_GET[ 'install' ];
 
 ?>
 <div class="wrap about-wrap charitable-wrap">
@@ -23,11 +24,18 @@ $emails = charitable_get_helper( 'emails' )->get_enabled_emails_names();
     <div class="badge">
         <a href="https://www.wpcharitable.com/?utm_source=welcome-page&utm_medium=wordpress-dashboard&utm_campaign=home&utm_content=icon" target="_blank"><i class="icon-charitable"></i></a>
     </div>
-    <div class="review">
-        <?php printf( 
-            __( 'Enjoying Charitable? Why not <a href="%s" target="_blank">leave a %s review</a> on WordPress.org? We\'d really appreciate it.', 'charitable' ), 
-            'https://wordpress.org/support/view/plugin-reviews/charitable?rate=5#postform', 
-            '<span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span>' ) ?>
+    <div class="intro">
+        <?php 
+        if ( $install ) : 
+            _e( 'Thank you for installing Charitable!', 'charitable' );
+        else : 
+            printf( 
+                __( 'Enjoying Charitable? Why not <a href="%s" target="_blank">leave a %s review</a> on WordPress.org? We\'d really appreciate it.', 'charitable' ), 
+                'https://wordpress.org/support/view/plugin-reviews/charitable?rate=5#postform', 
+                '<span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span>' 
+            );
+        endif;
+        ?>
     </div>
     <hr />
     <div class="column-left">
@@ -46,7 +54,7 @@ $emails = charitable_get_helper( 'emails' )->get_enabled_emails_names();
                         ) ?>
                     </li>
                 <?php else : ?>
-                    <li class="not-done"><a href="<?php echo admin_url( 'admin.php?page=charitable-settings&tab=gateways' ) ?>"><?php _e( 'Set up your payment gateways', 'charitable' ) ?></a></li>
+                    <li class="not-done"><a href="<?php echo admin_url( 'admin.php?page=charitable-settings&tab=gateways' ) ?>"><?php _e( 'You need to enable a payment gateway', 'charitable' ) ?></a></li>
                 <?php endif ?>
                 <?php if ( $campaigns_count > 0 ) : ?>
                     <li class="done"><?php 
@@ -58,7 +66,7 @@ $emails = charitable_get_helper( 'emails' )->get_enabled_emails_names();
                 <?php else : ?>
                     <li class="not-done"><a href="<?php echo admin_url( 'post-new.php?post_type=campaign' ) ?>"><?php _e( 'Create your first campaign', 'charitable' ) ?></a></li>
                 <?php endif ?>
-                <?php if ( $emails > 0 ) : ?>
+                <?php if ( count( $emails ) > 0 ) : ?>
                     <li class="done"><?php 
                         printf( 
                             _x( 'You have turned on the %s. <a href="%s">Change settings</a>', 'You have activated x and y. Change email settings.', 'charitable' ),
