@@ -111,6 +111,13 @@ You can post in the [support forum](https://wordpress.org/support/plugin/charita
 
 == Changelog ==
 
+= 1.3.1 = 
+* **APOLOGIES**: 1.3.0 introduced a couple of bugs that we failed to pick up on before releasing the update. We have fixed those bugs now and are working on improving the process around how we push out updates, to avoid issues like this in the future. 
+* Removes leftover testing code that prevented campaigns from being created or edited.
+* Format the donation amount so that PayPal can understand it (PayPal doesn't like amounts with more than two decimal places). [See issue](https://github.com/Charitable/Charitable/issues/102) 
+* Prevent PHP notice when making a donation. [See issue](https://github.com/Charitable/Charitable/issues/100)
+* Fixes a bug that prevented the Donate widget from working as expected.
+
 = 1.3.0 = 
 * **THANK YOU**: A massive thank you to the following contributors who have contributed to Charitable 1.3: [@helgatheviking](https://github.com/helgatheviking), [@rafecolton](https://github.com/rafecolton), [@ciegovolador](https://github.com/ciegovolador), [@ElStupid](https://github.com/ElStupid) and [@altatof](httsp://github.com/altatof). 
 * NEW: Export donations to CSV via the WordPress dashboard. Go to Charitable > Donations and click on the Export button to generate your report.
