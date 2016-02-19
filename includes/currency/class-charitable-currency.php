@@ -102,7 +102,7 @@ final class Charitable_Currency {
 	 *
 	 * $50.00 -> 50.00 
 	 *
-	 * @param 	string 		$amount
+	 * @param 	string $amount
 	 * @return 	float
 	 * @access  public
 	 * @since 	1.0.0

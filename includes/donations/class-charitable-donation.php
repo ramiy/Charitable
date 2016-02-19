@@ -133,18 +133,12 @@ class Charitable_Donation {
     /**
      * The amount donated on this donation.
      *
-     * @return  float
+     * @return  decimal
      * @access  public
      * @since   1.0.0
      */
     public function get_total_donation_amount() {
-        $total = $this->get_campaign_donations_db()->get_donation_total_amount( $this->donation_id );
-
-        if ( Charitable_Currency::get_instance()->is_comma_decimal() ) {
-            $total = Charitable_Currency::get_instance()->sanitize_database_amount( $total );
-        }
-
-        return $total;
+        return $this->get_campaign_donations_db()->get_donation_total_amount( $this->donation_id );
     }
 
     /**
