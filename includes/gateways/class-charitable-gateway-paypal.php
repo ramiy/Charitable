@@ -126,9 +126,6 @@ class Charitable_Gateway_Paypal extends Charitable_Gateway {
         $user_data = $processor->get_donation_data_value( 'user' );
         $donation = new Charitable_Donation( $donation_id );
         $transaction_mode = $gateway->get_value( 'transaction_mode' );
-
-        $amount = $donation->get_total_donation_amount();
-        $amount = Charitable_Currency::get_instance()->sanitize_monetary_amount( $amount );
     
         $paypal_args = apply_filters( 'charitable_paypal_redirect_args', array(
             'business'      => $gateway->get_value( 'paypal_email' ),
@@ -141,7 +138,7 @@ class Charitable_Gateway_Paypal extends Charitable_Gateway {
             'country'       => isset( $user_data[ 'country' ] ) ? $user_data[ 'country' ] : '',
             'zip'           => isset( $user_data[ 'postcode' ] ) ? $user_data[ 'postcode' ] : '',
             'invoice'       => $processor->get_donation_data_value( 'donation_key' ),
-            'amount'        => $amount,
+            'amount'        => $donation->get_total_donation_amount( true ),
             'item_name'     => html_entity_decode( $donation->get_campaigns_donated_to(), ENT_COMPAT, 'UTF-8' ),
             'no_shipping'   => '1',
             'shipping'      => '0',
