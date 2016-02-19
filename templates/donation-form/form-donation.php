@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 $form = $view_args[ 'form' ];
 $user_fields = $form->get_user_fields();
 $user = wp_get_current_user();
-$use_ajax = (int) Charitable_Gateways::get_instance()->gateways_support_ajax();
+$use_ajax = 'make_donation' == $form->get_form_action() && (int) Charitable_Gateways::get_instance()->gateways_support_ajax();
 
 if ( ! $form ) {
     return;

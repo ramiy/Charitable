@@ -93,6 +93,17 @@ abstract class Charitable_Form {
 	}
 
 	/**
+	 * Return the form action. 
+	 *
+	 * @return  string
+	 * @access  public
+	 * @since   1.3.1
+	 */
+	public function get_form_action() {
+		return $this->form_action;
+	}
+	
+	/**
 	 * Return the form ID. 
 	 *
 	 * @return 	string
