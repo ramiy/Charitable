@@ -152,8 +152,13 @@ final class Charitable_Public {
             return $open;
         }
 
-        if ( charitable_get_permalink( 'donation_receipt_page' ) || charitable_get_permalink( 'campaign_donation_page' ) ) {
-            return false;
+        $commentless_pages = apply_filters( 'charitable_pages_without_comments', array( array(
+            charitable_get_permalink( 'donation_receipt_page' ),
+            charitable_get_permalink( 'campaign_donation_page' )
+        ) ) );
+
+        if ( in_array( $post_id, $commentless_pages ) ) {
+            $open = false;
         }
 
         return $open;
