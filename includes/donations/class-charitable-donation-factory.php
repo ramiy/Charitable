@@ -57,7 +57,6 @@ class Charitable_Donation_Factory {
 		return new $classname( $the_donation );
 	}
 
-
 	/**
 	 * Create a class name e.g. Charitable_Donation_Type_Class instead of chartiable_donation_type-class.
 	 *
