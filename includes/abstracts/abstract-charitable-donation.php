@@ -157,7 +157,6 @@ abstract class Charitable_Abstract_Donation {
         return $amount;
     }
 
-
     /**
      * Return the campaigns donated to in this donation. 
      *
