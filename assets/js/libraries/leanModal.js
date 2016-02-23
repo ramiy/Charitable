@@ -29,7 +29,7 @@
 
                 $(this).on( 'click', function(e) {
               
-                    var modal_id = $(this).attr( "href" ), 
+                    var modal_id = methods.get_target( $(this) ), 
                         $modal = $( modal_id ), 
                         modal_height, 
                         modal_width;
@@ -66,6 +66,19 @@
              
             });
         }, 
+
+        /**
+         * Return the ID of the modal to open.
+         */
+        get_target : function( $trigger ) {
+            var id = '#' + $trigger.data( 'trigger-modal' );
+
+            if ( 1 === id.length ) {
+                id = $trigger.attr( "href" );
+            }
+
+            return id;
+        },
 
         /**
          * Close modal 

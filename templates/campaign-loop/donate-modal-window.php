@@ -6,6 +6,7 @@
  * 
  * @author  Studio 164a
  * @since   1.0.0
+ * @version 1.3.2
  */
 
 $modal_class = apply_filters( 'charitable_modal_window_class', 'charitable-modal' );
@@ -67,6 +68,8 @@ wp_enqueue_style( 'lean-modal-css' );
                 console.log( response );
             }
         });
+
+        return false;
     });
 })( jQuery );
 </script>

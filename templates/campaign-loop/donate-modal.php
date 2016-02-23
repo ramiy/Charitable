@@ -6,16 +6,17 @@
  *
  * @author  Studio 164a
  * @since   1.2.3
+ * @version 1.3.2
  */
 
 $campaign = $view_args[ 'campaign' ];
 
 ?>
 <div class="campaign-donation">
-    <a data-trigger-modal 
+    <a data-trigger-modal="charitable-donation-form-modal-loop"
         data-campaign-id="<?php echo $campaign->ID ?>"
         class="donate-button button" 
-        href="#charitable-donation-form-modal-loop" 
+        href="<?php echo charitable_get_permalink( 'campaign_donation_page', array( 'campaign_id' => $campaign->ID ) ) ?>" 
         title="<?php echo esc_attr( sprintf( _x( 'Make a donation to %s', 'make a donation to campaign', 'charitable' ), get_the_title( $campaign->ID ) ) ) ?>">
         <?php _e( 'Donate', 'charitable' ) ?>
     </a>

@@ -97,9 +97,9 @@ function charitable_is_page( $page, $args = array() ) {
  * general, you should use charitable_get_permalink() instead since it will
  * take into account permalinks that have been filtered by plugins/themes.
  *
- * @global 	WP_Rewrite 	$wp_rewrite
- * @param 	string 		$url
- * @param 	array 		$args
+ * @global 	WP_Rewrite $wp_rewrite
+ * @param 	string $url
+ * @param 	array $args
  * @return 	string
  * @since 	1.0.0
  */
@@ -107,15 +107,17 @@ function charitable_get_campaign_donation_page_permalink( $url, $args = array() 
 	global $wp_rewrite;
 
 	$campaign_id = isset( $args[ 'campaign_id' ] ) ? $args[ 'campaign_id' ] : get_the_ID();
+    $campaign_url = get_permalink( $campaign_id );
+
+    if ( 'same_page' == charitable_get_option( 'donation_form_display', 'separate_page' ) ) {
+        return $campaign_url;
+    }
 
 	if ( $wp_rewrite->using_permalinks() && ! isset( $_GET[ 'preview' ] ) ) {
-		$url = trailingslashit( get_permalink( $campaign_id ) ) . 'donate/';
+		return trailingslashit( $campaign_url ) . 'donate/';
 	}
-	else {
-		$url = esc_url_raw( add_query_arg( array( 'donate' => 1 ), get_permalink( $campaign_id ) ) );	
-	}
-			
-	return $url;
+
+    return esc_url_raw( add_query_arg( array( 'donate' => 1 ), $campaign_url ) );
 }	
 
 add_filter( 'charitable_permalink_campaign_donation_page', 'charitable_get_campaign_donation_page_permalink', 2, 2 );		
