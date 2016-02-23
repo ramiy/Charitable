@@ -81,6 +81,13 @@ class Charitable {
     private $registry;
 
     /**
+     * Donation factory instance.
+     *
+     * @var Charitable_Donation_Factory
+     */
+    public $donation_factory = null;
+
+    /**
      * Create class instance. 
      * 
      * @since   1.0.0
@@ -124,7 +131,10 @@ class Charitable {
         }
 
         // Set static instance
-        self::$instance = $this;        
+        self::$instance = $this;     
+
+         // Factory to create new donation instances 
+        $this->donation_factory = new Charitable_Donation_Factory();  
 
         $this->maybe_start_ajax();
         
@@ -151,6 +161,7 @@ class Charitable {
         require_once( $includes_path . 'abstracts/class-charitable-form.php' );
         require_once( $includes_path . 'abstracts/class-charitable-query.php' );
         require_once( $includes_path . 'abstracts/class-charitable-start-object.php' );
+        require_once( $includes_path . 'abstracts/abstract-charitable-donation.php' );
         
         /* Functions & Core Classes */
         require_once( $includes_path . 'charitable-core-functions.php' );                
@@ -179,6 +190,7 @@ class Charitable {
         require_once( $includes_path . 'donations/interface-charitable-donation-form.php' );
         require_once( $includes_path . 'donations/class-charitable-donation-processor.php' );
         require_once( $includes_path . 'donations/class-charitable-donation.php' );
+        require_once( $includes_path . 'donations/class-charitable-donation-factory.php' );
         require_once( $includes_path . 'donations/class-charitable-donations.php' );                
         require_once( $includes_path . 'donations/class-charitable-donation-form.php' );    
         require_once( $includes_path . 'donations/class-charitable-donation-amount-form.php' );
