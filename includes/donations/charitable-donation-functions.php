@@ -25,10 +25,16 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  * @since   1.0.0
  */
 function charitable_get_donation( $donation_id, $force = false ) {
+
+	if ( ! did_action( 'charitable_start' ) ) {
+		_doing_it_wrong( __FUNCTION__, __( 'charitable_get_donation should not be called before the charitable_start action.', 'charitable' ), '1.0' );
+		return false;
+	}
+
     $donation = wp_cache_get( $donation_id, 'charitable_donation', $force );
 
     if ( ! $donation ) {
-        $donation = new Charitable_Donation( $donation_id );
+        $donation = charitable()->donation_factory->get_donation( $donation_id );
         wp_cache_set( $donation_id, $donation, 'charitable_donation' );            
     }
 

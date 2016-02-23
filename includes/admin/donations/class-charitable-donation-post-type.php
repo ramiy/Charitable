@@ -152,7 +152,7 @@ final class Charitable_Donation_Post_Type {
 
         $donation = charitable_get_donation( $post );
 
-       $donation->update_donation_log( $message );
+        $donation->update_donation_log( $message );
     }
 
     /**
