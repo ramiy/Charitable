@@ -349,7 +349,11 @@ abstract class Charitable_Email implements Charitable_Email_Interface {
      * @access  public
      * @since   1.0.0
      */
-    public function add_donation_content_fields( $fields ) { 
+    public function add_donation_content_fields( $fields, Charitable_Email $email ) { 
+        if ( ! $this->is_current_email( $email ) ) {
+            return $fields;
+        }
+
         if ( ! in_array( 'donation', $this->object_types ) ) {
             return $fields;
         }
@@ -490,11 +494,17 @@ abstract class Charitable_Email implements Charitable_Email_Interface {
     /**
      * Add donation content fields' fake data for previews.
      *
+     * @param   array $fields
+     * @param   Charitable_Email $email
      * @return  array
      * @access  public
      * @since   1.0.0
      */
-    public function add_preview_donation_content_fields( $fields ) {  
+    public function add_preview_donation_content_fields( $fields, Charitable_Email $email ) {  
+        if ( ! $this->is_current_email( $email ) ) {
+            return $fields;
+        }
+
         if ( ! in_array( 'donation', $this->object_types ) ) {
             return $fields;
         }
@@ -513,11 +523,17 @@ abstract class Charitable_Email implements Charitable_Email_Interface {
     /**
      * Add campaign content fields.   
      *
+     * @param   array $fields
+     * @param   Charitable_Email $email
      * @return  array
      * @access  public
      * @since   1.0.0
      */
-    public function add_campaign_content_fields( $fields ) {
+    public function add_campaign_content_fields( $fields, Charitable_Email $email ) {
+        if ( $email->get_email_id() != $this->get_email_id() ) {
+            return $fields;
+        }
+
         if ( ! in_array( 'campaign', $this->object_types ) ) {
             return $fields;
         }
@@ -725,11 +741,17 @@ abstract class Charitable_Email implements Charitable_Email_Interface {
     /**
      * Add campaign content fields' fake data for previews.
      *
+     * @param   array $fields
+     * @param   Charitable_Email $email
      * @return  array
      * @access  public
      * @since   1.0.0
      */
-    public function add_preview_campaign_content_fields( $fields ) {
+    public function add_preview_campaign_content_fields( $fields, Charitable_Email $email ) {
+        if ( $email->get_email_id() != $this->get_email_id() ) {
+            return $fields;
+        }
+
         if ( ! in_array( 'campaign', $this->object_types ) ) {
             return $fields;
         }
@@ -1028,6 +1050,17 @@ abstract class Charitable_Email implements Charitable_Email_Interface {
         }
 
         return $return;
+    }
+
+    /**
+     * Checks whether the passed email is the same as the current email object. 
+     *
+     * @return  boolean
+     * @access  protected
+     * @since   1.3.2
+     */
+    protected function is_current_email( Charitable_Email $email ) {
+        return $email->get_email_id() == $this->get_email_id();
     }
 
     /**
