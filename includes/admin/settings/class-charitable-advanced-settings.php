@@ -57,7 +57,7 @@ final class Charitable_Advanced_Settings {
     /**
      * Add the advanced tab settings fields. 
      *
-     * @return  array[<string,array>]
+     * @return  array<string,array>
      * @access  public
      * @since   1.0.0
      */
