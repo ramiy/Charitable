@@ -86,7 +86,21 @@ class Charitable_Email_New_Donation extends Charitable_Email {
             'donation' => new Charitable_Donation( $donation_id ) 
         ) );
 
-        $email->send();
+        /**
+         * Don't resend the email.
+         */
+        if ( $email->is_sent_already( $donation_id ) ) {
+            return false;
+        }
+
+        $sent = $email->send();
+
+        /**
+         * Log that the email was sent.
+         */
+        if ( apply_filters( 'charitable_log_email_send', true, self::get_email_id(), $email ) ) {
+            $email->log( $donation_id, $sent );
+        }
 
         return true;
     }

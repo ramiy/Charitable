@@ -76,23 +76,50 @@ class Charitable_Email_Campaign_End extends Charitable_Email {
     public static function send_with_campaign_id( $campaign_id ) {
         if ( ! charitable_get_helper( 'emails' )->is_enabled_email( self::get_email_id() ) ) {
             return false;
-        }
+        }        
 
-        $campaign = new Charitable_Campaign( $campaign_id );        
-        $time_since_ended = $campaign->get_time_since_ended();
+        $email = new Charitable_Email_Campaign_End( array( 
+            'campaign' => new Charitable_Campaign( $campaign_id ) 
+        ) );
 
-        /* If the since since ended is 0 (campaign is still going) or more than 24 hours, return false */
-        if ( $time_since_ended == 0 || $time_since_ended > 86400 ) {
+        /**
+         * Don't resend the email.
+         */
+        if ( $email->is_sent_already( $campaign_id ) ) {
             return false;
         }
 
-        $email = new Charitable_Email_Campaign_End( array( 
-            'campaign' => $campaign 
-        ) );
+        /**
+         * Check whether the campaign expired in the last 24 hours.
+         */
+        if ( ! $email->is_time_to_send() ) {
+            return false;
+        }        
 
-        $email->send();
+        $sent = $email->send();
+
+        /**
+         * Log that the email was sent.
+         */
+        if ( apply_filters( 'charitable_log_email_send', true, self::get_email_id(), $email ) ) {
+            $email->log( $campaign_id, $sent );
+        }        
 
         return true;
+    }
+
+    /**
+     * Returns whether it is time to send the email. 
+     *
+     * This returns true if the campaign has expired in the last 24 hours.
+     *
+     * @return  boolean
+     * @access  public
+     * @since   1.3.2
+     */
+    public function is_time_to_send() {
+        $time_since_ended = $this->get_campaign()->get_time_since_ended();
+        return $time_since_ended > 0 && $time_since_ended <= 86400;
     }
 
     /**

@@ -749,21 +749,66 @@ abstract class Charitable_Email implements Charitable_Email_Interface {
     /**
      * Sends the email.
      *
-     * @return  void
+     * @return  boolean
      * @access  public
      * @since   1.0.0
      */
     public function send() {            
         do_action( 'charitable_before_send_email', $this );        
 
-        wp_mail( 
+        $sent = wp_mail( 
             $this->get_recipient(),
             do_shortcode( $this->get_subject() ),
             $this->build_email(),
             $this->get_headers()
         );
 
-        do_action( 'charitable_after_send_email', $this );
+        do_action( 'charitable_after_send_email', $this, $sent );
+
+        return $sent;
+    }
+
+    /**
+     * Checks whether the email has already been sent. 
+     *
+     * @param   int $campaign_id
+     * @return  boolean
+     * @access  public
+     * @since   1.3.2
+     */
+    public function is_sent_already( $post_id ) {
+        $log = get_post_meta( $post_id, $this->get_log_key(), true );
+
+        if ( is_array( $log ) ) {
+            foreach ( $log as $time => $sent ) {
+                if ( $sent ) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Log that the email was sent.
+     *
+     * @param   int $post_id
+     * @param   boolean $sent
+     * @return  void
+     * @access  public
+     * @since   1.3.2
+     */
+    public function log( $post_id, $sent ) {
+        $log = get_post_meta( $post_id, $this->get_log_key(), true );
+
+        if ( ! $log ) {
+            $log = array();
+        }
+
+        $log[ time() ] = $sent;
+
+        update_post_meta( $post_id, $this->get_log_key(), $log );
     }
 
     /**
@@ -840,6 +885,17 @@ abstract class Charitable_Email implements Charitable_Email_Interface {
         $message = ob_get_clean();
 
         return apply_filters( 'charitable_email_message', $message, $this );
+    }
+
+    /**
+     * Return the meta key used for the log.
+     *
+     * @return  string
+     * @access  protected
+     * @since   1.3.2
+     */
+    protected function get_log_key() {
+        return '_email_' . $this->get_email_id() . '_log';
     }
 
     /**
