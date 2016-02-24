@@ -187,8 +187,6 @@ class Charitable_Customizer {
             return;
         }
             
-        $priority = $panel[ 'priority' ];
-
         $wp_customize->add_panel( $panel_id, array(
             'title' => $panel[ 'title' ],
             'priority' => $panel[ 'priority' ]  
@@ -206,7 +204,7 @@ class Charitable_Customizer {
      * @access  private
      * @since   1.2.0
      */
-    private function add_panel_sections( $panel_id = false, $sections ) {
+    private function add_panel_sections( $panel_id, $sections ) {
         global $wp_customize;
 
         if ( empty( $sections ) ) {
@@ -221,14 +219,14 @@ class Charitable_Customizer {
     /**
      * Adds section & settings
      *
-     * @param   string  $section_id
-     * @param   array   $section
-     * @param   string  $panel
+     * @param   string $section_id
+     * @param   array $section
+     * @param   string $panel
      * @return  void
      * @access  private
      * @since   1.2.0
      */
-    private function add_section( $section_id, $section, $panel = "" ) {
+    private function add_section( $section_id, $section, $panel ) {
         global $wp_customize;
 
         if ( empty( $section ) ) {
@@ -239,9 +237,7 @@ class Charitable_Customizer {
 
         unset( $section[ 'settings' ] );
 
-        if ( ! empty( $panel ) ) {
-            $section[ 'panel' ] = $panel;
-        } 
+        $section[ 'panel' ] = $panel;
 
         $wp_customize->add_section( $section_id, $section );
 

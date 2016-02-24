@@ -226,7 +226,7 @@ final class Charitable_Donation_Post_Type {
         
         switch ( $column_name ) {
             case 'id' : 
-                $display = $donation->ID;
+                $display = $donation->get_number();
                 break;
 
             case 'donor' : 

@@ -64,6 +64,12 @@ abstract class Charitable_Email implements Charitable_Email_Interface {
     protected $recipients;
 
     /**
+     * @var     string
+     * @access  protected
+     */
+    protected $headers;
+
+    /**
      * Create a class instance. 
      *
      * @param   mixed[]  $objects
