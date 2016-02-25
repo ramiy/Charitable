@@ -316,7 +316,8 @@ abstract class Charitable_Email implements Charitable_Email_Interface {
                     __( 'Preview email in your browser', 'charitable' ),
                     __( 'Preview email', 'charitable' )
                 ),
-                'priority'  => 18
+                'priority'  => 18, 
+                'save'      => false
             )
         ) );
 
