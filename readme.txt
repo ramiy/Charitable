@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paypa
 Tags: donations, donate, donation plugin, fundraising, fundraising plugin, non-profit, non-profits, charity, churches, commerce, crowdfunding, crowd funding, paypal donations, paypal, stripe, stripe donations, campaigns, gifts, giving, wordpress fundraising, wordpress donations, wordpress donation plugin, peer to peer fundraising, peer to peer fundraiser, peer fundraising, social fundraising
 Requires at least: 4.1
 Tested up to: 4.5
-Stable tag: 1.3.1
+Stable tag: 1.3.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -12,27 +12,21 @@ Charitable is a powerful, extendable fundraising plugin that gives you full cont
 
 == Description ==
 
-**[Charitable](https://www.wpcharitable.com/?utm_source=readme&utm_medium=description-tab&utm_content=intro&utm_campaign=plugin-page-referrals)** is the WordPress fundraising alternative for non-profits, built to help non-profits raise money on their own website. 
-
-You can accept PayPal or offline donations right out of the box, with support for other gateways available as [extensions](https://www.wpcharitable.com/extensions?utm_source=readme&utm_medium=description-tab&utm_content=intro&utm_campaign=plugin-page-referrals).
-
-= Unlimited fundraising campaigns = 
-
-You can set up as many campaigns as you'd like with Charitable, and you can tailor them to your needs. You can set up suggested donation amounts, allow them to donate as much as they want, or do both.
-
-Need to set a fundraising goal? No problem. 
-
-Running a time-sensitive campaign? Set an end date for your campaign and give it a sense of urgency.
+**[Charitable](https://www.wpcharitable.com/?utm_source=readme&utm_medium=description-tab&utm_content=intro&utm_campaign=plugin-page-referrals)** is the WordPress Fundraising Toolkit. It's a robust, developer-friendly plugin that gives you complete control over your online fundraising.
 
 = Easy to use =
 
 Install, activate and create your first fundraising campaign in less than 5 minutes. With Charitable, adding campaigns is a straightforward, intuitive process. Less time setting up campaigns means more time for you to raise awareness for your campaign.
 
-= Accept credit card donations = 
+= Payment gateway support = 
 
-By coupling Charitable with our [Stripe extension](https://www.wpcharitable.com/extensions/charitable-stripe?utm_source=readme&utm_medium=description-tab&utm_content=credit-card-donations&utm_campaign=plugin-page-referrals), you can accept credit card donations directly on your website. Improve your donor conversion rates by keeping them on your website instead of redirecting them to PayPal.
+PayPal and offline donations are supported out of the box. When you're ready to start accepting donations through a different payment gateway, you can choose one of our premium gateway add-ons: 
 
-Want to use a different payment gateway? [Let us know](https://www.wpcharitable.com/support?utm_source=readme&utm_medium=description-tab&utm_content=credit-card-donations&utm_campaign=plugin-page-referrals).
+* **[Stripe](https://www.wpcharitable.com/extensions/charitable-stripe?utm_source=readme&utm_medium=description-tab&utm_content=extensions&utm_campaign=plugin-page-referrals)**
+* **[Authorize.Net](https://www.wpcharitable.com/extensions/charitable-authorize-net?utm_source=readme&utm_medium=description-tab&utm_content=extensions&utm_campaign=plugin-page-referrals)**
+* **[PayUMoney](https://www.wpcharitable.com/extensions/charitable-payu-money/?utm_source=readme&utm_medium=description-tab&utm_content=extensions&utm_campaign=plugin-page-referrals)**
+
+Need a payment gateway that wasn't listed? [Let us know](https://www.wpcharitable.com/support?utm_source=readme&utm_medium=description-tab&utm_content=credit-card-donations&utm_campaign=plugin-page-referrals).
 
 = Use Peer-to-Peer Fundraising to expand your reach = 
 
@@ -45,6 +39,14 @@ Ambassadors adds a frontend campaign submission form. People can create fundrais
 Other fundraising software charges you for every donation you receive. 
 
 Charitable is different. We won't charge you any transaction fees and you can use Charitable for free.
+
+= Unlimited fundraising campaigns = 
+
+You can set up as many campaigns as you'd like with Charitable, and you can tailor them to your needs. You can set up suggested donation amounts, allow them to donate as much as they want, or do both.
+
+Need to set a fundraising goal? No problem. 
+
+Running a time-sensitive campaign? Set an end date for your campaign and give it a sense of urgency.
 
 = Works with any theme = 
 
@@ -110,6 +112,13 @@ You can post in the [support forum](https://wordpress.org/support/plugin/charita
 6. Setting up Charitable: The Email settings area. 
 
 == Changelog ==
+
+= 1.3.2 = 
+* Fixed a bug that turned comments off everywhere. [#104](https://github.com/Charitable/Charitable/issues/104)
+* Added a better fallback for donations for users with Javascript enabled, when using the modal donation forms. [#60](https://github.com/Charitable/Charitable/issues/60)
+* Avoid sending donation notifications & receipts multiple times when a donation's status is toggled on/off Paid. [#96](https://github.com/Charitable/Charitable/issues/96)
+* Donate button in campaign grids links to the campaign page when the donation form is set up to show on the same page as the campaign. [#107](https://github.com/Charitable/Charitable/issues/107)
+* Fixed a bug that caused invalid shortcode options to show for custom emails sub-classing `Charitable_Email`. [#95](https://github.com/Charitable/Charitable/issues/95)
 
 = 1.3.1 = 
 * **APOLOGIES**: 1.3.0 introduced a couple of bugs that we failed to pick up on before releasing the update. We have fixed those bugs now and are working on improving the process around how we push out updates, to avoid issues like this in the future. 
