@@ -22,7 +22,7 @@ class Charitable_Donation_Factory {
 	 * Get donation.
 	 *
 	 * @param bool $the_donation (default: false)
-	 * @return WC_Order|bool
+	 * @return Charitable_Donation|bool
 	 */
 	public function get_donation( $the_donation = false ) {
 		global $post;
@@ -31,7 +31,7 @@ class Charitable_Donation_Factory {
 			$the_donation = $post;
 		} elseif ( is_numeric( $the_donation ) ) {
 			$the_donation = get_post( $the_donation );
-		} elseif ( $the_donation instanceof WC_Order ) {
+		} elseif ( $the_donation instanceof Charitable_Donation ) {
 			$the_donation = get_post( $the_donation->id );
 		}
 
@@ -53,7 +53,7 @@ class Charitable_Donation_Factory {
 
 
 	/**
-	 * Create a class name e.g. Charitable_Donation_Type_Class instead of WC_donation_type-class.
+	 * Create a class name e.g. Charitable_Donation_Type_Class instead of chartiable_donation_type-class.
 	 * @param  string $donation_type
 	 * @return string|false
 	 */
