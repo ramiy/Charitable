@@ -277,7 +277,7 @@ final class Charitable_Donation_Post_Type {
 
         if ( false === $donation ) {
 
-            $donation = new Charitable_Donation( $post_id );
+            $donation = charitable_get_donation( $post_id );
 
             wp_cache_set( $post_id, $donation, 'charitable_donation' );
 
