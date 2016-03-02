@@ -124,7 +124,7 @@ class Charitable_Gateway_Paypal extends Charitable_Gateway {
         $gateway = new Charitable_Gateway_Paypal();
 
         $user_data = $processor->get_donation_data_value( 'user' );
-        $donation = new Charitable_Donation( $donation_id );
+        $donation = charitable_get_donation( $donation_id );
         $transaction_mode = $gateway->get_value( 'transaction_mode' );
     
         $paypal_args = apply_filters( 'charitable_paypal_redirect_args', array(
@@ -248,7 +248,7 @@ class Charitable_Gateway_Paypal extends Charitable_Gateway {
         }
 
         $gateway        = new Charitable_Gateway_Paypal();
-        $donation       = new Charitable_Donation( $donation_id );
+        $donation       = charitable_get_donation( $donation_id );
 
         if ( 'paypal' != $donation->get_gateway() ) {
             return;
