@@ -125,7 +125,7 @@ class Charitable_Donor {
      */
     public function get_donation() {
         if ( ! isset( $this->donation ) ) {            
-            $this->donation = $this->donation_id ? new Charitable_Donation( $this->donation_id ) : false;
+            $this->donation = $this->donation_id ? charitable_get_donation( $this->donation_id ) : false;
         }
 
         return $this->donation;

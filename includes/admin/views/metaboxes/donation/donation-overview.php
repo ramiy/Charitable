@@ -7,7 +7,7 @@
  */
 global $post;
 
-$donation = new Charitable_Donation( $post );
+$donation = charitable_get_donation( $post );
 $donor = $donation->get_donor();
 
 ?>

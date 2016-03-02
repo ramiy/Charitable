@@ -76,7 +76,7 @@ class Charitable_Email_Donation_Receipt extends Charitable_Email {
         }
 
         $email = new Charitable_Email_Donation_Receipt( array( 
-            'donation' => new Charitable_Donation( $donation_id ) 
+            'donation' => charitable_get_donation( $donation_id ) 
         ) );
 
         /**
