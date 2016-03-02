@@ -198,7 +198,7 @@ final class Charitable_Request {
 		if ( ! isset( $this->donation ) ) {
 
 			$donation_id = $this->get_current_donation_id();
-			$this->donation = $donation_id ? new Charitable_Donation( $donation_id ) : false;
+			$this->donation = $donation_id ? charitable_get_donation( $donation_id ) : false;
 
 		}
 	

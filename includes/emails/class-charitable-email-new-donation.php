@@ -83,7 +83,7 @@ class Charitable_Email_New_Donation extends Charitable_Email {
         }
 
         $email = new Charitable_Email_New_Donation( array( 
-            'donation' => new Charitable_Donation( $donation_id ) 
+            'donation' => charitable_get_donation( $donation_id ) 
         ) );
 
         /**
