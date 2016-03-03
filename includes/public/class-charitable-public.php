@@ -99,7 +99,7 @@ final class Charitable_Public {
             'currency_format_thousand_sep' => esc_attr( charitable_get_option( 'thousands_separator', ',' ) ),
             'currency_format' => esc_attr( charitable_get_currency_helper()->get_accounting_js_format() ), // For accounting.js
             'error_invalid_amount' => sprintf( __( 'You must donate more than %s.', 'charitable' ), charitable_format_money( '0' ) )
-            ) );
+        ) );
 
         $suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 

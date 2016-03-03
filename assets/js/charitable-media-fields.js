@@ -123,6 +123,7 @@
                 selection = get_selection( $wrapper, key );
 
                 console.log( selection );
+
             });
 
             // Finally, open the modal
