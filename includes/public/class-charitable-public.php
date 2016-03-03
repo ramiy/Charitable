@@ -96,7 +96,7 @@ final class Charitable_Public {
             'currency_format_num_decimals' => esc_attr( charitable_get_option( 'decimal_count', 2 ) ),
             'currency_format_decimal_sep' => esc_attr( charitable_get_option( 'decimal_separator', '.' ) ),
             'currency_format_thousand_sep' => esc_attr( charitable_get_option( 'thousands_separator', ',' ) ),
-            'currency_format' => esc_attr( charitable_get_currency_helper()->get_accounting_js_format() ), // For accounting.js
+            'currency_format' => esc_attr( charitable_get_currency_helper()->get_accounting_js_format() ) // For accounting.js
 		) );
 
         $suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
@@ -116,6 +116,9 @@ final class Charitable_Public {
 			wp_register_script( 'lean-modal', charitable()->get_path( 'assets', false ) . 'js/libraries/leanModal' . $suffix . '.js', array( 'jquery' ), charitable()->get_version() );
 			wp_register_style( 'lean-modal-css', charitable()->get_path( 'assets', false ) . 'css/modal' . $suffix .'.css', array(), charitable()->get_version() );
 		}
+
+        /* Media Fields is also registered but NOT enqueued. */
+        wp_register_script( 'charitable-media-fields', charitable()->get_path( 'assets', false ) . 'js/charitable-media-fields' . $suffix . '.js', array( 'jquery' ), charitable()->get_version() );
 	}
 
     /**
