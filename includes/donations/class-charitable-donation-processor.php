@@ -280,9 +280,11 @@ class Charitable_Donation_Processor {
                 'success' => false,
                 'errors' => $errors
             );
-        }
+        }        
 
-        wp_send_json( $response );  
+        wp_send_json( $response );
+
+        exit();
     }
 
     /**
@@ -383,9 +385,12 @@ class Charitable_Donation_Processor {
 
         $this->update_donation_log( $donation_id, __( 'Donation created.', 'charitable' ) );
 
-        if ( ! is_admin() ) {
-            charitable_get_session()->add_donation_key( $this->get_donation_data_value( 'donation_key' ) );
-        }        
+        /**
+         * If we're not in the admin or we're doing AJAX, write to the session.
+         */
+        if ( ! is_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
+            charitable_get_session()->add_donation_key( $this->get_donation_data_value( 'donation_key' ) );            
+        }
 
         /**
          * @hook charitable_after_save_donation
