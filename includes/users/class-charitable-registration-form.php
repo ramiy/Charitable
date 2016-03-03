@@ -69,6 +69,17 @@ class Charitable_Registration_Form extends Charitable_Form {
     }
 
     /**
+     * Return the arguments passed to the shortcode. 
+     *
+     * @return  mixed[]
+     * @access  public
+     * @since   1.4.0
+     */
+    public function get_shortcode_args() {
+        return $this->shortcode_args;
+    }
+
+    /**
      * Profile fields to be displayed.      
      *
      * @return  array
