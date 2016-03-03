@@ -12,6 +12,7 @@
             return attachment_size;
         }
 
+<<<<<<< 48b041893a085be1192da5fc19de619fdd6c75a9
         var get_selection = function( $wrapper, key ) {
             var selection = [];
 
@@ -27,6 +28,9 @@
         };
 
         $( '.charitable-media-upload[data-uploader=1]' ).each( function() {
+=======
+        $( '.charitable-media-upload' ).each( function() {
+>>>>>>> First steps towards supporting picture upload with the picture form field.
             var $this = $( this ),
                 label = $this.data( 'upload-label' ),
                 key = $this.data( 'key' );
@@ -40,7 +44,11 @@
                 .append( '<input type="hidden" name="' + key + '" value="" />' );
         });
 
+<<<<<<< 48b041893a085be1192da5fc19de619fdd6c75a9
         $( '.charitable-media-upload[data-uploader=1] .upload' ).on( 'click', function( event ) {
+=======
+        $( '.charitable-media-upload .upload' ).on( 'click', function( event ) {
+>>>>>>> First steps towards supporting picture upload with the picture form field.
 
             var $this = $( this ),
                 $wrapper = $this.parent( '.charitable-media-upload' ),
@@ -52,8 +60,12 @@
                 key = $wrapper.data( 'key' ),                
                 label = $wrapper.data( 'upload-label' ),
                 button = $wrapper.data( 'upload-button' ),
+<<<<<<< 48b041893a085be1192da5fc19de619fdd6c75a9
                 frame = frames[ key ], 
                 selection = get_selection( $wrapper, key );
+=======
+                frame = frames[ key ];
+>>>>>>> First steps towards supporting picture upload with the picture form field.
 
             event.preventDefault();
 
@@ -72,14 +84,19 @@
                 library: {
                     author: user
                 },
+<<<<<<< 48b041893a085be1192da5fc19de619fdd6c75a9
                 multiple: multiple,
                 displaySettings: false
+=======
+                multiple: multiple
+>>>>>>> First steps towards supporting picture upload with the picture form field.
             });
 
             // When an image is selected, run a callback.
             frame.on( 'select', function() {
 
                 // We set multiple to false so only get one image from the uploader
+<<<<<<< 48b041893a085be1192da5fc19de619fdd6c75a9
                 var length = frame.state().get('selection').length,
                     images = frame.state().get('selection').models,
                     i = 0,
@@ -121,6 +138,24 @@
                 selection = get_selection( $wrapper, key );
 
                 console.log( selection );
+=======
+                var attachment = frame.state().get('selection').first().toJSON();
+
+                // Use attachment.id to get the image preview
+                var image = get_attachment_size( attachment, size, 'thumbnail' );
+
+                console.log( image );
+
+                if ( $img.length > 0 ) {
+                    $img.remove();
+                }
+
+                $wrapper.prepend( '<img src="' + image.url + '" width="' + image.width + '" height="' + image.height + '" />' );                    
+
+                $img = $this.find( 'img' );
+
+                $wrapper.find( 'input[name=' + key + ']' ).val( attachment.id );
+>>>>>>> First steps towards supporting picture upload with the picture form field.
             });
 
             // Finally, open the modal
