@@ -171,7 +171,6 @@ function charitable_get_valid_donation_statuses() {
     ) );
 }   
 
-
 /**
  * Add a message to the donation log. 
  *
@@ -203,8 +202,7 @@ function charitable_get_donation_log( $donation_id ) {
     return is_array( $log ) ? $log : array();
 }
 
-
- /**
+/**
  * Sanitize meta values before they are persisted to the database. 
  *
  * @param   mixed   $value
@@ -230,7 +228,6 @@ function charitable_sanitize_donation_meta( $value, $key ) {
  * @since   1.0.0
  */
 function charitable_flush_campaigns_donation_cache( $donation_id ) {
-
     $campaign_donations = charitable_get_table( 'campaign_donations' )->get_donation_records( $donation_id );
 
     foreach ( $campaign_donations as $campaign_donation ) {
