@@ -30,7 +30,7 @@ class Charitable_Registration_Shortcode {
      * @static
      * @since   1.0.0
      */
-    public static function display( $atts ) {
+    public static function display( $atts = array() ) {
         $defaults = array(
             'logged_in_message' => __( 'You are already logged in!', 'charitable' )
         );
@@ -47,7 +47,7 @@ class Charitable_Registration_Shortcode {
         }
 
         charitable_template( 'shortcodes/registration.php', array( 
-            'form' => new Charitable_Registration_Form( $args ) 
+            'form' => new Charitable_Registration_Form( $args )
         ) );
 
         return apply_filters( 'charitable_registration_shortcode', ob_get_clean() );       
