@@ -284,7 +284,7 @@ class Charitable_Gateway_Paypal extends Charitable_Gateway {
         if ( in_array( $payment_status, array( 'refunded', 'reversed' ) ) ) {
 
             /* It's a partial refund. */
-            if ( $amount < $donation->get_total_donation_amount() ) {
+            if ( $amount < $donation->get_total_donation_amount( true ) ) {
                 $message = sprintf( '%s: #%s', 
                     __( 'Partial PayPal refund processed', 'charitable' ), 
                     isset( $data[ 'parent_txn_id' ] ) ? $data[ 'parent_txn_id' ] : ''
@@ -330,7 +330,7 @@ class Charitable_Gateway_Paypal extends Charitable_Gateway {
         }
 
         /* Verify that the amount in the IPN matches the amount we expected. */
-        if ( $amount < $donation->get_total_donation_amount() ) {
+        if ( $amount < $donation->get_total_donation_amount( true ) ) {
 
             $message = sprintf( '%s %s', __( 'The amount in the IPN response does not match the expected donation amount. IPN data:', 'charitable' ), json_encode( $data ) );
             Charitable_Donation::update_donation_log( $donation_id, $message );
