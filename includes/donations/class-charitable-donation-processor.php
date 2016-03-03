@@ -280,9 +280,11 @@ class Charitable_Donation_Processor {
                 'success' => false,
                 'errors' => $errors
             );
-        }
+        }        
 
-        wp_send_json( $response );  
+        wp_send_json( $response );
+
+        exit();
     }
 
     /**
@@ -383,9 +385,12 @@ class Charitable_Donation_Processor {
 
         $this->update_donation_log( $donation_id, __( 'Donation created.', 'charitable' ) );
 
-        if ( ! is_admin() ) {
+        /**
+         * If we're not in the admin or we're doing AJAX, write to the session.
+         */
+        if ( ! is_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
             charitable_get_session()->add_donation_key( $this->get_donation_data_value( 'donation_key' ) );
-        }        
+        }
 
         /**
          * @hook charitable_after_save_donation
@@ -403,7 +408,7 @@ class Charitable_Donation_Processor {
      * @access  public
      * @since   1.0.0
      */
-    public function save_campaign_donations( $donation_id ) {        
+    public function save_campaign_donations( $donation_id ) {
         $campaigns = $this->get_campaign_donations_data();
 
         foreach ( $campaigns as $campaign ) {
@@ -442,16 +447,16 @@ class Charitable_Donation_Processor {
 
         $meta = apply_filters( 'charitable_donation_meta', $meta, $donation_id, $this );
 
-        foreach ( $meta as $meta_key => $value ) {  
+        foreach ( $meta as $meta_key => $value ) {
             $value = apply_filters( 'charitable_sanitize_donation_meta', $value, $meta_key );
             update_post_meta( $donation_id, $meta_key, $value );
-        }        
+        }
     }
 
     /**
      * Add a message to the donation log. 
      *
-     * @param   string      $message
+     * @param   string $message
      * @return  void
      * @access  public
      * @since   1.0.0
