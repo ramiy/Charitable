@@ -114,7 +114,7 @@ You can post in the [support forum](https://wordpress.org/support/plugin/charita
 == Changelog ==
 
 = 1.3.3 = 
-* 
+* Fixes a bug that prevented donors being able to access their donation receipts after making their donation.
 * Flush rewrite rules after installation to avoid "Page not found" errors.
 
 = 1.3.2 = 
