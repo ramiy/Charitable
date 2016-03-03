@@ -113,6 +113,10 @@ You can post in the [support forum](https://wordpress.org/support/plugin/charita
 
 == Changelog ==
 
+= 1.3.3 = 
+* 
+* Flush rewrite rules after installation to avoid "Page not found" errors.
+
 = 1.3.2 = 
 * Fixed a bug that turned comments off everywhere. [#104](https://github.com/Charitable/Charitable/issues/104)
 * Added a better fallback for donations for users with Javascript enabled, when using the modal donation forms. [#60](https://github.com/Charitable/Charitable/issues/60)

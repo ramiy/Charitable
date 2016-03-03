@@ -58,4 +58,4 @@ add_action( 'admin_menu', array( Charitable_Admin_Pages::get_instance(), 'add_me
  *
  * @see     Charitable_Admin_Pages::redirect_to_welcome()
  */
-add_action( 'charitable_install', array( Charitable_Admin_Pages::get_instance(), 'setup_welcome_redirect' ) );
+add_action( 'charitable_install', array( Charitable_Admin_Pages::get_instance(), 'setup_welcome_redirect' ), 100 );

@@ -28,13 +28,25 @@ class Charitable_Install {
 	 * @access 	public
 	 * @since 	1.0.0
 	 */
-	public function __construct() {		
+	public function __construct() {
 		$this->setup_roles();
 		$this->create_tables();		
 		$this->setup_upgrade_log();
 
 		set_transient( 'charitable_install', 1, 0 );
 	}	
+
+	/**
+	 * Flush rewrite rules. 
+	 *
+	 * @return  void
+	 * @access  public
+	 * @static
+	 * @since   1.3.3
+	 */
+	public static function flush_rewrite_rules() {
+		add_action( 'init', 'flush_rewrite_rules' );
+	}
 
 	/**
 	 * Create wp roles and assign capabilities
