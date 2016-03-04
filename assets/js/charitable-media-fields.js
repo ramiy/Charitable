@@ -21,6 +21,8 @@
                 selection.push( parseInt( this.value ) );
             });
 
+            console.log( selection );
+
             return selection;
         };
 
