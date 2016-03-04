@@ -21,8 +21,6 @@
                 selection.push( parseInt( this.value ) );
             });
 
-            console.log( selection );
-
             return selection;
         };
 
@@ -65,12 +63,16 @@
 
             // Create the media frame.
             frame = wp.media.frames.file_frame = wp.media({
+                frame: 'select',
                 title: label,
                 button: {
                     text: button,
                 },
                 library: {
                     author: user
+                },
+                content: {
+                    AttachmentView: false
                 },
                 multiple: multiple,
                 displaySettings: false
