@@ -21,7 +21,7 @@
                 selection.push( parseInt( this.value ) );
             });
 
-            return selection;
+            console.log( selection );
         };
 
         $( '.charitable-media-upload[data-uploader=1]' ).each( function() {
