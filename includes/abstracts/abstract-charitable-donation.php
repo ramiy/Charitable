@@ -611,6 +611,7 @@ abstract class Charitable_Abstract_Donation {
      * @return  void
      * @access  public
      * @since   1.0.0
+     * @deprecated 1.4.0
      */
     public function flush_campaigns_donation_cache( $donation_id ) {
         _deprecated_function( __METHOD__, '1.4.0', 'charitable_sanitize_donation_meta()' );
