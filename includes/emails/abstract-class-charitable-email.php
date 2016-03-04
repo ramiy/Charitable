@@ -149,7 +149,7 @@ abstract class Charitable_Email implements Charitable_Email_Interface {
      * @since   1.0.0
      */
     public function get_from_address() {
-        return charitable_get_option( 'email_from_address', get_option('admin_email') );
+        return charitable_get_option( 'email_from_email', get_option('admin_email') ););
     }
 
     /**
