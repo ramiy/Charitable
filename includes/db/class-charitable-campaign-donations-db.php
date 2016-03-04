@@ -358,25 +358,32 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 	 * Get total amount donated to a campaign.
 	 *
 	 * @global 	wpdb 	$wpdb
-	 * @param 	int 	$campaign_id
+	 * @param 	int|int[] $campaigns A campaign ID. Optionally, you can pass an array of campaign IDs to get the total of all put together.
 	 * @param 	boolean $include_all
 	 * @return 	int 					
 	 * @since 	1.0.0
 	 */
-	public function get_campaign_donated_amount( $campaign_id, $include_all = false ) {
+	public function get_campaign_donated_amount( $campaigns, $include_all = false ) {
 		global $wpdb;
 
 		$statuses = $include_all ? array() : Charitable_Donation::get_approval_statuses();
 
 		list( $status_clause, $parameters ) = $this->get_donation_status_clause( $statuses );
 
-		array_unshift( $parameters, $campaign_id );
+		if ( is_int( $campaigns ) ) {
+			$campaigns = array( $campaigns );
+		}
+
+		$parameters = array_merge( $campaigns, $parameters );
+
+		$campaigns_placeholders = array_fill( 0, count( $campaigns ), '%d' );
+		$campaigns_placeholders = implode( ', ', $campaigns_placeholders );
 
 		$sql = "SELECT SUM(amount) cd
 				FROM $this->table_name cd
 				INNER JOIN $wpdb->posts p
 				ON p.ID = cd.donation_id
-				WHERE cd.campaign_id = %d
+				WHERE cd.campaign_id IN ( $campaigns_placeholders )
 				$status_clause;";
 
 		$total = $wpdb->get_var( $wpdb->prepare( $sql, $parameters ) );
