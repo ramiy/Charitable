@@ -12,7 +12,21 @@
             return attachment_size;
         }
 
-        $( '.charitable-media-upload' ).each( function() {
+        var get_selection = function( $wrapper, key ) {
+            var selection = [];
+
+            // console.log( $wrapper.find( '[name=' + key + ']' ).add( '[name=' + key + '][]' ) );
+
+            $wrapper.find( 'input' ).each( function() {
+                selection.push( parseInt( this.value ) );
+            });
+
+            console.log( selection );
+
+            return selection;
+        };
+
+        $( '.charitable-media-upload[data-uploader=1]' ).each( function() {
             var $this = $( this ),
                 label = $this.data( 'upload-label' ),
                 key = $this.data( 'key' );
@@ -26,7 +40,7 @@
                 .append( '<input type="hidden" name="' + key + '" value="" />' );
         });
 
-        $( '.charitable-media-upload .upload' ).on( 'click', function( event ) {
+        $( '.charitable-media-upload[data-uploader=1] .upload' ).on( 'click', function( event ) {
 
             var $this = $( this ),
                 $wrapper = $this.parent( '.charitable-media-upload' ),
@@ -38,7 +52,8 @@
                 key = $wrapper.data( 'key' ),                
                 label = $wrapper.data( 'upload-label' ),
                 button = $wrapper.data( 'upload-button' ),
-                frame = frames[ key ];
+                frame = frames[ key ], 
+                selection = get_selection( $wrapper, key );
 
             event.preventDefault();
 
@@ -57,29 +72,55 @@
                 library: {
                     author: user
                 },
-                multiple: multiple
+                multiple: multiple,
+                displaySettings: false
             });
 
             // When an image is selected, run a callback.
             frame.on( 'select', function() {
 
                 // We set multiple to false so only get one image from the uploader
-                var attachment = frame.state().get('selection').first().toJSON();
+                var length = frame.state().get('selection').length,
+                    images = frame.state().get('selection').models,
+                    i = 0,
+                    image;
 
-                // Use attachment.id to get the image preview
-                var image = get_attachment_size( attachment, size, 'thumbnail' );
-
-                console.log( image );
-
-                if ( $img.length > 0 ) {
-                    $img.remove();
+                if ( multiple ) {
+                    $wrapper.find( 'input[name=' + key + ']' ).remove();
                 }
 
-                $wrapper.prepend( '<img src="' + image.url + '" width="' + image.width + '" height="' + image.height + '" />' );                    
+                for ( i; i < length; i++ ) {
+
+                    console.log( images[ i ] );
+
+                    image = get_attachment_size( images[ i ].changed, size, 'thumbnail' );
+
+                    if ( Number.isInteger( size ) ) {
+                        var width = height = size;
+                    }
+                    else {
+                        var width = image.width;
+                        var height = image.height;
+                    }
+
+                    if ( $img.length > 0 ) {
+                        $img.remove();
+                    }
+
+                    $wrapper.prepend( '<img src="' + image.url + '" width="' + width + '" height="' + height + '" />' );
+
+                    if ( multiple ) {
+                        $wrapper.append( '<input type="hidden" name="' + key + '[]" value="' + images[ i ].id + '" />' );
+                    }
+                    else {
+                        $wrapper.find( 'input[name=' + key + ']' ).val( images[ i ].id );
+                    }                    
+                }                
 
                 $img = $this.find( 'img' );
+                selection = get_selection( $wrapper, key );
 
-                $wrapper.find( 'input[name=' + key + ']' ).val( attachment.id );
+                console.log( selection );
             });
 
             // Finally, open the modal
