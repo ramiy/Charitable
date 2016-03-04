@@ -142,19 +142,19 @@ abstract class Charitable_Abstract_Donation {
     /**
      * The amount donated on this donation.
      *
-     * @return  float
+     * @param   boolean $sanitize
+     * @return  decimal
      * @access  public
      * @since   1.0.0
      */
-    public function get_total_donation_amount() {
+    public function get_total_donation_amount( $sanitize = false ) {
+        $amount = $this->get_campaign_donations_db()->get_donation_total_amount( $this->donation_id );
 
-        $total = $this->get_campaign_donations_db()->get_donation_total_amount( $this->donation_id );
-
-        if ( Charitable_Currency::get_instance()->is_comma_decimal() ) {
-            $total = Charitable_Currency::get_instance()->sanitize_database_amount( $total );
+        if ( $sanitize ) {
+            $amount = Charitable_Currency::get_instance()->sanitize_monetary_amount( $amount );
         }
 
-        return $total;
+        return $amount;
     }
 
 
@@ -541,10 +541,10 @@ abstract class Charitable_Abstract_Donation {
      * @return  array
      * @access  public
      * @since   1.0.0
-     * @deprecated 1.3.0
+     * @deprecated 1.4.0
      */
     public function get_valid_donation_statuses() {
-        _deprecated_function( __METHOD__, '1.3.0', 'charitable_get_valid_donation_statuses' );
+        _deprecated_function( __METHOD__, '1.4.0', 'charitable_get_valid_donation_statuses' );
         return charitable_get_valid_donation_statuses();
     }   
 
@@ -554,10 +554,10 @@ abstract class Charitable_Abstract_Donation {
      * @return  boolean
      * @access  public
      * @since   1.0.0
-     * @deprecated 1.3.0
+     * @deprecated 1.4.0
      */
     public function is_valid_donation_status( $status ) {
-        _deprecated_function( __METHOD__, '1.3.0', 'charitable_is_valid_donation_status' );
+        _deprecated_function( __METHOD__, '1.4.0', 'charitable_is_valid_donation_status' );
         return charitable_is_valid_donation_status();
     }
 
@@ -570,10 +570,10 @@ abstract class Charitable_Abstract_Donation {
      * @return  string[]
      * @access  public
      * @since   1.0.0
-     * @deprecated 1.3.0
+     * @deprecated 1.4.0
      */
     public function get_approval_statuses() {
-        _deprecated_function( __METHOD__, '1.3.0', 'charitable_get_approval_statuses' );
+        _deprecated_function( __METHOD__, '1.4.0', 'charitable_get_approval_statuses' );
         return charitable_get_approval_statuses();
     }
 
@@ -583,10 +583,10 @@ abstract class Charitable_Abstract_Donation {
      * @return  boolean
      * @access  public
      * @since   1.0.0
-     * @deprecated 1.3.0
+     * @deprecated 1.4.0
      */
     public function is_approved_status( $status ) {
-        _deprecated_function( __METHOD__, '1.3.0', 'charitable_is_approved_status' );
+        _deprecated_function( __METHOD__, '1.4.0', 'charitable_is_approved_status' );
         return charitable_is_approved_status( $status );
     }
 
@@ -598,10 +598,10 @@ abstract class Charitable_Abstract_Donation {
      * @return  mixed
      * @access  public
      * @since   1.0.0
-     * @deprecated 1.3.0
+     * @deprecated 1.4.0
      */
     public function sanitize_meta( $value, $key ) {
-        _deprecated_function( __METHOD__, '1.3.0', 'charitable_sanitize_donation_meta()' );
+        _deprecated_function( __METHOD__, '1.4.0', 'charitable_sanitize_donation_meta()' );
         return charitable_sanitize_donation_meta( $value, $key );
     }
 
@@ -612,9 +612,10 @@ abstract class Charitable_Abstract_Donation {
      * @return  void
      * @access  public
      * @since   1.0.0
+     * @deprecated 1.4.0
      */
     public function flush_campaigns_donation_cache( $donation_id ) {
-        _deprecated_function( __METHOD__, '1.3.0', 'charitable_sanitize_donation_meta()' );
+        _deprecated_function( __METHOD__, '1.4.0', 'charitable_sanitize_donation_meta()' );
         return charitable_flush_campaigns_donation_cache( $donation_id );
     }
 }
