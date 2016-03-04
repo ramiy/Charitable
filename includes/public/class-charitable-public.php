@@ -93,6 +93,7 @@ final class Charitable_Public {
 	public function wp_enqueue_scripts() {        
 		$vars = apply_filters( 'charitable_javascript_vars', array( 
 			'ajaxurl' => admin_url( 'admin-ajax.php' ),
+            'loading_gif' => charitable()->get_path( 'assets', false ) . '/images/charitable-loading.gif',
             'currency_format_num_decimals' => esc_attr( charitable_get_option( 'decimal_count', 2 ) ),
             'currency_format_decimal_sep' => esc_attr( charitable_get_option( 'decimal_separator', '.' ) ),
             'currency_format_thousand_sep' => esc_attr( charitable_get_option( 'thousands_separator', ',' ) ),
@@ -117,8 +118,14 @@ final class Charitable_Public {
 			wp_register_style( 'lean-modal-css', charitable()->get_path( 'assets', false ) . 'css/modal' . $suffix .'.css', array(), charitable()->get_version() );
 		}
 
-        /* Media Fields is also registered but NOT enqueued. */
-        wp_register_script( 'charitable-media-fields', charitable()->get_path( 'assets', false ) . 'js/charitable-media-fields' . $suffix . '.js', array( 'jquery' ), charitable()->get_version() );
+        /* pupload Fields is also registered but NOT enqueued. */
+        $upload_vars = array(
+            'max_file_uploads_single' => __( 'You may only upload maximum %d file', 'charitable' ),
+            'max_file_uploads_plural' => __( 'You may only upload maximum %d files', 'charitable' ),
+        );
+        
+        wp_register_script( 'charitable-pupload-fields', charitable()->get_path( 'assets', false ) . 'js/charitable-pupload-fields' . $suffix . '.js', array( 'jquery-ui-sortable', 'wp-ajax-response', 'plupload-all' ), charitable()->get_version() );
+        wp_localize_script( 'charitable-pupload-fields', 'CHARITABLE_UPLOAD_VARS', $upload_vars );
 	}
 
     /**
