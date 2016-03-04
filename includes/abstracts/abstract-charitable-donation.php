@@ -148,8 +148,6 @@ abstract class Charitable_Abstract_Donation {
      */
     public function get_total_donation_amount() {
 
-        _deprecated_function( __METHOD__, '1.4.0', 'get_total' );
-
         $total = $this->get_campaign_donations_db()->get_donation_total_amount( $this->donation_id );
 
         if ( Charitable_Currency::get_instance()->is_comma_decimal() ) {
