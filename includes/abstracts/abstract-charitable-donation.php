@@ -76,7 +76,6 @@ abstract class Charitable_Abstract_Donation {
      */
     protected $donor;
 
-
     /**
      * Instantiate a new donation object based off the ID.
      * 
@@ -93,8 +92,7 @@ abstract class Charitable_Abstract_Donation {
             $this->donation_id = $donation;
             $this->donation_data = get_post( $donation );
         }
-    }
-           
+    } 
 
     /**
      * Magic getter.
