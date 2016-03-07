@@ -123,8 +123,9 @@ final class Charitable_Public {
 
         /* pupload Fields is also registered but NOT enqueued. */
         $upload_vars = array(
-            'max_file_uploads_single' => __( 'You may only upload maximum %d file', 'charitable' ),
-            'max_file_uploads_plural' => __( 'You may only upload maximum %d files', 'charitable' ),
+            'remove_image' => _x( 'Remove', 'remove image button text', 'charitable' ),
+            'max_file_uploads_single' => __( 'You can only upload %d file', 'charitable' ),
+            'max_file_uploads_plural' => __( 'You can only upload a maximum of %d files', 'charitable' ),
         );
         
         wp_register_script( 'charitable-pupload-fields', charitable()->get_path( 'assets', false ) . 'js/charitable-pupload-fields' . $suffix . '.js', array( 'jquery-ui-sortable', 'wp-ajax-response', 'plupload-all' ), charitable()->get_version() );
