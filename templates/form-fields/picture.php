@@ -11,6 +11,8 @@ if ( ! isset( $view_args[ 'form' ] ) || ! isset( $view_args[ 'field' ] ) ) {
     return;
 }
 
+$highlight_colour = charitable_get_option( 'highlight_colour', apply_filters( 'charitable_default_highlight_colour', '#f89d35' ) );
+
 $form           = $view_args[ 'form' ];
 $field          = $view_args[ 'field' ];
 $classes        = $view_args[ 'classes' ];
@@ -58,6 +60,27 @@ $params = array(
 );
 
 ?>
+<style>
+.charitable-drag-drop-dropzone.supports-drag-drop, 
+.charitable-drag-drop-image-loader, 
+.charitable-drag-drop-images{ padding: 1em; width: 100%; }
+.charitable-drag-drop-dropzone.supports-drag-drop{ border: 3px dashed #ebebeb; text-align: center; }
+.charitable-drag-drop-dropzone.supports-drag-drop p, 
+.charitable-drag-drop-image-loader .loader-title{ margin: 0 0 0.5em; padding: 0; }
+.charitable-drag-drop-dropzone.supports-drag-drop .charitable-drag-drop-buttons{ margin-bottom: 0; }
+.charitable-drag-drop-image-loader, 
+.charitable-drag-drop-images { border: 1px solid #ebebeb; }
+.charitable-drag-drop-image-loader .loader-title{ font-style: italic; }
+.charitable-drag-drop-image-loader .images{ font-size: 0.85em; }
+.charitable-drag-drop-dropzone.drag-over{ border-color: <?php echo $highlight_colour ?>; }
+.charitable-drag-drop-images{ list-style: none; }
+.charitable-drag-drop-images:empty{ border: none; padding: 0; }
+.charitable-drag-drop-images li{ position: relative; padding: 0; margin: 0 4px 4px 0; display: inline-block; border: 1px solid #ebebeb; }
+.charitable-drag-drop-images li a.remove-image{ position: absolute; top: 0; right: 0; padding: 0 8px; background-color: #f89d35; color: #fff; font-size: 0.8em; border: none; display: none; }
+.charitable-drag-drop-images li:hover{ border: 1px dashed #f89d35; }
+.charitable-drag-drop-images li:hover a.remove-image{ display: block; }
+.charitable-drag-drop-images-1{ padding: 0; border: none; }
+</style>
 <div id="charitable_field_<?php echo $field[ 'key' ] ?>" class="<?php echo $classes ?>">    
     <?php if ( isset( $field[ 'label' ] ) ) : ?>
         <label for="charitable_field_<?php echo $field[ 'key' ] ?>">
