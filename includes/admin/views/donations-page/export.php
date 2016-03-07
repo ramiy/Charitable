@@ -45,7 +45,7 @@ $report_types = $table->get_report_types();
         <label for="charitable-donations-export-status"><?php _e( 'Filter by Status', 'charitable' ) ?></label>
         <select id="charitable-donations-export-status" name="post_status">
             <option value="all" <?php selected( $post_status, 'all' ) ?>><?php _e( 'All', 'charitable' ) ?></option>
-            <?php foreach (Charitable_Donation::get_valid_donation_statuses() as $key => $status) : ?>
+            <?php foreach (charitable_get_valid_donation_statuses() as $key => $status) : ?>
                 <option value="<?php echo esc_attr( $key ) ?>" <?php selected( $post_status, $key ) ?>><?php echo $status ?></option>
             <?php endforeach ?>
         </select>

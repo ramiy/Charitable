@@ -7,7 +7,7 @@
  */
 global $post;
 
-$donation = new Charitable_Donation( $post );
+$donation = charitable_get_donation( $post->ID );
 $donor = $donation->get_donor();
 
 ?>
@@ -64,7 +64,7 @@ $donor = $donation->get_donor();
                 <th><?php _e( 'Change Status', 'charitable' ) ?></th>
                 <td>
                     <select id="change-donation-status" name="post_status">
-                    <?php foreach ( Charitable_Donation::get_valid_donation_statuses() as $status => $label ) : ?>
+                    <?php foreach ( charitable_get_valid_donation_statuses() as $status => $label ) : ?>
                         <option value="<?php echo $status ?>" <?php selected( $status, $donation->get_status() ) ?>><?php echo $label ?></option>
                     <?php endforeach ?>
                     </select>

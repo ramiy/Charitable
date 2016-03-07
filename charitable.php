@@ -3,7 +3,7 @@
  * Plugin Name:         Charitable
  * Plugin URI:          https://www.wpcharitable.com
  * Description:         The WordPress fundraising alternative for non-profits, created to help non-profits raise money on their own website. 
- * Version:             1.3.3
+ * Version:             1.4.0
  * Author:              WP Charitable
  * Author URI:          https://wpcharitable.com
  * Requires at least:   4.1
@@ -26,14 +26,14 @@ if ( ! class_exists( 'Charitable' ) ) :
  * Main Charitable class
  *
  * @class       Charitable
- * @version     1.3.3
+ * @version     1.4.0
  */
 class Charitable {
 
     /**
      * @var     string
      */
-    const VERSION = '1.3.3';
+    const VERSION = '1.4.0';
 
     /**
      * @var     string A date in the format: YYYYMMDD
@@ -81,6 +81,13 @@ class Charitable {
     private $registry;
 
     /**
+     * Donation factory instance.
+     *
+     * @var Charitable_Donation_Factory
+     */
+    public $donation_factory = null;
+
+    /**
      * Create class instance. 
      * 
      * @since   1.0.0
@@ -124,7 +131,10 @@ class Charitable {
         }
 
         // Set static instance
-        self::$instance = $this;        
+        self::$instance = $this;     
+
+         // Factory to create new donation instances 
+        $this->donation_factory = new Charitable_Donation_Factory();  
 
         $this->maybe_start_ajax();
         
@@ -151,6 +161,7 @@ class Charitable {
         require_once( $includes_path . 'abstracts/class-charitable-form.php' );
         require_once( $includes_path . 'abstracts/class-charitable-query.php' );
         require_once( $includes_path . 'abstracts/class-charitable-start-object.php' );
+        require_once( $includes_path . 'abstracts/abstract-charitable-donation.php' );
         
         /* Functions & Core Classes */
         require_once( $includes_path . 'charitable-core-functions.php' );                
@@ -179,6 +190,7 @@ class Charitable {
         require_once( $includes_path . 'donations/interface-charitable-donation-form.php' );
         require_once( $includes_path . 'donations/class-charitable-donation-processor.php' );
         require_once( $includes_path . 'donations/class-charitable-donation.php' );
+        require_once( $includes_path . 'donations/class-charitable-donation-factory.php' );
         require_once( $includes_path . 'donations/class-charitable-donations.php' );                
         require_once( $includes_path . 'donations/class-charitable-donation-form.php' );    
         require_once( $includes_path . 'donations/class-charitable-donation-amount-form.php' );
@@ -286,8 +298,8 @@ class Charitable {
          * We do this on priority 20 so that any functionality that is loaded on init (such 
          * as addons) has a chance to run before the event.
          */
-        add_action( 'init', array( $this, 'do_charitable_actions' ), 20 );                
-        add_filter( 'charitable_sanitize_donation_meta', array( 'Charitable_Donation', 'sanitize_meta' ), 10, 2 );        
+        add_action( 'init', array( $this, 'do_charitable_actions' ), 20 );        
+        add_filter( 'charitable_sanitize_donation_meta', 'charitable_sanitize_donation_meta', 10, 2 );
     }
 
     /**

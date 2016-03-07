@@ -71,12 +71,12 @@ class Charitable_Email_Donation_Receipt extends Charitable_Email {
             return false;
         }
         
-        if ( ! Charitable_Donation::is_approved_status( get_post_status( $donation_id ) ) ) {
+        if ( ! charitable_is_approved_status( get_post_status( $donation_id ) ) ) {
             return false;
         }
 
         $email = new Charitable_Email_Donation_Receipt( array( 
-            'donation' => new Charitable_Donation( $donation_id ) 
+            'donation' => charitable_get_donation( $donation_id ) 
         ) );
 
         /**
