@@ -72,12 +72,22 @@ if ( ! function_exists( 'charitable_plupload_image_upload' ) ) :
 
         wp_update_attachment_metadata( $attachment_id, wp_generate_attachment_metadata( $attachment_id, $file_attr[ 'file' ] ) );
 
-        /**
-         * Save the file ID in the meta.
-         */
-        // add_post_meta( $post_id, $field_id, $attachment_id, false );
+        $size = (string) filter_input( INPUT_POST, 'size' );
+        $max_uploads = (int) filter_input( INPUT_POST, 'max_uploads', FILTER_SANITIZE_NUMBER_INT );
 
-        wp_send_json_success( $attachment_id );
+        if ( ! $size ) {
+            $size = 'thumbnail';
+        }
+        
+        ob_start();
+
+        charitable_template( 'form-fields/picture-preview.php', array( 'image' => $attachment_id, 'field' => array(
+            'key' => $field_id, 
+            'size' => $size, 
+            'max_uploads' => $max_uploads
+        ) ) );
+
+        wp_send_json_success( ob_get_clean() );
     }
 endif;
 
