@@ -121,6 +121,17 @@ class Charitable_Donation_Processor {
     }
 
     /**
+     * Return the donation ID. 
+     *
+     * @return  int
+     * @access  public
+     * @since   1.4.0
+     */
+    public function get_donation_id() {
+        return $this->donation_id;
+    }
+
+    /**
      * Executed when a user first clicks the Donate button on a campaign. 
      *
      * @return  void
@@ -184,6 +195,11 @@ class Charitable_Donation_Processor {
         }
         
         $this->donation_id = $processor->save_donation( $values );
+
+        /**
+         * Set a transient to allow plugins to act on this donation on the next page load.
+         */
+        set_transient( 'charitable_donation_' . charitable_get_session()->get_session_id(), $this );
 
         /**
          * We check whether the gateway is compatible with version 1.3, since Charitable 1.3
@@ -395,8 +411,8 @@ class Charitable_Donation_Processor {
         /**
          * @hook charitable_after_save_donation
          */
-        do_action( 'charitable_after_save_donation', $donation_id, $this );
-    
+        do_action( 'charitable_after_save_donation', $donation_id, $this );        
+
         return $donation_id;
     }
 
@@ -578,30 +594,7 @@ class Charitable_Donation_Processor {
      */
     public function get_ipn_url( $gateway ) {
         return add_query_arg( 'charitable-listener', $gateway, home_url( 'index.php' ) );
-    }
-
-    /**
-     * Checks for calls to our IPN. 
-     *
-     * This method is called on the init hook.
-     *
-     * IPNs in Charitable are structured in this way: charitable-listener=gateway
-     *
-     * @return  boolean True if this is a call to our IPN. False otherwise.
-     * @access  public
-     * @static
-     * @since   1.0.0
-     */
-    public static function ipn_listener() {
-        if ( isset( $_GET[ 'charitable-listener' ] ) ) {
-
-            $gateway = $_GET[ 'charitable-listener' ];
-            do_action( 'charitable_process_ipn_' . $gateway );
-            return true;
-        }
-
-        return false;
-    }
+    }    
 
     /**
      * Redirect the user after the gateway has processed the donation. 

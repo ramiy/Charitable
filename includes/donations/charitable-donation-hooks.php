@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  * donation is not saved to the database yet; it just exists in the user's 
  * session.
  *
- * @see Charitable_Donation_Processor::add_donation_to_session()
+ * @see     Charitable_Donation_Processor::add_donation_to_session()
  */
 add_action( 'charitable_start_donation', array( 'Charitable_Donation_Processor', 'add_donation_to_session' ) );
 
@@ -29,14 +29,14 @@ add_action( 'charitable_start_donation', array( 'Charitable_Donation_Processor',
  *
  * This is when a donation is saved to the database. 
  *
- * @see Charitable_Donation_Processor::make_donation()
+ * @see     Charitable_Donation_Processor::make_donation()
  */
 add_action( 'charitable_make_donation', array( 'Charitable_Donation_Processor', 'process_donation_form_submission' ) );
 
 /**
  * AJAX hook to process a donation.
  *
- * @see Charitable_Donation_Processor::ajax_process_donation_form_submission()
+ * @see     Charitable_Donation_Processor::ajax_process_donation_form_submission()
  */
 add_action( 'wp_ajax_make_donation', array( 'Charitable_Donation_Processor', 'ajax_process_donation_form_submission' ) );
 add_action( 'wp_ajax_nopriv_make_donation', array( 'Charitable_Donation_Processor', 'ajax_process_donation_form_submission' ) );
@@ -48,38 +48,45 @@ add_action( 'wp_ajax_nopriv_make_donation', array( 'Charitable_Donation_Processo
  * is submitted. By default, it just includes the amount to be donated and 
  * the campaign. 
  * 
- * @see Charitable_Donation_Processor::make_donation_streamlined()
+ * @see     Charitable_Donation_Processor::make_donation_streamlined()
  */
 add_action( 'charitable_make_donation_streamlined', array( 'Charitable_Donation_Processor', 'make_donation_streamlined' ) );
 
 /**
  * Donation update.
  * 
- * @see Charitable_Donation::flush_campaigns_donation_cache
+ * @see     Charitable_Donation::flush_campaigns_donation_cache
  */
 add_action( 'save_post_' . Charitable::DONATION_POST_TYPE, array( 'Charitable_Donation', 'flush_campaigns_donation_cache' ) );
 
 /**
  * Delete a donation.
  *
- * @see Charitable_Campaign_Donations_DB::delete_donation()
+ * @see     Charitable_Campaign_Donations_DB::delete_donation()
  */
 add_action( 'deleted_post', array( 'Charitable_Campaign_Donations_DB', 'delete_donation_records' ) );
 
 /**
  * IPN listener. 
  *
- * @see Charitable_Donation_Processor::ipn_listener()
+ * @see     charitable_ipn_listener()
  */
-add_action( 'init', array( 'Charitable_Donation_Processor', 'ipn_listener' ) );
+add_action( 'init', 'charitable_ipn_listener' );
+
+/**
+ * Post donation hook. 
+ *
+ * @see     charitable_is_after_donation()
+ */
+add_action( 'init', 'charitable_is_after_donation' );
 
 /**
  * Handle PayPal gateway payments. 
  *
- * @see Charitable_Gateway_Paypal::validate_donation
- * @see Charitable_Gateway_Paypal::process_donation
- * @see Charitable_Gateway_Paypal::process_ipn
- * @see Charitable_Gateway_Paypal::process_web_accept
+ * @see     Charitable_Gateway_Paypal::validate_donation
+ * @see     Charitable_Gateway_Paypal::process_donation
+ * @see     Charitable_Gateway_Paypal::process_ipn
+ * @see     Charitable_Gateway_Paypal::process_web_accept
  */
 add_filter( 'charitable_validate_donation_form_submission_gateway', array( 'Charitable_Gateway_Paypal', 'validate_donation' ), 10, 3 );
 add_filter( 'charitable_process_donation_paypal', array( 'Charitable_Gateway_Paypal', 'process_donation' ), 10, 3 );
