@@ -17,6 +17,10 @@ $size = isset( $field[ 'size' ] ) ? $field[ 'size' ] : 'thumbnail';
 $multiple = isset( $field[ 'max_uploads' ] ) && $field[ 'max_uploads' ] > 1 ? '[]' : '';
 $is_src = false !== strpos( $image, 'img' );
 
+if ( is_numeric( $size ) ) {
+    $size = array( $size, $size );
+}
+
 ?>
 <li <?php if ( ! $is_src ) : ?>data-attachment-id="<?php echo $image ?>"<?php endif ?>>
     <a href="#" class="remove-image button"><?php _e( 'Remove', 'charitable' ) ?></a>
