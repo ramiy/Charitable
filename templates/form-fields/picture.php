@@ -83,8 +83,7 @@ $params = array(
             <p class="loader-title"><?php _e( 'Uploading...', 'charitable' ) ?></p>
             <ul class="images"></ul>
         </div>
-        <ul id="<?php echo $field[ 'key' ] ?>-dragdrop-images" class="charitable-drag-drop-images charitable-drag-drop-images-<?php echo $max_uploads ?>">
-            <?php 
+        <ul id="<?php echo $field[ 'key' ] ?>-dragdrop-images" class="charitable-drag-drop-images charitable-drag-drop-images-<?php echo $max_uploads ?>"><?php 
             if ( ! empty( $value ) ) : 
                 if ( ! is_array( $value ) ) :
                     $value = array( $value );
@@ -96,7 +95,6 @@ $params = array(
 
                 endforeach;
             endif;
-            ?>
-        </ul>
+        ?></ul>
     </div>
 </div>
