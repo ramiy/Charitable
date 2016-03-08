@@ -11,8 +11,6 @@ if ( ! isset( $view_args[ 'form' ] ) || ! isset( $view_args[ 'field' ] ) ) {
     return;
 }
 
-$highlight_colour = charitable_get_option( 'highlight_colour', apply_filters( 'charitable_default_highlight_colour', '#f89d35' ) );
-
 $form           = $view_args[ 'form' ];
 $field          = $view_args[ 'field' ];
 $classes        = $view_args[ 'classes' ];
@@ -28,6 +26,8 @@ $has_max_uploads = strlen( $value ) && ( $max_uploads == 1 || $value >= $max_upl
 if ( $use_uploader ) {
     wp_enqueue_script( 'charitable-pupload-fields' );
 }
+
+wp_print_styles( 'charitable-pupload-fields' );
 
 $params = array(
     'runtimes'            => 'html5,silverlight,flash,html4',
@@ -58,27 +58,6 @@ $params = array(
 );
 
 ?>
-<style>
-.charitable-drag-drop-dropzone.supports-drag-drop, 
-.charitable-drag-drop-image-loader, 
-.charitable-drag-drop-images{ padding: 1em; width: 100%; }
-.charitable-drag-drop-dropzone.supports-drag-drop{ border: 3px dashed #ebebeb; text-align: center; }
-.charitable-drag-drop-dropzone.supports-drag-drop p, 
-.charitable-drag-drop-image-loader .loader-title{ margin: 0 0 0.5em; padding: 0; }
-.charitable-drag-drop-dropzone.supports-drag-drop .charitable-drag-drop-buttons{ margin-bottom: 0; }
-.charitable-drag-drop-image-loader, 
-.charitable-drag-drop-images { border: 1px solid #ebebeb; }
-.charitable-drag-drop-image-loader .loader-title{ font-style: italic; }
-.charitable-drag-drop-image-loader .images{ font-size: 0.85em; }
-.charitable-drag-drop-dropzone.drag-over{ border-color: <?php echo $highlight_colour ?>; }
-.charitable-drag-drop-images{ list-style: none; }
-.charitable-drag-drop-images:empty{ border: none; padding: 0; }
-.charitable-drag-drop-images li{ position: relative; padding: 0; margin: 0 4px 4px 0; display: inline-block; border: 1px solid #ebebeb; }
-.charitable-drag-drop-images li a.remove-image{ position: absolute; top: 0; right: 0; padding: 0 8px; background-color: #f89d35; color: #fff; font-size: 0.8em; border: none; display: none; }
-.charitable-drag-drop-images li:hover{ border: 1px dashed #f89d35; }
-.charitable-drag-drop-images li:hover a.remove-image{ display: block; }
-.charitable-drag-drop-images-1{ padding: 0; border: none; }
-</style>
 <div id="charitable_field_<?php echo $field[ 'key' ] ?>" class="<?php echo $classes ?>">    
     <?php if ( isset( $field[ 'label' ] ) ) : ?>
         <label for="charitable_field_<?php echo $field[ 'key' ] ?>">
@@ -96,7 +75,9 @@ $params = array(
         <div id="<?php echo $field[ 'key' ] ?>-dragdrop-dropzone" class="charitable-drag-drop-dropzone" <?php if ( $has_max_uploads ) : ?>style="display:none;"<?php endif ?>>
             <p class="charitable-drag-drop-info"><?php _ex( 'Drop images here', 'image upload', 'charitable' ) ?></p>
             <p><?php _ex( 'or', 'image upload', 'charitable' ) ?></p>
-            <p class="charitable-drag-drop-buttons"><input id="<?php echo $field[ 'key' ] ?>-browse-button" type="button" value="<?php _ex( 'Select Files', 'image upload', 'charitable' ) ?>" class="button" /></p>
+            <p class="charitable-drag-drop-buttons">
+                <button id="<?php echo $field[ 'key' ] ?>-browse-button" class="button"><?php _ex( 'Select Files', 'image upload', 'charitable' ) ?></button>
+            </p>
         </div>
         <div class="charitable-drag-drop-image-loader" style="display: none;">
             <p class="loader-title"><?php _e( 'Uploading...', 'charitable' ) ?></p>
