@@ -316,18 +316,20 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 	 * Get an object of all donations on a campaign.
 	 *
 	 * @global 	wpdb 	$wpdb
-	 * @param 	int 	$campaign_id
+	 * @param 	int|int[] $campaign_id
 	 * @return 	object
 	 * @since 	1.0.0
 	 */
 	public function get_donations_on_campaign( $campaign_id ){
 		global $wpdb;
 
+		list( $in, $parameters ) = $this->get_campaigns_clause( $campaign_id );
+
 		$sql = "SELECT * 
 				FROM $this->table_name 
-				WHERE campaign_id = %d;";
+				WHERE campaign_id IN ( $in );";
 
-		$records = $wpdb->get_results( $wpdb->prepare( $sql, $campaign_id ), OBJECT_K );
+		$records = $wpdb->get_results( $wpdb->prepare( $sql, $parameter ), OBJECT_K );
 
 		if ( $this->is_comma_decimal() ) {
             $records = array_map( array( $this, 'sanitize_amounts' ), $records );
@@ -347,11 +349,13 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 	public function get_donation_ids_for_campaign( $campaign_id ){
 		global $wpdb;
 
+		list( $in, $parameters ) = $this->get_campaigns_clause( $campaign_id );
+
 		$sql = "SELECT DISTINCT donation_id 
 				FROM $this->table_name 
-				WHERE campaign_id = %d;";
+				WHERE campaign_id IN ( $in );";
 
-		return $wpdb->get_col( $wpdb->prepare( $sql, intval( $campaign_id ) ) );
+		return $wpdb->get_col( $wpdb->prepare( $sql, $parameters ) );
 	}
 
 	/**
@@ -368,15 +372,17 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 
 		$statuses = $include_all ? array() : Charitable_Donation::get_approval_statuses();
 
-		list( $status_clause, $parameters ) = $this->get_donation_status_clause( $statuses );
+		list( $status_clause, $status_parameters ) = $this->get_donation_status_clause( $statuses );
 
-		array_unshift( $parameters, $campaign_id );
+		list( $campaigns_in, $campaigns_parameters ) = $this->get_campaigns_clause( $campaign_id );
+
+		$parameters = array_merge( $campaigns_parameters, $status_parameters );
 
 		$sql = "SELECT SUM(amount) cd
 				FROM $this->table_name cd
 				INNER JOIN $wpdb->posts p
 				ON p.ID = cd.donation_id
-				WHERE cd.campaign_id = %d
+				WHERE cd.campaign_id IN ( $campaigns_in )
 				$status_clause;";
 
 		$total = $wpdb->get_var( $wpdb->prepare( $sql, $parameters ) );
@@ -399,13 +405,15 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 	public function get_campaign_donors( $campaign_id ) {
 		global $wpdb;
 
+		list( $campaigns_in, $campaigns_parameters ) = $this->get_campaigns_clause( $campaign_id );
+
 		$sql = "SELECT DISTINCT p.post_author as donor_id
 				FROM $this->table_name c
 				INNER JOIN {$wpdb->prefix}posts p
 				ON c.donation_id = p.ID
-				WHERE c.campaign_id = %d;";
+				WHERE c.campaign_id IN ( $campaigns_in );";
 
-		return $wpdb->get_results( $wpdb->prepare( $sql, $campaign_id ), OBJECT_K );
+		return $wpdb->get_results( $wpdb->prepare( $sql, $campaigns_parameters ), OBJECT_K );
 	} 	 
 
 	 /**
@@ -422,14 +430,16 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 
 		$statuses = $include_all ? array() : Charitable_Donation::get_approval_statuses();
 
-		list( $status_clause, $parameters ) = $this->get_donation_status_clause( $statuses );
+		list( $status_clause, $status_parameters ) = $this->get_donation_status_clause( $statuses );
 
-		array_unshift( $parameters, $campaign_id );
+		list( $campaigns_in, $campaigns_parameters ) = $this->get_campaigns_clause( $campaign_id );
+
+		$parameters = array_merge( $campaigns_parameters, $status_parameters );
 
 		$sql = "SELECT COUNT( DISTINCT cd.donor_id ) 
 				FROM $this->table_name cd
 				INNER JOIN $wpdb->posts p ON p.ID = cd.donation_id
-				WHERE cd.campaign_id = %d
+				WHERE cd.campaign_id IN ( $campaigns_in )
 				$status_clause;";
 
 		return $wpdb->get_var( $wpdb->prepare( $sql, $parameters ) );
@@ -632,14 +642,47 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 		}
 
 		$statuses = array_filter( $statuses, array( 'Charitable_Donation', 'is_valid_donation_status' ) );
-		$placeholders = array_fill( 0, count( $statuses ), '%s' );
-		$in = implode( ', ', $placeholders );
+
+		$in = $this->get_in_clause( $statuses, '%s' );		
 
 		$sql = "AND p.post_status IN ( $in )";
 
-		$clause = array( $sql, $statuses );
+		return array( $sql, $statuses );
+	}
 
-		return $clause;
+	/**
+	 * Returns the campaign ID clause. 
+	 *
+	 * @param 	int|int[] $campaigns
+	 * @return  string
+	 * @access  private
+	 * @since   1.0.0
+	 */
+	private function get_campaigns_clause( $campaigns ) {
+		if ( ! is_array( $campaigns ) ) {
+			$campaigns = array( $campaigns );
+		}
+
+		$campaigns = array_filter( $campaigns, 'is_int' );
+
+		$in = $this->get_in_clause( $campaigns, '%d' );
+
+		return array( $in, $campaigns );
+	}
+
+	/**
+	 * Given an array and a placeholder, this returns a string with the correct number of placeholders.
+	 *
+	 * @param 	array $list
+	 * @param 	string $placeholder
+	 * @return  string
+	 * @access  private
+	 * @since   1.4.0
+	 */
+	private function get_in_clause( $list, $placeholder = '%s' ) {
+		$placeholders = array_fill( 0, count( $list ), $placeholder );
+		
+		return implode( ', ', $placeholders );
 	}
 
 	/**
