@@ -34,7 +34,9 @@ $highlight_colour = charitable_get_option( 'highlight_colour', apply_filters( 'c
 }
 
 #charitable-donation-form .donation-amount.selected,
-.charitable-notice {
+.charitable-notice, 
+.charitable-drag-drop-images li:hover a.remove-image,
+.charitable-drag-drop-dropzone.supports-drag-drop.drag-over {
     border-color: <?php echo $highlight_colour ?>;
 }
 </style>
