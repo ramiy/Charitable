@@ -392,7 +392,7 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 		}
 
 		return $total;
-	}	
+	}
 
 	/**
 	 * The users who have donated to the given campaign.

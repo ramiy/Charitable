@@ -188,7 +188,7 @@ class Charitable_Donation_Processor {
         $values = $form->get_donation_values();
         
         $gateway = $values[ 'gateway' ];
-
+    
         /* Validate the gateway values */    
         if ( ! apply_filters( 'charitable_validate_donation_form_submission_gateway', true, $gateway, $values ) ) {
             return false;

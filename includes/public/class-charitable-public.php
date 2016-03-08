@@ -97,6 +97,7 @@ final class Charitable_Public {
             'currency_format_decimal_sep' => esc_attr( charitable_get_option( 'decimal_separator', '.' ) ),
             'currency_format_thousand_sep' => esc_attr( charitable_get_option( 'thousands_separator', ',' ) ),
             'currency_format' => esc_attr( charitable_get_currency_helper()->get_accounting_js_format() ), // For accounting.js
+            'error_invalid_amount' => sprintf( __( 'You must donate more than %s.', 'charitable' ), charitable_format_money( '0' ) )
 		) );
 
         $suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
@@ -107,6 +108,8 @@ final class Charitable_Public {
 		wp_register_script( 'charitable-script', charitable()->get_path( 'assets', false ) . 'js/charitable'. $suffix . '.js', array( 'jquery' ), charitable()->get_version(), true );
         wp_localize_script( 'charitable-script', 'CHARITABLE_VARS', $vars );
         wp_enqueue_script( 'charitable-script' );
+
+        wp_register_script( 'charitable-donation-form', charitable()->get_path( 'assets', false ) . 'js/charitable-donation-form'. $suffix . '.js', array( 'jquery' ), charitable()->get_version(), true );        
 
 		wp_register_style( 'charitable-styles', charitable()->get_path( 'assets', false ) . 'css/charitable' . $suffix .'.css', array(), charitable()->get_version() );
 		wp_enqueue_style( 'charitable-styles' );
