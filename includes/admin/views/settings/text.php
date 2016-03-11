@@ -19,7 +19,8 @@ endif;
     id="<?php printf( 'charitable_settings_%s', implode( '_', $view_args[ 'key' ] ) ) ?>" 
     name="<?php printf( 'charitable_settings[%s]', $view_args[ 'name' ] ) ?>"
     value="<?php echo esc_attr( $value ) ?>" 
-    class="<?php echo esc_attr( $view_args[ 'classes' ] ) ?>" />
+    class="<?php echo esc_attr( $view_args[ 'classes' ] ) ?>" 
+    <?php echo charitable_get_arbitrary_attributes( $view_args ) ?> />
 
 <?php if ( isset( $view_args['help'] ) ) : ?>
 
