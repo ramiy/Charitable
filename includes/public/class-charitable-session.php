@@ -46,16 +46,17 @@ class Charitable_Session {
 	 * @since 	1.0.0
 	 */
 	private function __construct() {	
-		if ( ! defined( 'WP_SESSION_COOKIE' ) )
+		if ( ! defined( 'WP_SESSION_COOKIE' ) ) {
 			define( 'WP_SESSION_COOKIE', 'charitable_session' );
+		}
 
 		if ( ! class_exists( 'Recursive_ArrayAccess' ) ) {
 			require_once( charitable()->get_path( 'includes' ) . 'libraries/wp-session/class-recursive-arrayaccess.php' );
 		}
-		
+
 		if ( ! class_exists( 'WP_Session' ) ) {
 			require_once( charitable()->get_path( 'includes' ) . 'libraries/wp-session/class-wp-session.php' );
-			require_once( charitable()->get_path( 'includes' ) . 'libraries/wp-session/wp-session.php' );			
+			require_once( charitable()->get_path( 'includes' ) . 'libraries/wp-session/wp-session.php' );	
 		}
 
 		/* Set the expiration length & variant of the session */
@@ -89,17 +90,6 @@ class Charitable_Session {
 	 */
 	public function get_session_id() {
 		return $this->session->session_id;
-	}
-
-	/**
-	 * Save session data.
-	 *
-	 * @return 	void
-	 * @access 	public
-	 * @since 	1.4.0
-	 */
-	public function save() {
-		$this->session->write_data();
 	}
 
 	/**

@@ -405,9 +405,7 @@ class Charitable_Donation_Processor {
          * If we're not in the admin or we're doing AJAX, write to the session.
          */
         if ( ! is_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
-            $session = charitable_get_session();
-            $session->add_donation_key( $this->get_donation_data_value( 'donation_key' ) );
-            $session->save();
+            charitable_get_session()->add_donation_key( $this->get_donation_data_value( 'donation_key' ) );
         }
 
         /**
