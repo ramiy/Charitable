@@ -186,7 +186,7 @@ abstract class Charitable_Form {
 	 * @since   1.0.0
 	 */
 	public function increment_index( $increment, $field ) {
-		if ( in_array( $field[ 'type' ], array( 'hidden', 'paragraph' ) )
+		if ( in_array( $field[ 'type' ], array( 'hidden', 'paragraph', 'fieldset' ) )
 			|| ( isset( $field[ 'fullwidth'] ) && $field[ 'fullwidth' ] ) ) {
 			$increment = 0;
 		}
