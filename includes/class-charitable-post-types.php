@@ -198,7 +198,7 @@ final class Charitable_Post_Types {
 
         register_post_status( 'charitable-cancelled', array(
             'label'                     => _x( 'charitable-cancelled', 'Status General Name', 'charitable' ),
-            'label_count'               => _n_noop( 'Cancelled (%s)',  'Cancelled (%s)', 'charitable' ), 
+            'label_count'               => _n_noop( 'Canceled (%s)',  'Canceled (%s)', 'charitable' ), 
             'public'                    => false,
             'show_in_admin_all_list'    => true,
             'show_in_admin_status_list' => true,

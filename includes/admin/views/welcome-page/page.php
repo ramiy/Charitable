@@ -41,7 +41,7 @@ $install = isset( $_GET[ 'install' ] ) && $_GET[ 'install' ];
     <div class="column-left">
         <div class="column-inside">
             <h2><?php _e( 'The WordPress Fundraising Toolkit', 'charitable' ) ?></h2>
-            <p><?php _e( 'Charitable is everything you need to start accepting donations today. PayPal and offline donations work right out of the box, and when your organisation is ready to grow, our extensions give you the tools you need to move forward.', 'charitable' ) ?></p>            
+            <p><?php _e( 'Charitable is everything you need to start accepting donations today. PayPal and offline donations work right out of the box, and when your organization is ready to grow, our extensions give you the tools you need to move forward.', 'charitable' ) ?></p>            
             <hr />
             <h2><?php _e( 'Getting Started', 'charitable' ) ?></h2>
             <ul class="checklist">
@@ -96,7 +96,7 @@ $install = isset( $_GET[ 'install' ] ) && $_GET[ 'install' ];
         <div class="column-inside">            
             <img src="<?php echo charitable()->get_path( 'assets', false ) ?>images/reach-mockup.png" alt="<?php _e( 'Screenshot of Reach, a WordPress fundraising theme designed to complement Charitable', 'charitable' ) ?>" title="<?php _e( 'Reach is a WordPress fundraising theme designed to complement Charitable', 'charitable' ) ?>" style="margin-bottom: 21px;" width="336" height="166" />
             <h2><?php _e( 'Try Reach, a free theme designed for fundraising', 'charitable' ) ?></h2>
-            <p><?php _e( 'We built Reach to help non-profits &amp; social entrepreneurs run beautiful online fundraising campaigns. Whether you’re creating a website for your organisation’s peer-to-peer fundraising event or building an online crowdfunding platform, Reach is the perfect starting point.', 'charitable' ) ?></p>
+            <p><?php _e( 'We built Reach to help non-profits &amp; social entrepreneurs run beautiful online fundraising campaigns. Whether you’re creating a website for your organization’s peer-to-peer fundraising event or building an online crowdfunding platform, Reach is the perfect starting point.', 'charitable' ) ?></p>
             <p><a href="https://www.wpcharitable.com/download-reach/?utm_source=welcome-page&amp;utm_medium=wordpress-dashboard&amp;utm_campaign=reach" class="button-primary" style="margin-right: 8px;" target="_blank"><?php _e( 'Download it free', 'charitable' ) ?></a><a href="http://demo.wpcharitable.com/reach/?utm_source=welcome-page&amp;utm_medium=wordpress-dashboard&amp;utm_campaign=reach" class="button-secondary" target="_blank"><?php _e( 'View demo', 'charitable' ) ?></a></p>
             <hr />
             <h2><?php _e( 'Contribute to Charitable', 'charitable' ) ?></h2>
