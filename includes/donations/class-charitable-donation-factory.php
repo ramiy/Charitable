@@ -54,7 +54,7 @@ class Charitable_Donation_Factory {
 
 	/**
 	 * Create a class name e.g. Charitable_Donation_Type_Class instead of chartiable_donation_type-class.
-	 *
+     *
 	 * @param  string $donation_type
 	 * @return string|false
 	 */

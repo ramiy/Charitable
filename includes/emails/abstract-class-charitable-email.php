@@ -1095,7 +1095,7 @@ abstract class Charitable_Email implements Charitable_Email_Interface {
      */
     public function has_valid_campaign() {
         if ( is_null( $this->campaign ) || ! is_a( $this->campaign, 'Charitable_Campaign' ) ) {
-            _doing_it_wrong( __METHOD__, __( 'You cannot this email without a campaign!', 'charitable' ), '1.0.0' );
+            _doing_it_wrong( __METHOD__, __( 'You cannot send this email without a campaign!', 'charitable' ), '1.0.0' );
             return false;
         }
 

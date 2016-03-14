@@ -15,13 +15,12 @@
         var get_selection = function( $wrapper, key ) {
             var selection = [];
 
-            // console.log( $wrapper.find( '[name=' + key + ']' ).add( '[name=' + key + '][]' ) );
-
             $wrapper.find( 'input' ).each( function() {
                 selection.push( parseInt( this.value ) );
             });
 
             console.log( selection );
+            return selection;
         };
 
         $( '.charitable-media-upload[data-uploader=1]' ).each( function() {

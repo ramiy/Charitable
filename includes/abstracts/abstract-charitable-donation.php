@@ -92,7 +92,7 @@ abstract class Charitable_Abstract_Donation {
             $this->donation_id = $donation;
             $this->donation_data = get_post( $donation );
         }
-    } 
+    }
 
     /**
      * Magic getter.
