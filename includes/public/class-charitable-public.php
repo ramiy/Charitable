@@ -130,6 +130,8 @@ final class Charitable_Public {
         
         wp_register_script( 'charitable-pupload-fields', charitable()->get_path( 'assets', false ) . 'js/charitable-pupload-fields' . $suffix . '.js', array( 'jquery-ui-sortable', 'wp-ajax-response', 'plupload-all' ), charitable()->get_version() );
         wp_localize_script( 'charitable-pupload-fields', 'CHARITABLE_UPLOAD_VARS', $upload_vars );
+
+        wp_register_style( 'charitable-pupload-fields', charitable()->get_path( 'assets', false ) . 'css/charitable-pupload-fields' . $suffix . '.css', array(), charitable()->get_version() );
 	}
 
     /**
