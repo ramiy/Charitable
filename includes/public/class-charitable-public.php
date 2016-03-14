@@ -127,11 +127,10 @@ final class Charitable_Public {
             'max_file_uploads_single' => __( 'You can only upload %d file', 'charitable' ),
             'max_file_uploads_plural' => __( 'You can only upload a maximum of %d files', 'charitable' ),
         );
-        
-        wp_register_script( 'charitable-pupload-fields', charitable()->get_path( 'assets', false ) . 'js/charitable-pupload-fields' . $suffix . '.js', array( 'jquery-ui-sortable', 'wp-ajax-response', 'plupload-all' ), charitable()->get_version() );
-        wp_localize_script( 'charitable-pupload-fields', 'CHARITABLE_UPLOAD_VARS', $upload_vars );
 
         wp_register_style( 'charitable-pupload-fields', charitable()->get_path( 'assets', false ) . 'css/charitable-pupload-fields' . $suffix . '.css', array(), charitable()->get_version() );
+        wp_register_script( 'charitable-pupload-fields', charitable()->get_path( 'assets', false ) . 'js/charitable-pupload-fields' . $suffix . '.js', array( 'jquery-ui-sortable', 'wp-ajax-response', 'plupload-all' ), charitable()->get_version() );
+        wp_localize_script( 'charitable-pupload-fields', 'CHARITABLE_UPLOAD_VARS', $upload_vars );
 	}
 
     /**
