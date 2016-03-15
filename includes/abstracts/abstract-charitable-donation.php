@@ -17,7 +17,6 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  *
  * @since       1.4.0
  */
-
 abstract class Charitable_Abstract_Donation {
     
     /**
