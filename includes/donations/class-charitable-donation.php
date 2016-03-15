@@ -20,7 +20,11 @@ if ( ! class_exists( 'Charitable_Donation' ) ) :
  */
 class Charitable_Donation extends Charitable_Abstract_Donation {
     
-    /** @public string donation type */
+    /** 
+     * @var     string
+     * @access  public 
+     * @since   1.4.0
+     */
     public $donation_type = 'simple';
 
     /**
