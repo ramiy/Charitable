@@ -1,26 +1,129 @@
-CHARITABLE_ADMIN = {};
+CHARITABLE_ADMIN = window.CHARITABLE_ADMIN || {};
 
-CHARITABLE_ADMIN.SetupDatepicker = function( $el ) {
-	var $ = jQuery.noConflict();
+/**
+ * Datepicker
+ */
+( function( exports, $ ){
 
-	$el.datepicker( {
-		dateFormat 	: 'MM d, yy', 
-		minDate 	: $(this).data('min-date') || '',
-		beforeShow	: function( input, inst ) {
-			$('#ui-datepicker-div').addClass('charitable-datepicker-table');
+	if ( ! $.fn.datepicker ) {
+		return;
+	}
+
+	var Datepicker = function( $el ) {
+	
+		this.$el = $el;
+		options = {
+			dateFormat 	: 'MM d, yy', 
+			minDate 	: this.$el.data('min-date') || '',
+			beforeShow	: function( input, inst ) {
+				$('#ui-datepicker-div').addClass('charitable-datepicker-table');
+			}	
 		}
-	} );
 
-	$el.each( function(){				
-		if ( $(this).data('date') ) {
-			$(this).datepicker( 'setDate', $(this).data('date') );
+		this.$el.datepicker( options );
+
+		if ( this.$el.data('date') ) {
+			this.$el.datepicker( 'setDate', this.$el.data('date') );
 		}
 
-		if ( $(this).data('min-date') ) {
-			$(this).datepicker( 'option', 'minDate', $(this).data('min-date') );
+		if ( this.$el.data('min-date') ) {
+			this.$el.datepicker( 'option', 'minDate', this.$el.data('min-date') );
 		}
-	});
-};
+	}
+
+	exports.Datepicker = Datepicker;
+
+})( CHARITABLE_ADMIN, jQuery );
+
+/**
+ * Conditional settings.
+ */
+( function( exports, $ ){
+
+	var Settings = function( $el ) {
+		var triggers = [];
+
+		var toggle_setting = function($setting, $trigger) {
+			var $tr = $setting.parents('tr').first(),
+				value = $setting.data('show-only-if-value'),
+				show = (function(){
+					if ('checked' === value) {
+						return $trigger.is(':checked');
+					}
+					else if ('selected' === value) {
+						return $trigger.selected();
+					}
+					else {
+						return $trigger.val() === value;
+					}
+				})();
+
+			if (show) {
+				$tr.show();
+			}
+			else {
+				$tr.hide();
+			}
+		};
+
+		this.$el = $el;
+
+		this.$el.find( '[data-show-only-if-key]' ).each( function(){
+			var $this = $(this),
+				trigger_id = '#' + $this.data('show-only-if-key');
+
+			if ( 'undefined' === typeof triggers[trigger_id] ) {
+				triggers[trigger_id] = [];
+			}
+
+			triggers[trigger_id].push( $this );
+		});
+
+		for ( trigger in triggers ) {
+			var $trigger = $(trigger);			
+
+			if ( ! triggers.hasOwnProperty( trigger ) ) {
+				continue;
+			}
+
+			$trigger.on( 'change', function() {
+				var settings = triggers[trigger];
+				
+				for ( setting_key in triggers[trigger] ) {
+				
+					if ( ! triggers[trigger].hasOwnProperty( setting_key ) ) {
+						continue;
+					}
+
+					toggle_setting( triggers[trigger][setting_key], $trigger );
+				};
+
+				
+
+				// console.log(triggers[id]);
+
+				// triggers[id].each( function(){
+				// 	console.log(this);
+
+				// 	toggle_setting(this, show);
+				// });
+
+				// if (show) {
+				// 	$tr.show();
+				// }
+				// else {
+				// 	$tr.hide();
+				// }
+
+			}).change();
+		};		
+	};	
+
+	exports.Settings = Settings;
+
+})( CHARITABLE_ADMIN, jQuery );
+
+
 
 ( function($){
 
@@ -79,7 +182,7 @@ CHARITABLE_ADMIN.SetupDatepicker = function( $el ) {
 				reindex_rows();
 			}
 
-	    });
+		});
 	}
 		
 	var add_suggested_amount_row = function( $button ) {
@@ -130,9 +233,15 @@ CHARITABLE_ADMIN.SetupDatepicker = function( $el ) {
 
 	$(document).ready( function(){
 
-		if ( $.fn.datepicker ) {
-			CHARITABLE_ADMIN.SetupDatepicker( $('.charitable-datepicker') );			
+		if ( CHARITABLE_ADMIN.Datepicker ) {
+			$( '.charitable-datepicker' ).each( function() {
+				CHARITABLE_ADMIN.Datepicker( $(this ) ); 
+			});
 		}
+
+		$( '#charitable-settings' ).each( function(){
+			CHARITABLE_ADMIN.Settings( $(this) );
+		});
 
 		$('body.post-type-campaign .handlediv, body.post-type-donation .handlediv').remove();
 		$('body.post-type-campaign .hndle, body.post-type-donation .hndle').removeClass( 'hndle ui-sortable-handle' ).addClass( 'postbox-title' );
@@ -168,24 +277,24 @@ CHARITABLE_ADMIN.SetupDatepicker = function( $el ) {
 				};
 
 			$.ajax({
-	            type: "POST",
-	            data: data,
-	            dataType: "json",
-	            url: ajaxurl,
-	            xhrFields: {
-	                withCredentials: true
-	            },
-	            success: function (response) {
-	            	if ( response.deleted ) {
-	            		$block.remove();
-	            	}
-	            }
-	        }).fail(function (data) {
-	            if ( window.console && window.console.log ) {
-	            	console.log( 'failture' );
-	                console.log( data );
-	            }
-	        });
+				type: "POST",
+				data: data,
+				dataType: "json",
+				url: ajaxurl,
+				xhrFields: {
+					withCredentials: true
+				},
+				success: function (response) {
+					if ( response.deleted ) {
+						$block.remove();
+					}
+				}
+			}).fail(function (data) {
+				if ( window.console && window.console.log ) {
+					console.log( 'failture' );
+					console.log( data );
+				}
+			});
 
 			return false;
 		});

@@ -98,8 +98,10 @@ final class Charitable_Public {
             'currency_format_decimal_sep' => esc_attr( charitable_get_option( 'decimal_separator', '.' ) ),
             'currency_format_thousand_sep' => esc_attr( charitable_get_option( 'thousands_separator', ',' ) ),
             'currency_format' => esc_attr( charitable_get_currency_helper()->get_accounting_js_format() ), // For accounting.js
-            'error_invalid_amount' => sprintf( __( 'You must donate more than %s.', 'charitable' ), charitable_format_money( '0' ) )
-		) );
+            'error_invalid_amount' => sprintf( __( 'You must donate more than %s.', 'charitable' ), charitable_format_money( '0' ) ), 
+            'error_invalid_cc_number' => __( 'The credit card passed is not valid.', 'charitable' ),
+            'error_invalid_cc_expiry' => __( 'The credit card expiry date is not valid.', 'charitable' )
+        ) );
 
         $suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 

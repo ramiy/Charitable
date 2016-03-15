@@ -37,22 +37,7 @@ class Charitable_Session {
 	 * @access 	private
 	 * @since 	1.0.0
 	 */
-	private $session;
-
-    /**
-     * Returns and/or create the single instance of this class.  
-     *
-     * @return  Charitable_Session
-     * @access  public
-     * @since   1.2.0
-     */
-    public static function get_instance() {
-        if ( is_null( self::$instance ) ) {
-            self::$instance = new Charitable_Session();
-        }
-
-        return self::$instance;
-    }
+	private $session;    
 
 	/**
 	 * Instantiate session object. Private constructor.
@@ -80,6 +65,21 @@ class Charitable_Session {
 
 		$this->session = WP_Session::get_instance();			
 	}
+
+	/**
+     * Returns and/or create the single instance of this class.  
+     *
+     * @return  Charitable_Session
+     * @access  public
+     * @since   1.2.0
+     */
+    public static function get_instance() {
+        if ( is_null( self::$instance ) ) {
+            self::$instance = new Charitable_Session();
+        }
+
+        return self::$instance;
+    }
 
 	/**
 	 * Returns the session ID. 

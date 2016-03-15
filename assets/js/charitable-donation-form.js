@@ -43,6 +43,42 @@ CHARITABLE = window.CHARITABLE || {};
     };
 
     /**
+     * Get credit card number.
+     *
+     * @return  string
+     */
+    Donation_Form.prototype.get_cc_number = function() {
+        return this.form.find( '#charitable_field_cc_number input' ).val() || '';
+    };
+
+    /**
+     * Get credit card CVC number.
+     *
+     * @return  string
+     */
+    Donation_Form.prototype.get_cc_cvc = function() {
+        return this.form.find( '#charitable_field_cc_cvc input' ).val() || '';
+    };
+
+    /**
+     * Get credit card expiry month.
+     *
+     * @return  string
+     */
+    Donation_Form.prototype.get_cc_expiry_month = function() {
+        return this.form.find( '#charitable_field_cc_expiration select.month' ).val() || '';
+    };
+
+    /**
+     * Get credit card expiry year.
+     *
+     * @return  string
+     */
+    Donation_Form.prototype.get_cc_expiry_year = function() {
+        return this.form.find( '#charitable_field_cc_expiration select.year' ).val() || '';
+    };
+
+    /**
      * Add an error message.
      *
      * @param   string message
@@ -78,12 +114,6 @@ CHARITABLE = window.CHARITABLE || {};
     Donation_Form.prototype.is_valid_amount = function() {
         return this.get_amount() > 0;
     };
-
-    /**
-     * Validate the email address.
-     *
-     * @param 
-     */
 
     /**
      * Verifies the submission and returns true if it all looks ok.

@@ -42,6 +42,8 @@ final class Charitable_Admin {
      */
     protected function __construct() {
         $this->load_dependencies();
+
+        do_action( 'charitable_admin_loaded' );
     }
 
     /**

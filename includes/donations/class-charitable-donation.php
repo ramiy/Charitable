@@ -89,7 +89,6 @@ class Charitable_Donation extends Charitable_Abstract_Donation {
 
         $this->update_status( 'charitable-refunded' );
     }
-
 }
 
 endif; // End class_exists check
