@@ -57,7 +57,7 @@ final class Charitable_Email_Settings {
     /**
      * Returns all the payment email settings fields.  
      *
-     * @return  array[]
+     * @return  array
      * @access  public
      * @since   1.0.0
      */

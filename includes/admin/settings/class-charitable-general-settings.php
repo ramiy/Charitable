@@ -58,7 +58,7 @@ final class Charitable_General_Settings {
      * Add the general tab settings fields. 
      *
      * @param   array[] $fields
-     * @return  array[]
+     * @return  array
      * @access  public
      * @since   1.0.0
      */

@@ -141,7 +141,7 @@ abstract class Charitable_Abstract_Donation {
      * The amount donated on this donation.
      *
      * @param   boolean $sanitize
-     * @return  decimal
+     * @return  decimal|float|WP_Error
      * @access  public
      * @since   1.0.0
      */
@@ -298,7 +298,7 @@ abstract class Charitable_Abstract_Donation {
     /**
      * Returns the gateway's object helper. 
      *
-     * @return  Charitable_Gateway
+     * @return  false|Charitable_Gateway
      * @access  public
      * @since   1.0.0
      */

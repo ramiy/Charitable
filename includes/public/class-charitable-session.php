@@ -254,6 +254,18 @@ class Charitable_Session {
 	public function add_notices() {
 		$this->set( 'notices', charitable_get_notices()->get_notices() );
 	}
+
+	/**
+	 * Return any notices set in the session.
+	 *
+	 * @return 	mixed Session variable
+	 * @access  public
+	 * @since 	1.4.0
+	 */
+	public function get_notices() {
+		$notices = $this->get( 'notices' );
+		return $notices ? $notices : array();
+	}
 }
 
 endif;

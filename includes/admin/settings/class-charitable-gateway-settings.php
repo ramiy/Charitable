@@ -57,7 +57,7 @@ final class Charitable_Gateway_Settings {
     /**
      * Returns all the payment gateway settings fields.  
      *
-     * @return  array[]
+     * @return  array
      * @access  public
      * @since   1.0.0
      */

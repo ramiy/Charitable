@@ -62,7 +62,7 @@ class Charitable_Notices {
 	 */
 	private function __construct() {
 		/* Retrieve the notices from the session */
-		$this->notices = charitable_get_session()->get( 'notices' );
+		$this->notices = charitable_get_session()->get_notices();
 
 		/* Reset the session back to empty */
 		charitable_get_session()->set( 'notices', array(
