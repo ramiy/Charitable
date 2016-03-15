@@ -64,6 +64,10 @@ function charitable_campaign_loop_args( $view_args = array() ) {
  * @see     Charitable_Form::render_field()
  */
 function charitable_get_arbitrary_attributes( $field ) {
+    if ( ! isset( $field[ 'attrs' ] ) ) {
+        $field[ 'attrs' ] = array();
+    }
+    
     /* Add backwards compatibility support for placeholder, min, max, step, pattern and rows. */
     foreach ( array( 'placeholder', 'min', 'max', 'step', 'pattern', 'rows' ) as $attr ) {
         if ( isset( $field[ $attr ] ) && ! isset( $field[ 'attrs' ][ $attr ] ) ) {

@@ -497,23 +497,26 @@ abstract class Charitable_Abstract_Donation {
      * Update the status of the donation. 
      *  
      * @uses    wp_update_post()
-     * @param   string      $new_status
-     * @return  int|WP_Error                    The value 0 or WP_Error on failure. The donation ID on success.
+     *
+     * @param   string $new_status
+     * @return  int|WP_Error The value 0 or WP_Error on failure. The donation ID on success.
      * @access  public
      * @since   1.0.0
-     * @deprecated 1.3.0
      */
     public function update_status( $new_status ) {
-        if ( false === $this->is_valid_donation_status( $new_status ) ) {
+
+        if ( false === charitable_is_valid_donation_status( $new_status ) ) {
+
             $new_status = array_search( $new_status, charitable_get_valid_donation_statuses() );
 
             if ( false === $new_status ) {
                 _doing_it_wrong( __METHOD__, sprintf( '%s is not a valid donation status.', $new_status ), '1.0.0' );
                 return 0;
             }
+
         }
 
-        $old_status = $this->get_status();      
+        $old_status = $this->get_status();
 
         if ( $old_status == $new_status ) {
             return 0;
@@ -555,7 +558,7 @@ abstract class Charitable_Abstract_Donation {
      */
     public function is_valid_donation_status( $status ) {
         _deprecated_function( __METHOD__, '1.4.0', 'charitable_is_valid_donation_status' );
-        return charitable_is_valid_donation_status();
+        return charitable_is_valid_donation_status( $status );
     }
 
     /**
