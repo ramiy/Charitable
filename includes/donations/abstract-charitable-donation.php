@@ -11,6 +11,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
+if ( ! class_exists( 'Charitable_Abstract_Donation' ) ) :
 
 /**
  * Donation Model
@@ -618,3 +619,5 @@ abstract class Charitable_Abstract_Donation {
         return charitable_flush_campaigns_donation_cache( $donation_id );
     }
 }
+
+endif; // End class_exists check

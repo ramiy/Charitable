@@ -18,7 +18,6 @@ if ( ! class_exists( 'Charitable_Donation' ) ) :
  *
  * @since       1.0.0
  */
-
 class Charitable_Donation extends Charitable_Abstract_Donation {
     
     /** @public string donation type */

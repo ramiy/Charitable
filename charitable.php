@@ -160,8 +160,7 @@ class Charitable {
         /* Abstracts */
         require_once( $includes_path . 'abstracts/class-charitable-form.php' );
         require_once( $includes_path . 'abstracts/class-charitable-query.php' );
-        require_once( $includes_path . 'abstracts/class-charitable-start-object.php' );
-        require_once( $includes_path . 'abstracts/abstract-charitable-donation.php' );
+        require_once( $includes_path . 'abstracts/class-charitable-start-object.php' );        
         
         /* Functions & Core Classes */
         require_once( $includes_path . 'charitable-core-functions.php' );                
@@ -186,7 +185,8 @@ class Charitable {
         require_once( $includes_path . 'currency/charitable-currency-functions.php' );
         require_once( $includes_path . 'currency/class-charitable-currency.php' );
 
-        /* Donations */                
+        /* Donations */
+        require_once( $includes_path . 'donations/abstract-charitable-donation.php' );
         require_once( $includes_path . 'donations/interface-charitable-donation-form.php' );
         require_once( $includes_path . 'donations/class-charitable-donation-processor.php' );
         require_once( $includes_path . 'donations/class-charitable-donation.php' );

@@ -126,7 +126,7 @@ function charitable_is_after_donation() {
  * Returns whether the donation status is valid. 
  *
  * @return  boolean
- * @since   1.3.0
+ * @since   1.4.0
  */
 function charitable_is_valid_donation_status( $status ) {
     return array_key_exists( $status, charitable_get_valid_donation_statuses() );
@@ -139,7 +139,7 @@ function charitable_is_valid_donation_status( $status ) {
  * is also counted. 
  *
  * @return  string[]
- * @since   1.3.0
+ * @since   1.4.0
  */
 function charitable_get_approval_statuses() {
     return apply_filters( 'charitable_approval_donation_statuses', array( 'charitable-completed' ) );
@@ -149,7 +149,7 @@ function charitable_get_approval_statuses() {
  * Returns whether the passed status is an confirmed status. 
  *
  * @return  boolean
- * @since   1.3.0
+ * @since   1.4.0
  */
 function charitable_is_approved_status( $status ) {
     return in_array( $status, charitable_get_valid_donation_statuses() );
@@ -159,7 +159,7 @@ function charitable_is_approved_status( $status ) {
  * Return array of valid donations statuses. 
  *
  * @return  array
- * @since   1.3.0
+ * @since   1.4.0
  */
 function charitable_get_valid_donation_statuses() {
     return apply_filters( 'charitable_donation_statuses', array( 
