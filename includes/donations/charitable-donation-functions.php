@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  *
  * This will first attempt to retrieve it from the object cache to prevent duplicate objects.
  *
- * @param   int     $donation_id
+ * @param   int $donation_id
  * @param   boolean $foce
  * @return  Charitable_Donation
  * @since   1.0.0

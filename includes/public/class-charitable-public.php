@@ -165,6 +165,7 @@ final class Charitable_Public {
      * @since   1.3.0
      */
     public function disable_comments_on_application_pages( $open, $post_id ) {
+        
         /* If open is already false, just hit return. */
         if ( ! $open ) {
             return $open;

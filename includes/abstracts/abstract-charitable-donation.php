@@ -354,12 +354,14 @@ abstract class Charitable_Abstract_Donation {
     /**
      * Returns the customer note attached to the donation.
      *
+     * @uses    get_post_field
+     * @param   string Optional. How to filter the field. Accepts 'raw', 'edit', 'db', or 'display'. Default 'display'.
      * @return  string
      * @access  public
      * @since   1.0.0
      */
-    public function get_notes() {
-        return $this->donation_data->post_content;
+    public function get_notes( $context = 'display' ) {
+        return get_post_field( $this->donation_id, 'post_content', $context );
     }
 
     /**
