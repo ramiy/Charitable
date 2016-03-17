@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Charitable 1.4.0\n"
 "Report-Msgid-Bugs-To: https://www.wpcharitable.com/\n"
-"POT-Creation-Date: 2016-03-15 03:11:51+00:00\n"
+"POT-Creation-Date: 2016-03-17 03:38:36+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -4675,20 +4675,20 @@ msgstr ""
 msgid "Western Cape"
 msgstr ""
 
-#: includes/abstracts/abstract-charitable-donation.php:418
+#: includes/abstracts/abstract-charitable-donation.php:420
 #: includes/admin/views/metaboxes/donation/donation-log.php:20
 #: includes/donations/abstract-charitable-donation.php:418
 msgid "Date &amp; Time"
 msgstr ""
 
-#: includes/abstracts/abstract-charitable-donation.php:422
+#: includes/abstracts/abstract-charitable-donation.php:424
 #: includes/admin/donations/class-charitable-donation-post-type.php:201
 #: includes/donations/abstract-charitable-donation.php:422
 #: includes/users/class-charitable-roles.php:61
 msgid "Donor"
 msgstr ""
 
-#: includes/abstracts/abstract-charitable-donation.php:426
+#: includes/abstracts/abstract-charitable-donation.php:428
 #: includes/donations/abstract-charitable-donation.php:426
 #: includes/donations/class-charitable-donation-form.php:172
 #: includes/users/class-charitable-profile-form.php:143
@@ -4698,30 +4698,30 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
-#: includes/abstracts/abstract-charitable-donation.php:430
+#: includes/abstracts/abstract-charitable-donation.php:432
 #: includes/donations/abstract-charitable-donation.php:430
 #: includes/donations/class-charitable-donation-form.php:181
 #: includes/users/class-charitable-profile-form.php:180
 msgid "Address"
 msgstr ""
 
-#: includes/abstracts/abstract-charitable-donation.php:434
+#: includes/abstracts/abstract-charitable-donation.php:436
 #: includes/donations/abstract-charitable-donation.php:434
 msgid "Phone Number"
 msgstr ""
 
-#: includes/abstracts/abstract-charitable-donation.php:438
+#: includes/abstracts/abstract-charitable-donation.php:440
 #: includes/admin/views/metaboxes/donation/donation-overview.php:60
 #: includes/donations/abstract-charitable-donation.php:438
 msgid "Payment Method"
 msgstr ""
 
-#: includes/abstracts/abstract-charitable-donation.php:442
+#: includes/abstracts/abstract-charitable-donation.php:444
 #: includes/donations/abstract-charitable-donation.php:442
 msgid "Donation Key"
 msgstr ""
 
-#: includes/abstracts/abstract-charitable-donation.php:446
+#: includes/abstracts/abstract-charitable-donation.php:448
 #: includes/donations/abstract-charitable-donation.php:446
 msgid "Donation made in test mode?"
 msgstr ""

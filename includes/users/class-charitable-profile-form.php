@@ -314,8 +314,15 @@ class Charitable_Profile_Form extends Charitable_Form {
     public function get_merged_fields() {
         $fields = array();
 
-        foreach ( $this->get_fields() as $fieldset ) {
-            $fields = array_merge( $fields, $fieldset[ 'fields' ] );
+        foreach ( $this->get_fields() as $key => $section ) {
+
+            if ( isset( $section[ 'fields' ] ) ) {
+                $fields = array_merge( $fields, $section[ 'fields' ] );
+            }
+            else {
+                $fields[ $key ] = $section;
+            }
+            
         }
 
         return $fields;

@@ -264,7 +264,17 @@ class Charitable_Session {
 	 */
 	public function get_notices() {
 		$notices = $this->get( 'notices' );
-		return $notices ? $notices : array();
+
+		if ( $notices ) {
+			return $notices;
+		}
+
+		return array(
+			'error'		=> array(), 
+			'warning'	=> array(), 
+			'success'	=> array(), 
+			'info'		=> array()
+		);
 	}
 }
 
