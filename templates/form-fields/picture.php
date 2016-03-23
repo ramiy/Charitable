@@ -67,6 +67,9 @@ $params = array(
             <?php endif ?>
         </label>
     <?php endif ?>
+    <?php if ( isset( $field[ 'help' ] ) ) : ?>
+        <p class="charitable-field-help"><?php echo $field[ 'help' ] ?></p>
+    <?php endif ?>
     <div id="<?php echo $field[ 'key' ] ?>-dragdrop" 
         class="charitable-drag-drop hide-if-no-js"                 
         data-max-size="<?php echo $max_uploads ?>"

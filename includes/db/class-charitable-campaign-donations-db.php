@@ -395,7 +395,7 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
     }
 
     /**
-     * The users who have donated to the given campaign.
+     * The donor IDs of all who have donated to the given campaign.
      *
      * @global  wpdb    $wpdb
      * @param   int     $campaign_id
@@ -407,13 +407,11 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
 
         list( $campaigns_in, $campaigns_parameters ) = $this->get_campaigns_clause( $campaign_id );
 
-        $sql = "SELECT DISTINCT p.post_author as donor_id
-                FROM $this->table_name c
-                INNER JOIN {$wpdb->prefix}posts p
-                ON c.donation_id = p.ID
-                WHERE c.campaign_id IN ( $campaigns_in );";
+        $sql = "SELECT DISTINCT donor_id
+                FROM $this->table_name
+                WHERE campaign_id IN ( $campaigns_in );";
 
-        return $wpdb->get_results( $wpdb->prepare( $sql, $campaigns_parameters ), OBJECT_K );
+        return $wpdb->get_col( $wpdb->prepare( $sql, $campaigns_parameters ) );
     }    
 
      /**
