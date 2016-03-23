@@ -28,5 +28,5 @@ $value          = isset( $field[ 'value' ] ) ? $field[ 'value' ] : '';
             <?php endif ?>
         </label>
     <?php endif ?>
-    <input type="<?php echo esc_attr( $field_type ) ?>" name="<?php echo $field[ 'key' ] ?>" value="<?php echo esc_attr( stripslashes( $value ) ) ?>" <?php echo $pattern ?> <?php echo charitable_get_arbitrary_attributes( $field ) ?>/>
+    <input type="<?php echo esc_attr( $field_type ) ?>" name="<?php echo $field[ 'key' ] ?>" value="<?php echo esc_attr( stripslashes( $value ) ) ?>" <?php echo charitable_get_arbitrary_attributes( $field ) ?>/>
 </div>
