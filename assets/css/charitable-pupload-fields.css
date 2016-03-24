@@ -5,6 +5,7 @@
   width: 100%; }
 
 .charitable-drag-drop-dropzone {
+  margin-bottom: 1em;
   text-align: center; }
   .charitable-drag-drop-dropzone .charitable-drag-drop-buttons {
     margin-bottom: 0; }
