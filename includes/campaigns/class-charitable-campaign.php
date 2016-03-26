@@ -616,7 +616,7 @@ class Charitable_Campaign {
      * By default, this just returns the user from the post_author field, but 
      * it can be overridden by plugins. 
      *
-     * @return  int         $user_id
+     * @return  int $user_id
      * @access  public
      * @since   1.0.0
      */

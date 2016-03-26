@@ -295,7 +295,7 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
     }   
 
     /**
-     * Return an array of 
+     * Return an array of campaigns donated to in a single donation.
      *
      * @global  WPDB $wpdb
      * @return  object
@@ -346,7 +346,7 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
      * @return  object
      * @since   1.0.0
      */
-    public function get_donation_ids_for_campaign( $campaign_id ){
+    public function get_donation_ids_for_campaign( $campaign_id ) {
         global $wpdb;
 
         list( $in, $parameters ) = $this->get_campaigns_clause( $campaign_id );
@@ -362,19 +362,19 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
      * Get total amount donated to a campaign.
      *
      * @global  wpdb    $wpdb
-     * @param   int     $campaign_id
+     * @param   int|int[] $campaigns A campaign ID. Optionally, you can pass an array of campaign IDs to get the total of all put together.
      * @param   boolean $include_all
      * @return  int                     
      * @since   1.0.0
      */
-    public function get_campaign_donated_amount( $campaign_id, $include_all = false ) {
+    public function get_campaign_donated_amount( $campaigns, $include_all = false ) {
         global $wpdb;
 
         $statuses = $include_all ? array() : charitable_get_approval_statuses();
 
         list( $status_clause, $status_parameters ) = $this->get_donation_status_clause( $statuses );
 
-        list( $campaigns_in, $campaigns_parameters ) = $this->get_campaigns_clause( $campaign_id );
+        list( $campaigns_in, $campaigns_parameters ) = $this->get_campaigns_clause( $campaigns );
 
         $parameters = array_merge( $campaigns_parameters, $status_parameters );
 
@@ -636,7 +636,7 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
      * @param   string $default
      * @return  string
      * @access  public
-     * @since   1.4.0
+     * @since   1.3.4
      */
     public function get_orderby_clause( $args, $default = "" ) {
         if ( ! isset( $args[ 'orderby' ] ) && ! isset( $args[ 'order' ] ) ) {
@@ -709,7 +709,7 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
      * @param   string $placeholder
      * @return  string
      * @access  private
-     * @since   1.4.0
+     * @since   1.3.4
      */
     private function get_in_clause( $list, $placeholder = '%s' ) {
         $placeholders = array_fill( 0, count( $list ), $placeholder );

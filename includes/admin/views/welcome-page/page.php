@@ -41,7 +41,7 @@ $install = isset( $_GET[ 'install' ] ) && $_GET[ 'install' ];
     <div class="column-left">
         <div class="column-inside">
             <h2><?php _e( 'The WordPress Fundraising Toolkit', 'charitable' ) ?></h2>
-            <p><?php _e( 'Charitable is everything you need to start accepting donations today. PayPal and offline donations work right out of the box, and when your organization is ready to grow, our extensions give you the tools you need to move forward.', 'charitable' ) ?></p>            
+            <p><?php _e( 'Charitable is everything you need to start accepting donations today. PayPal and offline donations work right out of the box, and when your organization is ready to grow, our extensions give you the tools you need to move forward.', 'charitable' ) ?></p>
             <hr />
             <h2><?php _e( 'Getting Started', 'charitable' ) ?></h2>
             <ul class="checklist">
