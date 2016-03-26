@@ -128,6 +128,8 @@ final class Charitable_Public {
             'remove_image' => _x( 'Remove', 'remove image button text', 'charitable' ),
             'max_file_uploads_single' => __( 'You can only upload %d file', 'charitable' ),
             'max_file_uploads_plural' => __( 'You can only upload a maximum of %d files', 'charitable' ),
+            'max_file_size' => __( '%1$s exceeds the max upload size of %2$s', 'charitable' ),
+            'upload_problem' => __( '%s failed to upload. Please try again.', 'charitable' ),
         );
         
         wp_register_script( 'charitable-pupload-fields', charitable()->get_path( 'assets', false ) . 'js/charitable-pupload-fields' . $suffix . '.js', array( 'jquery-ui-sortable', 'wp-ajax-response', 'plupload-all' ), charitable()->get_version() );

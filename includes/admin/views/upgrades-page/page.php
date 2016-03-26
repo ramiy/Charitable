@@ -16,7 +16,7 @@ $number = $page->get_number();
 $steps = $page->get_steps( $total, $number );
 
 $doing_upgrade_args = array(
-    'page' => 'charitable-upgrade',
+    'page' => 'charitable-upgrades',
     'charitable-upgrade' => $action,
     'step' => $step,
     'total' => $total,

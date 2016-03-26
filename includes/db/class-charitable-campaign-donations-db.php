@@ -295,7 +295,7 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
     }   
 
     /**
-     * Return an array of 
+     * Return an array of campaigns donated to in a single donation.
      *
      * @global  WPDB $wpdb
      * @return  object

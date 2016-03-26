@@ -19,7 +19,7 @@ $placeholder    = isset( $field[ 'placeholder' ] ) ? esc_attr( $field[ 'placehol
 $size           = isset( $field[ 'size' ] ) ? $field[ 'size' ] : 'thumbnail';
 $use_uploader   = isset( $field[ 'uploader' ] ) && $field[ 'uploader' ];
 $max_uploads    = isset( $field[ 'max_uploads' ] ) ? $field[ 'max_uploads' ] : 1;
-$max_file_size  = isset( $field[ 'max_file_size' ] ) ? $field[ 'max_file_size' ] : wp_max_upload_size() . 'b';
+$max_file_size  = isset( $field[ 'max_file_size' ] ) ? $field[ 'max_file_size' ] : wp_max_upload_size();
 $value          = isset( $field[ 'value' ] ) ? $field[ 'value' ] : '';
 $has_max_uploads = strlen( $value ) && ( $max_uploads == 1 || $value >= $max_uploads );
 
@@ -72,7 +72,7 @@ $params = array(
     <?php endif ?>
     <div id="<?php echo $field[ 'key' ] ?>-dragdrop" 
         class="charitable-drag-drop hide-if-no-js"                 
-        data-max-size="<?php echo $max_uploads ?>"
+        data-max-size="<?php echo $max_file_size ?>"
         data-images="<?php echo $field[ 'key' ] ?>-dragdrop-images"
         data-params="<?php echo esc_attr( wp_json_encode( $params ) ) ?>">
         <div id="<?php echo $field[ 'key' ] ?>-dragdrop-dropzone" class="charitable-drag-drop-dropzone" <?php if ( $has_max_uploads ) : ?>style="display:none;"<?php endif ?>>

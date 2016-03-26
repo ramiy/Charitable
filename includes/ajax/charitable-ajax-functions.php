@@ -53,6 +53,11 @@ if ( ! function_exists( 'charitable_plupload_image_upload' ) ) :
 
         $file = $_FILES[ 'async-upload' ];
         $file_attr = wp_handle_upload( $file, array( 'test_form' => false ) );
+
+        if ( isset( $file_attr[ 'error' ] ) ) {
+            wp_send_json_error( $file_attr );
+        }
+
         $attachment = array(
             'guid'              => $file_attr[ 'url' ],
             'post_mime_type'    => $file_attr[ 'type' ],

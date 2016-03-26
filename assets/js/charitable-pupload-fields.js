@@ -11,7 +11,7 @@
             max_file_size = parseInt( $dragdrop.data( 'max-size' ), 10 ),
             isIE = navigator.userAgent.indexOf('Trident/') != -1 || navigator.userAgent.indexOf('MSIE ') != -1,                    
             msg = get_max_uploads_message( max_file_uploads ), 
-            $dropzone, key, error, uploader;
+            $dropzone, key, error, uploader;        
 
         uploader = new plupload.Uploader( params );
         
@@ -46,6 +46,9 @@
 
             var uploaded = $images.children().length;
 
+            // Remove the drag-over class if it's still on the dropzone.
+            $dropzone.removeClass('drag-over');
+
             // Remove files from queue if the max number of files have been uploaded
             if ( max_file_uploads > 0 && ( uploaded + files.length ) > max_file_uploads ) {
 
@@ -68,11 +71,11 @@
 
                 add_image_loader( $loader, file );
 
-                // addLoading( uploader, file, $images );
-                // addThrobber( file );
-
                 if ( file.size >= max_file_size ) {
-                    removeError( file );
+
+                    uploader.removeFile( file );
+                    
+                    add_image_error( $loader, $dropzone, file, CHARITABLE_UPLOAD_VARS.max_file_size.replace('%1$s', file.name).replace('%2$s', bytes_to_mb( max_file_size ) ) );
                 }
             });
 
@@ -81,10 +84,7 @@
         });
 
         uploader.bind( 'Error', function( uploader, e ){
-
             console.log( e );
-            console.log( uploader );
-
         });
 
         uploader.bind( 'FileUploaded', function( uploader, file, r ){
@@ -94,11 +94,14 @@
             r = $.parseJSON( r.response );
 
             if ( ! r.success ) {
-                console.log( 'error' );
+
+                add_image_error( $loader, $dropzone, file, CHARITABLE_UPLOAD_VARS.upload_problem.replace('%s', file.name) );
+                return;
+                
             }
 
             // Remove the image from the loader & possibly hide the loader.
-            hide_image_loader( $loader, file );            
+            hide_image_loader( $loader, file );
 
             // Display the image
             $images.append( r.data );
@@ -172,36 +175,28 @@
     }
 
     /**
-     * Removes li element if there is an error with the file
-     *
-     * @return void
+     * Return a readable filesize.
      */
-    function removeError( file ) {
-        $( 'li#' + file.id )
-            .addClass( 'charitable-image-error' )
-            .delay( 1600 )
-            .fadeOut( 'slow', function ()
-            {
-                $( this ).remove();
-            } );
+    function bytes_to_mb( size ) {
+        var i = Math.floor( Math.log(size) / Math.log(1024) );
+        return ( size / Math.pow(1024, i) ).toFixed(2) * 1 + ' ' + ['B', 'kB', 'MB', 'GB', 'TB'][i];
     }
 
     /**
-     * Adds loading li element
+     * Dequeues the file and displays an error.
      *
-     * @return void
+     * @param   object $loader
+     * @param   object $dropzone
+     * @param   object file 
+     * @param   string msg
+     * @return  void
      */
-    function addLoading( up, file, $ul ) {
-        $ul.removeClass( 'hidden' ).append( '<li id="' + file.id + '"><div class="charitable-image-uploading-bar"></div><div id="' + file.id + '-throbber" class="charitable-image-uploading-status"></div></li>' );
-    }
+    function add_image_error( $loader, $dropzone, file, msg ) {
+        $dropzone.fadeIn( 300 );
 
-    /**
-     * Adds loading throbber while waiting for a response
-     *
-     * @return void
-     */
-    function addThrobber( file ) {
-        $( '#' + file.id + '-throbber' ).html( '<img class="charitable-loader" height="64" width="64" src="' + CHARITABLE_VARS.loading_gift + '">' );
+        $loader.find( '[data-file-id=' + file.id + ']' ).addClass( 'error' ).text( msg ).delay( 5000 ).fadeOut( 300, function(){
+            hide_image_loader( $loader, file );            
+        });
     }
 
 })( jQuery );
