@@ -15,7 +15,7 @@
 
         uploader = new plupload.Uploader( params );
         
-        $dropzone = $( uploader.settings.drop_element );        
+        $dropzone = $( uploader.settings.drop_element );
 
         uploader.init();
 
@@ -23,9 +23,9 @@
             
             if ( ! $dropzone ) {
                 return;
-            }
+            }            
 
-            $dropzone.addClass( 'supports-drag-drop' );
+            $dragdrop.addClass( 'supports-drag-drop' );
 
             // We may need to enhance this to account for the issue noted
             // in https://core.trac.wordpress.org/ticket/21705

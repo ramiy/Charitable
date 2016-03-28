@@ -1,4 +1,18 @@
-.charitable-drag-drop-dropzone.supports-drag-drop, 
+.charitable-drag-drop-dropzone { 
+    display: none;
+}
+
+.charitable-drag-drop.supports-drag-drop {
+    .charitable-drag-drop-dropzone {
+        display: block;
+    }
+
+    input[type=file] {
+        display: none;
+    }
+}
+
+.charitable-drag-drop-dropzone, 
 .charitable-drag-drop-image-loader, 
 .charitable-drag-drop-images { 
     padding: 1em; 
@@ -7,18 +21,15 @@
 
 .charitable-drag-drop-dropzone { 
     margin-bottom: 1em;
+    border: 3px dashed #ebebeb; 
     text-align: center;
 
     .charitable-drag-drop-buttons { 
         margin-bottom: 0; 
     }
-
-    &.supports-drag-drop {
-        border: 3px dashed #ebebeb; 
-    }
 }
 
-.charitable-drag-drop-dropzone.supports-drag-drop p, 
+.charitable-drag-drop-dropzone p, 
 .charitable-drag-drop-image-loader .loader-title { 
     margin: 0 0 0.5em; 
     padding: 0; 
