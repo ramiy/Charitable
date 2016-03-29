@@ -24,10 +24,10 @@ $value          = isset( $field[ 'value' ] ) ? $field[ 'value' ] : '';
 $has_max_uploads = strlen( $value ) && ( $max_uploads == 1 || $value >= $max_uploads );
 
 if ( $use_uploader ) {
-    wp_enqueue_script( 'charitable-pupload-fields' );
+    wp_enqueue_script( 'charitable-plupload-fields' );
 }
 
-wp_print_styles( 'charitable-pupload-fields' );
+wp_print_styles( 'charitable-plupload-styles' );
 
 $params = array(
     'runtimes'            => 'html5,silverlight,flash,html4',

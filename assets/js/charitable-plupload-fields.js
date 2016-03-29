@@ -25,7 +25,7 @@
                 return;
             }            
 
-            $dragdrop.addClass( 'supports-drag-drop' );
+            $dragdrop.parent().addClass( 'supports-drag-drop' );
 
             // We may need to enhance this to account for the issue noted
             // in https://core.trac.wordpress.org/ticket/21705

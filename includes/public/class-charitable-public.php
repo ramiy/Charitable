@@ -133,10 +133,10 @@ final class Charitable_Public {
             'upload_problem' => __( '%s failed to upload. Please try again.', 'charitable' ),
         );
         
-        wp_register_script( 'charitable-pupload-fields', charitable()->get_path( 'assets', false ) . 'js/charitable-pupload-fields' . $suffix . '.js', array( 'jquery-ui-sortable', 'wp-ajax-response', 'plupload-all' ), $version );
-        wp_localize_script( 'charitable-pupload-fields', 'CHARITABLE_UPLOAD_VARS', $upload_vars );
+        wp_register_script( 'charitable-plupload-fields', charitable()->get_path( 'assets', false ) . 'js/charitable-plupload-fields' . $suffix . '.js', array( 'jquery-ui-sortable', 'wp-ajax-response', 'plupload-all' ), $version );
+        wp_localize_script( 'charitable-plupload-fields', 'CHARITABLE_UPLOAD_VARS', $upload_vars );
 
-        wp_register_style( 'charitable-pupload-fields', charitable()->get_path( 'assets', false ) . 'css/charitable-pupload-fields' . $suffix . '.css', array(), $version );
+        wp_register_style( 'charitable-plupload-styles', charitable()->get_path( 'assets', false ) . 'css/charitable-plupload-fields' . $suffix . '.css', array(), $version );
 	}
 
     /**

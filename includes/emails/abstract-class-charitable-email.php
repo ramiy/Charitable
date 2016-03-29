@@ -465,7 +465,7 @@ abstract class Charitable_Email implements Charitable_Email_Interface {
         $output = "";
 
         foreach ( $this->donation->get_campaign_donations() as $campaign_donation ) {
-            $line_item = sprintf( '%s: %s%s', $campaign_donation->campaign_name, charitable_get_currency_helper()->get_monetary_amount( $campaign_donation->amount ), PHP_EOL );
+            $line_item = sprintf( '%s: %s%s', $campaign_donation->campaign_name, charitable_format_money( $campaign_donation->amount ), PHP_EOL );
             $output .= apply_filters( 'charitable_donation_summary_line_item_email', $line_item, $campaign_donation, $args, $email );
         }
 

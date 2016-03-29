@@ -30,7 +30,7 @@ module.exports = function(grunt) {
                     'assets/css/charitable-admin-pages.css' : 'assets/css/scss/charitable-admin-pages.scss', 
                     'assets/css/charitable-admin-menu.css'  : 'assets/css/scss/charitable-admin-menu.scss', 
                     'assets/css/charitable-admin.css'       : 'assets/css/scss/charitable-admin.scss',
-                    'assets/css/charitable-pupload-fields.css' : 'assets/css/scss/charitable-pupload-fields.scss',
+                    'assets/css/charitable-plupload-fields.css' : 'assets/css/scss/charitable-plupload-fields.scss',
                     'assets/css/charitable.css'             : 'assets/css/scss/charitable.scss',
                     'assets/css/modal.css'                  : 'assets/css/scss/modal.scss'
                 }

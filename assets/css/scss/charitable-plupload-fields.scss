@@ -2,12 +2,12 @@
     display: none;
 }
 
-.charitable-drag-drop.supports-drag-drop {
+.supports-drag-drop {
     .charitable-drag-drop-dropzone {
         display: block;
     }
 
-    input[type=file] {
+    .charitable-file-inputs {
         display: none;
     }
 }

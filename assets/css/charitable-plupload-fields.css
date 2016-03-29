@@ -1,9 +1,9 @@
 .charitable-drag-drop-dropzone {
   display: none; }
 
-.charitable-drag-drop.supports-drag-drop .charitable-drag-drop-dropzone {
+.supports-drag-drop .charitable-drag-drop-dropzone {
   display: block; }
-.charitable-drag-drop.supports-drag-drop input[type=file] {
+.supports-drag-drop .charitable-file-inputs {
   display: none; }
 
 .charitable-drag-drop-dropzone,
@@ -62,4 +62,4 @@
   .charitable-drag-drop-image-loader .images {
     font-size: 0.85em; }
 
-/*# sourceMappingURL=charitable-pupload-fields.css.map */
+/*# sourceMappingURL=charitable-plupload-fields.css.map */
