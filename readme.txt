@@ -115,8 +115,8 @@ You can post in the [support forum](https://wordpress.org/support/plugin/charita
 
 = 1.3.4 - Unreleased =
 * 
-*
-*
+* 
+* Fixed display issues in the Charitable settings area with number fields.
 
 = 1.3.3 = 
 * Fixes a bug that prevented donors being able to access their donation receipts after making their donation.

@@ -236,7 +236,11 @@ class Charitable_Emails {
      * @since   1.0.0
      */
     public function email_shortcode( $atts = array() ) {
-        $args = shortcode_atts( array( 'show' => '' ), $atts, 'charitable_email' );
+        $defaults = array( 
+            'show' => ''
+        );
+
+        $args = wp_parse_args( $atts, $defaults );
 
         if ( ! isset( $args[ 'show' ] ) ) {
             return '';
