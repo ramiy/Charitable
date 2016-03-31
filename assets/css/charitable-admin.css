@@ -639,6 +639,9 @@ body.post-type-donation .closed .inside {
   .charitable-settings-field.wide {
     width: 100%; }
 
+input[type=number].charitable-settings-field {
+  height: auto; }
+
 select.charitable-settings-field {
   width: auto; }
 
