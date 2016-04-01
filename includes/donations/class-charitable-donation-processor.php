@@ -191,6 +191,7 @@ class Charitable_Donation_Processor {
     
         /* Validate the gateway values */    
         if ( ! apply_filters( 'charitable_validate_donation_form_submission_gateway', true, $gateway, $values ) ) {
+
             return false;
         }
         
@@ -220,7 +221,7 @@ class Charitable_Donation_Processor {
              *           `safe` : Whether to use wp_safe_redirect. If unset, will default to true.
              *
              * @hook charitable_process_donation_$gateway
-             */                        
+             */              
             return apply_filters( 'charitable_process_donation_' . $gateway, true, $this->donation_id, $processor );            
         }
         else {
