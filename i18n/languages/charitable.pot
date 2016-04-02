@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Charitable 1.4.0\n"
 "Report-Msgid-Bugs-To: https://www.wpcharitable.com/\n"
-"POT-Creation-Date: 2016-04-01 13:57:51+00:00\n"
+"POT-Creation-Date: 2016-04-02 09:56:40+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -6053,7 +6053,7 @@ msgid ""
 msgstr ""
 
 #: includes/donations/charitable-donation-functions.php:166
-#: includes/emails/abstract-class-charitable-email.php:525
+#: includes/emails/abstract-class-charitable-email.php:549
 msgid "Paid"
 msgstr ""
 
@@ -6160,19 +6160,19 @@ msgstr ""
 msgid "Your donation could not be processed. No payment gateway was selected."
 msgstr ""
 
-#: includes/donations/class-charitable-donation-processor.php:269
+#: includes/donations/class-charitable-donation-processor.php:268
 msgid "Campaign ID was not found. Unable to create donation."
 msgstr ""
 
-#: includes/donations/class-charitable-donation-processor.php:286
+#: includes/donations/class-charitable-donation-processor.php:285
 msgid "Unable to process donation."
 msgstr ""
 
-#: includes/donations/class-charitable-donation-processor.php:396
+#: includes/donations/class-charitable-donation-processor.php:395
 msgid "We were unable to save the donation. Please try again."
 msgstr ""
 
-#: includes/donations/class-charitable-donation-processor.php:404
+#: includes/donations/class-charitable-donation-processor.php:403
 msgid "Donation created."
 msgstr ""
 
@@ -6258,68 +6258,68 @@ msgstr ""
 msgid "The status of the donation (pending, paid, etc.)"
 msgstr ""
 
-#: includes/emails/abstract-class-charitable-email.php:523
+#: includes/emails/abstract-class-charitable-email.php:547
 msgid "Fake Campaign: $50.00"
 msgstr ""
 
-#: includes/emails/abstract-class-charitable-email.php:549
+#: includes/emails/abstract-class-charitable-email.php:573
 msgid "The title of the campaign"
 msgstr ""
 
-#: includes/emails/abstract-class-charitable-email.php:554
+#: includes/emails/abstract-class-charitable-email.php:578
 msgid "The name of the campaign creator"
 msgstr ""
 
-#: includes/emails/abstract-class-charitable-email.php:559
+#: includes/emails/abstract-class-charitable-email.php:583
 msgid "The email address of the campaign creator"
 msgstr ""
 
-#: includes/emails/abstract-class-charitable-email.php:564
+#: includes/emails/abstract-class-charitable-email.php:588
 msgid "The end date of the campaign"
 msgstr ""
 
-#: includes/emails/abstract-class-charitable-email.php:569
+#: includes/emails/abstract-class-charitable-email.php:593
 msgid ""
 "Display whether the campaign reached its goal. Add a `success` parameter as "
 "the message when the campaign was successful, and a `failure` parameter as "
 "the message when the campaign is not successful"
 msgstr ""
 
-#: includes/emails/abstract-class-charitable-email.php:574
+#: includes/emails/abstract-class-charitable-email.php:598
 msgid "Display the total amount donated to the campaign"
 msgstr ""
 
-#: includes/emails/abstract-class-charitable-email.php:579
+#: includes/emails/abstract-class-charitable-email.php:603
 msgid "Display the number of campaign donors"
 msgstr ""
 
-#: includes/emails/abstract-class-charitable-email.php:584
+#: includes/emails/abstract-class-charitable-email.php:608
 msgid "Display the campaign's fundraising goal"
 msgstr ""
 
-#: includes/emails/abstract-class-charitable-email.php:589
+#: includes/emails/abstract-class-charitable-email.php:613
 msgid "Display the campaign's URL"
 msgstr ""
 
-#: includes/emails/abstract-class-charitable-email.php:675
+#: includes/emails/abstract-class-charitable-email.php:699
 msgid "The campaign achieved its fundraising goal."
 msgstr ""
 
-#: includes/emails/abstract-class-charitable-email.php:676
+#: includes/emails/abstract-class-charitable-email.php:700
 msgid "The campaign did not reach its fundraising goal."
 msgstr ""
 
-#: includes/emails/abstract-class-charitable-email.php:1034
+#: includes/emails/abstract-class-charitable-email.php:1058
 msgid ""
 "The following options are available with the "
 "<code>[charitable_email]</code> shortcode:"
 msgstr ""
 
-#: includes/emails/abstract-class-charitable-email.php:1082
+#: includes/emails/abstract-class-charitable-email.php:1106
 msgid "You cannot send this email without a donation!"
 msgstr ""
 
-#: includes/emails/abstract-class-charitable-email.php:1098
+#: includes/emails/abstract-class-charitable-email.php:1122
 msgid "You cannot send this email without a campaign!"
 msgstr ""
 
