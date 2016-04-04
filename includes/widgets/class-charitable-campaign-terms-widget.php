@@ -29,7 +29,10 @@ class Charitable_Campaign_Terms_Widget extends WP_Widget {
         parent::__construct(
             'charitable_campaign_terms_widget', 
             __( 'Campaign Categories / Tags', 'charitable' ), 
-            array( 'description' => __( 'Displays your Charitable campaign categories or tags.', 'charitable' ) )
+            array( 
+                'description' => __( 'Displays your Charitable campaign categories or tags.', 'charitable' ),
+                'customize_selective_refresh' => true 
+            )
         );
     }
 

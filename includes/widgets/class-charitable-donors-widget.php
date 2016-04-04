@@ -29,7 +29,10 @@ class Charitable_Donors_Widget extends WP_Widget {
         parent::__construct(
             'charitable_donors_widget', 
             __( 'Donors', 'charitable' ), 
-            array( 'description' => __( 'Display a list of donors.', 'charitable' ) )
+            array( 
+                'description' => __( 'Display a list of donors.', 'charitable' ),
+                'customize_selective_refresh' => true  
+            )
         );
     }
 

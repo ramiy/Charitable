@@ -29,8 +29,11 @@ class Charitable_Donation_Stats_Widget extends WP_Widget {
     public function __construct() {
         parent::__construct(
             'charitable_donation_stats_widget', 
-            __( 'Donation Stats', 'charitable' ), 
-            array( 'description' => __( 'Show off your donation statistics.', 'charitable' ) )
+            __( 'Donation Stats', 'charitable' ),             
+            array( 
+                'description' => __( 'Show off your donation statistics.', 'charitable' ),
+                'customize_selective_refresh' => true 
+            )
         );
     }
 
