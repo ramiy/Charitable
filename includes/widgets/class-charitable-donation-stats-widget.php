@@ -42,8 +42,14 @@ class Charitable_Donation_Stats_Widget extends WP_Widget {
      * @access  public 
      * @since   1.0.0
      */
-    public function widget( $args, $instance ) {    
-        charitable_template( 'widgets/donation-stats.php', array_merge( $args, $instance ) );
+    public function widget( $args, $instance ) {
+        $view_args = array_merge( $args, $instance );
+
+        if ( ! isset( $view_args[ 'title' ] ) ) {
+            $view_args[ 'title' ] = __( 'Donation Statistics', 'charitable' );
+        }
+
+        charitable_template( 'widgets/donation-stats.php', $view_args );
     }    
 
     /**
