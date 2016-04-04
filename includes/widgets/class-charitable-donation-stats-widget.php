@@ -29,8 +29,11 @@ class Charitable_Donation_Stats_Widget extends WP_Widget {
     public function __construct() {
         parent::__construct(
             'charitable_donation_stats_widget', 
-            __( 'Donation Stats', 'charitable' ), 
-            array( 'description' => __( 'Show off your donation statistics.', 'charitable' ) )
+            __( 'Donation Stats', 'charitable' ),             
+            array( 
+                'description' => __( 'Show off your donation statistics.', 'charitable' ),
+                'customize_selective_refresh' => true 
+            )
         );
     }
 
@@ -42,8 +45,14 @@ class Charitable_Donation_Stats_Widget extends WP_Widget {
      * @access  public 
      * @since   1.0.0
      */
-    public function widget( $args, $instance ) {    
-        charitable_template( 'widgets/donation-stats.php', array_merge( $args, $instance ) );
+    public function widget( $args, $instance ) {
+        $view_args = array_merge( $args, $instance );
+
+        if ( ! isset( $view_args[ 'title' ] ) ) {
+            $view_args[ 'title' ] = __( 'Donation Statistics', 'charitable' );
+        }
+
+        charitable_template( 'widgets/donation-stats.php', $view_args );
     }    
 
     /**

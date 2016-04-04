@@ -165,6 +165,40 @@ class Charitable_Donors_DB extends Charitable_DB {
         
         return is_null( $donor_id ) ? 0 : (int) $donor_id;
     } 
+
+    /**
+     * Count the number of donors with donations. 
+     *
+     * @return  int
+     * @access  public
+     * @since   1.3.4
+     */
+    public function count_donors_with_donations( $statuses = array( 'charitable-completed' ) ) {
+        global $wpdb;
+
+        if ( ! is_array( $statuses ) ) {
+            $statuses = array( $statuses );
+        }
+
+        if ( empty( $statuses ) ) {
+            $status_clause = "";
+        }
+        else {
+            $statuses = array_filter( $statuses, array( 'Charitable_Donation', 'is_valid_donation_status' ) );
+            $placeholders = array_fill( 0, count( $statuses ), '%s' );    
+            $in = implode( ', ', $placeholders );
+            $status_clause = "AND p.post_status IN ( $in )";
+        }
+
+        $sql = "SELECT COUNT( * )
+                FROM {$wpdb->prefix}charitable_donors d
+                INNER JOIN {$wpdb->prefix}charitable_campaign_donations cd ON cd.donor_id = d.donor_id
+                INNER JOIN $wpdb->posts p ON cd.donation_id = p.ID
+                WHERE 1 = 1
+                $status_clause;";
+
+        return $wpdb->get_var( $wpdb->prepare( $sql, $statuses ) );
+    }
 }
 
 endif;

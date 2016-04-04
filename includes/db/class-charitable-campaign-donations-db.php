@@ -661,6 +661,32 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
     }
 
     /**
+     * Count donations by status. 
+     *
+     * @param   string|string[] $statuses
+     * @return  int
+     * @access  public
+     * @since   1.0.0
+     */
+    public function count_donations_by_status( $statuses ) {
+        global $wpdb;
+
+        if ( ! is_array( $statuses ) ) {
+            $statuses = array( $statuses );
+        }
+
+        list( $status_clause, $parameters ) = $this->get_donation_status_clause( $statuses );
+
+        $sql = "SELECT COUNT( * )
+                FROM {$wpdb->prefix}charitable_campaign_donations cd
+                INNER JOIN $wpdb->posts po ON po.ID = cd.donation_id
+                WHERE 1 = 1
+                $status_clause;";
+
+        return $wpdb->get_var( $wpdb->prepare( $sql, $parameters ) );
+    }
+
+    /**
      * Returns the donation status clause. 
      *
      * @param   boolean $include_all If true, will return a blank string. 
