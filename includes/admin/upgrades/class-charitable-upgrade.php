@@ -115,11 +115,19 @@ class Charitable_Upgrade {
 			$this->upgrade_actions = array(
 				'update_upgrade_system' => array(
 					'version' => '1.3.0',
-					'message' => __( 'Charitable needs to update the database.', 'charitable' )
+					'message' => __( 'Charitable needs to update the database.', 'charitable' ), 
+					'prompt' => true
 				), 
 				'fix_donation_dates' => array(
 					'version' => '1.3.0',
-					'message' => __( 'Charitable needs to fix incorrect donation dates.', 'charitable' )
+					'message' => __( 'Charitable needs to fix incorrect donation dates.', 'charitable' ), 
+					'prompt' => true
+				), 
+				'trigger_cron' => array(
+					'version' => '1.3.4',
+					'message' => '',
+					'prompt' => false, 
+					'callback' => array( 'Charitable_Cron', 'schedule_events' )
 				)
 			);
 
@@ -197,6 +205,14 @@ class Charitable_Upgrade {
 				 * If we've already done this upgrade, continue.
 				 */
 				if ( $this->upgrade_has_been_completed( $action ) ) {
+					continue;
+				}
+
+				/**
+				 * If the upgrade does not need a prompt, just do it straight away.
+				 */
+				if ( $this->do_upgrade_immediately( $upgrade ) ) {
+					call_user_func( $upgrade[ 'callback' ] );
 					continue;
 				}
 	?>
@@ -453,6 +469,25 @@ class Charitable_Upgrade {
 		$log = get_option( $this->upgrade_log_key );
 
 		return is_array( $log ) && array_key_exists( $action, $log );
+	}
+
+	/**
+	 * Checks whether an upgrade should be completed immediately, without a prompt. 
+	 *
+	 * @param 	array $upgrade
+	 * @return  boolean
+	 * @access  protected
+	 * @since   1.3.4
+	 */
+	protected function do_upgrade_immediately( $upgrade ) {
+		
+		/* If a prompt is required, return false. */
+		if ( ! isset( $upgrade[ 'prompt' ] ) || $upgrade[ 'prompt' ] ) {
+			return false;
+		}
+
+		/* If the callback is set and it's callable, return true. */
+		return isset( $upgrade[ 'callback' ] ) && is_callable( $upgrade[ 'callback' ] );
 	}
 
 	/**
