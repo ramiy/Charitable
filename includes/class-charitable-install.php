@@ -31,20 +31,22 @@ class Charitable_Install {
 	public function __construct() {
 		$this->setup_roles();
 		$this->create_tables();		
-		$this->setup_upgrade_log();
+		$this->setup_upgrade_log();		
 
 		set_transient( 'charitable_install', 1, 0 );
 	}	
 
 	/**
-	 * Flush rewrite rules. 
+	 * Finish the plugin installation. 
 	 *
 	 * @return  void
 	 * @access  public
 	 * @static
-	 * @since   1.3.3
+	 * @since   1.3.4
 	 */
-	public static function flush_rewrite_rules() {
+	public static function finish_installing() {		
+		Charitable_Cron::schedule_events();
+
 		add_action( 'init', 'flush_rewrite_rules' );
 	}
 

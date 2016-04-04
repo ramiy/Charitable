@@ -403,7 +403,7 @@ class Charitable {
 
         require_once( $this->get_path( 'includes' ) . 'class-charitable-install.php' );
 
-        Charitable_Install::flush_rewrite_rules();
+        Charitable_Install::finish_installing();
 
         do_action( 'charitable_install' );
 
