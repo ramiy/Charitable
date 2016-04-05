@@ -49,7 +49,7 @@ class Charitable_Email_Campaign_End extends Charitable_Email {
     public function __construct( $objects = array() ) {
         parent::__construct( $objects );
 
-        $this->name = apply_filters( 'charitable_email_campaign_end_name', __( 'Campaign Ended Notification', 'charitable' ) );
+        $this->name = apply_filters( 'charitable_email_campaign_end_name', __( 'Admin: Campaign Ended Notification', 'charitable' ) );
     }
 
     /**
