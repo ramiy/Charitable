@@ -113,7 +113,7 @@ You can post in the [support forum](https://wordpress.org/support/plugin/charita
 
 == Changelog ==
 
-= 1.3.4 - Unreleased =
+= 1.3.4 =
 * Added selective refresh support for Charitable widgets.
 * Added support for passing multiple campaign IDs to campaign donation queries. [#112](https://github.com/Charitable/Charitable/issues/112)
 * Fixed a bug where donors without a completed donation were included in the donor count in the Donation Stats widget. [#114](https://github.com/Charitable/Charitable/issues/114)
