@@ -69,7 +69,7 @@ class Charitable_Email_Donation_Receipt extends Charitable_Email {
     public static function send_with_donation_id( $donation_id ) {
         if ( ! charitable_get_helper( 'emails' )->is_enabled_email( self::get_email_id() ) ) {
             return false;
-        }
+        }        
         
         if ( ! charitable_is_approved_status( get_post_status( $donation_id ) ) ) {
             return false;

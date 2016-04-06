@@ -148,11 +148,12 @@ function charitable_get_approval_statuses() {
 /**
  * Returns whether the passed status is an confirmed status. 
  *
+ * @param   string $key
  * @return  boolean
  * @since   1.4.0
  */
 function charitable_is_approved_status( $status ) {
-    return in_array( $status, charitable_get_valid_donation_statuses() );
+    return in_array( $status, charitable_get_approval_statuses() );
 }
 
 /**

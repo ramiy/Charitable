@@ -34,4 +34,7 @@ else {
             <?php endif ?>
 		</label>
 	<?php endif ?>
+    <?php if ( isset( $field[ 'help' ] ) ) : ?>
+        <p class="charitable-field-help"><?php echo $field[ 'help' ] ?></p>
+    <?php endif ?>
 </div>
