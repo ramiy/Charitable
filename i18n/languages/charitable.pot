@@ -4,14 +4,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Charitable 1.4.0\n"
 "Report-Msgid-Bugs-To: https://www.wpcharitable.com/\n"
-"POT-Creation-Date: 2016-04-02 09:56:40+00:00\n"
+"POT-Creation-Date: 2016-04-06 00:02:50+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2016-MO-DA HO:MI+ZONE\n"
 "Last-Translator: WP-Translations (http://wp-translations.org/)\n"
 "Language-Team: WP-Translations <wpt@wp-translations.org>\n"
-"X-Generator: grunt-wp-i18n 0.5.4\n"
+"X-Generator: grunt-wp-i18n 0.5.3\n"
 "X-Poedit-KeywordsList: "
 "__;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_"
 "attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c;\n"
@@ -4810,7 +4810,7 @@ msgstr ""
 
 #: includes/admin/class-charitable-admin-pages.php:139
 #: includes/class-charitable-post-types.php:238
-#: includes/widgets/class-charitable-campaign-terms-widget.php:70
+#: includes/widgets/class-charitable-campaign-terms-widget.php:73
 msgid "Categories"
 msgstr ""
 
@@ -4820,7 +4820,7 @@ msgstr ""
 
 #: includes/admin/class-charitable-admin-pages.php:144
 #: includes/class-charitable-post-types.php:270
-#: includes/widgets/class-charitable-campaign-terms-widget.php:71
+#: includes/widgets/class-charitable-campaign-terms-widget.php:74
 msgid "Tags"
 msgstr ""
 
@@ -5207,31 +5207,31 @@ msgstr ""
 msgid "Charitable needs to update the database."
 msgstr ""
 
-#: includes/admin/upgrades/class-charitable-upgrade.php:122
+#: includes/admin/upgrades/class-charitable-upgrade.php:123
 msgid "Charitable needs to fix incorrect donation dates."
 msgstr ""
 
-#: includes/admin/upgrades/class-charitable-upgrade.php:147
+#: includes/admin/upgrades/class-charitable-upgrade.php:155
 msgid "Charitable was installed."
 msgstr ""
 
-#: includes/admin/upgrades/class-charitable-upgrade.php:188
+#: includes/admin/upgrades/class-charitable-upgrade.php:196
 msgid ""
 "Charitable needs to complete an upgrade that was started earlier. Click <a "
 "href=\"%s\">here</a> to continue the upgrade."
 msgstr ""
 
-#: includes/admin/upgrades/class-charitable-upgrade.php:204
+#: includes/admin/upgrades/class-charitable-upgrade.php:220
 msgid "Click <a href=\"%s\">here</a> to start the upgrade."
 msgstr ""
 
-#: includes/admin/upgrades/class-charitable-upgrade.php:268
-#: includes/admin/upgrades/class-charitable-upgrade.php:303
+#: includes/admin/upgrades/class-charitable-upgrade.php:284
+#: includes/admin/upgrades/class-charitable-upgrade.php:319
 msgid "You do not have permission to do Charitable upgrades"
 msgstr ""
 
-#: includes/admin/upgrades/class-charitable-upgrade.php:268
-#: includes/admin/upgrades/class-charitable-upgrade.php:303
+#: includes/admin/upgrades/class-charitable-upgrade.php:284
+#: includes/admin/upgrades/class-charitable-upgrade.php:319
 #: includes/licensing/class-charitable-plugin-updater.php:322
 msgid "Error"
 msgstr ""
@@ -6324,7 +6324,7 @@ msgid "You cannot send this email without a campaign!"
 msgstr ""
 
 #: includes/emails/class-charitable-email-campaign-end.php:52
-msgid "Campaign Ended Notification"
+msgid "Admin: Campaign Ended Notification"
 msgstr ""
 
 #: includes/emails/class-charitable-email-campaign-end.php:144
@@ -6332,7 +6332,7 @@ msgid "A campaign has finished"
 msgstr ""
 
 #: includes/emails/class-charitable-email-donation-receipt.php:45
-msgid "Donation Receipt"
+msgid "Donor: Donation Receipt"
 msgstr ""
 
 #: includes/emails/class-charitable-email-donation-receipt.php:124
@@ -6345,7 +6345,7 @@ msgid "Your Donation Receipt"
 msgstr ""
 
 #: includes/emails/class-charitable-email-new-donation.php:52
-msgid "New Donation Notification"
+msgid "Admin: New Donation Notification"
 msgstr ""
 
 #: includes/emails/class-charitable-email-new-donation.php:127
@@ -6654,50 +6654,50 @@ msgstr ""
 msgid "Campaign Categories / Tags"
 msgstr ""
 
-#: includes/widgets/class-charitable-campaign-terms-widget.php:32
+#: includes/widgets/class-charitable-campaign-terms-widget.php:33
 msgid "Displays your Charitable campaign categories or tags."
 msgstr ""
 
-#: includes/widgets/class-charitable-campaign-terms-widget.php:64
-#: includes/widgets/class-charitable-campaigns-widget.php:70
-#: includes/widgets/class-charitable-donate-widget.php:78
-#: includes/widgets/class-charitable-donation-stats-widget.php:61
+#: includes/widgets/class-charitable-campaign-terms-widget.php:67
+#: includes/widgets/class-charitable-campaigns-widget.php:73
+#: includes/widgets/class-charitable-donate-widget.php:79
+#: includes/widgets/class-charitable-donation-stats-widget.php:70
 msgid "Title:"
 msgstr ""
 
-#: includes/widgets/class-charitable-campaign-terms-widget.php:68
+#: includes/widgets/class-charitable-campaign-terms-widget.php:71
 msgid "Taxonomy"
 msgstr ""
 
-#: includes/widgets/class-charitable-campaign-terms-widget.php:75
+#: includes/widgets/class-charitable-campaign-terms-widget.php:78
 msgid "Show count:"
 msgstr ""
 
-#: includes/widgets/class-charitable-campaign-terms-widget.php:79
+#: includes/widgets/class-charitable-campaign-terms-widget.php:82
 msgid "Hide empty:"
 msgstr ""
 
-#: includes/widgets/class-charitable-campaigns-widget.php:33
+#: includes/widgets/class-charitable-campaigns-widget.php:34
 msgid "Displays your Charitable campaigns."
 msgstr ""
 
-#: includes/widgets/class-charitable-campaigns-widget.php:74
+#: includes/widgets/class-charitable-campaigns-widget.php:77
 msgid "Number of campaigns to display:"
 msgstr ""
 
-#: includes/widgets/class-charitable-campaigns-widget.php:79
+#: includes/widgets/class-charitable-campaigns-widget.php:82
 msgid "Show thumbnail"
 msgstr ""
 
-#: includes/widgets/class-charitable-campaigns-widget.php:82
+#: includes/widgets/class-charitable-campaigns-widget.php:85
 msgid "Order:"
 msgstr ""
 
-#: includes/widgets/class-charitable-campaigns-widget.php:84
+#: includes/widgets/class-charitable-campaigns-widget.php:87
 msgid "Date published"
 msgstr ""
 
-#: includes/widgets/class-charitable-campaigns-widget.php:85
+#: includes/widgets/class-charitable-campaigns-widget.php:88
 msgid "Ending soonest"
 msgstr ""
 
@@ -6709,16 +6709,16 @@ msgstr ""
 msgid "Display a donation widget."
 msgstr ""
 
-#: includes/widgets/class-charitable-donate-widget.php:83
+#: includes/widgets/class-charitable-donate-widget.php:84
 msgid "Campaign:"
 msgstr ""
 
-#: includes/widgets/class-charitable-donate-widget.php:85
-#: includes/widgets/class-charitable-donors-widget.php:83
+#: includes/widgets/class-charitable-donate-widget.php:86
+#: includes/widgets/class-charitable-donors-widget.php:86
 msgid "Campaign currently viewed"
 msgstr ""
 
-#: includes/widgets/class-charitable-donate-widget.php:86
+#: includes/widgets/class-charitable-donate-widget.php:87
 msgid "Specific campaigns"
 msgstr ""
 
@@ -6726,8 +6726,12 @@ msgstr ""
 msgid "Donation Stats"
 msgstr ""
 
-#: includes/widgets/class-charitable-donation-stats-widget.php:33
+#: includes/widgets/class-charitable-donation-stats-widget.php:34
 msgid "Show off your donation statistics."
+msgstr ""
+
+#: includes/widgets/class-charitable-donation-stats-widget.php:52
+msgid "Donation Statistics"
 msgstr ""
 
 #: includes/widgets/class-charitable-donors-widget.php:31
@@ -6735,59 +6739,59 @@ msgstr ""
 msgid "Donors"
 msgstr ""
 
-#: includes/widgets/class-charitable-donors-widget.php:32
+#: includes/widgets/class-charitable-donors-widget.php:33
 msgid "Display a list of donors."
 msgstr ""
 
-#: includes/widgets/class-charitable-donors-widget.php:65
+#: includes/widgets/class-charitable-donors-widget.php:68
 msgid "Title"
 msgstr ""
 
-#: includes/widgets/class-charitable-donors-widget.php:69
+#: includes/widgets/class-charitable-donors-widget.php:72
 msgid "Number of donors to display"
 msgstr ""
 
-#: includes/widgets/class-charitable-donors-widget.php:73
+#: includes/widgets/class-charitable-donors-widget.php:76
 msgid "Order by"
 msgstr ""
 
-#: includes/widgets/class-charitable-donors-widget.php:75
+#: includes/widgets/class-charitable-donors-widget.php:78
 msgid "Most recent"
 msgstr ""
 
-#: includes/widgets/class-charitable-donors-widget.php:76
+#: includes/widgets/class-charitable-donors-widget.php:79
 msgid "Amount donated"
 msgstr ""
 
-#: includes/widgets/class-charitable-donors-widget.php:80
+#: includes/widgets/class-charitable-donors-widget.php:83
 msgid "Show donors by campaign"
 msgstr ""
 
-#: includes/widgets/class-charitable-donors-widget.php:82
+#: includes/widgets/class-charitable-donors-widget.php:85
 msgid "Include all campaigns"
 msgstr ""
 
-#: includes/widgets/class-charitable-donors-widget.php:84
+#: includes/widgets/class-charitable-donors-widget.php:87
 msgid "Specific campaign"
 msgstr ""
 
-#: includes/widgets/class-charitable-donors-widget.php:93
+#: includes/widgets/class-charitable-donors-widget.php:96
 msgid "Group donations by the same person"
 msgstr ""
 
-#: includes/widgets/class-charitable-donors-widget.php:97
+#: includes/widgets/class-charitable-donors-widget.php:100
 msgid "Show donor's name"
 msgstr ""
 
-#: includes/widgets/class-charitable-donors-widget.php:101
+#: includes/widgets/class-charitable-donors-widget.php:104
 msgid "Show donor's donation amount"
 msgstr ""
 
-#: includes/widgets/class-charitable-donors-widget.php:105
+#: includes/widgets/class-charitable-donors-widget.php:108
 msgid "Show donor's location"
 msgstr ""
 
-#: includes/widgets/class-charitable-donors-widget.php:109
+#: includes/widgets/class-charitable-donors-widget.php:112
 msgid "Hide if there are no donors"
 msgstr ""
 

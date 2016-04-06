@@ -85,8 +85,8 @@ class Charitable_Emails {
      */
     public function register_emails() {
         $this->emails = apply_filters( 'charitable_emails', array(
-            'new_donation' => 'Charitable_Email_New_Donation',
             'donation_receipt' => 'Charitable_Email_Donation_Receipt', 
+            'new_donation' => 'Charitable_Email_New_Donation',            
             'campaign_end' => 'Charitable_Email_Campaign_End'
         ) );
 

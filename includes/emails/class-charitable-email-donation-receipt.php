@@ -42,7 +42,7 @@ class Charitable_Email_Donation_Receipt extends Charitable_Email {
     public function __construct( $objects = array() ) {
         parent::__construct( $objects );
         
-        $this->name = apply_filters( 'charitable_email_donation_receipt_name', __( 'Donation Receipt', 'charitable' ) );        
+        $this->name = apply_filters( 'charitable_email_donation_receipt_name', __( 'Donor: Donation Receipt', 'charitable' ) );        
     }
 
     /**
