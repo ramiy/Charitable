@@ -25,36 +25,36 @@ class Charitable_Donation_Factory {
 	/**
 	 * Get donation.
 	 *
-	 * @param 	bool $the_donation (default: false)
+	 * @param 	bool $donation (default: false)
 	 * @return 	Charitable_Donation|bool
 	 * @access 	public
 	 * @since 	1.4.0
 	 */
-	public function get_donation( $the_donation = false ) {
+	public function get_donation( $donation = false ) {
 		global $post;
 
-		if ( false === $the_donation ) {
-			$the_donation = $post;
-		} elseif ( is_numeric( $the_donation ) ) {
-			$the_donation = get_post( $the_donation );
-		} elseif ( $the_donation instanceof Charitable_Donation ) {
-			$the_donation = get_post( $the_donation->id );
+		if ( false === $donation ) {
+			$donation = $post;
+		} elseif ( is_numeric( $donation ) ) {
+			$donation = get_post( $donation );
+		} elseif ( $donation instanceof Charitable_Donation ) {
+			$donation = get_post( $donation->id );
 		}
 
-		if ( ! $the_donation || ! is_object( $the_donation ) ) {
+		if ( ! $donation || ! is_object( $donation ) ) {
 			return false;
 		}
 
-		$donation_id  = absint( $the_donation->ID );
-		$post_type = $the_donation->post_type;
+		$donation_id  = absint( $donation->ID );
+		$post_type = $donation->post_type;
 
-		$classname = $this->get_donation_class( $the_donation );
+		$classname = $this->get_donation_class( $donation );
 
 		if ( ! class_exists( $classname ) ) {
 			$classname = 'Charitable_Donation';
 		}
 
-		return new $classname( $the_donation );
+		return new $classname( $donation );
 	}
 
 	/**

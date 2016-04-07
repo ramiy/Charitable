@@ -33,6 +33,8 @@ if ( ! function_exists( 'charitable_template_custom_styles' ) ) :
 
         $styles = get_transient( 'charitable_custom_styles' );
 
+        $styles = false;
+
         if ( false === $styles ) {
 
             ob_start();

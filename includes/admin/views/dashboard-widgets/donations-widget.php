@@ -47,8 +47,8 @@ $this_year = $table->get_donations_summary_by_period( date( 'Y-%' ) );
         <table>
             <caption><h3><?php _e( 'Recent Donations', 'charitable' ) ?></h3></caption>
             <?php 
-            foreach ( $donations as $post ) :
-                $donation = charitable_get_donation( $post->ID );
+            foreach ( $donations as $donation_id ) :
+                $donation = charitable_get_donation( $donation_id );
             ?>
             <tr>
                 <td class="donation-date"><?php echo $donation->get_date() ?></td>
