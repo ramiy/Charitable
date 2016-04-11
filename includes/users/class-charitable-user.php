@@ -334,8 +334,8 @@ class Charitable_User extends WP_User {
     /**
      * Return all donations made by donor. 
      *
-     * @param   boolean     $distinct_donations     If true, will only count unique donations.
-     * @return  Object
+     * @param   boolean $distinct_donations If true, will only count unique donations.
+     * @return  object[]
      * @access  public
      * @since   1.0.0
      */

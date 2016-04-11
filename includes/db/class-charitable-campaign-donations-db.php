@@ -446,10 +446,10 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
     /**
      * Return all donations made by a donor. 
      *
-     * @global  wpdb    $wpdb
-     * @param   int     $donor_id
+     * @global  wpdb $wpdb
+     * @param   int $donor_id
      * @param   boolean $distinct_donations
-     * @return  object
+     * @return  object[]
      * @access  public
      * @since   1.0.0
      */
