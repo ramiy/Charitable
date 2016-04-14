@@ -113,7 +113,15 @@ You can post in the [support forum](https://wordpress.org/support/plugin/charita
 
 == Changelog ==
 
-= 1.3.4 - Unreleased =
+= 1.3.5 - Unreleased =
+* Added `get_donations()` method to `Charitable_Donor` class.
+* Deprecated `Charitable_Session::get_session_id()`. We are no longer using a public session ID.
+
+= 1.3.4 =
+* Added selective refresh support for Charitable widgets.
+* Added support for passing multiple campaign IDs to campaign donation queries. [#112](https://github.com/Charitable/Charitable/issues/112)
+* Fixed a bug where donors without a completed donation were included in the donor count in the Donation Stats widget. [#114](https://github.com/Charitable/Charitable/issues/114)
+* Fixed a bug that incorrectly set the from address for emails to always be the site email address, instead of using the provided settings. [#113](https://github.com/Charitable/Charitable/issues/113)
 * Fixed a bug that stopped the cron scheduler from being activated in any new installs. 
 * Fixed display issues in the Charitable settings area with number fields.
 * Deprecated usage of `shortcode_atts()` for the email shortcode, in favor of `wp_parse_args()`. If you relied on the `shortcode_atts_charitable_email` filter, this will no longer do anything and you should test & update your code.

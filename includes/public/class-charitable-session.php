@@ -79,18 +79,7 @@ class Charitable_Session {
 		add_filter( 'wp_session_expiration_variant', array( $this, 'set_session_expiration_variant_length' ), 99999 );		
 
 		$this->session = WP_Session::get_instance();			
-	}
-
-	/**
-	 * Returns the session ID. 
-	 *
-	 * @return 	string Session ID
-	 * @access 	public
-	 * @since 	1.0.0
-	 */
-	public function get_session_id() {
-		return $this->session->session_id;
-	}
+	}	
 
 	/**
 	 * Return a session variable. 
@@ -253,6 +242,19 @@ class Charitable_Session {
 	 */
 	public function add_notices() {
 		$this->set( 'notices', charitable_get_notices()->get_notices() );
+	}
+
+	/**
+	 * Returns the session ID. 
+	 *
+	 * @deprecated 1.3.5
+	 * 
+	 * @return 	string Session ID
+	 * @access 	public
+	 * @since 	1.3.5
+	 */
+	public function get_session_id() {
+		return '';
 	}
 }
 
