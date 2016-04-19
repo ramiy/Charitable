@@ -113,10 +113,13 @@ You can post in the [support forum](https://wordpress.org/support/plugin/charita
 
 == Changelog ==
 
+<<<<<<< HEAD
 = 1.3.5 - Unreleased =
 * Added `get_donations()` method to `Charitable_Donor` class.
 * Deprecated `Charitable_Session::get_session_id()`. We are no longer using a public session ID.
 
+=======
+>>>>>>> 7a2d43b32ac39fcc862e221dc829047465c06da8
 = 1.3.4 =
 * Added selective refresh support for Charitable widgets.
 * Added support for passing multiple campaign IDs to campaign donation queries. [#112](https://github.com/Charitable/Charitable/issues/112)

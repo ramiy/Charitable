@@ -49,7 +49,7 @@ class Charitable_Email_New_Donation extends Charitable_Email {
     public function __construct( $objects = array() ) {
         parent::__construct( $objects );
 
-        $this->name = apply_filters( 'charitable_email_new_donation_name', __( 'New Donation Notification', 'charitable' ) );
+        $this->name = apply_filters( 'charitable_email_new_donation_name', __( 'Admin: New Donation Notification', 'charitable' ) );
     }
 
     /**
