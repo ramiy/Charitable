@@ -364,6 +364,27 @@ class Charitable_Profile_Form extends Charitable_Form {
 
         }
     }
+
+    /**
+     * Add the charitable_user_profile_after_fields hook but fire off a deprecated notice.  
+     *
+     * @deprecated 1.4.0
+     * @return  void
+     * @access  public
+     * @static
+     * @since   1.4.0   
+     */
+    public static function add_deprecated_charitable_user_profile_after_fields_hook( $form ) {
+        if ( ! has_action( 'charitable_user_profile_after_fields' ) ) {
+            return;
+        }
+
+        _doing_it_wrong( __METHOD__, __( 'charitable_user_profile_after_fields hook has been removed. Use charitable_form_after_fields instead.', 'charitable' ), '1.4.0' );
+        
+        if ( 'Charitable_Profile_Form' == get_class( $form ) ) {
+            do_action( 'charitable_user_profile_after_fields', $form );
+        }
+    }
 }
 
 endif; // End class_exists check
