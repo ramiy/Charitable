@@ -1,8 +1,8 @@
 <?php
 /**
- * Class that manages the display and processing of the profile form.
+ * Class that manages the display and processing of the password form.
  *
- * @package     Charitable/Classes/Charitable_Profile_Form
+ * @package     Charitable/Classes/Charitable_Password_Form
  * @version     1.0.0
  * @author      Eric Daams
  * @copyright   Copyright (c) 2015, Studio 164a
@@ -12,14 +12,14 @@
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-if ( ! class_exists( 'Charitable_Profile_Form' ) ) : 
+if ( ! class_exists( 'Charitable_Password_Form' ) ) : 
 
 /**
- * Charitable_Profile_Form
+ * Charitable_Password_Form
  *
  * @since       1.0.0
  */
-class Charitable_Profile_Form extends Charitable_Form {
+class Charitable_Password_Form extends Charitable_Form {
 
     /**
      * Shortcode parameters. 
@@ -32,12 +32,12 @@ class Charitable_Profile_Form extends Charitable_Form {
     /**
      * @var     string
      */
-    protected $nonce_action = 'charitable_user_profile';
+    protected $nonce_action = 'charitable_user_password';
 
     /**
      * @var     string
      */
-    protected $nonce_name = '_charitable_user_profile_nonce';
+    protected $nonce_name = '_charitable_user_password_nonce';
 
     /**
      * Action to be executed upon form submission. 
@@ -45,7 +45,7 @@ class Charitable_Profile_Form extends Charitable_Form {
      * @var     string
      * @access  protected
      */
-    protected $form_action = 'update_profile';
+    protected $form_action = 'update_password';
 
     /**
      * The current user. 
@@ -65,9 +65,7 @@ class Charitable_Profile_Form extends Charitable_Form {
     public function __construct( $args = array() ) {    
         $this->id = uniqid();   
         $this->shortcode_args = $args;
-        $this->attach_hooks_and_filters();
-
-        $this->maybe_display_password_form();        
+        $this->attach_hooks_and_filters();  
     }
 
     /**
@@ -278,14 +276,14 @@ class Charitable_Profile_Form extends Charitable_Form {
     }
 
     /**
-     * Profile fields to be displayed.      
+     * Password fields to be displayed.      
      *
      * @return  array[]
      * @access  public
      * @since   1.0.0
      */
     public function get_fields() {          
-        $fields = apply_filters( 'charitable_user_profile_fields', array(
+        $fields = apply_filters( 'charitable_user_Password_fields', array(
             'user_fields' => array(
                 'legend'    => __( 'Your Details', 'charitable' ),
                 'type'      => 'fieldset',
@@ -299,7 +297,7 @@ class Charitable_Profile_Form extends Charitable_Form {
                 'priority'  => 20
             ),
             'social_fields' => array(
-                'legend'    => __( 'Your Social Profiles', 'charitable' ),
+                'legend'    => __( 'Your Social Passwords', 'charitable' ),
                 'type'      => 'fieldset',
                 'fields'    => $this->get_social_fields(),
                 'priority'  => 40
@@ -307,52 +305,6 @@ class Charitable_Profile_Form extends Charitable_Form {
         ), $this );     
 
         uasort( $fields, 'charitable_priority_sort' );
-
-        return $fields;
-    }
-
-    /**
-     * The fields displayed on the password form. 
-     *
-     * @return  array[]
-     * @access  public
-     * @since   1.4.0
-     */
-    public function get_password_fields() {
-        $fields = apply_filters( 'charitable_user_profile_password_fields', array(
-            'return_link' => array(
-                'priority'  => 0,
-                'type'      => 'paragraph',
-                'content'   => sprintf( __( '<a href="%s">&#x2190; Return to your profile form</a>', 'charitable' ), esc_url( remove_query_arg( 'update_password' ) ) )
-            ), 
-            'password_fields' => array(
-                'legend'    => __( 'Change Your Password', 'charitable' ),
-                'type'      => 'fieldset',
-                'fields'    => array(
-                    'current_pass' => array(
-                        'priority'  => 2,
-                        'type'      => 'password', 
-                        'label'     => __( 'Current Password', 'charitable' ),
-                        'value'     => '', 
-                        'required'  => true,
-                        'fullwidth' => true
-                    ),
-                    'user_pass' => array(
-                        'priority'  => 4,
-                        'type'      => 'password',
-                        'label'     => __( 'New Password', 'charitable' ),
-                        'required'  => true
-                    ),
-                    'user_pass_repeat' => array(
-                        'priority'  => 6,
-                        'type'      => 'password',
-                        'label'     => __( 'New Password (again)', 'charitable' ),
-                        'required'  => true
-                    )
-                ), 
-                'priority'  => 2
-            )            
-        ), $this );
 
         return $fields;
     }
@@ -382,15 +334,15 @@ class Charitable_Profile_Form extends Charitable_Form {
     }
 
     /**
-     * Update profile after form submission. 
+     * Update Password after form submission. 
      *
      * @return  void
      * @access  public
      * @static
      * @since   1.0.0
      */
-    public static function update_profile() {
-        $form = new Charitable_Profile_Form();
+    public static function update_Password() {
+        $form = new Charitable_Password_Form();
 
         if ( ! $form->validate_nonce() ) {
             return;
@@ -405,86 +357,21 @@ class Charitable_Profile_Form extends Charitable_Form {
 
         $fields = $form->get_merged_fields();
 
-        $submitted = apply_filters( 'charitable_profile_update_values', $_POST, $fields, $form );
+        $submitted = apply_filters( 'charitable_Password_update_values', $_POST, $fields, $form );
 
         $valid = $form->check_required_fields( $fields );
 
-        if ( $valid && isset( $_POST[ 'user_pass' ] ) ) {
-
-            return $form->maybe_change_password();
-
-        }
-
         if ( $valid ) {
             
-            $user->update_profile( $submitted, array_keys( $fields ) );
+            $user->update_Password( $submitted, array_keys( $fields ) );
 
-            do_action( 'charitable_profile_updated', $submitted, $fields, $form );
+            do_action( 'charitable_Password_updated', $submitted, $fields, $form );
 
         }
     }
 
     /**
-     * Changes a password if the current password is correct and the repeat matches the new password.
-     *
-     * @return  boolean|void
-     * @access  public
-     * @since   1.4.0
-     */
-    public function maybe_change_password() {
-
-        /* The current password must be set and correct. */
-        if ( ! isset( $_POST[ 'current_pass' ] ) || false == wp_check_password( $_POST[ 'current_pass' ], $this->get_user()->user_pass ) ) {
-
-            charitable_get_notices()->add_error( 'Current password is incorrect.', 'charitable' );
-
-            return false;
-
-        }
-
-        /* The new password must match the repeat (if set). */
-        if ( isset( $_POST[ 'user_pass_repeat' ] ) && $_POST[ 'user_pass_repeat' ] != $_POST[ 'user_pass' ] ) {
-
-            charitable_get_notices()->add_error( 'New passwords did not match.', 'charitable' );
-
-            return false;
-
-        }
-
-        wp_update_user( array(
-            'ID' => $this->get_user()->ID,
-            'user_pass' => $_POST[ 'user_pass' ]
-        ) );
-
-        charitable_get_notices()->add_success( 'Your password has been updated', 'charitable' );
-
-        wp_safe_redirect( esc_url( remove_query_arg( 'update_password' ) ) );
-
-        die();
-    }
-
-    /**
-     * When editing the password, we only display the password fields. 
-     *
-     * @return  void
-     * @access  private
-     * @since   1.4.0
-     */
-    private function maybe_display_password_form() {
-        if ( ! isset( $_GET[ 'update_password' ] ) || ! $_GET[ 'update_password' ] ) {
-            return;
-        }
-
-        /**  
-         * Filter the default form fields, replacing them entirely with the password fields. 
-         * This is done on priority 25 to avoid having non-relevant fields added that were 
-         * added through the `charitable_user_profile_fields` filter on a lower priority.
-         */
-        add_filter( 'charitable_user_profile_fields', array( $this, 'get_password_fields' ), 25 );
-    }
-
-    /**
-     * Add the charitable_user_profile_after_fields hook but fire off a deprecated notice.  
+     * Add the charitable_user_Password_after_fields hook but fire off a deprecated notice.  
      *
      * @deprecated 1.4.0
      * @return  void
@@ -492,15 +379,15 @@ class Charitable_Profile_Form extends Charitable_Form {
      * @static
      * @since   1.4.0   
      */
-    public static function add_deprecated_charitable_user_profile_after_fields_hook( $form ) {
-        if ( ! has_action( 'charitable_user_profile_after_fields' ) ) {
+    public static function add_deprecated_charitable_user_Password_after_fields_hook( $form ) {
+        if ( ! has_action( 'charitable_user_Password_after_fields' ) ) {
             return;
         }
 
-        _doing_it_wrong( __METHOD__, __( 'charitable_user_profile_after_fields hook has been removed. Use charitable_form_after_fields instead.', 'charitable' ), '1.4.0' );
+        _doing_it_wrong( __METHOD__, __( 'charitable_user_Password_after_fields hook has been removed. Use charitable_form_after_fields instead.', 'charitable' ), '1.4.0' );
         
-        if ( 'Charitable_Profile_Form' == get_class( $form ) ) {
-            do_action( 'charitable_user_profile_after_fields', $form );
+        if ( 'Charitable_Password_Form' == get_class( $form ) ) {
+            do_action( 'charitable_user_Password_after_fields', $form );
         }
     }
 }

@@ -49,7 +49,6 @@ do_action('charitable_user_profile_before');
 	 * @hook 	charitable_form_after_fields
 	 */
 	do_action( 'charitable_form_after_fields', $form );
-	// do_action( 'charitable_user_profile_after_fields', $form );
 
 	?>
 	<div class="charitable-form-field charitable-submit-field">
