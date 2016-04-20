@@ -66,8 +66,6 @@ class Charitable_Profile_Form extends Charitable_Form {
         $this->id = uniqid();   
         $this->shortcode_args = $args;
         $this->attach_hooks_and_filters();
-
-        $this->maybe_display_password_form();        
     }
 
     /**
@@ -161,11 +159,6 @@ class Charitable_Profile_Form extends Charitable_Form {
                 'required'  => false,
                 'priority'  => 12, 
                 'value'     => $this->get_user_value( 'description' )
-            ), 
-            'password' => array(
-                'type'      => 'paragraph',
-                'priority'  => 14, 
-                'content'   => sprintf( __( '<a href="%s">Change your password</a>', 'charitable' ), esc_url( add_query_arg( 'update_password', true ) ) )
             )
         ), $this );
 
@@ -292,6 +285,12 @@ class Charitable_Profile_Form extends Charitable_Form {
                 'fields'    => $this->get_user_fields(), 
                 'priority'  => 0
             ), 
+            'password_fields' => array(
+                'legend'    => __( 'Change Your Password', 'charitable' ),
+                'type'      => 'fieldset',
+                'fields'    => $this->get_password_fields(),
+                'priority'  => 10
+            ),
             'address_fields' => array(
                 'legend'    => __( 'Your Address', 'charitable' ),
                 'type'      => 'fieldset',
@@ -319,42 +318,31 @@ class Charitable_Profile_Form extends Charitable_Form {
      * @since   1.4.0
      */
     public function get_password_fields() {
-        $fields = apply_filters( 'charitable_user_profile_password_fields', array(
-            'return_link' => array(
-                'priority'  => 0,
-                'type'      => 'paragraph',
-                'content'   => sprintf( __( '<a href="%s">&#x2190; Return to your profile form</a>', 'charitable' ), esc_url( remove_query_arg( 'update_password' ) ) )
-            ), 
-            'password_fields' => array(
-                'legend'    => __( 'Change Your Password', 'charitable' ),
-                'type'      => 'fieldset',
-                'fields'    => array(
-                    'current_pass' => array(
-                        'priority'  => 2,
-                        'type'      => 'password', 
-                        'label'     => __( 'Current Password', 'charitable' ),
-                        'value'     => '', 
-                        'required'  => true,
-                        'fullwidth' => true
-                    ),
-                    'user_pass' => array(
-                        'priority'  => 4,
-                        'type'      => 'password',
-                        'label'     => __( 'New Password', 'charitable' ),
-                        'required'  => true
-                    ),
-                    'user_pass_repeat' => array(
-                        'priority'  => 6,
-                        'type'      => 'password',
-                        'label'     => __( 'New Password (again)', 'charitable' ),
-                        'required'  => true
-                    )
-                ), 
-                'priority'  => 2
-            )            
+        $password_fields = apply_filters( 'charitable_user_profile_password_fields', array(        
+            'current_pass' => array(
+                'priority'  => 2,
+                'type'      => 'password', 
+                'label'     => __( 'Current Password (leave blank to leave unchanged)', 'charitable' ),
+                'value'     => '', 
+                'required'  => false
+            ),
+            'user_pass' => array(
+                'priority'  => 4,
+                'type'      => 'password',
+                'label'     => __( 'New Password (leave blank to leave unchanged)', 'charitable' ),
+                'required'  => false
+            ),
+            'user_pass_repeat' => array(
+                'priority'  => 6,
+                'type'      => 'password',
+                'label'     => __( 'New Password (again)', 'charitable' ),
+                'required'  => false
+            )
         ), $this );
 
-        return $fields;
+        uasort( $password_fields, 'charitable_priority_sort' );
+
+        return $password_fields;
     }
 
     /**
@@ -407,11 +395,17 @@ class Charitable_Profile_Form extends Charitable_Form {
 
         $submitted = apply_filters( 'charitable_profile_update_values', $_POST, $fields, $form );
 
+        /* Remove the current_pass and user_pass_repeat fields, if set. */
+        unset( 
+            $submitted[ 'current_pass' ], 
+            $submitted[ 'user_pass_repeat' ] 
+        );
+
         $valid = $form->check_required_fields( $fields );
 
-        if ( $valid && isset( $_POST[ 'user_pass' ] ) ) {
+        if ( $valid && $form->is_changing_password() ) {
 
-            return $form->maybe_change_password();
+            $valid = $form->validate_password_change();
 
         }
 
@@ -425,16 +419,35 @@ class Charitable_Profile_Form extends Charitable_Form {
     }
 
     /**
-     * Changes a password if the current password is correct and the repeat matches the new password.
+     * Check whether the password is being changed. 
      *
-     * @return  boolean|void
+     * @return  boolean
      * @access  public
      * @since   1.4.0
      */
-    public function maybe_change_password() {
+    public function is_changing_password() {
+        if ( ! isset( $_POST[ 'user_pass' ] ) || empty( $_POST[ 'user_pass' ] ) ) {
+            return false;
+        }
 
-        /* The current password must be set and correct. */
-        if ( ! isset( $_POST[ 'current_pass' ] ) || false == wp_check_password( $_POST[ 'current_pass' ], $this->get_user()->user_pass ) ) {
+        if ( ! isset( $_POST[ 'current_pass' ] ) || empty( $_POST[ 'current_pass' ] ) ) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Changes a password if the current password is correct and the repeat matches the new password.
+     *
+     * @return  boolean
+     * @access  public
+     * @since   1.4.0
+     */
+    public function validate_password_change() {
+
+        /* The current password must be correct. */
+        if ( false == wp_check_password( $_POST[ 'current_pass' ], $this->get_user()->user_pass ) ) {
 
             charitable_get_notices()->add_error( 'Current password is incorrect.', 'charitable' );
 
@@ -451,36 +464,18 @@ class Charitable_Profile_Form extends Charitable_Form {
 
         }
 
-        wp_update_user( array(
-            'ID' => $this->get_user()->ID,
-            'user_pass' => $_POST[ 'user_pass' ]
-        ) );
+        return true;
 
-        charitable_get_notices()->add_success( 'Your password has been updated', 'charitable' );
+        // wp_update_user( array(
+        //     'ID' => $this->get_user()->ID,
+        //     'user_pass' => $_POST[ 'user_pass' ]
+        // ) );
 
-        wp_safe_redirect( esc_url( remove_query_arg( 'update_password' ) ) );
+        // charitable_get_notices()->add_success( 'Your password has been updated', 'charitable' );
 
-        die();
-    }
+        // wp_safe_redirect( esc_url( remove_query_arg( 'update_password' ) ) );
 
-    /**
-     * When editing the password, we only display the password fields. 
-     *
-     * @return  void
-     * @access  private
-     * @since   1.4.0
-     */
-    private function maybe_display_password_form() {
-        if ( ! isset( $_GET[ 'update_password' ] ) || ! $_GET[ 'update_password' ] ) {
-            return;
-        }
-
-        /**  
-         * Filter the default form fields, replacing them entirely with the password fields. 
-         * This is done on priority 25 to avoid having non-relevant fields added that were 
-         * added through the `charitable_user_profile_fields` filter on a lower priority.
-         */
-        add_filter( 'charitable_user_profile_fields', array( $this, 'get_password_fields' ), 25 );
+        // die();
     }
 
     /**
