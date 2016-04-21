@@ -606,19 +606,29 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
      *
      * @global  WPDB $wpdb
      * @param   string $period
+     * @param   string[] $statuses
      * @return  array
      * @access  public
      * @since   1.2.0
      */
-    public function get_donations_summary_by_period( $period = "" ) {
+    public function get_donations_summary_by_period( $period = "", $statuses = array() ) {
         global $wpdb;
+
+        if ( empty( $statuses ) ) {
+            $statuses = Charitable_Donation::get_approval_statuses();
+        }
+
+        list( $status_clause, $parameters ) = $this->get_donation_status_clause( $statuses );
+
+        array_unshift( $parameters, $period );
 
         $sql = "SELECT COALESCE( SUM( cd.amount ), 0 ) as amount, COUNT( cd.donation_id ) as count
                 FROM {$wpdb->prefix}charitable_campaign_donations cd
-                INNER JOIN $wpdb->posts po ON po.ID = cd.donation_id
-                WHERE po.post_date LIKE %s;";
+                INNER JOIN $wpdb->posts p ON p.ID = cd.donation_id
+                WHERE p.post_date LIKE %s
+                $status_clause;";
 
-        $results = $wpdb->get_results( $wpdb->prepare( $sql, $period ) );
+        $results = $wpdb->get_results( $wpdb->prepare( $sql, $parameters ) );
 
         $result = $results[0];
 

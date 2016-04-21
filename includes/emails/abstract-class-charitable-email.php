@@ -203,6 +203,17 @@ abstract class Charitable_Email implements Charitable_Email_Interface {
     }
 
     /**
+     * Checks whether we are currently previewing the email. 
+     *
+     * @return  boolean
+     * @access  public
+     * @since   1.3.5
+     */
+    public function is_preview() {
+        return isset( $_GET[ 'charitable_action' ] ) && 'preview_email' == $_GET[ 'charitable_action' ];
+    }
+
+    /**
      * Return the value of a specific field to be displayed in the email. 
      *
      * This is used by Charitable_Emails::email_shortcode() to obtain the value of the
@@ -222,7 +233,7 @@ abstract class Charitable_Email implements Charitable_Email_Interface {
             return '';
         }
 
-        if ( isset( $args[ 'preview' ] ) && $args[ 'preview' ] ) {
+        if ( $this->is_preview() ) {
             return $this->get_preview_field_content( $field );
         }
 
@@ -411,7 +422,11 @@ abstract class Charitable_Email implements Charitable_Email_Interface {
      * @since   1.0.0
      */
     public function get_donor_first_name() {        
-        return $this->return_value_if_has_valid_donation( $this->donation->get_donor()->get_value( 'first_name' ) );
+        if ( ! $this->has_valid_donation() ) {
+            return '';
+        }
+
+        return $this->donation->get_donor()->get_value( 'first_name' );
     }
 
     /**
@@ -422,7 +437,11 @@ abstract class Charitable_Email implements Charitable_Email_Interface {
      * @since   1.0.0
      */
     public function get_donor_full_name() {
-        return $this->return_value_if_has_valid_donation( $this->donation->get_donor()->get_name() );
+        if ( ! $this->has_valid_donation() ) {
+            return '';
+        }
+
+        return $this->donation->get_donor()->get_name();
     }
 
     /**
@@ -433,7 +452,11 @@ abstract class Charitable_Email implements Charitable_Email_Interface {
      * @since   1.0.0
      */
     public function get_donor_email() {
-        return $this->return_value_if_has_valid_donation( $this->donation->get_donor()->get_email() );
+        if ( ! $this->has_valid_donation() ) {
+            return '';
+        }
+
+        return $this->donation->get_donor()->get_email();
     }
 
     /**
@@ -444,7 +467,11 @@ abstract class Charitable_Email implements Charitable_Email_Interface {
      * @since   1.0.0
      */
     public function get_donation_id() {
-        return $this->return_value_if_has_valid_donation( $this->donation->get_donation_id() );
+        if ( ! $this->has_valid_donation() ) {
+            return '';
+        }
+
+        return $this->donation->get_donation_id();
     }
 
     /**
@@ -484,7 +511,11 @@ abstract class Charitable_Email implements Charitable_Email_Interface {
     public function get_donation_date( $value, $args ) {
         $format = isset( $args[ 'format' ] ) ? $args[ 'format' ] : get_option( 'date_format' );
 
-        return $this->return_value_if_has_valid_donation( $this->donation->get_date( $format ) );
+        if ( ! $this->has_valid_donation() ) {
+            return '';
+        }
+
+        return $this->donation->get_date( $format );
     }
 
     /**
@@ -495,7 +526,11 @@ abstract class Charitable_Email implements Charitable_Email_Interface {
      * @since   1.3.0
      */
     public function get_donation_status() {
-        return $this->return_value_if_has_valid_donation( $this->donation->get_status( true ) );
+        if ( ! $this->has_valid_donation() ) {
+            return '';
+        }
+
+        return $this->donation->get_status( true );
     }
 
     /**
