@@ -113,10 +113,9 @@ You can post in the [support forum](https://wordpress.org/support/plugin/charita
 
 == Changelog ==
 
-<<<<<<< HEAD
 = 1.4.0 - Unreleased = 
 *
-=======
+
 = 1.3.6 = 
 * Fixed errors when exporting donations with errors set to display. [#128](https://github.com/Charitable/Charitable/issues/128)
 
@@ -127,7 +126,6 @@ You can post in the [support forum](https://wordpress.org/support/plugin/charita
 * Only include completed payments in the Donation Statistics dashboard widget, for the period summaries. 
 * Fixed PHP notices in email previews.
 * Deprecated `Charitable_Session::get_session_id()`. We are no longer using a public session ID.
->>>>>>> stable
 
 = 1.3.4 =
 * Added selective refresh support for Charitable widgets.
