@@ -309,10 +309,17 @@ class Charitable_User extends WP_User {
      * @since   1.0.0
      */
     public function get_address( $donation_id = "" ) {
-        if ( $donation_id ) {            
+        $address_fields = false;
+
+        if ( $donation_id ) {         
+
             $address_fields = get_post_meta( $donation_id, 'donor', true );
+            
         }
-        else {
+
+        /* If the address fields were not set by the check above, get them from the user meta. */
+        if ( ! is_array( $address_fields ) ) {
+
             $address_fields = array(
                 'first_name'    => $this->get( 'first_name' ),
                 'last_name'     => $this->get( 'last_name' ),
@@ -324,6 +331,7 @@ class Charitable_User extends WP_User {
                 'postcode'      => $this->get( 'donor_postcode' ),
                 'country'       => $this->get( 'donor_country' )
             );
+
         }
 
         $address_fields = apply_filters( 'charitable_user_address_fields', $address_fields, $this, $donation_id );

@@ -592,7 +592,11 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
                 $sql_where
                 $sql_order";
 
-        $results = $wpdb->get_results( $wpdb->prepare( $sql, $parameters ) );
+        if ( ! empty( $parameters ) ) {
+            $sql = $wpdb->prepare( $sql, $parameters );
+        }
+
+        $results = $wpdb->get_results( $sql );
 
         if ( $this->is_comma_decimal() ) {
             $results = array_map( array( $this, 'sanitize_amounts' ), $results );
@@ -731,7 +735,9 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
             $campaigns = array( $campaigns );
         }
 
-        $campaigns = array_filter( $campaigns, 'is_int' );
+        /* Filter out any non-numeric campaign IDs, then convert to int */
+        $campaigns = array_filter( $campaigns, 'is_numeric' );
+        $campaigns = array_map( 'intval', $campaigns );
 
         $in = $this->get_in_clause( $campaigns, '%d' );
 
