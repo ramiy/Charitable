@@ -170,7 +170,7 @@ final class Charitable_Post_Types {
      */
     public function register_post_statuses() {
         register_post_status( 'charitable-pending', array(
-            'label'                     => _x( 'charitable-pending', 'Status General Name', 'charitable' ),
+            'label'                     => _x( 'Pending', 'Pending Donation Status', 'charitable' ),
             'label_count'               => _n_noop( 'Pending (%s)',  'Pending (%s)', 'charitable' ), 
             'public'                    => false,
             'show_in_admin_all_list'    => true,
@@ -179,7 +179,7 @@ final class Charitable_Post_Types {
         ) );
 
         register_post_status( 'charitable-completed', array(
-            'label'                     => _x( 'charitable-completed', 'Status General Name', 'charitable' ),
+            'label'                     => _x( 'Completed', 'Completed Donation Status', 'charitable' ),
             'label_count'               => _n_noop( 'Completed (%s)',  'Completed (%s)', 'charitable' ), 
             'public'                    => false,
             'show_in_admin_all_list'    => true,
@@ -188,7 +188,7 @@ final class Charitable_Post_Types {
         ) );
 
         register_post_status( 'charitable-failed', array(
-            'label'                     => _x( 'charitable-failed', 'Status General Name', 'charitable' ),
+            'label'                     => _x( 'Failed', 'Failed Donation Status', 'charitable' ),
             'label_count'               => _n_noop( 'Failed (%s)',  'Failed (%s)', 'charitable' ), 
             'public'                    => false,
             'show_in_admin_all_list'    => true,
@@ -197,7 +197,7 @@ final class Charitable_Post_Types {
         ) );
 
         register_post_status( 'charitable-cancelled', array(
-            'label'                     => _x( 'charitable-cancelled', 'Status General Name', 'charitable' ),
+            'label'                     => _x( 'Canceled', 'Canceled Donation Status', 'charitable' ),
             'label_count'               => _n_noop( 'Canceled (%s)',  'Canceled (%s)', 'charitable' ), 
             'public'                    => false,
             'show_in_admin_all_list'    => true,
@@ -206,7 +206,7 @@ final class Charitable_Post_Types {
         ) );
 
         register_post_status( 'charitable-refunded', array(
-            'label'                     => _x( 'charitable-refunded', 'Status General Name', 'charitable' ),
+            'label'                     => _x( 'Refunded', 'Refunded Donation Status', 'charitable' ),
             'label_count'               => _n_noop( 'Refunded (%s)',  'Refunded (%s)', 'charitable' ), 
             'public'                    => false,
             'show_in_admin_all_list'    => true,
@@ -215,7 +215,7 @@ final class Charitable_Post_Types {
         ) );
 
         register_post_status( 'charitable-preapproved', array(
-            'label'                     => _x( 'charitable-preapproved', 'Status General Name', 'charitable' ),
+            'label'                     => _x( 'Pre Approved', 'Pre Approved Donation Status', 'charitable' ),
             'label_count'               => _n_noop( 'Pre Approved (%s)',  'Pre Approved (%s)', 'charitable' ), 
             'public'                    => false,
             'show_in_admin_all_list'    => true,

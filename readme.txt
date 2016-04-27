@@ -3,8 +3,8 @@ Contributors: WPCharitable, ericdaams
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paypal%40164a%2ecom
 Tags: donations, donate, donation plugin, fundraising, fundraising plugin, non-profit, non-profits, charity, churches, commerce, crowdfunding, crowd funding, paypal donations, paypal, stripe, stripe donations, campaigns, gifts, giving, wordpress fundraising, wordpress donations, wordpress donation plugin, peer to peer fundraising, peer to peer fundraiser, peer fundraising, social fundraising
 Requires at least: 4.1
-Tested up to: 4.5
-Stable tag: 1.3.4
+Tested up to: 4.5.1
+Stable tag: 1.3.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -113,8 +113,21 @@ You can post in the [support forum](https://wordpress.org/support/plugin/charita
 
 == Changelog ==
 
+<<<<<<< HEAD
 = 1.4.0 - Unreleased = 
 *
+=======
+= 1.3.6 = 
+* Fixed errors when exporting donations with errors set to display. [#128](https://github.com/Charitable/Charitable/issues/128)
+
+= 1.3.5 =
+* Added `is_preview()` method to `Charitable_Email` class. 
+* Added `get_donations()` method to `Charitable_Donor` class.
+* Improved custom post status labels.
+* Only include completed payments in the Donation Statistics dashboard widget, for the period summaries. 
+* Fixed PHP notices in email previews.
+* Deprecated `Charitable_Session::get_session_id()`. We are no longer using a public session ID.
+>>>>>>> stable
 
 = 1.3.4 =
 * Added selective refresh support for Charitable widgets.

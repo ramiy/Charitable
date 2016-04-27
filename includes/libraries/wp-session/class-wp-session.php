@@ -25,7 +25,7 @@ final class WP_Session extends Recursive_ArrayAccess implements Iterator, Counta
 	 *
 	 * @var string
 	 */
-	public $session_id;
+	protected $session_id;
 
 	/**
 	 * Unix timestamp when session expires.
