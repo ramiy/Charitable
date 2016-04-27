@@ -114,7 +114,9 @@ You can post in the [support forum](https://wordpress.org/support/plugin/charita
 == Changelog ==
 
 = 1.3.6 = 
+* Prevented campaigns being created with no suggested donation amounts and custom donations disabled. This results in $0 donations. [#127](https://github.com/Charitable/Charitable/issues/127)
 * Fixed errors when exporting donations with errors set to display. [#128](https://github.com/Charitable/Charitable/issues/128)
+* Deprecated `Charitable_Email::return_value_if_has_valid_donation()` method, since this was completely broken and should not be used.
 
 = 1.3.5 =
 * Added `is_preview()` method to `Charitable_Email` class. 
