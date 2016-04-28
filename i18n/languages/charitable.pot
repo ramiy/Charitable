@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Charitable 1.4.0\n"
 "Report-Msgid-Bugs-To: https://www.wpcharitable.com/\n"
-"POT-Creation-Date: 2016-04-27 04:53:08+00:00\n"
+"POT-Creation-Date: 2016-04-28 06:33:17+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -6055,6 +6055,7 @@ msgid ""
 msgstr ""
 
 #: includes/donations/charitable-donation-functions.php:166
+#: includes/emails/abstract-class-charitable-email.php:560
 msgid "Paid"
 msgstr ""
 
@@ -6266,6 +6267,75 @@ msgstr ""
 
 #: includes/emails/abstract-class-charitable-email.php:410
 msgid "The status of the donation (pending, paid, etc.)"
+msgstr ""
+
+#: includes/emails/abstract-class-charitable-email.php:558
+msgid "Fake Campaign: $50.00"
+msgstr ""
+
+#: includes/emails/abstract-class-charitable-email.php:584
+msgid "The title of the campaign"
+msgstr ""
+
+#: includes/emails/abstract-class-charitable-email.php:589
+msgid "The name of the campaign creator"
+msgstr ""
+
+#: includes/emails/abstract-class-charitable-email.php:594
+msgid "The email address of the campaign creator"
+msgstr ""
+
+#: includes/emails/abstract-class-charitable-email.php:599
+msgid "The end date of the campaign"
+msgstr ""
+
+#: includes/emails/abstract-class-charitable-email.php:604
+msgid ""
+"Display whether the campaign reached its goal. Add a `success` parameter as "
+"the message when the campaign was successful, and a `failure` parameter as "
+"the message when the campaign is not successful"
+msgstr ""
+
+#: includes/emails/abstract-class-charitable-email.php:609
+msgid "Display the total amount donated to the campaign"
+msgstr ""
+
+#: includes/emails/abstract-class-charitable-email.php:614
+msgid "Display the number of campaign donors"
+msgstr ""
+
+#: includes/emails/abstract-class-charitable-email.php:619
+msgid "Display the campaign's fundraising goal"
+msgstr ""
+
+#: includes/emails/abstract-class-charitable-email.php:624
+msgid "Display the campaign's URL"
+msgstr ""
+
+#: includes/emails/abstract-class-charitable-email.php:710
+msgid "The campaign achieved its fundraising goal."
+msgstr ""
+
+#: includes/emails/abstract-class-charitable-email.php:711
+msgid "The campaign did not reach its fundraising goal."
+msgstr ""
+
+#: includes/emails/abstract-class-charitable-email.php:942
+msgid "You cannot send this email without a donation!"
+msgstr ""
+
+#: includes/emails/abstract-class-charitable-email.php:958
+msgid "You cannot send this email without a campaign!"
+msgstr ""
+
+#: includes/emails/abstract-class-charitable-email.php:1101
+msgid ""
+"The following options are available with the "
+"<code>[charitable_email]</code> shortcode:"
+msgstr ""
+
+#: includes/emails/abstract-class-charitable-email.php:1135
+msgid "This function was buggy and has been deprecated."
 msgstr ""
 
 #: includes/emails/class-charitable-email-campaign-end.php:52

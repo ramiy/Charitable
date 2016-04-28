@@ -24,7 +24,7 @@ add_filter( 'charitable_sanitize_campaign_meta', array( 'Charitable_Campaign', '
  * @see     Charitable_Campaign::sanitize_campaign_goal()
  * @see     Charitable_Campaign::sanitize_campaign_end_date()
  * @see     Charitable_Campaign::sanitize_campaign_suggested_donations()
- * @see     Charitable_Campaign::sanitize_checkbox()
+ * @see     Charitable_Campaign::sanitize_custom_donations()
  * @see     Charitable_Campaign::sanitize_campaign_description()
  */
 add_filter( 'charitable_sanitize_campaign_meta_campaign_goal', array( 'Charitable_Campaign', 'sanitize_campaign_goal' ) );
