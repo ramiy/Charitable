@@ -794,7 +794,9 @@ class Charitable_Campaign {
             return 1;
         }
 
-        if ( empty( self::sanitize_campaign_suggested_donations( $submitted[ '_campaign_suggested_donations' ] ) ) ) {
+        $suggested_donations = self::sanitize_campaign_suggested_donations( $submitted[ '_campaign_suggested_donations' ] );
+
+        if ( empty( $suggested_donations ) ) {
             return 1;
         }
 
