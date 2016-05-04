@@ -145,6 +145,17 @@ class Charitable_Donor {
     }
 
     /**
+     * Return the Charitable_Donation object associated with this object.  
+     *
+     * @return  object[]
+     * @access  public
+     * @since   1.3.5
+     */
+    public function get_donations() {
+        return $this->get_user()->get_donations();
+    }
+
+    /**
      * Return the donor meta stored for the particular donation. 
      *
      * @param   string $key Optional key passed to return a particular meta field.

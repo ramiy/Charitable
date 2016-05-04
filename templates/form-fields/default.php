@@ -28,5 +28,8 @@ $value          = isset( $field[ 'value' ] ) ? $field[ 'value' ] : '';
             <?php endif ?>
         </label>
     <?php endif ?>
+    <?php if ( isset( $field[ 'help' ] ) ) : ?>
+        <p class="charitable-field-help"><?php echo $field[ 'help' ] ?></p>
+    <?php endif ?>
     <input type="<?php echo esc_attr( $field_type ) ?>" name="<?php echo $field[ 'key' ] ?>" value="<?php echo esc_attr( stripslashes( $value ) ) ?>" <?php echo charitable_get_arbitrary_attributes( $field ) ?>/>
 </div>

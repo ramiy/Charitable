@@ -26,3 +26,10 @@ add_action( 'charitable_update_profile', array( 'Charitable_Profile_Form', 'upda
  * @see     Charitable_Registration_Form::save_registration()
  */
 add_action( 'charitable_save_registration', array( 'Charitable_Registration_Form', 'save_registration' ) );
+
+/**
+ * Add support for deprecated `charitable_user_profile_after_fields` hook.
+ *
+ * @see     Charitable_Profile_Form::add_deprecated_charitable_user_profile_after_fields_hook()
+ */
+add_action( 'charitable_form_after_fields', array( 'Charitable_Profile_Form', 'add_deprecated_charitable_user_profile_after_fields_hook' ) );    

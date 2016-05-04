@@ -144,7 +144,15 @@ class Charitable_Donation_Processor {
 
         if ( ! $processor->get_campaign() ) {
             return;
-        }       
+        }
+
+        $nonce = $_POST[ 'charitable-donate-now' ];
+
+        if ( ! wp_verify_nonce( $nonce, 'charitable-donate' ) 
+            && ! wp_verify_nonce( $nonce, 'charitable-donate-' ) // Kept for backwards compatibility 
+        ) {
+            return;
+        }
 
         /* Save the donation in the session */
         charitable_get_session()->add_donation( $processor->get_campaign()->ID, 0 );

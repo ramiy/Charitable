@@ -82,17 +82,6 @@ class Charitable_Session {
     }
 
 	/**
-	 * Returns the session ID. 
-	 *
-	 * @return 	string Session ID
-	 * @access 	public
-	 * @since 	1.0.0
-	 */
-	public function get_session_id() {
-		return $this->session->session_id;
-	}
-
-	/**
 	 * Return a session variable. 
 	 *
 	 * @param 	string $key
@@ -275,6 +264,19 @@ class Charitable_Session {
 			'success'	=> array(), 
 			'info'		=> array()
 		);
+	}
+
+	/**
+	 * Returns the session ID. 
+	 *
+	 * @deprecated 1.3.5
+	 * 
+	 * @return 	string Session ID
+	 * @access 	public
+	 * @since 	1.3.5
+	 */
+	public function get_session_id() {
+		return '';
 	}
 }
 

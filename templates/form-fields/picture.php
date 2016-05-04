@@ -20,8 +20,13 @@ $size           = isset( $field[ 'size' ] ) ? $field[ 'size' ] : 'thumbnail';
 $use_uploader   = isset( $field[ 'uploader' ] ) && $field[ 'uploader' ];
 $max_uploads    = isset( $field[ 'max_uploads' ] ) ? $field[ 'max_uploads' ] : 1;
 $max_file_size  = isset( $field[ 'max_file_size' ] ) ? $field[ 'max_file_size' ] : wp_max_upload_size();
-$value          = isset( $field[ 'value' ] ) ? $field[ 'value' ] : '';
-$has_max_uploads = strlen( $value ) && ( $max_uploads == 1 || $value >= $max_uploads );
+$value          = isset( $field[ 'value' ] ) ? $field[ 'value' ] : array();
+
+if ( ! is_array( $value ) ) {
+    $value = array( $value );
+}
+
+$has_max_uploads = count( $value ) >= $max_uploads;
 
 if ( $use_uploader ) {
     wp_enqueue_script( 'charitable-plup-fields' );
@@ -76,7 +81,7 @@ $params = array(
         data-images="<?php echo $field[ 'key' ] ?>-dragdrop-images"
         data-params="<?php echo esc_attr( wp_json_encode( $params ) ) ?>">
         <div id="<?php echo $field[ 'key' ] ?>-dragdrop-dropzone" class="charitable-drag-drop-dropzone" <?php if ( $has_max_uploads ) : ?>style="display:none;"<?php endif ?>>
-            <p class="charitable-drag-drop-info"><?php _ex( 'Drop images here', 'image upload', 'charitable' ) ?></p>
+            <p class="charitable-drag-drop-info"><?php echo 1 == $max_uploads ? _x( 'Drop image here', 'image upload', 'charitable' ) : _x( 'Drop images here', 'image upload plural', 'charitable' ) ?></p>
             <p><?php _ex( 'or', 'image upload', 'charitable' ) ?></p>
             <p class="charitable-drag-drop-buttons">
                 <button id="<?php echo $field[ 'key' ] ?>-browse-button" class="button"><?php _ex( 'Select Files', 'image upload', 'charitable' ) ?></button>
@@ -87,17 +92,11 @@ $params = array(
             <ul class="images"></ul>
         </div>
         <ul id="<?php echo $field[ 'key' ] ?>-dragdrop-images" class="charitable-drag-drop-images charitable-drag-drop-images-<?php echo $max_uploads ?>"><?php 
-            if ( ! empty( $value ) ) : 
-                if ( ! is_array( $value ) ) :
-                    $value = array( $value );
-                endif;
+            foreach ( $value as $image ) : 
+            
+                charitable_template( 'form-fields/picture-preview.php', array( 'image' => $image, 'field' => $field ) );
 
-                foreach ( $value as $image ) : 
-                
-                    charitable_template( 'form-fields/picture-preview.php', array( 'image' => $image, 'field' => $field ) );
-
-                endforeach;
-            endif;
+            endforeach;
         ?></ul>
     </div>
 </div>

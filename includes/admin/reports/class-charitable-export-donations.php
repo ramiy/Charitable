@@ -154,7 +154,9 @@ class Charitable_Export_Donations extends Charitable_Export {
             $query_args[ 'status' ] = $this->args[ 'status' ];
         }
 
+        /** @deprecated filter name with misspelling */
         $query_args = apply_filters( 'chairtable_export_donations_query_args', $query_args, $this->args );
+        $query_args = apply_filters( 'charitable_export_donations_query_args', $query_args, $this->args );
 
         return charitable_get_table( 'campaign_donations' )->get_donations_report( $query_args );
     }   

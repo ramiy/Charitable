@@ -203,6 +203,17 @@ abstract class Charitable_Email implements Charitable_Email_Interface {
     }
 
     /**
+     * Checks whether we are currently previewing the email. 
+     *
+     * @return  boolean
+     * @access  public
+     * @since   1.3.5
+     */
+    public function is_preview() {
+        return isset( $_GET[ 'charitable_action' ] ) && 'preview_email' == $_GET[ 'charitable_action' ];
+    }
+
+    /**
      * Return the value of a specific field to be displayed in the email. 
      *
      * This is used by Charitable_Emails::email_shortcode() to obtain the value of the
@@ -222,7 +233,7 @@ abstract class Charitable_Email implements Charitable_Email_Interface {
             return '';
         }
 
-        if ( isset( $args[ 'preview' ] ) && $args[ 'preview' ] ) {
+        if ( $this->is_preview() ) {
             return $this->get_preview_field_content( $field );
         }
 
@@ -920,6 +931,38 @@ abstract class Charitable_Email implements Charitable_Email_Interface {
     }    
 
     /**
+     * Checks whether the email has a valid donation object set. 
+     *
+     * @return  boolean
+     * @access  public
+     * @since   1.0.0
+     */
+    public function has_valid_donation() {
+        if ( is_null( $this->donation ) || ! is_a( $this->donation, 'Charitable_Donation' ) ) {
+            _doing_it_wrong( __METHOD__, __( 'You cannot send this email without a donation!', 'charitable' ), '1.0.0' );
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Checks whether the email has a valid donation object set. 
+     *
+     * @return  boolean
+     * @access  public
+     * @since   1.0.0
+     */
+    public function has_valid_campaign() {
+        if ( is_null( $this->campaign ) || ! is_a( $this->campaign, 'Charitable_Campaign' ) ) {
+            _doing_it_wrong( __METHOD__, __( 'You cannot send this email without a campaign!', 'charitable' ), '1.0.0' );
+            return false;
+        }
+
+        return true;
+    }   
+
+    /**
      * Build the email.  
      *
      * @return  string
@@ -1066,22 +1109,7 @@ abstract class Charitable_Email implements Charitable_Email_Interface {
         $html = ob_get_clean();
 
         return apply_filters( 'charitable_email_shortcode_options_text', $html, $this );
-    }
-
-    /**
-     * Returns the given value if the current email object has a valid donation. 
-     *
-     * @return  string
-     * @access  protected
-     * @since   1.0.0
-     */
-    protected function return_value_if_has_valid_donation( $return, $fallback = "" ) {
-        if ( ! $this->has_valid_donation() ) {
-            return $fallback;
-        }
-
-        return $return;
-    }
+    }    
 
     /**
      * Checks whether the passed email is the same as the current email object. 
@@ -1092,39 +1120,26 @@ abstract class Charitable_Email implements Charitable_Email_Interface {
      */
     protected function is_current_email( Charitable_Email $email ) {
         return $email->get_email_id() == $this->get_email_id();
-    }
+    }    
 
     /**
-     * Checks whether the email has a valid donation object set. 
-     *
-     * @return  boolean
-     * @access  public
+     * @deprecated 1.3.6
+     * 
+     * @param   mixed $return
+     * @param   mixed $fallback
+     * @return  mixed $return
+     * @access  protected
      * @since   1.0.0
      */
-    public function has_valid_donation() {
-        if ( is_null( $this->donation ) || ! is_a( $this->donation, 'Charitable_Donation' ) ) {
-            _doing_it_wrong( __METHOD__, __( 'You cannot send this email without a donation!', 'charitable' ), '1.0.0' );
-            return false;
+    protected function return_value_if_has_valid_donation( $return, $fallback = "" ) {
+        _deprecated_function( __METHOD__, '1.3.6', __( 'This function was buggy and has been deprecated.', 'charitable' ) );
+        
+        if ( ! $this->has_valid_donation() ) {
+            return $fallback;
         }
 
-        return true;
+        return $return;
     }
-
-    /**
-     * Checks whether the email has a valid donation object set. 
-     *
-     * @return  boolean
-     * @access  public
-     * @since   1.0.0
-     */
-    public function has_valid_campaign() {
-        if ( is_null( $this->campaign ) || ! is_a( $this->campaign, 'Charitable_Campaign' ) ) {
-            _doing_it_wrong( __METHOD__, __( 'You cannot send this email without a campaign!', 'charitable' ), '1.0.0' );
-            return false;
-        }
-
-        return true;
-    }   
 }
 
 endif; // End class_exists check

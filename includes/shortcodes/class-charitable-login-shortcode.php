@@ -39,16 +39,18 @@ class Charitable_Login_Shortcode {
 
         $args = shortcode_atts( $defaults, $atts, 'charitable_login' );    
 
-        ob_start();
+        $args[ 'login_form_args' ] = self::get_login_form_args( $args );
 
         if ( is_user_logged_in() ) {
+
+            ob_start();
 
             charitable_template( 'shortcodes/logged-in.php', $args );
             
             return ob_get_clean();
-        }
+        }        
 
-        $args[ 'login_form_args' ] = self::get_login_form_args( $args );
+        ob_start();
 
         charitable_template( 'shortcodes/login.php', $args );
 
