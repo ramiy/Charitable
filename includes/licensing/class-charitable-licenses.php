@@ -172,7 +172,7 @@ class Charitable_Licenses {
     public function get_license( $item ) {
         $license = $this->get_license_details( $item );
 
-        if ( ! $license ) {
+        if ( ! $license || ! is_array( $license )  ) {
             return false;
         }
 
