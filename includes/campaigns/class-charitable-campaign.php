@@ -731,35 +731,6 @@ class Charitable_Campaign {
     }    
 
     /**
-     * Sanitize the value provided for custom donations. 
-     *
-     * @param   mixed $value
-     * @param   array $submitted
-     * @return  boolean
-     * @access  public
-     * @static 
-     * @since   1.3.6
-     */
-    public static function sanitize_custom_donations( $value, $submitted ) {
-        $checked = self::sanitize_checkbox( $value );
-
-        if ( $checked ) {
-            return $checked;
-        }
-
-        /* If suggested donations are not set, custom donations needs to be enabled. */
-        if ( ! isset( $submitted[ '_campaign_suggested_donations' ] ) ) {
-            return true;
-        }
-
-        if ( empty( self::sanitize_campaign_suggested_donations( $submitted[ '_campaign_suggested_donations' ] ) ) ) {
-            return true;
-        }
-
-        return $checked;
-    }
-
-    /**
      * Sanitize the campaign description.
      *
      * @param   string  $value
