@@ -41,7 +41,11 @@ class Charitable_Donation_Helper extends WP_UnitTestCase {
 			wp_die( 'You must pass an array of campaigns to create a donation.' );
 		}
 
-		return Charitable_Donation_Processor::get_instance()->save_donation( $args );
+		$donation_id = Charitable_Donation_Processor::get_instance()->save_donation( $args );
+
+		Charitable_Donation_Processor::destroy();
+
+		return $donation_id;
 	}
 
 	/**

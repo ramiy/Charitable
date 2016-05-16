@@ -190,3 +190,17 @@ function charitable_get_current_donation_form() {
 function charitable_get_action_args( $args ) {
 	return sprintf( "data-charitable-args='%s'", json_encode( $args ) );
 }
+
+/**
+ * Returns the Charitable_Deprecated class, loading the file if required.
+ *
+ * @return 	Charitable_Deprecated
+ * @since 	1.4.0
+ */
+function charitable_get_deprecated() {
+	if ( ! class_exists( 'Charitable_Deprecated' ) ) {
+		require_once( charitable()->get_path( 'includes' ) . 'deprecated/class-charitable-deprecated.php' );
+	}
+
+	return Charitable_Deprecated::get_instance();
+}

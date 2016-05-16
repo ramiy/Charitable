@@ -434,7 +434,7 @@ class Charitable_Donation_Processor {
      * @since   1.0.0
      */
     public function save_campaign_donations( $donation_id ) {
-        $campaigns = $this->get_campaign_donations_data();
+        $campaigns = $this->get_campaign_donations_data();        
 
         foreach ( $campaigns as $campaign ) {
             $campaign[ 'donor_id' ] = $this->get_donor_id();
