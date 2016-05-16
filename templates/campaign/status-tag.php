@@ -19,6 +19,6 @@ if ( empty( $tag ) ) {
 }
 
 ?>
-<div class="campaign-status-tag campaign-status-tag-<?php echo strtolower( str_replace( ' ', '-', $tag ) ) ?>">  
+<div class="campaign-status-tag campaign-status-tag-<?php echo strtolower( str_replace( ' ', '-', $campaign->get_status_key() ) ) ?>">  
     <?php echo $tag ?>
 </div>
