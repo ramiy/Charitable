@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Charitable 1.4.0\n"
 "Report-Msgid-Bugs-To: https://www.wpcharitable.com/\n"
-"POT-Creation-Date: 2016-04-28 06:33:17+00:00\n"
+"POT-Creation-Date: 2016-05-16 05:42:14+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -5651,23 +5651,25 @@ msgstr ""
 msgid "This campaign failed to reach its funding goal %s ago"
 msgstr ""
 
-#: includes/campaigns/class-charitable-campaign.php:396
+#: includes/campaigns/class-charitable-campaign.php:445
+#: includes/campaigns/class-charitable-campaign.php:449
+#: includes/campaigns/class-charitable-campaign.php:453
 msgid "Ended"
 msgstr ""
 
-#: includes/campaigns/class-charitable-campaign.php:399
+#: includes/campaigns/class-charitable-campaign.php:449
 msgid "Successful"
 msgstr ""
 
-#: includes/campaigns/class-charitable-campaign.php:402
+#: includes/campaigns/class-charitable-campaign.php:453
 msgid "Unsuccessful"
 msgstr ""
 
-#: includes/campaigns/class-charitable-campaign.php:406
+#: includes/campaigns/class-charitable-campaign.php:457
 msgid "Ending Soon"
 msgstr ""
 
-#: includes/campaigns/class-charitable-campaign.php:409
+#: includes/campaigns/class-charitable-campaign.php:461
 msgid "Active"
 msgstr ""
 
@@ -7019,12 +7021,12 @@ msgctxt "You have activated x and y. Change email settings."
 msgid "You have turned on the %s. <a href=\"%s\">Change settings</a>"
 msgstr ""
 
-#: includes/campaigns/class-charitable-campaign.php:465
+#: includes/campaigns/class-charitable-campaign.php:519
 msgctxt "amount donated of goal"
 msgid "%s donated of %s goal"
 msgstr ""
 
-#: includes/campaigns/class-charitable-campaign.php:471
+#: includes/campaigns/class-charitable-campaign.php:525
 msgctxt "amount donated"
 msgid "%s donated"
 msgstr ""
