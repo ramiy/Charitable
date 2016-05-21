@@ -55,10 +55,29 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 			add_action( 'add_meta_boxes', array( $this, 'remove_meta_boxes' ), 20 );
 			add_action( 'transition_post_status', array( $this, 'handle_donation_status_change' ), 10, 3 );
 
-			// Add fields to the dashboard listing of donations.
-			add_filter( 'manage_edit-donation_columns',         array( $this, 'dashboard_columns' ), 11, 1 );
-			add_filter( 'manage_donation_posts_custom_column',  array( $this, 'dashboard_column_item' ), 11, 2 );
-			add_filter( 'views_edit-donation',                  array( $this, 'view_options' ) );
+			// Donations columns
+			add_filter( 'manage_edit-donation_columns', array( $this, 'dashboard_columns' ), 11, 1 );
+			add_filter( 'manage_donation_posts_custom_column', array( $this, 'dashboard_column_item' ), 11, 2 );
+			add_filter( 'manage_edit-donation_sortable_columns', array( $this, 'sortable_columns' ) );
+			add_filter( 'list_table_primary_column', array( $this, 'primary_column' ), 10, 2 );
+			add_filter( 'post_row_actions', array( $this, 'row_actions' ), 2, 100 );
+
+			// Bulk edit
+			add_filter( 'bulk_actions-edit-donation', array( $this, 'bulk_actions' ) );
+
+			// Customization filters
+			add_filter( 'views_edit-donation', array( $this, 'view_options' ) );
+			add_filter( 'disable_months_dropdown', array( $this, 'disable_months_dropdown' ), 10, 2 );
+			add_action( 'restrict_manage_posts', array( $this, 'restrict_manage_posts' ) );
+			add_action( 'manage_posts_extra_tablenav', array( $this, 'extra_tablenav' ) );
+
+			// Export
+			// add_action( 'admin_footer', array( $this, 'export' ) );
+			add_action( 'admin_enqueue_scripts', array( $this, 'setup_scripts' ) );
+
+			// Sorting query
+			add_filter( 'request', array( $this, 'request_query' ) );
+			add_filter( 'posts_clauses', array( $this, 'posts_clauses' ) );
 
 			do_action( 'charitable_admin_donation_post_type_start', $this );
 		}
@@ -150,7 +169,7 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 				);
 			}
 
-			charitable_update_donation_log( $post->ID, $message );
+			charitable_get_donation( $post->ID )->update_donation_log( $message );
 		}
 
 		/**
@@ -196,14 +215,12 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 		 */
 		public function dashboard_columns( $column_names ) {
 			$column_names = apply_filters( 'charitable_donation_dashboard_column_names', array(
-				'cb'                => '<input type="checkbox"/>',
-				'id'                => __( 'ID', 'charitable' ),
-				'donor'             => __( 'Donor', 'charitable' ),
-				'details'           => __( 'Details', 'charitable' ),
-				'amount'            => __( 'Amount Donated', 'charitable' ),
-				'campaigns'         => __( 'Campaign(s)', 'charitable' ),
-				'donation_date'     => __( 'Date', 'charitable' ),
-				'status'            => __( 'Status', 'charitable' ),
+				'cb'            => '<input type="checkbox"/>',
+				'id'            => __( 'Donation', 'charitable' ),
+				'amount'        => __( 'Amount Donated', 'charitable' ),
+				'campaigns'     => __( 'Campaign(s)', 'charitable' ),
+				'donation_date' => __( 'Date', 'charitable' ),
+				'post_status'   => __( 'Status', 'charitable' ),
 			) );
 
 			return $column_names;
@@ -222,101 +239,408 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 		 */
 		public function dashboard_column_item( $column_name, $post_id ) {
 
-			$donation = $this->get_donation( $post_id );
+			$donation = charitable_get_donation( $post_id );
 
 			switch ( $column_name ) {
+
 				case 'id' :
-					$display = $donation->get_number();
-					break;
 
-				case 'donor' :
-					$display = $donation->get_donor()->get_name();
-					break;
+					$title 	 = esc_attr__( 'View Donation Details', 'charitable' );
+					$name 	 = $donation->get_donor()->get_name();
 
-				case 'details' :
-					$display = sprintf( '<a href="%s">%s</a>',
-						esc_url( add_query_arg( array( 'post' => $donation->ID, 'action' => 'edit' ), admin_url( 'post.php' ) ) ),
-					__( 'View Donation Details', 'charitable' ) );
-					break;
+					if ( $name ) {
+						$text = sprintf( _x( '#%d by %s', 'number symbol', 'charitable' ),
+							$donation->get_donation_id(),
+							$name
+						);
+					} else {
+						$text = sprintf( _x( '#%d', 'number symbol', 'charitable' ),
+							$donation->get_donation_id()
+						);
+					}
 
-				case 'amount' :
-					$display = charitable_format_money( $donation->get_total_donation_amount() );
-					break;
+					$url 	 = esc_url( add_query_arg( array(
+						'post'   => $donation->get_donation_id(),
+						'action' => 'edit',
+					), admin_url( 'post.php' ) ) );
 
-				case 'campaigns' :
-					$display = implode( ', ', $donation->get_campaigns() );
-					break;
+					$display = sprintf( '<a href="%s" title="%s">%s</a>', $url, $title, $text );
 
-				case 'donation_date' :
-					$display = $donation->get_date();
 					break;
 
 				case 'status' :
+
+					$display = sprintf( '<mark class="status %s">%s</mark>',
+						esc_attr( $donation->get_status() ),
+						strtolower( $donation->get_status( true ) )
+					);
+
+					break;
+
+				case 'amount' :
+
+					$display = charitable_format_money( $donation->get_total_donation_amount() );
+					$display .= '<span class="meta">' . sprintf( _x( 'via %s', 'charitable' ), $donation->get_gateway_label() ). '</span>';
+
+					break;
+
+				case 'campaigns' :
+
+					$display = implode( ', ', $donation->get_campaigns() );
+
+					break;
+
+				case 'donation_date' :
+
+					$display = $donation->get_date();
+
+					break;
+
+				case 'post_status' :
+
 					$display = $donation->get_status( true );
+
 					break;
 
 				default :
+
 					$display = '';
+
 					break;
+
 			}
 
 			echo apply_filters( 'charitable_donation_column_display', $display, $column_name, $post_id, $donation );
 		}
 
 		/**
-		 * Returns the donation object. Caches the object to avoid re-creating this for each column.
+		 * Make columns sortable.
 		 *
-		 * @return  Charitable_Donation
-		 * @access  private
-		 * @since   1.0.0
+		 * @param   array $columns  .
+		 * @return  array
+		 * @access  public
+		 * @since   1.4.0
 		 */
-		private function get_donation( $post_id ) {
-			$donation = wp_cache_get( $post_id, 'charitable_donation' );
+		public function sortable_columns( $columns ) {
+			$sortable_columns = array(
+				'id'            => 'ID',
+				'amount'        => 'amount',
+				'donation_date' => 'date',
+				'post_status'   => 'post_status',
+			);
 
-			if ( false === $donation ) {
+			return wp_parse_args( $sortable_columns, $columns );
+		}
 
-				$donation = charitable_get_donation( $post_id );
+	    /**
+		 * Set list table primary column for donations.
+		 *
+		 * Support for WordPress 4.3.
+		 *
+		 * @param  string $default
+		 * @param  string $screen_id
+		 * @return string
+		 * @since  1.4.0
+		 */
+		public function primary_column( $default, $screen_id ) {
+			if ( 'edit-donation' === $screen_id ) {
+				return 'id';
+			}
 
-				wp_cache_set( $post_id, $donation, 'charitable_donation' );
+			return $default;
+		}
+
+		/**
+		 * Set row actions for donations.
+		 *
+		 * @param  array   $actions
+		 * @param  WP_Post $post
+		 * @return array
+		 * @since  1.4.0
+		 */
+		public function row_actions( $actions, $post ) {
+			if ( Charitable::DONATION_POST_TYPE !== $post->post_type ) {
+				return $actions;
+			}
+
+			if ( isset( $actions['inline hide-if-no-js'] ) ) {
+				unset( $actions['inline hide-if-no-js'] );
+			}
+
+			if ( isset( $actions['edit'] ) ) {
+
+				$title 	= esc_attr__( 'View Details', 'charitable' );
+				$text   = __( 'View', 'charitable' );
+				$url    = esc_url( add_query_arg( array(
+					'post' => $post->ID,
+					'action' => 'edit',
+				), admin_url( 'post.php' ) ) );
+
+				$actions['edit'] = sprintf( '<a href="%s" title="%s">%s</a>', $url, $title, $text );
 
 			}
 
-			return $donation;
+			return $actions;
+		}
+
+		/**
+		 * Remove edit from the bulk actions.
+		 *
+		 * @param  array $actions
+		 * @return array
+		 * @since  1.4.0
+		 */
+		public function bulk_actions( $actions ) {
+			if ( isset( $actions['edit'] ) ) {
+				unset( $actions['edit'] );
+			}
+
+			return $actions;
 		}
 
 		/**
 		 * Returns the array of view options for this campaign.
 		 *
-		 * @param   array       $views
+		 * @param   array $views
 		 * @return  array
 		 * @access  public
-		 * @since   1.0.0
+		 * @since   1.4.0
 		 */
 		public function view_options( $views ) {
+			$current      = isset( $_GET['post-status'] ) ? $_GET['post-status'] : '';
+			$statuses     = charitable_get_valid_donation_statuses();
+			$donations    = new Charitable_Donations();
+			$status_count = $donations->count_by_status();
+			$all_url      = esc_url( remove_query_arg( array( 'post_status', 'paged' ) ) );
+			$all_class 	  = '' == $current || 'all' == $current ? ' class="current"' : '';
+			$all_text 	  = __( 'All', 'charitable' );
+			$all_count 	  = $donations->count_all();
 
-			$current        = isset( $_GET['post-status'] ) ? $_GET['post-status'] : '';
-			$statuses       = charitable_get_valid_donation_statuses();
-			$donations      = new Charitable_Donations();
-			$status_count   = $donations->count_by_status();
-
-			$views          = array();
-			$views['all']   = sprintf( '<a href="%s"%s>%s <span class="count">(%s)</span></a>',
-				esc_url( remove_query_arg( array( 'post_status', 'paged' ) ) ),
-				'all' === $current || '' == $current ? ' class="current"' : '',
-				__( 'All', 'charitable' ),
-				$donations->count_all()
+			$views        = array();
+			$views['all'] = sprintf( '<a href="%s"%s>%s <span class="count">(%s)</span></a>',
+				$all_url,
+				$all_class,
+				$all_text,
+				$all_count
 			);
 
 			foreach ( $statuses as $status => $label ) {
+
+				$status_url   = esc_url( add_query_arg( array(
+					'post_status' => $status,
+					'paged' => false,
+				) ) );
+				$status_class = $status == $current ? ' class="current"' : '';
+				$status_count = isset( $status_count[ $status ] )
+					? $status_count[ $status ]->num_donations
+					: 0;
+
 				$views[ $status ] = sprintf( '<a href="%s"%s>%s <span class="count">(%s)</span></a>',
-					esc_url( add_query_arg( array( 'post_status' => $status, 'paged' => false ) ) ),
-					$current === $status ? ' class="current"' : '',
+					$status_url,
+					$status_class,
 					$label,
-					isset( $status_count[ $status ] ) ? $status_count[ $status ]->num_donations : 0
+					$status_count
 				);
 			}
 
 			return $views;
+		}
+
+		/**
+		 * Disable the month's dropdown (will replace with custom range search).
+		 *
+		 * @param mixed $public_query_vars
+		 * @param  str $post_type
+		 * @return array
+		 * @since  1.4.0
+		 */
+		public function disable_months_dropdown( $disable, $post_type ) {
+			if ( Charitable::DONATION_POST_TYPE == $post_type ) {
+				$disable = true;
+			}
+
+			return $disable;
+		}
+
+		/**
+		 * Add date-based filters above the donations table.
+		 *
+		 * @param  string $post_type
+		 * @since  1.4.0
+		 */
+		public function restrict_manage_posts( $post_type = '' ) {
+			global $typenow;
+
+			// echo '<pre>'; var_dump( $typenow ); echo '</pre>';
+
+			/* Show custom filters to filter orders by donor. */
+			if ( in_array( $typenow, array( Charitable::DONATION_POST_TYPE ) ) ) {
+				charitable_admin_view( 'donations-page/date-filters' );
+			}
+		}
+
+		/**
+		 * Add extra buttons after filters
+		 *
+		 * @param   string $which
+		 * @return 	void
+		 * @access 	public
+		 * @since   1.4.0
+		 */
+		public function extra_tablenav( $which ) {
+			global $typenow;
+
+			/* Add the export button. */
+			if ( 'top' == $which && in_array( $typenow, array( Charitable::DONATION_POST_TYPE ) ) ) {
+				charitable_admin_view( 'donations-page/export' );
+			}
+		}
+
+		/**
+		 * Admin scripts and styles.
+		 *
+		 * Set up the scripts & styles used for the modal.
+		 *
+		 * @return 	void
+		 * @access 	public
+		 * @since  	1.4.0
+		 */
+		public function setup_scripts() {
+			global $post_type;
+
+			if ( ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ) {
+				$suffix  = '';
+				$version = time();
+			} else {
+				$suffix  = '.min';
+				$version = charitable()->get_version();
+			}
+
+			$assets_path = charitable()->get_path( 'assets', false );
+
+			wp_register_script( 'lean-modal',
+				$assets_path . 'js/libraries/leanModal' . $suffix . '.js',
+				array( 'jquery-core' ),
+				$version
+			);
+
+			wp_register_style( 'lean-modal-css',
+				$assets_path . 'css/modal' . $suffix . 'css',
+				array(),
+				$version
+			);
+
+			wp_register_script( 'charitable-admin-donations',
+				$assets_path . 'js/charitable-admin-donations' . $suffix . '.js',
+				array( 'jquery-core', 'lean-modal' ),
+				$version
+			);
+
+			// if ( 'donation' == $post_type ) {
+			// 	wp_enqueue_script( 'lean-modal' );
+			// 	wp_enqueue_script( 'charitable-admin-donations' );
+			// 	wp_enqueue_style( 'lean-modal-css' );
+			// }
+		}
+
+		/**
+		 * Add custom filters to the query that returns the donations to be displayed.
+		 *
+		 * @param   array $vars
+		 * @return  array
+		 * @access 	public
+		 * @since   1.4.0
+		 */
+		public function request_query( $vars ) {
+			global $typenow;
+
+			if ( Charitable::DONATION_POST_TYPE === $typenow ) {
+
+				/* No Status: fix WP's crappy handling of "all" post status. */
+				if ( ! isset( $vars['post_status'] ) ) {
+					$vars['post_status'] = array_keys( charitable_get_valid_donation_statuses() );
+				}
+
+				/* Set up date query */
+				if ( isset( $_GET['start_date'] ) && ! empty( $_GET['start_date'] ) ) {
+
+					$start_date = $this->get_parsed_date( $_GET['start_date'] );
+
+					$vars['date_query']['after'] = array(
+						'year'  => $start_date['year'],
+						'month' => $start_date['month'],
+						'day'   => $start_date['day'],
+					);
+				}
+
+				if ( isset( $_GET['end_date'] ) && ! empty( $_GET['end_date'] ) ) {
+
+					$end_date = $this->get_parsed_date( $_GET['end_date'] );
+
+					$vars['date_query']['before'] = array(
+						'year'  => $end_date['year'],
+						'month' => $end_date['month'],
+						'day'   => $end_date['day'],
+					);
+				}
+			}
+
+			return $vars;
+		}
+
+		/**
+		 * Column sorting handler.
+		 *
+		 * @param   array $vars
+		 * @return  array
+		 * @access 	public
+		 * @since   1.4.0
+		 */
+		public function posts_clauses( $clauses ) {
+			global $typenow, $wpdb;
+
+			if ( Charitable::DONATION_POST_TYPE != $typenow ) {
+				return $clauses;
+			}
+
+			if ( ! isset( $vars['orderby'] ) ) {
+				return $clauses;
+			}
+
+			/* Sorting */
+			$order = isset( $_GET['order'] ) && strtoupper( $_GET['order'] ) == 'ASC' ? 'ASC' : 'DESC';
+
+			switch ( $vars['orderby'] ) {
+
+				case 'amount' :
+					$clauses['join'] = "JOIN {$wpdb->prefix}charitable_campaign_donations cd ON cd.donation_id = $wpdb->posts.ID ";
+					$clauses['orderby'] = 'cd.amount ' . $order;
+					break;
+
+				case 'status' :
+					$clauses['orderby'] = $wpdb->posts . '.post_status ' . $order;
+					break;
+
+			}
+
+			return $clauses;
+		}
+
+		/**
+		 * Given a date, returns an array containing the date, month and year.
+		 *
+		 * @return  string[]
+		 * @access  protected
+		 * @since   1.4.0
+		 */
+		protected function get_parsed_date( $date ) {
+			$time = strtotime( $date );
+
+			return array(
+				'year'  => date( 'Y', $time ),
+				'month' => date( 'm', $time ),
+				'day'   => date( 'd', $time ),
+			);
 		}
 	}
 
