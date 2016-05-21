@@ -741,17 +741,64 @@ select.charitable-settings-field {
   margin: 0;
   padding: 0; }
 
-.wp-list-table.donations .meta {
+.post-type-donation .wp-list-table .meta {
   display: block;
   color: #999; }
-.wp-list-table.donations .column-donation {
-  max-width: 200px; }
-.wp-list-table.donations .column-details {
-  max-width: 140px; }
-.wp-list-table.donations .column-amount {
-  max-width: 120px; }
-.wp-list-table.donations .column-status {
-  max-width: 120px; }
+.post-type-donation .wp-list-table .column-status mark {
+  text-align: center;
+  white-space: nowrap;
+  padding: 0 2px;
+  background: #999;
+  border: 1px solid #999;
+  margin: 0;
+  font-size: 9px;
+  text-transform: uppercase;
+  color: #fff;
+  font-weight: bold;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.3); }
+  .post-type-donation .wp-list-table .column-status mark.charitable-pending {
+    background-color: #ffb733;
+    border-color: #ffa500; }
+  .post-type-donation .wp-list-table .column-status mark.charitable-completed {
+    background-color: #00b300;
+    border-color: #008000; }
+  .post-type-donation .wp-list-table .column-status mark.charitable-failed {
+    background-color: #ffd633;
+    border-color: #ffcc00; }
+  .post-type-donation .wp-list-table .column-status mark.charitable-cancelled {
+    background-color: #ff3333;
+    border-color: #ff0000; }
+  .post-type-donation .wp-list-table .column-status mark.charitable-refunded {
+    background-color: #b3b3b3;
+    border-color: #999; }
+.post-type-donation .tablenav.top {
+  padding: 12px;
+  margin: 12px 0;
+  border: 1px solid #dfdfdf;
+  background-color: #fafafa;
+  box-sizing: initial;
+  overflow: hidden;
+  float: none; }
+  .post-type-donation .tablenav.top a.charitable-clear-filters.button-secondary {
+    display: inline-block;
+    margin: 1px 3px 0 0; }
+.post-type-donation .charitable-donations-export,
+.post-type-donation .search-box {
+  float: right;
+  margin-right: 11px; }
+.post-type-donation a.button-secondary.charitable-donations-export {
+  margin-left: 10px; }
+  .post-type-donation a.button-secondary.charitable-donations-export:before {
+    content: '\f316';
+    float: left;
+    font-family: dashicons;
+    font-size: 16px;
+    speak: none;
+    margin: 1px 2px 1px 0;
+    text-align: center;
+    color: #777;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale; }
 
 #charitable-donation-filters {
   float: left;
