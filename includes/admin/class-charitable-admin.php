@@ -248,8 +248,8 @@ final class Charitable_Admin {
             'campaign', 
             'donation', 
             'charitable_page_charitable-settings',
-            'charitable_page_charitable-donations-table', 
-            'dashboard'
+            'edit-donation',
+            'dashboard',
         ) );
     }   
 }

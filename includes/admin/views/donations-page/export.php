@@ -7,27 +7,15 @@
  * @since   1.0.0
  */
 
-/**
- * @var     Charitable_Donations_Table
- */
-$table = $view_args[ 'table' ];
-
-$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
-
-/**
- * Set up the scripts & styles used for the modal. 
- */
-wp_register_script( 'lean-modal', charitable()->get_path( 'assets', false ) . 'js/libraries/leanModal' . $suffix . '.js', array( 'jquery' ), charitable()->get_version() );
-wp_print_scripts( 'lean-modal' );
-wp_enqueue_style( 'lean-modal-css', charitable()->get_path( 'assets', false ) . 'css/modal' . $suffix . '.css', array(), charitable()->get_version() );
-
 $modal_class = apply_filters( 'charitable_modal_window_class', 'charitable-modal' );
 
 $start_date = isset( $_GET[ 'start_date' ] ) ? sanitize_text_field( $_GET[ 'start_date' ] ) : null;
 $end_date   = isset( $_GET[ 'end_date' ] ) ? sanitize_text_field( $_GET[ 'end_date' ] ) : null;
 $post_status = isset( $_GET[ 'post_status' ] ) ? $_GET[ 'post_status' ] : 'all';
 $report_type = isset( $_GET[ 'report_type' ] ) ? $_GET[ 'report_type' ] : 'donations';
-$report_types = $table->get_report_types();
+$report_types = apply_filters( 'charitable_donation_export_report_types', array( 
+            'donations' => __( 'Donations', 'charitable' ) 
+        ) );
 
 ?>
 <div id="charitable-donations-export-modal" style="display: none;" class="<?php echo esc_attr( $modal_class ) ?>">
@@ -70,12 +58,3 @@ $report_types = $table->get_report_types();
         <button name="charitable-export-donations" class="button button-primary"><?php _e( 'Export', 'charitable' ) ?></button>
     </form>
 </div>
-<script type="text/javascript">
-/* <![CDATA[ */
-( function( $ ) {
-    $('[data-trigger-modal]').leanModal({
-        closeButton : ".modal-close"
-    });
-})( jQuery );
-/* ]]> */
-</script>
