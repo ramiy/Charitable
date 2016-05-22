@@ -54,7 +54,7 @@ $donor = $donation->get_donor();
         <tfoot>
             <tr>
                 <th><?php _e( 'Total', 'charitable' ) ?></th>
-                <td><?php echo charitable_get_currency_helper()->get_monetary_amount( $donation->get_total_donation_amount() ) ?></td>
+                <td><?php echo $donation->get_total_donation_html() ?></td>
             </tr>
             <tr>
                 <th><?php _e( 'Payment Method', 'charitable' ) ?></th>

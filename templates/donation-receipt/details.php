@@ -46,7 +46,7 @@ $donation = $view_args[ 'donation' ];
     <tfoot>
         <tr>
             <td><?php _e( 'Total', 'charitable' ) ?></td>
-            <td><?php echo charitable_get_currency_helper()->get_monetary_amount( $donation->get_total_donation_amount() ) ?></td>
+            <td><?php echo $donation->get_total_donation_html() ?></td>
         </tr>
     </tfoot>
 </table>

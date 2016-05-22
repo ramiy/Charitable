@@ -155,6 +155,19 @@ abstract class Charitable_Abstract_Donation {
         return $amount;
     }
 
+
+    /**
+     * The formatted amount donated on this donation.
+     *
+     * @return  string
+     * @access  public
+     * @since   1.4.0
+     */
+    public function get_total_donation_html(){
+        return apply_filters( 'charitable_get_total_donation_html', charitable_get_currency_helper()->get_monetary_amount( $this->get_total_donation_amount() ), $this );
+    }
+
+    
     /**
      * Return the campaigns donated to in this donation. 
      *
