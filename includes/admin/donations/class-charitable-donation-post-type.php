@@ -286,7 +286,18 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 
 				case 'campaigns' :
 
-					$display = implode( ', ', $donation->get_campaigns() );
+	                $campaigns = array();
+
+	                foreach ( $donation->get_campaign_donations() as $cd ) {
+
+	                    $campaigns[] = sprintf( '<a href="edit.php?post_type=%s&campaign_id=%s">%s</a>',
+	                        Charitable::DONATION_POST_TYPE,
+	                        $cd->campaign_id,
+	                        $cd->campaign_name
+	                    );
+	                }
+
+	                $display = implode( ', ', $campaigns );
 
 					break;
 
@@ -475,7 +486,7 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 
 			/* Show custom filters to filter orders by donor. */
 			if ( in_array( $typenow, array( Charitable::DONATION_POST_TYPE ) ) ) {
-				charitable_admin_view( 'donations-page/date-filters' );
+				charitable_admin_view( 'donations-page/filters' );
 			}
 		}
 
@@ -554,36 +565,48 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 		public function request_query( $vars ) {
 			global $typenow;
 
-			if ( Charitable::DONATION_POST_TYPE === $typenow ) {
-
-				/* No Status: fix WP's crappy handling of "all" post status. */
-				if ( ! isset( $vars['post_status'] ) ) {
-					$vars['post_status'] = array_keys( charitable_get_valid_donation_statuses() );
-				}
-
-				/* Set up date query */
-				if ( isset( $_GET['start_date'] ) && ! empty( $_GET['start_date'] ) ) {
-
-					$start_date = $this->get_parsed_date( $_GET['start_date'] );
-
-					$vars['date_query']['after'] = array(
-						'year'  => $start_date['year'],
-						'month' => $start_date['month'],
-						'day'   => $start_date['day'],
-					);
-				}
-
-				if ( isset( $_GET['end_date'] ) && ! empty( $_GET['end_date'] ) ) {
-
-					$end_date = $this->get_parsed_date( $_GET['end_date'] );
-
-					$vars['date_query']['before'] = array(
-						'year'  => $end_date['year'],
-						'month' => $end_date['month'],
-						'day'   => $end_date['day'],
-					);
-				}
+			if ( Charitable::DONATION_POST_TYPE != $typenow ) {
+				return $vars;
 			}
+
+			/* No Status: fix WP's crappy handling of "all" post status. */
+			if ( ! isset( $vars['post_status'] ) ) {
+				$vars['post_status'] = array_keys( charitable_get_valid_donation_statuses() );
+			}
+
+			/* Set up date query */
+			if ( isset( $_GET['start_date'] ) && ! empty( $_GET['start_date'] ) ) {
+
+				$start_date = $this->get_parsed_date( $_GET['start_date'] );
+
+				$vars['date_query']['after'] = array(
+					'year'  => $start_date['year'],
+					'month' => $start_date['month'],
+					'day'   => $start_date['day'],
+				);
+			}
+
+			if ( isset( $_GET['end_date'] ) && ! empty( $_GET['end_date'] ) ) {
+
+				$end_date = $this->get_parsed_date( $_GET['end_date'] );
+
+				$vars['date_query']['before'] = array(
+					'year'  => $end_date['year'],
+					'month' => $end_date['month'],
+					'day'   => $end_date['day'],
+				);
+			}
+
+			/* Filter by campaign. */
+            if ( isset( $_GET[ 'campaign_id' ] ) && ! empty( $_GET[ 'campaign_id' ] ) ) {
+               
+                $ids = charitable_get_table( 'campaign_donations' )->get_donations_on_campaign( intval( $_GET[ 'campaign_id' ] ) );
+
+                if ( ! empty( $ids ) ) {  
+                    $ids = wp_list_pluck( $ids, 'donation_id' );
+                    $vars[ 'post__in' ] = (array) $ids;
+                }
+            }
 
 			return $vars;
 		}
