@@ -263,7 +263,20 @@ final class Charitable_Donation_Post_Type {
                 break;          
 
             case 'campaigns' : 
-                $display = implode( ', ', $donation->get_campaigns() );
+                $donations = $donation->get_campaign_donations();
+                $total = count( $donations );
+                $display = '';
+                $i = 1;
+                foreach( $donations as $d ){
+                    $display .= sprintf( '<a href="edit.php?post_type=%s&campaign_id=%s">%s</a>', 
+                        Charitable::DONATION_POST_TYPE,
+                        $d->campaign_id,
+                        $d->campaign_name );
+                    if( $i != $total ){
+                        $display .= ', ';
+                    }
+                    $i++;
+                }
                 break;
 
             case 'donation_date' :              
@@ -446,14 +459,32 @@ final class Charitable_Donation_Post_Type {
         if ( in_array( $typenow, array( Charitable::DONATION_POST_TYPE ) ) ) { 
             $start_date = isset( $_GET['start_date'] )  ? sanitize_text_field( $_GET['start_date'] ) : '';
             $end_date   = isset( $_GET['end_date'] )    ? sanitize_text_field( $_GET['end_date'] )   : '';
+            $campaign_id   = isset( $_GET['campaign_id'] )    ? intval( $_GET['campaign_id'] )   : '';
             ?>
             <label for="start_date" class="screen-reader-text"><?php _e( 'Start Date:', 'charitable' ) ?></label>
             <input type="text" id="start_date" placeholder="<?php _e( 'Start Date', 'charitable' );?>" name="start_date" class="charitable-datepicker" value="<?php echo $start_date; ?>" />
             <label for="end_date" class="screen-reader-text"><?php _e( 'End Date:', 'charitable' ) ?></label>     
             <input type="text" id="end_date" placeholder="<?php _e( 'End Date', 'charitable' );?>" name="end_date" class="charitable-datepicker" value="<?php echo $end_date; ?>" />
+
+            <?php 
+            $args = array(
+                'post_type' => Charitable::CAMPAIGN_POST_TYPE,
+                'nopaging' => true
+            );
+
+            $campaigns = get_posts( $args );
+
+            ?>
+
+            <select class="campaign_id" name="campaign_id">
+            <option value="all"><?php _e( 'All Campaigns', 'charitable' ) ?></option>
+            <?php foreach ( $campaigns as $campaign ) : ?>
+                <option value="<?php echo $campaign->ID ?>" <?php selected( $campaign_id, $campaign->ID );?> ><?php echo get_the_title( $campaign->ID ) ?></option>
+            <?php endforeach ?>
+        </select>         
                  
-            <?php if( ! empty( $start_date ) || ! empty( $end_date ) ) : ?>
-                <a href="<?php echo admin_url( 'edit.php?post_type=donation' ); ?>" class="charitable-clear-filters button-secondary"><?php _e( 'Clear Filter', 'charitable' ); ?></a>
+            <?php if( ! empty( $start_date ) || ! empty( $end_date ) || ! empty( $campaign ) ) : ?>
+                <a href="<?php echo admin_url( 'edit.php?post_type=' . Charitable::DONATION_POST_TYPE ); ?>" class="charitable-clear-filters button-secondary"><?php _e( 'Clear Filter', 'charitable' ); ?></a>
             <?php endif; ?>
           
     <?php    } 
@@ -549,6 +580,21 @@ final class Charitable_Donation_Post_Type {
                     'day' => $end_date[ 'day' ]
                 );
             }
+
+
+            // filter by campaign
+            if ( isset( $_GET[ 'campaign_id' ] ) && ! empty( $_GET[ 'campaign_id' ] ) ) {
+                $campaign_donations_db = new Charitable_Campaign_Donations_DB();
+
+                $ids = $campaign_donations_db->get_donations_on_campaign( intval( $_GET[ 'campaign_id' ] ) );
+
+                if( ! empty( $ids ) ){  
+                    $ids = wp_list_pluck( $ids, 'donation_id' );     
+                    $vars[ 'post__in' ] = (array) $ids; 
+                }
+                
+            }
+
         }
 
         return $vars;
@@ -569,11 +615,12 @@ final class Charitable_Donation_Post_Type {
         if ( Charitable::DONATION_POST_TYPE === $typenow ) {
         
             // Sorting
-            if ( isset( $vars['orderby'] ) ) {
+            if ( isset( $_GET['orderby'] ) ) {
 
                 $order = isset( $_GET['order'] ) && strtoupper( $_GET['order'] ) == 'ASC' ? 'ASC' : 'DESC';
 
-                switch ( $vars['orderby'] ) {
+                switch ( $_GET['orderby'] ) {
+
                     case 'amount' :
                         $clauses['join'] = "JOIN {$wpdb->prefix}charitable_campaign_donations cd ON cd.donation_id = $wpdb->posts.ID ";
                         $clauses['orderby'] = "cd.amount " . $order;

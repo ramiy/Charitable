@@ -52,6 +52,11 @@
         overflow: hidden;
         float: none;
 
+        select.campaign_id {
+            float: none;
+            vertical-align: top;
+        }
+
         a.charitable-clear-filters.button-secondary {
             display: inline-block;
             margin: 1px 3px 0 0;
