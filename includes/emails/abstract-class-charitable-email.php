@@ -220,24 +220,22 @@ abstract class Charitable_Email implements Charitable_Email_Interface {
      * particular field that was referenced in the shortcode. The second argument is
      * an optional array of arguments.
      *
-     * @param   string  $field
-     * @param   array   $args   Optional. May contain additional arguments. 
+     * @param   string $field
+     * @param   array $args Optional. May contain additional arguments. 
      * @return  string
      * @access  public
      * @since   1.0.0
      */
     public function get_value( $field, $args = array() ) {
-        $fields = $this->get_fields();
-
-        if ( ! isset( $fields[ $field ] ) ) {
-            return '';
-        }
+        $fields = $this->get_fields();        
 
         if ( $this->is_preview() ) {
             return $this->get_preview_field_content( $field );
         }
 
-        add_filter( 'charitable_email_content_field_value_' . $field, $fields[ $field ][ 'callback' ], 10, 3 );
+        if ( isset( $fields[ $field ] ) ) {
+            add_filter( 'charitable_email_content_field_value_' . $field, $fields[ $field ][ 'callback' ], 10, 3 );
+        }        
 
         return apply_filters( 'charitable_email_content_field_value_' . $field, '', $args, $this );
     }
@@ -1045,8 +1043,8 @@ abstract class Charitable_Email implements Charitable_Email_Interface {
      */
     protected function get_preview_field_content( $field ) {
         $values = apply_filters( 'charitable_email_preview_content_fields', array(
-            'site_name'     => get_option( 'blogname' ), 
-            'site_url'      => home_url()
+            'site_name' => get_option( 'blogname' ), 
+            'site_url' => home_url()
         ), $this );
 
         if ( ! isset( $values[ $field ] ) ) {
