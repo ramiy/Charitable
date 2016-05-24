@@ -289,15 +289,17 @@ final class Charitable_Currency {
 	/**
 	 * Return the currency symbol for a given currency. 
 	 *
+	 * This function was changed to a public method in 1.3.7.
+	 *
 	 * Credit: This is based on the WooCommerce implemenation.
 	 *
 	 * @uses 	charitable_currency_symbol
-	 * @param 	string 		$currency 		Optional. If not set, currency is based on currently selected currency.
+	 * @param 	string $currency Optional. If not set, currency is based on currently selected currency.
 	 * @return 	string
-	 * @access 	private
+	 * @access 	public
 	 * @since 	1.0.0
 	 */
-	private function get_currency_symbol( $currency = "" ) {
+	public function get_currency_symbol( $currency = "" ) {
 		if ( ! strlen( $currency ) ) {
 			$currency = charitable_get_option( 'currency', 'AUD' );
 		}		
