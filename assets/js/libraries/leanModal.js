@@ -31,6 +31,9 @@
               
                     var modal_id = methods.get_target( $(this) ), 
                         $modal = $( modal_id ), 
+                        resize = function() {
+                            methods.resize( $modal );
+                        },
                         modal_height, 
                         modal_width;
 
@@ -56,7 +59,9 @@
                         'z-index': 100000,                    
                     });
 
-                    methods.resize( $modal, window_height, modal_height );                    
+                    resize();
+                    $modal.resize( resize );
+                    $(window).resize( resize );
 
                     $modal.fadeTo(200,1);
 
