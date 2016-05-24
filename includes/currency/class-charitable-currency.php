@@ -290,7 +290,7 @@ final class Charitable_Currency {
 	 * Return the currency symbol for a given currency. 
 	 *
 	 * This function was changed to a public method in 1.3.7.
-	 * 
+	 *
 	 * Credit: This is based on the WooCommerce implemenation.
 	 *
 	 * @uses 	charitable_currency_symbol
