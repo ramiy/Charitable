@@ -4,7 +4,7 @@
  *
  * @author  Studio 164a
  * @since   1.0.0
- * @version 1.0.0
+ * @version 1.4.0
  */
 
 if ( ! isset( $view_args[ 'form' ] ) || ! isset( $view_args[ 'field' ] ) ) {
@@ -26,6 +26,7 @@ if ( ! is_array( $value ) ) {
     $value = array( $value );
 }
 
+$value = array_filter( $value );
 $has_max_uploads = count( $value ) >= $max_uploads;
 
 if ( $use_uploader ) {
