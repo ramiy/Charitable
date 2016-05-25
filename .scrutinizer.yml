@@ -1,4 +1,39 @@
 filter:
-  excluded_paths: [tests/*, includes/libraries/*, bin/*, assets/*, templates/* ]
+    excluded_paths:
+        - 'tests/*'
+        - 'bin/*'
+checks:
+    php:
+        fix_php_opening_tag: false
+        remove_php_closing_tag: false
+        one_class_per_file: true
+        side_effects_or_types: false
+        no_mixed_inline_html: false
+        require_braces_around_control_structures: true
+        php5_style_constructor: true
+        no_global_keyword: false
+        avoid_usage_of_logical_operators: true
+        psr2_class_declaration: false
+        no_underscore_prefix_in_properties: false
+        no_underscore_prefix_in_methods: false
+        blank_line_after_namespace_declaration: false
+        single_namespace_per_use: false
+        psr2_switch_declaration: false
+        psr2_control_structure_declaration: false
+        avoid_superglobals: false
+        security_vulnerabilities: true
+        no_exit: false
+        no_goto: true
+        fix_line_ending: true
+        align_assignments: true
+        avoid_multiple_statements_on_same_line: true
+        avoid_perl_style_comments: true
+        uppercase_constants: true
+
+coding_style:
+    php:
+        spaces:
+            around_operators:
+                negation: true
 tools:
-  sensiolabs_security_checker: true
+    sensiolabs_security_checker: true
