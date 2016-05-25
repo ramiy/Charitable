@@ -1,5 +1,5 @@
 # Charitable — WordPress Fundraising Plugin
-[![Build Status](https://scrutinizer-ci.com/g/Studio164a/Charitable/badges/build.png?b=master)](https://scrutinizer-ci.com/g/Studio164a/Charitable/build-status/master) [![Code Coverage](https://scrutinizer-ci.com/g/Studio164a/Charitable/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/Studio164a/Charitable/?branch=master) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Studio164a/Charitable/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Studio164a/Charitable/?branch=master)
+[![Build Status](https://scrutinizer-ci.com/g/Studio164a/Charitable/badges/build.png?b=master)](https://scrutinizer-ci.com/g/Studio164a/Charitable/build-status/master) [![Code Coverage](https://scrutinizer-ci.com/g/Studio164a/Charitable/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/Studio164a/Charitable/?branch=master) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Charitable/Charitable/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Charitable/Charitable/?branch=master)
 
 Charitable is a powerful, extendable fundraising plugin created to help non-profits accept donations on their own website. 
 

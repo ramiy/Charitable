@@ -80,7 +80,7 @@ class Test_Donation_Processor extends WP_UnitTestCase {
 
         $this->assertEquals( 2, $processor->save_campaign_donations( $donation_id ) );
 
-        $processor::destroy();
+        Charitable_Donation_Processor::destroy();
     }
 
     /** 
@@ -110,6 +110,6 @@ class Test_Donation_Processor extends WP_UnitTestCase {
 
         $this->assertCount( 2, $processor->get_campaign_donations_data() );
 
-        $processor::destroy();
+        Charitable_Donation_Processor::destroy();
      }
 }

@@ -29,6 +29,7 @@ echo "Installing Charitable...\n";
 
 // Install Charitable
 charitable()->activate();
+charitable()->charitable_install();
 
 global $current_user;
 
