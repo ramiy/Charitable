@@ -20,7 +20,7 @@ CHARITABLE = window.CHARITABLE || {};
      * @return  string
      */
     Donation_Form.prototype.get_amount = function() {
-        var amount = suggested = parseFloat( this.form.find( '[name=donation_amount]:selected' ).val() );
+        var amount = suggested = parseFloat( this.form.find( '[name=donation_amount]:checked' ).val() );
 
         if ( isNaN( suggested ) ) {
             amount = parseFloat( this.form.find( '[name=custom_donation_amount]' ).val() );
@@ -76,6 +76,18 @@ CHARITABLE = window.CHARITABLE || {};
      */
     Donation_Form.prototype.get_cc_expiry_year = function() {
         return this.form.find( '#charitable_field_cc_expiration select.year' ).val() || '';
+    };
+
+    /**
+     * Clear credit card fields. 
+     *
+     * This is used by gateways that create tokens through Javascript (such as Stripe), to 
+     * avoid credit card details hitting the server.
+     *
+     * @return  void
+     */
+    Donation_Form.prototype.clear_cc_fields = function() {
+        this.form.find( '#charitable_field_cc_number input, #charitable_field_cc_name input, #charitable_field_cc_cvc input, #charitable_field_cc_expiration select' ).removeAttr( 'name' );
     };
 
     /**

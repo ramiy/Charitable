@@ -137,9 +137,6 @@ class Charitable_User extends WP_User {
      * @since   1.0.0
      */
     public function get_donor() {
-
-        error_log( 'is logged in: ' . $this->is_logged_in() );
-
         if ( ! $this->is_logged_in() && ! isset( $this->donor_id ) ) {
             return null;
         }
