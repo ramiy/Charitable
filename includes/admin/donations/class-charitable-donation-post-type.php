@@ -268,7 +268,7 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 
 					break;
 
-				case 'status' :
+				case 'post_status' :
 
 					$display = sprintf( '<mark class="status %s">%s</mark>',
 						esc_attr( $donation->get_status() ),
@@ -304,12 +304,6 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 				case 'donation_date' :
 
 					$display = $donation->get_date();
-
-					break;
-
-				case 'post_status' :
-
-					$display = $donation->get_status( true );
 
 					break;
 
@@ -546,12 +540,6 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 				array( 'jquery-core', 'lean-modal' ),
 				$version
 			);
-
-			// if ( 'donation' == $post_type ) {
-			// 	wp_enqueue_script( 'lean-modal' );
-			// 	wp_enqueue_script( 'charitable-admin-donations' );
-			// 	wp_enqueue_style( 'lean-modal-css' );
-			// }
 		}
 
 		/**
