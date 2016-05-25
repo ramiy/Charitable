@@ -19,6 +19,13 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 add_action( 'admin_enqueue_scripts', array( Charitable_Admin::get_instance(), 'admin_enqueue_scripts' ) );
 
 /**
+ * Add a generic body class to donations page
+ *
+ * @see     Charitable_Admin::add_admin_body_class()
+ */
+add_filter( 'admin_body_class', array( Charitable_Admin::get_instance(), 'add_admin_body_class' ) );
+
+/**
  * Remove jQuery UI styles added by Ninja Forms.
  *
  * @see     Charitable_Admin::remove_jquery_ui_styles_nf()
