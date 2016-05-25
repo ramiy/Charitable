@@ -42,28 +42,29 @@ if ( ! class_exists( 'Charitable_Donation_Query' ) ) :
 		}
 
 		/**
-	 	* Return the number of all donations.
+		 * Return the number of all donations.
 		 *
-		 * @global 	WPDB 		$wpdb
+		 * @global 	WPDB   $wpdb
+		 * @param 	string $post_type
 		 * @return 	int
 		 * @access  public
 		 * @static
 		 * @since 	1.0.0
 		 */
-		public static function count_all() {
+		public static function count_all( $post_type = 'donation' ) {
 			global $wpdb;
 
 			$sql = "SELECT COUNT( * ) 
-				FROM $wpdb->posts 
-				WHERE post_type = 'donation'";
+					FROM $wpdb->posts 
+					WHERE post_type = %s";
 
-			return $wpdb->get_var( $sql );
+			return $wpdb->get_var( $wpdb->prepare( $sql, $post_type ) );
 		}
 
 		/**
 		 * Return count of donations grouped by status.
 		 *
-		 * @global 	WPDB $wpdb
+		 * @global 	WPDB  $wpdb
 		 * @param 	array $args
 		 * @return 	array
 		 * @access  public
@@ -77,16 +78,16 @@ if ( ! class_exists( 'Charitable_Donation_Query' ) ) :
 				's'          => null,
 				'start_date' => null,
 				'end_date'   => null,
+				'post_type'	 => 'donation'
 			);
 
 			$args = wp_parse_args( $args, $defaults );
 
-			$where_clause = "post_type = 'donation'";
+			$where_clause = $wpdb->prepare( 'post_type = %s', $args['post_type'] );
 
 			if ( ! empty( $args['s'] ) ) {
 
 				$where_clause .= "AND ((p.post_title LIKE '%{$args['s']}%') OR (p.post_content LIKE '%{$args['s']}%'))";
-
 			}
 
 			if ( ! empty( $args['start_date'] ) ) {
