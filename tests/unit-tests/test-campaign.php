@@ -131,7 +131,8 @@ class Test_Charitable_Campaign extends WP_UnitTestCase {
 
 	function test_get_seconds_left_for_finite_campaign() {
 		$seconds_left = $this->end_time_1 - current_time( 'timestamp' );
-		$this->assertEquals( $seconds_left , $this->campaign_1->get_seconds_left() );		
+		$diff = $this->campaign_1->get_seconds_left() - $seconds_left; // Sometimes the two are a second out, so we allow for that.
+		$this->assertTrue( in_array( $diff, array( 0, 1 ) ) );
 	}
 
 	function test_get_seconds_left_for_endless_campaign() {
