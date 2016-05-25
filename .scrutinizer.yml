@@ -1,0 +1,4 @@
+filter:
+  excluded_paths: [tests/*, includes/libraries/*, bin/*, assets/*, templates/* ]
+tools:
+  sensiolabs_security_checker: true
