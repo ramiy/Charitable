@@ -151,6 +151,25 @@ final class Charitable_Admin {
         }
     }
 
+
+
+
+    /**
+     * Adds one or more classes to the body tag in the dashboard.
+     *
+     * @param  String $classes Current body classes.
+     * @return String          Altered body classes.
+     * @since 1.0.0
+     */
+    public function add_admin_body_class( $classes ) {
+        $screen = get_current_screen();
+        if( Charitable::DONATION_POST_TYPE == $screen->post_type ){
+            $classes .= ' post-type-charitable';
+        } 
+        return $classes;
+    }
+
+
     /**
      * Add custom links to the plugin actions. 
      *
