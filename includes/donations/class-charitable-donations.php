@@ -50,12 +50,12 @@ class Charitable_Donations {
 	 * @static
 	 * @since 	1.0.0
 	 */
-	public static function count_all() {
+	public static function count_all( $post_type = 'donation' ) {
 		global $wpdb;
 
 		$sql = "SELECT COUNT( * ) 
 				FROM $wpdb->posts 
-				WHERE post_type = 'donation'";
+				WHERE post_type = '$post_type'";
 
 		return $wpdb->get_var( $sql );
 	}
@@ -77,11 +77,12 @@ class Charitable_Donations {
 			's'          => null,
 			'start_date' => null,
 			'end_date'   => null,
+			'post_type'	 => 'donation'
 		);
 
 		$args = wp_parse_args( $args, $defaults );
 
-		$where_clause = "post_type = 'donation'";
+		$where_clause = sprintf( "post_type = '%s'", $args['post_type'] );
 
 		if ( ! empty( $args[ 's' ] ) ) {
 			$where_clause .= "AND ((p.post_title LIKE '%{$args['s']}%') OR (p.post_content LIKE '%{$args['s']}%'))";
