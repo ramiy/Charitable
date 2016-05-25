@@ -63,12 +63,12 @@ class Test_Donation_Processor extends WP_UnitTestCase {
             'user_id'       => 1, 
             'campaigns'     => array(
                 array(
-                    'campaign_id'   => $this->campaign_1, 
+                    'campaign_id'   => $this->campaign_1->ID, 
                     'campaign_name' => get_the_title( $this->campaign_1 ), 
                     'amount'        => 30
                 ), 
                 array(
-                    'campaign_id'   => $this->campaign_2, 
+                    'campaign_id'   => $this->campaign_2->ID, 
                     'campaign_name' => get_the_title( $this->campaign_2 ), 
                     'amount'        => 40
                 )
@@ -79,6 +79,8 @@ class Test_Donation_Processor extends WP_UnitTestCase {
         ) );
 
         $this->assertEquals( 2, $processor->save_campaign_donations( $donation_id ) );
+
+        $processor::destroy();
     }
 
     /** 
@@ -91,12 +93,12 @@ class Test_Donation_Processor extends WP_UnitTestCase {
             'user_id'       => 1, 
             'campaigns'     => array(
                 array(
-                    'campaign_id'   => $this->campaign_1, 
+                    'campaign_id'   => $this->campaign_1->ID, 
                     'campaign_name' => get_the_title( $this->campaign_1 ), 
                     'amount'        => 30
                 ), 
                 array(
-                    'campaign_id'   => $this->campaign_2, 
+                    'campaign_id'   => $this->campaign_2->ID, 
                     'campaign_name' => get_the_title( $this->campaign_2 ), 
                     'amount'        => 40
                 )
@@ -107,5 +109,7 @@ class Test_Donation_Processor extends WP_UnitTestCase {
         ) );
 
         $this->assertCount( 2, $processor->get_campaign_donations_data() );
+
+        $processor::destroy();
      }
 }

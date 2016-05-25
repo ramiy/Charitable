@@ -186,7 +186,8 @@ abstract class Charitable_Form {
 	 * @since   1.0.0
 	 */
 	public function increment_index( $increment, $field ) {
-		if ( in_array( $field[ 'type' ], array( 'hidden', 'paragraph', 'fieldset' ) )
+		if ( in_array( $field[ 'type' ], array( 'hidden', 'paragraph', 
+		'fieldset' ) )
 			|| ( isset( $field[ 'fullwidth'] ) && $field[ 'fullwidth' ] ) ) {
 			$increment = 0;
 		}
@@ -216,6 +217,11 @@ abstract class Charitable_Form {
 
 		$input_name = is_null( $namespace ) ? $key : $namespace . '[' . $key . ']';
 		$field[ 'key' ] = apply_filters( 'charitable_form_field_key', $input_name, $key, $namespace, $form, $index );
+
+		/* Set default attributes array. */
+		if ( ! isset( $field[ 'attrs' ] ) ) {
+			$field[ 'attrs' ] = array();
+		}
 
 		/* Allows extensions/themes to plug in their own template objects here. */
 		$template = apply_filters( 'charitable_form_field_template', false, $field, $form, $index );

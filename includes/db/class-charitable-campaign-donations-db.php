@@ -117,7 +117,7 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
             'donor_id'              => '',
             'campaign_id'           => '',
             'campaign_name'         => '',
-            'amount'                => '',
+            'amount'                => '',          
         );
     }
 
@@ -203,7 +203,7 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
         global $wpdb;
 
         if ( empty( $statuses ) ) {
-            $statuses = Charitable_Donation::get_approval_statuses();
+            $statuses = charitable_get_approval_statuses();
         }
 
         list( $status_clause, $parameters ) = $this->get_donation_status_clause( $statuses );
@@ -315,12 +315,12 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
     /**
      * Get an object of all donations on a campaign.
      *
-     * @global  wpdb    $wpdb
-     * @param   int     $campaign_id
+     * @global  wpdb $wpdb
+     * @param   int|int[] $campaign_id
      * @return  object
      * @since   1.0.0
      */
-    public function get_donations_on_campaign( $campaign_id ){
+    public function get_donations_on_campaign( $campaign_id ) {
         global $wpdb;
 
         list( $in, $parameters ) = $this->get_campaigns_clause( $campaign_id );
@@ -370,7 +370,7 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
     public function get_campaign_donated_amount( $campaigns, $include_all = false ) {
         global $wpdb;
 
-        $statuses = $include_all ? array() : Charitable_Donation::get_approval_statuses();
+        $statuses = $include_all ? array() : charitable_get_approval_statuses();
 
         list( $status_clause, $status_parameters ) = $this->get_donation_status_clause( $statuses );
 
@@ -392,10 +392,10 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
         }
 
         return $total;
-    }   
+    }
 
     /**
-     * The users who have donated to the given campaign.
+     * The donor IDs of all who have donated to the given campaign.
      *
      * @global  wpdb    $wpdb
      * @param   int     $campaign_id
@@ -426,7 +426,7 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
     public function count_campaign_donors( $campaign_id, $include_all = false ) {
         global $wpdb;
 
-        $statuses = $include_all ? array() : Charitable_Donation::get_approval_statuses();
+        $statuses = $include_all ? array() : charitable_get_approval_statuses();
 
         list( $status_clause, $status_parameters ) = $this->get_donation_status_clause( $statuses );
 
@@ -446,10 +446,10 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
     /**
      * Return all donations made by a donor. 
      *
-     * @global  wpdb    $wpdb
-     * @param   int     $donor_id
+     * @global  wpdb $wpdb
+     * @param   int $donor_id
      * @param   boolean $distinct_donations
-     * @return  object
+     * @return  object[]
      * @access  public
      * @since   1.0.0
      */
@@ -544,7 +544,7 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
     /**
      * Return a set of donations, filtered by the provided arguments. 
      *
-     * @param   array   $args
+     * @param   array $args
      * @return  array
      * @access  public
      * @since   1.0.0
@@ -713,7 +713,7 @@ class Charitable_Campaign_Donations_DB extends Charitable_DB {
             return array( "", array() );
         }
 
-        $statuses = array_filter( $statuses, array( 'Charitable_Donation', 'is_valid_donation_status' ) );
+        $statuses = array_filter( $statuses, 'charitable_is_valid_donation_status' );
 
         $in = $this->get_in_clause( $statuses, '%s' );
 

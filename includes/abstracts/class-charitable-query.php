@@ -337,7 +337,7 @@ abstract class Charitable_Query implements Iterator {
             $status = array( $status );
         }
 
-        $status = array_filter( $status, array( 'Charitable_Donation', 'is_valid_donation_status' ) );
+        $status = array_filter( $status, 'charitable_is_valid_donation_status' );
 
         $placeholders = $this->get_placeholders( count( $status ), '%s' );
 

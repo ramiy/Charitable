@@ -54,3 +54,33 @@ function charitable_campaign_loop_args( $view_args = array() ) {
     
     return apply_filters( 'charitable_campaign_loop_args', $args );
 }
+
+/**
+ * Processes arbitrary form attributes into HTML-safe key/value pairs
+ *
+ * @param   array $field Array defining the form field attributes
+ * @return  string       The formatted HTML-safe attributes
+ * @since   1.3.0
+ * @see     Charitable_Form::render_field()
+ */
+function charitable_get_arbitrary_attributes( $field ) {
+    if ( ! isset( $field[ 'attrs' ] ) ) {
+        $field[ 'attrs' ] = array();
+    }
+    
+    /* Add backwards compatibility support for placeholder, min, max, step, pattern and rows. */
+    foreach ( array( 'placeholder', 'min', 'max', 'step', 'pattern', 'rows' ) as $attr ) {
+        if ( isset( $field[ $attr ] ) && ! isset( $field[ 'attrs' ][ $attr ] ) ) {
+            $field[ 'attrs' ][ $attr ] = $field[ $attr ];
+        }
+    }
+
+    $output = '';
+
+    foreach ( $field[ 'attrs' ] as $key => $value ) {
+        $escaped_value = esc_attr( $value );
+        $output .= " $key=\"$escaped_value\" ";
+    }
+
+    return apply_filters( 'charitable_arbitrary_field_attributes', $output );
+}

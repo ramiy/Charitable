@@ -14,10 +14,13 @@ if ( ! isset( $view_args[ 'form' ] ) || ! isset( $view_args[ 'field' ] ) ) {
 $form 			= $view_args[ 'form' ];
 $field 			= $view_args[ 'field' ];
 $classes 		= $view_args[ 'classes' ];
-$is_required 	= isset( $field[ 'required' ] ) 	? $field[ 'required' ] 		: false;
-$value			= isset( $field[ 'value' ] ) 		? $field[ 'value' ] 		: '';
-$placeholder 	= isset( $field[ 'placeholder' ] ) 	? $field[ 'placeholder' ] 	: '';
-$rows 			= isset( $field[ 'rows' ] ) 		? $field[ 'rows' ] 			: 4;
+$is_required 	= isset( $field[ 'required' ] ) ? $field[ 'required' ] : false;
+$value			= isset( $field[ 'value' ] ) ? $field[ 'value' ] : '';
+
+if ( ! isset( $field[ 'attrs' ][ 'rows' ] ) ) {
+	$field[ 'attrs' ][ 'rows' ] = 4;
+}
+
 ?>
 <div id="charitable_field_<?php echo $field['key'] ?>" class="<?php echo $classes ?>">
 	<?php if ( isset( $field['label'] ) ) : ?>
@@ -28,5 +31,5 @@ $rows 			= isset( $field[ 'rows' ] ) 		? $field[ 'rows' ] 			: 4;
 			<?php endif ?>
 		</label>
 	<?php endif ?>
-	<textarea name="<?php echo esc_attr( $field['key'] ) ?>" placeholder="<?php echo esc_attr( $placeholder ) ?>" rows="<?php echo intval( $rows ) ?>"><?php echo esc_textarea( stripslashes( $value ) ) ?></textarea>
+	<textarea name="<?php echo esc_attr( $field['key'] ) ?>" <?php echo charitable_get_arbitrary_attributes( $field ) ?>><?php echo esc_textarea( stripslashes( $value ) ) ?></textarea>
 </div>

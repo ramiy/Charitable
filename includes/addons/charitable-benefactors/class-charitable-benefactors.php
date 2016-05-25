@@ -145,7 +145,7 @@ class Charitable_Benefactors implements Charitable_Addon_Interface {
             return;
         }
 
-        $currency_helper = charitable()->get_currency_helper();
+        $currency_helper = charitable_get_currency_helper();
         $benefactors = $_POST['_campaign_benefactor'];
 
         foreach ( $benefactors as $campaign_benefactor_id => $data ) {

@@ -81,6 +81,13 @@ class Charitable {
     private $registry;
 
     /**
+     * Donation factory instance.
+     *
+     * @var Charitable_Donation_Factory
+     */
+    public $donation_factory = null;
+
+    /**
      * Create class instance. 
      * 
      * @since   1.0.0
@@ -124,7 +131,10 @@ class Charitable {
         }
 
         // Set static instance
-        self::$instance = $this;        
+        self::$instance = $this;     
+
+         // Factory to create new donation instances 
+        $this->donation_factory = new Charitable_Donation_Factory();  
 
         $this->maybe_start_ajax();
         
@@ -150,7 +160,7 @@ class Charitable {
         /* Abstracts */
         require_once( $includes_path . 'abstracts/class-charitable-form.php' );
         require_once( $includes_path . 'abstracts/class-charitable-query.php' );
-        require_once( $includes_path . 'abstracts/class-charitable-start-object.php' );
+        require_once( $includes_path . 'abstracts/class-charitable-start-object.php' );        
         
         /* Functions & Core Classes */
         require_once( $includes_path . 'charitable-core-functions.php' );                
@@ -175,10 +185,12 @@ class Charitable {
         require_once( $includes_path . 'currency/charitable-currency-functions.php' );
         require_once( $includes_path . 'currency/class-charitable-currency.php' );
 
-        /* Donations */                
+        /* Donations */
+        require_once( $includes_path . 'donations/abstract-charitable-donation.php' );
         require_once( $includes_path . 'donations/interface-charitable-donation-form.php' );
         require_once( $includes_path . 'donations/class-charitable-donation-processor.php' );
         require_once( $includes_path . 'donations/class-charitable-donation.php' );
+        require_once( $includes_path . 'donations/class-charitable-donation-factory.php' );
         require_once( $includes_path . 'donations/class-charitable-donations.php' );                
         require_once( $includes_path . 'donations/class-charitable-donation-form.php' );    
         require_once( $includes_path . 'donations/class-charitable-donation-amount-form.php' );
@@ -196,20 +208,20 @@ class Charitable {
         require_once( $includes_path . 'users/class-charitable-profile-form.php' );
 
         /* Gateways */
-        include_once( $includes_path . 'gateways/interface-charitable-gateway.php' );        
+        require_once( $includes_path . 'gateways/interface-charitable-gateway.php' );        
         require_once( $includes_path . 'gateways/class-charitable-gateways.php' );
-        include_once( $includes_path . 'gateways/abstract-class-charitable-gateway.php' );
-        include_once( $includes_path . 'gateways/class-charitable-gateway-offline.php' );
-        include_once( $includes_path . 'gateways/class-charitable-gateway-paypal.php' );        
+        require_once( $includes_path . 'gateways/abstract-class-charitable-gateway.php' );
+        require_once( $includes_path . 'gateways/class-charitable-gateway-offline.php' );
+        require_once( $includes_path . 'gateways/class-charitable-gateway-paypal.php' );        
 
         /* Emails */        
-        include_once( $includes_path . 'emails/interface-charitable-email.php' );        
+        require_once( $includes_path . 'emails/interface-charitable-email.php' );        
         require_once( $includes_path . 'emails/class-charitable-emails.php' ); 
-        include_once( $includes_path . 'emails/abstract-class-charitable-email.php' );
-        include_once( $includes_path . 'emails/class-charitable-email-new-donation.php' );
-        include_once( $includes_path . 'emails/class-charitable-email-donation-receipt.php' );
-        include_once( $includes_path . 'emails/class-charitable-email-campaign-end.php' );
-        include_once( $includes_path . 'emails/charitable-email-hooks.php' );
+        require_once( $includes_path . 'emails/abstract-class-charitable-email.php' );
+        require_once( $includes_path . 'emails/class-charitable-email-new-donation.php' );
+        require_once( $includes_path . 'emails/class-charitable-email-donation-receipt.php' );
+        require_once( $includes_path . 'emails/class-charitable-email-campaign-end.php' );
+        require_once( $includes_path . 'emails/charitable-email-hooks.php' );
             
         /* Database */
         require_once( $includes_path . 'db/abstract-class-charitable-db.php' );
@@ -286,8 +298,8 @@ class Charitable {
          * We do this on priority 20 so that any functionality that is loaded on init (such 
          * as addons) has a chance to run before the event.
          */
-        add_action( 'init', array( $this, 'do_charitable_actions' ), 20 );                
-        add_filter( 'charitable_sanitize_donation_meta', array( 'Charitable_Donation', 'sanitize_meta' ), 10, 2 );        
+        add_action( 'init', array( $this, 'do_charitable_actions' ), 20 );        
+        add_filter( 'charitable_sanitize_donation_meta', 'charitable_sanitize_donation_meta', 10, 2 );
     }
 
     /**
@@ -573,17 +585,6 @@ class Charitable {
     }
 
     /**
-     * Return an instance of the currency helper. 
-     *
-     * @return  Charitable_Currency
-     * @access  public
-     * @since   1.0.0
-     */
-    public function get_currency_helper() {
-        return Charitable_Currency::get_instance();
-    }
-
-    /**
      * Returns the model for one of Charitable's database tables. 
      *
      * @param   string $table
@@ -696,9 +697,22 @@ class Charitable {
     } 
 
     /**
+     * DEPRECATED METHODS 
+     */
+
+    /**
+     * @deprecated
+     */
+    public function get_currency_helper() {
+        charitable_get_deprecated()->deprecated_function( __METHOD__, '1.3.7', 'charitable_get_currency_helper' );
+        return charitable_get_currency_helper();
+    }
+
+    /**
      * @deprecated
      */
     public function get_location_helper() {
+        charitable_get_deprecated()->deprecated_function( __METHOD__, '1.2.0', 'charitable_get_location_helper' );
         return charitable_get_location_helper();
     }      
 }

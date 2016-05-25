@@ -121,6 +121,17 @@ class Charitable_Donation_Processor {
     }
 
     /**
+     * Return the donation ID. 
+     *
+     * @return  int
+     * @access  public
+     * @since   1.4.0
+     */
+    public function get_donation_id() {
+        return $this->donation_id;
+    }
+
+    /**
      * Executed when a user first clicks the Donate button on a campaign. 
      *
      * @return  void
@@ -185,13 +196,19 @@ class Charitable_Donation_Processor {
         $values = $form->get_donation_values();
         
         $gateway = $values[ 'gateway' ];
-
+    
         /* Validate the gateway values */    
         if ( ! apply_filters( 'charitable_validate_donation_form_submission_gateway', true, $gateway, $values ) ) {
+
             return false;
         }
         
         $this->donation_id = $processor->save_donation( $values );
+
+        /**
+         * Set a transient to allow plugins to act on this donation on the next page load.
+         */
+        set_transient( 'charitable_donation_' . charitable_get_session()->get_session_id(), $this );
 
         /**
          * We check whether the gateway is compatible with version 1.3, since Charitable 1.3
@@ -212,7 +229,7 @@ class Charitable_Donation_Processor {
              *           `safe` : Whether to use wp_safe_redirect. If unset, will default to true.
              *
              * @hook charitable_process_donation_$gateway
-             */                        
+             */              
             return apply_filters( 'charitable_process_donation_' . $gateway, true, $this->donation_id, $processor );            
         }
         else {
@@ -403,8 +420,8 @@ class Charitable_Donation_Processor {
         /**
          * @hook charitable_after_save_donation
          */
-        do_action( 'charitable_after_save_donation', $donation_id, $this );
-    
+        do_action( 'charitable_after_save_donation', $donation_id, $this );        
+
         return $donation_id;
     }
 
@@ -417,7 +434,7 @@ class Charitable_Donation_Processor {
      * @since   1.0.0
      */
     public function save_campaign_donations( $donation_id ) {
-        $campaigns = $this->get_campaign_donations_data();
+        $campaigns = $this->get_campaign_donations_data();        
 
         foreach ( $campaigns as $campaign ) {
             $campaign[ 'donor_id' ] = $this->get_donor_id();
@@ -470,14 +487,8 @@ class Charitable_Donation_Processor {
      * @since   1.0.0
      */
     public function update_donation_log( $donation_id, $message ) {
-        $log = Charitable_Donation::get_donation_log( $donation_id );
-
-        $log[] = array( 
-            'time'      => time(), 
-            'message'   => $message
-        );
-
-        update_post_meta( $donation_id, '_donation_log', $log );
+        $donation = charitable_get_donation( $donation_id );
+        $donation->update_donation_log( $message );
     }
 
     /**
@@ -586,30 +597,7 @@ class Charitable_Donation_Processor {
      */
     public function get_ipn_url( $gateway ) {
         return add_query_arg( 'charitable-listener', $gateway, home_url( 'index.php' ) );
-    }
-
-    /**
-     * Checks for calls to our IPN. 
-     *
-     * This method is called on the init hook.
-     *
-     * IPNs in Charitable are structured in this way: charitable-listener=gateway
-     *
-     * @return  boolean True if this is a call to our IPN. False otherwise.
-     * @access  public
-     * @static
-     * @since   1.0.0
-     */
-    public static function ipn_listener() {
-        if ( isset( $_GET[ 'charitable-listener' ] ) ) {
-
-            $gateway = $_GET[ 'charitable-listener' ];
-            do_action( 'charitable_process_ipn_' . $gateway );
-            return true;
-        }
-
-        return false;
-    }
+    }    
 
     /**
      * Redirect the user after the gateway has processed the donation. 
@@ -732,7 +720,7 @@ class Charitable_Donation_Processor {
     protected function get_donation_status() {
         $status = $this->get_donation_data_value( 'status', 'charitable-pending' );
 
-        if ( ! Charitable_Donation::is_valid_donation_status( $status ) ) {
+        if ( ! charitable_is_valid_donation_status( $status ) ) {
             $status = 'charitable-pending';
         }
 

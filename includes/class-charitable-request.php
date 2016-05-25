@@ -31,10 +31,17 @@ final class Charitable_Request {
     private static $instance = null;
 
 	/**
-	 * @var 	Charitable_Campaign
+	 * @var 	Charitable_Campaign|false
 	 * @access 	private
 	 */
 	private $campaign;
+
+	/**
+	 * @var 	int
+	 * @access 	private
+	 */
+	private $campaign_id;
+
 
 	/**
 	 * @var 	Charitable_Donor
@@ -101,7 +108,7 @@ final class Charitable_Request {
 	/** 
 	 * Returns the current campaign. If there is no current campaign, return false. 
 	 *
-	 * @return 	Charitable_Campaign if we're viewing a campaign within a loop. False otherwise. 
+	 * @return 	Charitable_Campaign|false Campaign object if we're viewing a campaign within a loop. False otherwise. 
 	 * @access 	public
 	 * @since 	1.0.0
 	 */
@@ -198,7 +205,7 @@ final class Charitable_Request {
 		if ( ! isset( $this->donation ) ) {
 
 			$donation_id = $this->get_current_donation_id();
-			$this->donation = $donation_id ? new Charitable_Donation( $donation_id ) : false;
+			$this->donation = $donation_id ? charitable_get_donation( $donation_id ) : false;
 
 		}
 	

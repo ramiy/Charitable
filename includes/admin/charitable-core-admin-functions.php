@@ -53,7 +53,7 @@ function charitable_get_admin_settings() {
 /**
  * Returns whether we are currently viewing the Charitable settings area. 
  *
- * @param   string $tab     Optional. If passed, the function will also check that we are on the given tab.
+ * @param   string $tab Optional. If passed, the function will also check that we are on the given tab.
  * @return  boolean
  * @since   1.2.0
  */

@@ -57,7 +57,7 @@ final class Charitable_Licenses_Settings {
     /**
      * Add the licenses tab settings fields. 
      *
-     * @return  array[]
+     * @return  array
      * @access  public
      * @since   1.0.0
      */

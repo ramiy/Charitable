@@ -67,7 +67,7 @@ class Test_Charitable_Donation extends WP_UnitTestCase {
 			)
 		) );
 		
-		$donation = new Charitable_Donation( $donation_id );
+		$donation = charitable_get_donation( $donation_id );
 		
 		$this->assertEquals( $donation_id, $donation->ID );
 	}	
@@ -87,7 +87,7 @@ class Test_Charitable_Donation extends WP_UnitTestCase {
 			'gateway' => 'stripe'
 		) );
 		
-		$donation = new Charitable_Donation( $donation_id );
+		$donation = charitable_get_donation( $donation_id );
 		
 		$this->assertEquals( 'stripe', $donation->get_gateway() );
 	}
@@ -106,7 +106,7 @@ class Test_Charitable_Donation extends WP_UnitTestCase {
 			)
 		) );
 		
-		$donation = new Charitable_Donation( $donation_id );
+		$donation = charitable_get_donation( $donation_id );
 		
 		$this->assertEquals( 10, $donation->get_total_donation_amount() );
 	}
@@ -131,7 +131,7 @@ class Test_Charitable_Donation extends WP_UnitTestCase {
 			)
 		) );
 		
-		$donation = new Charitable_Donation( $donation_id );
+		$donation = charitable_get_donation( $donation_id );
 		
 		$this->assertEquals( 125, $donation->get_total_donation_amount() );
 	}
@@ -151,7 +151,7 @@ class Test_Charitable_Donation extends WP_UnitTestCase {
 			)
 		) );
 
-		$donation = new Charitable_Donation( $donation_id );
+		$donation = charitable_get_donation( $donation_id );
 		
 		$this->assertCount( 1, $donation->get_campaign_donations() );
 	}
@@ -177,7 +177,7 @@ class Test_Charitable_Donation extends WP_UnitTestCase {
 			)
 		) );
 		
-		$donation = new Charitable_Donation( $donation_id );
+		$donation = charitable_get_donation( $donation_id );
 		
 		$this->assertCount( 2, $donation->get_campaign_donations() );
 	}	
@@ -197,7 +197,7 @@ class Test_Charitable_Donation extends WP_UnitTestCase {
 			'note' => 'This is a note'
 		) );
 		
-		$donation = new Charitable_Donation( $donation_id );
+		$donation = charitable_get_donation( $donation_id );
 		
 		$this->assertEquals( 'This is a note', $donation->get_notes() );
 	}
@@ -217,7 +217,7 @@ class Test_Charitable_Donation extends WP_UnitTestCase {
 			'status' => 'charitable-completed'
 		) );
 
-		$donation = new Charitable_Donation( $donation_id );
+		$donation = charitable_get_donation( $donation_id );
 
 		$this->assertEquals( 'charitable-completed', $donation->get_status() );
 	}
@@ -237,7 +237,7 @@ class Test_Charitable_Donation extends WP_UnitTestCase {
 			'status' => 'charitable-completed'
 		) );
 		
-		$donation = new Charitable_Donation( $donation_id );
+		$donation = charitable_get_donation( $donation_id );
 
 		$this->assertInstanceOf( 'Charitable_Donor', $donation->get_donor() );
 	}
@@ -256,8 +256,10 @@ class Test_Charitable_Donation extends WP_UnitTestCase {
 			), 
 			'status' => 'charitable-completed'
 		) );
+
+		$donation = charitable_get_donation( $donation_id );
 		
-		$this->assertCount( 1, Charitable_Donation::get_donation_log( $donation_id ) );
+		$this->assertCount( 1, $donation->get_donation_log() );
 	}	
 
 	/**
@@ -275,10 +277,12 @@ class Test_Charitable_Donation extends WP_UnitTestCase {
 			), 
 			'status' => 'charitable-completed'
 		) );
-		
-		Charitable_Donation::update_donation_log( $donation_id, 'New message' );
 
-		$this->assertCount( 2, Charitable_Donation::get_donation_log( $donation_id ) );
+		$donation = charitable_get_donation( $donation_id );
+		
+		$donation->update_donation_log( 'New message' );
+
+		$this->assertCount( 2, $donation->get_donation_log() );
 	}		
 
 	/**
@@ -296,7 +300,7 @@ class Test_Charitable_Donation extends WP_UnitTestCase {
 			'status' => 'charitable-pending'
 		) );
 
-		$donation = new Charitable_Donation( $donation_id );
+		$donation = charitable_get_donation( $donation_id );
 
 		$donation->update_status( 'charitable-completed' );
 
@@ -318,14 +322,14 @@ class Test_Charitable_Donation extends WP_UnitTestCase {
 			'status' => 'charitable-pending'
 		) );
 
-		$donation = new Charitable_Donation( $donation_id );
+		$donation = charitable_get_donation( $donation_id );
 
 		$donation->update_status( 'charitable-completed' );
 
-		$log = Charitable_Donation::get_donation_log( $donation_id );
+		$log = $donation->get_donation_log();
 		$last = array_pop( $log );
 
-		$this->assertEquals( 'Donation status updated from Pending to Completed', $last['message'] );
+		$this->assertEquals( 'Donation status updated from Pending to Paid.', $last['message'] );
 	}
 
 	public function test_get_campaigns() {
@@ -345,7 +349,7 @@ class Test_Charitable_Donation extends WP_UnitTestCase {
 			'status' => 'charitable-pending'
 		) );
 
-		$donation = new Charitable_Donation( $donation_id );
+		$donation = charitable_get_donation( $donation_id );
 
 		$this->assertCount( 2, $donation->get_campaigns() );
 	}
@@ -367,13 +371,13 @@ class Test_Charitable_Donation extends WP_UnitTestCase {
 			'status' => 'charitable-pending'
 		) );
 
-		$donation = new Charitable_Donation( $donation_id );
+		$donation = charitable_get_donation( $donation_id );
 
 		$this->assertEquals( 'Test Campaign 1, Test Campaign 2', $donation->get_campaigns_donated_to() );
 	}
 
 	public function test_get_valid_donation_statuses() {
-		$this->assertCount( 5, Charitable_Donation::get_valid_donation_statuses() );	
+		$this->assertCount( 5, charitable_get_valid_donation_statuses() );	
 	}
 
 }

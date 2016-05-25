@@ -48,11 +48,11 @@ do_action('charitable_user_profile_before');
 	/**
 	 * @hook 	charitable_form_after_fields
 	 */
-	do_action( 'charitable_user_profile_after_fields', $form );
+	do_action( 'charitable_form_after_fields', $form );
 
 	?>
 	<div class="charitable-form-field charitable-submit-field">
-		<button class="button button-primary" type="submit" name="update-profile"><?php esc_attr_e( 'Update', 'charitable' ) ?></button>
+		<button class="button button-primary" type="submit" name="update-profile"><?php _e( 'Update', 'charitable' ) ?></button>
 	</div>
 </form>
 <?php

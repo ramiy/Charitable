@@ -37,22 +37,7 @@ class Charitable_Session {
 	 * @access 	private
 	 * @since 	1.0.0
 	 */
-	private $session;
-
-    /**
-     * Returns and/or create the single instance of this class.  
-     *
-     * @return  Charitable_Session
-     * @access  public
-     * @since   1.2.0
-     */
-    public static function get_instance() {
-        if ( is_null( self::$instance ) ) {
-            self::$instance = new Charitable_Session();
-        }
-
-        return self::$instance;
-    }
+	private $session;    
 
 	/**
 	 * Instantiate session object. Private constructor.
@@ -79,7 +64,22 @@ class Charitable_Session {
 		add_filter( 'wp_session_expiration_variant', array( $this, 'set_session_expiration_variant_length' ), 99999 );		
 
 		$this->session = WP_Session::get_instance();			
-	}	
+	}
+
+	/**
+     * Returns and/or create the single instance of this class.  
+     *
+     * @return  Charitable_Session
+     * @access  public
+     * @since   1.2.0
+     */
+    public static function get_instance() {
+        if ( is_null( self::$instance ) ) {
+            self::$instance = new Charitable_Session();
+        }
+
+        return self::$instance;
+    }
 
 	/**
 	 * Return a session variable. 
@@ -242,6 +242,28 @@ class Charitable_Session {
 	 */
 	public function add_notices() {
 		$this->set( 'notices', charitable_get_notices()->get_notices() );
+	}
+
+	/**
+	 * Return any notices set in the session.
+	 *
+	 * @return 	mixed Session variable
+	 * @access  public
+	 * @since 	1.4.0
+	 */
+	public function get_notices() {
+		$notices = $this->get( 'notices' );
+
+		if ( $notices ) {
+			return $notices;
+		}
+
+		return array(
+			'error'		=> array(), 
+			'warning'	=> array(), 
+			'success'	=> array(), 
+			'info'		=> array()
+		);
 	}
 
 	/**

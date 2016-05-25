@@ -240,7 +240,7 @@ class Charitable_Emails {
             'show' => ''
         );
 
-        $args = wp_parse_args( $atts, $defaults );
+        $args = apply_filters( 'charitable_email_shortcode_args', wp_parse_args( $atts, $defaults ), $atts, $defaults );
 
         if ( ! isset( $args[ 'show' ] ) ) {
             return '';

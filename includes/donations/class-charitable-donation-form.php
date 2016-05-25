@@ -468,7 +468,8 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
         }   
 
         $hidden_fields = apply_filters( 'charitable_donation_form_hidden_fields', array(
-            'campaign_id' => $this->campaign->ID
+            'campaign_id' => $this->campaign->ID, 
+            'description' => get_the_title( $this->campaign->ID )
         ) );
 
         foreach ( $hidden_fields as $name => $value  ) {
@@ -616,18 +617,28 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
         foreach ( $this->get_fields() as $section_id => $section ) {
 
             if ( 'payment_fields' == $section_id ) {
+                
                 $section_fields = array();
+
                 foreach ( $section[ 'gateways' ] as $gateway_id => $gateway_section ) {
                     if ( isset( $gateway_section[ 'fields' ] ) ) {
                         $section_fields[ 'gateways' ][ $gateway_id ] = $gateway_section[ 'fields' ];
                     }
                 }
+
+                $fields = array_merge( $fields, $section_fields );
+
+            }
+            elseif ( isset( $section[ 'fields' ] ) ) {
+
+                $fields = array_merge( $fields, $section[ 'fields' ] );            
+
             }
             else {
-                $section_fields = isset( $section[ 'fields' ] ) ? $section[ 'fields' ] : $section;
+
+                $fields[ $section_id ] = $section;
             }
 
-            $fields = array_merge( $fields, $section_fields );            
         }
 
         return $fields;

@@ -62,7 +62,7 @@ class Charitable_Notices {
 	 */
 	private function __construct() {
 		/* Retrieve the notices from the session */
-		$this->notices = charitable_get_session()->get( 'notices' );
+		$this->notices = charitable_get_session()->get_notices();
 
 		/* Reset the session back to empty */
 		charitable_get_session()->set( 'notices', array(
@@ -226,6 +226,26 @@ class Charitable_Notices {
 	 */
 	public function get_notices() {
 		return $this->notices;
+	}
+
+	/**
+	 * Clear out all existing notices. 
+	 *
+	 * @return  void
+	 * @access  public
+	 * @since   1.4.0
+	 */
+	public function clear() {
+		$clear = array(
+			'error'		=> array(), 
+			'warning'	=> array(), 
+			'success'	=> array(), 
+			'info'		=> array()
+		);		
+
+		$this->notices = $clear;
+
+		charitable_get_session()->set( 'notices', $clear );
 	}
 }	
 

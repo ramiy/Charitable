@@ -56,7 +56,7 @@ class Charitable_Export_Donations extends Charitable_Export {
      * @since   1.0.0
      */
     public function __construct( $args ) {
-        $this->statuses = Charitable_Donation::get_valid_donation_statuses();
+        $this->statuses = charitable_get_valid_donation_statuses();
 
         add_filter( 'charitable_export_data_key_value', array( $this, 'set_custom_field_data' ), 10, 3 );
 

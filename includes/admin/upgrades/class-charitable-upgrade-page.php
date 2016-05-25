@@ -95,7 +95,7 @@ class Charitable_Upgrade_Page {
     /**
      * Return the current upgrade action.
      *
-     * @return  string
+     * @return  false|string False if no action was specified. 
      * @access  public
      * @since   1.3.0
      */
@@ -125,7 +125,7 @@ class Charitable_Upgrade_Page {
     /**
      * Return the total number of records to be updated. 
      *
-     * @return  int
+     * @return  false|int
      * @access  public
      * @since   1.3.0
      */

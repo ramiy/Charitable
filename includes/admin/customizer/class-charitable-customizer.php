@@ -144,7 +144,7 @@ class Charitable_Customizer {
                         'control'   => array(
                             'control_type'      => 'WP_Customize_Color_Control',
                             'priority'          => 1110,
-                            'label'             => __( 'Highlight Colour', 'charitable' )
+                            'label'             => __( 'Highlight Color', 'charitable' )
                         )
                     )
                 )

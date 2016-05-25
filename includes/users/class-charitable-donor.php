@@ -30,6 +30,14 @@ class Charitable_Donor {
     protected $donor_id;
 
     /**
+     * The donor data from charitable_donors table. 
+     *
+     * @var     Object
+     * @access  protected
+     */
+    protected $data;
+
+    /**
      * The donation ID. 
      *
      * @var     int
@@ -71,6 +79,7 @@ class Charitable_Donor {
      */
     public function __construct( $donor_id, $donation_id = false ) {
         $this->donor_id = $donor_id;
+        $this->data = charitable_get_table( 'donors' )->get( $donor_id );
         $this->donation_id = $donation_id;        
     }
 
@@ -84,6 +93,10 @@ class Charitable_Donor {
     public function __get( $key ) {
         if ( isset( $this->$key ) ) {
             return $this->$key;
+        }
+
+        if ( isset( $this->data->$key ) ) {
+            return $this->data->$key;   
         }
 
         return $this->get_user()->$key;
@@ -125,7 +138,7 @@ class Charitable_Donor {
      */
     public function get_donation() {
         if ( ! isset( $this->donation ) ) {            
-            $this->donation = $this->donation_id ? new Charitable_Donation( $this->donation_id ) : false;
+            $this->donation = $this->donation_id ? charitable_get_donation( $this->donation_id ) : false;
         }
 
         return $this->donation;
@@ -192,13 +205,21 @@ class Charitable_Donor {
      * @since   1.0.0
      */
     public function get_name() {
-        if ( ! $this->get_donor_meta() ) {
-            return $this->get_user()->get_name();
+        $meta = $this->get_donor_meta();
+
+        if ( $meta ) {
+
+            $first_name = isset( $meta[ 'first_name' ] ) ? $meta[ 'first_name' ] : '';
+            $last_name = isset( $meta[ 'last_name' ] ) ? $meta[ 'last_name' ] : '';            
+
+        }
+        else {
+
+            $first_name = $this->data->first_name;
+            $last_name = $this->data->last_name;
+
         }
 
-        $meta = $this->get_donor_meta();
-        $first_name = isset( $meta[ 'first_name' ] ) ? $meta[ 'first_name' ] : '';
-        $last_name = isset( $meta[ 'last_name' ] ) ? $meta[ 'last_name' ] : '';
         $name = trim( sprintf( '%s %s', $first_name, $last_name ) );
 
         return apply_filters( 'charitable_donor_name', $name, $this );
@@ -212,7 +233,9 @@ class Charitable_Donor {
      * @since   1.2.4
      */
     public function get_email() {
-        return $this->get_value( 'email' );
+        $email = $this->get_donor_meta( 'email' );
+        
+        return $email ? $email : $this->data->email;
     }
 
     /**

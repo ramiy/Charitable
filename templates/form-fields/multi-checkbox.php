@@ -17,7 +17,6 @@ $classes        = $view_args[ 'classes' ];
 $is_required    = isset( $field[ 'required' ] ) ? $field[ 'required' ] : false;
 $options        = isset( $field[ 'options' ] ) ? $field[ 'options' ] : array();
 $value          = isset( $field[ 'value' ] ) ? (array) $field[ 'value' ] : array();
-$placeholder    = isset( $field[ 'placeholder' ] ) ? $field[ 'placeholder' ] : '';
 
 if ( empty( $options ) ) {
     return;
@@ -41,7 +40,7 @@ if ( empty( $options ) ) {
     <?php foreach ( $options as $val => $label ) : ?>
 
         <li>
-            <input type="checkbox" name="<?php echo $field[ 'key' ] ?>[]" value="<?php echo $val ?>" <?php checked( in_array( $val, $value ) ) ?> />
+            <input type="checkbox" name="<?php echo $field[ 'key' ] ?>[]" value="<?php echo $val ?>" <?php checked( in_array( $val, $value ) ) ?> <?php echo charitable_get_arbitrary_attributes( $field ) ?>/>
             <?php echo $label ?>
         </li>
 

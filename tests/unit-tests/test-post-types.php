@@ -42,7 +42,7 @@ class Test_Charitable_Post_Types extends WP_UnitTestCase {
 		$this->assertEquals( 'Add Donation', $wp_post_types['donation']->labels->add_new );
 		$this->assertEquals( 'Add New Donation', $wp_post_types['donation']->labels->add_new_item );
 		$this->assertEquals( 'Edit', $wp_post_types['donation']->labels->edit );
-		$this->assertEquals( 'Edit Donation', $wp_post_types['donation']->labels->edit_item );
+		$this->assertEquals( 'Donation Details', $wp_post_types['donation']->labels->edit_item );
 		$this->assertEquals( 'New Donation', $wp_post_types['donation']->labels->new_item );
 		$this->assertEquals( 'View Donation', $wp_post_types['donation']->labels->view );
 		$this->assertEquals( 'View Donation', $wp_post_types['donation']->labels->view_item );

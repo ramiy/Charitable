@@ -180,7 +180,7 @@ class Charitable_Campaign {
     /**
      * Returns the amount of time left in the campaign in seconds.
      *
-     * @return  int $time_left      Int if campaign has an end date. False if campaign has no end date.
+     * @return  int $time_left Int if campaign has an end date. False if campaign has no end date.
      * @access  public
      * @since   1.0.0
      */
@@ -345,7 +345,7 @@ class Charitable_Campaign {
             return '';
         }
 
-        return charitable()->get_currency_helper()->get_monetary_amount( $this->get( 'goal' ) );
+        return charitable_format_money( $this->get( 'goal' ) );
     }
 
     /**
@@ -748,7 +748,7 @@ class Charitable_Campaign {
         }
 
         foreach ( $value as $key => $suggestion ) {
-            $value[ $key ][ 'amount' ] = charitable_get_currency_helper()->sanitize_monetary_amount( $suggestion[ 'amount' ] );
+            $value[ $key ][ 'amount' ] = charitable_format_money( $suggestion[ 'amount' ] );
         }
 
         return $value;
