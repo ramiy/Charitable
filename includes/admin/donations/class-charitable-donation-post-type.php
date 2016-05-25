@@ -253,7 +253,7 @@ final class Charitable_Donation_Post_Type {
                     $display .= sprintf( _x( ' by %s', 'charitable', 'Donation by donor name' ), $name );
                 }
                 break;
-            case 'status' : 
+            case 'post_status' : 
                 $display = '<mark class="status '. $donation->get_status() .'">'. strtolower( $donation->get_status( true ) ) . '</mark>';
                 break;
 
@@ -281,10 +281,6 @@ final class Charitable_Donation_Post_Type {
 
             case 'donation_date' :              
                 $display = $donation->get_date(); 
-                break;
-
-            case 'post_status' : 
-                $display = $donation->get_status( true );
                 break;
 
             default :

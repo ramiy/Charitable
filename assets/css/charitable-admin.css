@@ -741,10 +741,10 @@ select.charitable-settings-field {
   margin: 0;
   padding: 0; }
 
-.post-type-donation .wp-list-table .meta {
+.edit-php.post-type-charitable .wp-list-table .meta {
   display: block;
   color: #999; }
-.post-type-donation .wp-list-table .column-status mark {
+.edit-php.post-type-charitable .wp-list-table .column-post_status mark {
   text-align: center;
   white-space: nowrap;
   padding: 0 2px;
@@ -756,22 +756,22 @@ select.charitable-settings-field {
   color: #fff;
   font-weight: bold;
   text-shadow: 0 1px 0 rgba(0, 0, 0, 0.3); }
-  .post-type-donation .wp-list-table .column-status mark.charitable-pending {
+  .edit-php.post-type-charitable .wp-list-table .column-post_status mark.charitable-pending {
     background-color: #ffb733;
     border-color: #ffa500; }
-  .post-type-donation .wp-list-table .column-status mark.charitable-completed {
+  .edit-php.post-type-charitable .wp-list-table .column-post_status mark.charitable-completed {
     background-color: #00b300;
     border-color: #008000; }
-  .post-type-donation .wp-list-table .column-status mark.charitable-failed {
+  .edit-php.post-type-charitable .wp-list-table .column-post_status mark.charitable-failed {
     background-color: #ffd633;
     border-color: #ffcc00; }
-  .post-type-donation .wp-list-table .column-status mark.charitable-cancelled {
+  .edit-php.post-type-charitable .wp-list-table .column-post_status mark.charitable-cancelled {
     background-color: #ff3333;
     border-color: #ff0000; }
-  .post-type-donation .wp-list-table .column-status mark.charitable-refunded {
+  .edit-php.post-type-charitable .wp-list-table .column-post_status mark.charitable-refunded {
     background-color: #b3b3b3;
     border-color: #999; }
-.post-type-donation .tablenav.top {
+.edit-php.post-type-charitable .tablenav.top {
   padding: 12px;
   margin: 12px 0;
   border: 1px solid #dfdfdf;
@@ -779,19 +779,19 @@ select.charitable-settings-field {
   box-sizing: initial;
   overflow: hidden;
   float: none; }
-  .post-type-donation .tablenav.top select.campaign_id {
+  .edit-php.post-type-charitable .tablenav.top select.campaign_id {
     float: none;
     vertical-align: top; }
-  .post-type-donation .tablenav.top a.charitable-clear-filters.button-secondary {
+  .edit-php.post-type-charitable .tablenav.top a.charitable-clear-filters.button-secondary {
     display: inline-block;
     margin: 1px 3px 0 0; }
-.post-type-donation .charitable-donations-export,
-.post-type-donation .search-box {
+.edit-php.post-type-charitable .charitable-donations-export,
+.edit-php.post-type-charitable .search-box {
   float: right;
   margin-right: 11px; }
-.post-type-donation a.button-secondary.charitable-donations-export {
+.edit-php.post-type-charitable a.button-secondary.charitable-donations-export {
   margin-left: 10px; }
-  .post-type-donation a.button-secondary.charitable-donations-export:before {
+  .edit-php.post-type-charitable a.button-secondary.charitable-donations-export:before {
     content: '\f316';
     float: left;
     font-family: dashicons;
