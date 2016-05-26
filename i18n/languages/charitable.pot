@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Charitable 1.4.0\n"
 "Report-Msgid-Bugs-To: https://www.wpcharitable.com/\n"
-"POT-Creation-Date: 2016-04-07 12:51:07+00:00\n"
+"POT-Creation-Date: 2016-04-20 07:06:45+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -4691,6 +4691,7 @@ msgstr ""
 #: includes/abstracts/abstract-charitable-donation.php:428
 #: includes/donations/abstract-charitable-donation.php:426
 #: includes/donations/class-charitable-donation-form.php:172
+#: includes/users/class-charitable-password-form.php:143
 #: includes/users/class-charitable-profile-form.php:143
 #: includes/users/class-charitable-registration-form.php:92
 #: templates/donation-form/donor-fields/donor-details.php:25
@@ -4701,6 +4702,7 @@ msgstr ""
 #: includes/abstracts/abstract-charitable-donation.php:432
 #: includes/donations/abstract-charitable-donation.php:430
 #: includes/donations/class-charitable-donation-form.php:181
+#: includes/users/class-charitable-password-form.php:185
 #: includes/users/class-charitable-profile-form.php:180
 msgid "Address"
 msgstr ""
@@ -6078,41 +6080,49 @@ msgid "No donation amount was set."
 msgstr ""
 
 #: includes/donations/class-charitable-donation-form.php:154
+#: includes/users/class-charitable-password-form.php:129
 #: includes/users/class-charitable-profile-form.php:129
 msgid "First name"
 msgstr ""
 
 #: includes/donations/class-charitable-donation-form.php:163
+#: includes/users/class-charitable-password-form.php:136
 #: includes/users/class-charitable-profile-form.php:136
 msgid "Last name"
 msgstr ""
 
 #: includes/donations/class-charitable-donation-form.php:190
+#: includes/users/class-charitable-password-form.php:192
 #: includes/users/class-charitable-profile-form.php:187
 msgid "Address 2"
 msgstr ""
 
 #: includes/donations/class-charitable-donation-form.php:199
+#: includes/users/class-charitable-password-form.php:199
 #: includes/users/class-charitable-profile-form.php:194
 msgid "City"
 msgstr ""
 
 #: includes/donations/class-charitable-donation-form.php:208
+#: includes/users/class-charitable-password-form.php:206
 #: includes/users/class-charitable-profile-form.php:201
 msgid "State"
 msgstr ""
 
 #: includes/donations/class-charitable-donation-form.php:217
+#: includes/users/class-charitable-password-form.php:213
 #: includes/users/class-charitable-profile-form.php:208
 msgid "Postcode / ZIP code"
 msgstr ""
 
 #: includes/donations/class-charitable-donation-form.php:226
+#: includes/users/class-charitable-password-form.php:220
 #: includes/users/class-charitable-profile-form.php:215
 msgid "Country"
 msgstr ""
 
 #: includes/donations/class-charitable-donation-form.php:236
+#: includes/users/class-charitable-password-form.php:228
 #: includes/users/class-charitable-profile-form.php:223
 msgid "Phone"
 msgstr ""
@@ -6135,6 +6145,7 @@ msgid "Your Donation"
 msgstr ""
 
 #: includes/donations/class-charitable-donation-form.php:347
+#: includes/users/class-charitable-password-form.php:288
 #: includes/users/class-charitable-profile-form.php:283
 msgid "Your Details"
 msgstr ""
@@ -6614,32 +6625,74 @@ msgstr ""
 msgid "You are already logged in!"
 msgstr ""
 
+#: includes/users/class-charitable-password-form.php:150
 #: includes/users/class-charitable-profile-form.php:150
 msgid "Organization"
 msgstr ""
 
+#: includes/users/class-charitable-password-form.php:157
 #: includes/users/class-charitable-profile-form.php:157
 msgid "Bio"
 msgstr ""
 
+#: includes/users/class-charitable-password-form.php:166
+msgid "<a href=\"%s\">Change your password</a>"
+msgstr ""
+
+#: includes/users/class-charitable-password-form.php:251
 #: includes/users/class-charitable-profile-form.php:246
 msgid "Your Website"
 msgstr ""
 
+#: includes/users/class-charitable-password-form.php:258
 #: includes/users/class-charitable-profile-form.php:253
 msgid "Twitter"
 msgstr ""
 
+#: includes/users/class-charitable-password-form.php:265
 #: includes/users/class-charitable-profile-form.php:260
 msgid "Facebook"
 msgstr ""
 
-#: includes/users/class-charitable-profile-form.php:289
+#: includes/users/class-charitable-password-form.php:294
+#: includes/users/class-charitable-profile-form.php:295
 msgid "Your Address"
 msgstr ""
 
-#: includes/users/class-charitable-profile-form.php:295
+#: includes/users/class-charitable-password-form.php:300
+msgid "Your Social Passwords"
+msgstr ""
+
+#: includes/users/class-charitable-password-form.php:387
+msgid ""
+"charitable_user_Password_after_fields hook has been removed. Use "
+"charitable_form_after_fields instead."
+msgstr ""
+
+#: includes/users/class-charitable-profile-form.php:289
+msgid "Change Your Password"
+msgstr ""
+
+#: includes/users/class-charitable-profile-form.php:301
 msgid "Your Social Profiles"
+msgstr ""
+
+#: includes/users/class-charitable-profile-form.php:325
+msgid "Current Password (leave blank to leave unchanged)"
+msgstr ""
+
+#: includes/users/class-charitable-profile-form.php:332
+msgid "New Password (leave blank to leave unchanged)"
+msgstr ""
+
+#: includes/users/class-charitable-profile-form.php:338
+msgid "New Password (again)"
+msgstr ""
+
+#: includes/users/class-charitable-profile-form.php:484
+msgid ""
+"charitable_user_profile_after_fields hook has been removed. Use "
+"charitable_form_after_fields instead."
 msgstr ""
 
 #: includes/users/class-charitable-roles.php:30
