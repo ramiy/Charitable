@@ -23,7 +23,6 @@ if ( $campaign->has_ended() ) {
 }
 
 $suggested_donations = $campaign->get_suggested_donations();
-$currency_helper    = charitable()->get_currency_helper();
 
 if ( empty( $suggested_donations ) && ! $campaign->get( 'allow_custom_donations' ) ) {
     return;

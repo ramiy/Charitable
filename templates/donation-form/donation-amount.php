@@ -19,7 +19,6 @@ if ( ! isset( $view_args[ 'form' ] ) ) {
 $form = $view_args[ 'form' ];
 $campaign = $form->get_campaign();
 $suggested_donations = $campaign->get_suggested_donations();
-$currency_helper = charitable()->get_currency_helper();
 $donation_amount = $campaign->get_donation_amount_in_session();
 
 if ( empty( $suggested_donations ) && ! $campaign->get( 'allow_custom_donations' ) ) {
@@ -36,7 +35,7 @@ if ( $donation_amount ) : ?>
     <p class="set-donation-amount"><?php 
         printf( '%s: <strong>%s</strong>', 
             __( 'Your Donation Amount', 'charitable' ), 
-            $currency_helper->get_monetary_amount( $donation_amount ) 
+            charitable_format_money( $donation_amount ) 
         ) ?>
         <a href="#" class="change-donation" data-charitable-toggle="charitable-donation-options-<?php echo $view_args[ 'form' ]->get_form_identifier() ?>"><?php _e( 'Change', 'charitable' ) ?></a>
     </p><!-- .set-donation-amount -->
@@ -73,7 +72,7 @@ if ( $donation_amount ) : ?>
             <li class="donation-amount suggested-donation-amount">
                 <label for="form-<?php echo $view_args[ 'form' ]->get_form_identifier() . '-field-' . $suggestion['amount']; ?>"><input id="form-<?php echo $view_args[ 'form' ]->get_form_identifier() . '-field-' . $suggestion['amount']; ?>" type="radio" name="donation_amount" value="<?php echo $suggestion[ 'amount' ] ?>" <?php echo $checked ?> /><?php 
                 printf( '<span class="amount">%s</span> <span class="description">%s</span>', 
-                    $currency_helper->get_monetary_amount( $suggestion[ 'amount' ] ), 
+                    charitable_format_money( $suggestion[ 'amount' ] ), 
                     isset( $suggestion[ 'description' ] ) ? $suggestion[ 'description' ] : ''
                 ) ?></label>
             </li>

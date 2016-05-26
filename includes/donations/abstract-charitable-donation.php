@@ -454,15 +454,17 @@ abstract class Charitable_Abstract_Donation {
     /**
      * Add a message to the donation log. 
      *
-     * @param   string      $message
+     * @param   string $message
      * @return  void
      * @access  public
      * @since   1.0.0
      * @deprecated 1.3.0
      */
     public function update_donation_log( $message, $deprecated_message = null ) {
-        if( is_int( $message ) ){
-            _deprecated_argument( __METHOD__, '1.3.0', '$donation_id no longer required as get_donation_log() is used in object context. Use $donation->update_donation_log($message)' );
+        if ( is_int( $message ) ) {
+
+            charitable_get_deprecated()->deprecated_argument( __METHOD__, '1.3.0', sprintf( __( '$donation_id is no longer required as update_donation_log() is used in object context. Use $donation->update_donation_log($message)' ) ) );
+ 
             $message = $deprecated_message;
         }
         
@@ -485,9 +487,12 @@ abstract class Charitable_Abstract_Donation {
      * @deprecated 1.3.0
      */
     public function get_donation_log( $donation_id = null ) {
-        if(  $donation_id ){
-            _deprecated_argument( __METHOD__, '1.3.0', '$donation_id no longer required as get_donation_log() is used in object context. Use $donation->get_donation_log()' );
+        if ( $donation_id ) {
+
+            charitable_get_deprecated()->deprecated_argument( __METHOD__, '1.3.0', sprintf( __( '$donation_id is no longer required as get_donation_log() is used in object context. Use $donation->get_donation_log() instead.' ) ) );
+
         }
+
         $log = get_post_meta( $this->donation_id, '_donation_log', true );;
 
         return is_array( $log ) ? $log : array();
@@ -505,12 +510,14 @@ abstract class Charitable_Abstract_Donation {
      */
     public function update_status( $new_status ) {
 
+        $statuses = charitable_get_valid_donation_statuses();
+
         if ( false === charitable_is_valid_donation_status( $new_status ) ) {
 
-            $new_status = array_search( $new_status, charitable_get_valid_donation_statuses() );
+            $new_status = array_search( $new_status, $statuses );
 
             if ( false === $new_status ) {
-                _doing_it_wrong( __METHOD__, sprintf( '%s is not a valid donation status.', $new_status ), '1.0.0' );
+                charitable_get_deprecated()->doing_it_wrong( __METHOD__, sprintf( '%s is not a valid donation status.', $new_status ), '1.0.0' );
                 return 0;
             }
 
@@ -525,7 +532,9 @@ abstract class Charitable_Abstract_Donation {
         /* This actually updates the post status */
         $this->donation_data->post_status = $new_status;
 
-        $donation_id = wp_update_post( $this->donation_data );                
+        $donation_id = wp_update_post( $this->donation_data ); 
+
+        $this->update_donation_log( sprintf( __( 'Donation status updated from %s to %s.', 'charitable' ), $statuses[ $old_status ], $statuses[ $new_status ] ) );
 
         return $donation_id;
     }

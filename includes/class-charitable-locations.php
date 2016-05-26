@@ -269,6 +269,10 @@ class Charitable_Locations {
 	 */
 	private function sanitize_address_fields( $address_fields ) {
 		
+		if ( ! is_array( $address_fields ) ) {
+			return $address_fields;
+		}
+		
 		$address_fields = array_map( 'trim', $address_fields );	
 
 		/**

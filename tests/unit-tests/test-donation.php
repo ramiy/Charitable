@@ -329,7 +329,7 @@ class Test_Charitable_Donation extends WP_UnitTestCase {
 		$log = $donation->get_donation_log();
 		$last = array_pop( $log );
 
-		$this->assertEquals( 'Donation status updated from Pending to Completed', $last['message'] );
+		$this->assertEquals( 'Donation status updated from Pending to Paid.', $last['message'] );
 	}
 
 	public function test_get_campaigns() {

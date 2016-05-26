@@ -6,8 +6,7 @@ class Test_Charitable_Currency_Helper extends WP_UnitTestCase {
 
 	function setUp() {
 		parent::setUp();
-		$this->charitable = charitable();
-		$this->currency_helper = $this->charitable->get_currency_helper();		
+		$this->currency_helper = charitable_get_currency_helper();		
 		$this->set_currency_format( 'left' );
 		$this->set_currency( 'AUD' );		
 		$this->set_decimal_count( 2 );

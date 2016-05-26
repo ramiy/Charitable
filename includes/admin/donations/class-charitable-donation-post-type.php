@@ -240,7 +240,7 @@ final class Charitable_Donation_Post_Type {
                 break;
 
             case 'amount' : 
-                $display = charitable()->get_currency_helper()->get_monetary_amount( $donation->get_total_donation_amount() );
+                $display = charitable_format_money( $donation->get_total_donation_amount() );
                 break;          
 
             case 'campaigns' : 

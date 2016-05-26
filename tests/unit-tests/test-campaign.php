@@ -113,19 +113,29 @@ class Test_Charitable_Campaign extends WP_UnitTestCase {
 		$this->assertEquals( 0, $this->campaign_2->get('end_date') );
 	}
 
-	function test_get_end_time() {
-		$this->assertEquals( $this->end_time_1, $this->campaign_1->get_end_time() );
+	function test_get_end_time_for_finite_campaign() {
+		$this->assertEquals( $this->end_time_1, $this->campaign_1->get_end_time() );		
+	}
+
+	function test_get_end_time_for_endless_campaign() {
 		$this->assertFalse( $this->campaign_2->get_end_time() );
 	}
 
-	function test_get_end_date() {
+	function test_get_end_date_for_finite_campaign() {
 		$this->assertEquals( date('Y-m-d', $this->end_time_1), $this->campaign_1->get_end_date( 'Y-m-d' ) );
+	}
+
+	function test_get_end_date_for_endless_campaign() {
 		$this->assertFalse( $this->campaign_2->get_end_date() );
 	}
 
-	function test_get_seconds_left() {
-		$seconds_left = $this->end_time_1 - time();
-		$this->assertEquals( $seconds_left , $this->campaign_1->get_seconds_left() );
+	function test_get_seconds_left_for_finite_campaign() {
+		$seconds_left = $this->end_time_1 - current_time( 'timestamp' );
+		$diff = $this->campaign_1->get_seconds_left() - $seconds_left; // Sometimes the two are a second out, so we allow for that.
+		$this->assertTrue( in_array( $diff, array( 0, 1 ) ) );
+	}
+
+	function test_get_seconds_left_for_endless_campaign() {
 		$this->assertFalse( $this->campaign_2->get_seconds_left() );
 	}
 

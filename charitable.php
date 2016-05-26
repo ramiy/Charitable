@@ -7,7 +7,7 @@
  * Author:              WP Charitable
  * Author URI:          https://wpcharitable.com
  * Requires at least:   4.1
- * Tested up to:        4.5
+ * Tested up to:        4.5.2
  *
  * Text Domain:         charitable
  * Domain Path:         /i18n/languages/
@@ -208,20 +208,20 @@ class Charitable {
         require_once( $includes_path . 'users/class-charitable-profile-form.php' );
 
         /* Gateways */
-        include_once( $includes_path . 'gateways/interface-charitable-gateway.php' );        
+        require_once( $includes_path . 'gateways/interface-charitable-gateway.php' );        
         require_once( $includes_path . 'gateways/class-charitable-gateways.php' );
-        include_once( $includes_path . 'gateways/abstract-class-charitable-gateway.php' );
-        include_once( $includes_path . 'gateways/class-charitable-gateway-offline.php' );
-        include_once( $includes_path . 'gateways/class-charitable-gateway-paypal.php' );        
+        require_once( $includes_path . 'gateways/abstract-class-charitable-gateway.php' );
+        require_once( $includes_path . 'gateways/class-charitable-gateway-offline.php' );
+        require_once( $includes_path . 'gateways/class-charitable-gateway-paypal.php' );        
 
         /* Emails */        
-        include_once( $includes_path . 'emails/interface-charitable-email.php' );        
+        require_once( $includes_path . 'emails/interface-charitable-email.php' );        
         require_once( $includes_path . 'emails/class-charitable-emails.php' ); 
-        include_once( $includes_path . 'emails/abstract-class-charitable-email.php' );
-        include_once( $includes_path . 'emails/class-charitable-email-new-donation.php' );
-        include_once( $includes_path . 'emails/class-charitable-email-donation-receipt.php' );
-        include_once( $includes_path . 'emails/class-charitable-email-campaign-end.php' );
-        include_once( $includes_path . 'emails/charitable-email-hooks.php' );
+        require_once( $includes_path . 'emails/abstract-class-charitable-email.php' );
+        require_once( $includes_path . 'emails/class-charitable-email-new-donation.php' );
+        require_once( $includes_path . 'emails/class-charitable-email-donation-receipt.php' );
+        require_once( $includes_path . 'emails/class-charitable-email-campaign-end.php' );
+        require_once( $includes_path . 'emails/charitable-email-hooks.php' );
             
         /* Database */
         require_once( $includes_path . 'db/abstract-class-charitable-db.php' );
@@ -585,17 +585,6 @@ class Charitable {
     }
 
     /**
-     * Return an instance of the currency helper. 
-     *
-     * @return  Charitable_Currency
-     * @access  public
-     * @since   1.0.0
-     */
-    public function get_currency_helper() {
-        return Charitable_Currency::get_instance();
-    }
-
-    /**
      * Returns the model for one of Charitable's database tables. 
      *
      * @param   string $table
@@ -708,9 +697,22 @@ class Charitable {
     } 
 
     /**
+     * DEPRECATED METHODS 
+     */
+
+    /**
+     * @deprecated
+     */
+    public function get_currency_helper() {
+        charitable_get_deprecated()->deprecated_function( __METHOD__, '1.4.0', 'charitable_get_currency_helper' );
+        return charitable_get_currency_helper();
+    }
+
+    /**
      * @deprecated
      */
     public function get_location_helper() {
+        charitable_get_deprecated()->deprecated_function( __METHOD__, '1.2.0', 'charitable_get_location_helper' );
         return charitable_get_location_helper();
     }      
 }

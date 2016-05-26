@@ -116,7 +116,7 @@ class Charitable_User extends WP_User {
     /**
      * Return the donor ID of this user. 
      *
-     * @return  int     $donor_id
+     * @return  int $donor_id
      * @access  public
      * @since   1.0.0
      */
@@ -136,7 +136,7 @@ class Charitable_User extends WP_User {
      * @access  public
      * @since   1.0.0
      */
-    public function get_donor() {    
+    public function get_donor() {
         if ( ! $this->is_logged_in() && ! isset( $this->donor_id ) ) {
             return null;
         }
@@ -309,10 +309,17 @@ class Charitable_User extends WP_User {
      * @since   1.0.0
      */
     public function get_address( $donation_id = "" ) {
-        if ( $donation_id ) {            
+        $address_fields = false;
+
+        if ( $donation_id ) {         
+
             $address_fields = get_post_meta( $donation_id, 'donor', true );
+            
         }
-        else {
+
+        /* If the address fields were not set by the check above, get them from the user meta. */
+        if ( ! is_array( $address_fields ) ) {
+
             $address_fields = array(
                 'first_name'    => $this->get( 'first_name' ),
                 'last_name'     => $this->get( 'last_name' ),
@@ -324,6 +331,7 @@ class Charitable_User extends WP_User {
                 'postcode'      => $this->get( 'donor_postcode' ),
                 'country'       => $this->get( 'donor_country' )
             );
+
         }
 
         $address_fields = apply_filters( 'charitable_user_address_fields', $address_fields, $this, $donation_id );
@@ -585,8 +593,23 @@ class Charitable_User extends WP_User {
     /**
      * Insert a new donor with submitted values. 
      *
-     * @param   array       $submitted      The submitted values.
-     * @param   array       $keys           The keys of fields that are to be updated.   
+     * @param   array $submitted The submitted values.
+     * @param   array $keys The keys of fields that are to be updated.   
+     * @return  int 
+     * @access  public
+     * @since   1.4.0
+     */
+    public static function create_profile( $submitted = array(), $keys = array() ) {
+        $user = new Charitable_User();
+        $user_id = $user->update_profile( $submitted, $keys );
+        return new Charitable_User( $user_id );
+    }
+
+    /**
+     * Update the user's details with submitted values. 
+     *
+     * @param   array $submitted The submitted values.
+     * @param   array $keys The keys of fields that are to be updated.   
      * @return  int 
      * @access  public
      * @since   1.0.0
@@ -618,8 +641,8 @@ class Charitable_User extends WP_User {
      * Save core fields of the user (i.e. the wp_users data) 
      *
      * @uses    wp_insert_user
-     * @param   array   $submitted
-     * @return  int     User ID
+     * @param   array $submitted
+     * @return  int User ID
      * @access  public
      * @since   1.0.0
      */
@@ -707,9 +730,9 @@ class Charitable_User extends WP_User {
     /**
      * Save the user's meta fields. 
      *   
-     * @param   array       $submitted      The submitted values.
-     * @param   array       $keys           The keys of fields that are to be updated. 
-     * @return  int         Number of fields updated.
+     * @param   array $submitted The submitted values.
+     * @param   array $keys The keys of fields that are to be updated. 
+     * @return  int Number of fields updated.
      * @access  public
      * @since   1.0.0
      */

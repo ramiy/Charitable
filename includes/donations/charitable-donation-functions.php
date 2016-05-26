@@ -179,7 +179,6 @@ function charitable_get_valid_donation_statuses() {
  * @since   1.0.0
  */
 function charitable_update_donation_log( $donation_id, $message ) {
-
     $log = charitable_get_donation_log( $donation_id );
 
     $log[] = array( 

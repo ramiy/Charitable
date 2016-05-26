@@ -144,7 +144,15 @@ class Charitable_Donation_Processor {
 
         if ( ! $processor->get_campaign() ) {
             return;
-        }       
+        }
+
+        $nonce = $_POST[ 'charitable-donate-now' ];
+
+        if ( ! wp_verify_nonce( $nonce, 'charitable-donate' ) 
+            && ! wp_verify_nonce( $nonce, 'charitable-donate-' ) // Kept for backwards compatibility 
+        ) {
+            return;
+        }
 
         /* Save the donation in the session */
         charitable_get_session()->add_donation( $processor->get_campaign()->ID, 0 );
@@ -426,7 +434,7 @@ class Charitable_Donation_Processor {
      * @since   1.0.0
      */
     public function save_campaign_donations( $donation_id ) {
-        $campaigns = $this->get_campaign_donations_data();
+        $campaigns = $this->get_campaign_donations_data();        
 
         foreach ( $campaigns as $campaign ) {
             $campaign[ 'donor_id' ] = $this->get_donor_id();

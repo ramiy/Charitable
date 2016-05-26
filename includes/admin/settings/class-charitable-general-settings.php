@@ -84,14 +84,14 @@ final class Charitable_General_Settings {
                 'type'              => 'select', 
                 'priority'          => 4, 
                 'default'           => 'AU', 
-                'options'           => charitable()->get_location_helper()->get_countries()
+                'options'           => charitable_get_location_helper()->get_countries()
             ), 
             'currency'              => array(
                 'title'             => __( 'Currency', 'charitable' ), 
                 'type'              => 'select', 
                 'priority'          => 10, 
                 'default'           => 'AUD',
-                'options'           => charitable()->get_currency_helper()->get_all_currencies()                        
+                'options'           => charitable_get_currency_helper()->get_all_currencies()                        
             ), 
             'currency_format'       => array(
                 'title'             => __( 'Currency Format', 'charitable' ), 

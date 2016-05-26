@@ -47,14 +47,14 @@ $donor = $donation->get_donor();
         <?php foreach ( $donation->get_campaign_donations() as $campaign_donation ) : ?>
             <tr>
                 <td class="campaign-name"><?php echo $campaign_donation->campaign_name ?></td>
-                <td class="campaign-donation-amount"><?php echo charitable_get_currency_helper()->get_monetary_amount( $campaign_donation->amount ) ?></td>
+                <td class="campaign-donation-amount"><?php echo charitable_format_money( $campaign_donation->amount ) ?></td>
             </tr>
         <?php endforeach ?>
         </tbody>
         <tfoot>
             <tr>
                 <th><?php _e( 'Total', 'charitable' ) ?></th>
-                <td><?php echo charitable_get_currency_helper()->get_monetary_amount( $donation->get_total_donation_amount() ) ?></td>
+                <td><?php echo charitable_format_money( $donation->get_total_donation_amount() ) ?></td>
             </tr>
             <tr>
                 <th><?php _e( 'Payment Method', 'charitable' ) ?></th>

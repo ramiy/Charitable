@@ -52,11 +52,11 @@ class Charitable_User_Dashboard {
      * @since   1.0.0
      */
     private function __construct() {        
-        add_action( 'after_setup_theme',                array( $this, 'register_menu' ), 100 );
-        add_action( 'template_include',                 array( $this, 'load_user_dashboard_template' ) );
-        add_action( 'wp_update_nav_menu',               array( $this, 'flush_menu_object_cache' ) );
-        add_action( 'wp_update_nav_menu_item',          array( $this, 'flush_menu_object_cache' ) );        
-        add_filter( 'body_class',                       array( $this, 'add_body_class' ) );
+        add_action( 'after_setup_theme', array( $this, 'register_menu' ), 100 );
+        add_action( 'template_include', array( $this, 'load_user_dashboard_template' ) );
+        add_action( 'wp_update_nav_menu', array( $this, 'flush_menu_object_cache' ) );
+        add_action( 'wp_update_nav_menu_item', array( $this, 'flush_menu_object_cache' ) );        
+        add_filter( 'body_class', array( $this, 'add_body_class' ) );
         
         do_action( 'charitable_user_dashboard_start', $this );   
     }
@@ -174,7 +174,7 @@ class Charitable_User_Dashboard {
     /**
      * Checks whether the current requested page is in the user dashboard nav. 
      *
-     * @param   Object      $object         Optional. If not set, will base it on the current queried object.
+     * @param   Object $object Optional. If not set, will base it on the current queried object.
      * @return  boolean
      * @access  public
      * @since   1.0.0
@@ -183,13 +183,19 @@ class Charitable_User_Dashboard {
         global $wp;
 
         $found = false;
+
         $ret = wp_cache_get( 'charitable_in_user_dashboard', '', false, $found );       
 
-        if ( false === $found ) {           
-            $current_url    = trailingslashit( charitable_get_current_url() );
-            $ret            = in_array( get_queried_object_id(), $this->nav_objects() ) || in_array( $current_url, $this->nav_objects() );
-            $ret            = apply_filters( 'charitable_is_in_user_dashboard', $ret, $this->nav_objects() );
+        if ( false === $found ) {   
+
+            $current_url = trailingslashit( charitable_get_current_url() );
+            
+            $ret = in_array( get_queried_object_id(), $this->nav_objects() ) || in_array( $current_url, $this->nav_objects() );
+            
+            $ret = apply_filters( 'charitable_is_in_user_dashboard', $ret, $this->nav_objects() );
+            
             wp_cache_set( 'charitable_in_user_dashboard', $ret );
+
         }
 
         return $ret;

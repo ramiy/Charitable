@@ -180,7 +180,7 @@ class Charitable_Campaign {
     /**
      * Returns the amount of time left in the campaign in seconds.
      *
-     * @return  int $time_left      Int if campaign has an end date. False if campaign has no end date.
+     * @return  int $time_left Int if campaign has an end date. False if campaign has no end date.
      * @access  public
      * @since   1.0.0
      */
@@ -345,7 +345,7 @@ class Charitable_Campaign {
             return '';
         }
 
-        return charitable()->get_currency_helper()->get_monetary_amount( $this->get( 'goal' ) );
+        return charitable_format_money( $this->get( 'goal' ) );
     }
 
     /**
@@ -379,6 +379,50 @@ class Charitable_Campaign {
     }
 
     /**
+     * Return a status key for the campaign. 
+     *
+     * This will return one of the following: 
+     *
+     * inactive : A campaign that is not published. 
+     * ended : A campaign without a goal has finished
+     * successful : A campaign with a goal has finished & achieved its goal
+     * unsucessful : A campaign with a goal has finished without achieving its goal
+     * ending : A campaign is ending soon.
+     * active : A campaign that is active and not ending soon.
+     *
+     * @return  string
+     * @access  public
+     * @since   1.3.7
+     */
+    public function get_status_key() {
+        $ending_soon_threshold = apply_filters( 'charitable_campaign_ending_soon_threshold', WEEK_IN_SECONDS );
+        
+        $ended = $this->has_ended();
+
+        if ( 'publish' != $this->post->post_status ) {
+            return 'inactive';
+        }
+
+        if ( $ended && ! $this->has_goal() ) {
+            return 'ended';
+        }
+
+        if ( $ended && $this->has_achieved_goal() ) {
+            return 'successful';
+        }
+
+        if ( $ended ) {
+            return 'unsucessful';
+        }
+
+        if ( ! $this->is_endless() && $this->get_seconds_left() < $ending_soon_threshold ) {
+            return 'ending';
+        }
+
+        return 'active';
+    }
+
+    /**
      * Return the campaign status tag. 
      *
      * @return  string
@@ -386,30 +430,40 @@ class Charitable_Campaign {
      * @since   1.0.0
      */
     public function get_status_tag() {
-        $ending_soon_threshold = apply_filters( 'charitable_campaign_ending_soon_threshold', WEEK_IN_SECONDS );
+        $key = $this->get_status_key();
+
         $show_achievement = apply_filters( 'charitable_campaign_show_achievement_status_tag', true );
         $show_active_tag = apply_filters( 'charitable_campaign_show_active_status_tag', false );
-        $tag = "";
 
-        if ( $this->has_ended() ) {
-            if ( ! $show_achievement || ! $this->has_goal() ) {
+        switch ( $key ) {
+
+            case 'inactive' : 
+                $tag = '';
+                break;
+
+            case 'ended' : 
                 $tag = __( 'Ended', 'charitable' );
-            }
-            elseif ( $this->has_achieved_goal() ) {
-                $tag = __( 'Successful', 'charitable' );
-            }
-            else {
-                $tag = __( 'Unsuccessful', 'charitable' );
-            }            
-        }
-        elseif ( ! $this->is_endless() && $this->get_seconds_left() < $ending_soon_threshold ) {
-            $tag = __( 'Ending Soon', 'charitable' );
-        }
-        elseif ( $show_active_tag ) {
-            $tag = __( 'Active', 'charitable' );
+                break;
+
+            case 'successful' : 
+                $tag = $show_achievement ? __( 'Successful', 'charitable' ) : __( 'Ended', 'charitable' );
+                break;
+
+            case 'unsucessful' : 
+                $tag = $show_achievement ? __( 'Unsuccessful', 'charitable' ) : __( 'Ended', 'charitable' );
+                break;
+
+            case 'ending' : 
+                $tag = __( 'Ending Soon', 'charitable' );
+                break;
+
+            case 'active' : 
+                $tag = $show_active_tag ? __( 'Active', 'charitable' ) : '';
+                break;
+
         }
 
-        return apply_filters( 'charitable_campaign_status_tag', $tag, $this );
+        return apply_filters( 'charitable_campaign_status_tag', $tag, $key, $this );       
     }
 
     /**
@@ -694,7 +748,7 @@ class Charitable_Campaign {
         }
 
         foreach ( $value as $key => $suggestion ) {
-            $value[ $key ][ 'amount' ] = charitable_get_currency_helper()->sanitize_monetary_amount( $suggestion[ 'amount' ] );
+            $value[ $key ][ 'amount' ] = charitable_format_money( $suggestion[ 'amount' ] );
         }
 
         return $value;
@@ -727,7 +781,7 @@ class Charitable_Campaign {
      * @since   1.0.0
      */
     public static function sanitize_checkbox( $value ) {
-        return true == $value || 'on' == $value;
+        return intval( true == $value || 'on' == $value );
     }    
 
     /**
@@ -741,6 +795,37 @@ class Charitable_Campaign {
      */
     public static function sanitize_campaign_description( $value ) {
         return sanitize_text_field( $value );
+    }
+
+    /**
+     * Sanitize the value provided for custom donations. 
+     *
+     * @param   mixed $value
+     * @param   array $submitted
+     * @return  boolean
+     * @access  public
+     * @static 
+     * @since   1.3.6
+     */
+    public static function sanitize_custom_donations( $value, $submitted ) {
+        $checked = self::sanitize_checkbox( $value );
+
+        if ( $checked ) {
+            return $checked;
+        }
+
+        /* If suggested donations are not set, custom donations needs to be enabled. */
+        if ( ! isset( $submitted[ '_campaign_suggested_donations' ] ) ) {
+            return 1;
+        }
+
+        $suggested_donations = self::sanitize_campaign_suggested_donations( $submitted[ '_campaign_suggested_donations' ] );
+
+        if ( empty( $suggested_donations ) ) {
+            return 1;
+        }
+
+        return $checked;
     }
 
     /**
