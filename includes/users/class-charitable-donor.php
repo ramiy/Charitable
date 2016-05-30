@@ -103,6 +103,17 @@ class Charitable_Donor {
     }
 
     /**
+     * Display the donor name when echoing object.
+     *
+     * @return  string
+     * @access  public
+     * @since   1.4.0
+     */
+    public function __toString() {
+        return $this->get_name();
+    }
+
+    /**
      * A thin wrapper around the Charitable_User::get() method. 
      *
      * @param   string $key

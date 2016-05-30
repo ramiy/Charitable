@@ -41,17 +41,6 @@ function charitable_get_donation( $donation_id, $force = false ) {
 }
 
 /**
- * Get the gateway used for the donation.
- *
- * @param   int $donation_id
- * @return  string
- * @since   1.0.0
- */
-function charitable_get_donation_gateway( $donation_id ) {
-    return get_post_meta( $donation_id, 'donation_gateway', true );
-}
-
-/**
  * Returns the donation for the current request.
  * 
  * @return  Charitable_Donation
@@ -59,6 +48,21 @@ function charitable_get_donation_gateway( $donation_id ) {
  */
 function charitable_get_current_donation() {
     return charitable_get_helper( 'request' )->get_current_donation();   
+}
+
+/**
+ * Create a donation. 
+ *
+ * @param   array $args Values for the donation.
+ * @return  int
+ * @since   1.4.0
+ */
+function charitable_create_donation( array $args ) {
+    $donation_id = Charitable_Donation_Processor::get_instance()->save_donation( $args );
+    
+    Charitable_Donation_Processor::destroy();
+
+    return $donation_id;
 }
 
 /**
@@ -199,6 +203,17 @@ function charitable_get_donation_log( $donation_id ) {
     $log = get_post_meta( $donation_id, '_donation_log', true );;
 
     return is_array( $log ) ? $log : array();
+}
+
+/**
+ * Get the gateway used for the donation.
+ *
+ * @param   int $donation_id
+ * @return  string
+ * @since   1.0.0
+ */
+function charitable_get_donation_gateway( $donation_id ) {
+    return get_post_meta( $donation_id, 'donation_gateway', true );
 }
 
 /**
