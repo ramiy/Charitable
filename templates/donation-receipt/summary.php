@@ -29,7 +29,7 @@ $donation = $view_args[ 'donation' ];
     </li>
     <li class="donation-total"> 
         <?php _e( 'Total:', 'charitable' ) ?>
-        <span class="donation-summary-value"><?php echo charitable_format_money( $donation->get_total_donation_amount() ) ?></span>
+        <span class="donation-summary-value"><?php echo $donation->get_total_donation_html() ?></span>
     </li>
     <li class="donation-method">
         <?php _e( 'Payment Method:', 'charitable' ) ?>

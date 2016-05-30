@@ -1,24 +1,89 @@
-.wp-list-table.donations {
-    .meta {
-        display: block;
-        color: #999;
+.edit-php.post-type-charitable  {
+
+    .wp-list-table {
+        .meta {
+            display: block;
+            color: #999;
+        }
+        .column-post_status mark {
+            //display: block;
+            text-align: center;
+            white-space: nowrap;
+            padding: 0 2px;
+            background: #999;
+            border: 1px solid #999;
+            margin: 0;
+            font-size: 9px;
+            text-transform: uppercase;
+            color: #fff;
+            font-weight: bold;
+            text-shadow: 0 1px 0 rgba(0,0,0,0.3);
+
+            &.charitable-pending {
+                background-color: lighten( #ffa500, 10% ); //orange
+                border-color: #ffa500;
+            }
+            &.charitable-completed {
+                background-color: lighten( #008000, 10% ); // green
+                border-color: #008000;
+            }
+            &.charitable-failed {
+                background-color: lighten( #ffcc00, 10% ); // dark yellow
+                border-color: #ffcc00;
+            }
+            &.charitable-cancelled {
+                background-color: lighten( #ff0000, 10% ); // red
+                border-color: #ff0000;
+            }
+            &.charitable-refunded {
+                background-color: lighten( #999, 10% ); // gray
+                border-color: #999;
+            }
+
+        } 
     }
 
-    .column-donation {
-        max-width: 200px;
+    .tablenav.top {
+        padding: 12px;
+        margin: 12px 0;
+        border: 1px solid #dfdfdf;
+        background-color: #fafafa;
+        box-sizing: initial;
+        overflow: hidden;
+        float: none;
+
+        select.campaign_id {
+            float: none;
+            vertical-align: top;
+        }
+
+        a.charitable-clear-filters.button-secondary {
+            display: inline-block;
+            margin: 1px 3px 0 0;
+        }
     }
 
-    .column-details {
-        max-width: 140px;
+    .charitable-donations-export,
+    .search-box {
+        float: right;
+        margin-right: 11px;
     }
 
-    .column-amount {
-        max-width: 120px;
+     a.button-secondary.charitable-donations-export {
+        margin-left: 10px;
+        &:before {
+            content: '\f316';
+            float: left;
+            font-family: dashicons;
+            font-size: 16px;
+            speak: none;
+            margin: 1px 2px 1px 0;
+            text-align: center;            
+            color: #777;
+            -webkit-font-smoothing: antialiased !important;
+            -moz-osx-font-smoothing: grayscale;
+        }
     }
-
-    .column-status {
-        max-width: 120px;
-    }    
 }
 
 #charitable-donation-filters {
