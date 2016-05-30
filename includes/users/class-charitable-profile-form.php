@@ -419,7 +419,7 @@ class Charitable_Profile_Form extends Charitable_Form {
     }
 
     /**
-     * Check whether the password is being changed. 
+     * Check whether the password is being changed.
      *
      * @return  boolean
      * @access  public
@@ -465,17 +465,6 @@ class Charitable_Profile_Form extends Charitable_Form {
         }
 
         return true;
-
-        // wp_update_user( array(
-        //     'ID' => $this->get_user()->ID,
-        //     'user_pass' => $_POST[ 'user_pass' ]
-        // ) );
-
-        // charitable_get_notices()->add_success( 'Your password has been updated', 'charitable' );
-
-        // wp_safe_redirect( esc_url( remove_query_arg( 'update_password' ) ) );
-
-        // die();
     }
 
     /**
@@ -492,7 +481,7 @@ class Charitable_Profile_Form extends Charitable_Form {
             return;
         }
 
-        _doing_it_wrong( __METHOD__, __( 'charitable_user_profile_after_fields hook has been removed. Use charitable_form_after_fields instead.', 'charitable' ), '1.4.0' );
+        charitable_get_deprecated()->doing_it_wrong( __METHOD__, __( 'charitable_user_profile_after_fields hook has been removed. Use charitable_form_after_fields instead.', 'charitable' ), '1.4.0' );
         
         if ( 'Charitable_Profile_Form' == get_class( $form ) ) {
             do_action( 'charitable_user_profile_after_fields', $form );
