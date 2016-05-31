@@ -115,7 +115,9 @@ You can post in the [support forum](https://wordpress.org/support/plugin/charita
 
 =======
 = 1.4.0 - Unreleased = 
+* Added a `charitable_create_donation()` function for developers who want to create donations programatically. [#109](https://github.com/Charitable/Charitable/issues/109)
 * Added a new `Charitable_Deprecated` class, which is used to record any incorrect usage of Charitable functions or methods.
+* Added a `Charitable_Donor::__toString()` method, so that you echoing the object simply prints out the donor name. 
 
 = 1.3.7 = 
 * Makes `Charitable_Currency::get_currency_symbol()` a publicly accessible method.
