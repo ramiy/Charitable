@@ -113,7 +113,7 @@ final class Charitable_Public {
         wp_localize_script( 'charitable-script', 'CHARITABLE_VARS', $vars );
         wp_enqueue_script( 'charitable-script' );
 
-        wp_register_script( 'charitable-donation-form', charitable()->get_path( 'assets', false ) . 'js/charitable-donation-form'. $suffix . '.js', array( 'jquery' ), $version, true );        
+        wp_register_script( 'charitable-donation-form', charitable()->get_path( 'assets', false ) . 'js/charitable-donation-form'. $suffix . '.js', array( 'charitable-script', 'jquery' ), $version, true );        
 
 		wp_register_style( 'charitable-styles', charitable()->get_path( 'assets', false ) . 'css/charitable' . $suffix .'.css', array(), $version );
 		wp_enqueue_style( 'charitable-styles' );
@@ -133,7 +133,8 @@ final class Charitable_Public {
             'upload_problem' => __( '%s failed to upload. Please try again.', 'charitable' ),
         );
         
-        wp_register_script( 'charitable-plup-fields', charitable()->get_path( 'assets', false ) . 'js/charitable-plupload-fields' . $suffix . '.js', array( 'jquery-ui-sortable', 'wp-ajax-response', 'plupload-all' ), $version );
+        wp_register_script( 'charitable-plup-fields', charitable()->get_path( 'assets', false ) . 'js/charitable-plupload-fields' . $suffix . '.js', array( 'jquery-ui-sortable', 'wp-ajax-response', 'plupload-all' ), $version, true );
+        
         wp_localize_script( 'charitable-plup-fields', 'CHARITABLE_UPLOAD_VARS', $upload_vars );
 
         wp_register_style( 'charitable-plup-styles', charitable()->get_path( 'assets', false ) . 'css/charitable-plupload-fields' . $suffix . '.css', array(), $version );

@@ -91,6 +91,15 @@ CHARITABLE = window.CHARITABLE || {};
     };
 
     /**
+     * Return the selected payment method.
+     *
+     * @return  string
+     */
+    Donation_Form.prototype.get_payment_method = function() {
+        return this.form.find( '[type=hidden][name=gateway], [name=gateway]:checked' ).val() || '';
+    };
+
+    /**
      * Add an error message.
      *
      * @param   string message
