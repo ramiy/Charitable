@@ -22,6 +22,11 @@ if ( ! class_exists( 'Charitable_Licenses' ) ) :
 class Charitable_Licenses {
 
     /**
+     * @var string
+     */
+    const UPDATE_URL = 'https://wpcharitable.local';
+
+    /**
      * The single instance of this class.  
      *
      * @var     Charitable_Licenses|null
@@ -70,35 +75,88 @@ class Charitable_Licenses {
     private function __construct() {
         $this->products = array();
 
-        add_action( 'admin_init', array( $this, 'update_products' ), 0 );
+        add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'check_for_updates' ) );
+        // add_action( 'admin_init', array( $this, 'update_products' ), 0 );
+        // add_filter( 'plugins_api', array( $this, 'plugins_api_filter' ), 10, 3 );
         add_action( 'charitable_deactivate_license', array( $this, 'deactivate_license' ) );
+        // add_action( 'admin_init', array( $this, 'show_changelog' ) );        
     }
 
     /**
-     * Check for updates for any licensed products. 
+     * Checks for any Charitable extensions with updates. 
      *
-     * @return  void
+     * @param   array $_transient_data
+     * @return  array
      * @access  public
-     * @since   1.0.0
+     * @since   1.4.0
      */
-    public function update_products() {
+    public function check_for_updates( $_transient_data ) {
+        global $pagenow;
+
+        if( ! is_object( $_transient_data ) ) {
+            $_transient_data = new stdClass;
+        }
+
+        if( 'plugins.php' == $pagenow && is_multisite() ) {
+            return $_transient_data;
+        }
+
+        /* Loop over our licensed products and check whether any are missing transient data. */
+        $missing_data = array();
+
         foreach ( $this->get_licenses() as $product_key => $license_details ) {
 
             if ( ! is_array( $license_details ) ) {
-                continue;
+                continue;   
             }
 
             $product = $this->get_product_license_details( $product_key );
-            $license = trim( $license_details[ 'license' ] );
 
-            new Charitable_Plugin_Updater( $product[ 'url' ], $product[ 'file' ], array(
-                'version'   => $product[ 'version' ],
-                'license'   => $license,
-                'item_name' => $product[ 'name' ],
-                'author'    => $product[ 'author' ]
-            ) );
+            $plugin_file = plugin_basename( $product[ 'file' ] );
+
+            if ( empty( $_transient_data->response ) || empty( $_transient_data->response[ $plugin_file ] ) ) {
+
+                $missing_data[ $plugin_file ] = $product;
+
+            }
+
         }
-    }
+
+        /* If we are missing data for any of our products, check whether any have an update. */
+        if ( ! empty( $missing_data ) ) {
+
+            $versions = $this->get_versions( $missing_data );
+
+            if ( ! empty( $versions) ) {
+
+                foreach ( $missing_data as $plugin_file => $product ) {            
+
+                    if ( ! isset( $versions[ $product[ 'name' ] ] ) ) {
+                        continue;
+                    }
+
+                    $version_info = $versions[ $product[ 'name' ] ];
+
+                    if ( version_compare( $product[ 'version' ], $version_info[ 'new_version' ], '<' ) ) {                     
+                        if ( isset( $version_info[ 'sections' ] ) ) {
+                            $version_info[ 'sections' ] = maybe_unserialize( $version_info[ 'sections' ] );
+                        }
+
+                        $_transient_data->response[ $plugin_file ] = (object) $version_info;
+
+                    }
+
+                    $_transient_data->last_checked = time();
+                    $_transient_data->checked[ $plugin_file ] = $product[ 'version' ];
+
+                }           
+                
+            }            
+
+        }
+
+        return $_transient_data;
+    }    
 
     /**
      * Register a product that requires licensing. 
@@ -111,14 +169,32 @@ class Charitable_Licenses {
      * @access  public
      * @since   1.0.0
      */
-    public function register_licensed_product( $item_name, $author, $version, $file, $url = 'https://www.wpcharitable.com' ) {
-        $this->products[ $this->get_item_key( $item_name ) ] = array(
+    public function register_licensed_product( $item_name, $author, $version, $file, $url = false ) {
+        if ( ! $url ) {
+            $url = Charitable_Licenses::UPDATE_URL;
+        }
+
+        $product_key = $this->get_item_key( $item_name );
+
+        $this->products[ $product_key ] = array(
             'name'      => $item_name, 
             'author'    => $author, 
             'version'   => $version,
             'url'       => $url, 
             'file'      => $file
-        );    
+        );
+
+        $licenses = $this->get_licenses();
+        $license = isset( $licenses[ $product_key ][ 'license' ] ) ? trim( $licenses[ $product_key ][ 'license' ] ) : '';
+        
+        new Charitable_Plugin_Updater( $url, $file, array(
+            'version'   => $version,
+            'license'   => $license,
+            'item_name' => $item_name,
+            'author'    => $author
+        ) );
+
+
     }
 
     /**
@@ -334,6 +410,48 @@ class Charitable_Licenses {
     }
 
     /**
+     * Updates information on the "View version x.x details" page with custom data.
+     *
+     * @uses api_request()
+     *
+     * @param   mixed $data
+     * @param   string $action
+     * @param   object $args
+     * @return  object $data
+     * @access  public
+     * @since   1.4.0
+     */
+    public function plugins_api_filter( $data, $action = '', $args = null ) {
+
+        if ( $action != 'plugin_information' ) {
+            return $data;
+        }
+
+        if ( ! isset( $args->slug ) || ( $args->slug != $this->slug ) ) {
+
+            return $data;
+
+        }
+
+        $to_send = array(
+            'slug'   => $this->slug,
+            'is_ssl' => is_ssl(),
+            'fields' => array(
+                'banners' => false, // These will be supported soon hopefully
+                'reviews' => false,
+            )
+        );
+
+        $api_response = $this->api_request( 'plugin_information', $to_send );
+
+        if ( false !== $api_response ) {
+            $data = $api_response;
+        }
+
+        return $data;
+    }
+
+    /**
      * Return a key for the item, based on the item name. 
      *
      * @param   string $item_name
@@ -344,6 +462,66 @@ class Charitable_Licenses {
     protected function get_item_key( $item_name ) {
         return strtolower( str_replace( ' ', '_', $item_name ) );
     }
+
+    /**
+     * Return the latest versions of Charitable plugins.
+     *
+     * @param   array $products 
+     * @return  array
+     * @access  protected
+     * @since   1.4.0
+     */
+    protected function get_versions( $products ) {
+        $versions = wp_cache_get( 'plugin_versions', 'charitable' );
+
+        if ( false === $versions ) {
+
+            $response = wp_remote_post( 
+                Charitable_Licenses::UPDATE_URL . '/edd-api/versions/', 
+                array( 
+                    'sslverify' => false, 
+                    'timeout' => 15,
+                    'body' => array(
+                        'licenses' => array_values( wp_list_pluck( $this->get_licenses(), 'license' ) )
+                    )
+                ) 
+            );
+
+            $versions = wp_remote_retrieve_body( $response );
+
+            $versions = json_decode( $versions, true );
+
+            wp_cache_set( 'plugin_versions', $versions, 'charitable' );
+        }
+
+        return $versions;
+    }
+
+    /**
+     * Check for updates for any licensed products. 
+     *
+     * @return  void
+     * @access  public
+     * @since   1.0.0
+     */
+    public function update_products() {
+        foreach ( $this->get_licenses() as $product_key => $license_details ) {
+
+            if ( ! is_array( $license_details ) ) {
+                continue;
+            }
+
+            $product = $this->get_product_license_details( $product_key );
+            $license = trim( $license_details[ 'license' ] );
+
+            new Charitable_Plugin_Updater( $product[ 'url' ], $product[ 'file' ], array(
+                'version'   => $product[ 'version' ],
+                'license'   => $license,
+                'item_name' => $product[ 'name' ],
+                'author'    => $product[ 'author' ]
+            ) );
+        }
+    }    
 }
 
 endif; // End class_exists check
