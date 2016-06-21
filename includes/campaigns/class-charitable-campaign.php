@@ -489,7 +489,7 @@ class Charitable_Campaign {
     /**
      * Return the current amount of donations.
      *
-     * @return  int
+     * @return  string
      * @access  public
      * @since   1.0.0
      */
