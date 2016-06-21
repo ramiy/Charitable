@@ -47,8 +47,8 @@ if ( $donation_amount ) : ?>
     <?php
 
     /**
-      * @hook    charitable_donation_form_before_donation_amounts
-      */
+     * @hook    charitable_donation_form_before_donation_amounts
+     */
     do_action( 'charitable_donation_form_before_donation_amounts', $view_args[ 'form' ] );
     ?>
 
@@ -63,6 +63,11 @@ if ( $donation_amount ) : ?>
 
             $checked = checked( $suggestion[ 'amount' ], $donation_amount, false ); 
 
+            $id = esc_attr( sprintf( 'form-%s-field-%s', 
+                $view_args[ 'form' ]->get_form_identifier(), 
+                $suggestion[ 'amount' ]
+            ) );
+
             if ( strlen( $checked ) ) :
 
                 $donation_amount_is_suggestion = true;
@@ -70,7 +75,7 @@ if ( $donation_amount ) : ?>
             endif; ?>
 
             <li class="donation-amount suggested-donation-amount">
-                <label for="form-<?php echo $view_args[ 'form' ]->get_form_identifier() . '-field-' . $suggestion['amount']; ?>"><input id="form-<?php echo $view_args[ 'form' ]->get_form_identifier() . '-field-' . $suggestion['amount']; ?>" type="radio" name="donation_amount" value="<?php echo $suggestion[ 'amount' ] ?>" <?php echo $checked ?> /><?php 
+                <label for="<?php echo $id ?>"><input id="<?php echo $id ?>" type="radio" name="donation_amount" value="<?php echo $suggestion[ 'amount' ] ?>" <?php echo $checked ?> /><?php 
                 printf( '<span class="amount">%s</span> <span class="description">%s</span>', 
                     charitable_format_money( $suggestion[ 'amount' ] ), 
                     isset( $suggestion[ 'description' ] ) ? $suggestion[ 'description' ] : ''

@@ -123,6 +123,7 @@ You can post in the [support forum](https://wordpress.org/support/plugin/charita
 * Makes `Charitable_Currency::get_currency_symbol()` a publicly accessible method.
 * Allow email shortcode values to be dynamically generated without being registered first. This simplifies the process of displaying dynamic data within emails if there is no existing shortcode output for it. [#134](https://github.com/Charitable/Charitable/issues/134)
 * Provide a consistent api for determining the status of a campaign. Developers can use `$campaign->get_status_key()` (where `$campaign` is a `Charitable_Campaign` object) to check whether a campaign is inactive, ended, ended and successfully funded, ended and not successfully funded, ending soon, or active. 
+* Reset the positioning and styling of the modal when window or modal change in size. This prevents the modal from growing larger than the size of the window without having scrollbars. [#135](https://github.com/Charitable/Charitable/issues/135)
 
 = 1.3.6 = 
 * Prevented campaigns being created with no suggested donation amounts and custom donations disabled. This results in $0 donations. [#127](https://github.com/Charitable/Charitable/issues/127)
