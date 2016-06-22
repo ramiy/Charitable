@@ -42,6 +42,7 @@ if ( ! class_exists( 'Charitable_Campaigns_Shortcode' ) ) :
 				'include_inactive' => false,
 				'columns' => 2,
 				'button' => 'donate',
+				'responsive' => 1,
 			);
 
 			$args = shortcode_atts( $default, $atts, 'campaigns' );
@@ -61,8 +62,9 @@ if ( ! class_exists( 'Charitable_Campaigns_Shortcode' ) ) :
 
 			$view_args = apply_filters( 'charitable_campaigns_shortcode_view_args', array(
 				'campaigns' => $args['campaigns'],
-				'columns'   => $args['columns'],
-				'button'    => $args['button'],
+				'columns' => $args['columns'],
+				'button' => $args['button'],
+				'responsive' => $args['responsive'],
 			), $args );
 
 			$template->set_view_args( $view_args );
@@ -136,7 +138,7 @@ if ( ! class_exists( 'Charitable_Campaigns_Shortcode' ) ) :
 				$query_args['post__not_in'] = explode( ',', $args['exclude'] );
 			}
 
-			if ( ! empty( $args['order'] ) ) {
+			if ( ! empty( $args['order'] ) && in_array( $args['order'], array( 'DESC', 'ASC' ), true ) ) {
 				$query_args['order'] = $args['order'];
 			}
 

@@ -84,6 +84,7 @@ add_action( 'charitable_campaign_content_after', 'charitable_template_campaign_d
  * @see     charitable_template_campaign_loop_add_modal()
  */
 add_action( 'charitable_campaign_loop_before', 'charitable_template_campaign_loop_add_modal' );
+add_action( 'charitable_campaign_loop_before', 'charitable_template_responsive_styles', 10, 2 );
 
 /**
  * Campaigns loop, before title.
