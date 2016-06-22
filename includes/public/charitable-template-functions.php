@@ -654,11 +654,11 @@ if ( ! function_exists( 'charitable_template_donation_form_login' ) ) :
 	/**
 	 * Display a prompt to login at the start of the user fields block.
 	 *
-	 * @param   Charitable_Form $form
+	 * @param   Charitable_Donation_Form_Interface $form The donation form object.
 	 * @return  void
 	 * @since   1.0.0
 	 */
-	function charitable_template_donation_form_login( Charitable_Form $form ) {
+	function charitable_template_donation_form_login( Charitable_Donation_Form_Interface $form ) {
 		$user = $form->get_user();
 
 		if ( $user ) {
@@ -673,11 +673,11 @@ if ( ! function_exists( 'charitable_template_donation_form_donor_details' ) ) :
 	/**
 	 * Display the donor's saved details if the user is logged in.
 	 *
-	 * @param   Charitable_Form $form
+	 * @param   Charitable_Donation_Form_Interface $form The donation form object.
 	 * @return  void
 	 * @since   1.0.0
 	 */
-	function charitable_template_donation_form_donor_details( Charitable_Form $form ) {
+	function charitable_template_donation_form_donor_details( Charitable_Donation_Form_Interface $form ) {
 		$user = $form->get_user();        
 
 		/* Verify that the user is logged in and has all required fields filled out */
@@ -693,11 +693,11 @@ if ( ! function_exists( 'charitable_template_donation_form_donor_fields_hidden_w
 	/**
 	 * If the user is logged in, adds a wrapper around the donor fields that hide them.
 	 *
-	 * @param   Charitable_Form $form
+	 * @param   Charitable_Donation_Form_Interface $form The donation form object.
 	 * @return  void
 	 * @since   1.0.0
 	 */
-	function charitable_template_donation_form_donor_fields_hidden_wrapper_start( Charitable_Form $form ) {
+	function charitable_template_donation_form_donor_fields_hidden_wrapper_start( Charitable_Donation_Form_Interface $form ) {
 		/* Verify that the user is logged in and has all required fields filled out */
 		if ( ! $form->get_user()  || ! $form->user_has_required_fields() ) {
 			return;
@@ -711,11 +711,11 @@ if ( ! function_exists( 'charitable_template_donation_form_donor_fields_hidden_w
 	/**
 	 * Closes the hidden donor fields wrapper div if the user is logged in.
 	 *
-	 * @param   Charitable_Form $form
+	 * @param   Charitable_Donation_Form_Interface $form The donation form object.
 	 * @return  void
 	 * @since   1.0.0
 	 */
-	function charitable_template_donation_form_donor_fields_hidden_wrapper_end( Charitable_Form $form ) {
+	function charitable_template_donation_form_donor_fields_hidden_wrapper_end( Charitable_Donation_Form_Interface $form ) {
 		/* Verify that the user is logged in and has all required fields filled out */
 		if ( ! $form->get_user()  || ! $form->user_has_required_fields() ) {
 			return;
