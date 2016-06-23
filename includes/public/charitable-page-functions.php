@@ -59,6 +59,7 @@ function charitable_get_template_path( $template, $default = '' ) {
  * - charitable_get_permalink( 'registration_page' );
  * - charitable_get_permalink( 'profile_page' );
  * - charitable_get_permalink( 'donation_receipt_page' );
+ * - charitable_get_permalink( 'donation_cancel_page' );
  *
  * @param 	string 	$page
  * @param   array   $args       Optional array of arguments.
@@ -79,6 +80,7 @@ function charitable_get_permalink( $page, $args = array() ) {
  * - charitable_is_page( 'registration_page' );
  * - charitable_is_page( 'profile_page' );
  * - charitable_is_page( 'donation_receipt_page' );
+ * - charitable_is_page( 'donation_cancel_page' );
  *
  * @param   string  $page
  * @param 	array 	$args 		Optional array of arguments.
@@ -217,6 +219,43 @@ function charitable_get_campaign_widget_page_permalink( $url, $args = array() ) 
 add_filter( 'charitable_permalink_campaign_widget_page', 'charitable_get_campaign_widget_page_permalink', 2, 2 );
 
 /**
+ * Returns the URL for the campaign donation page.
+ *
+ * This is used when you call charitable_get_permalink( 'donation_cancel_page' ). In
+ * general, you should use charitable_get_permalink() instead since it will
+ * take into account permalinks that have been filtered by plugins/themes.
+ *
+ * @global 	WP_Rewrite $wp_rewrite
+ *
+ * @param 	string $url The default URL.
+ * @param 	array  $args An array of arguments.
+ * @return 	string
+ * @since 	1.4.0
+ */
+function charitable_get_donation_cancel_page_permalink( $url, $args = array() ) {
+	global $wp_rewrite;
+
+	/* A donation ID must be provided. */
+	if ( ! isset( $args['donation_id'] ) ) {
+		return $url;
+	}
+
+	/* Grab the first campaign donation. */
+	$campaign_donation = current( charitable_get_donation( $args['donation_id'] )->get_campaign_donations() );
+
+	$donation_page = charitable_get_permalink( 'campaign_donation_page', array(
+		'campaign_id' => $campaign_donation->campaign_id,
+	) );
+
+	return esc_url( add_query_arg( array(
+		'donation_id' => $args['donation_id'],
+		'cancel' => true
+	), $donation_page ) );
+}
+
+add_filter( 'charitable_permalink_donation_cancel_page', 'charitable_get_donation_cancel_page_permalink', 2, 2 );
+
+/**
  * Checks whether the current request is for the given page.
  *
  * This is used when you call charitable_is_page( 'campaign_donation_page' ).
@@ -316,6 +355,32 @@ function charitable_is_donation_processing_page( $ret = false, $args = array() )
 
 add_filter( 'charitable_is_page_donation_processing_page', 'charitable_is_donation_processing_page', 2, 2 );
 
+/**
+ * Checks whether the current request is for the donation cancel page.
+ *
+ * This is used when you call charitable_is_page( 'donation_cancel_page' ).
+ * In general, you should use charitable_is_page() instead since it will
+ * take into account any filtering by plugins/themes.
+ *
+ * @global 	WP_Query $wp_query
+ *
+ * @param 	string   $page
+ * @param 	array    $args
+ * @return 	boolean
+ * @since 	1.4.0
+ */
+function charitable_is_donation_cancel_page( $ret = false, $args = array() ) {
+	global $wp_query;
+
+	$ret = charitable_is_page( 'campaign_donation_page' )
+		&& isset( $wp_query->query_vars['donation_id'] )
+		&& isset( $wp_query->query_vars['cancel'] )
+		&& $wp_query->query_vars['cancel'];
+
+	return $ret;
+}
+
+add_filter( 'charitable_is_page_donation_cancel_page', 'charitable_is_donation_cancel_page', 2, 2 );
 
 /**
  * Checks whether the current request is for an email preview.

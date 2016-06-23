@@ -148,17 +148,14 @@ class Charitable_Gateway_Paypal extends Charitable_Gateway {
             'custom'        => $donation_id,
             'rm'            => '2',
             'return'        => charitable_get_permalink( 'donation_receipt_page', array( 'donation_id' => $donation_id ) ),
-            'cancel_return' => home_url(),
-        //     'cancel_return' => edd_get_failed_transaction_uri( '?payment-id=' . $payment ),
+            'cancel_return' => charitable_get_permalink( 'donation_cancel_page', array( 'donation_id' => $donation_id ) ),
             'notify_url'    => $processor->get_ipn_url( self::ID ),
             'cbt'           => get_bloginfo( 'name' ),
             'bn'            => 'Charitable_SP', 
-            'cmd'           => $transaction_mode == 'donations' ? '_donations' : '_xclick'
+            'cmd'           => $transaction_mode == 'donations' ? '_donations' : '_xclick',
         ), $donation_id, $processor );
 
-        /**
-         * Set up the PayPal redirect URL
-         */
+        /* Set up the PayPal redirect URL. */
         $paypal_redirect = trailingslashit( $gateway->get_redirect_url() ) . '?';
         $paypal_redirect .= http_build_query( $paypal_args );
         $paypal_redirect = str_replace( '&amp;', '&', $paypal_redirect );

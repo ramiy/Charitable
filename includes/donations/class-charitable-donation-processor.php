@@ -374,12 +374,12 @@ if ( ! class_exists( 'Charitable_Donation_Processor' ) ) :
 			$this->donation_data = apply_filters( 'charitable_donation_values', $values );
 
 			if ( ! $this->get_campaign_donations_data() ) {
-				_doing_it_wrong( __METHOD__, 'A donation cannot be inserted without an array of campaigns being donated to.', '1.0.0' );
+				charitable_get_deprecated()->doing_it_wrong( __METHOD__, 'A donation cannot be inserted without an array of campaigns being donated to.', '1.0.0' );
 				return 0;
 			}
 
 			if ( ! $this->is_valid_user_data() ) {
-				_doing_it_wrong( __METHOD__, 'A donation cannot be inserted without valid user data.', '1.0.0' );
+				charitable_get_deprecated()->doing_it_wrong( __METHOD__, 'A donation cannot be inserted without valid user data.', '1.0.0' );
 				return 0;
 			}
 
@@ -413,12 +413,27 @@ if ( ! class_exists( 'Charitable_Donation_Processor' ) ) :
 			}
 
 			/**
-			 * If we're not in the admin or we're doing AJAX, write to the session.
+			 * Update the user session if we're on the public site or in an AJAX request.
+			 *
+			 * 1. Write the donation key to the session.
+			 * 2. Write the campaign donation amounts to the session. This is required in 
+			 * case the donor gets sent back to the donation form (cancellation, failure).
 			 */
 			if ( ! is_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
-				charitable_get_session()->add_donation_key( $this->get_donation_data_value( 'donation_key' ) );
-			}
 
+				$session = charitable_get_session();
+
+				/* Required for the donation receipt to load for logged out donors. */
+				$session->add_donation_key( $this->get_donation_data_value( 'donation_key' ) );
+
+				/* Required in case the donor is redirected back to the donation form. */
+				foreach ( $this->get_campaign_donations_data() as $campaign ) {
+					$session->add_donation( $campaign['campaign_id'], $campaign['amount'] );
+				}
+
+				error_log( 'touched session' );
+			}
+		
 			/**
 			 * @hook charitable_after_save_donation
 			 */
@@ -468,7 +483,7 @@ if ( ! class_exists( 'Charitable_Donation_Processor' ) ) :
 
 				$campaign['donor_id'] = $this->get_donor_id();
 				$campaign['donation_id'] = $donation_id;
- 
+
 				$campaign_donation_id = charitable_get_table( 'campaign_donations' )->insert( $campaign );
 
 				if ( 0 == $campaign_donation_id ) {
@@ -642,13 +657,6 @@ if ( ! class_exists( 'Charitable_Donation_Processor' ) ) :
 
 			/* If the gateway processing failed, add the error notices to the session. */
 			if ( false == $gateway_processing ) {
-
-				$session = charitable_get_session();
-
-				/* Add the donation amount & campaign id to the session. */
-				foreach ( $this->get_campaign_donations_data() as $campaign ) {
-					$session->add_donation( $campaign['campaign_id'], $campaign['amount'] );
-				}
 
 				/* Log the failed payment. */
 				$this->update_donation_log(
