@@ -206,6 +206,7 @@ class Charitable {
         require_once( $includes_path . 'users/class-charitable-donor-query.php' );
         require_once( $includes_path . 'users/class-charitable-registration-form.php' );
         require_once( $includes_path . 'users/class-charitable-profile-form.php' );
+        require_once( $includes_path . 'users/class-charitable-forgot-password-form.php' );
 
         /* Gateways */
         require_once( $includes_path . 'gateways/interface-charitable-gateway.php' );        
@@ -249,6 +250,7 @@ class Charitable {
         require_once( $includes_path . 'shortcodes/class-charitable-login-shortcode.php' );
         require_once( $includes_path . 'shortcodes/class-charitable-registration-shortcode.php' );
         require_once( $includes_path . 'shortcodes/class-charitable-profile-shortcode.php' );
+        require_once( $includes_path . 'shortcodes/class-charitable-forgot-password-shortcode.php' );
         require_once( $includes_path . 'shortcodes/charitable-shortcodes-hooks.php' );
 
         /* Widgets */
@@ -258,6 +260,10 @@ class Charitable {
         require_once( $includes_path . 'widgets/class-charitable-donors-widget.php' );
         require_once( $includes_path . 'widgets/class-charitable-donate-widget.php' );
         require_once( $includes_path . 'widgets/class-charitable-donation-stats-widget.php' );
+
+        /* User Management */
+        require_once( $includes_path . 'user-management/class-charitable-forgot-password.php' );
+        require_once( $includes_path . 'user-management/charitable-forgot-password-hooks.php' );
 
         /* Customizer */
         require_once( $includes_path . 'admin/customizer/class-charitable-customizer.php' );
