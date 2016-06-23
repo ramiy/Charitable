@@ -264,11 +264,10 @@ add_filter( 'charitable_permalink_donation_cancel_page', 'charitable_get_donatio
  *
  * @global 	WP_Query 	$wp_query
  * @param 	boolean     $ret
- * @param 	array       $args
  * @return 	boolean
  * @since 	1.0.0
  */
-function charitable_is_campaign_donation_page( $ret = false, $args = array() ) {
+function charitable_is_campaign_donation_page( $ret = false ) {
 	global $wp_query;
 
 	$ret = is_main_query() && isset( $wp_query->query_vars['donate'] ) && is_singular( 'campaign' );
@@ -276,7 +275,7 @@ function charitable_is_campaign_donation_page( $ret = false, $args = array() ) {
 	return $ret;
 }
 
-add_filter( 'charitable_is_page_campaign_donation_page', 'charitable_is_campaign_donation_page', 2, 2 );
+add_filter( 'charitable_is_page_campaign_donation_page', 'charitable_is_campaign_donation_page', 2 );
 
 /**
  * Checks whether the current request is for the campaign widget page.
@@ -287,11 +286,10 @@ add_filter( 'charitable_is_page_campaign_donation_page', 'charitable_is_campaign
  *
  * @global  WP_Query    $wp_query
  * @param   string      $page
- * @param   array       $args
  * @return  boolean
  * @since   1.0.0
  */
-function charitable_is_campaign_widget_page( $ret = false, $args = array() ) {
+function charitable_is_campaign_widget_page( $ret = false ) {
 	global $wp_query;
 
 	$ret = is_main_query() && isset( $wp_query->query_vars['widget'] ) && is_singular( 'campaign' );
@@ -299,7 +297,7 @@ function charitable_is_campaign_widget_page( $ret = false, $args = array() ) {
 	return $ret;
 }
 
-add_filter( 'charitable_is_page_campaign_widget_page', 'charitable_is_campaign_widget_page', 2, 2 );
+add_filter( 'charitable_is_page_campaign_widget_page', 'charitable_is_campaign_widget_page', 2 );
 
 /**
  * Checks whether the current request is for the donation receipt page.
@@ -309,12 +307,12 @@ add_filter( 'charitable_is_page_campaign_widget_page', 'charitable_is_campaign_w
  * take into account any filtering by plugins/themes.
  *
  * @global 	WP_Query 	$wp_query
+ *
  * @param 	string 		$page
- * @param 	array       $args
  * @return 	boolean
  * @since 	1.0.0
  */
-function charitable_is_donation_receipt_page( $ret = false, $args = array() ) {
+function charitable_is_donation_receipt_page( $ret = false ) {
 	global $wp_query;
 
 	$receipt_page = charitable_get_option( 'donation_receipt_page', 'auto' );
@@ -330,7 +328,7 @@ function charitable_is_donation_receipt_page( $ret = false, $args = array() ) {
 	return $ret;
 }
 
-add_filter( 'charitable_is_page_donation_receipt_page', 'charitable_is_donation_receipt_page', 2, 2 );
+add_filter( 'charitable_is_page_donation_receipt_page', 'charitable_is_donation_receipt_page', 2 );
 
 /**
  * Checks whether the current request is for the donation receipt page.
@@ -340,8 +338,8 @@ add_filter( 'charitable_is_page_donation_receipt_page', 'charitable_is_donation_
  * take into account any filtering by plugins/themes.
  *
  * @global  WP_Query    $wp_query
+ *
  * @param   string      $page
- * @param   array       $args
  * @return  boolean
  * @since   1.0.0
  */
@@ -353,7 +351,7 @@ function charitable_is_donation_processing_page( $ret = false, $args = array() )
 	return $ret;
 }
 
-add_filter( 'charitable_is_page_donation_processing_page', 'charitable_is_donation_processing_page', 2, 2 );
+add_filter( 'charitable_is_page_donation_processing_page', 'charitable_is_donation_processing_page', 2 );
 
 /**
  * Checks whether the current request is for the donation cancel page.
@@ -365,11 +363,10 @@ add_filter( 'charitable_is_page_donation_processing_page', 'charitable_is_donati
  * @global 	WP_Query $wp_query
  *
  * @param 	string   $page
- * @param 	array    $args
  * @return 	boolean
  * @since 	1.4.0
  */
-function charitable_is_donation_cancel_page( $ret = false, $args = array() ) {
+function charitable_is_donation_cancel_page( $ret = false ) {
 	global $wp_query;
 
 	$ret = charitable_is_page( 'campaign_donation_page' )
@@ -380,7 +377,7 @@ function charitable_is_donation_cancel_page( $ret = false, $args = array() ) {
 	return $ret;
 }
 
-add_filter( 'charitable_is_page_donation_cancel_page', 'charitable_is_donation_cancel_page', 2, 2 );
+add_filter( 'charitable_is_page_donation_cancel_page', 'charitable_is_donation_cancel_page', 2 );
 
 /**
  * Checks whether the current request is for an email preview.
@@ -390,15 +387,16 @@ add_filter( 'charitable_is_page_donation_cancel_page', 'charitable_is_donation_c
  * take into account any filtering by plugins/themes.
  *
  * @param   string      $page
- * @param   array       $args
  * @return  boolean
  * @since   1.0.0
  */
-function charitable_is_email_preview( $ret = false, $args = array() ) {
-	return isset( $_GET['charitable_action'] ) && 'preview_email' == $_GET['charitable_action'];
+function charitable_is_email_preview( $ret = false ) {
+	$ret = isset( $_GET['charitable_action'] ) && 'preview_email' == $_GET['charitable_action'];
+
+	return $ret;
 }
 
-add_filter( 'charitable_is_page_email_preview', 'charitable_is_email_preview', 2, 2 );
+add_filter( 'charitable_is_page_email_preview', 'charitable_is_email_preview', 2 );
 
 /**
  * Checks whether the current request is for a single campaign.

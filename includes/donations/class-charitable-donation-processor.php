@@ -430,8 +430,6 @@ if ( ! class_exists( 'Charitable_Donation_Processor' ) ) :
 				foreach ( $this->get_campaign_donations_data() as $campaign ) {
 					$session->add_donation( $campaign['campaign_id'], $campaign['amount'] );
 				}
-
-				error_log( 'touched session' );
 			}
 		
 			/**
@@ -664,7 +662,7 @@ if ( ! class_exists( 'Charitable_Donation_Processor' ) ) :
 					sprintf( __( 'Payment failed with errors: %s', 'charitable' ), PHP_EOL . implode( PHP_EOL, charitable_get_notices()->get_errors() ) )
 				);
 
-				$session->add_notices();
+				charitable_get_session()->add_notices();
 			}
 
 			/* Set the redirect status to use. */
