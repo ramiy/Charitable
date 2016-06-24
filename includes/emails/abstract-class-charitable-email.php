@@ -424,7 +424,7 @@ abstract class Charitable_Email implements Charitable_Email_Interface {
             return '';
         }
 
-        return $this->donation->get_donor()->get_value( 'first_name' );
+        return $this->donation->get_donor()->get_donor_meta( 'first_name' );
     }
 
     /**

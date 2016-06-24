@@ -163,26 +163,12 @@ class Charitable_Donor {
             return $this->donor_meta;
         }
 
-        return isset( $this->donor_meta[ $key ] ) ? $this->donor_meta[ $key ] : '';
-    }
-
-    /**
-     * Return a value from the donor meta.
-     *
-     * @param   string $key
-     * @return  mixed
-     * @access  public
-     * @since   1.2.4
-     */
-    public function get_value( $key ) {
-        $meta = $this->get_donor_meta();
-
-        if ( ! $meta || ! isset( $meta[ $key ] ) ) {
+        if ( ! isset( $this->donor_meta[ $key ] ) ) {
             return '';
         }
 
-        return $meta[ $key ];
-    }
+        return $this->donor_meta[ $key ];
+    }    
 
     /**
      * Return the donor's name stored for the particular donation. 
@@ -303,6 +289,20 @@ class Charitable_Donor {
      */
     public function get_donation_amount( $campaign_id = "" ) {
         return charitable_get_table( 'campaign_donations' )->get_donation_amount( $this->donation_id, $campaign_id );
+    }
+
+    /**
+     * Return a value from the donor meta.
+     *
+     * @deprecated 
+     *
+     * @param   string $key
+     * @return  mixed
+     * @access  public
+     * @since   1.2.4
+     */
+    public function get_value( $key ) {
+        return $this->get_donor_meta( $key );        
     }
 }
 
