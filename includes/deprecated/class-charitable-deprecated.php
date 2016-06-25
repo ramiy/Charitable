@@ -90,9 +90,9 @@ if ( ! class_exists( 'Charitable_Deprecated' ) ) :
 		/**
 		 * Log a deprecated function.
 		 *
-		 * @param   string $function
-		 * @param   string $version
-		 * @param   string|null $replacement
+		 * @param   string      $function The function that has been deprecated
+		 * @param   string      $version The version of Charitable where the function was deprecated.
+		 * @param   string|null $replacement Optional. The function to use instead.
 		 * @return  boolean Whether the notice was logged.
 		 * @access  public
 		 * @since   1.4.0

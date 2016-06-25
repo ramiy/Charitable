@@ -175,52 +175,38 @@ if ( ! class_exists( 'Charitable_Donor' ) ) :
 		}
 
 		/**
-		 * Return the donor meta stored for the particular donation.
-		 *
-		 * @param   string $key Optional key passed to return a particular meta field.
-		 * @return  array|false
-		 * @access  public
-		 * @since   1.0.0
-		 */
-		public function get_donor_meta( $key = '' ) {
-			if ( ! $this->get_donation() ) {
-				return false;
-			}
+         * Return the donor meta stored for the particular donation. 
+         *
+         * @param   string $key Optional key passed to return a particular meta field.
+         * @return  array|false
+         * @access  public
+         * @since   1.0.0
+         */
+        public function get_donor_meta( $key = '' ) {
+            if ( ! $this->get_donation() ) {
+                return false;
+            }
 
-			if ( ! isset( $this->donor_meta ) ) {
-				$this->donor_meta = get_post_meta( $this->donation_id, 'donor', true );
-			}
+            if ( ! isset( $this->donor_meta ) ) {
+                $this->donor_meta = get_post_meta( $this->donation_id, 'donor', true );
+            }
 
-			if ( empty( $key ) ) {
-				return $this->donor_meta;
-			}
+            if ( empty( $key ) ) {
+                return $this->donor_meta;
+            }
 
-			return isset( $this->donor_meta[ $key ] ) ? $this->donor_meta[ $key ] : '';
-		}
+            $mapped_keys = $this->get_mapped_keys();
 
-		/**
-		 * Return a value from the donor meta.
-		 *
-		 * @param   string $key
-		 * @return  mixed
-		 * @access  public
-		 * @since   1.2.4
-		 */
-		public function get_value( $key ) {
-			$mapped_keys = $this->get_mapped_keys();
+            if ( in_array( $key, $mapped_keys ) ) {
+                $key = array_search( $key, $mapped_keys );
+            }
 
-			$meta = $this->get_donor_meta();
+            if ( ! isset( $this->donor_meta[ $key ] ) ) {
+                return '';
+            }
 
-			if ( in_array( $key, $mapped_keys ) ) {
-				$key = array_search( $key, $mapped_keys );
-			}
-
-			if ( ! $meta || ! isset( $meta[ $key ] ) ) {
-				return '';
-			}
-
-			return $meta[ $key ];
-		}
+            return $this->donor_meta[ $key ];
+        }   
 
 		/**
 		 * Return the donor's name stored for the particular donation.
@@ -364,6 +350,21 @@ if ( ! class_exists( 'Charitable_Donor' ) ) :
 
 			return $this->mapped_keys;
 		}
+
+        /**
+         * Return a value from the donor meta.
+         *
+         * @deprecated 
+         *
+         * @param   string $key
+         * @return  mixed
+         * @access  public
+         * @since   1.2.4
+         */
+        public function get_value( $key ) {
+            charitable_get_deprecated()->deprecated_function( __METHOD__, '1.4.0', 'Charitable_Donor::get_donor_meta()' );
+            return $this->get_donor_meta( $key );        
+        }
 	}
 
 endif; // End class_exists check
