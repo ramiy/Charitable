@@ -482,7 +482,6 @@ if ( ! class_exists( 'Charitable_Abstract_Donation' ) ) :
 		 * @return  array
 		 * @access  public
 		 * @since   1.0.0
-		 * @deprecated 1.3.0
 		 */
 		public function get_donation_log( $donation_id = null ) {
 			if ( $donation_id ) {
