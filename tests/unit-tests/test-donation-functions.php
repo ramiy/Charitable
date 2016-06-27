@@ -61,7 +61,7 @@ class Test_Charitable_Donation_Functions extends WP_UnitTestCase {
 	 * @covers charitable_cancel_donation
 	 * @depends test_create_donation
 	 */
-	private function test_cancel_donation() {
+	public function test_cancel_donation() {
 
 		$donation_id = $this->create_donation( 'charitable-pending' );
 
@@ -76,7 +76,7 @@ class Test_Charitable_Donation_Functions extends WP_UnitTestCase {
 	 * @covers charitable_cancel_donation
 	 * @depends test_cancel_donation
 	 */
-	private function test_do_not_cancel_donation() {
+	public function test_do_not_cancel_donation() {
 
 		$donation_id = $this->create_donation( 'charitable-pending' );
 
