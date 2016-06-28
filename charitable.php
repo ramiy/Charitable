@@ -268,6 +268,8 @@ class Charitable {
         require_once( $includes_path . 'user-management/charitable-forgot-password-hooks.php' );
         require_once( $includes_path . 'user-management/class-charitable-reset-password.php' );
         require_once( $includes_path . 'user-management/charitable-reset-password-hooks.php' );
+        require_once( $includes_path . 'user-management/class-charitable-user-management.php' );
+        require_once( $includes_path . 'user-management/charitable-user-management-hooks.php' );
 
         /* Customizer */
         require_once( $includes_path . 'admin/customizer/class-charitable-customizer.php' );
