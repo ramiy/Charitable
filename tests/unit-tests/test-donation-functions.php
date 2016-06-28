@@ -63,10 +63,17 @@ class Test_Charitable_Donation_Functions extends WP_UnitTestCase {
 	 */
 	public function test_cancel_donation() {
 
+		/**
+		 * Temporary workaround for issue noted below.
+		 * @see https://core.trac.wordpress.org/ticket/37207
+		 */
+		Charitable_Post_Types::get_instance()->add_endpoints();
+
 		$donation_id = $this->create_donation( 'charitable-pending' );
 
-		set_query_var( 'cancel', true );
-		set_query_var( 'donation_id', $donation_id );
+		$page = charitable_get_donation_cancel_page_permalink( false, array( 'donation_id' => $donation_id ) );
+
+		$this->go_to( $page );
 
 		$this->assertTrue( charitable_cancel_donation() );
 
@@ -78,7 +85,19 @@ class Test_Charitable_Donation_Functions extends WP_UnitTestCase {
 	 */
 	public function test_do_not_cancel_donation() {
 
+		/**
+		 * Temporary workaround for issue noted below.
+		 * @see https://core.trac.wordpress.org/ticket/37207
+		 */
+		Charitable_Post_Types::get_instance()->add_endpoints();
+
 		$donation_id = $this->create_donation( 'charitable-pending' );
+
+		$campaign_donation = current( charitable_get_donation( $donation_id )->get_campaign_donations() );
+
+		$donate_url = charitable_get_campaign_donation_page_permalink( false, array( 'campaign_id' => $campaign_donation->campaign_id ) );
+
+		$this->go_to( $donate_url );
 
 		$this->assertFalse( charitable_cancel_donation() );
 

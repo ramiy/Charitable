@@ -190,13 +190,11 @@ function charitable_cancel_donation() {
 		return false;
 	}
 
-	$donation_id = $wp_query->query_vars['donation_id'];
-
-	if ( ! $donation_id ) {
+	if ( ! isset( $wp_query->query_vars['donation_id'] ) ) {
 		return false;
 	}
 
-	charitable_get_donation( $donation_id )->update_status( 'charitable-cancelled' );
+	charitable_get_donation( $wp_query->query_vars['donation_id'] )->update_status( 'charitable-cancelled' );
 
 	return true;
 }

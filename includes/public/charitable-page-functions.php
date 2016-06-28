@@ -247,9 +247,9 @@ function charitable_get_donation_cancel_page_permalink( $url, $args = array() ) 
 		'campaign_id' => $campaign_donation->campaign_id,
 	) );
 
-	return esc_url( add_query_arg( array(
+	return esc_url_raw( add_query_arg( array(
 		'donation_id' => $args['donation_id'],
-		'cancel' => true
+		'cancel' => true,
 	), $donation_page ) );
 }
 
@@ -270,9 +270,15 @@ add_filter( 'charitable_permalink_donation_cancel_page', 'charitable_get_donatio
 function charitable_is_campaign_donation_page() {
 	global $wp_query;
 
-	return is_main_query() 
-		&& isset( $wp_query->query_vars['donate'] ) 
-		&& is_singular( 'campaign' );
+	if ( ! $wp_query->is_main_query() || ! $wp_query->is_singular( Charitable::CAMPAIGN_POST_TYPE ) ) {
+		return false;
+	}
+
+	if ( 'same_page' == charitable_get_option( 'donation_form_display', 'separate_page' ) ) {
+		return true;
+	}
+
+	return isset( $wp_query->query_vars['donate'] );
 }
 
 add_filter( 'charitable_is_page_campaign_donation_page', 'charitable_is_campaign_donation_page', 2 );
@@ -292,9 +298,9 @@ add_filter( 'charitable_is_page_campaign_donation_page', 'charitable_is_campaign
 function charitable_is_campaign_widget_page() {
 	global $wp_query;
 
-	return is_main_query() 
-		&& isset( $wp_query->query_vars['widget'] ) 
-		&& is_singular( 'campaign' );
+	return $wp_query->is_main_query()
+		&& isset( $wp_query->query_vars['widget'] )
+		&& $wp_query->is_singular( Charitable::CAMPAIGN_POST_TYPE );
 }
 
 add_filter( 'charitable_is_page_campaign_widget_page', 'charitable_is_campaign_widget_page', 2 );
@@ -322,8 +328,8 @@ function charitable_is_donation_receipt_page() {
 
 	}
 
-	return is_main_query() 
-		&& isset( $wp_query->query_vars['donation_receipt'] ) 
+	return is_main_query()
+		&& isset( $wp_query->query_vars['donation_receipt'] )
 		&& isset( $wp_query->query_vars['donation_id'] );
 }
 
@@ -344,8 +350,8 @@ add_filter( 'charitable_is_page_donation_receipt_page', 'charitable_is_donation_
 function charitable_is_donation_processing_page() {
 	global $wp_query;
 
-	return is_main_query() 
-		&& isset( $wp_query->query_vars['donation_processing'] ) 
+	return is_main_query()
+		&& isset( $wp_query->query_vars['donation_processing'] )
 		&& isset( $wp_query->query_vars['donation_id'] );
 }
 

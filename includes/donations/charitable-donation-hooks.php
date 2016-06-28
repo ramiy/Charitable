@@ -85,7 +85,7 @@ add_action( 'init', 'charitable_is_after_donation' );
  *
  * @see     charitable_cancel_donation()
  */
-add_action( 'init', 'charitable_cancel_donation' );
+add_action( 'template_redirect', 'charitable_cancel_donation' );
 
 /**
  * Handle PayPal gateway payments.
