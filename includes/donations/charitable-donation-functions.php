@@ -26,8 +26,11 @@ if ( ! defined( 'ABSPATH' ) ) { exit; // Exit if accessed directly
  */
 function charitable_get_donation( $donation_id, $force = false ) {
 	if ( ! did_action( 'charitable_start' ) && false === ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
-		_doing_it_wrong( __FUNCTION__, __( 'charitable_get_donation should not be called before the charitable_start action.', 'charitable' ), '1.0' );
+
+		charitable_get_deprecated()->doing_it_wrong( __FUNCTION__, __( 'charitable_get_donation should not be called before the charitable_start action.', 'charitable' ), '1.0.0' );
+
 		return false;
+
 	}
 
 	$donation = wp_cache_get( $donation_id, 'charitable_donation', $force );
@@ -275,4 +278,6 @@ function charitable_flush_campaigns_donation_cache( $donation_id ) {
 	foreach ( $campaign_donations as $campaign_donation ) {
 		Charitable_Campaign::flush_donations_cache( $campaign_donation->campaign_id );
 	}
+
+	wp_cache_delete( $donation_id, 'charitable_donation' );
 }
