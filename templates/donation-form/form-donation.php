@@ -8,7 +8,7 @@
  * @version 1.3.0
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 $form = $view_args[ 'form' ];
 $user_fields = $form->get_user_fields();

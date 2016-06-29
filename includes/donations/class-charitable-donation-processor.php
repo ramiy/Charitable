@@ -627,20 +627,6 @@ if ( ! class_exists( 'Charitable_Donation_Processor' ) ) :
 		}
 
 		/**
-		 * Return the IPN url.
-		 *
-		 * IPNs in Charitable are structured in this way: charitable-listener=gateway
-		 *
-		 * @param   string $gateway
-		 * @return  string
-		 * @access  public
-		 * @since   1.0.0
-		 */
-		public function get_ipn_url( $gateway ) {
-			return add_query_arg( 'charitable-listener', $gateway, home_url( 'index.php' ) );
-		}
-
-		/**
 		 * Redirect the user after the gateway has processed the donation.
 		 *
 		 * @uses    Charitable_Donation_Processor::get_redirection_after_gateway_processing()
@@ -819,6 +805,24 @@ if ( ! class_exists( 'Charitable_Donation_Processor' ) ) :
 		 */
 		private function gateway_is_130_compatible( $gateway ) {
 			return Charitable_Gateways::get_instance()->get_gateway_object( $gateway )->supports( '1.3.0' );
+		}
+
+		/**
+		 * Return the IPN url.
+		 *
+		 * IPNs in Charitable are structured in this way: charitable-listener=gateway
+		 *
+		 * @deprecated
+		 *
+		 * @param   string $gateway
+		 * @return  string
+		 * @access  public
+		 * @since   1.0.0
+		 */
+		public function get_ipn_url( $gateway ) {
+			charitable_get_deprecated()->deprecated_function( __METHOD__, '1.4.0', 'charitable_get_ipn_url()' );
+
+			return charitable_get_ipn_url( $gateway );
 		}
 	}
 

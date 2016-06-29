@@ -84,6 +84,19 @@ function charitable_get_donation_by_key( $donation_key ) {
 }
 
 /**
+ * Return the IPN url for this gateway.
+ *
+ * IPNs in Charitable are structured in this way: charitable-listener=gateway
+ *
+ * @param 	strign $gateway
+ * @return  string
+ * @since   1.4.0
+ */
+function charitable_get_ipn_url( $gateway ) {
+	return add_query_arg( 'charitable-listener', $gateway, home_url( 'index.php' ) );
+}
+
+/**
  * Checks for calls to our IPN.
  *
  * This method is called on the init hook.
