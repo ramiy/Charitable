@@ -202,7 +202,7 @@ if ( ! class_exists( 'Charitable_User_Management' ) ) :
       $current_user = wp_get_current_user();
       $roles = $current_user->roles;
 
-      return (
+      return in_array( 'administrator', $roles ) || (
         !empty( array_intersect( $ok_roles, $roles ) ) && # user has one of the approved roles
         empty( array_intersect( $not_ok_roles, $roles ) ) # user has zero of the unapproved roles
       );
