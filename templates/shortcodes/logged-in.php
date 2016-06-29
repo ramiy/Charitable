@@ -10,7 +10,7 @@
  * @version 1.0.0
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 $message = isset( $view_args[ 'logged_in_message' ] ) ? $view_args[ 'logged_in_message' ] : __( 'You are already logged in!', 'charitable' );
 

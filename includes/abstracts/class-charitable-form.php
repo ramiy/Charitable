@@ -74,10 +74,10 @@ abstract class Charitable_Form {
 	 * @since 	1.0.0
 	 */
 	protected function attach_hooks_and_filters() {
-		add_action( 'charitable_form_before_fields',	array( $this, 'render_error_notices' ) ); 
-		add_action( 'charitable_form_before_fields',	array( $this, 'add_hidden_fields' ) ); 
-		add_action( 'charitable_form_field', 			array( $this, 'render_field' ), 10, 5 );
-		add_filter( 'charitable_form_field_increment', 	array( $this, 'increment_index' ), 10, 2 );
+		add_action( 'charitable_form_before_fields', array( $this, 'render_error_notices' ) ); 
+		add_action( 'charitable_form_before_fields', array( $this, 'add_hidden_fields' ) ); 
+		add_action( 'charitable_form_field', array( $this, 'render_field' ), 10, 5 );
+		add_filter( 'charitable_form_field_increment', array( $this, 'increment_index' ), 10, 2 );
 	}
 
 	/**

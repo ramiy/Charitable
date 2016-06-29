@@ -9,7 +9,7 @@
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License  
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 if ( ! class_exists( 'Charitable_Email' ) ) : 
 
@@ -424,7 +424,7 @@ abstract class Charitable_Email implements Charitable_Email_Interface {
             return '';
         }      
 
-        return $this->donation->get_donor()->get_value( 'first_name' );
+        return $this->donation->get_donor()->get_donor_meta( 'first_name' );
     }
 
     /**

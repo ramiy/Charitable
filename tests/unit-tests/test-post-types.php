@@ -2,16 +2,31 @@
 
 class Test_Charitable_Post_Types extends WP_UnitTestCase {
 
-	function setUp() {
+	public function setUp() {
 		parent::setUp();
+
+		$this->set_permalink_structure( '/%year%/%monthnum%/%day%/%postname%/' );
+
+		$this->qvs = $GLOBALS['wp']->public_query_vars;
+
+		/**
+		 * Temporary workaround for issue noted below.
+		 * @see https://core.trac.wordpress.org/ticket/37207
+		 */
+		Charitable_Post_Types::get_instance()->add_endpoints();
 	}
 
-	function test_campaign_post_types() {
+	public function tearDown() {
+		$GLOBALS['wp']->public_query_vars = $this->qvs;
+		parent::tearDown();
+	}
+
+	public function test_is_campaign_post_type_registered() {
 		global $wp_post_types;
 		$this->assertArrayHasKey( 'campaign', $wp_post_types );
 	}
 
-	function test_campaign_post_type_labels() {
+	public function test_campaign_post_type_labels() {
 		global $wp_post_types;
 		$this->assertEquals( 'Campaigns', $wp_post_types['campaign']->labels->name );
 		$this->assertEquals( 'Campaign', $wp_post_types['campaign']->labels->singular_name );
@@ -27,14 +42,14 @@ class Test_Charitable_Post_Types extends WP_UnitTestCase {
 		$this->assertEquals( 'No Campaigns found', $wp_post_types['campaign']->labels->not_found );
 		$this->assertEquals( 'No Campaigns found in trash', $wp_post_types['campaign']->labels->not_found_in_trash );
 		$this->assertEquals( 'Parent Campaign', $wp_post_types['campaign']->labels->parent );
-	}	
+	}
 
-	function test_donation_post_types() {
+	public function test_is_donation_post_type_registered() {
 		global $wp_post_types;
 		$this->assertArrayHasKey( 'donation', $wp_post_types );
 	}
 
-	function test_donation_post_type_labels() {
+	public function test_donation_post_type_labels() {
 		global $wp_post_types;
 		$this->assertEquals( 'Donations', $wp_post_types['donation']->labels->name );
 		$this->assertEquals( 'Donation', $wp_post_types['donation']->labels->singular_name );
@@ -52,7 +67,7 @@ class Test_Charitable_Post_Types extends WP_UnitTestCase {
 		$this->assertEquals( 'Parent Donation', $wp_post_types['donation']->labels->parent );
 	}
 
-	function test_custom_post_statuses() {
+	public function test_custom_post_statuses() {
 		global $wp_post_statuses;
 		$this->assertArrayHasKey( 'charitable-pending', $wp_post_statuses );
 		$this->assertArrayHasKey( 'charitable-completed', $wp_post_statuses );
@@ -60,5 +75,33 @@ class Test_Charitable_Post_Types extends WP_UnitTestCase {
 		$this->assertArrayHasKey( 'charitable-cancelled', $wp_post_statuses );
 		$this->assertArrayHasKey( 'charitable-refunded', $wp_post_statuses );
 		$this->assertArrayHasKey( 'charitable-preapproved', $wp_post_statuses );
+	}
+
+	/**
+	 * @covers Charitable_Post_Types::add_endpoints()
+	 */
+	public function test_is_donate_endpoint_added() {
+		$this->assertContains( 'donate', $GLOBALS['wp']->public_query_vars );
+	}
+
+	/**
+	 * @covers Charitable_Post_Types::add_endpoints()
+	 */
+	public function test_is_widget_endpoint_added() {
+		$this->assertContains( 'widget', $GLOBALS['wp']->public_query_vars );
+	}
+
+	/**
+	 * @covers Charitable_Post_Types::add_endpoints()
+	 */
+	public function test_is_donation_receipt_endpoint_added() {
+		$this->assertContains( 'donation_receipt', $GLOBALS['wp']->public_query_vars );
+	}
+
+	/**
+	 * @covers Charitable_Post_Types::add_endpoints()
+	 */
+	public function test_is_donation_processing_endpoint_added() {
+		$this->assertContains( 'donation_processing', $GLOBALS['wp']->public_query_vars );
 	}
 }

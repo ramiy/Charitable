@@ -9,7 +9,7 @@
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License   
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 if ( ! class_exists( 'Charitable_Customizer' ) ) : 
 
@@ -300,7 +300,7 @@ class Charitable_Customizer {
      */
     public function load_customizer_script() {
         $suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
-        wp_register_script( 'charitable-customizer', charitable()->get_path( 'assets', false ) . 'js/charitable-customizer' . $suffix . '.js', array( 'jquery', 'customize-preview' ), '1.2.0-beta5', true );
+        wp_register_script( 'charitable-customizer', charitable()->get_path( 'assets', false ) . 'js/charitable-customizer' . $suffix . '.js', array( 'jquery-core', 'customize-preview' ), '1.2.0-beta5', true );
         wp_enqueue_script( 'charitable-customizer' );
     }
 }
