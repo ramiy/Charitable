@@ -213,21 +213,14 @@ function charitable_cancel_donation() {
 }
 
 /**
- * Add a message to the donation log.
+ * Add a message to a donation's log.
  *
- * @param   string      $message
+ * @param   string $message
  * @return  void
  * @since   1.0.0
  */
 function charitable_update_donation_log( $donation_id, $message ) {
-	$log = charitable_get_donation_log( $donation_id );
-
-	$log[] = array(
-		'time'      => time(),
-		'message'   => $message,
-	);
-
-	update_post_meta( $donation_id, '_donation_log', $log );
+	charitable_get_donation( $donation_id )->update_donation_log( $message );
 }
 
 /**
@@ -237,9 +230,7 @@ function charitable_update_donation_log( $donation_id, $message ) {
  * @since   1.0.0
  */
 function charitable_get_donation_log( $donation_id ) {
-	$log = get_post_meta( $donation_id, '_donation_log', true );;
-
-	return is_array( $log ) ? $log : array();
+	charitable_get_donation( $donation_id )->get_donation_log();
 }
 
 /**

@@ -530,7 +530,13 @@ if ( ! class_exists( 'Charitable_Abstract_Donation' ) ) :
 
 			$donation_id = wp_update_post( $this->donation_data );
 
-			$this->update_donation_log( sprintf( __( 'Donation status updated from %s to %s.', 'charitable' ), $statuses[ $old_status ], $statuses[ $new_status ] ) );
+			$message = sprintf(
+				__( 'Donation status updated from %s to %s.', 'charitable' ),
+				$statuses[ $old_status ],
+				$statuses[ $new_status ]
+			);
+
+			$this->update_donation_log( $message );
 
 			return $donation_id;
 		}
