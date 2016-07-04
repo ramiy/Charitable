@@ -745,40 +745,29 @@ select.charitable-settings-field {
   display: block;
   color: #999; }
 .edit-php.post-type-charitable .wp-list-table .column-post_status mark {
+  padding: 2px 4px;
+  margin: 0;
   text-align: center;
   white-space: nowrap;
-  padding: 0 2px;
   background: #999;
-  border: 1px solid #999;
-  margin: 0;
-  font-size: 9px;
-  text-transform: uppercase;
   color: #fff;
-  font-weight: bold;
-  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.3); }
+  border-radius: 2px;
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: bold; }
   .edit-php.post-type-charitable .wp-list-table .column-post_status mark.charitable-pending {
-    background-color: #ffb733;
-    border-color: #ffa500; }
+    background-color: #ffa500; }
   .edit-php.post-type-charitable .wp-list-table .column-post_status mark.charitable-completed {
-    background-color: #00b300;
-    border-color: #008000; }
+    background-color: #008000; }
   .edit-php.post-type-charitable .wp-list-table .column-post_status mark.charitable-failed {
-    background-color: #ffd633;
-    border-color: #ffcc00; }
+    background-color: #f7a129; }
   .edit-php.post-type-charitable .wp-list-table .column-post_status mark.charitable-cancelled {
-    background-color: #ff3333;
-    border-color: #ff0000; }
+    background-color: #ff0000; }
   .edit-php.post-type-charitable .wp-list-table .column-post_status mark.charitable-refunded {
-    background-color: #b3b3b3;
-    border-color: #999; }
+    background-color: #3fb8f5; }
 .edit-php.post-type-charitable .tablenav.top {
-  padding: 12px;
-  margin: 12px 0;
-  border: 1px solid #dfdfdf;
-  background-color: #fafafa;
-  box-sizing: initial;
-  overflow: hidden;
-  float: none; }
+  margin: 0 0 12px 0; }
   .edit-php.post-type-charitable .tablenav.top select.campaign_id {
     float: none;
     vertical-align: top; }
