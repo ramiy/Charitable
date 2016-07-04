@@ -6,51 +6,50 @@
             color: #999;
         }
         .column-post_status mark {
-            //display: block;
+            padding: 2px 4px;
+            margin: 0;
             text-align: center;
             white-space: nowrap;
-            padding: 0 2px;
             background: #999;
-            border: 1px solid #999;
-            margin: 0;
-            font-size: 9px;
-            text-transform: uppercase;
             color: #fff;
+            // border: 1px solid #999;
+            border-radius: 2px;
+            font-size: 10px;
+            letter-spacing: 1px;
+            text-transform: uppercase;            
             font-weight: bold;
-            text-shadow: 0 1px 0 rgba(0,0,0,0.3);
 
             &.charitable-pending {
-                background-color: lighten( #ffa500, 10% ); //orange
-                border-color: #ffa500;
+                background-color: #ffa500;
             }
             &.charitable-completed {
-                background-color: lighten( #008000, 10% ); // green
-                border-color: #008000;
+                background-color: #008000;
+                // border-color: #008000;
             }
             &.charitable-failed {
-                background-color: lighten( #ffcc00, 10% ); // dark yellow
-                border-color: #ffcc00;
+                background-color: #f7a129;
+                // border-color: #ffcc00;
             }
             &.charitable-cancelled {
-                background-color: lighten( #ff0000, 10% ); // red
-                border-color: #ff0000;
+                background-color: #ff0000;
+                // border-color: #ff0000;
             }
             &.charitable-refunded {
-                background-color: lighten( #999, 10% ); // gray
-                border-color: #999;
+                background-color: #3fb8f5;
+                // border-color: #999;
             }
 
         } 
     }
 
     .tablenav.top {
-        padding: 12px;
-        margin: 12px 0;
-        border: 1px solid #dfdfdf;
-        background-color: #fafafa;
-        box-sizing: initial;
-        overflow: hidden;
-        float: none;
+        // padding: 12px;
+        margin: 0 0 12px 0;
+        // border: 1px solid #dfdfdf;
+        // background-color: #fafafa;
+        // box-sizing: initial;
+        // overflow: hidden;
+        // float: none;
 
         select.campaign_id {
             float: none;
