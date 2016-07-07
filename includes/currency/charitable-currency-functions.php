@@ -42,3 +42,14 @@ function charitable_get_currency() {
 function charitable_format_money( $amount ) {
     return charitable_get_currency_helper()->get_monetary_amount( $amount );
 }
+
+/**
+ * Sanitize an amount, converting it into a float.
+ *
+ * @param   string $amount
+ * @return  float|WP_Error
+ * @since   1.4.0
+ */
+function charitable_sanitize_amount( $amount ) {
+    return charitable_get_currency_helper()->sanitize_monetary_amount( $amount );
+}

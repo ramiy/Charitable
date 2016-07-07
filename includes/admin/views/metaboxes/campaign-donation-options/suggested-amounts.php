@@ -21,9 +21,12 @@ $suggested_donations    = get_post_meta( $post->ID, '_campaign_suggested_donatio
 if ( ! $suggested_donations ) {
     $suggested_donations = array();
 }
-// add a default empty row to the end. we will use this as our clone model
+
+/* Add a default empty row to the end. We will use this as our clone model. */
 $default = array_fill_keys( array_keys( $fields ), '');
+
 array_push( $suggested_donations, $default );
+
 ?>
 <div id="charitable-campaign-suggested-donations-metabox-wrap" class="charitable-metabox-wrap">
     <table id="charitable-campaign-suggested-donations" class="widefat charitable-campaign-suggested-donations">
@@ -61,6 +64,10 @@ array_push( $suggested_donations, $default );
                             }
                             else {
                                 $value = '';
+                            }
+
+                            if ( 'amount' == $key && strlen( $value ) ) {
+                                $value = charitable_format_money( $value );
                             }
 
                             ?>

@@ -742,7 +742,7 @@ if ( ! class_exists( 'Charitable_Campaign' ) ) :
 			}
 
 			foreach ( $value as $key => $suggestion ) {
-				$value[ $key ]['amount'] = charitable_format_money( $suggestion['amount'] );
+				$value[ $key ]['amount'] = charitable_sanitize_amount( $suggestion['amount'] );
 			}
 
 			return $value;
