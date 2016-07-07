@@ -124,6 +124,8 @@ final class Charitable_Currency {
 			$amount = str_replace( '_', '.', $amount );
 		}
 
+		$amount = trim( $amount, $this->get_currency_symbol() );
+
 		return floatval( filter_var( $amount, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION ) );
 	}
 
