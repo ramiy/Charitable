@@ -156,6 +156,8 @@ if ( ! class_exists( 'Charitable_Gateways' ) ) :
 				}
 			}
 
+			uksort( $active_gateways, array( $this, 'sort_by_default' ) );
+
 			return $active_gateways;
 		}
 
@@ -363,6 +365,28 @@ if ( ! class_exists( 'Charitable_Gateways' ) ) :
 			update_option( 'charitable_settings', $settings );
 
 			do_action( 'charitable_gateway_disable', $gateway );
+		}
+
+		/**
+		 * Sort the active gateways, placing the default gateway first.
+		 *
+		 * @param 	
+		 * @return  int
+		 * @access  protected
+		 * @since   1.4.0
+		 */
+		protected function sort_by_default( $a, $b ) {
+			$default = $this->get_default_gateway();
+
+			if ( $a == $default ) {
+				return -1;
+			} 
+
+			if ( $b == $default ) {
+				return 1;
+			}
+
+			return 0;
 		}
 	}
 

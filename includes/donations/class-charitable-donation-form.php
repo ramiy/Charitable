@@ -377,7 +377,6 @@ if ( ! class_exists( 'Charitable_Donation_Form' ) ) :
 		 */
 		public function add_payment_fields( $fields ) {
 			$gateways_helper = charitable_get_helper( 'gateways' );
-			$active_gateways = $gateways_helper->get_active_gateways();
 			$default_gateway = $gateways_helper->get_default_gateway();
 
 			$gateways = array();
