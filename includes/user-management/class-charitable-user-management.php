@@ -156,7 +156,11 @@ if ( ! class_exists( 'Charitable_User_Management' ) ) :
      */
     private static function current_user_should_see_wp_admin() {
       $all_roles = array_keys( self::editable_roles() );
-      $ok_roles = array_merge( get_option( 'charitable_settings' )[ 'view_wp_admin' ], array( 'administrator' ) );
+      $from_settings = array();
+      if ( is_array( get_option( 'charitable_settings' ) ) && array_key_exists( 'view_wp_admin', get_option( 'charitable_settings' ) ) && $view_setting = get_option( 'charitable_settings' )[ 'view_wp_admin_bar' ] ) {
+        $from_settings = $view_setting;
+      }
+      $ok_roles = array_merge( $from_settings, array( 'administrator' ) );
       $not_ok_roles = array_diff( $all_roles, $ok_roles );
       return self::user_has_only_ok_roles( $ok_roles, $not_ok_roles );
     }
@@ -184,7 +188,11 @@ if ( ! class_exists( 'Charitable_User_Management' ) ) :
      */
     private static function current_user_should_see_wp_admin_bar() {
       $all_roles = array_keys( self::editable_roles() );
-      $ok_roles = array_merge( get_option( 'charitable_settings' )[ 'view_wp_admin_bar' ], array( 'administrator' ) );
+      $from_settings = array();
+      if ( is_array( get_option( 'charitable_settings' ) ) && array_key_exists( 'view_wp_admin_bar', get_option( 'charitable_settings' ) ) && $view_setting = get_option( 'charitable_settings' )[ 'view_wp_admin_bar' ] ) {
+        $from_settings = $view_setting;
+      }
+      $ok_roles = array_merge( $from_settings, array( 'administrator' ) );
       $not_ok_roles = array_diff( $all_roles, $ok_roles );
       return self::user_has_only_ok_roles( $ok_roles, $not_ok_roles );
     }
