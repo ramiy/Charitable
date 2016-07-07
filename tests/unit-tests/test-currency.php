@@ -14,39 +14,93 @@ class Test_Charitable_Currency_Helper extends WP_UnitTestCase {
 		$this->set_thousands_separator( ',' );
 	}
 
-	function test_get_monetary_amount() {		
-		$this->assertEquals( '&#36;60.00', $this->currency_helper->get_monetary_amount( 60 ) );
+	/**
+	 * @covers Charitable_Currency::get_monetary_amount()
+	 */
+	function test_get_monetary_amount_with_string() {				
 		$this->assertEquals( '&#36;60.00', $this->currency_helper->get_monetary_amount( '60' ) );
 	}
 
-	function test_sanitize_monetary_amount() {		
-		$this->assertEquals( 60.00, $this->currency_helper->sanitize_monetary_amount( '60' ) );		
-		$this->assertEquals( 10.50, $this->currency_helper->sanitize_monetary_amount( '10.50' ) );
-		$this->assertEquals( 10000.00, $this->currency_helper->sanitize_monetary_amount( '10,000' ) );
+	/**
+	 * @covers Charitable_Currency::get_monetary_amount()
+	 */
+	function test_get_monetary_amount_with_float() {
+		$this->assertEquals( '&#36;60.00', $this->currency_helper->get_monetary_amount( 60 ) );
+	}
 
-		/* Switch separators */
+	/**
+	 * @covers Charitable_Currency::sanitize_monetary_amount()
+	 */
+	function test_sanitize_monetary_amount() {		
+		$this->assertEquals( 60.00, $this->currency_helper->sanitize_monetary_amount( '60' ) );
+	}
+
+	/**
+	 * @covers Charitable_Currency::sanitize_monetary_amount()
+	 */
+	function test_sanitize_monetary_amount_with_decimals() {		
+		$this->assertEquals( 10.50, $this->currency_helper->sanitize_monetary_amount( '10.50' ) );
+	}
+	
+	/**
+	 * @covers Charitable_Currency::sanitize_monetary_amount()
+	 */
+	function test_sanitize_monetary_amount_with_thousands() {
+		$this->assertEquals( 10000.00, $this->currency_helper->sanitize_monetary_amount( '10,000' ) );
+	}
+
+	/**
+	 * @covers Charitable_Currency::sanitize_monetary_amount()
+	 */
+	function test_sanitize_monetary_amount_switched() {
 		$this->set_decimal_separator( ',' );
 		$this->set_thousands_separator( '.' );
 
 		$this->assertEquals( 600.00, $this->currency_helper->sanitize_monetary_amount( '600,00' ) );
-		$this->assertEquals( 6000.00, $this->currency_helper->sanitize_monetary_amount( '6.000' ) );
+	}
+
+	/**
+	 * @covers Charitable_Currency::sanitize_monetary_amount()
+	 */
+	function test_sanitize_monetary_amount_switched_with_decimals() {
+		$this->set_decimal_separator( ',' );
+		$this->set_thousands_separator( '.' );
+
 		$this->assertEquals( 12500.50, $this->currency_helper->sanitize_monetary_amount( '12.500,50' ) );
 	}
 
 	/**
-	 * @expectedIncorrectUsage	Charitable_Currency::sanitize_monetary_amount
+	 * @covers Charitable_Currency::sanitize_monetary_amount()
 	 */
+	function test_sanitize_monetary_amount_switched_with_thousands() {
+		$this->set_decimal_separator( ',' );
+		$this->set_thousands_separator( '.' );
+
+		$this->assertEquals( 6000.00, $this->currency_helper->sanitize_monetary_amount( '6.000' ) );
+	}
+
+	/**
+     * @expectedException PHPUnit_Framework_Error
+     */
 	function test_sanitize_monetary_amount_exception() {		
 		$this->assertInstanceOf( 'WP_Error', $this->currency_helper->sanitize_monetary_amount( 10.50 ) );
 	}
 	
+	/**
+	 * @covers Charitable_Currency::get_decimals()
+	 */	
 	function test_get_decimals() {
 		$this->assertEquals( 2, $this->currency_helper->get_decimals() );	
-		$this->set_decimal_count( 4 );
-		$this->assertEquals( 4, $this->currency_helper->get_decimals() );
-		$this->set_decimal_count( 2 );
 	}
 	
+	/**
+	 * @covers Charitable_Currency::get_decimals()
+	 */
+	function test_get_decimals_non_default() {
+		$this->set_decimal_count( 4 );
+		$this->assertEquals( 4, $this->currency_helper->get_decimals() );
+	}
+
 	function test_get_currency_formats() {
 		$this->assertEquals( '%1$s%2$s', $this->currency_helper->get_currency_format() );	
 

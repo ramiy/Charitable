@@ -130,7 +130,7 @@ if ( ! class_exists( 'Charitable_Deprecated' ) ) :
 
 			$version = is_null( $version ) ? '' : sprintf( __( '(This message was added in Charitable version %s.)', 'charitable' ), $version );
 
-			$message = sprintf( __( '%1$s was called <strong>incorrectly</strong>. %2$s %3$s', 'charitable' ), $function, $version );
+			$message = sprintf( __( '%1$s was called <strong>incorrectly</strong>. %2$s %3$s', 'charitable' ), $function, $message, $version );
 
 			trigger_error( $message );
 

@@ -29,11 +29,11 @@ class Charitable_Install {
 	 * @since 	1.0.0
 	 */
 	public function __construct() {
-		// $this->setup_roles();
-		// $this->create_tables();		
-		// $this->setup_upgrade_log();		
+		$this->setup_roles();
+		$this->create_tables();		
+		$this->setup_upgrade_log();		
 
-		// set_transient( 'charitable_install', 1, 0 );
+		set_transient( 'charitable_install', 1, 0 );
 	}	
 
 	/**

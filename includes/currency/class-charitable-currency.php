@@ -74,8 +74,8 @@ if ( ! class_exists( 'Charitable_Currency' ) ) :
 		 *
 		 * 50.00 -> $50.00 
 		 *
-		 * @param 	string 		$amount
-		 * @param 	int|false 	$decimal_count 	Optional. If not set, default decimal count will be used.
+		 * @param 	string    $amount
+		 * @param 	int|false $decimal_count Optional. If not set, default decimal count will be used.
 	 	 * @return 	string|WP_Error
 	 	 * @access 	public
 	 	 * @since 	1.0.0
@@ -129,7 +129,7 @@ if ( ! class_exists( 'Charitable_Currency' ) ) :
 				$amount = str_replace( '_', '.', $amount );
 			}
 
-			$amount = trim( $amount, $this->get_currency_symbol() );
+			$amount = str_replace( $this->get_currency_symbol(), '', $amount );
 
 			return floatval( filter_var( $amount, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION ) );
 		}
