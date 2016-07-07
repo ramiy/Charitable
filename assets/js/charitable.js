@@ -136,7 +136,7 @@ CHARITABLE.AJAXDonate = {
 
     init : function() {
         var self = this;
-        jQuery( 'body' ).on ( 'submit', '#charitable-donation-form[data-use-ajax=1]', function( event ) {                        
+        jQuery( 'body' ).on ( 'submit', '#charitable-donation-form[data-use-ajax=1]', function( event ) {
             return self.onClick( this );
         });
     }

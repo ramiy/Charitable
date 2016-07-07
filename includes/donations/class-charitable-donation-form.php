@@ -676,7 +676,7 @@ class Charitable_Donation_Form extends Charitable_Form implements Charitable_Don
             $amount = isset( $_POST[ 'custom_donation_amount' ] ) ? $_POST[ 'custom_donation_amount' ] : 0;
         }        
 
-        $amount = charitable_get_currency_helper()->sanitize_monetary_amount( $amount );
+        $amount = charitable_get_currency_helper()->sanitize_monetary_amount( strval( $amount ) );
 
         return apply_filters( 'charitable_donation_form_amount', $amount );
 
