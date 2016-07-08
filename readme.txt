@@ -122,7 +122,7 @@ You can post in the [support forum](https://wordpress.org/support/plugin/charita
 * Added a `charitable_create_donation()` function for developers who want to create donations programatically. [#109](https://github.com/Charitable/Charitable/issues/109)
 * Added a new `Charitable_Donations_Query` class, which can be used by developers to retrieve donations from the database. [#155](https://github.com/Charitable/Charitable/issues/155)
 * Added a new `Charitable_Deprecated` class, which is used to record any incorrect usage of Charitable functions or methods.
-* Include the donor's phone number in the donations export CSV. [#154](https://github.com/Charitable/Charitable/issues/154)
+* Include the donor's phone number and the payment method in the donations export CSV. [#154](https://github.com/Charitable/Charitable/issues/154)
 * When multiple gateways are enabled, the default one is listed first in the donation form. [#139](https://github.com/Charitable/Charitable/issues/139)
 * Automatically cancel a donation when the donor returns from the gateway before completing it. This works with PayPal, PayUMoney and PayFast. [#90](https://github.com/Charitable/Charitable/issues/90) and [#117](https://github.com/Charitable/Charitable/issues/117)
 * Added a `Charitable_Donor::__toString()` method, so that echoing the object simply prints out the donor name.

@@ -327,7 +327,7 @@ if ( ! class_exists( 'Charitable_Abstract_Donation' ) ) :
 			}
 
 			$statuses = charitable_get_valid_donation_statuses();
-			return $statuses[ $status ];
+			return isset( $statuses[ $status ] ) ? $statuses[ $status ] : $status;
 		}
 
 		/**
@@ -562,8 +562,8 @@ if ( ! class_exists( 'Charitable_Abstract_Donation' ) ) :
 
 			$message = sprintf(
 				__( 'Donation status updated from %s to %s.', 'charitable' ),
-				$statuses[ $old_status ],
-				$statuses[ $new_status ]
+				isset( $statuses[ $old_status ] ) ? $statuses[ $old_status ] : $old_status,
+				isset( $statuses[ $new_status ] ) ? $statuses[ $new_status ] : $new_status
 			);
 
 			$this->update_donation_log( $message );
