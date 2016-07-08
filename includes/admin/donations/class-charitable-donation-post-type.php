@@ -396,12 +396,27 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 		 * @since  1.4.0
 		 */
 		public function bulk_actions( $actions ) {
-			if ( isset( $actions['edit'] ) ) {
-				unset( $actions['edit'] );
-			}
-
-			return $actions;
+			return array();
 		}
+
+		/**
+	     * Retrieve the bulk actions
+	     *
+	     * @access public
+	     * @since 1.0.0
+	     * @return array $actions Array of the bulk actions
+	     */
+	    public function get_bulk_actions() {
+	        $actions = array();
+	        
+	        foreach ( charitable_get_valid_donation_statuses() as $status_key => $label ) {
+	            $actions[ 'set-' . $status_key ] = sprintf( _x( 'Set to %s', 'set donation status to x', 'charitable' ), $label );
+	        }
+	        $actions[ 'delete' ] = __( 'Delete', 'charitable' );
+	        return apply_filters( 'charitable_donations_table_bulk_actions', $actions );
+	    }
+
+
 
 		/**
 		 * Returns the array of view options for this campaign.
@@ -476,11 +491,14 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 		public function restrict_manage_posts( $post_type = '' ) {
 			global $typenow;
 
-			// echo '<pre>'; var_dump( $typenow ); echo '</pre>';
-
 			/* Show custom filters to filter orders by donor. */
 			if ( in_array( $typenow, array( Charitable::DONATION_POST_TYPE ) ) ) {
+
+				// until WordPress core fixes: https://core.trac.wordpress.org/ticket/16031.
+				charitable_admin_view( 'donations-page/bulk-actions', array( 'which' => 'top', 'actions' => $this->get_bulk_actions() ) );
+
 				charitable_admin_view( 'donations-page/filters' );
+
 			}
 		}
 
@@ -499,6 +517,12 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 			if ( 'top' == $which && in_array( $typenow, array( Charitable::DONATION_POST_TYPE ) ) ) {
 				charitable_admin_view( 'donations-page/export' );
 			}
+
+			/* restore the bottom bulk actions. */
+			if ( 'bottom' == $which && in_array( $typenow, array( Charitable::DONATION_POST_TYPE ) ) ) {
+				charitable_admin_view( 'donations-page/bulk-actions', array( 'which' => 'top', 'actions' => $this->get_bulk_actions() ) );
+			}
+		}
 		}
 
 		/**
