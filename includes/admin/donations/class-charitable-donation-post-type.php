@@ -72,7 +72,7 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 			add_action( 'manage_posts_extra_tablenav', array( $this, 'extra_tablenav' ) );
 
 			// Export
-			// add_action( 'admin_footer', array( $this, 'export' ) );
+			add_action( 'admin_footer', array( $this, 'export' ) );
 			add_action( 'admin_enqueue_scripts', array( $this, 'setup_scripts' ) );
 
 			// Sorting query
@@ -523,7 +523,27 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 				charitable_admin_view( 'donations-page/bulk-actions', array( 'which' => 'top', 'actions' => $this->get_bulk_actions() ) );
 			}
 		}
+
+
+		/**
+		 * Add export template to footer
+		 *
+		 * @param   string $which
+		 * @return 	void
+		 * @access 	public
+		 * @since   1.4.0
+		 */
+		public function export() {
+			global $typenow;
+
+			/* Add the export form. */
+			if ( in_array( $typenow, array( Charitable::DONATION_POST_TYPE ) ) ) {
+				charitable_admin_view( 'donations-page/export-form' );
+			}
+
+
 		}
+		
 
 		/**
 		 * Admin scripts and styles.
