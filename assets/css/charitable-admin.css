@@ -745,18 +745,70 @@ select.charitable-settings-field {
   padding-right: 0; }
 .edit-php.post-type-charitable .tablenav #start_date, .edit-php.post-type-charitable .tablenav #end_date {
   width: 10.5em; }
+.edit-php.post-type-charitable .tablenav #post-query-submit {
+  display: none; }
+.edit-php.post-type-charitable .tablenav .charitable-donations-filter:before {
+  content: "\f536";
+  float: left;
+  font-family: dashicons;
+  font-size: 16px;
+  speak: none;
+  margin: 1px 2px 1px 0;
+  text-align: center;
+  color: #777;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale; }
 .edit-php.post-type-charitable .tablenav.top {
   margin: 0 0 12px 0; }
   .edit-php.post-type-charitable .tablenav.top select.campaign_id {
     float: none;
     vertical-align: top; }
-  .edit-php.post-type-charitable .tablenav.top a.charitable-clear-filters.button-secondary {
+  .edit-php.post-type-charitable .tablenav.top a.button-secondary {
     display: inline-block;
-    margin: 1px 3px 0 0; }
-.edit-php.post-type-charitable .charitable-donations-export,
-.edit-php.post-type-charitable .search-box {
-  float: right;
-  margin-right: 11px; }
+    margin: 1px 8px 0 0; }
+  .edit-php.post-type-charitable .tablenav.top .actions {
+    overflow: visible; }
+    .edit-php.post-type-charitable .tablenav.top .actions .has-popup {
+      position: relative;
+      display: inline-block;
+      cursor: pointer;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none; }
+      .edit-php.post-type-charitable .tablenav.top .actions .has-popup .popup {
+        visibility: hidden;
+        width: 260px;
+        background-color: #999;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 4px;
+        position: absolute;
+        z-index: 1;
+        top: 125%;
+        left: 50%;
+        margin-left: -136px; }
+        .edit-php.post-type-charitable .tablenav.top .actions .has-popup .popup input, .edit-php.post-type-charitable .tablenav.top .actions .has-popup .popup label, .edit-php.post-type-charitable .tablenav.top .actions .has-popup .popup select {
+          width: 80%;
+          margin-bottom: 1em; }
+        .edit-php.post-type-charitable .tablenav.top .actions .has-popup .popup .inner {
+          background: white;
+          padding: 1em 0;
+          border-radius: 4px; }
+        .edit-php.post-type-charitable .tablenav.top .actions .has-popup .popup::before {
+          content: "";
+          position: absolute;
+          bottom: 100%;
+          left: 50%;
+          margin-left: -5px;
+          border-width: 5px;
+          border-style: solid;
+          border-color: transparent transparent #999 transparent; }
+        .edit-php.post-type-charitable .tablenav.top .actions .has-popup .popup.show {
+          visibility: visible !important;
+          -webkit-animation: fadeIn 1s;
+          animation: fadeIn 1s; }
 .edit-php.post-type-charitable a.button-secondary.charitable-donations-export:before {
   content: '\f316';
   float: left;
@@ -794,48 +846,16 @@ select.charitable-settings-field {
   .edit-php.post-type-charitable .wp-list-table .column-post_status mark.charitable-refunded {
     background-color: #3fb8f5; }
 
-#charitable-donation-filters {
-  float: left;
-  width: 100%;
-  padding: 12px 0;
-  margin: 12px 0;
-  border: 1px solid #dfdfdf;
-  background-color: #fafafa; }
-  #charitable-donation-filters label {
-    display: inline-block;
-    padding: 0; }
-  #charitable-donation-filters .charitable-donations-export,
-  #charitable-donation-filters .search-box {
-    float: right;
-    margin-right: 11px; }
-  #charitable-donation-filters .charitable-donations-export:before {
-    content: '\f316';
-    float: left;
-    font-family: dashicons;
-    font-size: 16px;
-    speak: none;
-    margin: 1px 2px 1px 0;
-    text-align: center;
-    color: #777;
-    -webkit-font-smoothing: antialiased !important;
-    -moz-osx-font-smoothing: grayscale; }
-
-#charitable-donation-date-filters {
-  display: inline-block;
-  margin-left: 11px; }
-  #charitable-donation-date-filters input {
-    margin-right: 4px; }
-
-#charitable-donations-export-modal {
+.charitable-donations-modal {
   max-width: 400px;
   background-color: #f1f1f1; }
-  #charitable-donations-export-modal .modal-close {
+  .charitable-donations-modal .modal-close {
     position: absolute;
     top: 2px;
     right: 2px;
     z-index: 10;
     cursor: pointer; }
-    #charitable-donations-export-modal .modal-close::before {
+    .charitable-donations-modal .modal-close::before {
       content: "\f158";
       display: block !important;
       font: normal 20px/1 dashicons;
@@ -847,81 +867,38 @@ select.charitable-settings-field {
       color: #777;
       -webkit-font-smoothing: antialiased !important;
       -moz-osx-font-smoothing: grayscale; }
-  #charitable-donations-export-modal h3 {
+  .charitable-donations-modal h3 {
     margin-top: 0;
     font-size: 23px;
     line-height: 29px;
     font-weight: 400;
     text-align: center; }
-  #charitable-donations-export-modal .charitable-donations-export-form {
+  .charitable-donations-modal .charitable-donations-export-form {
     width: 80%;
     padding: 22px 10%;
     font-size: 14px;
     background-color: #fff; }
-    #charitable-donations-export-modal .charitable-donations-export-form legend,
-    #charitable-donations-export-modal .charitable-donations-export-form label,
-    #charitable-donations-export-modal .charitable-donations-export-form input[type=text],
-    #charitable-donations-export-modal .charitable-donations-export-form select,
-    #charitable-donations-export-modal .charitable-donations-export-form button {
+    .charitable-donations-modal .charitable-donations-export-form legend,
+    .charitable-donations-modal .charitable-donations-export-form label,
+    .charitable-donations-modal .charitable-donations-export-form input[type=text],
+    .charitable-donations-modal .charitable-donations-export-form select,
+    .charitable-donations-modal .charitable-donations-export-form button {
       display: block; }
-    #charitable-donations-export-modal .charitable-donations-export-form input[type=text] {
+    .charitable-donations-modal .charitable-donations-export-form input[type=text] {
       width: 320px;
       max-width: 100%; }
-    #charitable-donations-export-modal .charitable-donations-export-form input[type=text],
-    #charitable-donations-export-modal .charitable-donations-export-form select {
+    .charitable-donations-modal .charitable-donations-export-form input[type=text],
+    .charitable-donations-modal .charitable-donations-export-form select {
       max-width: 100%;
-      margin-bottom: 22px;
+      margin-bottom: 22px; }
+    .charitable-donations-modal .charitable-donations-export-form input[type=text] {
       padding-top: 11px;
       padding-bottom: 11px; }
-    #charitable-donations-export-modal .charitable-donations-export-form legend,
-    #charitable-donations-export-modal .charitable-donations-export-form label,
-    #charitable-donations-export-modal .charitable-donations-export-form #charitable-export-start-date {
+    .charitable-donations-modal .charitable-donations-export-form legend,
+    .charitable-donations-modal .charitable-donations-export-form label,
+    .charitable-donations-modal .charitable-donations-export-form #charitable-export-start-date {
       margin-bottom: 6px; }
 
-@media (max-width: 74.375em) {
-  #charitable-donation-date-filters {
-    float: left;
-    display: block; }
-    #charitable-donation-date-filters label {
-      float: left;
-      margin-right: 2px; }
-    #charitable-donation-date-filters input {
-      display: block; }
-    #charitable-donation-date-filters .button-secondary {
-      float: left;
-      margin-top: 17px; }
-
-  #charitable-donation-filters .search-box,
-  #charitable-donation-filters .charitable-donations-export {
-    margin-top: 17px; } }
-@media (max-width: 67.5em) {
-  #charitable-donation-filters .search-box {
-    margin-top: 6px;
-    clear: right; }
-  #charitable-donation-filters .charitable-donations-export {
-    margin-top: 0; } }
-@media (max-width: 52.5em) {
-  #charitable-donation-date-filters {
-    width: 265px; }
-    #charitable-donation-date-filters label {
-      width: 100%;
-      margin-bottom: 4px;
-      line-height: 27px;
-      clear: both; }
-    #charitable-donation-date-filters input {
-      display: inline-block;
-      float: right;
-      margin-right: 0; }
-    #charitable-donation-date-filters .button-secondary {
-      margin: 0 11px 0 0;
-      clear: left; }
-      #charitable-donation-date-filters .button-secondary.charitable-clear-filters {
-        clear: none; } }
-@media (max-width: 30em) {
-  #charitable-donation-filters .charitable-donations-export {
-    float: left;
-    margin: 11px 11px 0 11px;
-    clear: both; } }
 #charitable_dashboard_donations .hide-if-no-js {
   padding: 10px 0;
   text-align: center; }
