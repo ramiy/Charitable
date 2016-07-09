@@ -18,10 +18,7 @@ $campaigns   = get_posts( array(
 $start_date   = isset( $_GET['start_date'] )  ? sanitize_text_field( $_GET['start_date'] ) : null;
 $end_date     = isset( $_GET['end_date'] )    ? sanitize_text_field( $_GET['end_date'] ) : null;
 $post_status  = isset( $_GET['post_status'] ) ? $_GET['post_status'] : 'all';
-$report_type  = isset( $_GET['report_type'] ) ? $_GET['report_type'] : 'donations';
-$report_types = apply_filters( 'charitable_donation_export_report_types', array(
-	'donations' => __( 'Donations', 'charitable' ),
-) );
+
 
 ?>
 <div id="charitable-donations-filter-modal" style="display: none" class="charitable-donations-modal <?php echo esc_attr( $modal_class ) ?>">
@@ -31,18 +28,18 @@ $report_types = apply_filters( 'charitable_donation_export_report_types', array(
 		<input type="hidden" name="post_type" class="post_type_page" value="donation">
 		<fieldset>
 			<legend><?php _e( 'Filter by Date', 'charitable' ) ?></legend>
-			<input type="text" id="charitable-export-start_date" name="start_date" class="charitable-datepicker" value="<?php echo $start_date; ?>" placeholder="<?php esc_attr_e( 'From:', 'charitable' ) ?>" />
-			<input type="text" id="charitable-export-end_date" name="end_date" class="charitable-datepicker" value="<?php echo $end_date; ?>" placeholder="<?php esc_attr_e( 'To:', 'charitable' ) ?>" />
+			<input type="text" id="charitable-filter-start_date" name="start_date" class="charitable-datepicker" value="<?php echo $start_date; ?>" placeholder="<?php esc_attr_e( 'From:', 'charitable' ) ?>" />
+			<input type="text" id="charitable-filter-end_date" name="end_date" class="charitable-datepicker" value="<?php echo $end_date; ?>" placeholder="<?php esc_attr_e( 'To:', 'charitable' ) ?>" />
 		</fieldset>
-		<label for="charitable-donations-export-status"><?php _e( 'Filter by Status', 'charitable' ) ?></label>
-		<select id="charitable-donations-export-status" name="post_status">
+		<label for="charitable-donations-filter-status"><?php _e( 'Filter by Status', 'charitable' ) ?></label>
+		<select id="charitable-donations-filter-status" name="post_status">
 			<option value="all" <?php selected( $post_status, 'all' ) ?>><?php _e( 'All', 'charitable' ) ?></option>
 			<?php foreach ( charitable_get_valid_donation_statuses() as $key => $status ) : ?>
 				<option value="<?php echo esc_attr( $key ) ?>" <?php selected( $post_status, $key ) ?>><?php echo $status ?></option>
 			<?php endforeach ?>
 		</select>
-		<label for="charitable-donations-export-campaign"><?php _e( 'Filter by Campaign', 'charitable' ) ?></label>
-		<select id="charitable-donations-export-campaign" name="campaign_id">
+		<label for="charitable-donations-filter-campaign"><?php _e( 'Filter by Campaign', 'charitable' ) ?></label>
+		<select id="charitable-donations-filter-campaign" name="campaign_id">
 			<option value="all"><?php _e( 'All Campaigns', 'charitable' ) ?></option>
 			<?php foreach ( $campaigns as $campaign ) : ?>
 				<option value="<?php echo $campaign->ID ?>" <?php selected( $campaign_id, $campaign->ID );?> ><?php echo get_the_title( $campaign->ID ) ?></option>
@@ -50,6 +47,6 @@ $report_types = apply_filters( 'charitable_donation_export_report_types', array(
 		</select>
 
 		<?php do_action( 'charitable_filter_donations_form' ) ?>
-		<button type="submit" name="charitable-filter-donations" class="button button-primary"><?php _e( 'Filter', 'charitable' ) ?></button>
+		<button type="submit" class="button button-primary"><?php _e( 'Filter', 'charitable' ) ?></button>
 	</form>
 </div>
