@@ -65,7 +65,6 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 			add_filter( 'bulk_actions-edit-donation', array( $this, 'bulk_actions' ) );
 
 			// Customization filters
-			add_filter( 'views_edit-donation', array( $this, 'view_options' ) );
 			add_filter( 'disable_months_dropdown', array( $this, 'disable_months_dropdown' ), 10, 2 );
 			add_action( 'restrict_manage_posts', array( $this, 'restrict_manage_posts' ) );
 			add_action( 'manage_posts_extra_tablenav', array( $this, 'extra_tablenav' ) );
@@ -419,55 +418,6 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 	        return apply_filters( 'charitable_donations_table_bulk_actions', $actions );
 	    }
 
-
-
-		/**
-		 * Returns the array of view options for this campaign.
-		 *
-		 * @param   array $views
-		 * @return  array
-		 * @access  public
-		 * @since   1.4.0
-		 */
-		public function view_options( $views ) {
-			$current      = isset( $_GET['post-status'] ) ? $_GET['post-status'] : '';
-			$statuses     = charitable_get_valid_donation_statuses();
-			$donations    = new Charitable_Donations();
-			$status_count = $donations->count_by_status();
-			$all_url      = esc_url( remove_query_arg( array( 'post_status', 'paged' ) ) );
-			$all_class 	  = '' == $current || 'all' == $current ? ' class="current"' : '';
-			$all_text 	  = __( 'All', 'charitable' );
-			$all_count 	  = $donations->count_all();
-
-			$views        = array();
-			$views['all'] = sprintf( '<a href="%s"%s>%s <span class="count">(%s)</span></a>',
-				$all_url,
-				$all_class,
-				$all_text,
-				$all_count
-			);
-
-			foreach ( $statuses as $status => $label ) {
-
-				$status_url   = esc_url( add_query_arg( array(
-					'post_status' => $status,
-					'paged' => false,
-				) ) );
-				$status_class = $status == $current ? ' class="current"' : '';
-				$status_count = isset( $status_count[ $status ] )
-					? $status_count[ $status ]->num_donations
-					: 0;
-
-				$views[ $status ] = sprintf( '<a href="%s"%s>%s <span class="count">(%s)</span></a>',
-					$status_url,
-					$status_class,
-					$label,
-					$status_count
-				);
-			}
-
-			return $views;
-		}
 
 		/**
 		 * Disable the month's dropdown (will replace with custom range search).
