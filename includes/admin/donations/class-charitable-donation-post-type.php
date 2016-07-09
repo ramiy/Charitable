@@ -53,7 +53,6 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 
 			add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
 			add_action( 'add_meta_boxes', array( $this, 'remove_meta_boxes' ), 20 );
-			add_action( 'transition_post_status', array( $this, 'handle_donation_status_change' ), 10, 3 );
 
 			// Donations columns
 			add_filter( 'manage_edit-donation_columns', array( $this, 'dashboard_columns' ), 11, 1 );
@@ -150,8 +149,12 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 		 * @return  void
 		 * @access  public
 		 * @since   1.2.0
+		 * @deprecated   1.4.0
 		 */
 		public function handle_donation_status_change( $new_status, $old_status, $post ) {
+
+			_deprecated_function( __METHOD__, '1.4.0', 'Handled automatically when $donation->update_status() is called.' );
+
 			if ( Charitable::DONATION_POST_TYPE != $post->post_type ) {
 				return;
 			}
