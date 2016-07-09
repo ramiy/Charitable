@@ -764,7 +764,6 @@ select.charitable-settings-field {
     float: none;
     vertical-align: top; }
   .edit-php.post-type-charitable .tablenav.top a.button-secondary {
-    display: inline-block;
     margin: 1px 8px 0 0; }
   .edit-php.post-type-charitable .tablenav.top .actions {
     overflow: visible; }

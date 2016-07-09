@@ -11,4 +11,4 @@
 
 ?>
 
-<a href="#charitable-donations-filter-modal" class="charitable-donations-filter button-secondary trigger-modal" data-trigger-modal><?php _e( 'Filter', 'charitable' ) ?></a>
+<a href="#charitable-donations-filter-modal" class="charitable-donations-filter button-secondary trigger-modal hide-if-no-js" data-trigger-modal><?php _e( 'Filter', 'charitable' ) ?></a>
