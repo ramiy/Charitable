@@ -73,8 +73,8 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 			add_action( 'restrict_manage_posts', array( $this, 'restrict_manage_posts' ) );
 			add_action( 'manage_posts_extra_tablenav', array( $this, 'extra_tablenav' ) );
 
-			// Export
-			add_action( 'admin_footer', array( $this, 'export' ) );
+			// Modal Forms: Export and Filter
+			add_action( 'admin_footer', array( $this, 'modal_forms' ) );
 			add_action( 'admin_enqueue_scripts', array( $this, 'load_scripts' ) );
 
 			// Sorting query
@@ -622,19 +622,20 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 
 
 		/**
-		 * Add export template to footer
+		 * Add modal template to footer
 		 *
 		 * @param   string $which
 		 * @return 	void
 		 * @access 	public
 		 * @since   1.4.0
 		 */
-		public function export() {
+		public function modal_forms() {
 			global $typenow;
 
-			/* Add the export form. */
+			/* Add the modal form. */
 			if ( in_array( $typenow, array( Charitable::DONATION_POST_TYPE ) ) ) {
 				charitable_admin_view( 'donations-page/export-form' );
+				charitable_admin_view( 'donations-page/filter-form' );
 			}
 
 
