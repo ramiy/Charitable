@@ -618,7 +618,7 @@ if ( ! class_exists( 'Charitable_Campaign_Donations_DB' ) ) :
 			global $wpdb;
 
 			if ( empty( $statuses ) ) {
-				$statuses = Charitable_Donation::get_approval_statuses();
+				$statuses = charitable_get_approval_statuses();
 			}
 
 			list( $status_clause, $parameters ) = $this->get_donation_status_clause( $statuses );
