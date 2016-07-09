@@ -748,10 +748,14 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
                
                 $ids = charitable_get_table( 'campaign_donations' )->get_donations_on_campaign( intval( $_GET[ 'campaign_id' ] ) );
 
-                if ( ! empty( $ids ) ) {  
-                    $ids = wp_list_pluck( $ids, 'donation_id' );
-                    $vars[ 'post__in' ] = (array) $ids;
+                if( ! empty( $ids ) ){
+                	$ids = wp_list_pluck( $ids, 'donation_id' );
+                } else {
+                	$ids = array(0);
                 }
+
+                $vars[ 'post__in' ] = (array) $ids;
+                
             }
 
 			return $vars;
