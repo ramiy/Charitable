@@ -8,7 +8,7 @@
  */
 
 ?>
-<div class="alignleft export">
+<div class="alignleft actions charitable-export-actions">
 	<a href="#charitable-donations-export-modal" class="charitable-donations-export button-secondary trigger-modal" data-trigger-modal><?php _e( 'Export', 'charitable' ) ?></a>
 </div>
 
