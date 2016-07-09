@@ -75,7 +75,7 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 
 			// Export
 			add_action( 'admin_footer', array( $this, 'export' ) );
-			add_action( 'admin_enqueue_scripts', array( $this, 'setup_scripts' ) );
+			add_action( 'admin_enqueue_scripts', array( $this, 'load_scripts' ) );
 
 			// Sorting query
 			add_filter( 'request', array( $this, 'request_query' ) );
@@ -650,8 +650,11 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 		 * @access 	public
 		 * @since  	1.4.0
 		 */
-		public function setup_scripts() {
-			global $post_type;
+		public function load_scripts( $hook ) {
+
+			if ( 'edit.php' != $hook ) {
+		        return;
+		    }
 
 			if ( ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ) {
 				$suffix  = '';
@@ -663,14 +666,16 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 
 			$assets_path = charitable()->get_path( 'assets', false );
 
+			// register the appropriate scripts
 			wp_register_script( 'lean-modal',
 				$assets_path . 'js/libraries/leanModal' . $suffix . '.js',
 				array( 'jquery-core' ),
-				$version
+				$version,
+				true
 			);
 
 			wp_register_style( 'lean-modal-css',
-				$assets_path . 'css/modal' . $suffix . 'css',
+				$assets_path . 'css/modal' . $suffix . '.css',
 				array(),
 				$version
 			);
@@ -678,8 +683,20 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 			wp_register_script( 'charitable-admin-donations',
 				$assets_path . 'js/charitable-admin-donations' . $suffix . '.js',
 				array( 'jquery-core', 'lean-modal' ),
-				$version
+				$version,
+				true
 			);
+
+			global $typenow;
+
+			/* Enqueue the scripts for donation page */
+			if ( in_array( $typenow, array( Charitable::DONATION_POST_TYPE ) ) ) {
+				wp_enqueue_style( 'lean-modal-css' );
+				wp_enqueue_script( 'jquery-core' );
+				wp_enqueue_script( 'lean-modal' );
+				wp_enqueue_script( 'charitable-admin-donations' );
+			}
+
 		}
 
 		/**

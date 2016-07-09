@@ -7,9 +7,6 @@
  * @since   1.0.0
  */
 
-wp_enqueue_script( 'lean-modal' );
-wp_enqueue_script( 'charitable-admin-donations' );
-wp_enqueue_style( 'lean-modal-css' );
 
 $modal_class  = apply_filters( 'charitable_modal_window_class', 'charitable-modal' );
 $start_date   = isset( $_GET['start_date'] )  ? sanitize_text_field( $_GET['start_date'] ) : null;
