@@ -873,30 +873,30 @@ select.charitable-settings-field {
     line-height: 29px;
     font-weight: 400;
     text-align: center; }
-  .charitable-donations-modal .charitable-donations-export-form {
+  .charitable-donations-modal .charitable-donations-modal-form {
     width: 80%;
     padding: 22px 10%;
     font-size: 14px;
     background-color: #fff; }
-    .charitable-donations-modal .charitable-donations-export-form legend,
-    .charitable-donations-modal .charitable-donations-export-form label,
-    .charitable-donations-modal .charitable-donations-export-form input[type=text],
-    .charitable-donations-modal .charitable-donations-export-form select,
-    .charitable-donations-modal .charitable-donations-export-form button {
+    .charitable-donations-modal .charitable-donations-modal-form legend,
+    .charitable-donations-modal .charitable-donations-modal-form label,
+    .charitable-donations-modal .charitable-donations-modal-form input[type=text],
+    .charitable-donations-modal .charitable-donations-modal-form select,
+    .charitable-donations-modal .charitable-donations-modal-form button {
       display: block; }
-    .charitable-donations-modal .charitable-donations-export-form input[type=text] {
+    .charitable-donations-modal .charitable-donations-modal-form input[type=text] {
       width: 320px;
       max-width: 100%; }
-    .charitable-donations-modal .charitable-donations-export-form input[type=text],
-    .charitable-donations-modal .charitable-donations-export-form select {
+    .charitable-donations-modal .charitable-donations-modal-form input[type=text],
+    .charitable-donations-modal .charitable-donations-modal-form select {
       max-width: 100%;
       margin-bottom: 22px; }
-    .charitable-donations-modal .charitable-donations-export-form input[type=text] {
+    .charitable-donations-modal .charitable-donations-modal-form input[type=text] {
       padding-top: 11px;
       padding-bottom: 11px; }
-    .charitable-donations-modal .charitable-donations-export-form legend,
-    .charitable-donations-modal .charitable-donations-export-form label,
-    .charitable-donations-modal .charitable-donations-export-form #charitable-export-start-date {
+    .charitable-donations-modal .charitable-donations-modal-form legend,
+    .charitable-donations-modal .charitable-donations-modal-form label,
+    .charitable-donations-modal .charitable-donations-modal-form #charitable-export-start-date {
       margin-bottom: 6px; }
 
 #charitable_dashboard_donations .hide-if-no-js {
