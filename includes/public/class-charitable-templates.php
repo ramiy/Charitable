@@ -141,6 +141,22 @@ if ( ! class_exists( 'Charitable_Templates' ) ) :
 		 * @since   1.0.0
 		 */
 		protected function get_donate_template( $template ) {
+
+			/* If a donation ID is included, make sure it belongs to the current user. */
+			$donation_id = get_query_var( 'donation_id', false );
+
+			if ( $donation_id ) {
+
+				$donation = charitable_get_donation( $donation_id );
+
+				if ( ! $donation || ! $donation->is_from_current_user() ) {
+
+					wp_safe_redirect( charitable_get_permalink( 'campaign_donation_page' ) );
+					exit();
+
+				}
+			}
+
 			do_action( 'charitable_is_donate_page' );
 
 			$new_template = apply_filters( 'charitable_donate_page_template', array( 'campaign-donation-page.php', 'page.php', 'index.php' ) );

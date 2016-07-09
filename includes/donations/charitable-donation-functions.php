@@ -19,8 +19,8 @@ if ( ! defined( 'ABSPATH' ) ) { exit; // Exit if accessed directly
  *
  * This will first attempt to retrieve it from the object cache to prevent duplicate objects.
  *
- * @param   int $donation_id
- * @param   boolean $foce
+ * @param   int     $donation_id
+ * @param   boolean $force
  * @return  Charitable_Donation
  * @since   1.0.0
  */
@@ -210,7 +210,22 @@ function charitable_cancel_donation() {
 		return false;
 	}
 
-	charitable_get_donation( $wp_query->query_vars['donation_id'] )->update_status( 'charitable-cancelled' );
+	$donation = charitable_get_donation( $wp_query->query_vars['donation_id'] );
+
+	if ( ! $donation ) {
+		return false;
+	}
+
+	/* Donations can only be cancelled if they are currently pending. */
+	if ( 'charitable-pending' != $donation->get_status() ) {
+		return false;
+	}
+
+	if ( ! $donation->is_from_current_user() ) {
+		return false;
+	}
+
+	$donation->update_status( 'charitable-cancelled' );
 
 	return true;
 }

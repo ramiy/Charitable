@@ -114,13 +114,20 @@ You can post in the [support forum](https://wordpress.org/support/plugin/charita
 == Changelog ==
 
 =======
-= 1.4.0 - Unreleased = 
+= 1.4.0 - Unreleased =
+* Scale the campaign grid gracefully when viewing on smaller screens. The `[campaigns]` shortcode now supports a `responsive` paramater, which is enabled by default. You can set it to a specific px/em amount to change the breakpoint, or set it to `0` to disable responsive styling. [#88](https://github.com/Charitable/Charitable/issues/88)
+* Include an `order` paramater for the `[campaigns]` shortcode, to reverse the direction in which campaigns are displayed. [#64](https://github.com/Charitable/Charitable/issues/64)
+* Added drag and drop support for the Picture form field, which is used in the User Avatar and Ambassadors extensions. [#111](https://github.com/Charitable/Charitable/issues/111)
 * Added a `charitable_create_donation()` function for developers who want to create donations programatically. [#109](https://github.com/Charitable/Charitable/issues/109)
 * Added a new `Charitable_Deprecated` class, which is used to record any incorrect usage of Charitable functions or methods.
+* Include the donor's phone number in the donations export CSV. [#154](https://github.com/Charitable/Charitable/issues/154)
+* When multiple gateways are enabled, the default one is listed first in the donation form. [#139](https://github.com/Charitable/Charitable/issues/139)
+* Automatically cancel a donation when the donor returns from the gateway before completing it. This works with PayPal, PayUMoney and PayFast. [#90](https://github.com/Charitable/Charitable/issues/90) and [#117](https://github.com/Charitable/Charitable/issues/117)
 * Added a `Charitable_Donor::__toString()` method, so that echoing the object simply prints out the donor name.
 * Added `charitable_sanitize_amount()` function to convert any amount of type string into a float.
 * Trim the currency symbol from monetary amounts to prevent the symbol being treated as part of the amount. [#145](https://github.com/Charitable/Charitable/pull/145)
 * Trim the currency symbol from the suggested donation amounts when saving a campaign. [#147](https://github.com/Charitable/Charitable/issues/147)
+* When a donation fails and the user is redirected back to the donation form, they can re-attempt the same donation. Previously, a new donation would have been created, leaving a phantom pending donation behind. [#106](https://github.com/Charitable/Charitable/issues/106)
 
 = 1.3.7 = 
 * Makes `Charitable_Currency::get_currency_symbol()` a publicly accessible method.

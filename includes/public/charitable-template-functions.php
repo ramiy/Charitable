@@ -620,7 +620,7 @@ if ( ! function_exists( 'charitable_template_donation_receipt_output' ) ) :
 
 		ob_start();
 
-		if ( ! charitable_user_can_access_receipt( $donation ) ) {
+		if ( ! $donation->is_from_current_user() ) {
 
 			charitable_template( 'donation-receipt/not-authorized.php', array( 'content' => $content ) );
 

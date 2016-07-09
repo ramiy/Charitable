@@ -450,6 +450,36 @@ if ( ! class_exists( 'Charitable_Abstract_Donation' ) ) :
 		}
 
 		/**
+		 * Checks whether the donation is from the current user.
+		 *
+		 * @return  boolean
+		 * @access  public
+		 * @since   1.4.0
+		 */
+		public function is_from_current_user() {
+
+			/* If the donation key is stored in the session, the user can access this receipt */
+			if ( charitable_get_session()->has_donation_key( $this->get_donation_key() ) ) {
+				return true;
+			}
+
+			if ( ! is_user_logged_in() ) {
+				return false;
+			}
+
+			/* Retrieve the donor and current logged in user */
+			$donor = $this->get_donor();
+			$user  = wp_get_current_user();
+
+			/* Make sure they match */
+			if ( $donor->ID ) {
+				return $donor->ID == $user->ID;
+			}
+
+			return $donor->get_email() == $user->user_email;
+		}
+
+		/**
 		 * Add a message to the donation log.
 		 *
 		 * @param   string $message
