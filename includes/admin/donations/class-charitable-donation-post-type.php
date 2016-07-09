@@ -551,17 +551,13 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 		 */
 		public function bulk_messages( $bulk_messages, $bulk_counts ) {
 
-			$post_obj = get_post_type_object( Charitable::DONATION_POST_TYPE );
-			$singular = strtolower( $post_obj->labels->singular_name );
-			$plural = strtolower( $post_obj->labels->name );
-
 			$bulk_messages[ Charitable::DONATION_POST_TYPE ] = array(
-				'updated'   => _n( "%d $singular updated.", "%d $plural updated.", $bulk_counts['updated'], 'charitable' ),
-				'locked'    => ( 1 == $bulk_counts['locked'] ) ? __( "1 $singular not updated, somebody is editing it." ) :
-				                   _n( "%s $singular not updated, somebody is editing it.", "%s $plural not updated, somebody is editing them.", $bulk_counts['locked'], 'charitable' ),
-				'deleted'   => _n( "%s $singular permanently deleted.", "%s $plural permanently deleted.", $bulk_counts['deleted'], 'charitable' ),
-				'trashed'   => _n( "%s $singular moved to the Trash.", "%s $plural moved to the Trash.", $bulk_counts['trashed'], 'charitable' ),
-				'untrashed' => _n( "%s $singular restored from the Trash.", "%s $plural restored from the Trash.", $bulk_counts['untrashed'], 'charitable' ),
+				'updated'   => _n( "%d donation updated.", "%d donations updated.", $bulk_counts['updated'], 'charitable' ),
+				'locked'    => ( 1 == $bulk_counts['locked'] ) ? __( "1 donation not updated, somebody is editing it." ) :
+				                   _n( "%s donation not updated, somebody is editing it.", "%s donations not updated, somebody is editing them.", $bulk_counts['locked'], 'charitable' ),
+				'deleted'   => _n( "%s donation permanently deleted.", "%s donations permanently deleted.", $bulk_counts['deleted'], 'charitable' ),
+				'trashed'   => _n( "%s donation moved to the Trash.", "%s donations moved to the Trash.", $bulk_counts['trashed'], 'charitable' ),
+				'untrashed' => _n( "%s donation restored from the Trash.", "%s donations restored from the Trash.", $bulk_counts['untrashed'], 'charitable' ),
 			);
 
 			return $bulk_messages;
