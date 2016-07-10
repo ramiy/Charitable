@@ -38,7 +38,7 @@ if ( ! class_exists( 'Charitable_Gateways' ) ) :
 		private $gateways;
 
 		/**
-	 	* Set up the class.
+		* Set up the class.
 		 *
 		 * Note that the only way to instantiate an object is with the charitable_start method,
 		 * which can only be called during the start phase. In other words, don't try
@@ -275,6 +275,52 @@ if ( ! class_exists( 'Charitable_Gateways' ) ) :
 		}
 
 		/**
+		 * Checks whether all of the active gateways support a feature.
+		 *
+		 * If ANY gateway doesn't support the feature, this returns false.
+		 *
+		 * @param 	string $feature
+		 * @return  boolean
+		 * @access  public
+		 * @since   1.4.0
+		 */
+		public function all_gateways_support( $feature ) {
+			foreach ( $this->get_active_gateways() as $gateway_id => $gateway_class ) {
+
+				$gateway_object = new $gateway_class;
+
+				if ( false === $gateway_object->supports( $feature ) ) {
+					return false;
+				}
+			}
+
+			return true;
+		}
+
+		/**
+		 * Checks whether any of the active gateways support a feature.
+		 *
+		 * If any gateway supports the feature, this returns true. Otherwise false.
+		 *
+		 * @param 	string $feature
+		 * @return  boolean
+		 * @access  public
+		 * @since   1.4.0
+		 */
+		public function any_gateway_supports( $feature ) {
+			foreach ( $this->get_active_gateways() as $gateway_id => $gateway_class ) {
+
+				$gateway_object = new $gateway_class;
+
+				if ( true === $gateway_object->supports( $feature ) ) {
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		/**
 		 * Checks whether all of the active gateways support AJAX.
 		 *
 		 * If ANY gateway doesn't support AJAX, this returns false.
@@ -284,16 +330,7 @@ if ( ! class_exists( 'Charitable_Gateways' ) ) :
 		 * @since   1.3.0
 		 */
 		public function gateways_support_ajax() {
-			foreach ( $this->get_active_gateways() as $gateway_id => $gateway_class ) {
-
-				$gateway_object = new $gateway_class;
-
-				if ( false === $gateway_object->supports( '1.3.0' ) ) {
-					return false;
-				}
-			}
-
-			return true;
+			return $this->all_gateways_support( '1.3.0' );
 		}
 
 		/**
