@@ -4,7 +4,7 @@
  * Contains tests for functions added in `includes/donations/charitable-donation-functions.php`.
  */
 
-class Test_Charitable_Donation_Functions extends WP_UnitTestCase {
+class Test_Charitable_Donation_Functions extends Charitable_UnitTestCase {
 
 	public function setUp() {
 		parent::setUp();

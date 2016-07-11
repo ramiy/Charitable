@@ -4,7 +4,7 @@
  * Contains tests for functions added in `includes/public/charitable-page-functions.php`.
  */
 
-class Test_Charitable_Page_Functions extends WP_UnitTestCase {
+class Test_Charitable_Page_Functions extends Charitable_UnitTestCase {
 
 	private static $campaign_id;
 

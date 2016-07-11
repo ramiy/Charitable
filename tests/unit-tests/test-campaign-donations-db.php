@@ -1,6 +1,6 @@
 <?php
 
-class Test_Campaign_Donations_DB extends WP_UnitTestCase {
+class Test_Campaign_Donations_DB extends Charitable_UnitTestCase {
 	
 	public function setUp() {
 		parent::setUp();

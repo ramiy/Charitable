@@ -1,6 +1,6 @@
 <?php
 
-class Test_Charitable_User extends WP_UnitTestCase {
+class Test_Charitable_User extends Charitable_UnitTestCase {
 
 	/**
 	 * We have three different users to test several different 

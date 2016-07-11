@@ -1,6 +1,6 @@
 <?php
 
-class Test_Charitable_Campaigns extends WP_UnitTestCase {
+class Test_Charitable_Campaigns extends Charitable_UnitTestCase {
 
 	private $post;
 

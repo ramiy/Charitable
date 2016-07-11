@@ -1181,7 +1181,11 @@ abstract class Charitable_Email implements Charitable_Email_Interface {
      * @since   1.0.0
      */
     protected function return_value_if_has_valid_donation( $return, $fallback = "" ) {
-        _deprecated_function( __METHOD__, '1.3.6', __( 'This function was buggy and has been deprecated.', 'charitable' ) );
+        charitable_get_deprecated()->deprecated_function(
+            __METHOD__,
+            '1.3.6',
+            __( 'This function was buggy and has been deprecated.', 'charitable' )
+        );
         
         if ( ! $this->has_valid_donation() ) {
             return $fallback;

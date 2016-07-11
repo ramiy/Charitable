@@ -1,6 +1,6 @@
 <?php
 
-class Test_Charitable_Currency_Helper extends WP_UnitTestCase {
+class Test_Charitable_Currency_Helper extends Charitable_UnitTestCase {
 	
 	private $currency_helper;
 

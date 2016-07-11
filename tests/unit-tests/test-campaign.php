@@ -1,6 +1,6 @@
 <?php
 
-class Test_Charitable_Campaign extends WP_UnitTestCase {	
+class Test_Charitable_Campaign extends Charitable_UnitTestCase {	
 
 	/** 
 	 * There are two campaigns. 

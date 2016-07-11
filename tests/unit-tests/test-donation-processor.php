@@ -1,6 +1,6 @@
 <?php
 
-class Test_Donation_Processor extends WP_UnitTestCase {
+class Test_Donation_Processor extends Charitable_UnitTestCase {
 
     private $donation_1;
     private $donation_2;
