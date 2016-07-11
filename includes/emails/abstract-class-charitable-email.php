@@ -77,12 +77,12 @@ abstract class Charitable_Email implements Charitable_Email_Interface {
      * @since   1.0.0
      */
     public function __construct( $objects = array() ) {
-        $this->donation = isset( $objects[ 'donation' ] ) ? $objects[ 'donation' ] : null;
-        $this->campaign = isset( $objects[ 'campaign' ] ) ? $objects[ 'campaign' ] : null;
+        $this->donation = isset( $objects['donation'] ) ? $objects['donation'] : null;
+        $this->campaign = isset( $objects['campaign'] ) ? $objects['campaign'] : null;
 
-        add_filter( 'charitable_email_content_fields', array( $this, 'add_donation_content_fields' ), 10, 2 );
+        add_filter( 'charitable_email_content_fields',         array( $this, 'add_donation_content_fields' ), 10, 2 );
         add_filter( 'charitable_email_preview_content_fields', array( $this, 'add_preview_donation_content_fields' ), 10, 2 );
-        add_filter( 'charitable_email_content_fields', array( $this, 'add_campaign_content_fields' ), 10, 2 );
+        add_filter( 'charitable_email_content_fields',         array( $this, 'add_campaign_content_fields' ), 10, 2 );
         add_filter( 'charitable_email_preview_content_fields', array( $this, 'add_preview_campaign_content_fields' ), 10, 2 );
     }
 
@@ -210,7 +210,7 @@ abstract class Charitable_Email implements Charitable_Email_Interface {
      * @since   1.3.5
      */
     public function is_preview() {
-        return isset( $_GET[ 'charitable_action' ] ) && 'preview_email' == $_GET[ 'charitable_action' ];
+        return isset( $_GET['charitable_action'] ) && 'preview_email' == $_GET['charitable_action'];
     }
 
     /**
@@ -234,7 +234,7 @@ abstract class Charitable_Email implements Charitable_Email_Interface {
         }
 
         if ( isset( $fields[ $field ] ) ) {
-            add_filter( 'charitable_email_content_field_value_' . $field, $fields[ $field ][ 'callback' ], 10, 3 );
+            add_filter( 'charitable_email_content_field_value_' . $field, $fields[ $field ]['callback'], 10, 3 );
         }        
 
         return apply_filters( 'charitable_email_content_field_value_' . $field, '', $args, $this );
@@ -346,7 +346,7 @@ abstract class Charitable_Email implements Charitable_Email_Interface {
             return $settings;
         }
 
-        $settings[ 'recipient' ] = array(
+        $settings['recipient'] = array(
             'type'      => 'text',
             'title'     => __( 'Recipients', 'charitable' ), 
             'help'      => __( 'A comma-separated list of email address that will receive this email.', 'charitable' ),
@@ -374,37 +374,47 @@ abstract class Charitable_Email implements Charitable_Email_Interface {
             return $fields;
         }
 
-        $fields[ 'donor' ] = array(
+        $fields['donor'] = array(
             'description'   => __( 'The full name of the donor', 'charitable' ),
             'callback'      => array( $this, 'get_donor_full_name' )
         );
          
-        $fields[ 'donor_first_name' ] = array(
+        $fields['donor_first_name'] = array(
             'description'   => __( 'The first name of the donor', 'charitable' ), 
             'callback'      => array( $this, 'get_donor_first_name' )
         );
 
-        $fields[ 'donor_email' ] = array(
+        $fields['donor_email'] = array(
             'description'   => __( 'The email address of the donor', 'charitable' ),
             'callback'      => array( $this, 'get_donor_email' )
         );
 
-        $fields[ 'donation_id' ] = array(
+        $fields['donor_address'] = array(
+            'description'   => __( 'The donor\'s address', 'charitable' ),
+            'callback'      => array( $this, 'get_donor_address')
+        );
+
+        $fields['donor_phone'] = array(
+            'description'   => __( 'The donor\'s phone number', 'charitable' ),
+            'callback'      => array( $this, 'get_donor_phone')
+        );
+
+        $fields['donation_id'] = array(
             'description'   => __( 'The donation ID', 'charitable' ), 
             'callback'      => array( $this, 'get_donation_id' )
         );
 
-        $fields[ 'donation_summary' ] = array(
+        $fields['donation_summary'] = array(
             'description'   => __( 'A summary of the donation', 'charitable' ), 
             'callback'      => array( $this, 'get_donation_summary' )
         );
 
-        $fields[ 'donation_date' ] = array(
+        $fields['donation_date'] = array(
             'description'   => __( 'The date the donation was made', 'charitable' ),
             'callback'      => array( $this, 'get_donation_date' )
         );
 
-        $fields[ 'donation_status' ] = array(
+        $fields['donation_status'] = array(
             'description'   => __( 'The status of the donation (pending, paid, etc.)', 'charitable' ),
             'callback'      => array( $this, 'get_donation_status' )
         );
@@ -443,7 +453,7 @@ abstract class Charitable_Email implements Charitable_Email_Interface {
     }
 
     /**
-     * Return the full name of the donor. 
+     * Return the email of the donor. 
      *
      * @return  string
      * @access  public
@@ -455,6 +465,36 @@ abstract class Charitable_Email implements Charitable_Email_Interface {
         }
 
         return $this->donation->get_donor()->get_email();
+    }
+
+    /**
+     * Return the address of the donor. 
+     *
+     * @return  string
+     * @access  public
+     * @since   1.4.0
+     */
+    public function get_donor_address() {
+        if ( ! $this->has_valid_donation() ) {
+            return '';
+        }
+
+        return $this->donation->get_donor()->get_address();
+    }
+
+    /**
+     * Return the donor's phone number.
+     *
+     * @return  string
+     * @access  public
+     * @since   1.4.0
+     */
+    public function get_donor_phone() {
+        if ( ! $this->has_valid_donation() ) {
+            return '';
+        }
+
+        return $this->donation->get_donor()->get_donor_meta( 'phone' );
     }
 
     /**
@@ -511,7 +551,7 @@ abstract class Charitable_Email implements Charitable_Email_Interface {
             return '';
         }
 
-        $format = isset( $args[ 'format' ] ) ? $args[ 'format' ] : get_option( 'date_format' );
+        $format = isset( $args['format'] ) ? $args['format'] : get_option( 'date_format' );
 
         return $this->donation->get_date( $format );
     }
@@ -549,14 +589,25 @@ abstract class Charitable_Email implements Charitable_Email_Interface {
             return $fields;
         }
 
-        $fields[ 'donor' ]              = 'John Deere';
-        $fields[ 'donor_first_name' ]   = 'John';
-        $fields[ 'donor_email' ]        = 'john@example.com';
-        $fields[ 'donation_id' ]        = 164;
-        $fields[ 'donation_summary' ]   = __( 'Fake Campaign: $50.00', 'charitable' ) . PHP_EOL;
-        $fields[ 'donation_date' ]      = date_i18n( get_option( 'date_format' ) );
-        $fields[ 'donation_status' ]    = __( 'Paid', 'charitable' );
-
+        $fields['donor']            = 'John Deere';
+        $fields['donor_first_name'] = 'John';
+        $fields['donor_email']      = 'john@example.com';
+        $fields['donor_address']    = charitable_get_location_helper()->get_formatted_address( array(
+            'first_name' => 'John',
+            'last_name'  => 'Deere', 
+            'company'    => 'Deere & Company',
+            'address'    => 'One John Deere Place',
+            'city'       => 'Moline',
+            'state'      => 'Illinois' ,
+            'postcode'   => '61265',
+            'country'    => 'US',
+        ) );        
+        // Yes, this is in fact the address of John Deere headquarters :)
+        $fields['donor_phone']      = '1300 000 000';
+        $fields['donation_id']      = 164;
+        $fields['donation_summary'] = __( 'Fake Campaign: $50.00', 'charitable' ) . PHP_EOL;
+        $fields['donation_date']    = date_i18n( get_option( 'date_format' ) );
+        $fields['donation_status']  = __( 'Paid', 'charitable' );
         return $fields;
     }
 
@@ -578,47 +629,47 @@ abstract class Charitable_Email implements Charitable_Email_Interface {
             return $fields;
         }
 
-        $fields[ 'campaign_title' ] = array(
+        $fields['campaign_title'] = array(
             'description'   => __( 'The title of the campaign', 'charitable' ), 
             'callback'      => array( $this, 'get_campaign_title' )
         );
 
-        $fields[ 'campaign_creator' ] = array(
+        $fields['campaign_creator'] = array(
             'description'   => __( 'The name of the campaign creator', 'charitable' ), 
             'callback'      => array( $this, 'get_campaign_creator' )
         );
 
-        $fields[ 'campaign_creator_email' ] = array(
+        $fields['campaign_creator_email'] = array(
             'description'   => __( 'The email address of the campaign creator', 'charitable' ), 
             'callback'      => array( $this, 'get_campaign_creator_email' )
         );
 
-        $fields[ 'campaign_end_date' ] = array(
+        $fields['campaign_end_date'] = array(
             'description'   => __( 'The end date of the campaign', 'charitable' ), 
             'callback'      => array( $this, 'get_campaign_end_date' ) 
         );
 
-        $fields[ 'campaign_achieved_goal' ] = array(
+        $fields['campaign_achieved_goal'] = array(
             'description'   => __( 'Display whether the campaign reached its goal. Add a `success` parameter as the message when the campaign was successful, and a `failure` parameter as the message when the campaign is not successful', 'charitable' ),
             'callback'      => array( $this, 'get_campaign_achieved_goal' )
         );
 
-        $fields[ 'campaign_donated_amount' ] = array(
+        $fields['campaign_donated_amount'] = array(
             'description'   => __( 'Display the total amount donated to the campaign', 'charitable' ),
             'callback'      => array( $this, 'get_campaign_donated_amount' )
         );
 
-        $fields[ 'campaign_donor_count' ] = array(
+        $fields['campaign_donor_count'] = array(
             'description'   => __( 'Display the number of campaign donors', 'charitable' ),
             'callback'      => array( $this, 'get_campaign_donor_count' )
         );
 
-        $fields[ 'campaign_goal' ] = array(
+        $fields['campaign_goal'] = array(
             'description'   => __( 'Display the campaign\'s fundraising goal', 'charitable' ),
             'callback'      => array( $this, 'get_campaign_goal' )
         );        
 
-        $fields[ 'campaign_url' ] = array(
+        $fields['campaign_url'] = array(
           'description'     => __( 'Display the campaign\'s URL', 'charitable' ),
           'callback'        => array( $this, 'get_campaign_url' )
         );
@@ -712,10 +763,10 @@ abstract class Charitable_Email implements Charitable_Email_Interface {
         $args = wp_parse_args( $args, $defaults );
 
         if ( $this->campaign->has_achieved_goal() ) {
-            return $args[ 'success' ];
+            return $args['success'];
         }
 
-        return $args[ 'failure' ];
+        return $args['failure'];
     }
 
     /**
@@ -796,15 +847,15 @@ abstract class Charitable_Email implements Charitable_Email_Interface {
             return $fields;
         }
 
-        $fields[ 'campaign_title' ]         = 'Fake Campaign';
-        $fields[ 'campaign_creator' ]       = 'Harry Ferguson';
-        $fields[ 'campaign_creator_email' ] = 'harry@example.com';
-        $fields[ 'campaign_end_date' ]      = date( get_option('date_format', 'd/m/Y') );
-        $fields[ 'campaign_achieved_goal' ] = 'The campaign achieved its fundraising goal.';
-        $fields[ 'campaign_donated_amount' ] = '$16,523';
-        $fields[ 'campaign_donor_count' ]   = 23;
-        $fields[ 'campaign_goal' ]          = '$15,000';
-        $fields[ 'campaign_url' ]           = 'http://www.example.com/campaigns/fake-campaign';
+        $fields['campaign_title']         = 'Fake Campaign';
+        $fields['campaign_creator']       = 'Harry Ferguson';
+        $fields['campaign_creator_email'] = 'harry@example.com';
+        $fields['campaign_end_date']      = date( get_option('date_format', 'd/m/Y') );
+        $fields['campaign_achieved_goal'] = 'The campaign achieved its fundraising goal.';
+        $fields['campaign_donated_amount'] = '$16,523';
+        $fields['campaign_donor_count']   = 23;
+        $fields['campaign_goal']          = '$15,000';
+        $fields['campaign_url']           = 'http://www.example.com/campaigns/fake-campaign';
         return $fields;
     }
 
@@ -897,7 +948,7 @@ abstract class Charitable_Email implements Charitable_Email_Interface {
      * @since   1.0.0
      */
     public function set_preview_mode( $atts ) {
-        $atts[ 'preview' ] = true;
+        $atts['preview'] = true;
         return $atts;
     }
 
@@ -1099,7 +1150,7 @@ abstract class Charitable_Email implements Charitable_Email_Interface {
         <p><?php _e( 'The following options are available with the <code>[charitable_email]</code> shortcode:', 'charitable' ) ?></p>
         <ul>
         <?php foreach ( $this->get_fields() as $key => $field ) : ?>
-            <li><strong><?php echo $field[ 'description' ] ?></strong>: [charitable_email show=<?php echo $key ?>]</li>
+            <li><strong><?php echo $field['description'] ?></strong>: [charitable_email show=<?php echo $key ?>]</li>
         <?php endforeach ?> 
         </ul>
 
