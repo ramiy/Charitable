@@ -280,9 +280,9 @@ if ( ! class_exists( 'Charitable_User' ) ) :
 		 * @since   1.0.0
 		 */
 		public function get_location() {
-			$city = $this->get( 'donor_city' );
-			$state = $this->get( 'donor_state' );
-			$country = $this->get( 'donor_country' );
+			$city     = $this->get( 'donor_city' );
+			$state    = $this->get( 'donor_state' );
+			$country  = $this->get( 'donor_country' );
 			$location = '';
 
 			if ( strlen( $city ) || strlen( $state ) ) {
@@ -339,15 +339,15 @@ if ( ! class_exists( 'Charitable_User' ) ) :
 			if ( ! is_array( $address_fields ) ) {
 
 				$address_fields = array(
-				'first_name'    => $this->get( 'first_name' ),
-				'last_name'     => $this->get( 'last_name' ),
-				'company'       => $this->get( 'donor_company' ),
-				'address'       => $this->get( 'donor_address' ),
-				'address_2'     => $this->get( 'donor_address_2' ),
-				'city'          => $this->get( 'donor_city' ),
-				'state'         => $this->get( 'donor_state' ),
-				'postcode'      => $this->get( 'donor_postcode' ),
-				'country'       => $this->get( 'donor_country' ),
+					'first_name'    => $this->get( 'first_name' ),
+					'last_name'     => $this->get( 'last_name' ),
+					'company'       => $this->get( 'donor_company' ),
+					'address'       => $this->get( 'donor_address' ),
+					'address_2'     => $this->get( 'donor_address_2' ),
+					'city'          => $this->get( 'donor_city' ),
+					'state'         => $this->get( 'donor_state' ),
+					'postcode'      => $this->get( 'donor_postcode' ),
+					'country'       => $this->get( 'donor_country' ),
 				);
 
 			}

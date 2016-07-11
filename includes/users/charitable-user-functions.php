@@ -45,16 +45,16 @@ function charitable_get_user( $user_id, $force = false ) {
  */
 function charitable_get_user_mapped_keys() {
 	return apply_filters( 'charitable_donor_mapped_keys', array(
-		'email' => 'user_email',
-		'company' => 'donor_company',
-		'address' => 'donor_address',
-		'address_2' => 'donor_address_2',
-		'city' => 'donor_city',
-		'state' => 'donor_state',
-		'postcode' => 'donor_postcode',
-		'zip' => 'donor_postcode',
-		'country' => 'donor_country',
-		'phone' => 'donor_phone',
+		'email' 		   => 'user_email',
+		'company' 		   => 'donor_company',
+		'address' 		   => 'donor_address',
+		'address_2' 	   => 'donor_address_2',
+		'city' 			   => 'donor_city',
+		'state' 		   => 'donor_state',
+		'postcode' 		   => 'donor_postcode',
+		'zip' 			   => 'donor_postcode',
+		'country' 		   => 'donor_country',
+		'phone' 		   => 'donor_phone',
 		'user_description' => 'description',
 	) );
 }

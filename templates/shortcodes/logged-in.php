@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
- * Displays the logged in message. 
+ * Displays the logged in message.
  *
  * Override this template by copying it to yourtheme/charitable/shortcodes/logged-in.php
  *
@@ -12,6 +12,8 @@
 
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
-$message = isset( $view_args[ 'logged_in_message' ] ) ? $view_args[ 'logged_in_message' ] : __( 'You are already logged in!', 'charitable' );
+$message = isset( $view_args['logged_in_message'] )
+	? $view_args['logged_in_message']
+	: __( 'You are already logged in!', 'charitable' );
 
 echo wpautop( $message );

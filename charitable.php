@@ -192,6 +192,7 @@ if ( ! class_exists( 'Charitable' ) ) :
 			require_once( $includes_path . 'donations/class-charitable-donation.php' );
 			require_once( $includes_path . 'donations/class-charitable-donation-factory.php' );
 			require_once( $includes_path . 'donations/class-charitable-donations.php' );
+			require_once( $includes_path . 'donations/class-charitable-donations-query.php' );
 			require_once( $includes_path . 'donations/class-charitable-donation-form.php' );
 			require_once( $includes_path . 'donations/class-charitable-donation-amount-form.php' );
 			require_once( $includes_path . 'donations/charitable-donation-hooks.php' );

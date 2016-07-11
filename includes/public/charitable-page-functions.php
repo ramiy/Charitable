@@ -130,9 +130,9 @@ add_filter( 'charitable_permalink_campaign_donation_page', 'charitable_get_campa
  * general, you should use charitable_get_permalink() instead since it will
  * take into account permalinks that have been filtered by plugins/themes.
  *
- * @global  WP_Rewrite  $wp_rewrite
- * @param   string      $url
- * @param   array       $args
+ * @global  WP_Rewrite $wp_rewrite
+ * @param   string     $url
+ * @param   array      $args
  * @return  string
  * @since   1.0.0
  */

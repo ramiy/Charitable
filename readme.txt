@@ -115,10 +115,12 @@ You can post in the [support forum](https://wordpress.org/support/plugin/charita
 
 =======
 = 1.4.0 - Unreleased =
+* Added the `[charitable_my_donations]` shortcode. Use this shortcode to allow logged in users to view a history of their donations, including links to the donation receipts. [#14](https://github.com/Charitable/Charitable/issues/14)
 * Scale the campaign grid gracefully when viewing on smaller screens. The `[campaigns]` shortcode now supports a `responsive` paramater, which is enabled by default. You can set it to a specific px/em amount to change the breakpoint, or set it to `0` to disable responsive styling. [#88](https://github.com/Charitable/Charitable/issues/88)
 * Include an `order` paramater for the `[campaigns]` shortcode, to reverse the direction in which campaigns are displayed. [#64](https://github.com/Charitable/Charitable/issues/64)
 * Added drag and drop support for the Picture form field, which is used in the User Avatar and Ambassadors extensions. [#111](https://github.com/Charitable/Charitable/issues/111)
 * Added a `charitable_create_donation()` function for developers who want to create donations programatically. [#109](https://github.com/Charitable/Charitable/issues/109)
+* Added a new `Charitable_Donations_Query` class, which can be used by developers to retrieve donations from the database. [#155](https://github.com/Charitable/Charitable/issues/155)
 * Added a new `Charitable_Deprecated` class, which is used to record any incorrect usage of Charitable functions or methods.
 * Include the donor's phone number in the donations export CSV. [#154](https://github.com/Charitable/Charitable/issues/154)
 * When multiple gateways are enabled, the default one is listed first in the donation form. [#139](https://github.com/Charitable/Charitable/issues/139)
