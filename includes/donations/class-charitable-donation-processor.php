@@ -175,7 +175,7 @@ if ( ! class_exists( 'Charitable_Donation_Processor' ) ) :
 		 */
 		public function process_donation() {
 			$processor = self::get_instance();
-			$campaign = $processor->get_campaign();
+			$campaign  = $processor->get_campaign();
 
 			if ( ! $campaign ) {
 				return;
@@ -556,6 +556,19 @@ if ( ! class_exists( 'Charitable_Donation_Processor' ) ) :
 		public function get_donation_data_value( $key, $default = false ) {
 			$data = $this->get_donation_data();
 			return isset( $data[ $key ] ) ? $data[ $key ] : $default;
+		}
+
+		/**
+		 * Set a value for a particular key.
+		 *
+		 * @param   string $key The key to set.
+		 * @param   mixed  $value The value to be set.
+		 * @return  void
+		 * @access  public
+		 * @since   1.4.0
+		 */
+		public function set_donation_data_value( $key, $value ) {
+			$this->donation_data[ $key ] = $value;
 		}
 
 		/**

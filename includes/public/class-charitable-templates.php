@@ -204,7 +204,11 @@ if ( ! class_exists( 'Charitable_Templates' ) ) :
 		 * @deprecated 1.3.0
 		 */
 		public function add_donation_page_body_class( $classes ) {
-			_deprecated_function( __METHOD__, '1.3.0', 'charitable_add_body_classes()' );
+			charitable_get_deprecated()->deprecated_function(
+				__METHOD__,
+				'1.3.0',
+				'charitable_add_body_classes()'
+			);
 
 			return $classes;
 		}
@@ -213,7 +217,11 @@ if ( ! class_exists( 'Charitable_Templates' ) ) :
 		 * @deprecated 1.3.0
 		 */
 		public function add_widget_page_body_class( $classes ) {
-			_deprecated_function( __METHOD__, '1.3.0', 'charitable_add_body_classes()' );
+			charitable_get_deprecated()->deprecated_function(
+				__METHOD__,
+				'1.3.0',
+				'charitable_add_body_classes()'
+			);
 
 			return $classes;
 		}
@@ -222,7 +230,11 @@ if ( ! class_exists( 'Charitable_Templates' ) ) :
 		 * @deprecated 1.3.0
 		 */
 		public function remove_admin_bar_from_widget_template() {
-			_deprecated_function( __METHOD__, '1.3.0', 'charitable_hide_admin_bar()' );
+			charitable_get_deprecated()->deprecated_function(
+				__METHOD__,
+				'1.3.0',
+				'charitable_hide_admin_bar()'
+			);
 
 			return charitable_hide_admin_bar();
 		}
@@ -231,7 +243,11 @@ if ( ! class_exists( 'Charitable_Templates' ) ) :
 		 * @deprecated 1.3.0
 		 */
 		public function donation_receipt_template( $template ) {
-			_deprecated_function( __METHOD__, '1.3.0', 'Charitable_Templates::template_loader() or Charitable_Templates::get_donation_receipt_template()' );
+			charitable_get_deprecated()->deprecated_function(
+				__METHOD__,
+				'1.3.0',
+				'Charitable_Templates::template_loader() or Charitable_Templates::get_donation_receipt_template()'
+			);
 
 			return get_donation_receipt_template( $template );
 		}
@@ -240,7 +256,11 @@ if ( ! class_exists( 'Charitable_Templates' ) ) :
 		 * @deprecated 1.3.0
 		 */
 		public function donation_processing_template( $template ) {
-			_deprecated_function( __METHOD__, '1.3.0', 'Charitable_Templates::template_loader() or Charitable_Templates::get_donation_processing_template()' );
+			charitable_get_deprecated()->deprecated_function(
+				__METHOD__,
+				'1.3.0',
+				'Charitable_Templates::template_loader() or Charitable_Templates::get_donation_processing_template()'
+			);
 
 			return get_donation_processing_template( $template );
 		}
@@ -249,7 +269,11 @@ if ( ! class_exists( 'Charitable_Templates' ) ) :
 		 * @deprecated 1.3.0
 		 */
 		public function donate_template( $template ) {
-			_deprecated_function( __METHOD__, '1.3.0', 'Charitable_Templates::template_loader() or Charitable_Templates::get_donate_template()' );
+			charitable_get_deprecated()->deprecated_function(
+				__METHOD__,
+				'1.3.0',
+				'Charitable_Templates::template_loader() or Charitable_Templates::get_donate_template()'
+			);
 
 			return get_donate_template( $template );
 		}
@@ -258,7 +282,11 @@ if ( ! class_exists( 'Charitable_Templates' ) ) :
 		 * @deprecated 1.3.0
 		 */
 		public function widget_template( $template ) {
-			_deprecated_function( __METHOD__, '1.3.0', 'Charitable_Templates::template_loader() or Charitable_Templates::get_widget_template()' );
+			charitable_get_deprecated()->deprecated_function(
+				__METHOD__,
+				'1.3.0',
+				'Charitable_Templates::template_loader() or Charitable_Templates::get_widget_template()'
+			);
 
 			return get_widget_template( $template );
 		}
@@ -267,7 +295,11 @@ if ( ! class_exists( 'Charitable_Templates' ) ) :
 		 * @deprecated 1.3.0
 		 */
 		public function email_template( $template ) {
-			_deprecated_function( __METHOD__, '1.3.0', 'Charitable_Templates::template_loader() or Charitable_Templates::get_email_template()' );
+			charitable_get_deprecated()->deprecated_function(
+				__METHOD__,
+				'1.3.0',
+				'Charitable_Templates::template_loader() or Charitable_Templates::get_email_template()'
+			);
 
 			return get_email_template( $template );
 		}
