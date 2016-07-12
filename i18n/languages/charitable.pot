@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Charitable 1.4.0\n"
 "Report-Msgid-Bugs-To: https://www.wpcharitable.com/\n"
-"POT-Creation-Date: 2016-06-29 07:43:12+00:00\n"
+"POT-Creation-Date: 2016-07-07 13:45:35+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -24,7 +24,7 @@ msgstr ""
 "X-Poedit-Bookmarks: \n"
 "X-Textdomain-Support: yes\n"
 
-#: charitable.php:685 charitable.php:696
+#: charitable.php:697 charitable.php:708
 msgid "Cheatin&#8217; huh?"
 msgstr ""
 
@@ -4784,7 +4784,7 @@ msgstr ""
 
 #: includes/admin/campaigns/class-charitable-campaign-post-type.php:249
 #: includes/admin/campaigns/class-charitable-campaign-post-type.php:250
-#: includes/admin/class-charitable-admin.php:146
+#: includes/admin/class-charitable-admin.php:147
 #: includes/admin/donations/class-charitable-donations-table.php:145
 msgid "Amount"
 msgstr ""
@@ -4794,7 +4794,7 @@ msgid "Description (optional)"
 msgstr ""
 
 #: includes/admin/campaigns/class-charitable-campaign-post-type.php:254
-#: includes/admin/class-charitable-admin.php:147
+#: includes/admin/class-charitable-admin.php:148
 msgid "Optional Description"
 msgstr ""
 
@@ -4828,12 +4828,12 @@ msgstr ""
 
 #: includes/admin/class-charitable-admin-pages.php:148
 #: includes/admin/class-charitable-admin-pages.php:149
-#: includes/admin/class-charitable-admin.php:163
+#: includes/admin/class-charitable-admin.php:164
 msgid "Settings"
 msgstr ""
 
-#: includes/admin/class-charitable-admin.php:189
-#: includes/admin/settings/class-charitable-settings.php:106
+#: includes/admin/class-charitable-admin.php:190
+#: includes/admin/settings/class-charitable-settings.php:107
 msgid "Extensions"
 msgstr ""
 
@@ -5116,6 +5116,7 @@ msgid "Choose how you want a campaign's donation form to show."
 msgstr ""
 
 #: includes/admin/settings/class-charitable-general-settings.php:154
+#: includes/admin/settings/class-charitable-user-management-settings.php:76
 msgid "Pages"
 msgstr ""
 
@@ -5130,50 +5131,22 @@ msgid ""
 msgstr ""
 
 #: includes/admin/settings/class-charitable-general-settings.php:166
-msgid "Login Page"
+msgid "Donation Receipt Page"
 msgstr ""
 
 #: includes/admin/settings/class-charitable-general-settings.php:171
-msgid "Use WordPress Login"
+msgid "Automatic"
 msgstr ""
 
 #: includes/admin/settings/class-charitable-general-settings.php:174
-#: includes/admin/settings/class-charitable-general-settings.php:189
-#: includes/admin/settings/class-charitable-general-settings.php:203
+#: includes/admin/settings/class-charitable-user-management-settings.php:89
+#: includes/admin/settings/class-charitable-user-management-settings.php:104
+#: includes/admin/settings/class-charitable-user-management-settings.php:118
+#: includes/admin/settings/class-charitable-user-management-settings.php:132
 msgid "Choose a Static Page"
 msgstr ""
 
 #: includes/admin/settings/class-charitable-general-settings.php:177
-msgid ""
-"Allow users to login via the normal WordPress login page or via a static "
-"page. The static page should contain the <code>[charitable_login]</code> "
-"shortcode."
-msgstr ""
-
-#: includes/admin/settings/class-charitable-general-settings.php:181
-msgid "Registration Page"
-msgstr ""
-
-#: includes/admin/settings/class-charitable-general-settings.php:186
-msgid "Use WordPress Registration Page"
-msgstr ""
-
-#: includes/admin/settings/class-charitable-general-settings.php:192
-msgid ""
-"Allow users to register via the default WordPress login or via a static "
-"page. The static page should contain the "
-"<code>[charitable_registration]</code> shortcode."
-msgstr ""
-
-#: includes/admin/settings/class-charitable-general-settings.php:195
-msgid "Donation Receipt Page"
-msgstr ""
-
-#: includes/admin/settings/class-charitable-general-settings.php:200
-msgid "Automatic"
-msgstr ""
-
-#: includes/admin/settings/class-charitable-general-settings.php:206
 msgid ""
 "Choose the page that users will be redirected to after donating. Leave it "
 "set to automatic to use the built-in Charitable receipt. If you choose a "
@@ -5198,7 +5171,87 @@ msgid "Licenses"
 msgstr ""
 
 #: includes/admin/settings/class-charitable-settings.php:79
+msgid "User Management"
+msgstr ""
+
+#: includes/admin/settings/class-charitable-settings.php:80
 msgid "Advanced"
+msgstr ""
+
+#: includes/admin/settings/class-charitable-user-management-settings.php:81
+msgid "Login Page"
+msgstr ""
+
+#: includes/admin/settings/class-charitable-user-management-settings.php:86
+msgid "Use WordPress Login"
+msgstr ""
+
+#: includes/admin/settings/class-charitable-user-management-settings.php:92
+msgid ""
+"Allow users to login via the normal WordPress login page or via a static "
+"page. The static page should contain the <code>[charitable_login]</code> "
+"shortcode."
+msgstr ""
+
+#: includes/admin/settings/class-charitable-user-management-settings.php:124
+msgid "Registration Page"
+msgstr ""
+
+#: includes/admin/settings/class-charitable-user-management-settings.php:129
+msgid "Use WordPress Registration Page"
+msgstr ""
+
+#: includes/admin/settings/class-charitable-user-management-settings.php:135
+msgid ""
+"Allow users to register via the default WordPress login or via a static "
+"page. The static page should contain the "
+"<code>[charitable_registration]</code> shortcode."
+msgstr ""
+
+#: includes/admin/settings/class-charitable-user-management-settings.php:138
+msgid "WP Admin"
+msgstr ""
+
+#: includes/admin/settings/class-charitable-user-management-settings.php:143
+msgid "View WP Admin Bar"
+msgstr ""
+
+#: includes/admin/settings/class-charitable-user-management-settings.php:148
+msgid ""
+"Selected roles will see the WP Admin bar when logged in. Administrators can "
+"<em>always</em> see WP Admin bar."
+msgstr ""
+
+#: includes/admin/settings/class-charitable-user-management-settings.php:151
+msgid "View WP Admin"
+msgstr ""
+
+#: includes/admin/settings/class-charitable-user-management-settings.php:156
+msgid ""
+"Selected roles will view WP Admin by visiting /wp-admin. Other users will "
+"be given a 404 page when attempting to view WP Admin. Administrators can "
+"<em>always</em> see WP Admin."
+msgstr ""
+
+#: includes/admin/settings/class-charitable-user-management-settings.php:159
+msgid "404 Page"
+msgstr ""
+
+#: includes/admin/settings/class-charitable-user-management-settings.php:163
+msgid ""
+"Page to which the user is redirected if user attempts to visit /wp-admin "
+"and is not on the allowed user list"
+msgstr ""
+
+#: includes/admin/settings/class-charitable-user-management-settings.php:166
+msgid "Hide Default WP Login Page"
+msgstr ""
+
+#: includes/admin/settings/class-charitable-user-management-settings.php:170
+msgid ""
+"Hide the default WordPress Login page entirely. Users will be automatically "
+"redirected to the pages selected above and will no longer be able to visit "
+"<code>/wp-login.php</code> directly."
 msgstr ""
 
 #: includes/admin/upgrades/class-charitable-upgrade-page.php:65
@@ -6684,6 +6737,44 @@ msgstr ""
 msgid "You are already logged in!"
 msgstr ""
 
+#: includes/user-management/class-charitable-forgot-password.php:69
+msgid "Check your email for a link to reset your password."
+msgstr ""
+
+#: includes/user-management/class-charitable-reset-password.php:92
+msgid "<strong>ERROR:</strong> The two passwords you entered don't match."
+msgstr ""
+
+#: includes/user-management/class-charitable-reset-password.php:102
+msgid "<strong>ERROR:</strong> Password must not be empty."
+msgstr ""
+
+#: includes/user-management/class-charitable-reset-password.php:113
+msgid "Your password was successfully changed."
+msgstr ""
+
+#: includes/user-management/class-charitable-reset-password.php:117
+msgid "<strong>ERROR:</strong> Bad Request"
+msgstr ""
+
+#: includes/user-management/class-charitable-reset-password.php:147
+msgid "Your password reset link has expired. Please request a new link below."
+msgstr ""
+
+#: includes/user-management/class-charitable-reset-password.php:150
+msgid ""
+"Your password reset link appears to be invalid. Please request a new link "
+"below."
+msgstr ""
+
+#: includes/user-management/class-charitable-reset-password.php:155
+msgid "There was an error with your request. Please try again."
+msgstr ""
+
+#: includes/users/class-charitable-forgot-password-form.php:53
+msgid "Email Address"
+msgstr ""
+
 #: includes/users/class-charitable-password-form.php:150
 #: includes/users/class-charitable-profile-form.php:150
 msgid "Organization"
@@ -6752,6 +6843,14 @@ msgstr ""
 msgid ""
 "charitable_user_profile_after_fields hook has been removed. Use "
 "charitable_form_after_fields instead."
+msgstr ""
+
+#: includes/users/class-charitable-reset-password-form.php:53
+msgid "New Password"
+msgstr ""
+
+#: includes/users/class-charitable-reset-password-form.php:63
+msgid "Repeat New Password"
 msgstr ""
 
 #: includes/users/class-charitable-roles.php:30
@@ -7003,6 +7102,11 @@ msgstr ""
 
 #: templates/form-fields/picture.php:92
 msgid "Uploading..."
+msgstr ""
+
+#: templates/shortcodes/forgot-password.php:42
+#: templates/shortcodes/reset-password.php:48
+msgid "Reset Password"
 msgstr ""
 
 #: templates/shortcodes/login.php:26
