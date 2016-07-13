@@ -12,25 +12,25 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 ?>
 <div class="charitable-login-form">
-    <?php
+	<?php
 
-    /**
-     * @hook    charitable_login_form_before
-     */
-    do_action( 'charitable_login_form_before' );
+	/**
+	 * @hook    charitable_login_form_before
+	 */
+	do_action( 'charitable_login_form_before' );
 
-    wp_login_form( $view_args[ 'login_form_args' ] );
+	wp_login_form( $view_args['login_form_args'] );
 
-    ?>
-    <p>
-        <a href="<?php echo wp_lostpassword_url() ?>"><?php _e( 'Forgot Password', 'charitable' ) ?></a>
-    </p>
-    <?php
+	?>
+	<p>
+		<a href="<?php echo charitable_get_permalink( 'forgot_password_page' ) ?>"><?php _e( 'Forgot Password', 'charitable' ) ?></a>
+	</p>
+	<?php
 
-    /**
-     * @hook    charitable_login_form_after
-     */
-    do_action( 'charitable_login_form_after' )
+	/**
+	 * @hook    charitable_login_form_after
+	 */
+	do_action( 'charitable_login_form_after' )
 
-    ?>
+	?>
 </div>

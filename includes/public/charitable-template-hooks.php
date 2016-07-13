@@ -41,11 +41,14 @@ add_filter( 'body_class', 'charitable_add_body_classes' );
  * @see     charitable_template_donation_form_content()
  * @see     charitable_template_donation_receipt_content()
  * @see     charitable_template_donation_processing_content()
+ * @see     charitable_template_forgot_password_content()
  */
 add_filter( 'the_content', 'charitable_template_campaign_content' );
 add_filter( 'the_content', 'charitable_template_donation_form_content' );
 add_filter( 'the_content', 'charitable_template_donation_receipt_content' );
 add_filter( 'the_content', 'charitable_template_donation_processing_content' );
+add_filter( 'the_content', 'charitable_template_forgot_password_content' );
+add_filter( 'the_content', 'charitable_template_reset_password_content' );
 
 /**
  * Single campaign, before content.

@@ -837,3 +837,54 @@ if ( ! function_exists( 'charitable_template_donation_processing_content' ) ) :
 	}
 
 endif;
+
+/**********************************************/
+/* ACCOUNT PAGE
+/**********************************************/
+
+if ( ! function_exists( 'charitable_template_forgot_password_content' ) ) :
+
+	/**
+	 * Render the content of the forgot password page.
+	 *
+	 * @param   string $content
+	 * @return  string
+	 * @since   1.4.0
+	 */
+	function charitable_template_forgot_password_content( $content = '' ) {
+		if ( ! charitable_is_page( 'forgot_password_page' ) ) {
+			return $content;
+		}
+
+		ob_start();
+
+		charitable_template( 'account/forgot-password.php', array(
+			'form' => new Charitable_Forgot_Password_Form(),
+		) );
+
+		$content = ob_get_clean();
+
+		return $content;
+	}
+
+endif;
+
+if ( ! function_exists( 'charitable_template_reset_password_content' ) ) :
+
+	/**
+	 * Render the content of the reset password page.
+	 *
+	 * @param   string $content
+	 * @return  string
+	 * @since   1.4.0
+	 */
+	function charitable_template_reset_password_content( $content = '' ) {
+		if ( ! charitable_is_page( 'reset_password_page' ) ) {
+			return $content;
+		}
+
+		charitable_template( 'account/reset-password.php' );
+	}
+
+endif;
+

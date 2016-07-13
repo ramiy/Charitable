@@ -8,58 +8,52 @@
  * @copyright   Copyright (c) 2015, Studio 164a
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
-if ( ! defined( 'ABSPATH' ) ) exit;
 
-if ( ! class_exists( 'Charitable_Forgot_Password_Form' ) && class_exists( 'Charitable_Form' ) ):
+if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-  /**
-   * Charitable_Forgot_Password_Form
-   *
-   * @since       1.4.0
-   */
-  class Charitable_Forgot_Password_Form extends Charitable_Form {
+if ( ! class_exists( 'Charitable_Forgot_Password_Form' ) ) :
 
-    /**
-     * Shortcode parameters.
-     *
-     * @var     array
-     * @access  protected
-     */
-    protected $shortcode_args;
+	/**
+	 * Charitable_Forgot_Password_Form
+	 *
+	 * @since       1.4.0
+	 */
+	class Charitable_Forgot_Password_Form extends Charitable_Form {
 
-    /**
-     * Create class object.
-     *
-     * @param   array       $args       User-defined shortcode attributes.
-     * @access  public
-     * @since   1.4.0
-     */
-    public function __construct( $args = array() ) {
-      $this->id = uniqid();
-      $this->shortcode_args = $args;
-      $this->attach_hooks_and_filters();
-    }
+		/**
+		 * Create class object.
+		 *
+		 * @param   array $args User-defined shortcode attributes.
+		 * @access  public
+		 * @since   1.4.0
+		 */
+		public function __construct() {
+			$this->id = uniqid();
+			// $this->shortcode_args = $args;
+			$this->attach_hooks_and_filters();
+		}
 
-    /**
-     * Forgot password fields to be displayed.
-     *
-     * @return  array
-     * @access  public
-     * @since   1.4.0
-     */
-    public function get_fields() {
-      $fields = apply_filters( 'charitable_forgot_password_fields', array(
-        'user_login' => array(
-          'label'               => __( 'Email Address', 'charitable' ),
-          'type'                => 'text',
-          'required'            => true,
-          'priority'            => 10,
-        ),
-      ) );
+		/**
+		 * Forgot password fields to be displayed.
+		 *
+		 * @return  array
+		 * @access  public
+		 * @since   1.4.0
+		 */
+		public function get_fields() {
+			$fields = apply_filters( 'charitable_forgot_password_fields', array(
+				'user_login' => array(
+					'label'    => __( 'Email Address', 'charitable' ),
+					'type'     => 'email',
+					'required' => true,
+					'priority' => 10,
+				),
+			) );
 
-      uasort( $fields, 'charitable_priority_sort' );
-      return $fields;
-    }
-  }
+			uasort( $fields, 'charitable_priority_sort' );
+
+			return $fields;
+		}
+	}
 
 endif;
