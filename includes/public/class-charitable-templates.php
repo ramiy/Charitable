@@ -94,6 +94,10 @@ if ( ! class_exists( 'Charitable_Templates' ) ) :
 				return $this->get_forgot_password_template( $template );
 			}
 
+			if ( charitable_is_page( 'reset_password_page' ) ) {
+				return $this->get_reset_password_template( $template );
+			}
+
 			return $template;
 
 		}
@@ -232,7 +236,40 @@ if ( ! class_exists( 'Charitable_Templates' ) ) :
 				'content' => '',
 			) );
 
-			$new_template = apply_filters( 'charitable_forgot_password_page_template', array( 'forgot-password-page.php', 'page.php', 'index.php' ) );
+			$new_template = apply_filters( 'charitable_forgot_password_page_template', array(
+				'forgot-password-page.php',
+				'page.php',
+				'index.php',
+			) );
+
+			return charitable_get_template_path( $new_template, $template );
+
+		}
+
+		/**
+		 * Load the reset password template.
+		 *
+		 * @param   string $template
+		 * @return  string
+		 * @access  protected
+		 * @since   1.4.0
+		 */
+		protected function get_reset_password_template( $template ) {
+
+			if ( 'wp' == charitable_get_option( 'login_page', 'wp' ) ) {
+				return $template;
+			}
+
+			new Charitable_Ghost_Page( 'reset-password-page', array(
+				'title'   => __( 'Reset Password', 'charitable' ),
+				'content' => '',
+			) );
+
+			$new_template = apply_filters( 'charitable_reset_password_page_template', array(
+				'reset-password-page.php',
+				'page.php',
+				'index.php',
+			) );
 
 			return charitable_get_template_path( $new_template, $template );
 

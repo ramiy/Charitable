@@ -414,6 +414,7 @@ function charitable_is_campaign_page() {
  * take into account permalinks that have been filtered by plugins/themes.
  *
  * @see     charitable_get_permalink
+ * 
  * @global  WP_Rewrite  $wp_rewrite
  * @param   string      $url
  * @param   array       $args
@@ -472,15 +473,65 @@ add_filter( 'charitable_permalink_forgot_password_page', 'charitable_get_forgot_
  * take into account permalinks that have been filtered by plugins/themes.
  *
  * @see     charitable_get_permalink
- * @global  WP_Rewrite  $wp_rewrite
- * @param   string      $url
- * @param   array       $args
- * @return  string
+ *
+ * @global  WP_Rewrite $wp_rewrite
+ * @param   string     $url
+ * @param   array      $args This must include a user object.
+ * @return  string|WP_Error|false
  * @since   1.4.0
  */
 function charitable_get_reset_password_page_permalink( $url, $args = array() ) {
-	$page = charitable_get_option( 'reset_password_page', 'wp' );
-	$url  = 'wp' == $page ? wp_lostpassword_url() : get_permalink( $page );
+	global $wp_rewrite;
+
+	if ( ! isset( $args['user'] ) || ! is_a( $args['user'], 'WP_User' ) ) {
+
+		charitable_get_deprecated()->doing_it_wrong(
+			__FUNCTION__,
+			__( 'Password reset link cannot be generated without a WP_User object.', 'charitable' ),
+			'1.4.0'
+		);
+
+		return false;
+
+	}
+
+	$login_page = charitable_get_permalink( 'login_page' );
+
+	/* If we are using the default WordPress login process, return false. */
+	if ( wp_login_url() == $login_page ) {
+
+		charitable_get_deprecated()->doing_it_wrong(
+			__FUNCTION__,
+			__( 'Password reset link should not be called when using the default WordPress login.', 'charitable' ),
+			'1.4.0'
+		);
+
+		return false;
+
+	}
+
+	/* Get the base URL. */
+	if ( $wp_rewrite->using_permalinks() ) {
+		$url = trailingslashit( $login_page ) . 'reset-password/';
+	} else {
+		$url = esc_url_raw( add_query_arg( array( 'reset_password' => 1 ), $login_page ) );
+	}	
+
+	/* Add the key and user login */
+	$user = $args['user'];
+	$key  = get_password_reset_key( $user );
+
+	if ( is_wp_error( $key ) ) {
+
+		return $key;
+
+	}
+
+	$url = esc_url_raw( add_query_arg( array(
+		'key'   => $key,
+		'login' => rawurlencode( $user->user_login ),
+	), $url ) );
+
 	return $url;
 }
 
@@ -494,6 +545,8 @@ add_filter( 'charitable_permalink_reset_password_page', 'charitable_get_reset_pa
  * take into account any filtering by plugins/themes.
  *
  * @see     charitable_is_page
+ * 
+ * @global 	WP_Post $post
  * @return  boolean
  * @since   1.0.0
  */
@@ -550,21 +603,23 @@ add_filter( 'charitable_is_page_forgot_password_page', 'charitable_is_forgot_pas
  * take into account any filtering by plugins/themes.
  *
  * @see     charitable_is_page
+ * 
+ * @global  WP_Query       $wp_query
+ * @param 	boolean|string $ret The value to be filtered and returned.
  * @return  boolean
  * @since   1.0.0
  */
 function charitable_is_reset_password_page( $ret = false ) {
-	// global $post;
+	global $wp_query;
 
-	// $page = charitable_get_option( 'reset_password_page', 'wp' );
+	$login_page = charitable_get_option( 'login_page', 'wp' );
 
-	// if ( 'wp' == $page ) {
-	// 	$ret = wp_reset_password_url() == charitable_get_current_url();
-	// } elseif ( is_object( $post ) ) {
-	// 	$ret = $page == $post->ID;
-	// }
+	if ( 'wp' == $login_page ) {
+		return false;
+	}
 
-	return $ret;
+	return $wp_query->is_main_query()
+		&& isset( $wp_query->query_vars['reset_password'] );
 }
 
 add_filter( 'charitable_is_page_reset_password_page', 'charitable_is_reset_password_page', 2 );

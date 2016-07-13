@@ -883,7 +883,16 @@ if ( ! function_exists( 'charitable_template_reset_password_content' ) ) :
 			return $content;
 		}
 
-		charitable_template( 'account/reset-password.php' );
+		ob_start();
+
+		charitable_template( 'account/reset-password.php', array(
+			'form' => new Charitable_Reset_Password_Form(),
+		) );
+
+		$content = ob_get_clean();
+
+		return $content;
+
 	}
 
 endif;

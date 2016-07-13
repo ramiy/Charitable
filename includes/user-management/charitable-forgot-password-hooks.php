@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 /**
  * Redirects user to forgot password page selected in settings if it is different from default page.
  *
- * @see Charitable_Forgot_Password::redirect_to_custom_lostpassword()
+ * @see     Charitable_Forgot_Password::redirect_to_custom_lostpassword()
  */
 add_action( 'login_form_lostpassword', array( 'Charitable_Forgot_Password', 'redirect_to_custom_lostpassword' ) );
 
@@ -24,7 +24,7 @@ add_action( 'login_form_lostpassword', array( 'Charitable_Forgot_Password', 'red
  * reset is not successful, user is redirected back to the forgot password page
  * and the WordPress error message is displayed.
  *
- * @see Charitable_Forgot_Password::do_lost_password()
+ * @see     Charitable_Forgot_Password::do_lost_password()
  */
 add_action( 'login_form_lostpassword', array( 'Charitable_Forgot_Password', 'do_password_lost' ) );
 
@@ -32,8 +32,8 @@ add_action( 'login_form_lostpassword', array( 'Charitable_Forgot_Password', 'do_
  * On the login page, look in the session for forgot password error messages
  * and display them if they are present.
  *
- * @see Charitable_Forgot_Password::check_for_password_reset_text()
- * @see charitable_login_form_before
+ * @see     Charitable_Forgot_Password::check_for_password_reset_text()
+ * @see     charitable_login_form_before
  */
 add_action( 'charitable_login_form_before', array( 'Charitable_Forgot_Password', 'check_for_password_reset_text' ) );
 
@@ -41,7 +41,14 @@ add_action( 'charitable_login_form_before', array( 'Charitable_Forgot_Password',
  * On the forgot password page, look in the session for forgot password error
  * messages or notices and display them if they are present.
  *
- * @see Charitable_Forgot_Password::get_errors_from_session()
- * @see charitable_forgot_password_before
+ * @see     Charitable_Forgot_Password::get_errors_from_session()
+ * @see     charitable_forgot_password_before
  */
 add_action( 'charitable_forgot_password_before', array( 'Charitable_Forgot_Password', 'get_errors_from_session' ) );
+
+/**
+ * Fire off the password reset request.
+ *
+ * @see     Charitable_Forgot_Password_Form::retrieve_password()
+ */
+add_action( 'charitable_retrieve_password', array( 'Charitable_Forgot_Password_Form', 'retrieve_password' ) );

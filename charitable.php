@@ -224,6 +224,7 @@ if ( ! class_exists( 'Charitable' ) ) :
 			require_once( $includes_path . 'emails/class-charitable-email-new-donation.php' );
 			require_once( $includes_path . 'emails/class-charitable-email-donation-receipt.php' );
 			require_once( $includes_path . 'emails/class-charitable-email-campaign-end.php' );
+			require_once( $includes_path . 'emails/class-charitable-email-password-reset.php' );
 			require_once( $includes_path . 'emails/charitable-email-hooks.php' );
 
 			/* Database */

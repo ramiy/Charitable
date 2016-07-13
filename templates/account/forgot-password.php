@@ -10,6 +10,9 @@
 
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
+/**
+ * @var 	Charitable_Forgot_Password_Form
+ */
 $form = $view_args['form'];
 
 ?>
@@ -21,7 +24,7 @@ $form = $view_args['form'];
 	do_action( 'charitable_forgot_password_before' );
 
 	?>
-	<form id="lostpasswordform" class="charitable-form" action="<?php echo wp_lostpassword_url(); ?>" method="post">
+	<form id="lostpasswordform" class="charitable-form" method="post">
 
 		<?php do_action( 'charitable_form_before_fields', $form ); ?>
 
