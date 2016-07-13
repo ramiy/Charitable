@@ -428,6 +428,51 @@ function charitable_get_login_page_permalink( $url, $args = array() ) {
 
 add_filter( 'charitable_permalink_login_page', 'charitable_get_login_page_permalink', 2, 2 );
 
+
+/**
+ * Returns the URL for the forgot password page
+ *
+ * This is used when you call charitable_get_permalink( 'forgot_password' ). In
+ * general, you should use charitable_get_permalink() instead since it will
+ * take into account permalinks that have been filtered by plugins/themes.
+ *
+ * @see     charitable_get_permalink
+ * @global  WP_Rewrite  $wp_rewrite
+ * @param   string      $url
+ * @param   array       $args
+ * @return  string
+ * @since   1.4.0
+ */
+function charitable_get_forgot_password_page_permalink( $url, $args = array() ) {
+  $page = charitable_get_option( 'forgot_password_page', 'wp' );
+  $url = 'wp' == $page ? wp_lostpassword_url() : get_permalink( $page );
+  return $url;
+}
+
+add_filter( 'charitable_permalink_forgot_password_page', 'charitable_get_forgot_password_page_permalink', 2, 2 );
+
+/**
+ * Returns the URL for the reset password page
+ *
+ * This is used when you call charitable_get_permalink( 'forgot_password' ). In
+ * general, you should use charitable_get_permalink() instead since it will
+ * take into account permalinks that have been filtered by plugins/themes.
+ *
+ * @see     charitable_get_permalink
+ * @global  WP_Rewrite  $wp_rewrite
+ * @param   string      $url
+ * @param   array       $args
+ * @return  string
+ * @since   1.4.0
+ */
+function charitable_get_reset_password_page_permalink( $url, $args = array() ) {
+  $page = charitable_get_option( 'reset_password_page', 'wp' );
+  $url = 'wp' == $page ? wp_lostpassword_url() : get_permalink( $page );
+  return $url;
+}
+
+add_filter( 'charitable_permalink_reset_password_page', 'charitable_get_reset_password_page_permalink', 2, 2 );
+
 /**
  * Checks whether the current request is for the campaign editing page.
  *

@@ -72,11 +72,12 @@ final class Charitable_Settings {
      */
     public function get_sections() {
         return apply_filters( 'charitable_settings_tabs', array( 
-            'general'   => __( 'General', 'charitable' ), 
-            'gateways'  => __( 'Payment Gateways', 'charitable' ), 
-            'emails'    => __( 'Emails', 'charitable' ), 
-            'licenses'  => __( 'Licenses', 'charitable' ), 
-            'advanced'  => __( 'Advanced', 'charitable' )
+            'general'         => __( 'General', 'charitable' ), 
+            'gateways'        => __( 'Payment Gateways', 'charitable' ), 
+            'emails'          => __( 'Emails', 'charitable' ), 
+            'licenses'        => __( 'Licenses', 'charitable' ), 
+            'user_management' => __( 'User Management', 'charitable' ),
+            'advanced'        => __( 'Advanced', 'charitable' )
         ) );
     }
 
@@ -251,6 +252,19 @@ final class Charitable_Settings {
         }
 
         return $pages;
+    }
+
+    /**
+     * Returns an array of all roles that are not admin
+     *
+     * @return  string[]
+     * @access  public
+     * @since   1.0.0
+     */
+    public function get_editable_roles() {
+      $roles = array_map( function( $value ) { return $value[ 'name' ]; }, get_editable_roles() );
+      unset( $roles[ 'administrator' ] );
+      return $roles;
     }
 
     /**

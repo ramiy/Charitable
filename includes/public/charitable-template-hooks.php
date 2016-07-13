@@ -147,4 +147,3 @@ add_action( 'charitable_donation_form_donor_fields_before', 'charitable_template
  * @see     charitable_template_donation_form_donor_fields_wrapper_end()
  */
 add_action( 'charitable_donation_form_donor_fields_after', 'charitable_template_donation_form_donor_fields_hidden_wrapper_end', 4 );
-
