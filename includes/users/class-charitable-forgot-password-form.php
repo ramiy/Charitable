@@ -25,14 +25,14 @@ if ( ! class_exists( 'Charitable_Forgot_Password_Form' ) ) :
 		 * @access 	protected
 		 * @since 	1.4.0
 		 */
-		protected $nonce_action = 'charitable_reset_password';
+		protected $nonce_action = 'charitable_forgot_password';
 
 		/**
 		 * @var 	string
 		 * @access 	protected
 		 * @since 	1.4.0
 		 */
-		protected $nonce_name = '_charitable_reset_password_nonce';
+		protected $nonce_name = '_charitable_forgot_password_nonce';
 
 		/**
 		 * Form action.
@@ -52,7 +52,6 @@ if ( ! class_exists( 'Charitable_Forgot_Password_Form' ) ) :
 		 */
 		public function __construct() {
 			$this->id = uniqid();
-			// $this->shortcode_args = $args;
 			$this->attach_hooks_and_filters();
 		}
 
@@ -81,38 +80,27 @@ if ( ! class_exists( 'Charitable_Forgot_Password_Form' ) ) :
 		/**
 		 * Send the password reset email.
 		 *
-		 * @global  wpdb         $wpdb      WordPress database abstraction object.
-	     * @global  PasswordHash $wp_hasher Portable PHP password hashing framework.
-	     *
 		 * @return  bool|WP_Error True: when finish. WP_Error on error
 		 * @access  public
 		 * @static
 		 * @since   1.4.0
 		 */
 		public static function retrieve_password() {
-			global $wpdb, $wp_hasher;
-
 			$form = new Charitable_Forgot_Password_Form();
 
 			if ( ! $form->validate_nonce() ) {
 				return;
 			}
 
-			$errors = new WP_Error();
-
 			if ( empty( $_POST['user_login'] ) ) {
 
-				$errors->add( 'empty_username', __( '<strong>ERROR</strong>: Enter a username or email address.', 'charitable' ) );
+				charitable_get_notices()->add_error( __( '<strong>ERROR</strong>: Enter a username or email address.', 'charitable' ) );
+				return;
 
 			} elseif ( strpos( $_POST['user_login'], '@' ) ) {
 
 				$user = get_user_by( 'email', trim( $_POST['user_login'] ) );
 
-				if ( empty( $user ) ) {
-
-					$errors->add( 'invalid_email', __( '<strong>ERROR</strong>: There is no user registered with that email address.', 'charitable' ) );
-
-				}
 			} else {
 
 				$login = trim( $_POST['user_login'] );
@@ -120,17 +108,14 @@ if ( ! class_exists( 'Charitable_Forgot_Password_Form' ) ) :
 
 			}
 
-			do_action( 'lostpassword_post', $errors );
-
-			/* If there are errors, proceed no further. */
-			if ( $errors->get_error_code() ) {
-				return $errors;
-			}
+			do_action( 'lostpassword_post' );
 
 			/* If we are missing user data, proceed no further. */
 			if ( ! $user ) {
-				$errors->add( 'invalidcombo', __( '<strong>ERROR</strong>: Invalid username or email.', 'charitable' ) );
-				return $errors;
+
+				charitable_get_notices()->add_error( __( '<strong>ERROR</strong>: Invalid username or email.', 'charitable' ) );
+				return;
+
 			}
 
 			/* Prepare the email. */
@@ -139,13 +124,26 @@ if ( ! class_exists( 'Charitable_Forgot_Password_Form' ) ) :
 
 			/* Make sure that the reset link was generated correctly. */
 			if ( is_wp_error( $reset_link ) ) {
-				return $reset_link;
+
+				charitable_get_notices()->add_errors_from_wp_error( $reset_link );
+				return;
+
 			}
 
 			$sent = $email->send();
 
-			return $sent;
+			if ( ! $sent ) {
 
+				charitable_get_notices()->add_error( __( 'We were unable to send your password reset email.', 'charitable' ) );
+				return;
+
+			}
+
+			$redirect_url = esc_url( add_query_arg( array( 'email_sent' => '1' ), charitable_get_permalink( 'forgot_password_page' ) ) );
+
+			wp_safe_redirect( $redirect_url );
+
+			exit();
 		}
 	}
 

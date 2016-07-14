@@ -172,7 +172,7 @@ if ( ! class_exists( 'Charitable_Form' ) ) :
 			$this->nonce_field();
 
 			?>
-			<input type="hidden" name="charitable_action" value="<?php echo $this->form_action ?>" />	
+			<input type="hidden" name="charitable_action" value="<?php echo esc_attr( $this->form_action ) ?>" />	
 			<?php
 		}
 

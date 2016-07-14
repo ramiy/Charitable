@@ -125,7 +125,31 @@ if ( ! class_exists( 'Charitable_Email_Password_Reset' ) ) :
 		 */
 		public function get_reset_link() {
 			if ( ! isset( $this->reset_link ) ) {
-				$this->reset_link = charitable_get_permalink( 'reset_password_page', array( 'user' => $this->user ) );
+
+				if ( ! is_a( $this->user, 'WP_User' ) ) {
+
+					charitable_get_deprecated()->doing_it_wrong(
+						__METHOD__,
+						__( 'Password reset link cannot be generated without a WP_User object.', 'charitable' ),
+						'1.4.0'
+					);
+
+					return '';
+
+				}
+
+				$base_url = charitable_get_permalink( 'reset_password_page' );
+				$key 	  = get_password_reset_key( $this->user );
+
+				if ( is_wp_error( $key ) ) {
+					return $key;
+				}
+
+				$this->reset_link = esc_url_raw( add_query_arg( array(
+					'key'   => $key,
+					'login' => rawurlencode( $this->user->user_login ),
+				), $base_url ) );
+
 			}
 
 			return $this->reset_link;
@@ -142,7 +166,7 @@ if ( ! class_exists( 'Charitable_Email_Password_Reset' ) ) :
 			if ( ! isset( $this->user ) || ! is_a( $this->user, 'WP_User' ) ) {
 				return '';
 			}
-			
+
 			return $this->user->user_login;
 		}
 

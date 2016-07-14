@@ -8,7 +8,8 @@
  * @copyright   Copyright (c) 2015, Studio 164a
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
-if ( ! defined( 'ABSPATH' ) ) exit;
+
+if ( ! defined( 'ABSPATH' ) ) { exit; }
 
 if ( ! class_exists( 'Charitable_User_Management' ) ) :
 
@@ -20,10 +21,93 @@ if ( ! class_exists( 'Charitable_User_Management' ) ) :
 	class Charitable_User_Management {
 
 		/**
+		 * The class instance.
+		 *
+		 * @var 	Charitable_User_Management
+		 * @access 	private
+		 * @static
+		 * @since 	1.4.0
+		 */
+		private static $instance;
+
+		/**
+		 * Returns and/or create the single instance of this class.
+		 *
+		 * @return  Charitable_User_Management
+		 * @access  public
+		 * @since   1.4.0
+		 */
+		public static function get_instance() {
+			if ( is_null( self::$instance ) ) {
+				self::$instance = new Charitable_User_Management();
+			}
+
+			return self::$instance;
+		}
+
+		/**
+		 * Set up the class.
+		 *
+		 * @access  private
+		 * @since   1.4.0
+		 */
+		private function __construct() {
+		}
+
+		/**
+		 * Check whether we have clicked on a password reset link.
+		 *
+		 * If so, redirect to the password reset page without the query string.
+		 *
+		 * @return  false|void False if no redirect takes place.
+		 * @access  public
+		 * @since   1.4.0
+		 */
+		public function maybe_redirect_to_password_reset() {
+			if ( ! charitable_is_page( 'reset_password_page' ) ) {
+				return false;
+			}
+
+			if ( ! isset( $_GET['key'] ) || ! isset( $_GET['login'] ) ) {
+				return false;
+			}
+
+			$value = sprintf( '%s:%s', wp_unslash( $_GET['login'] ), wp_unslash( $_GET['key'] ) );
+
+			$this->set_reset_cookie( $value );
+
+			wp_safe_redirect( charitable_get_permalink( 'reset_password_page' ) );
+
+			exit();
+		}
+
+		/**
+		 * Set the password reset cookie.
+		 *
+		 * This is based on the WC_Shortcode_My_Account::set_reset_password_cookie()
+		 * method in WooCommerce, which in turn is based on the core implementation
+		 * in wp-login.php.
+		 *
+		 * @param 	string $value
+		 * @return  void
+		 * @access  public
+		 * @since   1.4.0
+		 */
+		public function set_reset_cookie( $value = '' ) {
+			$rp_cookie = 'wp-resetpass-' . COOKIEHASH;
+			$rp_path   = current( explode( '?', wp_unslash( $_SERVER['REQUEST_URI'] ) ) );
+
+			if ( $value ) {
+				setcookie( $rp_cookie, $value, 0, $rp_path, COOKIE_DOMAIN, is_ssl(), true );
+			} else {
+				setcookie( $rp_cookie, ' ', time() - YEAR_IN_SECONDS, $rp_path, COOKIE_DOMAIN, is_ssl(), true );
+			}
+		}
+
+		/**
 		 * Check for a redirect_to query arg in $_REQUEST
 		 *
-		 * If query ?redirect_to= query arg is present in $_REQUEST, append it to
-		 * $url
+		 * If query ?redirect_to= query arg is present in $_REQUEST, append it to $url
 		 *
 		 * @access private
 		 * @static
@@ -209,7 +293,7 @@ if ( ! class_exists( 'Charitable_User_Management' ) ) :
 		private static function user_has_only_ok_roles( $ok_roles, $not_ok_roles ) {
 			global $wp_roles;
 
-			$roles = wp_get_current_user()->roles;			
+			$roles = wp_get_current_user()->roles;
 
 			if ( in_array( 'administrator', $roles ) ) {
 				return true;
