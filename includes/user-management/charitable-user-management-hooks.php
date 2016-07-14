@@ -12,25 +12,11 @@
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 /**
- * Hides the WP Admin bar if the current user is not allowed to view it.
- *
- * @see Charitable_User_Management::remove_admin_bar()
- */
-add_action( 'after_setup_theme', array( 'Charitable_User_Management', 'remove_admin_bar' ) );
-
-/**
  * Fire off the password reset request.
  *
  * @see     Charitable_Forgot_Password_Form::retrieve_password()
  */
 add_action( 'charitable_retrieve_password', array( 'Charitable_Forgot_Password_Form', 'retrieve_password' ) );
-
-/**
- * Redirect the user to the password reset page with the query string removed.
- *
- * @see     Charitable_User_Management::maybe_redirect_to_password_reset()
- */
-add_action( 'template_redirect', array( Charitable_User_Management::get_instance(), 'maybe_redirect_to_password_reset' ) );
 
 /**
  * Reset a user's password.
@@ -40,12 +26,41 @@ add_action( 'template_redirect', array( Charitable_User_Management::get_instance
 add_action( 'charitable_reset_password', array( 'Charitable_Reset_Password_Form', 'reset_password' ) );
 
 /**
- * Returns a 404 response if the current user attempts to visit /wp-admin and is not authorized
+ * Redirect the user to the password reset page with the query string removed.
  *
- * @see Charitable_User_Management::blockusers_init()
+ * @see     Charitable_User_Management::maybe_redirect_to_password_reset()
  */
-// add_action( 'admin_init', array( 'Charitable_User_Management', 'blockusers_init' ) );
+add_action( 'template_redirect', array( Charitable_User_Management::get_instance(), 'maybe_redirect_to_password_reset' ) );
 
+/**
+ * Hides the WP Admin bar if the current user is not allowed to view it.
+ *
+ * @see Charitable_User_Management::remove_admin_bar()
+ */
+add_action( 'after_setup_theme', array( Charitable_User_Management::get_instance(), 'maybe_remove_admin_bar' ) );
+
+/**
+ * Redirects the user away from /wp-admin if they are not authorized to access it.
+ *
+ * @see     Charitable_User_Management::maybe_redirect_away_from_admin()
+ */
+add_action( 'admin_init', array( Charitable_User_Management::get_instance(), 'maybe_redirect_away_from_admin' ) );
+
+/**
+ * If desired, all access to wp-login.php can be redirected to the Charitable login page.
+ *
+ * This is switched off by default. To enable this option, you need to set a Charitable
+ * login page and also return true for the filter:
+ *
+ * add_filter( 'charitable_disable_wp_login', '__return_true' );
+ *
+ * @see     Charitable_User_Management::redirect_to_charitable_login()
+ */
+if ( apply_filters( 'charitable_disable_wp_login', false ) && 'wp' != charitable_get_option( 'login_page', 'wp' ) ) {
+
+	add_action( 'login_init', array( Charitable_User_Management::get_instance(), 'redirect_to_charitable_login' ) );
+
+}
 
 // /**
 //  * Redirect user from wp-login.php to charitable login page if Hide Default
@@ -60,7 +75,7 @@ add_action( 'charitable_reset_password', array( 'Charitable_Reset_Password_Form'
 //  * if Hide Default WP Login Page is selected in the settings
 //  *
 //  * @see Charitable_User_Management::maybe_redirect_at_authenticate()
- 
+
 // add_filter( 'authenticate', array( 'Charitable_User_Management', 'maybe_redirect_at_authenticate' ) , 101, 3 );
 
 // /**

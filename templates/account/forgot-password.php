@@ -2,6 +2,8 @@
 /**
  * The template used to display the forgot password form. Provided here primarily as a way to make it easier to override using theme templates.
  *
+ * Override this template by copying it to yourtheme/charitable/account/forgot-password.php
+ *
  * @author  Rafe Colton
  * @package Charitable/Templates/Account
  * @since   1.4.0

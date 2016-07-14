@@ -3,6 +3,8 @@
  * The template used to display the reset password form. Provided here
  * primarily as a way to make it easier to override using theme templates.
  *
+ * Override this template by copying it to yourtheme/charitable/account/reset-password.php
+ *
  * @author  Rafe Colton
  * @package Charitable/Templates/Account
  * @since   1.4.0
@@ -25,7 +27,7 @@ $form = $view_args['form'];
 	do_action( 'charitable_reset_password_before' );
 
 	?>
-	<form id="resetpassform" class="charitable-form" action="<?php echo site_url( 'wp-login.php?action=resetpass' ); ?>" method="post" autocomplete="off">
+	<form id="resetpassform" class="charitable-form" method="post" autocomplete="off">
 
 		<?php do_action( 'charitable_form_before_fields', $form ); ?>
 
@@ -45,10 +47,13 @@ $form = $view_args['form'];
 			?>
 			<p class="description"><?php echo wp_get_password_hint() ?></p>
 		</div>
+		
 		<?php do_action( 'charitable_form_after_fields', $form ); ?>
+		
 		<div class="charitable-form-field charitable-submit-field resetpass-submit">
 			<button id="resetpass-button" class="button button-primary lostpassword-button" type="submit"><?php _e( 'Reset Password', 'charitable' ) ?></button>
 		</div>
+
 	</form>
 
 	<?php

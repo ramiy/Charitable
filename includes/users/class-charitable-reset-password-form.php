@@ -175,7 +175,9 @@ if ( ! class_exists( 'Charitable_Reset_Password_Form' ) ) :
 			/* Parameter checks OK, reset password */
 			reset_password( $user, $_POST['pass1'] );
 
-			charitable_get_notices()->add_notice( __( 'Your password was successfully changed.', 'charitable' ) );
+			charitable_get_notices()->add_success( __( 'Your password was successfully changed.', 'charitable' ) );
+
+			charitable_get_session()->add_notices();
 
 			wp_safe_redirect( charitable_get_permalink( 'login_page' ) );
 
@@ -191,6 +193,7 @@ if ( ! class_exists( 'Charitable_Reset_Password_Form' ) ) :
 		 * @since   1.4.0
 		 */
 		protected function parse_reset_key() {
+
 			$this->key   = null;
 			$this->login = null;
 
@@ -221,6 +224,7 @@ if ( ! class_exists( 'Charitable_Reset_Password_Form' ) ) :
 			/* Reset key / login is correct, display reset password form with hidden key / login values */
 			$this->key   = $key;
 			$this->login = $login;
+
 		}
 	}
 

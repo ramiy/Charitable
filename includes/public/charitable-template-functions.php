@@ -858,9 +858,17 @@ if ( ! function_exists( 'charitable_template_forgot_password_content' ) ) :
 
 		ob_start();
 
-		charitable_template( 'account/forgot-password.php', array(
-			'form' => new Charitable_Forgot_Password_Form(),
-		) );
+		if ( isset( $_GET['email_sent'] ) ) {
+
+			charitable_template( 'account/forgot-password-sent.php' );
+
+		} else {
+
+			charitable_template( 'account/forgot-password.php', array(
+				'form' => new Charitable_Forgot_Password_Form(),
+			) );
+
+		}
 
 		$content = ob_get_clean();
 
