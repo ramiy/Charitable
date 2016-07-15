@@ -103,8 +103,10 @@ if ( ! class_exists( 'Charitable_Templates' ) ) :
 				return $template;
 			}
 
+			$donation_receipt_page_title = apply_filters( 'charitable_donation_receipt_page_title', __( 'Your Receipt', 'charitable' ) );
+
 			new Charitable_Ghost_Page( 'donation-receipt-page', array(
-				'title'     => __( 'Your Receipt', 'charitable' ),
+				'title'     => $donation_receipt_page_title,
 				'content'   => sprintf( '<p>%s</p>', __( 'Thank you for your donation!', 'charitable' ) ),
 			) );
 
