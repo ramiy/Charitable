@@ -428,7 +428,7 @@ if ( ! function_exists( 'charitable_template_campaign_loop' ) ) :
 	 * This is used instead of the_content filter.
 	 *
 	 * @param   WP_Query $campaigns
-	 * @param   int     $columns
+	 * @param   int      $columns
 	 * @return  void
 	 * @since   1.0.0
 	 */
