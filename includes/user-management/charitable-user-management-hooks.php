@@ -84,8 +84,4 @@ add_action( 'admin_init', array( Charitable_User_Management::get_instance(), 'ma
  *
  * @see     Charitable_User_Management::redirect_to_charitable_login()
  */
-if ( apply_filters( 'charitable_disable_wp_login', false ) && 'wp' != charitable_get_option( 'login_page', 'wp' ) ) {
-
-	add_action( 'login_init', array( Charitable_User_Management::get_instance(), 'redirect_to_charitable_login' ) );
-
-}
+add_action( 'login_init', array( Charitable_User_Management::get_instance(), 'redirect_to_charitable_login' ) );
