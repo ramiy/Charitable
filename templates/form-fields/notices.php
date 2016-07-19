@@ -24,7 +24,6 @@ if ( empty( $notices ) ) {
         <?php foreach ( $messages as $message ) : ?>
             <li><?php echo $message ?></li>
         <?php endforeach ?>
-        <li>
     </ul><!-- charitable-notice-<?php esc_attr( $type ) ?> -->
 <?php endforeach ?>
 </div><!-- .charitable-notices -->
