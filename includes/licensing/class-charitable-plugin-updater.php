@@ -267,6 +267,13 @@ class Charitable_Plugin_Updater {
         return $request;
     }
 
+    /**
+     * Display the changelog.
+     *
+     * @return  void
+     * @access  public
+     * @since   1.0.0
+     */
     public function show_changelog() {
 
         if ( empty( $_REQUEST['edd_sl_action'] ) || 'view_plugin_changelog' != $_REQUEST['edd_sl_action'] ) {
