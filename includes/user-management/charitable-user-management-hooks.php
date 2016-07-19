@@ -26,6 +26,34 @@ add_action( 'charitable_retrieve_password', array( 'Charitable_Forgot_Password_F
 add_action( 'charitable_reset_password', array( 'Charitable_Reset_Password_Form', 'reset_password' ) );
 
 /**
+ * Save a profile. 
+ *
+ * @see     Charitable_Profile_Form::update_profile()
+ */
+add_action( 'charitable_update_profile', array( 'Charitable_Profile_Form', 'update_profile' ) );     
+
+/**
+ * Save a user after registration. 
+ *
+ * @see     Charitable_Registration_Form::save_registration()
+ */
+add_action( 'charitable_save_registration', array( 'Charitable_Registration_Form', 'save_registration' ) );
+
+/**
+ * Display any notices before the login form.
+ *
+ * @see     charitable_template_notices
+ */
+add_action( 'charitable_login_form_before', 'charitable_template_notices' );
+
+/**
+ * Add support for deprecated `charitable_user_profile_after_fields` hook.
+ *
+ * @see     Charitable_Profile_Form::add_deprecated_charitable_user_profile_after_fields_hook()
+ */
+add_action( 'charitable_form_after_fields', array( 'Charitable_Profile_Form', 'add_deprecated_charitable_user_profile_after_fields_hook' ) );
+
+/**
  * Redirect the user to the password reset page with the query string removed.
  *
  * @see     Charitable_User_Management::maybe_redirect_to_password_reset()
@@ -61,30 +89,3 @@ if ( apply_filters( 'charitable_disable_wp_login', false ) && 'wp' != charitable
 	add_action( 'login_init', array( Charitable_User_Management::get_instance(), 'redirect_to_charitable_login' ) );
 
 }
-
-// /**
-//  * Redirect user from wp-login.php to charitable login page if Hide Default
-//  * WP Login Page is selected in the settings
-//  *
-//  * @see Charitable_User_Management::prevent_wp_login()
-//  */
-// add_action( 'login_form_login', array( 'Charitable_User_Management', 'prevent_wp_login' ) );
-
-// *
-//  * Redirect user from wp-login.php to charitable login page, upon failed auth,
-//  * if Hide Default WP Login Page is selected in the settings
-//  *
-//  * @see Charitable_User_Management::maybe_redirect_at_authenticate()
-
-// add_filter( 'authenticate', array( 'Charitable_User_Management', 'maybe_redirect_at_authenticate' ) , 101, 3 );
-
-// /**
-//  * On the login page, look in the session for login error messages or notices
-//  * and display them if they are present.
-//  *
-//  * @see Charitable_User_Management::get_login_errors_from_session()
-//  * @see charitable_login_form_before
-//  */
-// add_action( 'charitable_login_form_before', array( 'Charitable_User_Management', 'get_login_errors_from_session' ) );
-
-

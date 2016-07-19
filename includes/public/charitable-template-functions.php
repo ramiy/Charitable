@@ -905,3 +905,28 @@ if ( ! function_exists( 'charitable_template_reset_password_content' ) ) :
 
 endif;
 
+/**********************************************/
+/* NOTICES
+/**********************************************/
+
+if ( ! function_exists( 'charitable_template_notices' ) ) :
+
+	/**
+	 * Render any notices.
+	 *
+	 * @param   array $notices
+	 * @return  void
+	 * @since   1.4.0
+	 */
+	function charitable_template_notices( $notices = array() ) {
+		if ( empty( $notices ) ) {
+			$notices = charitable_get_notices()->get_notices();
+		}
+
+		charitable_template( 'form-fields/notices.php', array(
+			'notices' => $notices
+		) );
+
+	}
+
+endif;

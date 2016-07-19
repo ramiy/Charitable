@@ -200,15 +200,10 @@ if ( ! class_exists( 'Charitable' ) ) :
 
 			/* Users */
 			require_once( $includes_path . 'users/charitable-user-functions.php' );
-			require_once( $includes_path . 'users/charitable-user-hooks.php' );
 			require_once( $includes_path . 'users/class-charitable-user.php' );
 			require_once( $includes_path . 'users/class-charitable-roles.php' );
 			require_once( $includes_path . 'users/class-charitable-donor.php' );
 			require_once( $includes_path . 'users/class-charitable-donor-query.php' );
-			require_once( $includes_path . 'users/class-charitable-registration-form.php' );
-			require_once( $includes_path . 'users/class-charitable-profile-form.php' );
-			require_once( $includes_path . 'users/class-charitable-forgot-password-form.php' );
-			require_once( $includes_path . 'users/class-charitable-reset-password-form.php' );
 
 			/* Gateways */
 			require_once( $includes_path . 'gateways/interface-charitable-gateway.php' );
@@ -252,9 +247,7 @@ if ( ! class_exists( 'Charitable' ) ) :
 			require_once( $includes_path . 'shortcodes/class-charitable-donation-receipt-shortcode.php' );
 			require_once( $includes_path . 'shortcodes/class-charitable-login-shortcode.php' );
 			require_once( $includes_path . 'shortcodes/class-charitable-registration-shortcode.php' );
-			require_once( $includes_path . 'shortcodes/class-charitable-profile-shortcode.php' );
-			require_once( $includes_path . 'shortcodes/class-charitable-forgot-password-shortcode.php' );
-			require_once( $includes_path . 'shortcodes/class-charitable-reset-password-shortcode.php' );
+			require_once( $includes_path . 'shortcodes/class-charitable-profile-shortcode.php' );			
 			require_once( $includes_path . 'shortcodes/charitable-shortcodes-hooks.php' );
 
 			/* Widgets */
@@ -266,10 +259,10 @@ if ( ! class_exists( 'Charitable' ) ) :
 			require_once( $includes_path . 'widgets/class-charitable-donation-stats-widget.php' );
 
 			/* User Management */
-			require_once( $includes_path . 'user-management/class-charitable-forgot-password.php' );
-			require_once( $includes_path . 'user-management/charitable-forgot-password-hooks.php' );
-			require_once( $includes_path . 'user-management/class-charitable-reset-password.php' );
-			require_once( $includes_path . 'user-management/charitable-reset-password-hooks.php' );
+			require_once( $includes_path . 'user-management/class-charitable-registration-form.php' );
+			require_once( $includes_path . 'user-management/class-charitable-profile-form.php' );
+			require_once( $includes_path . 'user-management/class-charitable-forgot-password-form.php' );
+			require_once( $includes_path . 'user-management/class-charitable-reset-password-form.php' );
 			require_once( $includes_path . 'user-management/class-charitable-user-management.php' );
 			require_once( $includes_path . 'user-management/charitable-user-management-hooks.php' );
 

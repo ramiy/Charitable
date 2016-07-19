@@ -88,7 +88,6 @@ final class Charitable_Admin {
         require_once( $admin_dir . 'settings/class-charitable-gateway-settings.php' );
         require_once( $admin_dir . 'settings/class-charitable-licenses-settings.php' );
         require_once( $admin_dir . 'settings/class-charitable-advanced-settings.php' );
-        require_once( $admin_dir . 'settings/class-charitable-user-management-settings.php' );
         require_once( $admin_dir . 'settings/charitable-settings-admin-hooks.php' );
 
         /* Dashboard widgets */

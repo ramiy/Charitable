@@ -61,6 +61,7 @@ if ( ! class_exists( 'Charitable_Notices' ) ) :
 		 * @since	1.0.0
 		 */
 		private function __construct() {
+			
 			/* Retrieve the notices from the session */
 			$this->notices = charitable_get_session()->get_notices();
 

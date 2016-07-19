@@ -139,7 +139,11 @@ if ( ! class_exists( 'Charitable_Forgot_Password_Form' ) ) :
 
 			}
 
-			$redirect_url = esc_url( add_query_arg( array( 'email_sent' => '1' ), charitable_get_permalink( 'forgot_password_page' ) ) );
+			charitable_get_notices()->add_success( __( 'Your password reset request has been received. Please check your email for a link to reset your password.', 'charitable' ) );
+
+			charitable_get_session()->add_notices();
+
+			$redirect_url = esc_url_raw( charitable_get_permalink( 'login_page' ) );
 
 			wp_safe_redirect( $redirect_url );
 

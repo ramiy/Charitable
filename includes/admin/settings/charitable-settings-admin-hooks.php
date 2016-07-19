@@ -88,13 +88,6 @@ add_filter( 'charitable_settings_tab_fields_licenses', array( Charitable_License
 add_filter( 'charitable_settings_tab_fields_advanced', array( Charitable_Advanced_Settings::get_instance(), 'add_advanced_fields' ), 5 );
 
 /**
- * Add settings to the User Management tab.
- *
- * @see     Charitable_User_Management_Settings::add_user_management_fields()
- */
-add_filter( 'charitable_settings_tab_fields_user_management', array( Charitable_User_Management_Settings::get_instance(), 'add_user_management_fields' ), 5 );
-
-/**
  * Add extra settings for the individual gateways & emails tabs.
  *
  * @see     Charitable_Gateway_Settings::add_individual_gateway_fields()

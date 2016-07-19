@@ -135,7 +135,7 @@ if ( ! class_exists( 'Charitable_Form' ) ) :
 		/**
 		 * Display error notices at the start of the form, if there are any.
 		 *
-		 * @param 	Charitable_Form 	$form
+		 * @param 	Charitable_Form $form
 		 * @return 	void
 		 * @access  public
 		 * @since 	1.0.0
