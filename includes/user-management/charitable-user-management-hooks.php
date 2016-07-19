@@ -85,3 +85,12 @@ add_action( 'admin_init', array( Charitable_User_Management::get_instance(), 'ma
  * @see     Charitable_User_Management::redirect_to_charitable_login()
  */
 add_action( 'login_form_login', array( Charitable_User_Management::get_instance(), 'redirect_to_charitable_login' ) );
+
+/**
+ * If hiding all access to wp-login.php using the charitable_disable_wp_login
+ * filter, capture login error messages and display them on the Charitable
+ * login page
+ *
+ * @see     Charitable_User_Management::maybe_redirect_at_authenticate()
+ */
+add_action( 'authenticate', array( Charitable_User_Management::get_instance(), 'maybe_redirect_at_authenticate' ), 101, 3 );

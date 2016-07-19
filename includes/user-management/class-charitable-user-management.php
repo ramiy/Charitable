@@ -84,6 +84,38 @@ if ( ! class_exists( 'Charitable_User_Management' ) ) :
 		}
 
 		/**
+		 * Check if user has submitted a login attempt
+		 *
+		 * If so, and charitable_disable_wp_login is set, display errors on
+		 * charitable login page
+		 *
+		 * @return  WP_User|WP_Error|void Redirect if charitable_disable_wp_login is set and there are login errors
+		 * @access  public
+		 * @since   1.4.0
+		 */
+		public function maybe_redirect_at_authenticate( $user_or_error, $username, $password ) {
+			if ( apply_filters( 'charitable_disable_wp_login', false ) && 'wp' != charitable_get_option( 'login_page', 'wp' ) ) {
+				if ( $_SERVER[ 'REQUEST_METHOD' ] == 'POST' ) {
+					if( is_wp_error( $user_or_error ) ) {
+
+						foreach( $user_or_error->get_error_messages()	as $key => $error ) {
+							charitable_get_notices()->add_error( $error );
+						}
+
+						charitable_get_session()->add_notices();
+
+						wp_safe_redirect( esc_url_raw( charitable_get_permalink( 'login_page' ) ) );
+
+						exit();
+
+					}
+				}
+			}
+
+			return $user_or_error;
+		}
+
+		/**
 		 * Set the password reset cookie.
 		 *
 		 * This is based on the WC_Shortcode_My_Account::set_reset_password_cookie()
