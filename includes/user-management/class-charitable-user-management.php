@@ -116,6 +116,26 @@ if ( ! class_exists( 'Charitable_User_Management' ) ) :
 		}
 
 		/**
+		 * Check if user is attempting to access the forgot password page
+		 *
+		 * If so, and charitable_disable_wp_login is set, redirect them to the custom forgot password page
+		 *
+		 * @return  void
+		 * @access  public
+		 * @since   1.4.0
+		 */
+		public function maybe_redirect_to_custom_lostpassword() {
+			if ( apply_filters( 'charitable_disable_wp_login', false ) && 'wp' != charitable_get_option( 'login_page', 'wp' ) ) {
+				if ( $_SERVER[ 'REQUEST_METHOD' ] == 'GET' ) {
+
+						wp_safe_redirect( esc_url_raw( charitable_get_permalink( 'forgot_password_page' ) ) );
+
+						exit();
+				}
+			}
+		}
+
+		/**
 		 * Set the password reset cookie.
 		 *
 		 * This is based on the WC_Shortcode_My_Account::set_reset_password_cookie()
