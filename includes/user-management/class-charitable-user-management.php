@@ -77,7 +77,7 @@ if ( ! class_exists( 'Charitable_User_Management' ) ) :
 
 			$this->set_reset_cookie( $value );
 
-			wp_safe_redirect( charitable_get_permalink( 'reset_password_page' ) );
+			wp_safe_redirect( esc_url_raw( charitable_get_permalink( 'reset_password_page' ) ) );
 
 			exit();
 
@@ -175,12 +175,12 @@ if ( ! class_exists( 'Charitable_User_Management' ) ) :
 
 				$redirect_url = charitable_get_permalink( 'profile_page' );
 
-				if ( ! $redirect_url ) {
+				if ( false === $redirect_url ) {
 					$redirect_url = home_url();
 				}
 			}
 
-			wp_safe_redirect( $redirect_url );
+			wp_safe_redirect( esc_url_raw( $redirect_url ) );
 
 			exit();
 
@@ -200,7 +200,8 @@ if ( ! class_exists( 'Charitable_User_Management' ) ) :
 				return;
 			}
 
-			wp_safe_redirect( charitable_get_permalink( 'login_page' ) );
+			wp_safe_redirect( esc_url_raw( charitable_get_permalink( 'login_page' ) ) );
+
 			exit();
 
 		}

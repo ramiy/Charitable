@@ -10,9 +10,7 @@
  */
 
 // Exit if accessed directly.
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+if ( ! defined( 'ABSPATH' ) ) { exit; }
 
 if ( ! class_exists( 'Charitable_Licenses' ) ) :
 
@@ -28,7 +26,7 @@ if ( ! class_exists( 'Charitable_Licenses' ) ) :
 		 *
 		 * @var string
 		 */
-		const UPDATE_URL = 'https://wpcharitable.local';
+		const UPDATE_URL = 'https://www.wpcharitable.com';
 
 		/**
 		 * The single instance of this class.
