@@ -867,7 +867,7 @@ select.charitable-settings-field {
       -webkit-font-smoothing: antialiased !important;
       -moz-osx-font-smoothing: grayscale; }
   .charitable-donations-modal h3 {
-    margin-top: 0;
+    margin: 0.5em 0;
     font-size: 23px;
     line-height: 29px;
     font-weight: 400;
@@ -897,6 +897,9 @@ select.charitable-settings-field {
     .charitable-donations-modal .charitable-donations-modal-form label,
     .charitable-donations-modal .charitable-donations-modal-form #charitable-export-start-date {
       margin-bottom: 6px; }
+    .charitable-donations-modal .charitable-donations-modal-form input.charitable-datepicker {
+      width: 48%;
+      display: inline-block; }
 
 #charitable_dashboard_donations .hide-if-no-js {
   padding: 10px 0;

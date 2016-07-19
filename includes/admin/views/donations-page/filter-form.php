@@ -19,7 +19,6 @@ $start_date   = isset( $_GET['start_date'] )  ? sanitize_text_field( $_GET['star
 $end_date     = isset( $_GET['end_date'] )    ? sanitize_text_field( $_GET['end_date'] ) : null;
 $post_status  = isset( $_GET['post_status'] ) ? $_GET['post_status'] : 'all';
 
-
 ?>
 <div id="charitable-donations-filter-modal" style="display: none" class="charitable-donations-modal <?php echo esc_attr( $modal_class ) ?>">
 	<a class="modal-close"></a>
