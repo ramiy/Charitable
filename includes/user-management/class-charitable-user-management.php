@@ -197,14 +197,13 @@ if ( ! class_exists( 'Charitable_User_Management' ) ) :
 
 			if ( apply_filters( 'charitable_disable_wp_login', false ) && 'wp' != charitable_get_option( 'login_page', 'wp' ) ) {
 				/* Don't prevent logging out. */
-				if ( isset( $_GET['action'] ) && 'logout' == $_GET['action'] ) {
-					return;
+				if ( $_SERVER[ 'REQUEST_METHOD' ] == 'GET' ) {
+
+					wp_safe_redirect( esc_url_raw( charitable_get_permalink( 'login_page' ) ) );
+
+					exit();
+
 				}
-
-				wp_safe_redirect( esc_url_raw( charitable_get_permalink( 'login_page' ) ) );
-
-				exit();
-
 			}
 		}
 
