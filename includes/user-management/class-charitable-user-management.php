@@ -84,6 +84,28 @@ if ( ! class_exists( 'Charitable_User_Management' ) ) :
 		}
 
 		/**
+		 * Check if user is attempting to access the default reset password page
+		 *
+		 * If so, and charitable_disable_wp_login is set, redirect them to the custom reset password page
+		 *
+		 * @return  void
+		 * @access  public
+		 * @since   1.4.0
+		 */
+		public function maybe_redirect_to_custom_password_reset_page() {
+			if ( apply_filters( 'charitable_disable_wp_login', false ) && 'wp' != charitable_get_option( 'login_page', 'wp' ) ) {
+
+				$redirect_url = charitable_get_permalink( 'reset_password_page' );
+				$redirect_url = add_query_arg( 'login', esc_attr( $_REQUEST['login'] ), $redirect_url );
+				$redirect_url = add_query_arg( 'key', esc_attr( $_REQUEST['key'] ), $redirect_url );
+
+				wp_safe_redirect( esc_url_raw( $redirect_url ) );
+
+				exit();
+			}
+		}
+
+		/**
 		 * Check if user has submitted a login attempt
 		 *
 		 * If so, and charitable_disable_wp_login is set, display errors on

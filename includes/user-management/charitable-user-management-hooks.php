@@ -103,3 +103,13 @@ add_action( 'authenticate', array( Charitable_User_Management::get_instance(), '
  * @see     Charitable_User_Management::maybe_redirect_to_custom_lostpassword()
  */
 add_action( 'login_form_lostpassword', array( Charitable_User_Management::get_instance(), 'maybe_redirect_to_custom_lostpassword' ) );
+
+/**
+ * If hiding all access to wp-login.php using the charitable_disable_wp_login
+ * filter, redirect user to custom reset password page if they try to directly
+ * access /wp-login.php?action=rp or /wp-login.php?action=resetpass
+ *
+ * @see     Charitable_User_Management::maybe_redirect_to_custom_password_reset_page()
+ */
+add_action( 'login_form_rp', array( Charitable_User_Management::get_instance(), 'maybe_redirect_to_custom_password_reset_page' ) );
+add_action( 'login_form_resetpass', array( Charitable_User_Management::get_instance(), 'maybe_redirect_to_custom_password_reset_page' ) );
