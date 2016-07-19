@@ -43,7 +43,6 @@ class Test_Charitable extends Charitable_UnitTestCase {
         $this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'donations/charitable-donation-hooks.php' );
         $this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'donations/charitable-donation-functions.php' );
         $this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'users/charitable-user-functions.php' );
-        $this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'users/charitable-user-hooks.php' );
         $this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'users/class-charitable-user.php' );
         $this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'users/class-charitable-roles.php' );
         $this->assertFileExists( $this->charitable->get_path( 'includes' ) . 'users/class-charitable-donor.php' );

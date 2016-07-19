@@ -361,11 +361,11 @@
   padding: 1em;
   margin-bottom: 1em;
   border: 1px solid; }
-  .charitable-notice .errors {
+  .charitable-notice > ul {
     padding: 0;
     margin: 0;
     list-style: none; }
-    .charitable-notice .errors li {
+    .charitable-notice > ul li {
       list-style: none; }
 
 /*# sourceMappingURL=charitable.css.map */

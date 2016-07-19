@@ -330,6 +330,8 @@ if ( ! class_exists( 'Charitable_Post_Types' ) ) :
 		public function add_endpoints() {
 			add_rewrite_endpoint( 'donate', EP_PERMALINK );
 			add_rewrite_endpoint( 'widget', EP_PERMALINK );
+			add_rewrite_endpoint( 'reset_password', EP_PERMALINK );
+			add_rewrite_endpoint( 'forgot_password', EP_PERMALINK );
 			add_rewrite_endpoint( 'donation_receipt', EP_ROOT );
 			add_rewrite_endpoint( 'donation_processing', EP_ROOT );
 		}
@@ -355,6 +357,8 @@ if ( ! class_exists( 'Charitable_Post_Types' ) ) :
 		public function add_rewrite_rule() {
 			add_rewrite_rule( 'donation-receipt/([0-9]+)/?$', 'index.php?donation_id=$matches[1]&donation_receipt=1', 'top' );
 			add_rewrite_rule( 'donation-processing/([0-9]+)/?$', 'index.php?donation_id=$matches[1]&donation_processing=1', 'top' );
+			add_rewrite_rule( '(.?.+?)(?:/([0-9]+))?/forgot-password/?$', 'index.php?pagename=$matches[1]&page=$matches[2]&forgot_password=1', 'top' );
+			add_rewrite_rule( '(.?.+?)(?:/([0-9]+))?/reset-password/?$', 'index.php?pagename=$matches[1]&page=$matches[2]&reset_password=1', 'top' );
 		}
 	}
 

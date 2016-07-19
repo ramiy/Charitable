@@ -155,32 +155,24 @@ final class Charitable_General_Settings {
                 'type'              => 'heading', 
                 'priority'          => 30
             ),
-            'profile_page'          => array(
-                'title'             => __( 'Profile Page', 'charitable' ), 
-                'type'              => 'select', 
-                'priority'          => 34, 
-                'options'           => charitable_get_admin_settings()->get_pages(), 
-                'help'              => __( 'The static page should contain the <code>[charitable_profile]</code> shortcode.', 'charitable' )
-            ), 
             'login_page'            => array(
-                'title'             => __( 'Login Page', 'charitable' ), 
-                'type'              => 'select', 
-                'priority'          => 34, 
+                'title'             => __( 'Login Page', 'charitable' ),
+                'type'              => 'select',
+                'priority'          => 32,
                 'default'           => 'wp',
                 'options'           => array(
-                    'wp'            => __( 'Use WordPress Login', 'charitable' ), 
-                    'pages'         => array( 
-                        'options'   => charitable_get_admin_settings()->get_pages(), 
+                    'wp'            => __( 'Use WordPress Login', 'charitable' ),
+                    'pages'         => array(
+                        'options'   => charitable_get_admin_settings()->get_pages(),
                         'label'     => __( 'Choose a Static Page', 'charitable' )
                     )
-                ), 
+                ),
                 'help'              => __( 'Allow users to login via the normal WordPress login page or via a static page. The static page should contain the <code>[charitable_login]</code> shortcode.', 'charitable' )
-
-            ), 
+            ),
             'registration_page' => array(
-                'title'             => __( 'Registration Page', 'charitable' ), 
-                'type'              => 'select', 
-                'priority'          => 36, 
+                'title'             => __( 'Registration Page', 'charitable' ),
+                'type'              => 'select',
+                'priority'          => 34,
                 'default'           => 'wp',
                 'options'           => array(
                     'wp'            => __( 'Use WordPress Registration Page', 'charitable' ),
@@ -190,6 +182,13 @@ final class Charitable_General_Settings {
                     )
                 ),
                 'help'              => __( 'Allow users to register via the default WordPress login or via a static page. The static page should contain the <code>[charitable_registration]</code> shortcode.', 'charitable' )
+            ),
+            'profile_page'          => array(
+                'title'             => __( 'Profile Page', 'charitable' ), 
+                'type'              => 'select', 
+                'priority'          => 36, 
+                'options'           => charitable_get_admin_settings()->get_pages(), 
+                'help'              => __( 'The static page should contain the <code>[charitable_profile]</code> shortcode.', 'charitable' )
             ), 
             'donation_receipt_page' => array(
                 'title'             => __( 'Donation Receipt Page', 'charitable' ), 

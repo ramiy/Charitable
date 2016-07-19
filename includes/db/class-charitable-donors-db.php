@@ -183,9 +183,9 @@ if ( ! class_exists( 'Charitable_Donors_DB' ) ) :
 			if ( empty( $statuses ) ) {
 				$status_clause = '';
 			} else {
-				$statuses = array_filter( $statuses, array( 'Charitable_Donation', 'is_valid_donation_status' ) );
-				$placeholders = array_fill( 0, count( $statuses ), '%s' );
-				$in = implode( ', ', $placeholders );
+				$statuses 	   = array_filter( $statuses, 'charitable_is_valid_donation_status' );
+				$placeholders  = array_fill( 0, count( $statuses ), '%s' );
+				$in 		   = implode( ', ', $placeholders );
 				$status_clause = "AND p.post_status IN ( $in )";
 			}
 

@@ -1,14 +1,14 @@
-<?php 
+<?php
 /**
- * Charitable Email Hooks. 
+ * Charitable Email Hooks.
  *
- * Action/filter hooks used for Charitable emails. 
- * 
+ * Action/filter hooks used for Charitable emails.
+ *
  * @package     Charitable/Functions/Emails
  * @version     1.0.3
  * @author      Eric Daams
  * @copyright   Copyright (c) 2015, Studio 164a
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License  
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
@@ -31,7 +31,7 @@ add_action( 'charitable_after_save_donation', array( 'Charitable_Email_Donation_
 add_action( 'save_post_' . Charitable::DONATION_POST_TYPE, array( 'Charitable_Email_Donation_Receipt', 'send_with_donation_id' ) );
 
 /**
- * Send the Donation Notification email. 
+ * Send the Donation Notification email.
  *
  * This email is sent to the website admin or other recipients, after the donation has been made.
  *
