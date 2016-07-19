@@ -569,7 +569,7 @@ function charitable_get_login_redirect_url() {
 	return apply_filters( 'charitable_signon_redirect_url', $redirect );
 }
 
-	/**
+/**
  * Returns the current URL.
  *
  * @see 	https://gist.github.com/leereamsnyder/fac3b9ccb6b99ab14f36

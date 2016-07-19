@@ -40,7 +40,9 @@ if ( ! class_exists( 'Charitable_My_Donations_Shortcode' ) ) :
 			/* If the user is logged out, redirect to login/registration page. */
 			if ( ! is_user_logged_in() ) {
 
-				echo Charitable_Login_Shortcode::display();
+				echo Charitable_Login_Shortcode::display( array(
+					'redirect' => charitable_get_current_url(),
+				) );
 
 				return;
 	        }

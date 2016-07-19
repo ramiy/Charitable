@@ -24,7 +24,7 @@ class Charitable_Login_Shortcode {
      *
      * This receives the user-defined attributes and passes the logic off to the class. 
      *
-     * @param   array   $atts   User-defined shortcode attributes.
+     * @param   array $atts User-defined shortcode attributes.
      * @return  string
      * @access  public
      * @static
@@ -34,7 +34,8 @@ class Charitable_Login_Shortcode {
         global $wp;        
 
         $defaults = array(
-            'logged_in_message' => __( 'You are already logged in!', 'charitable' )
+            'logged_in_message' => __( 'You are already logged in!', 'charitable' ),
+            'redirect'          => esc_url_raw( charitable_get_login_redirect_url() ),
         );
 
         $args = shortcode_atts( $defaults, $atts, 'charitable_login' );    
@@ -60,16 +61,18 @@ class Charitable_Login_Shortcode {
     /**
      * Return donations to display with the shortcode. 
      *
-     * @param   array $args 
+     * @param   array   $args 
      * @return  mixed[] $args
      * @access  protected
      * @static
      * @since   1.0.0
      */
     protected static function get_login_form_args( $args ) {
-        return apply_filters( 'charitable_login_form_args', array(
-            'redirect' => esc_url( charitable_get_login_redirect_url() )
-        ), $args );
+        $default = array(
+            'redirect' => $args['redirect'],
+        );
+
+        return apply_filters( 'charitable_login_form_args', $default, $args );
     }
 }
 
