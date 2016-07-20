@@ -99,3 +99,10 @@ add_filter( 'charitable_validate_donation_form_submission_gateway', array( 'Char
 add_filter( 'charitable_process_donation_paypal', array( 'Charitable_Gateway_Paypal', 'process_donation' ), 10, 3 );
 add_action( 'charitable_process_ipn_paypal', array( 'Charitable_Gateway_Paypal', 'process_ipn' ) );
 add_action( 'charitable_paypal_web_accept', array( 'Charitable_Gateway_Paypal', 'process_web_accept' ), 10, 2 );
+
+/**
+ * Load charitable-donation-form.js before donation form.
+ *
+ * @see     charitable_load_donation_form_script()
+ */
+add_action( 'charitable_donation_form_before', 'charitable_load_donation_form_script' );

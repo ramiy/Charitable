@@ -8,8 +8,32 @@ CHARITABLE = window.CHARITABLE || {};
     var Donation_Form = function( form ) {
         this.errors = [];
         this.form = form;
+        
+        // Private object initialization
+        var init = function( self ) {
+
+            self.form.find( '.donation-amount input:checked' ).each( function() {
+                $( this ).closest('li').addClass( 'selected' );
+            });
+
+            self.form.on( 'click', '.donation-amount', function( event ) {
+                self.select_donation_amount( $(this) );
+            });
+
+            self.form.on( 'focus', 'input.custom-donation-input', function( event ) {
+                self.on_focus_custom_amount( $(this) );
+            });
+
+        }
+
+        init( this );
     };
 
+    /**
+     * Return the submitted email address.
+     *
+     * @return  string
+     */
     Donation_Form.prototype.get_email = function() {
         return this.form.find( '[name=email]' ).val();
     };
@@ -100,6 +124,49 @@ CHARITABLE = window.CHARITABLE || {};
     };
 
     /**
+     * Select a donation amount.
+     *
+     * @return  void
+     */
+    Donation_Form.prototype.select_donation_amount = function( $el ) {
+        var $li = $el.closest('li');
+
+        // Already selected, quit early to prevent focus/change loop
+        if( $li.hasClass( 'selected' ) ){
+            return false; 
+        }
+
+        this.form.find( '.donation-amount.selected' ).removeClass( 'selected' );
+        
+        $li.addClass( 'selected' );
+
+        if ( $li.hasClass( 'custom-donation-amount' ) ) {
+            $li.find( 'input.custom-donation-input' ).focus();
+        }
+
+        return false;
+    };
+
+    /**
+     * Handle focus event for custom amount field.
+     *
+     * @return  void
+     */
+    Donation_Form.prototype.on_focus_custom_amount = function( $el ) {
+        var self = this;
+
+        $el.closest('li').find( 'input[name=donation_amount]' );.prop( 'checked', true ).trigger( 'change' );
+
+        this.form.off( 'focus', 'input.custom-donation-input' );
+
+        $el.focus();
+        
+        this.form.on( 'focus', 'input.custom-donation-input', function( event ) {
+            self.on_focus_custom_amount( $(this) );
+        });
+    }
+
+    /**
      * Add an error message.
      *
      * @param   string message
@@ -154,5 +221,16 @@ CHARITABLE = window.CHARITABLE || {};
     };
 
     exports.Donation_Form = Donation_Form;
+
+    /**
+     * Set up Donation Form object.
+     */
+    $( document ).ready( function(){
+        var $form = $( '#charitable-donation-form' );
+        
+        if ( $form.length ) {
+            new CHARITABLE.Donation_Form( $form );
+        }
+    });
 
 })( CHARITABLE, jQuery );

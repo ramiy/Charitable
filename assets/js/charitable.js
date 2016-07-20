@@ -32,44 +32,44 @@ CHARITABLE.Toggle = {
 /**
  * Donation amount selection
  */
-CHARITABLE.DonationSelection = {
+// CHARITABLE.DonationSelection = {
 
-    selectOption : function( $el ) {
-        var $li = $el.closest('li');
+//     selectOption : function( $el ) {
+//         var $li = $el.closest('li');
 
-        // already selected, quit early to prevent focus/change loop
-        if( $li.hasClass( 'selected' ) ){
-            return false; 
-        }
+//         // already selected, quit early to prevent focus/change loop
+//         if( $li.hasClass( 'selected' ) ){
+//             return false; 
+//         }
 
-        var $form = $el.closest('.charitable-form');
+//         var $form = $el.closest('.charitable-form');
 
-        $form.find('.donation-amount.selected').removeClass( 'selected' );
-        $li.addClass( 'selected' );
+//         $form.find('.donation-amount.selected').removeClass( 'selected' );
+//         $li.addClass( 'selected' );
 
-        if ( $li.hasClass( 'custom-donation-amount' ) ) {
-            $li.find( 'input.custom-donation-input' ).focus();
-        }
+//         if ( $li.hasClass( 'custom-donation-amount' ) ) {
+//             $li.find( 'input.custom-donation-input' ).focus();
+//         }
 
-        return false;
-    },
+//         return false;
+//     },
     
-    init : function() {
-        var self = this;
+//     init : function() {
+//         var self = this;
 
-        jQuery( '.donation-amount input:checked' ).each( function() {
-            jQuery( this ).closest('li').addClass( 'selected' );
-        });
+//         jQuery( '.donation-amount input:checked' ).each( function() {
+//             jQuery( this ).closest('li').addClass( 'selected' );
+//         });
 
-        jQuery( '.charitable-form' ).on( 'click', '.donation-amount', function( event ) {
-            self.selectOption( jQuery(this) );
-        });
+//         jQuery( '.charitable-form' ).on( 'click', '.donation-amount', function( event ) {
+//             self.selectOption( jQuery(this) );
+//         });
 
-        jQuery( '.charitable-form' ).on( 'focus', 'input.custom-donation-input', function( event ) {
-            jQuery(this).closest('li').find('input[name=donation_amount]').prop('checked', true).trigger('change');
-        });
-    }
-};
+//         jQuery( '.charitable-form' ).on( 'focus', 'input.custom-donation-input', function( event ) {
+//             jQuery(this).closest('li').find('input[name=donation_amount]').prop('checked', true).trigger('change');
+//         });
+//     }
+// };
 
 /**
  * AJAX donation
@@ -255,7 +255,7 @@ CHARITABLE.Accounting = {
     jQuery( document ).ready( function() {
         CHARITABLE.Toggle.init();
 
-        CHARITABLE.DonationSelection.init();
+        // CHARITABLE.DonationSelection.init();
         
         CHARITABLE.AJAXDonate.init();       
 

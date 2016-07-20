@@ -29,7 +29,7 @@ if ( ! $form ) {
 /**
  * @hook 	charitable_donation_form_before
  */
-do_action('charitable_donation_form_before', $form);
+do_action( 'charitable_donation_form_before', $form );
 
 /**
  * Render the donation form.
@@ -39,4 +39,4 @@ $form->render();
 /**
  * @hook 	charitable_donation_form_after
  */
-do_action('charitable_donation_form_after', $form);
+do_action( 'charitable_donation_form_after', $form );

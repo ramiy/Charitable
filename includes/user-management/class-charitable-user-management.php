@@ -267,7 +267,9 @@ if ( ! class_exists( 'Charitable_User_Management' ) ) :
 		 * @access  public
 		 * @since   1.4.0
 		 */
-		public function redirect_to_charitable_login() {
+		public function maybe_redirect_to_charitable_login() {
+
+			
 
 			if ( apply_filters( 'charitable_disable_wp_login', false ) && 'wp' != charitable_get_option( 'login_page', 'wp' ) ) {
 				/* Don't prevent logging out. */
