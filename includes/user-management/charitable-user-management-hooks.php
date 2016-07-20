@@ -93,7 +93,7 @@ add_action( 'login_form_login', array( Charitable_User_Management::get_instance(
  *
  * @see     Charitable_User_Management::maybe_redirect_at_authenticate()
  */
-add_action( 'authenticate', array( Charitable_User_Management::get_instance(), 'maybe_redirect_at_authenticate' ), 101, 3 );
+add_filter( 'authenticate', array( Charitable_User_Management::get_instance(), 'maybe_redirect_at_authenticate' ), 101 );
 
 /**
  * If hiding all access to wp-login.php using the charitable_disable_wp_login

@@ -93,48 +93,58 @@ if ( ! class_exists( 'Charitable_User_Management' ) ) :
 		 * @since   1.4.0
 		 */
 		public function maybe_redirect_to_custom_password_reset_page() {
-			if ( apply_filters( 'charitable_disable_wp_login', false ) && 'wp' != charitable_get_option( 'login_page', 'wp' ) ) {
 
-				$redirect_url = charitable_get_permalink( 'reset_password_page' );
-				$redirect_url = add_query_arg( 'login', esc_attr( $_REQUEST['login'] ), $redirect_url );
-				$redirect_url = add_query_arg( 'key', esc_attr( $_REQUEST['key'] ), $redirect_url );
-
-				wp_safe_redirect( esc_url_raw( $redirect_url ) );
-
-				exit();
+			if ( ! apply_filters( 'charitable_disable_wp_login', false ) ) {
+				return;
 			}
+
+			if ( 'wp' == charitable_get_option( 'login_page', 'wp' ) ) {
+				return;
+			}
+
+			$redirect_url = charitable_get_permalink( 'reset_password_page' );
+			$redirect_url = add_query_arg( 'login', esc_attr( $_REQUEST['login'] ), $redirect_url );
+			$redirect_url = add_query_arg( 'key', esc_attr( $_REQUEST['key'] ), $redirect_url );
+
+			wp_safe_redirect( esc_url_raw( $redirect_url ) );
+
+			exit();
 		}
 
 		/**
-		 * Check if user has submitted a login attempt
+		 * Check if a failed user login attempt originated from Charitable login form. 
 		 *
-		 * If so, and charitable_disable_wp_login is set, display errors on
-		 * charitable login page
+		 * If so redirect user to Charitable login page.
 		 *
-		 * @return  WP_User|WP_Error|void Redirect if charitable_disable_wp_login is set and there are login errors
+		 * @param 	WP_User|WP_Error $user_or_error
+		 * @return  WP_User|void
 		 * @access  public
 		 * @since   1.4.0
 		 */
-		public function maybe_redirect_at_authenticate( $user_or_error, $username, $password ) {
-			if ( apply_filters( 'charitable_disable_wp_login', false ) && 'wp' != charitable_get_option( 'login_page', 'wp' ) ) {
-				if ( $_SERVER[ 'REQUEST_METHOD' ] == 'POST' ) {
-					if( is_wp_error( $user_or_error ) ) {
+		public function maybe_redirect_at_authenticate( $user_or_error ) {
 
-						foreach( $user_or_error->get_error_messages()	as $key => $error ) {
-							charitable_get_notices()->add_error( $error );
-						}
-
-						charitable_get_session()->add_notices();
-
-						wp_safe_redirect( esc_url_raw( charitable_get_permalink( 'login_page' ) ) );
-
-						exit();
-
-					}
-				}
+			if ( 'POST' != $_SERVER['REQUEST_METHOD'] ) {
+				return $user_or_error;
+			}
+			
+			if ( ! is_wp_error( $user_or_error ) ) {
+				return $user_or_error;
 			}
 
-			return $user_or_error;
+			if ( ! isset( $_POST['charitable'] ) || ! $_POST['charitable'] ) {
+				return $user_or_error;
+			}
+		
+			echo '<pre>'; var_dump( $user_or_error ); echo '</pre>';
+			die;
+
+			charitable_get_notices()->add_errors_from_wp_error( $user_or_error );
+
+			charitable_get_session()->add_notices();
+
+			wp_safe_redirect( esc_url_raw( charitable_get_permalink( 'login_page' ) ) );
+
+			exit();
 		}
 
 		/**
@@ -147,14 +157,22 @@ if ( ! class_exists( 'Charitable_User_Management' ) ) :
 		 * @since   1.4.0
 		 */
 		public function maybe_redirect_to_custom_lostpassword() {
-			if ( apply_filters( 'charitable_disable_wp_login', false ) && 'wp' != charitable_get_option( 'login_page', 'wp' ) ) {
-				if ( $_SERVER[ 'REQUEST_METHOD' ] == 'GET' ) {
 
-						wp_safe_redirect( esc_url_raw( charitable_get_permalink( 'forgot_password_page' ) ) );
-
-						exit();
-				}
+			if ( ! apply_filters( 'charitable_disable_wp_login', false ) ) {
+				return;
 			}
+
+			if ( 'wp' == charitable_get_option( 'login_page', 'wp' ) ) {
+				return;
+			}
+
+			if ( $_SERVER[ 'REQUEST_METHOD' ] != 'GET' ) {
+				return;
+			}
+
+			wp_safe_redirect( esc_url_raw( charitable_get_permalink( 'forgot_password_page' ) ) );
+
+			exit();
 		}
 
 		/**
@@ -269,18 +287,22 @@ if ( ! class_exists( 'Charitable_User_Management' ) ) :
 		 */
 		public function maybe_redirect_to_charitable_login() {
 
-			
-
-			if ( apply_filters( 'charitable_disable_wp_login', false ) && 'wp' != charitable_get_option( 'login_page', 'wp' ) ) {
-				/* Don't prevent logging out. */
-				if ( $_SERVER[ 'REQUEST_METHOD' ] == 'GET' ) {
-
-					wp_safe_redirect( esc_url_raw( charitable_get_permalink( 'login_page' ) ) );
-
-					exit();
-
-				}
+			if ( ! apply_filters( 'charitable_disable_wp_login', false ) ) {
+				return;
 			}
+
+			if ( 'wp' == charitable_get_option( 'login_page', 'wp' ) ) {
+				return;
+			}
+
+			/* Don't prevent logging out. */
+			if ( $_SERVER[ 'REQUEST_METHOD' ] != 'GET' ) {
+				return;
+			}
+
+			wp_safe_redirect( esc_url_raw( charitable_get_permalink( 'login_page' ) ) );
+
+			exit();
 		}
 
 		/**

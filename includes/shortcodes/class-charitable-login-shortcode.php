@@ -49,13 +49,31 @@ if ( ! class_exists( 'Charitable_Login_Shortcode' ) ) :
                 charitable_template( 'shortcodes/logged-in.php', $args );
                 
                 return ob_get_clean();
-            }        
+            }                    
 
             ob_start();
 
             charitable_template( 'shortcodes/login.php', $args );
 
             return apply_filters( 'charitable_login_shortcode', ob_get_clean() );        
+        }
+
+        /**
+         * Fingerprint the login form with our charitable=true hidden field.
+         *
+         * @param   string $content
+         * @return  string
+         * @access  public
+         * @static
+         * @since   1.4.0
+         */
+        public static function add_hidden_field_to_login_form( $content, $args  ) {
+            
+            if ( isset( $args['charitable'] ) && $args['charitable'] ) {
+                $content .= '<input type="hidden" name="charitable" value="1" />';
+            }
+
+            return $content;
         }
 
         /**
@@ -69,7 +87,8 @@ if ( ! class_exists( 'Charitable_Login_Shortcode' ) ) :
          */
         protected static function get_login_form_args( $args ) {
             $default = array(
-                'redirect' => $args['redirect'],
+                'redirect'   => $args['redirect'],
+                'charitable' => true,
             );
 
             return apply_filters( 'charitable_login_form_args', $default, $args );
