@@ -117,11 +117,12 @@ if ( ! class_exists( 'Charitable_User_Management' ) ) :
 		 * If so redirect user to Charitable login page.
 		 *
 		 * @param 	WP_User|WP_Error $user_or_error
+		 * @param 	string 			 $username
 		 * @return  WP_User|void
 		 * @access  public
 		 * @since   1.4.0
 		 */
-		public function maybe_redirect_at_authenticate( $user_or_error ) {
+		public function maybe_redirect_at_authenticate( $user_or_error, $username ) {
 
 			if ( 'POST' != $_SERVER['REQUEST_METHOD'] ) {
 				return $user_or_error;
@@ -169,7 +170,13 @@ if ( ! class_exists( 'Charitable_User_Management' ) ) :
 
 			charitable_get_session()->add_notices();
 
-			wp_safe_redirect( esc_url_raw( charitable_get_permalink( 'login_page' ) ) );
+			$redirect_url = charitable_get_permalink( 'login_page' );
+
+			if ( strlen( $username ) ) {
+				$redirect_url = add_query_arg( 'username', $username, $redirect_url );
+			}
+
+			wp_safe_redirect( esc_url_raw( $redirect_url ) );
 
 			exit();
 		}

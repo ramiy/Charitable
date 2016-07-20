@@ -91,6 +91,10 @@ if ( ! class_exists( 'Charitable_Login_Shortcode' ) ) :
                 'charitable' => true,
             );
 
+            if ( isset( $_GET['username']) ) {
+                $default['value_username'] = $_GET['username'];
+            }
+
             return apply_filters( 'charitable_login_form_args', $default, $args );
         }
     }
