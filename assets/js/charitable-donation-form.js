@@ -155,7 +155,7 @@ CHARITABLE = window.CHARITABLE || {};
     Donation_Form.prototype.on_focus_custom_amount = function( $el ) {
         var self = this;
 
-        $el.closest('li').find( 'input[name=donation_amount]' );.prop( 'checked', true ).trigger( 'change' );
+        $el.closest('li').find( 'input[name=donation_amount]' ).prop( 'checked', true ).trigger( 'change' );
 
         this.form.off( 'focus', 'input.custom-donation-input' );
 

@@ -135,10 +135,37 @@ if ( ! class_exists( 'Charitable_User_Management' ) ) :
 				return $user_or_error;
 			}
 		
-			echo '<pre>'; var_dump( $user_or_error ); echo '</pre>';
-			die;
+			foreach ( $user_or_error->errors as $code => $error ) {
 
-			charitable_get_notices()->add_errors_from_wp_error( $user_or_error );
+				/* Make sure the error messages link to our forgot password page, not WordPress' */
+				switch ( $code ) {
+
+					case 'invalid_email' :
+						
+						$error = __( '<strong>ERROR</strong>: Invalid email address.', 'charitable' ) .
+							' <a href="' . esc_url( charitable_get_permalink( 'forgot_password_page' ) ) . '">' .
+							__( 'Lost your password?' ) .
+							'</a>';
+						
+						break;
+
+					case 'incorrect_password' : 
+						
+						$error = sprintf(
+							/* translators: %s: email address */
+							__( '<strong>ERROR</strong>: The password you entered for the email address %s is incorrect.' ),
+							'<strong>' . $email . '</strong>'
+						) .
+						' <a href="' . esc_url( charitable_get_permalink( 'forgot_password_page' ) ) . '">' .
+						__( 'Lost your password?' ) .
+						'</a>';
+						
+						break;
+				}
+
+				charitable_get_notices()->add_error( $error );
+
+			}
 
 			charitable_get_session()->add_notices();
 
