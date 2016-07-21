@@ -32,115 +32,115 @@ CHARITABLE.Toggle = {
 /**
  * Donation amount selection
  */
-CHARITABLE.DonationSelection = {
+// CHARITABLE.DonationSelection = {
 
-    selectOption : function( $el ) {
-        var $li = $el.closest('li');
+//     selectOption : function( $el ) {
+//         var $li = $el.closest('li');
 
-        // already selected, quit early to prevent focus/change loop
-        if( $li.hasClass( 'selected' ) ){
-            return false; 
-        }
+//         // already selected, quit early to prevent focus/change loop
+//         if( $li.hasClass( 'selected' ) ){
+//             return false; 
+//         }
 
-        var $form = $el.closest('.charitable-form');
+//         var $form = $el.closest('.charitable-form');
 
-        $form.find('.donation-amount.selected').removeClass( 'selected' );
-        $li.addClass( 'selected' );
+//         $form.find('.donation-amount.selected').removeClass( 'selected' );
+//         $li.addClass( 'selected' );
 
-        if ( $li.hasClass( 'custom-donation-amount' ) ) {
-            $li.find( 'input.custom-donation-input' ).focus();
-        }
+//         if ( $li.hasClass( 'custom-donation-amount' ) ) {
+//             $li.find( 'input.custom-donation-input' ).focus();
+//         }
 
-        return false;
-    },
+//         return false;
+//     },
     
-    init : function() {
-        var self = this;
+//     init : function() {
+//         var self = this;
 
-        jQuery( '.donation-amount input:checked' ).each( function() {
-            jQuery( this ).closest('li').addClass( 'selected' );
-        });
+//         jQuery( '.donation-amount input:checked' ).each( function() {
+//             jQuery( this ).closest('li').addClass( 'selected' );
+//         });
 
-        jQuery( '.charitable-form' ).on( 'click', '.donation-amount', function( event ) {
-            self.selectOption( jQuery(this) );
-        });
+//         jQuery( '.charitable-form' ).on( 'click', '.donation-amount', function( event ) {
+//             self.selectOption( jQuery(this) );
+//         });
 
-        jQuery( '.charitable-form' ).on( 'focus', 'input.custom-donation-input', function( event ) {
-            jQuery(this).closest('li').find('input[name=donation_amount]').prop('checked', true).trigger('change');
-        });
-    }
-};
+//         jQuery( '.charitable-form' ).on( 'focus', 'input.custom-donation-input', function( event ) {
+//             jQuery(this).closest('li').find('input[name=donation_amount]').prop('checked', true).trigger('change');
+//         });
+//     }
+// };
 
 /**
  * AJAX donation
  */
-CHARITABLE.AJAXDonate = {
+// CHARITABLE.AJAXDonate = {
 
-    onClick : function( form ) {
-        var $form = jQuery( form );
-        var data = $form.serializeArray().reduce( function( obj, item ) {
-            obj[ item.name ] = item.value;
-            return obj;
-        }, {} );
-        var coordinates = $form.position();
-        var $modal = $form.parent( '#charitable-donation-form-modal' );
+//     onClick : function( form ) {
+//         var $form = jQuery( form );
+//         var data = $form.serializeArray().reduce( function( obj, item ) {
+//             obj[ item.name ] = item.value;
+//             return obj;
+//         }, {} );
+//         var coordinates = $form.position();
+//         var $modal = $form.parent( '#charitable-donation-form-modal' );
 
-        $form.find( '.charitable-form-processing' ).show();        
+//         $form.find( '.charitable-form-processing' ).show();        
 
-        /* Cancel the default Charitable action, but pass it along as the form_action variable */       
-        data.action = 'make_donation';
-        data.form_action = data.charitable_action;          
-        delete data.charitable_action;
+//         /* Cancel the default Charitable action, but pass it along as the form_action variable */       
+//         data.action = 'make_donation';
+//         data.form_action = data.charitable_action;          
+//         delete data.charitable_action;
 
-        jQuery.ajax({
-            type: "POST",
-            data: data,
-            dataType: "json",
-            url: CHARITABLE_VARS.ajaxurl,
-            xhrFields: {
-                withCredentials: true
-            },
-            success: function (response) {
-                if ( response.success ) {
-                    window.location.href = response.redirect_to;
-                }
+//         jQuery.ajax({
+//             type: "POST",
+//             data: data,
+//             dataType: "json",
+//             url: CHARITABLE_VARS.ajaxurl,
+//             xhrFields: {
+//                 withCredentials: true
+//             },
+//             success: function (response) {
+//                 if ( response.success ) {
+//                     window.location.href = response.redirect_to;
+//                 }
 
-                $form.find( '.charitable-form-processing' ).hide();
+//                 $form.find( '.charitable-form-processing' ).hide();
 
-                if ( $form.find( '.charitable-form-errors').length ) {
-                    $form.find( '.charitable-form-errors' ).remove(); 
-                }
+//                 if ( $form.find( '.charitable-form-errors').length ) {
+//                     $form.find( '.charitable-form-errors' ).remove(); 
+//                 }
                 
-                $form.prepend( response.errors );    
+//                 $form.prepend( response.errors );    
                 
-                if ( $modal.length ) {
-                    $modal.scrollTop( 0 );
-                }
-                else {
-                    window.scrollTo( coordinates.left, coordinates.top );
-                }                
-            }
-        }).fail(function (response, textStatus, errorThrown) {
-            if ( window.console && window.console.log ) {
-                console.log( response );
-            }
+//                 if ( $modal.length ) {
+//                     $modal.scrollTop( 0 );
+//                 }
+//                 else {
+//                     window.scrollTo( coordinates.left, coordinates.top );
+//                 }                
+//             }
+//         }).fail(function (response, textStatus, errorThrown) {
+//             if ( window.console && window.console.log ) {
+//                 console.log( response );
+//             }
 
-            window.scrollTo( coordinates.left, coordinates.top );
+//             window.scrollTo( coordinates.left, coordinates.top );
 
-        }).done(function (response) {
+//         }).done(function (response) {
 
-        });
+//         });
 
-        return false;
-    },
+//         return false;
+//     },
 
-    init : function() {
-        var self = this;
-        jQuery( 'body' ).on ( 'submit', '#charitable-donation-form[data-use-ajax=1]', function( event ) {
-            return self.onClick( this );
-        });
-    }
-};
+//     // init : function() {
+//     //     var self = this;
+//     //     jQuery( 'body' ).on ( 'submit', '#charitable-donation-form[data-use-ajax=1]', function( event ) {
+//     //         return self.onClick( this );
+//     //     });
+//     // }
+// };
 
 /**
  * URL sanitization
@@ -171,47 +171,47 @@ CHARITABLE.Modal = {
 /**
  * Payment method selection
  */
- CHARITABLE.PaymentMethodSelection = {
+ // CHARITABLE.PaymentMethodSelection = {
 
-    loaded : false,
+ //    loaded : false,
 
-    getActiveMethod : function( $el ) {
-        return jQuery( '#charitable-gateway-selector input[name=gateway]:checked' ).val();
-    },
+ //    getActiveMethod : function( $el ) {
+ //        return jQuery( '#charitable-gateway-selector input[name=gateway]:checked' ).val();
+ //    },
 
-    hideInactiveMethods : function( active ) {
-        var active = active || this.getActiveMethod();
+ //    hideInactiveMethods : function( active ) {
+ //        var active = active || this.getActiveMethod();
 
-        jQuery( '#charitable-gateway-fields .charitable-gateway-fields[data-gateway!=' + active + ']' ).hide();
-    },
+ //        jQuery( '#charitable-gateway-fields .charitable-gateway-fields[data-gateway!=' + active + ']' ).hide();
+ //    },
 
-    showActiveMethod : function( active ) {
-        jQuery( '#charitable-gateway-fields .charitable-gateway-fields[data-gateway=' + active + ']' ).show();
-    },
+ //    showActiveMethod : function( active ) {
+ //        jQuery( '#charitable-gateway-fields .charitable-gateway-fields[data-gateway=' + active + ']' ).show();
+ //    },
 
-    init : function() {
-        var self = this, 
-            $selector = jQuery( '#charitable-gateway-selector input[name=gateway]' );        
+ //    init : function() {
+ //        var self = this, 
+ //            $selector = jQuery( '#charitable-gateway-selector input[name=gateway]' );        
 
-        /* If there is only one gateway, we don't need to do anything else. */
-        if ( 0 === $selector.length ) {
-            return;
-        }
+ //        /* If there is only one gateway, we don't need to do anything else. */
+ //        if ( 0 === $selector.length ) {
+ //            return;
+ //        }
 
-        self.hideInactiveMethods();
+ //        self.hideInactiveMethods();
 
-        if ( self.loaded ) {
-            return;
-        }
+ //        if ( self.loaded ) {
+ //            return;
+ //        }
 
-        jQuery( 'body' ).on( 'change', '#charitable-gateway-selector input[name=gateway]', function() {
-            self.hideInactiveMethods();
-            self.showActiveMethod( jQuery(this).val() );
-        });
+ //        jQuery( 'body' ).on( 'change', '#charitable-gateway-selector input[name=gateway]', function() {
+ //            self.hideInactiveMethods();
+ //            self.showActiveMethod( jQuery(this).val() );
+ //        });
 
-        self.loaded = true;
-    }
- };
+ //        self.loaded = true;
+ //    }
+ // };
 
 
 /**
@@ -255,11 +255,11 @@ CHARITABLE.Accounting = {
     jQuery( document ).ready( function() {
         CHARITABLE.Toggle.init();
 
-        CHARITABLE.DonationSelection.init();
+        // CHARITABLE.DonationSelection.init();
         
-        CHARITABLE.AJAXDonate.init();       
+        // CHARITABLE.AJAXDonate.init();       
 
-        CHARITABLE.PaymentMethodSelection.init();
+        // CHARITABLE.PaymentMethodSelection.init();
 
         CHARITABLE.Modal.init();
 

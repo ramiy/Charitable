@@ -8,25 +8,129 @@ CHARITABLE = window.CHARITABLE || {};
     var Donation_Form = function( form ) {
         this.errors = [];
         this.form = form;
+
+        var self = this;
         
-        // Private object initialization
-        var init = function( self ) {
+        // Private event handlers
+        var on_focus_custom_amount = function() {
+            $( this ).closest('li').find( 'input[name=donation_amount]' ).prop( 'checked', true ).trigger( 'change' );
 
-            self.form.find( '.donation-amount input:checked' ).each( function() {
-                $( this ).closest('li').addClass( 'selected' );
-            });
+            self.form.off( 'focus', 'input.custom-donation-input' );
 
-            self.form.on( 'click', '.donation-amount', function( event ) {
-                self.select_donation_amount( $(this) );
-            });
-
+            $( this ).focus();
+            
             self.form.on( 'focus', 'input.custom-donation-input', function( event ) {
                 self.on_focus_custom_amount( $(this) );
             });
+        };
+
+        var on_change_payment_gateway = function() {
+            self.hide_inactive_payment_methods();
+
+            self.show_active_payment_methods( $(this).val() );
+        };
+
+        var on_submit = function() {
+
+            var data = self.form.serializeArray().reduce( function( obj, item ) {
+                obj[ item.name ] = item.value;
+                return obj;
+            }, {} );
+            var coordinates = self.form.position();
+            var $modal = self.form.parent( '#charitable-donation-form-modal' );
+
+            self.form.find( '.charitable-form-processing' ).show();        
+
+            /* Cancel the default Charitable action, but pass it along as the form_action variable */       
+            data.action = 'make_donation';
+            data.form_action = data.charitable_action;          
+            delete data.charitable_action;
+
+            $.ajax({
+                type: "POST",
+                data: data,
+                dataType: "json",
+                url: CHARITABLE_VARS.ajaxurl,
+                xhrFields: {
+                    withCredentials: true
+                },
+                success: function (response) {
+
+                    if ( response.success ) {
+                        window.location.href = response.redirect_to;
+                    }
+
+                    self.form.find( '.charitable-form-processing' ).hide();
+
+                    if ( self.form.find( '.charitable-form-errors').length ) {
+                        self.form.find( '.charitable-form-errors' ).remove(); 
+                    }
+                    
+                    self.form.prepend( response.errors );    
+                    
+                    if ( $modal.length ) {
+                        $modal.scrollTop( 0 );
+                    }
+                    else {
+                        window.scrollTo( coordinates.left, coordinates.top );
+                    }                
+                }
+            }).fail(function (response, textStatus, errorThrown) {
+                if ( window.console && window.console.log ) {
+                    console.log( response );
+                }
+
+                window.scrollTo( coordinates.left, coordinates.top );
+
+            }).done(function (response) {
+
+            });
+
+            return false;
+        };
+
+        // Private object initialization
+        var init = function() {
+
+            // Init donation amount selection
+            (function() {
+
+                self.form.find( '.donation-amount input:checked' ).each( function() {
+                    $( this ).closest('li').addClass( 'selected' );
+                });
+
+                self.form.on( 'click', '.donation-amount', function( event ) {
+                    self.select_donation_amount( $(this) );
+                });
+
+                self.form.on( 'focus', 'input.custom-donation-input', on_focus_custom_amount );
+            })();
+
+            // Init payment method selection
+            (function() {
+
+                if ( 0 === self.get_all_payment_methods().length ) {
+                    return;
+                }
+
+                self.hide_inactive_payment_methods();
+
+                $( 'body' ).on( 'change', '#charitable-gateway-selector input[name=gateway]', on_change_payment_gateway );
+
+            })();
+    
+            // Handle donation form submission            
+            if ( 1 === self.form.data( 'use-ajax' ) ) {
+                $( 'body' ).on( 'submit', self.form, on_submit );
+            }
+
+            // donation_selection_init();
+
+            // gateway_select_init();
 
         }
 
-        init( this );
+        init();
     };
 
     /**
@@ -124,6 +228,37 @@ CHARITABLE = window.CHARITABLE || {};
     };
 
     /**
+     * Return all payment methods.
+     *
+     * @return  object
+     */
+    Donation_Form.prototype.get_all_payment_methods = function() {
+        return this.form.find( '#charitable-gateway-selector input[name=gateway]' );
+    }
+
+    /**
+     * Hide inactive payment methods.
+     *
+     * @return  void
+     */
+    Donation_Form.prototype.hide_inactive_payment_methods = function() {
+        var active = this.get_payment_method();
+
+        this.form.find( '.charitable-gateway-fields[data-gateway!=' + active + ']' ).hide();
+    };
+
+    /**
+     * Show active payment methods.
+     *
+     * @return  void
+     */
+    Donation_Form.prototype.show_active_payment_methods = function( active ) {
+        var active = active || this.get_payment_method();
+
+        this.form.find( '.charitable-gateway-fields[data-gateway=' + active + ']' ).show();
+    };
+
+    /**
      * Select a donation amount.
      *
      * @return  void
@@ -146,25 +281,6 @@ CHARITABLE = window.CHARITABLE || {};
 
         return false;
     };
-
-    /**
-     * Handle focus event for custom amount field.
-     *
-     * @return  void
-     */
-    Donation_Form.prototype.on_focus_custom_amount = function( $el ) {
-        var self = this;
-
-        $el.closest('li').find( 'input[name=donation_amount]' ).prop( 'checked', true ).trigger( 'change' );
-
-        this.form.off( 'focus', 'input.custom-donation-input' );
-
-        $el.focus();
-        
-        this.form.on( 'focus', 'input.custom-donation-input', function( event ) {
-            self.on_focus_custom_amount( $(this) );
-        });
-    }
 
     /**
      * Add an error message.
