@@ -142,15 +142,6 @@ if ( ! class_exists( 'Charitable_Public' ) ) :
 
 			wp_enqueue_script( 'charitable-script' );
 
-			/* Donation form script */
-			// wp_register_script(
-			// 	'charitable-donation-form',
-			// 	$assets_dir . 'js/charitable-donation-form'. $suffix . '.js',
-			// 	array( 'charitable-script', 'jquery-core' ),
-			// 	$version,
-			// 	true
-			// );
-
 			/* Main styles */
 			wp_register_style(
 				'charitable-styles',
