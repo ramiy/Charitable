@@ -122,7 +122,7 @@ class Test_Charitable_Campaign extends Charitable_UnitTestCase {
 	}
 
 	function test_get_end_date_for_finite_campaign() {
-		$this->assertEquals( date('Y-m-d', $this->end_time_1), $this->campaign_1->get_end_date( 'Y-m-d' ) );
+		$this->assertEquals( date( 'Y-m-d', $this->end_time_1 ), $this->campaign_1->get_end_date( 'Y-m-d' ) );
 	}
 
 	function test_get_end_date_for_endless_campaign() {
@@ -131,15 +131,15 @@ class Test_Charitable_Campaign extends Charitable_UnitTestCase {
 
 	function test_get_seconds_left_for_finite_campaign() {
 		$seconds_left = $this->end_time_1 - current_time( 'timestamp' );
-		$diff = $this->campaign_1->get_seconds_left() - $seconds_left; // Sometimes the two are a second out, so we allow for that.
-		$this->assertTrue( in_array( $diff, array( 0, 1 ) ) );
+		$diff = $this->campaign_1->get_seconds_left() - $seconds_left;
+		$this->assertFalse( $diff > 4 ); // The different should not be greater than 4 seconds.
 	}
 
 	function test_get_seconds_left_for_endless_campaign() {
 		$this->assertFalse( $this->campaign_2->get_seconds_left() );
 	}
 
-	function test_get_time_left() {	
+	function test_get_time_left() {
 		$this->assertEquals( '<span class="amount time-left days-left">300</span> Days Left', $this->campaign_1->get_time_left() );
 		$this->assertEquals( '', $this->campaign_2->get_time_left() );
 	}
