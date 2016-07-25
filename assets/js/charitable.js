@@ -84,11 +84,23 @@ CHARITABLE = window.CHARITABLE || {};
         };
 
         /**
+         * Flag to prevent the on_submit handler from sending multiple concurrent AJAX requests
+         *
+         * @access  private
+         */
+        var submit_processing = false;
+
+        /**
          * Submit event handler for donation form.
          * 
          * @access  private
          */
         var on_submit = function() {
+            if ( submit_processing ) {
+                return false;
+            }
+
+            submit_processing = true;
 
             var $form = $( this );
             var data = $form.serializeArray().reduce( function( obj, item ) {
@@ -96,9 +108,12 @@ CHARITABLE = window.CHARITABLE || {};
                 return obj;
             }, {} );
             var coordinates = $form.position();
-            var $modal = $form.parent( '#charitable-donation-form-modal' );
+            var $modal = $form.parents( '.charitable-modal' );
+            var $spinner = $form.find( '.charitable-form-processing' );
+            var $donate_btn = $form.find( 'button[name="donate"]' );
 
-            $form.find( '.charitable-form-processing' ).show();        
+            $donate_btn.hide();
+            $spinner.show();
 
             /* Cancel the default Charitable action, but pass it along as the form_action variable */       
             data.action = 'make_donation';
@@ -118,31 +133,36 @@ CHARITABLE = window.CHARITABLE || {};
                     if ( response.success ) {
                         window.location.href = response.redirect_to;
                     }
-
-                    $form.find( '.charitable-form-processing' ).hide();
-
-                    if ( $form.find( '.charitable-form-errors').length ) {
-                        $form.find( '.charitable-form-errors' ).remove(); 
-                    }
-                    
-                    $form.prepend( response.errors );    
-                    
-                    if ( $modal.length ) {
-                        $modal.scrollTop( 0 );
-                    }
                     else {
-                        window.scrollTo( coordinates.left, coordinates.top );
-                    }                
+                        $donate_btn.show();
+                        $spinner.hide();
+
+                        if ( $form.find( '.charitable-form-errors').length ) {
+                            $form.find( '.charitable-form-errors' ).remove();
+                        }
+
+                        $form.prepend( response.errors );
+
+                        if ( $modal.length ) {
+                            $modal.scrollTop( 0 );
+                        }
+                        else {
+                            window.scrollTo( coordinates.left, coordinates.top );
+                        }
+                    }
                 }
             }).fail(function (response, textStatus, errorThrown) {
                 if ( window.console && window.console.log ) {
                     console.log( response );
                 }
 
+                $donate_btn.show();
+                $spinner.hide();
+
                 window.scrollTo( coordinates.left, coordinates.top );
 
-            }).done(function (response) {
-
+            }).always(function (response) {
+                submit_processing = false;
             });
 
             return false;
