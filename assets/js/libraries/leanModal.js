@@ -28,11 +28,14 @@
                 offset = parseInt( o.verticalOffset );
 
                 $(this).on( 'click', function(e) {
-              
-                    var modal_id = $(this).attr( "href" ), 
+
+                    var modal_id = methods.get_target( $(this) ), 
                         $modal = $( modal_id ), 
+                        resize = function() {
+                            methods.resize( $modal );
+                        },
                         modal_height, 
-                        modal_width;
+                        modal_width;                    
 
                     $( "#lean_overlay" ).on( 'click', function() { 
                         methods.close( $modal );                    
@@ -56,9 +59,14 @@
                         'z-index': 100000,                    
                     });
 
-                    methods.resize( $modal, window_height, modal_height );                    
+                    resize();
+                    $modal.resize( resize );
+                    $(window).resize( resize );
 
                     $modal.fadeTo(200,1);
+
+                    /* Provide an event hook for other scripts to use. */
+                    $( 'body' ).trigger( 'charitable:modal:open' );
 
                     e.preventDefault();
                         
@@ -68,12 +76,28 @@
         }, 
 
         /**
+         * Return the ID of the modal to open.
+         */
+        get_target : function( $trigger ) {
+            var id = '#' + $trigger.data( 'trigger-modal' );
+
+            if ( 1 === id.length ) {
+                id = $trigger.attr( "href" );
+            }
+
+            return id;
+        },
+
+        /**
          * Close modal 
          */
         close : function( $modal ) {
             $( "#lean_overlay" ).fadeOut(200);
             $modal.css({ 'display' : 'none' });
             methods.reset( $modal );
+
+            /* Provide an event hook for other scripts to use. */
+            $( 'body' ).trigger( 'charitable:modal:close' );
         }, 
 
         /**
@@ -120,9 +144,15 @@
             }                   
 
             $modal.css( modal_css );
+
+            /* Provide an event hook for other scripts to use. */
+            $( 'body' ).trigger( 'charitable:modal:resize' );
         }        
     };   
  
+    /** 
+     * Register this as a jQuery function.
+     */
     $.fn.extend({ 
         leanModal : function( method_or_options ) {
             if ( methods[ method_or_options ] ) {
@@ -134,6 +164,15 @@
                 $.error( 'Method ' +   method_or_options  + ' does not exist on jQuery.leanModal' );
             }    
         }
-    });        
+    });
+
+    /**
+     * Init function.
+     */
+    $( document ).ready( function() {
+        $( '[data-trigger-modal]' ).leanModal({
+            closeButton : ".modal-close"
+        });
+    }); 
      
 })(jQuery);

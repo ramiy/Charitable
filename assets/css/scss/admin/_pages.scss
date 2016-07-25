@@ -1,0 +1,107 @@
+.charitable-wrap {
+    hr {
+        margin: 21px 0;
+    }
+
+    h1, h2, h3 {
+        margin: 0 0 21px;
+    }
+
+    h3 {
+        font-size: 1.1em;
+    }
+
+    .version {
+        padding: 4px 8px;    
+        font-size: 14px;
+        font-weight: bold;
+        border-radius: 3px;
+        background: #fff;
+    }
+
+    .badge {
+        position: absolute;
+        right: 0;
+        top: 0;
+        padding: 14px;
+        border-radius: 40px;
+        background-color: #f99d33;    
+
+        a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        i {
+            font-size: 40px;
+        }
+    }
+
+    .intro {
+        margin-bottom: 21px;
+        color: #777;
+
+        .dashicons {
+            display: inline;
+            font-size: 11px;            
+        }
+    }
+
+    .checklist {
+        margin-bottom: 21px; 
+        
+        li {
+            margin-bottom: 12px;
+            &::before {
+                position: relative;
+                left: -4px;
+                bottom: -2px;
+                font-family: dashicons;
+                font-size: 21px;
+                vertical-align: bottom;
+            }
+        }
+        
+        .done {
+            color: #79ba49;
+            &::before {
+                content: "\f147";
+            }
+        }
+
+        .not-done {
+            color: #d54e21;
+            &::before {
+                content: "\f335";
+            }
+        }
+    }
+
+    .column-left {
+        float: left;
+        width: 60%;
+        border: 1px solid rgba( 0, 0, 0, 0.1 );
+        border-radius: 3px;
+        background-color: #fff;
+    }
+
+    .column-right {
+        float: right;
+        width: 36%;  
+        border: 1px solid rgba( 0, 0, 0, 0.1 );
+        border-radius: 3px;
+        font-size: 13px;
+        line-height: 21px;
+        background-color: #fff;
+    }
+
+    .column-inside {
+        padding: 21px;
+    }
+
+    .upgrade {
+        padding: 21px;
+        border-top: 3px solid #f99d33;
+        background: #fef4e8;
+    }
+}

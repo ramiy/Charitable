@@ -9,7 +9,7 @@
  * @author 		Eric Daams
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 if ( ! class_exists( 'Charitable_Campaigns_Widget' ) ) : 
 
@@ -30,7 +30,10 @@ class Charitable_Campaigns_Widget extends WP_Widget {
 		parent::__construct(
 			'charitable_campaigns_widget', 
 			__( 'Campaigns', 'charitable' ), 
-			array( 'description' => __( 'Displays your Charitable campaigns.', 'charitable' ) )
+			array( 
+				'description' => __( 'Displays your Charitable campaigns.', 'charitable' ),
+				'customize_selective_refresh' => true 
+			)
 		);
 	}
 

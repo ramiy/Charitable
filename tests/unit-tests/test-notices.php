@@ -1,11 +1,14 @@
 <?php
 
-class Test_Charitable_Notices extends WP_UnitTestCase {
+class Test_Charitable_Notices extends Charitable_UnitTestCase {
 
 	function setUp() {
 		parent::setUp();
 
 		$this->notices = charitable_get_notices();
+
+		// Clear out all existing notices
+		$this->notices->clear();
 	}
 
 	function test_get_instance() {

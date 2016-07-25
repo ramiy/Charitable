@@ -12,7 +12,7 @@
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License   
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 /**
  * Load a view from the admin/views folder. 
@@ -53,7 +53,7 @@ function charitable_get_admin_settings() {
 /**
  * Returns whether we are currently viewing the Charitable settings area. 
  *
- * @param   string $tab     Optional. If passed, the function will also check that we are on the given tab.
+ * @param   string $tab Optional. If passed, the function will also check that we are on the given tab.
  * @return  boolean
  * @since   1.2.0
  */
@@ -134,4 +134,30 @@ function charitable_do_settings_fields( $page, $section ) {
 
         echo '</tr>';
     }
+}
+
+/**
+ * Add new tab to the Charitable settings area. 
+ *
+ * @param   string[] $tabs
+ * @param   string $key
+ * @param   string $name
+ * @param   mixed[] $args
+ * @return  string[]
+ * @since   1.3.0
+ */
+function charitable_add_settings_tab( $tabs, $key, $name, $args = array() ) {
+    $defaults = array(
+        'index' => 3
+    );
+
+    $args = wp_parse_args( $args, $defaults );
+
+    $keys   = array_keys( $tabs );
+    $values = array_values( $tabs );
+
+    array_splice( $keys, $args[ 'index' ], 0, $key );
+    array_splice( $values, $args[ 'index' ], 0, $name );
+    
+    return array_combine( $keys, $values );
 }

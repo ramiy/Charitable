@@ -1,6 +1,6 @@
 <?php
 
-class Test_Charitable_Roles extends WP_UnitTestCase {
+class Test_Charitable_Roles extends Charitable_UnitTestCase {
 
 	private $roles;
 

@@ -26,7 +26,9 @@ if ( ! is_array( $value ) ) {
                 id="<?php printf( 'charitable_settings_%s_%s', implode( '_', $view_args[ 'key' ] ), $option ) ?>" 
                 name="<?php printf( 'charitable_settings[%s][]', $view_args[ 'name' ] ) ?>"
                 value="<?php echo esc_attr( $option ) ?>"
-                <?php checked( in_array( $option, $value ) ) ?> />
+                <?php checked( in_array( $option, $value ) ) ?> 
+                <?php echo charitable_get_arbitrary_attributes( $view_args ) ?>
+                />
             <?php echo $label ?>
         </li>
 

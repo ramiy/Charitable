@@ -9,7 +9,7 @@
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License   
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 if ( ! class_exists( 'Charitable_Customizer' ) ) : 
 
@@ -144,7 +144,7 @@ class Charitable_Customizer {
                         'control'   => array(
                             'control_type'      => 'WP_Customize_Color_Control',
                             'priority'          => 1110,
-                            'label'             => __( 'Highlight Colour', 'charitable' )
+                            'label'             => __( 'Highlight Color', 'charitable' )
                         )
                     )
                 )
@@ -187,8 +187,6 @@ class Charitable_Customizer {
             return;
         }
             
-        $priority = $panel[ 'priority' ];
-
         $wp_customize->add_panel( $panel_id, array(
             'title' => $panel[ 'title' ],
             'priority' => $panel[ 'priority' ]  
@@ -206,7 +204,7 @@ class Charitable_Customizer {
      * @access  private
      * @since   1.2.0
      */
-    private function add_panel_sections( $panel_id = false, $sections ) {
+    private function add_panel_sections( $panel_id, $sections ) {
         global $wp_customize;
 
         if ( empty( $sections ) ) {
@@ -221,14 +219,14 @@ class Charitable_Customizer {
     /**
      * Adds section & settings
      *
-     * @param   string  $section_id
-     * @param   array   $section
-     * @param   string  $panel
+     * @param   string $section_id
+     * @param   array $section
+     * @param   string $panel
      * @return  void
      * @access  private
      * @since   1.2.0
      */
-    private function add_section( $section_id, $section, $panel = "" ) {
+    private function add_section( $section_id, $section, $panel ) {
         global $wp_customize;
 
         if ( empty( $section ) ) {
@@ -239,9 +237,7 @@ class Charitable_Customizer {
 
         unset( $section[ 'settings' ] );
 
-        if ( ! empty( $panel ) ) {
-            $section[ 'panel' ] = $panel;
-        } 
+        $section[ 'panel' ] = $panel;
 
         $wp_customize->add_section( $section_id, $section );
 
@@ -303,7 +299,8 @@ class Charitable_Customizer {
      * @since   1.2.0
      */
     public function load_customizer_script() {
-        wp_register_script( 'charitable-customizer', charitable()->get_path( 'assets', false ) . 'js/charitable-customizer.js', array( 'jquery', 'customize-preview' ), '1.2.0-beta5', true );
+        $suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+        wp_register_script( 'charitable-customizer', charitable()->get_path( 'assets', false ) . 'js/charitable-customizer' . $suffix . '.js', array( 'jquery-core', 'customize-preview' ), '1.2.0-beta5', true );
         wp_enqueue_script( 'charitable-customizer' );
     }
 }

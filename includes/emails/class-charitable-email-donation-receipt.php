@@ -42,7 +42,7 @@ class Charitable_Email_Donation_Receipt extends Charitable_Email {
     public function __construct( $objects = array() ) {
         parent::__construct( $objects );
         
-        $this->name = apply_filters( 'charitable_email_donation_receipt_name', __( 'Donation Receipt', 'charitable' ) );        
+        $this->name = apply_filters( 'charitable_email_donation_receipt_name', __( 'Donor: Donation Receipt', 'charitable' ) );        
     }
 
     /**
@@ -69,17 +69,31 @@ class Charitable_Email_Donation_Receipt extends Charitable_Email {
     public static function send_with_donation_id( $donation_id ) {
         if ( ! charitable_get_helper( 'emails' )->is_enabled_email( self::get_email_id() ) ) {
             return false;
-        }
+        }        
         
-        if ( ! Charitable_Donation::is_approved_status( get_post_status( $donation_id ) ) ) {
+        if ( ! charitable_is_approved_status( get_post_status( $donation_id ) ) ) {
             return false;
         }
 
         $email = new Charitable_Email_Donation_Receipt( array( 
-            'donation' => new Charitable_Donation( $donation_id ) 
+            'donation' => charitable_get_donation( $donation_id ) 
         ) );
 
-        $email->send();
+        /**
+         * Don't resend the email.
+         */
+        if ( $email->is_sent_already( $donation_id ) ) {
+            return false;
+        }
+
+        $sent = $email->send();
+
+        /**
+         * Log that the email was sent.
+         */
+        if ( apply_filters( 'charitable_log_email_send', true, self::get_email_id(), $email ) ) {
+            $email->log( $donation_id, $sent );
+        }
 
         return true;
     }

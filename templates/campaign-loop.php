@@ -10,7 +10,7 @@
  * @version 1.2.3
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 $campaigns = $view_args[ 'campaigns' ];
 $columns = $view_args[ 'columns' ];
@@ -30,6 +30,7 @@ endif;
  * @hook charitable_campaign_loop_before
  */
 do_action( 'charitable_campaign_loop_before', $campaigns, $args );
+
 ?>
 <ol class="<?php echo $loop_class ?>">
 
@@ -46,6 +47,7 @@ wp_reset_postdata();
 ?>
 </ol>
 <?php
+
 /**
  * @hook charitable_campaign_loop_after
  */

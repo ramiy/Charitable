@@ -10,7 +10,7 @@
  * @version 1.0.0
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 $highlight_colour = charitable_get_option( 'highlight_colour', apply_filters( 'charitable_default_highlight_colour', '#f89d35' ) );
 
@@ -34,7 +34,9 @@ $highlight_colour = charitable_get_option( 'highlight_colour', apply_filters( 'c
 }
 
 #charitable-donation-form .donation-amount.selected,
-.charitable-notice {
+.charitable-notice, 
+.charitable-drag-drop-images li:hover a.remove-image,
+.supports-drag-drop .charitable-drag-drop-dropzone.drag-over {
     border-color: <?php echo $highlight_colour ?>;
 }
 </style>

@@ -1,10 +1,10 @@
-=== Charitable - Fundraising & Crowdfunding ===
+=== Charitable - Donation Plugin ===
 Contributors: WPCharitable, ericdaams
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paypal%40164a%2ecom
 Tags: donations, donate, donation plugin, fundraising, fundraising plugin, non-profit, non-profits, charity, churches, commerce, crowdfunding, crowd funding, paypal donations, paypal, stripe, stripe donations, campaigns, gifts, giving, wordpress fundraising, wordpress donations, wordpress donation plugin, peer to peer fundraising, peer to peer fundraiser, peer fundraising, social fundraising
 Requires at least: 4.1
-Tested up to: 4.4
-Stable tag: 1.2.4
+Tested up to: 4.5.2
+Stable tag: 1.4.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -12,31 +12,25 @@ Charitable is a powerful, extendable fundraising plugin that gives you full cont
 
 == Description ==
 
-**[Charitable](https://wpcharitable.com/?utm_source=readme&utm_medium=description-tab&utm_content=intro&utm_campaign=plugin-page-referrals)** is the WordPress fundraising alternative for non-profits, built to help non-profits raise money on their own website. 
-
-You can accept PayPal or offline donations right out of the box, with support for other gateways available as [extensions](https://wpcharitable.com/extensions?utm_source=readme&utm_medium=description-tab&utm_content=intro&utm_campaign=plugin-page-referrals).
-
-= Unlimited fundraising campaigns = 
-
-You can set up as many campaigns as you'd like with Charitable, and you can tailor them to your needs. You can set up suggested donation amounts, allow them to donate as much as they want, or do both.
-
-Need to set a fundraising goal? No problem. 
-
-Running a time-sensitive campaign? Set an end date for your campaign and give it a sense of urgency.
+**[Charitable](https://www.wpcharitable.com/?utm_source=readme&utm_medium=description-tab&utm_content=intro&utm_campaign=plugin-page-referrals)** is the WordPress Fundraising Toolkit. It's a robust, developer-friendly plugin that gives you complete control over your online fundraising.
 
 = Easy to use =
 
 Install, activate and create your first fundraising campaign in less than 5 minutes. With Charitable, adding campaigns is a straightforward, intuitive process. Less time setting up campaigns means more time for you to raise awareness for your campaign.
 
-= Accept credit card donations = 
+= Payment gateway support = 
 
-By coupling Charitable with our [Stripe extension](https://wpcharitable.com/extensions/charitable-stripe?utm_source=readme&utm_medium=description-tab&utm_content=credit-card-donations&utm_campaign=plugin-page-referrals), you can accept credit card donations directly on your website. Improve your donor conversion rates by keeping them on your website instead of redirecting them to PayPal.
+PayPal and offline donations are supported out of the box. When you're ready to start accepting donations through a different payment gateway, you can choose one of our premium gateway add-ons: 
 
-Want to use a different payment gateway? [Let us know](https://wpcharitable.com/support?utm_source=readme&utm_medium=description-tab&utm_content=credit-card-donations&utm_campaign=plugin-page-referrals).
+* **[Stripe](https://www.wpcharitable.com/extensions/charitable-stripe?utm_source=readme&utm_medium=description-tab&utm_content=extensions&utm_campaign=plugin-page-referrals)**
+* **[Authorize.Net](https://www.wpcharitable.com/extensions/charitable-authorize-net?utm_source=readme&utm_medium=description-tab&utm_content=extensions&utm_campaign=plugin-page-referrals)**
+* **[PayUMoney](https://www.wpcharitable.com/extensions/charitable-payu-money/?utm_source=readme&utm_medium=description-tab&utm_content=extensions&utm_campaign=plugin-page-referrals)**
+
+Need a payment gateway that wasn't listed? [Let us know](https://www.wpcharitable.com/support?utm_source=readme&utm_medium=description-tab&utm_content=credit-card-donations&utm_campaign=plugin-page-referrals).
 
 = Use Peer-to-Peer Fundraising to expand your reach = 
 
-With our [Charitable Ambassadors extension](https://wpcharitable.com/extensions/charitable-ambassadors?utm_source=readme&utm_medium=description-tab&utm_content=peer-to-peer-fundraising&utm_campaign=plugin-page-referrals), you can use peer-to-peer fundraising to leverage your supporters’ network of friends and family. 
+With our [Charitable Ambassadors extension](https://www.wpcharitable.com/extensions/charitable-ambassadors?utm_source=readme&utm_medium=description-tab&utm_content=peer-to-peer-fundraising&utm_campaign=plugin-page-referrals), you can use peer-to-peer fundraising to leverage your supporters’ network of friends and family. 
 
 Ambassadors adds a frontend campaign submission form. People can create fundraisers for your cause or personal causes, allowing you to create a crowdfunding platform powered by Charitable Ambassadors.
 
@@ -46,6 +40,14 @@ Other fundraising software charges you for every donation you receive.
 
 Charitable is different. We won't charge you any transaction fees and you can use Charitable for free.
 
+= Unlimited fundraising campaigns = 
+
+You can set up as many campaigns as you'd like with Charitable, and you can tailor them to your needs. You can set up suggested donation amounts, allow them to donate as much as they want, or do both.
+
+Need to set a fundraising goal? No problem. 
+
+Running a time-sensitive campaign? Set an end date for your campaign and give it a sense of urgency.
+
 = Works with any theme = 
 
 Charitable has been designed to work with any well-coded theme, including the default WordPress themes.
@@ -54,22 +56,23 @@ Charitable has been designed to work with any well-coded theme, including the de
 
 One size does *not* fit all. That's why we made Charitable an extendable platform. 
 
-* **[Ambassadors](https://wpcharitable.com/extensions/charitable-ambassadors?utm_source=readme&utm_medium=description-tab&utm_content=extensions&utm_campaign=plugin-page-referrals)** - Add peer-to-peer fundraising or crowdfunding to your website, with front-end campaign submission.
+* **[Ambassadors](https://www.wpcharitable.com/extensions/charitable-ambassadors?utm_source=readme&utm_medium=description-tab&utm_content=extensions&utm_campaign=plugin-page-referrals)** - Add peer-to-peer fundraising or crowdfunding to your website, with front-end campaign submission.
 * **[Easy Digital Downloads](https://www.wpcharitable.com/extensions/charitable-easy-digital-downloads-connect/?utm_source=readme&utm_medium=description-tab&utm_content=extensions&utm_campaign=plugin-page-referrals)** - 
 Accept donations with Easy Digital Downloads. Compatible with any EDD payment gateway.
-* **[Stripe](https://wpcharitable.com/extensions/charitable-stripe?utm_source=readme&utm_medium=description-tab&utm_content=extensions&utm_campaign=plugin-page-referrals)** - Accept credit card donations on your website.
+* **[Stripe](https://www.wpcharitable.com/extensions/charitable-stripe?utm_source=readme&utm_medium=description-tab&utm_content=extensions&utm_campaign=plugin-page-referrals)** - Accept credit card donations on your website.
+* **[Authorize.Net](https://www.wpcharitable.com/extensions/charitable-authorize-net?utm_source=readme&utm_medium=description-tab&utm_content=extensions&utm_campaign=plugin-page-referrals)** - Accept credit card donations with Authorize.Net.
 * **[PayUMoney](https://www.wpcharitable.com/extensions/charitable-payu-money/?utm_source=readme&utm_medium=description-tab&utm_content=extensions&utm_campaign=plugin-page-referrals)** - Take donations with PayUMoney, a payment gateway for Indian non-profits and organizations.
-* **[Anonymous Donations](https://wpcharitable.com/extensions/charitable-anonymous-donations?utm_source=readme&utm_medium=description-tab&utm_content=extensions&utm_campaign=plugin-page-referrals)** - Allow people to make donations anonymously.
-* **[User Avatars](https://wpcharitable.com/extensions/charitable-user-avatar?utm_source=readme&utm_medium=description-tab&utm_content=extensions&utm_campaign=plugin-page-referrals)** - Let your donors upload their own profile photo to your site, instead of using their Gravatar profile.
-* **[Simple Updates](https://wpcharitable.com/extensions/charitable-simple-updates?utm_source=readme&utm_medium=description-tab&utm_content=extensions&utm_campaign=plugin-page-referrals)** - Add updates about your fundraising campaigns.
+* **[Anonymous Donations](https://www.wpcharitable.com/extensions/charitable-anonymous-donations?utm_source=readme&utm_medium=description-tab&utm_content=extensions&utm_campaign=plugin-page-referrals)** - Allow people to make donations anonymously.
+* **[User Avatars](https://www.wpcharitable.com/extensions/charitable-user-avatar?utm_source=readme&utm_medium=description-tab&utm_content=extensions&utm_campaign=plugin-page-referrals)** - Let your donors upload their own profile photo to your site, instead of using their Gravatar profile.
+* **[Simple Updates](https://www.wpcharitable.com/extensions/charitable-simple-updates?utm_source=readme&utm_medium=description-tab&utm_content=extensions&utm_campaign=plugin-page-referrals)** - Add updates about your fundraising campaigns.
 
 Looking for more? 
 
-[View all extensions](https://wpcharitable.com/extensions?utm_source=readme&utm_medium=description-tab&utm_content=extensions&utm_campaign=plugin-page-referrals). 
+[View all extensions](https://www.wpcharitable.com/extensions?utm_source=readme&utm_medium=description-tab&utm_content=extensions&utm_campaign=plugin-page-referrals). 
 
 = Get involved =
 
-Join the community on [WP Charitable](https://wpcharitable.com/?utm_source=readme&utm_medium=description-tab&utm_content=get-involved&utm_campaign=plugin-page-referrals). 
+Join the community on [WP Charitable](https://www.wpcharitable.com/?utm_source=readme&utm_medium=description-tab&utm_content=get-involved&utm_campaign=plugin-page-referrals). 
 
 Developers can contribute to Charitable on our [Github repository](https://github.com/Charitable/Charitable).
 
@@ -85,11 +88,11 @@ Developers can contribute to Charitable on our [Github repository](https://githu
 
 You can accept donations with the Offline Donations gateway, which allows your donors to create a donation and make the payment via cheque or bank transfer (you can display your payment details to them).
 
-You can also accept credit card donations with the [Stripe extension](https://wpcharitable.com/extensions/charitable-stripe?utm_source=readme&utm_medium=faq-tab&utm_content=avoid-paypal&utm_campaign=plugin-page-referrals). If you want to use a different payment gateway, [let us know](https://wpcharitable.com/support?utm_source=readme&utm_medium=faq-tab&utm_content=avoid-paypal&utm_campaign=plugin-page-referrals).
+You can also accept credit card donations with the [Stripe extension](https://www.wpcharitable.com/extensions/charitable-stripe?utm_source=readme&utm_medium=faq-tab&utm_content=avoid-paypal&utm_campaign=plugin-page-referrals). If you want to use a different payment gateway, [let us know](https://www.wpcharitable.com/support?utm_source=readme&utm_medium=faq-tab&utm_content=avoid-paypal&utm_campaign=plugin-page-referrals).
 
 = How do I add a grid of campaigns to my page? = 
 
-Easy. Just add `[campaigns]` into your page content. [Read more](https://wpcharitable.com/documentation/the-campaigns-shortcode?utm_source=readme&utm_medium=faq-tab&utm_content=campaigns-shortcode&utm_campaign=plugin-page-referrals).
+Easy. Just add `[campaigns]` into your page content. [Read more](https://www.wpcharitable.com/documentation/the-campaigns-shortcode?utm_source=readme&utm_medium=faq-tab&utm_content=campaigns-shortcode&utm_campaign=plugin-page-referrals).
 
 = Does Charitable support recurring donations? =
 
@@ -110,15 +113,86 @@ You can post in the [support forum](https://wordpress.org/support/plugin/charita
 
 == Changelog ==
 
+=======
+= 1.4.0 - Unreleased =
+* Added the `[charitable_my_donations]` shortcode. Use this shortcode to allow logged in users to view a history of their donations, including links to the donation receipts. [#14](https://github.com/Charitable/Charitable/issues/14)
+* Scale the campaign grid gracefully when viewing on smaller screens. The `[campaigns]` shortcode now supports a `responsive` paramater, which is enabled by default. You can set it to a specific px/em amount to change the breakpoint, or set it to `0` to disable responsive styling. [#88](https://github.com/Charitable/Charitable/issues/88)
+* Include an `order` paramater for the `[campaigns]` shortcode, to reverse the direction in which campaigns are displayed. [#64](https://github.com/Charitable/Charitable/issues/64)
+* Added drag and drop support for the Picture form field, which is used in the User Avatar and Ambassadors extensions. [#111](https://github.com/Charitable/Charitable/issues/111)
+* Added a `charitable_create_donation()` function for developers who want to create donations programatically. [#109](https://github.com/Charitable/Charitable/issues/109)
+* Added a new `Charitable_Donations_Query` class, which can be used by developers to retrieve donations from the database. [#155](https://github.com/Charitable/Charitable/issues/155)
+* Added a new `Charitable_Deprecated` class, which is used to record any incorrect usage of Charitable functions or methods.
+* Include the donor's phone number in the donations export CSV. [#154](https://github.com/Charitable/Charitable/issues/154)
+* When multiple gateways are enabled, the default one is listed first in the donation form. [#139](https://github.com/Charitable/Charitable/issues/139)
+* Automatically cancel a donation when the donor returns from the gateway before completing it. This works with PayPal, PayUMoney and PayFast. [#90](https://github.com/Charitable/Charitable/issues/90) and [#117](https://github.com/Charitable/Charitable/issues/117)
+* Added a `Charitable_Donor::__toString()` method, so that echoing the object simply prints out the donor name.
+* Added `charitable_sanitize_amount()` function to convert any amount of type string into a float.
+* Trim the currency symbol from monetary amounts to prevent the symbol being treated as part of the amount. [#145](https://github.com/Charitable/Charitable/pull/145)
+* Trim the currency symbol from the suggested donation amounts when saving a campaign. [#147](https://github.com/Charitable/Charitable/issues/147)
+* When a donation fails and the user is redirected back to the donation form, they can re-attempt the same donation. Previously, a new donation would have been created, leaving a phantom pending donation behind. [#106](https://github.com/Charitable/Charitable/issues/106)
+
+= 1.3.7 = 
+* Makes `Charitable_Currency::get_currency_symbol()` a publicly accessible method.
+* Allow email shortcode values to be dynamically generated without being registered first. This simplifies the process of displaying dynamic data within emails if there is no existing shortcode output for it. [#134](https://github.com/Charitable/Charitable/issues/134)
+* Provide a consistent api for determining the status of a campaign. Developers can use `$campaign->get_status_key()` (where `$campaign` is a `Charitable_Campaign` object) to check whether a campaign is inactive, ended, ended and successfully funded, ended and not successfully funded, ending soon, or active. 
+* Reset the positioning and styling of the modal when window or modal change in size. This prevents the modal from growing larger than the size of the window without having scrollbars. [#135](https://github.com/Charitable/Charitable/issues/135)
+
+= 1.3.6 = 
+* Prevented campaigns being created with no suggested donation amounts and custom donations disabled. This results in $0 donations. [#127](https://github.com/Charitable/Charitable/issues/127)
+* Fixed errors when exporting donations with errors set to display. [#128](https://github.com/Charitable/Charitable/issues/128)
+* Deprecated `Charitable_Email::return_value_if_has_valid_donation()` method, since this was completely broken and should not be used.
+
+= 1.3.5 =
+* Added `is_preview()` method to `Charitable_Email` class. 
+* Added `get_donations()` method to `Charitable_Donor` class.
+* Improved custom post status labels.
+* Only include completed payments in the Donation Statistics dashboard widget, for the period summaries. 
+* Fixed PHP notices in email previews.
+* Deprecated `Charitable_Session::get_session_id()`. We are no longer using a public session ID.
+
+= 1.3.4 =
+* Added selective refresh support for Charitable widgets.
+* Added support for passing multiple campaign IDs to campaign donation queries. [#112](https://github.com/Charitable/Charitable/issues/112)
+* Fixed a bug where donors without a completed donation were included in the donor count in the Donation Stats widget. [#114](https://github.com/Charitable/Charitable/issues/114)
+* Fixed a bug that incorrectly set the from address for emails to always be the site email address, instead of using the provided settings. [#113](https://github.com/Charitable/Charitable/issues/113)
+* Fixed a bug that stopped the cron scheduler from being activated in any new installs. 
+* Fixed display issues in the Charitable settings area with number fields.
+* Deprecated usage of `shortcode_atts()` for the email shortcode, in favor of `wp_parse_args()`. If you relied on the `shortcode_atts_charitable_email` filter, this will no longer do anything and you should test & update your code.
+
+= 1.3.3 = 
+* Fixes a bug that prevented donors being able to access their donation receipts after making their donation.
+* Flush rewrite rules after installation to avoid "Page not found" errors.
+
+= 1.3.2 = 
+* Fixed a bug that turned comments off everywhere. [#104](https://github.com/Charitable/Charitable/issues/104)
+* Added a better fallback for donations for users with Javascript enabled, when using the modal donation forms. [#60](https://github.com/Charitable/Charitable/issues/60)
+* Avoid sending donation notifications & receipts multiple times when a donation's status is toggled on/off Paid. [#96](https://github.com/Charitable/Charitable/issues/96)
+* Donate button in campaign grids links to the campaign page when the donation form is set up to show on the same page as the campaign. [#107](https://github.com/Charitable/Charitable/issues/107)
+* Fixed a bug that caused invalid shortcode options to show for custom emails sub-classing `Charitable_Email`. [#95](https://github.com/Charitable/Charitable/issues/95)
+
+= 1.3.1 = 
+* **APOLOGIES**: 1.3.0 introduced a couple of bugs that we failed to pick up on before releasing the update. We have fixed those bugs now and are working on improving the process around how we push out updates, to avoid issues like this in the future. 
+* Removes leftover testing code that prevented campaigns from being created or edited.
+* Format the donation amount so that PayPal can understand it (PayPal doesn't like amounts with more than two decimal places). [See issue](https://github.com/Charitable/Charitable/issues/102) 
+* Prevent PHP notice when making a donation. [See issue](https://github.com/Charitable/Charitable/issues/100)
+* Fixes a bug that prevented the Donate widget from working as expected.
+
 = 1.3.0 = 
+* **THANK YOU**: A massive thank you to the following contributors who have contributed to Charitable 1.3: [@helgatheviking](https://github.com/helgatheviking), [@rafecolton](https://github.com/rafecolton), [@ciegovolador](https://github.com/ciegovolador), [@ElStupid](https://github.com/ElStupid) and [@altatof](httsp://github.com/altatof). 
 * NEW: Export donations to CSV via the WordPress dashboard. Go to Charitable > Donations and click on the Export button to generate your report.
-* NEW: Added a `campaign_id` parameter to the `[campaigns]` shortcode to show just a single campaign's widget.
+* NEW: Donations are now processed via AJAX, which results in a smoother donation flow, particularly if you're using modal donations. [See issue](https://github.com/Charitable/Charitable/issues/41)
+* NEW: Added an `id` parameter to the `[campaigns]` shortcode to show just a single campaign's widget.
 * NEW: Dutch & French translations! Major props to @ElStupid (Dutch translation) and @altatof (French translation).
 * NEW: Added custom body classes for the following templates: donation receipt, donation processing and email preview. All body classes are added via a single function: `charitable_add_body_classes()`.
+* Added ARS currency.
+* Fixed a bug that prevented donations with cents from being stored/displayed correctly when using commas for the currency decimal. [See issue](https://github.com/Charitable/Charitable/issues/57)
+* Fixed a bug that let to donations being saved with the incorrect donation time. Run the upgrade routines to fix this in all your existing donations.
 * Removed `charitable_templates_start` hook and deprecated all methods in the `Charitable_Templates` class. If you were calling any of these directly or using the `charitable_templates_start` hook, update your application code. All templates are now loaded via a single method: `Charitable_Templates::template_loader()`. All custom body classes are added via `charitable_add_body_classes()`. `Charitable_Templates::remove_admin_bar_from_widget_template()` has been replaced with `charitable_hide_admin_bar()`. 
 * Fixes a styling bug that caused the progress bar to extend beyond the campaign widget when more than 100% of a campaign's has been raised. [See issue](https://github.com/Charitable/Charitable/issues/47)
 * Fixes a Javascript bug that prevented the $ variable (jQuery) from being defined in certain cases in the admin scripts. 
 * Fixes a clash with Cart66.
+* Fixed a bug in modal donation window. [See issue](https://github.com/Charitable/Charitable/issues/43)
+* Changed the `amount` column in the `wp_charitable_campaign_donations` table to a DECIMAL, instead of FLOAT. [See issue](https://github.com/Charitable/Charitable/issues/56)
 
 = 1.2.4 =  
 * Updated for compatibility with WordPress 4.4.

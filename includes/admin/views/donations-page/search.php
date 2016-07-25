@@ -24,7 +24,7 @@ if ( ! empty( $_REQUEST[ 'order' ] ) )
 ?>
 <p class="search-box">
     <?php do_action( 'charitable_donation_history_search' ); ?>
-    <label class="screen-reader-text" for="charitable-search-input"><?php echo $text; ?>:</label>
+    <label class="screen-reader-text" for="charitable-search-input"><?php _e( 'Search', 'charitable' ) ?>:</label>
     <input type="search" id="charitable-search-input" name="s" value="<?php _admin_search_query() ?>" />
     <?php submit_button( __( 'Search', 'charitable' ), 'button', false, false, array( 'ID' => 'search-submit' ) ) ?>
 </p>

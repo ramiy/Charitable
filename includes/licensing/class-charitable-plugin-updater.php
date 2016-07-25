@@ -20,88 +20,71 @@ class Charitable_Plugin_Updater {
     /**
      * Class constructor.
      *
-     * @uses plugin_basename()
-     * @uses hook()
+     * @uses    plugin_basename()
+     * @uses    hook()
      *
-     * @param string  $_api_url     The URL pointing to the custom API endpoint.
-     * @param string  $_plugin_file Path to the plugin file.
-     * @param array   $_api_data    Optional data to send with API calls.
-     * @return void
+     * @param   string $api_url The URL pointing to the custom API endpoint.
+     * @param   string $plugin_file Path to the plugin file.
+     * @param   array $api_data Optional data to send with API calls.
+     * @return  void
      */
-    function __construct( $_api_url, $_plugin_file, $_api_data = null ) {
-        $this->api_url  = trailingslashit( $_api_url );
-        $this->api_data = $_api_data;
-        $this->name     = plugin_basename( $_plugin_file );
-        $this->slug     = basename( $_plugin_file, '.php' );
-        $this->version  = $_api_data['version'];
+    public function __construct( $api_url, $plugin_file, $api_data = null ) {
+        $this->api_url  = trailingslashit( $api_url );
+        $this->api_data = $api_data;
+        $this->name     = plugin_basename( $plugin_file );
+        $this->slug     = basename( $plugin_file, '.php' );
+        $this->version  = $api_data['version'];
 
         // Set up hooks.
-        $this->init();        
+        $this->init();
     }
 
     /**
      * Set up WordPress filters to hook into WP's update process.
      *
-     * @uses add_filter()
+     * @uses    add_filter()
      *
-     * @return void
+     * @return  void
+     * @access  public
+     * @since   1.0.0
      */
     public function init() {
-        add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'check_update' ) );
         add_filter( 'plugins_api', array( $this, 'plugins_api_filter' ), 10, 3 );
         add_action( 'admin_init', array( $this, 'show_changelog' ) );
         add_action( 'after_plugin_row_' . $this->name, array( $this, 'show_update_notification' ), 10, 2 );
     }
 
     /**
-     * Check for Updates at the defined API endpoint and modify the update array.
+     * Return the update information for the plugin. 
      *
-     * This function dives into the update API just when WordPress creates its update array,
-     * then adds a custom API call and injects the custom plugin data retrieved from the API.
-     * It is reassembled from parts of the native WordPress plugin update code.
-     * See wp-includes/update.php line 121 for the original wp_update_plugins() function.
-     *
-     * @uses api_request()
-     *
-     * @param array   $_transient_data Update array build by WordPress.
-     * @return array Modified update array with custom plugin data.
+     * @return  false|object
+     * @access  public
+     * @since   1.4.0
      */
-    public function check_update( $_transient_data ) {
-        global $pagenow;
+    public function get_version_info() {
 
-        if( ! is_object( $_transient_data ) ) {
-            $_transient_data = new stdClass;
-        }
+        if ( ! isset( $this->version_info ) ) {
 
-        if( 'plugins.php' == $pagenow && is_multisite() ) {
-            return $_transient_data;
-        }
+            $update_transient = get_site_transient( 'update_plugins' );
 
-        if ( empty( $_transient_data->response ) || empty( $_transient_data->response[ $this->name ] ) ) {
+            if ( ! isset( $update_transient->response[ $this->name ] ) ) {
 
-            $version_info = $this->api_request( 'plugin_latest_version', array( 'slug' => $this->slug ) );
+                $this->version_info = false; 
+            }
 
-            if ( false !== $version_info && is_object( $version_info ) && isset( $version_info->new_version ) ) {
+            else {
 
-                $this->did_check = true;
-
-                if( version_compare( $this->version, $version_info->new_version, '<' ) ) {
-
-                    $_transient_data->response[ $this->name ] = $version_info;
-
-                }
-
-                $_transient_data->last_checked = time();
-                $_transient_data->checked[ $this->name ] = $this->version;
+                $this->version_info = $update_transient->response[ $this->name ];
 
             }
+
         }
 
-        return $_transient_data;
-    }
+        return $this->version_info;
+    }   
 
     /**
-     * show update nofication row -- needed for multisite subsites, because WP won't tell you otherwise!
+     * Show update nofication row -- needed for multisite subsites, because WP won't tell you otherwise!
      *
      * @param string  $file
      * @param array   $plugin
@@ -121,7 +104,7 @@ class Charitable_Plugin_Updater {
         }
 
         // Remove our filter on the site transient
-        remove_filter( 'pre_set_site_transient_update_plugins', array( $this, 'check_update' ), 10 );
+        remove_filter( 'pre_set_site_transient_update_plugins', array( Charitable_Licenses::get_instance(), 'check_for_updates' ) );
 
         $update_cache = get_site_transient( 'update_plugins' );
 
@@ -160,7 +143,7 @@ class Charitable_Plugin_Updater {
         }
 
         // Restore our filter
-        add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'check_update' ) );
+        add_filter( 'pre_set_site_transient_update_plugins', array( Charitable_Licenses::get_instance(), 'check_for_updates' ) );
 
         if ( ! empty( $update_cache->response[ $this->name ] ) && version_compare( $this->version, $version_info->new_version, '<' ) ) {
 
@@ -172,14 +155,14 @@ class Charitable_Plugin_Updater {
 
             if ( empty( $version_info->download_link ) ) {
                 printf(
-                    __( 'There is a new version of %1$s available. <a target="_blank" class="thickbox" href="%2$s">View version %3$s details</a>.', 'edd' ),
+                    __( 'There is a new version of %1$s available. <a target="_blank" class="thickbox" href="%2$s">View version %3$s details</a>.', 'charitable' ),
                     esc_html( $version_info->name ),
                     esc_url( $changelog_link ),
                     esc_html( $version_info->new_version )
                 );
             } else {
                 printf(
-                    __( 'There is a new version of %1$s available. <a target="_blank" class="thickbox" href="%2$s">View version %3$s details</a> or <a href="%4$s">update now</a>.', 'edd' ),
+                    __( 'There is a new version of %1$s available. <a target="_blank" class="thickbox" href="%2$s">View version %3$s details</a> or <a href="%4$s">update now</a>.', 'charitable' ),
                     esc_html( $version_info->name ),
                     esc_url( $changelog_link ),
                     esc_html( $version_info->new_version ),
@@ -191,81 +174,61 @@ class Charitable_Plugin_Updater {
         }
     }
 
-
     /**
      * Updates information on the "View version x.x details" page with custom data.
      *
-     * @uses api_request()
+     * @uses    api_request()
      *
-     * @param mixed   $_data
-     * @param string  $_action
-     * @param object  $_args
-     * @return object $_data
+     * @param   mixed $data
+     * @param   string $action
+     * @param   object $args
+     * @return  object $data
+     * @access  public
+     * @since   1.0.0
      */
-    public function plugins_api_filter( $_data, $_action = '', $_args = null ) {
+    public function plugins_api_filter( $data, $action = '', $args = null ) {
 
-        if ( $_action != 'plugin_information' ) {
+        if ( $action != 'plugin_information' ) {
 
-            return $_data;
-
-        }
-
-        if ( ! isset( $_args->slug ) || ( $_args->slug != $this->slug ) ) {
-
-            return $_data;
+            return $data;
 
         }
 
-        $to_send = array(
-            'slug'   => $this->slug,
-            'is_ssl' => is_ssl(),
-            'fields' => array(
-                'banners' => false, // These will be supported soon hopefully
-                'reviews' => false,
-            )
-        );
+        if ( ! isset( $args->slug ) || ( $args->slug != $this->slug ) ) {
 
-        $api_response = $this->api_request( 'plugin_information', $to_send );
+            return $data;
 
-        if ( false !== $api_response ) {
-            $_data = $api_response;
+        }        
+
+        $version_info = $this->get_version_info();
+
+        if ( $version_info ) {
+
+            $data = $version_info;
+
         }
 
-        return $_data;
-    }
-
-
-    /**
-     * Disable SSL verification in order to prevent download update failures
-     *
-     * @param array   $args
-     * @param string  $url
-     * @return object $array
-     */
-    public function http_request_args( $args, $url ) {
-        // If it is an https request and we are performing a package download, disable ssl verification
-        if ( strpos( $url, 'https://' ) !== false && strpos( $url, 'edd_action=package_download' ) ) {
-            $args['sslverify'] = false;
-        }
-        return $args;
+        return $data;
     }
 
     /**
      * Calls the API and, if successfull, returns the object delivered by the API.
      *
-     * @uses get_bloginfo()
-     * @uses wp_remote_post()
-     * @uses is_wp_error()
+     * @uses    get_bloginfo()
+     * @uses    wp_remote_post()
+     * @uses    is_wp_error()
      *
-     * @param string  $_action The requested action.
-     * @param array   $_data   Parameters for the API action.
-     * @return false||object
+     * @param   string $action The requested action.
+     * @param   array $data Parameters for the API action.
+     * @return  false||object
+     * @access  private
+     * @since   1.0.0
      */
-    private function api_request( $_action, $_data ) {
+    private function api_request( $action, $data ) {
 
         global $wp_version;
 
-        $data = array_merge( $this->api_data, $_data );
+        $data = array_merge( $this->api_data, $data );
 
         if ( $data['slug'] != $this->slug ) {
             return;
@@ -304,6 +267,13 @@ class Charitable_Plugin_Updater {
         return $request;
     }
 
+    /**
+     * Display the changelog.
+     *
+     * @return  void
+     * @access  public
+     * @since   1.0.0
+     */
     public function show_changelog() {
 
         if ( empty( $_REQUEST['edd_sl_action'] ) || 'view_plugin_changelog' != $_REQUEST['edd_sl_action'] ) {
@@ -319,10 +289,10 @@ class Charitable_Plugin_Updater {
         }
 
         if ( ! current_user_can( 'update_plugins' ) ) {
-            wp_die( __( 'You do not have permission to install plugin updates', 'edd' ), __( 'Error', 'edd' ), array( 'response' => 403 ) );
+            wp_die( __( 'You do not have permission to install plugin updates', 'charitable' ), __( 'Error', 'charitable' ), array( 'response' => 403 ) );
         }
 
-        $response = $this->api_request( 'plugin_latest_version', array( 'slug' => $_REQUEST['slug'] ) );
+        $response = $this->get_version_info();
 
         if ( $response && isset( $response->sections['changelog'] ) ) {
             echo '<div style="background:#fff;padding:10px;">' . $response->sections['changelog'] . '</div>';

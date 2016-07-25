@@ -92,3 +92,11 @@
     }    
 }
 
+.campaign-grid-4 {
+    .campaign.hentry {
+        width: 23.5%;
+    }
+    .campaign.hentry:nth-child(4n+4) {
+        margin-right: 0;
+    }    
+}

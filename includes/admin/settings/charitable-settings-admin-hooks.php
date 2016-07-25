@@ -11,7 +11,7 @@
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License  
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 /** 
  * Register Charitable settings.
@@ -19,7 +19,14 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  * @see     Charitable_Settings::register_settings()
  */
 add_action( 'admin_init', array( Charitable_Settings::get_instance(), 'register_settings' ) );        
-        
+
+/**
+ * Maybe add "Extensions" settings tab.
+ *
+ * @see     Charitable_Settings::maybe_add_extensions_tab()
+ */
+add_action( 'charitable_settings_tabs', array( Charitable_Settings::get_instance(), 'maybe_add_extensions_tab' ) );
+
 /** 
  * Sanitize checkbox values when settings are submitted.
  *

@@ -9,7 +9,7 @@
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License  
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 if ( ! class_exists( 'Charitable_Licenses_Settings' ) ) : 
 
@@ -57,7 +57,7 @@ final class Charitable_Licenses_Settings {
     /**
      * Add the licenses tab settings fields. 
      *
-     * @return  array[]
+     * @return  array
      * @access  public
      * @since   1.0.0
      */
@@ -135,7 +135,10 @@ final class Charitable_Licenses_Settings {
         $licenses = $new_values[ 'licenses' ];
 
         foreach ( $licenses as $product_key => $license ) {
-            if ( ! strlen( $license ) ) {
+            $license = trim( $license );
+
+            if ( empty( $license ) ) {
+                $values[ 'licenses' ][ $product_key ] = "";
                 continue;
             }
 

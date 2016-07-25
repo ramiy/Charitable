@@ -64,6 +64,13 @@
     }
 }
 
+.charitable-submit-field {
+    .button {
+        font-size: 1em;
+        line-height: 1.5em;
+    }
+}
+
 .charitable-form-content {
     margin-bottom: 1em;
 }
@@ -131,12 +138,18 @@
             float: left;
             width: 49%;
             margin: 0 2% 0.5em 0;
-            padding: 0.5em 1em;
             border: 1px solid #ddd;
             background-color: transparent;      
-            cursor: pointer;
             list-style: none;
-            z-index: 1;
+
+            label { 
+                display: block;
+                width: 100%;
+                padding: 0.5em 1em;
+                margin: 0;
+                font-size: 1em;
+                cursor: pointer;
+            }
 
             .amount {
                 font-weight: bolder;
@@ -147,10 +160,8 @@
             }
 
             input[type=radio] {
-                position: relative;
                 margin: 0 6px 0 0;
                 vertical-align: middle;
-                z-index: -1;
             }
         }
 

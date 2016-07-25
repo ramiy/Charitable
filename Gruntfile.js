@@ -10,36 +10,45 @@ module.exports = function(grunt) {
  
     grunt.initConfig({
 
-        pkg: grunt.file.readJSON('package.json'),
+        'pkg': grunt.file.readJSON('package.json'),
  
         // watch for changes and run sass
-        watch: {                        
-            sass: {
-                files: [ 
+        'watch': {                        
+            'php': {
+              'files': [
+                'includes/**/*.php',
+                'templates/**/*.php'
+              ],
+              'tasks': ['copy']
+            },
+            'sass': {
+                'files': [ 
                     'assets/css/',
                     'assets/css/**'
                 ],
-                tasks: ['sass:dist']
+                'tasks': ['sass:dist']
             }, 
         },
 
         // Sass
-        sass: {
-            dist: {
-                files: {                    
+        'sass': {
+            'dist': {
+                'files': {                    
+                    'assets/css/charitable-admin-pages.css' : 'assets/css/scss/charitable-admin-pages.scss', 
                     'assets/css/charitable-admin-menu.css'  : 'assets/css/scss/charitable-admin-menu.scss', 
                     'assets/css/charitable-admin.css'       : 'assets/css/scss/charitable-admin.scss',
+                    'assets/css/charitable-plupload-fields.css' : 'assets/css/scss/charitable-plupload-fields.scss',
                     'assets/css/charitable.css'             : 'assets/css/scss/charitable.scss',
                     'assets/css/modal.css'                  : 'assets/css/scss/modal.scss'
                 }
             }
         },
 
-        checktextdomain: {
-            options:{
-                text_domain: 'charitable',
-                create_report_file: true,
-                keywords: [
+        'checktextdomain' : {
+            'options' : {
+                'text_domain': 'charitable',
+                'create_report_file': true,
+                'keywords': [
                     '__:1,2d',
                     '_e:1,2d',
                     '_x:1,2c,3d',
@@ -60,29 +69,29 @@ module.exports = function(grunt) {
                     '_nc:1,2,4c,5d'
                 ]
             },
-            files: {
-                src: [
+            'files' : {
+                'src' : [
                     '**/*.php', // Include all files
                     '!node_modules/**', // Exclude node_modules/
                     '!build/.*'// Exclude build/
                 ],
-                expand: true
+                'expand' : true
             }
         },
 
-        makepot: {
-            target: {
-                options: {
-                    domainPath: '/i18n/languages/',    // Where to save the POT file.
-                    exclude: ['build/.*'],
-                    mainFile: 'charitable.php',    // Main project file.
-                    potFilename: 'charitable.pot',    // Name of the POT file.
-                    potHeaders: {
-                        poedit: true,                 // Includes common Poedit headers.
+        'makepot' : {
+            'target' : {
+                'options' : {
+                    'domainPath' : '/i18n/languages/',    // Where to save the POT file.
+                    'exclude' : ['build/.*'],
+                    'mainFile' : 'charitable.php',    // Main project file.
+                    'potFilename' : 'charitable.pot',    // Name of the POT file.
+                    'potHeaders' : {
+                        'poedit' : true,                 // Includes common Poedit headers.
                         'x-poedit-keywordslist': true // Include a list of all possible gettext functions.
                                 },
-                    type: 'wp-plugin',    // Type of project (wp-plugin or wp-theme).
-                    updateTimestamp: true,    // Whether the POT-Creation-Date should be updated without other changes.
+                    'type' : 'wp-plugin',    // Type of project (wp-plugin or wp-theme).
+                    'updateTimestamp' : true,    // Whether the POT-Creation-Date should be updated without other changes.
                     processPot: function( pot, options ) {
                         pot.headers['report-msgid-bugs-to'] = 'https://www.wpcharitable.com/';
                         pot.headers['last-translator'] = 'WP-Translations (http://wp-translations.org/)';
@@ -112,59 +121,63 @@ module.exports = function(grunt) {
         },
 
         // javascript linting with jshint
-        jshint: {
-            options: {
-                jshintrc: '.jshintrc',
-                force: true
+        'jshint' : {
+            'options' : {
+                'jshintrc' : '.jshintrc',
+                'force' : true
             },
-            all: [
+            'all' : [
                 'Gruntfile.js'
             ]
         },        
 
         // uglify to concat, minify, and make source maps
-        uglify: {
-            dist: {
-                files: {
-                    'assets/js/charitable-admin.min.js' : 'assets/js/charitable-admin.js', 
-                    'assets/js/charitable-admin-benefactors.min.js' : 'assets/js/charitable-admin-benefactors.js',
-                    'assets/js/charitable-customizer.min.js' : 'assets/js/charitable-customizer.js', 
-                }
+        'uglify' : {
+            'options' : {
+                'compress' : {
+                    'global_defs' : {
+                        "EO_SCRIPT_DEBUG": false
+                    },
+                    'dead_code' : true
+                    },
+                'banner' : '/*! <%= pkg.title %> <%= pkg.version %> <%= grunt.template.today("yyyy-mm-dd HH:MM") %> */\n'
+            },
+            'build' : {
+                'files' : [{
+                    'expand' : true,   // Enable dynamic expansion.
+                    'src' : [ 
+                        'assets/js/*.js',                         
+                        '!assets/js/*.min.js', 
+                        '!assets/js/libraries/*.js',
+                        'assets/js/libraries/leanModal.js'
+                    ], // Actual pattern(s) to match.
+                    'ext' : '.min.js',   // Dest filepaths will have this extension.
+                }]
             }
         },
 
         // minify CSS
-        cssmin: {
-            minify: {
-                files: {
-                    'assets/css/charitable.min.css' : 'assets/css/charitable.css'
-                }
-            }
-        },        
-
-        // make POT file
-        // makepot: {
-        //     target: {
-        //         options: {
-        //             cwd: '',                        // Directory of files to internationalize.
-        //             domainPath: '/i18n/languages',  // Where to save the POT file.                    
-        //             mainFile: 'charitable.php',     // Main project file.
-        //             potFilename: 'charitable.pot',  // Name of the POT file.
-        //             type: 'wp-plugin',              // Type of project (wp-plugin or wp-theme).
-        //             updateTimestamp: true           // Whether the POT-Creation-Date should be updated without other changes.
-        //         }
-        //     }
-        // },
+        'cssmin' : {
+          'target' : {
+            'files' : [{
+              'expand' : true,
+              'cwd' : 'assets/css',
+              'dest' : 'assets/css',
+              'src' : ['*.css', '!*.min.css'],
+              'ext' : '.min.css'
+            }]
+          }
+        },
 
         // Clean up build directory
-        clean: {
-            main: ['build/<%= pkg.name %>']
+        'clean' : {
+            'main' : ['build/<%= pkg.name %>']
         },
 
         // Copy the theme into the build directory
-        copy: {
-            main: {
-                src:  [
+        'copy' : {
+            'main' : {
+                'src' :  [
                     '**',
                     '!bin/**',
                     '!composer.json',
@@ -182,24 +195,23 @@ module.exports = function(grunt) {
                     '!**/package.json',
                     '!**/README.md',
                     '!**/*~', 
-                    '!assets/css/scss/**',
-                    '!assets/css/*.map'
+                    '!assets/css/scss/**'
                 ],
-                dest: 'build/<%= pkg.name %>/'
+                'dest' : 'build/<%= pkg.name %>/'
             }
         },
 
         //Compress build directory into <name>.zip and <name>-<version>.zip
-        compress: {
-            main: {
-                options: {
-                    mode: 'zip',
-                    archive: './build/<%= pkg.name %>-<%= pkg.version %>.zip'
+        'compress' : {
+            'main' : {
+                'options' : {
+                    'mode' : 'zip',
+                    'archive' : './build/<%= pkg.name %>-<%= pkg.version %>.zip'
                 },
-                expand: true,
-                cwd: 'build/<%= pkg.name %>/',
-                src: ['**/*'],
-                dest: '<%= pkg.name %>/'
+                'expand' : true,
+                'cwd' : 'build/<%= pkg.name %>/',
+                'src' : ['**/*'],
+                'dest' : '<%= pkg.name %>/'
             }
         },
 
@@ -210,7 +222,7 @@ module.exports = function(grunt) {
     grunt.registerTask( 'default', 'watch' );
     
     // Build task(s).
-    grunt.registerTask( 'build', [ 'makepot', 'clean', 'copy', 'compress' ] );
+    grunt.registerTask( 'build', [ 'uglify', 'cssmin', 'makepot', 'clean', 'copy', 'compress' ] );
 
     // grunt.registerTask('default', ['watch']);
     // grunt.registerTask('build', ['sync', 'jshint', 'uglify', 'makepot']);

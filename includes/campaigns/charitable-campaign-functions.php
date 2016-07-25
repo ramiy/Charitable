@@ -12,7 +12,7 @@
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License  
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 /**
  * Returns the given campaign. 
@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  * @since   1.0.0
  */
 function charitable_get_campaign( $campaign_id ) {
-    return new Charitable_Campaign( $campaign_id );
+    return new Charitable_Campaign( $campaign_id ); // @todo FILTER this
 }
 
 /**

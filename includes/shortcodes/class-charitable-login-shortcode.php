@@ -1,74 +1,102 @@
 <?php
 /**
  * Login shortcode class.
- * 
+ *
  * @version     1.0.0
  * @package     Charitable/Shortcodes/Login
  * @category    Class
  * @author      Eric Daams
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
-if ( ! class_exists( 'Charitable_Login_Shortcode' ) ) : 
-
-/**
- * Charitable_Login_Shortcode class. 
- *
- * @since       1.0.0
- */
-class Charitable_Login_Shortcode {
+if ( ! class_exists( 'Charitable_Login_Shortcode' ) ) :
 
     /**
-     * The callback method for the campaigns shortcode.
+     * Charitable_Login_Shortcode class. 
      *
-     * This receives the user-defined attributes and passes the logic off to the class. 
-     *
-     * @param   array   $atts   User-defined shortcode attributes.
-     * @return  string
-     * @access  public
-     * @static
-     * @since   1.0.0
+     * @since       1.0.0
      */
-    public static function display( $atts = array() ) {
-        global $wp;        
+    class Charitable_Login_Shortcode {
 
-        $defaults = array(
-            'logged_in_message' => __( 'You are already logged in!', 'charitable' )
-        );
+        /**
+         * The callback method for the campaigns shortcode.
+         *
+         * This receives the user-defined attributes and passes the logic off to the class. 
+         *
+         * @param   array $atts User-defined shortcode attributes.
+         * @return  string
+         * @access  public
+         * @static
+         * @since   1.0.0
+         */
+        public static function display( $atts = array() ) {
+            global $wp;        
 
-        $args = shortcode_atts( $defaults, $atts, 'charitable_login' );    
+            $defaults = array(
+                'logged_in_message' => __( 'You are already logged in!', 'charitable' ),
+                'redirect'          => esc_url_raw( charitable_get_login_redirect_url() ),
+            );
 
-        ob_start();
+            $args = shortcode_atts( $defaults, $atts, 'charitable_login' );    
 
-        if ( is_user_logged_in() ) {
+            $args[ 'login_form_args' ] = self::get_login_form_args( $args );
 
-            charitable_template( 'shortcodes/logged-in.php', $args );
-            
-            return ob_get_clean();
+            if ( is_user_logged_in() ) {
+
+                ob_start();
+
+                charitable_template( 'shortcodes/logged-in.php', $args );
+                
+                return ob_get_clean();
+            }                    
+
+            ob_start();
+
+            charitable_template( 'shortcodes/login.php', $args );
+
+            return apply_filters( 'charitable_login_shortcode', ob_get_clean() );        
         }
 
-        $args[ 'login_form_args' ] = self::get_login_form_args( $args );
+        /**
+         * Fingerprint the login form with our charitable=true hidden field.
+         *
+         * @param   string $content
+         * @return  string
+         * @access  public
+         * @static
+         * @since   1.4.0
+         */
+        public static function add_hidden_field_to_login_form( $content, $args  ) {
+            
+            if ( isset( $args['charitable'] ) && $args['charitable'] ) {
+                $content .= '<input type="hidden" name="charitable" value="1" />';
+            }
 
-        charitable_template( 'shortcodes/login.php', $args );
+            return $content;
+        }
 
-        return apply_filters( 'charitable_login_shortcode', ob_get_clean() );        
+        /**
+         * Return donations to display with the shortcode. 
+         *
+         * @param   array   $args 
+         * @return  mixed[] $args
+         * @access  protected
+         * @static
+         * @since   1.0.0
+         */
+        protected static function get_login_form_args( $args ) {
+            $default = array(
+                'redirect'   => $args['redirect'],
+                'charitable' => true,
+            );
+
+            if ( isset( $_GET['username']) ) {
+                $default['value_username'] = $_GET['username'];
+            }
+
+            return apply_filters( 'charitable_login_form_args', $default, $args );
+        }
     }
-
-    /**
-     * Return donations to display with the shortcode. 
-     *
-     * @param   array $args 
-     * @return  mixed[] $args
-     * @access  protected
-     * @static
-     * @since   1.0.0
-     */
-    protected static function get_login_form_args( $args ) {
-        return apply_filters( 'charitable_login_form_args', array(
-            'redirect' => esc_url( charitable_get_login_redirect_url() )
-        ), $args );
-    }
-}
 
 endif;

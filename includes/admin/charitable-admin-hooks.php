@@ -9,7 +9,7 @@
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License  
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 /**
  * Enqueue Charitable's admin-area scripts & styles. 
@@ -45,3 +45,17 @@ add_filter( 'plugin_row_meta', array( Charitable_Admin::get_instance(), 'add_plu
  * @see     Charitable_Admin::export_donations()
  */
 add_action( 'charitable_export_donations', array( Charitable_Admin::get_instance(), 'export_donations' ) );
+
+/** 
+ * Add Charitable menu.
+ *
+ * @see     Charitable_Admin_Pages::add_menu()
+ */
+add_action( 'admin_menu', array( Charitable_Admin_Pages::get_instance(), 'add_menu' ), 5 );
+
+/**
+ * Redirect to welcome page after install.
+ *
+ * @see     Charitable_Admin_Pages::redirect_to_welcome()
+ */
+add_action( 'charitable_install', array( Charitable_Admin_Pages::get_instance(), 'setup_welcome_redirect' ), 100 );

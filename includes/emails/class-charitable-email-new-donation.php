@@ -49,7 +49,7 @@ class Charitable_Email_New_Donation extends Charitable_Email {
     public function __construct( $objects = array() ) {
         parent::__construct( $objects );
 
-        $this->name = apply_filters( 'charitable_email_new_donation_name', __( 'New Donation Notification', 'charitable' ) );
+        $this->name = apply_filters( 'charitable_email_new_donation_name', __( 'Admin: New Donation Notification', 'charitable' ) );
     }
 
     /**
@@ -78,15 +78,29 @@ class Charitable_Email_New_Donation extends Charitable_Email {
             return false;
         }
         
-        if ( ! Charitable_Donation::is_approved_status( get_post_status( $donation_id ) ) ) {
+        if ( ! charitable_is_approved_status( get_post_status( $donation_id ) ) ) {
             return false;
         }
 
         $email = new Charitable_Email_New_Donation( array( 
-            'donation' => new Charitable_Donation( $donation_id ) 
+            'donation' => charitable_get_donation( $donation_id ) 
         ) );
 
-        $email->send();
+        /**
+         * Don't resend the email.
+         */
+        if ( $email->is_sent_already( $donation_id ) ) {
+            return false;
+        }
+
+        $sent = $email->send();
+
+        /**
+         * Log that the email was sent.
+         */
+        if ( apply_filters( 'charitable_log_email_send', true, self::get_email_id(), $email ) ) {
+            $email->log( $donation_id, $sent );
+        }
 
         return true;
     }

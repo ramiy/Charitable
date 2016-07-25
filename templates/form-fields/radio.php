@@ -10,7 +10,7 @@
  * @version 1.0.0
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 if ( ! isset( $view_args[ 'form' ] ) || ! isset( $view_args[ 'field' ] ) ) {
     return;
@@ -45,7 +45,8 @@ if ( empty( $options ) ) {
                     id="<?php echo $field[ 'key' ] . '-' . $option ?>" 
                     name="<?php echo $field[ 'key' ] ?>"
                     value="<?php echo esc_attr( $option ) ?>"
-                    <?php checked( $value, $option ) ?> />
+                    <?php checked( $value, $option ) ?>
+                    <?php echo charitable_get_arbitrary_attributes( $field ) ?> />
                 <?php echo $label ?>
             </li>
 

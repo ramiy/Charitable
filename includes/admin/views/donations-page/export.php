@@ -12,12 +12,14 @@
  */
 $table = $view_args[ 'table' ];
 
+$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+
 /**
  * Set up the scripts & styles used for the modal. 
  */
-wp_register_script( 'lean-modal', charitable()->get_path( 'assets', false ) . 'js/libraries/jquery.leanModal.js', array( 'jquery' ), charitable()->get_version() );
+wp_register_script( 'lean-modal', charitable()->get_path( 'assets', false ) . 'js/libraries/leanModal' . $suffix . '.js', array( 'jquery-core' ), charitable()->get_version() );
 wp_print_scripts( 'lean-modal' );
-wp_enqueue_style( 'lean-modal-css', charitable()->get_path( 'assets', false ) . 'css/modal.css', array(), charitable()->get_version() );
+wp_enqueue_style( 'lean-modal-css', charitable()->get_path( 'assets', false ) . 'css/modal' . $suffix . '.css', array(), charitable()->get_version() );
 
 $modal_class = apply_filters( 'charitable_modal_window_class', 'charitable-modal' );
 
@@ -43,7 +45,7 @@ $report_types = $table->get_report_types();
         <label for="charitable-donations-export-status"><?php _e( 'Filter by Status', 'charitable' ) ?></label>
         <select id="charitable-donations-export-status" name="post_status">
             <option value="all" <?php selected( $post_status, 'all' ) ?>><?php _e( 'All', 'charitable' ) ?></option>
-            <?php foreach (Charitable_Donation::get_valid_donation_statuses() as $key => $status) : ?>
+            <?php foreach (charitable_get_valid_donation_statuses() as $key => $status) : ?>
                 <option value="<?php echo esc_attr( $key ) ?>" <?php selected( $post_status, $key ) ?>><?php echo $status ?></option>
             <?php endforeach ?>
         </select>

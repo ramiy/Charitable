@@ -55,8 +55,6 @@ final class Charitable_Admin_Pages {
     private function __construct() {
         $this->admin_menu_capability = apply_filters( 'charitable_admin_menu_capability', 'manage_options' );
         $this->admin_menu_parent_page = 'charitable';
-
-        add_action( 'admin_menu', array( $this, 'add_menu' ), 5 );
     }
 
     /**
@@ -82,7 +80,7 @@ final class Charitable_Admin_Pages {
      * @since   1.0.0
      */
     public function add_menu() {
-        add_menu_page( 'Charitable', 'Charitable', $this->admin_menu_capability, $this->admin_menu_parent_page, array( $this, 'render_charitable_settings_page' ) );        
+        add_menu_page( 'Charitable', 'Charitable', $this->admin_menu_capability, $this->admin_menu_parent_page, array( $this, 'render_welcome_page' ) );        
 
         foreach ( $this->get_submenu_pages() as $page ) {
             if ( ! isset( $page[ 'page_title' ] ) 
@@ -106,8 +104,6 @@ final class Charitable_Admin_Pages {
                 $function
             );
         }
-
-        remove_submenu_page( $this->admin_menu_parent_page, $this->admin_menu_parent_page );
     }
 
     /**
@@ -158,6 +154,29 @@ final class Charitable_Admin_Pages {
     }
 
     /**
+     * Set up the redirect to the welcome page. 
+     *
+     * @return  void
+     * @access  public
+     * @since   1.3.0
+     */
+    public function setup_welcome_redirect() {
+        add_action( 'admin_init', array( self::get_instance(), 'redirect_to_welcome' ) );
+    }
+
+    /**
+     * Redirect to the welcome page. 
+     *
+     * @return  void
+     * @access  public
+     * @since   1.3.0
+     */
+    public function redirect_to_welcome() {
+        wp_safe_redirect( admin_url( 'admin.php?page=charitable&install=true' ) ); 
+        exit;
+    }
+
+    /**
      * Display the Charitable settings page. 
      *
      * @return  void
@@ -177,6 +196,17 @@ final class Charitable_Admin_Pages {
      */
     public function render_donations_page() {
         charitable_admin_view( 'donations-page/page' );
+    }
+
+    /**
+     * Display the Charitable welcome page.
+     *
+     * @return  void
+     * @access  public
+     * @since   1.0.0
+     */
+    public function render_welcome_page() {
+        charitable_admin_view( 'welcome-page/page' );
     }
 }
 

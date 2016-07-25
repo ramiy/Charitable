@@ -17,8 +17,7 @@ $classes        = esc_attr( $view_args[ 'classes' ] );
 $field_type     = isset( $field[ 'type' ] ) ? $field[ 'type' ] : 'text';
 $is_required    = isset( $field[ 'required' ] ) ? $field[ 'required' ] : false;
 $value          = isset( $field[ 'value' ] ) ? $field[ 'value' ] : '';
-$placeholder    = isset( $field[ 'placeholder' ] ) ? esc_attr( $field[ 'placeholder' ] ) : '';
-$pattern        = isset( $field[ 'pattern' ] ) ? 'pattern="' . esc_attr( $field[ 'pattern' ] ) . '"' : ' ';
+
 ?>
 <div id="charitable_field_<?php echo $field['key'] ?>" class="<?php echo $classes ?>">
     <?php if ( isset( $field['label'] ) ) : ?>
@@ -29,5 +28,8 @@ $pattern        = isset( $field[ 'pattern' ] ) ? 'pattern="' . esc_attr( $field[
             <?php endif ?>
         </label>
     <?php endif ?>
-    <input type="<?php echo esc_attr( $field_type ) ?>" name="<?php echo $field[ 'key' ] ?>" value="<?php echo esc_attr( stripslashes( $value ) ) ?>" placeholder="<?php echo $placeholder ?>" <?php echo $pattern ?> />
+    <?php if ( isset( $field[ 'help' ] ) ) : ?>
+        <p class="charitable-field-help"><?php echo $field[ 'help' ] ?></p>
+    <?php endif ?>
+    <input type="<?php echo esc_attr( $field_type ) ?>" name="<?php echo $field[ 'key' ] ?>" value="<?php echo esc_attr( stripslashes( $value ) ) ?>" <?php echo charitable_get_arbitrary_attributes( $field ) ?>/>
 </div>

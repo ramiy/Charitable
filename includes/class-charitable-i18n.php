@@ -105,7 +105,7 @@ class Charitable_i18n {
             }
          
             load_textdomain( $this->textdomain, $mofile_path );
-        }
+        }        
 
         load_plugin_textdomain( $this->textdomain, false, $this->languages_directory );
     }
@@ -123,7 +123,7 @@ class Charitable_i18n {
             return WP_LANG_DIR . '/' . $this->textdomain . '/' . $this->mofile;
         }
 
-        return $this->languages_directory . $this->mofile;
+        return trailingslashit( $this->languages_directory ) . $this->mofile;
     }
 
     /**

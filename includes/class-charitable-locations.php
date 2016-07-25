@@ -9,7 +9,7 @@
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License  
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly. 
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly. 
 
 if ( ! class_exists( 'Charitable_Locations' ) ) : 
 
@@ -268,6 +268,10 @@ class Charitable_Locations {
 	 * @since 	1.0.0
 	 */
 	private function sanitize_address_fields( $address_fields ) {
+		
+		if ( ! is_array( $address_fields ) ) {
+			return $address_fields;
+		}
 		
 		$address_fields = array_map( 'trim', $address_fields );	
 

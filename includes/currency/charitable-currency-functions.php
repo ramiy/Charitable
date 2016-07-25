@@ -10,7 +10,7 @@
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License  
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 /**
  * Return currency helper class.  
@@ -41,4 +41,15 @@ function charitable_get_currency() {
  */
 function charitable_format_money( $amount ) {
     return charitable_get_currency_helper()->get_monetary_amount( $amount );
+}
+
+/**
+ * Sanitize an amount, converting it into a float.
+ *
+ * @param   string $amount
+ * @return  float|WP_Error
+ * @since   1.4.0
+ */
+function charitable_sanitize_amount( $amount ) {
+    return charitable_get_currency_helper()->sanitize_monetary_amount( $amount );
 }

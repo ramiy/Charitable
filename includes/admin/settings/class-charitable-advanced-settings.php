@@ -9,7 +9,7 @@
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License  
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 if ( ! class_exists( 'Charitable_Advanced_Settings' ) ) : 
 
@@ -57,7 +57,7 @@ final class Charitable_Advanced_Settings {
     /**
      * Add the advanced tab settings fields. 
      *
-     * @return  array[]
+     * @return  array<string,array>
      * @access  public
      * @since   1.0.0
      */

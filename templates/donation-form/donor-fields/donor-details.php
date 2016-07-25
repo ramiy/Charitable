@@ -8,22 +8,22 @@
  * @version 1.0.0
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 /**
  * @var Charitable_User
  */
-$user = $view_args[ 'user' ];
+$user = $view_args['user'];
 
 if ( ! $user ) {
-    return;
+	return;
 }
 
 ?>
 <address class="donor-address"><?php echo $user->get_address() ?></address>
 <p class="donor-contact-details">
-	<?php printf( '%s: %s', __( 'Email', 'charitable '), $user->user_email ) ?>
-	<?php if ( $user->__isset( 'donor_phone') ) : 
+	<?php printf( '%s: %s', __( 'Email', 'charitable ' ), $user->user_email ) ?>
+	<?php if ( $user->__isset( 'donor_phone' ) ) :
 		printf( '<br />%s: %s', __( 'Phone number', 'charitable' ), $user->get( 'donor_phone' ) );
 	endif ?>
 </p>

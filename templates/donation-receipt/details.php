@@ -10,7 +10,7 @@
  * @version 1.0.0
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 /**
  * @var     Charitable_Donation
@@ -39,14 +39,14 @@ $donation = $view_args[ 'donation' ];
                 
                 ?>
             </td>
-            <td class="donation-amount"><?php echo charitable_get_currency_helper()->get_monetary_amount( $campaign_donation->amount ) ?></td>
+            <td class="donation-amount"><?php echo charitable_format_money( $campaign_donation->amount ) ?></td>
         </tr>
     <?php endforeach ?>
     </tbody>
     <tfoot>
         <tr>
             <td><?php _e( 'Total', 'charitable' ) ?></td>
-            <td><?php echo charitable_get_currency_helper()->get_monetary_amount( $donation->get_total_donation_amount() ) ?></td>
+            <td><?php echo charitable_format_money( $donation->get_total_donation_amount() ) ?></td>
         </tr>
     </tfoot>
 </table>

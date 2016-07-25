@@ -11,7 +11,7 @@
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License  
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 /**
  * Orders an array by the priority key.
@@ -113,4 +113,32 @@ function charitable_get_timezone_id() {
  */
 function charitable_validate_absint( $i ) {
     return filter_var( $i, FILTER_VALIDATE_INT, array( 'min_range' => 1 ) );
+}
+
+/**
+ * Format an array of strings as a sentence part. 
+ *
+ * If there is one item in the string, this will just return that item.
+ * If there are two items, it will return a string like this: "x and y".
+ * If there are three or more items, it will return a string like this: "x, y and z".
+ *
+ * @param   string[] $list
+ * @return  string
+ * @since   1.3.0
+ */
+function charitable_list_to_sentence_part( $list ) {
+    $list = array_values( $list );
+
+    if ( 1 == count( $list ) ) {
+        return $list[0];
+    }
+
+    if ( 2 == count( $list ) ) {
+        return sprintf( _x( '%s and %s', 'x and y', 'charitable' ), $list[0], $list[1] );
+    }
+
+    
+    $last = array_pop( $list );
+
+    return sprintf( _x( '%s and %s', 'x and y', 'charitable' ), implode( ', ', $list ), $last );
 }

@@ -33,9 +33,10 @@ class Charitable_Donate_Widget extends WP_Widget {
             'charitable_donate_widget', // Base ID
             __( 'Campaign Donation', 'charitable'), // Name
             array( 
-                'description' => __( 'Display a donation widget.', 'charitable' 
-            )
-        ) );
+                'description' => __( 'Display a donation widget.', 'charitable' ), 
+                'customize_selective_refresh' => true
+            ) 
+        );
     }
 
     /**

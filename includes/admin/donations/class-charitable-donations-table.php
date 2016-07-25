@@ -93,7 +93,7 @@ class Charitable_Donations_Table extends WP_List_Table {
         ) );
 
         $this->base_url = admin_url( 'edit.php?page=charitable-donations-table' );
-        $this->donation_statuses = Charitable_Donation::get_valid_donation_statuses();
+        $this->donation_statuses = charitable_get_valid_donation_statuses();
 
         $this->prepare_donation_counts();
         $this->process_bulk_action();    

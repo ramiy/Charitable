@@ -21,6 +21,7 @@ $max = isset( $view_args['max'] ) ? 'max="' . $view_args['max'] . '"' : '';
     name="<?php printf( 'charitable_settings[%s]', $view_args[ 'name' ] ) ?>"
     value="<?php echo $value ?>" <?php echo $min ?> <?php echo $max ?> 
     class="<?php echo esc_attr( $view_args[ 'classes' ] ) ?>"
+    <?php echo charitable_get_arbitrary_attributes( $view_args ) ?>
     />
 <?php if ( isset( $view_args['help'] ) ) : ?>
 
