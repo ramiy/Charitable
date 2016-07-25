@@ -454,7 +454,7 @@ if ( ! function_exists( 'charitable_template_responsive_styles' ) ) :
 	 * @since 	1.4.0
 	 */
 	function charitable_template_responsive_styles( $campaigns, $args ) {
-		if ( ! $args['responsive'] ) {
+		if ( ! isset( $args['responsive'] ) || ! $args['responsive'] ) {
 			return;
 		}
 
