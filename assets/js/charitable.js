@@ -130,22 +130,23 @@ CHARITABLE = window.CHARITABLE || {};
                     if ( response.success ) {
                         window.location.href = response.redirect_to;
                     }
-
-                    $donate_btn.show();
-                    $spinner.hide();
-
-                    if ( $form.find( '.charitable-form-errors').length ) {
-                        $form.find( '.charitable-form-errors' ).remove(); 
-                    }
-                    
-                    $form.prepend( response.errors );    
-                    
-                    if ( $modal.length ) {
-                        $modal.scrollTop( 0 );
-                    }
                     else {
-                        window.scrollTo( coordinates.left, coordinates.top );
-                    }                
+                        $donate_btn.show();
+                        $spinner.hide();
+
+                        if ( $form.find( '.charitable-form-errors').length ) {
+                            $form.find( '.charitable-form-errors' ).remove();
+                        }
+
+                        $form.prepend( response.errors );
+
+                        if ( $modal.length ) {
+                            $modal.scrollTop( 0 );
+                        }
+                        else {
+                            window.scrollTo( coordinates.left, coordinates.top );
+                        }
+                    }
                 }
             }).fail(function (response, textStatus, errorThrown) {
                 if ( window.console && window.console.log ) {
