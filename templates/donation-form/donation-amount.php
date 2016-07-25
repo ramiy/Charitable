@@ -103,7 +103,7 @@ if ( $donation_amount ) : ?>
 <?php elseif ( $campaign->get( 'allow_custom_donations' ) ) : ?>
 
 	<div id="custom-donation-amount-field" class="charitable-form-field charitable-custom-donation-field-alone">
-		<input type="text" name="custom_donation_amount" placeholder="<?php esc_attr_e( 'Enter donation amount', 'charitable' ) ?>" value="<?php if ( $donation_amount ) { echo $donation_amount; } ?>" />
+		<input type="text" class="custom-donation-input" name="custom_donation_amount" placeholder="<?php esc_attr_e( 'Enter donation amount', 'charitable' ) ?>" value="<?php if ( $donation_amount ) { echo esc_attr( $donation_amount ); } ?>" />
 	</div>
 
 <?php endif ?>

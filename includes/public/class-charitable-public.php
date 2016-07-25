@@ -100,13 +100,15 @@ if ( ! class_exists( 'Charitable_Public' ) ) :
 				$version = charitable()->get_version();
 			}
 
+			$assets_dir = charitable()->get_path( 'assets', false );
+
 			/* Accounting.js */
 			wp_register_script(
 				'accounting',
-				charitable()->get_path( 'assets', false ) . 'js/libraries/accounting'. $suffix . '.js',
+				$assets_dir . 'js/libraries/accounting'. $suffix . '.js',
 				array( 'jquery-core' ),
 				$version,
-				true 
+				true
 			);
 
 			wp_enqueue_script( 'accounting' );
@@ -114,7 +116,7 @@ if ( ! class_exists( 'Charitable_Public' ) ) :
 			/* Main Charitable script. */
 			$vars = apply_filters( 'charitable_javascript_vars', array(
 				'ajaxurl' => admin_url( 'admin-ajax.php' ),
-				'loading_gif' => charitable()->get_path( 'assets', false ) . '/images/charitable-loading.gif',
+				'loading_gif' => $assets_dir . '/images/charitable-loading.gif',
 				'currency_format_num_decimals' => esc_attr( charitable_get_option( 'decimal_count', 2 ) ),
 				'currency_format_decimal_sep' => esc_attr( charitable_get_option( 'decimal_separator', '.' ) ),
 				'currency_format_thousand_sep' => esc_attr( charitable_get_option( 'thousands_separator', ',' ) ),
@@ -126,33 +128,33 @@ if ( ! class_exists( 'Charitable_Public' ) ) :
 
 			wp_register_script(
 				'charitable-script',
-				charitable()->get_path( 'assets', false ) . 'js/charitable'. $suffix . '.js',
+				$assets_dir . 'js/charitable'. $suffix . '.js',
 				array( 'jquery-core' ),
 				$version,
 				true
 			);
-			
+
 			wp_localize_script(
 				'charitable-script',
 				'CHARITABLE_VARS',
 				$vars
 			);
-			
+
 			wp_enqueue_script( 'charitable-script' );
 
 			/* Donation form script */
-			wp_register_script(
-				'charitable-donation-form',
-				charitable()->get_path( 'assets', false ) . 'js/charitable-donation-form'. $suffix . '.js',
-				array( 'charitable-script', 'jquery-core' ),
-				$version, 
-				true
-			);
+			// wp_register_script(
+			// 	'charitable-donation-form',
+			// 	$assets_dir . 'js/charitable-donation-form'. $suffix . '.js',
+			// 	array( 'charitable-script', 'jquery-core' ),
+			// 	$version,
+			// 	true
+			// );
 
 			/* Main styles */
 			wp_register_style(
 				'charitable-styles',
-				charitable()->get_path( 'assets', false ) . 'css/charitable' . $suffix .'.css',
+				$assets_dir . 'css/charitable' . $suffix .'.css',
 				array(),
 				$version
 			);
@@ -163,15 +165,15 @@ if ( ! class_exists( 'Charitable_Public' ) ) :
 			if ( 'modal' == charitable_get_option( 'donation_form_display', 'separate_page' ) ) {
 
 				wp_register_script(
-					'lean-modal', 
-					charitable()->get_path( 'assets', false ) . 'js/libraries/leanModal' . $suffix . '.js', 
+					'lean-modal',
+					$assets_dir . 'js/libraries/leanModal' . $suffix . '.js',
 					array( 'jquery-core' ),
 					$version
 				);
 
 				wp_register_style(
 					'lean-modal-css',
-					charitable()->get_path( 'assets', false ) . 'css/modal' . $suffix .'.css',
+					$assets_dir . 'css/modal' . $suffix .'.css',
 					array(),
 					$version
 				);
@@ -189,7 +191,7 @@ if ( ! class_exists( 'Charitable_Public' ) ) :
 
 			wp_register_script(
 				'charitable-plup-fields',
-				charitable()->get_path( 'assets', false ) . 'js/charitable-plupload-fields' . $suffix . '.js',
+				$assets_dir . 'js/charitable-plupload-fields' . $suffix . '.js',
 				array( 'jquery-ui-sortable', 'wp-ajax-response', 'plupload-all' ),
 				$version,
 				true
@@ -198,14 +200,14 @@ if ( ! class_exists( 'Charitable_Public' ) ) :
 			wp_localize_script(
 				'charitable-plup-fields',
 				'CHARITABLE_UPLOAD_VARS',
-				$upload_vars 
+				$upload_vars
 			);
 
 			wp_register_style(
 				'charitable-plup-styles',
-				charitable()->get_path( 'assets', false ) . 'css/charitable-plupload-fields' . $suffix . '.css',
+				$assets_dir . 'css/charitable-plupload-fields' . $suffix . '.css',
 				array(),
-				$version 
+				$version
 			);
 		}
 

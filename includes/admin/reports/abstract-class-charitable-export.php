@@ -78,8 +78,7 @@ if ( ! class_exists( 'Charitable_Export' ) ) :
 		 * @since   1.0.0
 		 */
 		protected function export() {
-			// $d = $this->get_data();
-			// echo '<pre>'; var_dump( $d ); echo '</pre>';
+
 			$data = array_map( array( $this, 'map_data' ), $this->get_data() );
 
 			$this->print_headers();
@@ -96,9 +95,6 @@ if ( ! class_exists( 'Charitable_Export' ) ) :
 			}
 
 			fclose( $output );
-
-			// echo '<pre>'; var_dump( $data ); echo '</pre>';
-			// die;
 
 			exit();
 		}

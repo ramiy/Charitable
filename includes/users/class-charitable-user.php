@@ -715,7 +715,7 @@ if ( ! class_exists( 'Charitable_User' ) ) :
 				$signon = Charitable_User::signon( $values['user_login'], $values['user_pass'] );
 
 				if ( is_wp_error( $signon ) ) {
-					charitable_get_notices()->add_errors_from_wp_error( $result );
+					charitable_get_notices()->add_errors_from_wp_error( $signon );
 					return false;
 				}
 
