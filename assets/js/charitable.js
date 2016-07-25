@@ -88,7 +88,7 @@ CHARITABLE = window.CHARITABLE || {};
          *
          * @access  private
          */
-         var submit_processing = false;
+        var submit_processing = false;
 
         /**
          * Submit event handler for donation form.
@@ -96,7 +96,10 @@ CHARITABLE = window.CHARITABLE || {};
          * @access  private
          */
         var on_submit = function() {
-            if (submit_processing) return false;
+            if ( submit_processing ) {
+                return false;
+            }
+
             submit_processing = true;
 
             var $form = $( this );
@@ -105,7 +108,7 @@ CHARITABLE = window.CHARITABLE || {};
                 return obj;
             }, {} );
             var coordinates = $form.position();
-            var $modal = $form.parent( '#charitable-donation-form-modal' );
+            var $modal = $form.parents( '.charitable-modal' );
             var $spinner = $form.find( '.charitable-form-processing' );
             var $donate_btn = $form.find( 'button[name="donate"]' );
 
