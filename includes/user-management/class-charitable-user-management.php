@@ -162,6 +162,10 @@ if ( ! class_exists( 'Charitable_User_Management' ) ) :
 						'</a>';
 						
 						break;
+
+					default : 
+						$error = $error[0];
+
 				}
 
 				charitable_get_notices()->add_error( $error );
