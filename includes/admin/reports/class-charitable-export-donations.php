@@ -100,6 +100,10 @@ if ( ! class_exists( 'Charitable_Export_Donations' ) ) :
 				case 'phone' :
 					$value = charitable_get_donation( $data['donation_id'] )->get_donor()->get_donor_meta( 'phone' );
 					break;
+
+				case 'donation_gateway' :
+					$value = charitable_get_donation( $data['donation_id'] )->get_gateway_object()->get_name();
+					break;
 			}
 
 			return $value;
