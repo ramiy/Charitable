@@ -552,11 +552,11 @@ if ( ! class_exists( 'Charitable_User' ) ) :
 		 */
 		public function get_activity( $args = array() ) {
 			$defaults = array(
-			'author'        => $this->ID,
-			'post_status'   => array( 'charitable-completed', 'charitable-preapproved', 'publish' ),
-			'post_type'     => array( 'donation', 'campaign' ),
-			'order'         => 'DESC',
-			'orderby'       => 'date',
+				'author'        => $this->ID,
+				'post_status'   => array( 'charitable-completed', 'charitable-preapproved', 'publish' ),
+				'post_type'     => array( 'donation', 'campaign' ),
+				'order'         => 'DESC',
+				'orderby'       => 'date',
 			);
 
 			$args = wp_parse_args( $args, $defaults );
@@ -590,8 +590,15 @@ if ( ! class_exists( 'Charitable_User' ) ) :
 			 * to this party right now then.
 			 */
 			if ( ! $email ) {
-				_doing_it_wrong( __METHOD__, __( 'Unable to add donor. Email not set for logged out user.', 'charitable' ), '1.0.0' );
+
+				charitable_get_deprecated()->doing_it_wrong(
+					__METHOD__,
+					__( 'Unable to add donor. Email not set for logged out user.', 'charitable' ),
+					'1.0.0'
+				);
+
 				return 0;
+
 			}
 
 			$donor_values = apply_filters( 'charitable_donor_values', array(
