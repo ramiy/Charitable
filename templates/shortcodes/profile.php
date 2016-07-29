@@ -52,7 +52,7 @@ do_action('charitable_user_profile_before');
 
 	?>
 	<div class="charitable-form-field charitable-submit-field">
-		<button class="button button-primary" type="submit" name="update-profile"><?php _e( 'Update', 'charitable' ) ?></button>
+		<button class="button button-primary" type="submit" name="update-profile"><?php echo apply_filters( 'charitable_profile_form_submit_button_name', __( 'Update', 'charitable' ) ); ?></button>
 	</div>
 </form>
 <?php
