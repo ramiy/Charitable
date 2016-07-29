@@ -10,7 +10,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
-$form   = $view_args['form'];
+$form = $view_args['form'];
 
 /**
  * @hook    charitable_user_registration_before
