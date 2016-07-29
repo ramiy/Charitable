@@ -291,14 +291,6 @@ if ( ! class_exists( 'Charitable_Donation_Processor' ) ) :
 					$errors = array( __( 'Unable to process donation.', 'charitable' ) );
 				}
 
-				ob_start();
-
-				charitable_template( 'form-fields/errors.php', array(
-					'errors' => $errors,
-				) );
-
-				$errors = ob_get_clean();
-
 				$response = array(
 					'success' => false,
 					'errors' => $errors,

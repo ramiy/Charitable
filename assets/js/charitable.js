@@ -84,21 +84,47 @@ CHARITABLE = window.CHARITABLE || {};
         };
 
         /**
+         * Flag to prevent the on_submit handler from sending multiple concurrent AJAX requests
+         *
+         * @access  private
+         */
+        var submit_processing = false;
+
+        /**
          * Submit event handler for donation form.
          * 
          * @access  private
          */
         var on_submit = function() {
 
-            var $form = $( this );
-            var data = $form.serializeArray().reduce( function( obj, item ) {
-                obj[ item.name ] = item.value;
-                return obj;
-            }, {} );
-            var coordinates = $form.position();
-            var $modal = $form.parent( '#charitable-donation-form-modal' );
+            if ( submit_processing ) {
+                return false;
+            }
 
-            $form.find( '.charitable-form-processing' ).show();        
+            submit_processing = true;            
+
+            var $form = $( this );
+            var $helper = new CHARITABLE.Donation_Form( $form );            
+
+            /* Validate the form submission before going further. */
+            if ( false === $helper.validate() ) {
+
+                $helper.print_errors();
+
+                $helper.scroll_to_top();
+
+                submit_processing = false; 
+
+                return false;
+
+            }
+
+            var data = $helper.get_data();            
+            var $spinner = $form.find( '.charitable-form-processing' );
+            var $donate_btn = $form.find( 'button[name="donate"]' );
+
+            $donate_btn.hide();
+            $spinner.show();
 
             /* Cancel the default Charitable action, but pass it along as the form_action variable */       
             data.action = 'make_donation';
@@ -118,30 +144,32 @@ CHARITABLE = window.CHARITABLE || {};
                     if ( response.success ) {
                         window.location.href = response.redirect_to;
                     }
-
-                    $form.find( '.charitable-form-processing' ).hide();
-
-                    if ( $form.find( '.charitable-form-errors').length ) {
-                        $form.find( '.charitable-form-errors' ).remove(); 
-                    }
-                    
-                    $form.prepend( response.errors );    
-                    
-                    if ( $modal.length ) {
-                        $modal.scrollTop( 0 );
-                    }
                     else {
-                        window.scrollTo( coordinates.left, coordinates.top );
-                    }                
+                        $donate_btn.show();
+                        $spinner.hide();
+
+                        $helper.print_errors( response.errors );
+
+                        $helper.scroll_to_top();
+                    }
                 }
+
             }).fail(function (response, textStatus, errorThrown) {
+
                 if ( window.console && window.console.log ) {
                     console.log( response );
                 }
 
-                window.scrollTo( coordinates.left, coordinates.top );
+                $donate_btn.show();
+                $spinner.hide();
 
-            }).done(function (response) {
+                $helper.print_errors( [ CHARITABLE_VARS.error_unknown ] );
+
+                $helper.scroll_to_top();
+
+            }).always(function (response) {
+
+                submit_processing = false;
 
             });
 
@@ -164,6 +192,7 @@ CHARITABLE = window.CHARITABLE || {};
                 self.hide_inactive_payment_methods();
                 self.form.on( 'change', '#charitable-gateway-selector input[name=gateway]', on_change_payment_gateway );
             }
+
         }
 
         /**
@@ -188,6 +217,7 @@ CHARITABLE = window.CHARITABLE || {};
             }
 
             CHARITABLE.forms_initialized = true;
+
         }
 
         init_each();
@@ -195,6 +225,7 @@ CHARITABLE = window.CHARITABLE || {};
         if ( false === CHARITABLE.forms_initialized ) {
             init();
         } 
+
     };
 
     /**
@@ -382,12 +413,144 @@ CHARITABLE = window.CHARITABLE || {};
     };
 
     /**
+     * Print the errors at the top of the form.
+     *
+     * @param   array
+     */
+    Donation_Form.prototype.print_errors = function( errors ) {
+
+        var e = errors || this.errors,
+            i = 0,
+            count = e.length,
+            output = '';
+
+        if ( 0 === count ) {
+            return;
+        }
+
+        if ( this.form.find( '.charitable-form-errors' ).length ) {
+            this.form.find( '.charitable-form-errors' ).remove();
+        }
+
+        output += '<div class="charitable-form-errors charitable-notice"><ul class="errors"><li>';
+        output += e.join( '</li><li>' );    
+        output += '</li></ul></div>';
+
+        this.form.prepend( output );
+
+    }
+
+    /**
+     * Clear the errors and remove the printed errors.
+     */
+    Donation_Form.prototype.clear_errors = function() {
+
+        this.errors = [];
+        
+        if ( this.form.find( '.charitable-form-errors' ).length ) {
+            this.form.find( '.charitable-form-errors' ).remove();
+        }
+
+    }
+
+    /**
+     * Scroll to the top of the form.
+     */
+    Donation_Form.prototype.scroll_to_top = function() {
+
+        var $modal = this.form.parents( '.charitable-modal' );
+
+        if ( $modal.length ) {
+            $modal.scrollTop( 0 );
+        }
+        else {
+            window.scrollTo( this.form.position().left, this.form.position().top );
+        }  
+
+    };
+
+    /**
+     * Returns all of the submitted data as key=>value object.
+     *
+     * @return  object
+     */
+    Donation_Form.prototype.get_data = function() {
+
+        return this.form.serializeArray().reduce( function( obj, item ) {
+            obj[ item.name ] = item.value;
+            return obj;
+        }, {} );
+
+    };
+
+    /**
+     * Returns all of the required fields.
+     *
+     * @return  object
+     */
+    Donation_Form.prototype.get_required_fields = function() {
+        
+        var fields = this.form.find( '.charitable-fieldset .required-field' ).not( '#charitable-gateway-fields .required-field' );
+        var gateway_fields = this.form.find( '[data-gateway=' + this.get_payment_method() + '] .required-field' );
+
+        if ( gateway_fields.length ) {
+            fields = $.merge( fields, gateway_fields );
+        }
+
+        return fields;
+
+    };
+
+    /**
      * Make sure that the submitted amount is valid.
      *
      * @return  boolean
      */
     Donation_Form.prototype.is_valid_amount = function() {
+
         return this.get_amount() > 0;
+
+    };
+
+    /**
+     * Validate the amount. If not valid, set an error.
+     *
+     * @return  boolean
+     */
+    Donation_Form.prototype.validate_amount = function() {
+        
+        if ( false === this.is_valid_amount() ) {
+            this.add_error( CHARITABLE_VARS.error_invalid_amount );
+            return false;
+        }
+    
+        return true;
+
+    };
+
+    /**
+     * Verify that all required fields are filled out.
+     *
+     * @return  boolean
+     */
+    Donation_Form.prototype.validate_required_fields = function() {
+        
+        var has_missing_vals = false;
+
+        this.get_required_fields().each( function() {
+
+            if ( '' === $( this ).find( 'input, select, textarea' ).val() ) {
+                has_missing_vals = true;
+            }
+
+        });
+
+        if ( has_missing_vals ) {
+            this.add_error( CHARITABLE_VARS.error_required_fields );
+        }        
+
+        return has_missing_vals;
+
     };
 
     /**
@@ -397,14 +560,18 @@ CHARITABLE = window.CHARITABLE || {};
      * @return  boolean
      */
     Donation_Form.prototype.validate = function() {
-        var valid = true;
-    
-        if ( false === this.is_valid_amount() ) {
-            valid = false;
-            this.add_error( CHARITABLE_VARS.error_invalid_amount );
-        }
 
-        return valid;
+        /* First clear out the errors. */
+        this.clear_errors();
+
+        this.validate_amount();
+
+        this.validate_required_fields();
+
+        this.form.trigger( 'charitable:form:validate' );
+
+        return this.errors.length === 0;
+
     };
 
     exports.Donation_Form = Donation_Form;
