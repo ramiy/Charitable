@@ -750,7 +750,7 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 			}
 
 			/* Filter by campaign. */
-            if ( isset( $_GET[ 'campaign_id' ] ) & 'all' != $_GET['campaign_id'] ) {
+            if ( isset( $_GET[ 'campaign_id' ] ) && 'all' != $_GET['campaign_id'] ) {
                
                 $donations = charitable_get_table( 'campaign_donations' )->get_donation_ids_for_campaign( $_GET[ 'campaign_id' ] );
 
