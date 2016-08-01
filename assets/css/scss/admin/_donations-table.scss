@@ -9,18 +9,12 @@
             display: none;
         }
 
-        .charitable-donations-filter {
+        .charitable-donations-filter, .charitable-donations-export {
             &:before{
-                content: "\f536";
-                float: left;
-                font-family: dashicons;
+                vertical-align: middle;
                 font-size: 16px;
-                speak: none;
-                margin: 1px 2px 1px 0;
-                text-align: center;
-                color: #777;
-                -webkit-font-smoothing: antialiased !important;
-                -moz-osx-font-smoothing: grayscale;
+                width: 16px;
+                height: 16px;
             }
         }
 
@@ -30,10 +24,6 @@
             select.campaign_id {
                 float: none;
                 vertical-align: top;
-            }
-
-            a.button-secondary {
-                margin: 1px 8px 0 0;
             }
 
             .actions {
@@ -99,26 +89,13 @@
                 }
 
             }
+            
+            .charitable-export-actions {
+                margin-left: 8px;
+            }
 
         }  
 
-    }
-
-
-
-     a.button-secondary.charitable-donations-export {
-        &:before {
-            content: '\f316';
-            float: left;
-            font-family: dashicons;
-            font-size: 16px;
-            speak: none;
-            margin: 1px 2px 1px 0;
-            text-align: center;            
-            color: #777;
-            -webkit-font-smoothing: antialiased !important;
-            -moz-osx-font-smoothing: grayscale;
-        }
     }
 
     .wp-list-table {
