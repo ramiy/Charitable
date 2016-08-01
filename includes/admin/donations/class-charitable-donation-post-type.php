@@ -379,6 +379,8 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 		public function set_status_views( $views ) {
 
 			$counts = $this->get_status_counts();
+			
+			$current = isset( $_GET["post_status"] ) ? $_GET["post_status"] : "";
 
 			foreach ( charitable_get_valid_donation_statuses() as $key => $label ) {
 
@@ -386,7 +388,7 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 					add_query_arg( array( 'post_status' => $key, 'paged' => FALSE ) ),
 					$current === $key ? ' class="current"' : '', 
 					$label,
-					$counts[ $key ]
+					isset( $counts[ $key ] ) ? $counts[ $key ] : '0'
 				);
 
 			}
