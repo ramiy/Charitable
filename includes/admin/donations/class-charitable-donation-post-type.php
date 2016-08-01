@@ -79,7 +79,7 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 
 			// Customization filters
 			add_filter( 'disable_months_dropdown', array( $this, 'disable_months_dropdown' ), 10, 2 );
-			add_action( 'restrict_manage_posts', array( $this, 'restrict_manage_posts' ) );
+			add_action( 'restrict_manage_posts', array( $this, 'restrict_manage_posts' ), 99 );
 			add_action( 'manage_posts_extra_tablenav', array( $this, 'extra_tablenav' ) );
 
 			// Modal Forms: Export and Filter
