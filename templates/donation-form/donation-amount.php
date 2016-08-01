@@ -91,7 +91,7 @@ if ( $donation_amount ) : ?>
 			<li class="donation-amount custom-donation-amount">  
 				<label for="form-<?php echo $view_args['form']->get_form_identifier();?>-field-custom-amount">             
 				<input id="form-<?php echo $view_args['form']->get_form_identifier();?>-field-custom-amount" type="radio" name="donation_amount" value="custom" <?php checked( $has_custom_donation_amount ) ?> />
-				<span class="description"><?php _e( 'Custom amount', 'charitable' ) ?></span>
+				<span class="description"><?php echo apply_filters( 'charitable_donation_amount_form_custom_amount_text', __( 'Custom amount', 'charitable' ) ); ?></span>
 				<input type="text" class="custom-donation-input" name="custom_donation_amount" value="<?php if ( $has_custom_donation_amount ) { echo $donation_amount; } ?>" />
 				</label>
 			</li>
