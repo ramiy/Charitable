@@ -120,18 +120,19 @@ if ( ! class_exists( 'Charitable_Export_Donations' ) ) :
 		 */
 		protected function get_csv_columns() {
 			$columns = array(
-				'donation_id'   => __( 'Donation ID', 'charitable' ),
-				'campaign_id'   => __( 'Campaign ID', 'charitable' ),
-				'campaign_name' => __( 'Campaign Title', 'charitable' ),
-				'first_name'    => __( 'Donor First Name', 'charitable' ),
-				'last_name'     => __( 'Donor Last Name', 'charitable' ),
-				'email'         => __( 'Donor Email', 'charitable' ),
-				'address'       => __( 'Donor Address', 'charitable' ),
-				'phone'         => __( 'Donor Phone Number', 'charitable' ),
-				'amount'        => __( 'Donation Amount', 'charitable' ),
-				'date'          => __( 'Date of Donation', 'charitable' ),
-				'time'          => __( 'Time of Donation', 'charitable' ),
-				'status'        => __( 'Donation Status', 'charitable' ),
+				'donation_id'      => __( 'Donation ID', 'charitable' ),
+				'campaign_id'      => __( 'Campaign ID', 'charitable' ),
+				'campaign_name'    => __( 'Campaign Title', 'charitable' ),
+				'first_name'       => __( 'Donor First Name', 'charitable' ),
+				'last_name'        => __( 'Donor Last Name', 'charitable' ),
+				'email'            => __( 'Donor Email', 'charitable' ),
+				'address'          => __( 'Donor Address', 'charitable' ),
+				'phone'            => __( 'Donor Phone Number', 'charitable' ),
+				'amount'           => __( 'Donation Amount', 'charitable' ),
+				'date'             => __( 'Date of Donation', 'charitable' ),
+				'time'             => __( 'Time of Donation', 'charitable' ),
+				'status'           => __( 'Donation Status', 'charitable' ),
+				'donation_gateway' => __( 'Donation Gateway', 'charitable' ),
 			);
 
 			return apply_filters( 'charitable_export_donations_columns', $columns, $this->args );

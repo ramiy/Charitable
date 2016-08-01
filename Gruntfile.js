@@ -158,15 +158,15 @@ module.exports = function(grunt) {
 
         // minify CSS
         'cssmin' : {
-          'target' : {
-            'files' : [{
-              'expand' : true,
-              'cwd' : 'assets/css',
-              'dest' : 'assets/css',
-              'src' : ['*.css', '!*.min.css'],
-              'ext' : '.min.css'
-            }]
-          }
+            'target' : {
+                'files' : [{
+                    'expand' : true,
+                    'cwd' : 'assets/css',
+                    'dest' : 'assets/css',
+                    'src' : ['*.css', '!*.min.css'],
+                    'ext' : '.min.css'
+                }]
+            }
         },
 
         // Clean up build directory

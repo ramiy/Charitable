@@ -437,10 +437,13 @@ if ( ! class_exists( 'Charitable_Form' ) ) :
 			if ( count( $missing ) ) {
 
 				$missing_fields = implode( '</li><li>', $missing );
-				charitable_get_notices()->add_error( sprintf( '<p>%s</p><ul class="error-list"><li>%s</li></ul>',
-					__( 'There were problems with your form submission. The following required fields were not filled out:', 'charitable' ),
-					$missing_fields
-				) );
+
+				charitable_get_notices()->add_error(
+					sprintf( '<p>%s</p><ul class="error-list"><li>%s</li></ul>',
+						__( 'There were problems with your form submission. The following required fields were not filled out:', 'charitable' ),
+						$missing_fields
+					)
+				);
 
 				$ret = false;
 			}

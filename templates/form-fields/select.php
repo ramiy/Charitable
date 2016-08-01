@@ -21,9 +21,9 @@ $value			= isset( $field[ 'value' ] ) 		? $field[ 'value' ] 		: '';
 if ( count( $options ) ) : 
 
 ?>
-<div id="charitable_field_<?php echo $field['key'] ?>" class="<?php echo $classes ?>">
+<div id="charitable_field_<?php echo $field['key'] ?>" class="<?php echo esc_attr( $classes ) ?>">
 	<?php if ( isset( $field['label'] ) ) : ?>
-		<label for="charitable_field_<?php echo $field['key'] ?>">
+		<label for="charitable_field_<?php echo esc_attr( $field['key'] ) ?>">
 			<?php echo $field['label'] ?>
 			<?php if ( $is_required ) : ?>
 				<abbr class="required" title="required">*</abbr>
@@ -34,13 +34,14 @@ if ( count( $options ) ) :
 		<?php 
 
 		foreach ( $options as $val => $label ) :
+			
 			if ( is_array( $label ) ) : ?>
 				
-				<optgroup>
+				<optgroup label="<?php echo esc_attr( $val ) ?>">
 				
 				<?php foreach( $label as $val => $label ) : ?>
 
-					<option value="<?php echo $val ?>" <?php selected( $val, $value ) ?>><?php echo $label ?></option>
+					<option value="<?php echo esc_attr( $val ) ?>" <?php selected( $val, $value ) ?>><?php echo $label ?></option>
 
 				<?php endforeach; ?>
 				
@@ -48,7 +49,7 @@ if ( count( $options ) ) :
 			
 			<?php else : ?>
 
-				<option value="<?php echo $val ?>" <?php selected( $val, $value ) ?>><?php echo $label ?></option> 
+				<option value="<?php echo esc_attr( $val ) ?>" <?php selected( $val, $value ) ?>><?php echo $label ?></option> 
 				
 			<?php 
 

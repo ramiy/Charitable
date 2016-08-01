@@ -132,17 +132,16 @@ if ( ! class_exists( 'Charitable_Registration_Form' ) ) :
 			}
 
 			$fields = $form->get_fields();
-
-			$valid = $form->check_required_fields( $fields );
+			$valid  = $form->check_required_fields( $fields );
 
 			if ( ! $valid ) {
 				return;
 			}
 
 			$submitted = apply_filters( 'charitable_registration_values', $_POST, $fields, $form );
-
-			$user = new Charitable_User();
-			$user_id = $user->update_profile( $submitted, array_keys( $fields ) );
+			
+			$user      = new Charitable_User();
+			$user_id   = $user->update_profile( $submitted, array_keys( $fields ) );
 
 			/**
 			 * If the user was successfully created, redirect to the login redirect URL.
