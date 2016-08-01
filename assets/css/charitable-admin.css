@@ -835,7 +835,7 @@ select.charitable-settings-field {
   text-transform: uppercase;
   font-weight: bold; }
   .edit-php.post-type-charitable .wp-list-table .column-post_status mark.charitable-pending {
-    background-color: #ffa500; }
+    background-color: #777; }
   .edit-php.post-type-charitable .wp-list-table .column-post_status mark.charitable-completed {
     background-color: #008000; }
   .edit-php.post-type-charitable .wp-list-table .column-post_status mark.charitable-failed {
@@ -867,7 +867,7 @@ select.charitable-settings-field {
       -webkit-font-smoothing: antialiased !important;
       -moz-osx-font-smoothing: grayscale; }
   .charitable-donations-modal h3 {
-    margin: 0.5em 0;
+    margin: 0 0 0.5em;
     font-size: 23px;
     line-height: 29px;
     font-weight: 400;
