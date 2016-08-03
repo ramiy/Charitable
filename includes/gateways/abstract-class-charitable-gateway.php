@@ -175,9 +175,6 @@ if ( ! class_exists( 'Charitable_Gateway' ) ) :
 					'type'      => 'text',
 					'required'  => true,
 					'priority'  => 4,
-					'attrs'     => array(
-						'pattern'   => '[0-9]{13,16}',
-					),
 					'data_type' => 'gateway',
 				),
 				'cc_cvc' => array(
