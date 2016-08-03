@@ -72,7 +72,7 @@ CHARITABLE = window.CHARITABLE || {};
 
         /**
          * Change event handler for payment gateway selector.
-         * 
+         *
          * @access  private
          */
         var on_change_payment_gateway = function() {
@@ -81,6 +81,75 @@ CHARITABLE = window.CHARITABLE || {};
 
             self.show_active_payment_methods( $(this).val() );
         
+        };
+
+        /**
+         * Closure variable for on_input_card_number event handler.
+         *
+         * @access  private
+         */
+        var card_number_prev_val = '';
+
+        /**
+         * Input event handler for credit card number. Prevents invalid characters,
+         * invalid length, and automatically inserts spaces for readability.
+         *
+         * @access  private
+         */
+        var on_input_card_number = function(e) {
+            var current_val = e.target.value;
+            var is_amex = /^3(4|7)/.test( current_val );
+            var max_length = is_amex ? 17 : 19;
+
+            // Record cursor position so we can return it to the proper position after modifying input
+            var cursor_position = this.selectionStart;
+
+            // Copy current_val to current_val_formatted, adding and removing spaces where appropriate
+            var current_val_formatted = '';
+            current_val.split('').forEach(function(char){
+                var idx = current_val_formatted.length;
+
+                // Handle American Express cards
+                if( is_amex ) {
+                    if ( ( idx === 4 || idx === 11 ) && char !== ' ' ) {
+                        current_val_formatted += ' ';
+                        if ( cursor_position === idx + 1 ) {
+                            cursor_position++;
+                        }
+                    }
+                    else if( idx !== 4 && idx !== 11 && char === ' ' ) {
+                        return;
+                    }
+                }
+
+                // Handle all other cards
+                else {
+                    if( ( idx + 1 ) % 5 === 0 && char !== ' ' ) {
+                        current_val_formatted += ' ';
+                        if ( cursor_position === idx + 1 ) {
+                            cursor_position++;
+                        }
+                    }
+                    else if( ( idx + 1 ) % 5 !== 0 && char === ' ' ) {
+                        return;
+                    }
+                }
+
+                current_val_formatted += char;
+            });
+
+            // If attempted input contains invalid characters, or is invalid length, revert to previous value
+            if( /[^\d^\s]/.test(current_val)  ||  current_val.length > max_length ) {
+              e.target.value = card_number_prev_val;
+              this.setSelectionRange( cursor_position - 1, cursor_position - 1 );
+            }
+
+            // Otherwise, update the input field and card_number_prev_val variable with the correctly formatted input
+            else {
+              card_number_prev_val = e.target.value = current_val_formatted;
+              this.setSelectionRange( cursor_position, cursor_position );
+            }
+
         };
 
         /**
@@ -210,6 +279,9 @@ CHARITABLE = window.CHARITABLE || {};
 
             // Init currency formatting        
             $body.on( 'blur', '.custom-donation-input', on_change_custom_donation_amount );
+
+            // Init card number formatting
+            $body.on( 'input', 'input[name="cc_number"]', on_input_card_number );
 
             // Handle donation form submission            
             if ( 1 === self.form.data( 'use-ajax' ) ) {
