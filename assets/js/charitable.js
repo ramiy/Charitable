@@ -529,6 +529,43 @@ CHARITABLE = window.CHARITABLE || {};
     };
 
     /**
+     * Validate the card number using the Luhn algorithm.
+     *
+     * @return  boolean
+     */
+    Donation_Form.prototype.is_valid_card_number = function() {
+
+        /**
+         * Luhn algorithm in JavaScript: validate credit card number supplied as string of numbers
+         * @author ShirtlessKirk. Copyright (c) 2012.
+         * @license WTFPL (http://www.wtfpl.net/txt/copying)
+         */
+        // Closure compiled version (updated Feb 11, 2015):
+        var luhnChk=function(a){return function(c){for(var l=c.length,b=1,s=0,v;l;)v=parseInt(c.charAt(--l),10),s+=(b^=1)?a[v]:v;return s&&0===s%10}}([0,2,4,6,8,1,3,5,7,9]);
+
+        var cc_number = this.get_cc_number().replace(/ /g,''); // Remove any spaces
+
+        return luhnChk( cc_number );
+
+    };
+
+    /**
+     * Validate the card number. If not valid, set an error.
+     *
+     * @return  boolean
+     */
+    Donation_Form.prototype.validate_card_number = function() {
+        
+        if ( false === this.is_valid_card_number() ) {
+            this.add_error( CHARITABLE_VARS.error_invalid_cc_number );
+            return false;
+        }
+    
+        return true;
+
+    };
+
+    /**
      * Verify that all required fields are filled out.
      *
      * @return  boolean
@@ -565,6 +602,8 @@ CHARITABLE = window.CHARITABLE || {};
         this.clear_errors();
 
         this.validate_amount();
+
+        this.validate_card_number();
 
         this.validate_required_fields();
 
