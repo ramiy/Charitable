@@ -24,6 +24,9 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
  * @since   1.0.0
  */
 function charitable_get_user( $user_id, $force = false ) {
+	if ( is_a( $user_id, 'WP_User' ) ) {
+		$user_id = $user_id->ID;
+	}
 	$user = wp_cache_get( $user_id, 'charitable_user', $force );
 
 	if ( ! $user ) {
