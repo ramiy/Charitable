@@ -601,8 +601,15 @@ if ( ! class_exists( 'Charitable_Donation_Form' ) ) :
 								}
 
 								$field_type = $field['type'];
-								$default = 'checkbox' == $field_type ? false : '';
-								$values['gateways'][ $gateway_id ][ $key ] = isset( $submitted[ $key ] ) ? $submitted[ $key ] : $default;
+								$default    = 'checkbox' == $field_type ? false : '';
+								$value      = isset( $submitted[ $key ] ) ? $submitted[ $key ] : $default;
+
+								/* Strip extra spaces from the credit card number. */
+								if ( 'cc_number' == $key ) {
+									$value  = trim( str_replace( ' ', '', $value ) );
+								}
+
+								$values['gateways'][ $gateway_id ][ $key ] = $value;
 							}
 						}
 					} elseif ( isset( $field['type'] ) ) {

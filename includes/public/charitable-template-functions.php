@@ -721,7 +721,6 @@ if ( ! function_exists( 'charitable_template_donation_form_content' ) ) :
 
 	}
 
-
 endif;
 
 if ( ! function_exists( 'charitable_template_donation_form_login' ) ) :

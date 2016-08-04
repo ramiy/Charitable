@@ -15,11 +15,11 @@ module.exports = function(grunt) {
         // watch for changes and run sass
         'watch': {                        
             'php': {
-              'files': [
-                'includes/**/*.php',
-                'templates/**/*.php'
-              ],
-              'tasks': ['copy']
+                'files': [
+                    'includes/**/*.php',
+                    'templates/**/*.php'
+                ],
+                'tasks': ['copy']
             },
             'sass': {
                 'files': [ 

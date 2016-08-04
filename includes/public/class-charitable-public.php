@@ -53,7 +53,9 @@ if ( ! class_exists( 'Charitable_Public' ) ) :
 		 */
 		private function __construct() {
 			add_action( 'after_setup_theme', array( $this, 'load_template_files' ) );
-			add_action( 'wp_enqueue_scripts', array( $this, 'wp_enqueue_scripts' ) );
+			add_action( 'wp_enqueue_scripts', array( $this, 'setup_scripts' ) );
+			add_action( 'charitable_donation_form_before', array( $this, 'maybe_enqueue_donation_form_scripts' ) );
+			add_action( 'charitable_campaign_loop_before', array( $this, 'maybe_enqueue_donation_form_scripts' ) );
 			add_filter( 'post_class', array( $this, 'campaign_post_class' ) );
 			add_filter( 'comments_open', array( $this, 'disable_comments_on_application_pages' ), 10, 2 );
 
@@ -90,7 +92,7 @@ if ( ! class_exists( 'Charitable_Public' ) ) :
 		 * @access 	public
 		 * @since 	1.0.0
 		 */
-		public function wp_enqueue_scripts() {
+		public function setup_scripts() {
 
 			if ( ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ) {
 				$suffix  = '';
@@ -100,18 +102,7 @@ if ( ! class_exists( 'Charitable_Public' ) ) :
 				$version = charitable()->get_version();
 			}
 
-			$assets_dir = charitable()->get_path( 'assets', false );
-
-			/* Accounting.js */
-			wp_register_script(
-				'accounting',
-				$assets_dir . 'js/libraries/accounting'. $suffix . '.js',
-				array( 'jquery-core' ),
-				$version,
-				true
-			);
-
-			wp_enqueue_script( 'accounting' );
+			$assets_dir = charitable()->get_path( 'assets', false );			
 
 			/* Main Charitable script. */
 			$vars = apply_filters( 'charitable_javascript_vars', array(
@@ -128,10 +119,19 @@ if ( ! class_exists( 'Charitable_Public' ) ) :
 				'error_invalid_cc_expiry' => __( 'The credit card expiry date is not valid.', 'charitable' ),
 			) );
 
+			/* Accounting.js */
+			wp_register_script(
+				'accounting',
+				$assets_dir . 'js/libraries/accounting'. $suffix . '.js',
+				array( 'jquery-core' ),
+				$version,
+				true
+			);
+
 			wp_register_script(
 				'charitable-script',
 				$assets_dir . 'js/charitable'. $suffix . '.js',
-				array( 'jquery-core' ),
+				array( 'accounting', 'jquery-core' ),
 				$version,
 				true
 			);
@@ -140,9 +140,16 @@ if ( ! class_exists( 'Charitable_Public' ) ) :
 				'charitable-script',
 				'CHARITABLE_VARS',
 				$vars
-			);
+			);			
 
-			wp_enqueue_script( 'charitable-script' );
+			/* Credit card validation */
+			wp_register_script(
+				'charitable-credit-card',
+				$assets_dir . 'js/charitable-credit-card'. $suffix . '.js',
+				array( 'charitable-script' ),
+				$version,
+				true
+			);			
 
 			/* Main styles */
 			wp_register_style(
@@ -202,6 +209,34 @@ if ( ! class_exists( 'Charitable_Public' ) ) :
 				array(),
 				$version
 			);
+		}
+
+		/**
+		 * Conditionally load the donation form scripts if we're viewing the donation form.
+		 *
+		 * @return  boolean True if scripts were loaded. False otherwise.
+		 * @access  public
+		 * @since   1.4.0
+		 */
+		public function maybe_enqueue_donation_form_scripts() {
+		
+			$action = current_action();
+			$load   = 'charitable_donation_form_before' == $action;
+
+			if ( ! $load ) {
+				$load = 'charitable_campaign_loop_before' == $action && 'modal' == charitable_get_option( 'donation_form_display', 'separate_page' );
+			}
+
+			if ( $load ) {
+				wp_enqueue_script( 'charitable-script' );
+
+				if ( Charitable_Gateways::get_instance()->any_gateway_supports( 'credit-card' ) ) {
+					wp_enqueue_script( 'charitable-credit-card' );
+				}
+			}
+
+			return $load;
+
 		}
 
 		/**
