@@ -132,8 +132,11 @@ if ( ! function_exists( 'charitable_template_campaign_content' ) ) :
 			return $content;
 		}
 
+		/**
+		 * If this is the donation form, and it's showing on a separate page, return the content. 
+		 */
 		if ( charitable_is_page( 'campaign_donation_page' )
-			&& 'same_page' != charitable_get_option( 'donation_form_display', 'separate_page' ) ) {
+			&& 'separate_page' == charitable_get_option( 'donation_form_display', 'separate_page' ) ) {
 			return $content;
 		}
 
@@ -704,21 +707,19 @@ if ( ! function_exists( 'charitable_template_donation_form_content' ) ) :
 	 */
 	function charitable_template_donation_form_content( $content ) {
 
-		if ( charitable_is_page( 'campaign_donation_page' ) ) {
-
-			if ( 'same_page' == charitable_get_option( 'donation_form_display', 'separate_page' ) ) {
-				return $content;
-			}
-
-			ob_start();
-
-			charitable_template( 'content-donation-form.php' );
-
-			$content = ob_get_clean();
+		if ( ! charitable_is_page( 'campaign_donation_page' ) ) {
+			return $content;
 		}
 
-		return $content;
+		if ( 'separate_page' != charitable_get_option( 'donation_form_display', 'separate_page' ) ) {
+			return $content;
+		}
 
+		ob_start();
+
+		charitable_template( 'content-donation-form.php' );
+
+		return ob_get_clean();
 	}
 
 endif;
@@ -733,6 +734,7 @@ if ( ! function_exists( 'charitable_template_donation_form_login' ) ) :
 	 * @since   1.0.0
 	 */
 	function charitable_template_donation_form_login( Charitable_Donation_Form_Interface $form ) {
+
 		$user = $form->get_user();
 
 		if ( $user ) {

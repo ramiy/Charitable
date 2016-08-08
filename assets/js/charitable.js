@@ -52,7 +52,7 @@ CHARITABLE = window.CHARITABLE || {};
          *
          * @return  void
          */
-        var on_select_donation_amount = function() {
+        var on_select_donation_amount = function() {            
 
             var $li = $( this ).closest( 'li' );
 

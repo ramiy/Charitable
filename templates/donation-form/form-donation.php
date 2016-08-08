@@ -14,13 +14,14 @@ $form        = $view_args['form'];
 $user_fields = $form->get_user_fields();
 $user        = wp_get_current_user();
 $use_ajax    = 'make_donation' == $form->get_form_action() && (int) Charitable_Gateways::get_instance()->gateways_support_ajax();
+$form_id     = isset( $view_args['form_id'] ) ? $view_args['form_id'] : 'charitable-donation-form';
 
 if ( ! $form ) {
 	return;
 }
 
 ?>
-<form method="post" id="charitable-donation-form" class="charitable-form" data-use-ajax="<?php echo $use_ajax ?>">
+<form method="post" id="<?php echo esc_attr( $form_id ) ?>" class="charitable-donation-form charitable-form" data-use-ajax="<?php echo esc_attr( $use_ajax ) ?>">
 	<?php
 	/**
 	 * @hook    charitable_form_before_fields

@@ -54,7 +54,7 @@ if ( ! class_exists( 'Charitable_Public' ) ) :
 		private function __construct() {
 			add_action( 'after_setup_theme', array( $this, 'load_template_files' ) );
 			add_action( 'wp_enqueue_scripts', array( $this, 'setup_scripts' ) );
-			add_action( 'charitable_donation_form_before', array( $this, 'maybe_enqueue_donation_form_scripts' ) );
+			add_action( 'wp_enqueue_scripts', array( $this, 'maybe_enqueue_donation_form_scripts' ), 11 );
 			add_action( 'charitable_campaign_loop_before', array( $this, 'maybe_enqueue_donation_form_scripts' ) );
 			add_filter( 'post_class', array( $this, 'campaign_post_class' ) );
 			add_filter( 'comments_open', array( $this, 'disable_comments_on_application_pages' ), 10, 2 );
@@ -151,6 +151,8 @@ if ( ! class_exists( 'Charitable_Public' ) ) :
 				true
 			);			
 
+			/* Enqueue credit card & 
+
 			/* Main styles */
 			wp_register_style(
 				'charitable-styles',
@@ -220,11 +222,10 @@ if ( ! class_exists( 'Charitable_Public' ) ) :
 		 */
 		public function maybe_enqueue_donation_form_scripts() {
 		
-			$action = current_action();
-			$load   = 'charitable_donation_form_before' == $action;
+			$load = charitable_is_page( 'campaign_donation_page' );
 
 			if ( ! $load ) {
-				$load = 'charitable_campaign_loop_before' == $action && 'modal' == charitable_get_option( 'donation_form_display', 'separate_page' );
+				$load = 'charitable_campaign_loop_before' == current_action() && 'modal' == charitable_get_option( 'donation_form_display', 'separate_page' );
 			}
 
 			if ( $load ) {
@@ -236,7 +237,6 @@ if ( ! class_exists( 'Charitable_Public' ) ) :
 			}
 
 			return $load;
-
 		}
 
 		/**

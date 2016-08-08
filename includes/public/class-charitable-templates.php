@@ -37,6 +37,7 @@ if ( ! class_exists( 'Charitable_Templates' ) ) :
 		 * @since   1.2.0
 		 */
 		public static function get_instance() {
+
 			if ( is_null( self::$instance ) ) {
 				self::$instance = new Charitable_Templates();
 			}
@@ -58,7 +59,6 @@ if ( ! class_exists( 'Charitable_Templates' ) ) :
 
 			/* If you want to unhook any of the callbacks attached above, use this hook. */
 			do_action( 'charitable_templates_start', $this );
-
 		}
 
 		/**
@@ -78,7 +78,7 @@ if ( ! class_exists( 'Charitable_Templates' ) ) :
 				return $this->get_donation_processing_template( $template );
 			}
 
-			if ( charitable_is_page( 'campaign_donation_page' ) ) {
+			if ( charitable_is_page( 'campaign_donation_page', array( 'strict' => true ) ) ) {
 				return $this->get_donate_template( $template );
 			}
 
@@ -99,7 +99,6 @@ if ( ! class_exists( 'Charitable_Templates' ) ) :
 			}
 
 			return $template;
-
 		}
 
 		/**
@@ -159,7 +158,7 @@ if ( ! class_exists( 'Charitable_Templates' ) ) :
 		 * @since   1.0.0
 		 */
 		protected function get_donate_template( $template ) {
-
+			
 			/* If a donation ID is included, make sure it belongs to the current user. */
 			$donation_id = get_query_var( 'donation_id', false );
 

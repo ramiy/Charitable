@@ -262,26 +262,39 @@ add_filter( 'charitable_permalink_donation_cancel_page', 'charitable_get_donatio
  * In general, you should use charitable_is_page() instead since it will
  * take into account any filtering by plugins/themes.
  *
- * @global 	WP_Query 	$wp_query
+ * By default, this will return true when viewing a campaign with the `donate` 
+ * query var set, or when the donation form is shown on the campaign page or 
+ * in a modal. 
  *
+ * Pass `'strict' => true` in `$args` to only return true when the `donate`
+ * query var is set.
+ *
+ * @global 	WP_Query $wp_query
+ * @param 	boolean  $ret
+ * @param 	array    $args
  * @return 	boolean
  * @since 	1.0.0
  */
-function charitable_is_campaign_donation_page() {
+function charitable_is_campaign_donation_page( $ret, $args = array() ) {
 	global $wp_query;
 
 	if ( ! $wp_query->is_main_query() || ! $wp_query->is_singular( Charitable::CAMPAIGN_POST_TYPE ) ) {
 		return false;
 	}
 
-	if ( 'same_page' == charitable_get_option( 'donation_form_display', 'separate_page' ) ) {
+	if ( isset( $wp_query->query_vars['donate'] ) ) {
 		return true;
+	}	
+
+	/* If 'strict' is set to `true`, this will only return true if this has the /donate/ endpoint. */
+	if ( isset( $args['strict'] ) && $args['strict'] ) {
+		return false;
 	}
 
-	return isset( $wp_query->query_vars['donate'] );
+	return 'separate_page' != charitable_get_option( 'donation_form_display', 'separate_page' );
 }
 
-add_filter( 'charitable_is_page_campaign_donation_page', 'charitable_is_campaign_donation_page', 2 );
+add_filter( 'charitable_is_page_campaign_donation_page', 'charitable_is_campaign_donation_page', 2, 2 );
 
 /**
  * Checks whether the current request is for the campaign widget page.
