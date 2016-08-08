@@ -79,7 +79,7 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 
 			// Customization filters
 			add_filter( 'disable_months_dropdown', array( $this, 'disable_months_dropdown' ), 10, 2 );
-			add_action( 'restrict_manage_posts', array( $this, 'restrict_manage_posts' ) );
+			add_action( 'restrict_manage_posts', array( $this, 'restrict_manage_posts' ), 99 );
 			add_action( 'manage_posts_extra_tablenav', array( $this, 'extra_tablenav' ) );
 
 			// Modal Forms: Export and Filter
@@ -379,6 +379,8 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 		public function set_status_views( $views ) {
 
 			$counts = $this->get_status_counts();
+			
+			$current = isset( $_GET["post_status"] ) ? $_GET["post_status"] : "";
 
 			foreach ( charitable_get_valid_donation_statuses() as $key => $label ) {
 
@@ -386,7 +388,7 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 					add_query_arg( array( 'post_status' => $key, 'paged' => FALSE ) ),
 					$current === $key ? ' class="current"' : '', 
 					$label,
-					$counts[ $key ]
+					isset( $counts[ $key ] ) ? $counts[ $key ] : '0'
 				);
 
 			}
@@ -748,7 +750,7 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 			}
 
 			/* Filter by campaign. */
-            if ( isset( $_GET[ 'campaign_id' ] ) & 'all' != $_GET['campaign_id'] ) {
+            if ( isset( $_GET[ 'campaign_id' ] ) && 'all' != $_GET['campaign_id'] ) {
                
                 $donations = charitable_get_table( 'campaign_donations' )->get_donation_ids_for_campaign( $_GET[ 'campaign_id' ] );
 
