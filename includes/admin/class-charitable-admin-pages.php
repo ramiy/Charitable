@@ -131,8 +131,7 @@ final class Charitable_Admin_Pages {
             array( 
                 'page_title'    => $donation_post_type->labels->menu_name,
                 'menu_title'    => $donation_post_type->labels->menu_name,
-                'menu_slug'     => 'charitable-donations-table',
-                'function'      => array( $this, 'render_donations_page' )
+                'menu_slug'     => 'edit.php?post_type=donation',
             ), 
             array( 
                 'page_title'    => __( 'Campaign Categories', 'charitable' ),
@@ -193,8 +192,10 @@ final class Charitable_Admin_Pages {
      * @return  void
      * @access  public
      * @since   1.0.0
+     * @deprecated 1.4.0
      */
     public function render_donations_page() {
+        _deprecated_function( __METHOD__, '1.4.0', 'Donations page now rendered by WordPress default manage_edit-donation_columns' );
         charitable_admin_view( 'donations-page/page' );
     }
 

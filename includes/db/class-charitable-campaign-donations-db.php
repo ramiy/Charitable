@@ -565,9 +565,15 @@ if ( ! class_exists( 'Charitable_Campaign_Donations_DB' ) ) :
 				$parameters = array_merge( $parameters, $campaigns_parameters );
 			}
 
-			if ( isset( $args['status'] ) ) {
+			if ( isset( $args['status'] ) ) { 
 				$sql_where_clauses[] = 'p.post_status = %s';
 				$parameters[] = $args['status'];
+			} else { 
+				// if ALL: select all valid statuses
+				$statuses = array_keys( charitable_get_valid_donation_statuses() );
+				$in = $this->get_in_clause( $statuses, '%s' );
+				$sql_where_clauses[] = "p.post_status IN ( $in )";
+				$parameters = array_merge( $parameters, $statuses ); 
 			}
 
 			if ( isset( $args['start_date'] ) ) {

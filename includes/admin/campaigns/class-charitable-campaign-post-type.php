@@ -52,6 +52,7 @@ final class Charitable_Campaign_Post_Type {
         add_action( 'charitable_campaign_donation_options_metabox', array( $this, 'campaign_donation_options_metabox' ));
         add_filter( 'enter_title_here',                             array( $this, 'campaign_enter_title' ), 10, 2 );
         add_filter( 'get_user_option_meta-box-order_campaign',      '__return_false' );
+        add_filter( 'bulk_post_updated_messages', array( $this, 'bulk_messages' ), 10, 2 );
     }
 
     /**
@@ -319,6 +320,25 @@ final class Charitable_Campaign_Post_Type {
 
         return $placeholder;
     }
+
+    /**
+     * Modify bulk messages
+     */
+    public function bulk_messages( $bulk_messages, $bulk_counts ) {
+
+        $bulk_messages[ Charitable::CAMPAIGN_POST_TYPE ] = array(
+            'updated'   => _n( "%d campaign updated.", "%d campaigns updated.", $bulk_counts['updated'], 'charitable' ),
+            'locked'    => ( 1 == $bulk_counts['locked'] ) ? __( "1 campaign not updated, somebody is editing it." ) :
+                               _n( "%s campaign not updated, somebody is editing it.", "%s campaigns not updated, somebody is editing them.", $bulk_counts['locked'], 'charitable' ),
+            'deleted'   => _n( "%s campaign permanently deleted.", "%s campaigns permanently deleted.", $bulk_counts['deleted'], 'charitable' ),
+            'trashed'   => _n( "%s campaign moved to the Trash.", "%s campaigns moved to the Trash.", $bulk_counts['trashed'], 'charitable' ),
+            'untrashed' => _n( "%s campaign restored from the Trash.", "%s campaigns restored from the Trash.", $bulk_counts['untrashed'], 'charitable' ),
+        );
+
+        return $bulk_messages;
+
+    }
+
 }
 
 endif; // End class_exists check

@@ -181,8 +181,8 @@ if ( ! class_exists( 'Charitable_Post_Types' ) ) :
 			) );
 
 			register_post_status( 'charitable-completed', array(
-				'label'                     => _x( 'Completed', 'Completed Donation Status', 'charitable' ),
-				'label_count'               => _n_noop( 'Completed (%s)',  'Completed (%s)', 'charitable' ),
+				'label'                     => _x( 'Paid', 'Paid Donation Status', 'charitable' ),
+				'label_count'               => _n_noop( 'Paid (%s)',  'Paid (%s)', 'charitable' ),
 				'public'                    => false,
 				'show_in_admin_all_list'    => true,
 				'show_in_admin_status_list' => true,
