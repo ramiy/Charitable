@@ -48,7 +48,6 @@ if ( ! class_exists( 'Charitable_Campaign_Donations_DB' ) ) :
 		/**
 		 * Set up the database table name.
 		 *
-		 * @return  void
 		 * @access  public
 		 * @since   1.0.0
 		 */
@@ -225,22 +224,46 @@ if ( ! class_exists( 'Charitable_Campaign_Donations_DB' ) ) :
 		}
 
 		/**
-		 * Get an object of all campaign donations associated with one or more donations.
-		 *
-		 * @global  wpdb      $wpdb
+		 * Return an object containing all campaign donations associated with a particular
+		 * campaign ID or a particular donation ID.
+		 * 
+		 * @global 	WPDB      $wpdb 
+		 * @param 	string    $field The field we are retrieving donations by. Either 'campaign' or 'donation'.
 		 * @param 	int|int[] $donation_id A single donation ID or an array of IDs.
 		 * @return  Object
 		 * @access  public
-		 * @since   1.0.0
+		 * @since   1.4.0
 		 */
-		public function get_donation_records( $donation_id ) {
+		public function get_campaign_donations_by( $field, $id ) {
 			global $wpdb;
 
-			list( $in, $parameters ) = $this->get_in_clause_params( $donation_id );
+			switch ( $field ) {
+
+				case 'campaign' :
+				case 'campaign_id' : 
+					$column = 'campaign_id';
+					break;
+
+				case 'donation' : 
+				case 'donation_id' : 
+					$column = 'donation_id';
+					break;
+
+				default : 
+					charitable_get_deprecated()->doing_it_wrong(
+						__METHOD__,
+						__( 'First argument expected to be \`campaign`, `campaign_id`, `donation` or `donation_id`.', 'charitable' ),
+						'1.4.0'
+					);
+					return;
+
+			}
+
+			list( $in, $parameters ) = $this->get_in_clause_params( $id );
 
 			$sql = "SELECT * 
                     FROM $this->table_name 
-                    WHERE donation_id IN ( $in );";
+                    WHERE $field IN ( $in );";
 
 			$records = $wpdb->get_results( $wpdb->prepare( $sql, $parameters ), OBJECT_K );
 
@@ -249,6 +272,19 @@ if ( ! class_exists( 'Charitable_Campaign_Donations_DB' ) ) :
 			}
 
 			return $records;
+		}
+
+		/**
+		 * Get an object of all campaign donations associated with one or more donations.
+		 *
+		 * @uses 	Charitable_Campaign_Donations_DB::get_campaign_donations_by()
+		 * @param 	int|int[] $donation_id A single donation ID or an array of IDs.
+		 * @return  Object
+		 * @access  public
+		 * @since   1.0.0
+		 */
+		public function get_donation_records( $donation_id ) {
+			return $this->get_campaign_donations_by( 'donation_id', $donation_id );
 		}
 
 		/**
@@ -318,27 +354,13 @@ if ( ! class_exists( 'Charitable_Campaign_Donations_DB' ) ) :
 		/**
 		 * Get an object of all donations on a campaign.
 		 *
-		 * @global  wpdb $wpdb
+		 * @uses 	Charitable_Campaign_Donations_DB::get_campaign_donations_by()
 		 * @param   int|int[] $campaign_id
 		 * @return  object
 		 * @since   1.0.0
 		 */
 		public function get_donations_on_campaign( $campaign_id ) {
-			global $wpdb;
-
-			list( $in, $parameters ) = $this->get_in_clause_params( $campaign_id );
-
-			$sql = "SELECT * 
-                    FROM $this->table_name 
-                    WHERE campaign_id IN ( $in );";
-
-			$records = $wpdb->get_results( $wpdb->prepare( $sql, $parameters ), OBJECT_K );
-
-			if ( $this->is_comma_decimal() ) {
-				$records = array_map( array( $this, 'sanitize_amounts' ), $records );
-			}
-
-			return $records;
+			return $this->get_campaign_donations_by( 'campaign_id', $campaign_id );			
 		}
 
 		/**
