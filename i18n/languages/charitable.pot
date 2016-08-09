@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Charitable 1.4.0\n"
 "Report-Msgid-Bugs-To: https://www.wpcharitable.com/\n"
-"POT-Creation-Date: 2016-08-08 10:27:03+00:00\n"
+"POT-Creation-Date: 2016-08-09 08:48:35+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -4928,55 +4928,55 @@ msgstr ""
 msgid "All"
 msgstr ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:550
+#: includes/admin/donations/class-charitable-donation-post-type.php:557
 msgid "Donation status changed."
 msgid_plural "%s donation statuses changed."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:565
+#: includes/admin/donations/class-charitable-donation-post-type.php:572
 msgid "%d donation updated."
 msgid_plural "%d donations updated."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:566
+#: includes/admin/donations/class-charitable-donation-post-type.php:573
 msgid "1 donation not updated, somebody is editing it."
 msgstr ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:567
+#: includes/admin/donations/class-charitable-donation-post-type.php:574
 msgid "%s donation not updated, somebody is editing it."
 msgid_plural "%s donations not updated, somebody is editing them."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:568
+#: includes/admin/donations/class-charitable-donation-post-type.php:575
 msgid "%s donation permanently deleted."
 msgid_plural "%s donations permanently deleted."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:569
+#: includes/admin/donations/class-charitable-donation-post-type.php:576
 msgid "%s donation moved to the Trash."
 msgid_plural "%s donations moved to the Trash."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:570
+#: includes/admin/donations/class-charitable-donation-post-type.php:577
 msgid "%s donation restored from the Trash."
 msgid_plural "%s donations restored from the Trash."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:871
+#: includes/admin/donations/class-charitable-donation-post-type.php:878
 msgid "Handled automatically when $donation->update_status() is called."
 msgstr ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:881
+#: includes/admin/donations/class-charitable-donation-post-type.php:888
 msgid "Donation status set to %s."
 msgstr ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:885
+#: includes/admin/donations/class-charitable-donation-post-type.php:892
 #: includes/donations/abstract-charitable-donation.php:564
 msgid "Donation status updated from %s to %s."
 msgstr ""
@@ -5218,35 +5218,35 @@ msgstr ""
 msgid "Upgrade Charitable"
 msgstr ""
 
-#: includes/admin/upgrades/class-charitable-upgrade.php:118
+#: includes/admin/upgrades/class-charitable-upgrade.php:117
 msgid "Charitable needs to update the database."
 msgstr ""
 
-#: includes/admin/upgrades/class-charitable-upgrade.php:123
+#: includes/admin/upgrades/class-charitable-upgrade.php:122
 msgid "Charitable needs to fix incorrect donation dates."
 msgstr ""
 
-#: includes/admin/upgrades/class-charitable-upgrade.php:155
+#: includes/admin/upgrades/class-charitable-upgrade.php:160
 msgid "Charitable was installed."
 msgstr ""
 
-#: includes/admin/upgrades/class-charitable-upgrade.php:196
+#: includes/admin/upgrades/class-charitable-upgrade.php:201
 msgid ""
 "Charitable needs to complete an upgrade that was started earlier. Click <a "
 "href=\"%s\">here</a> to continue the upgrade."
 msgstr ""
 
-#: includes/admin/upgrades/class-charitable-upgrade.php:220
+#: includes/admin/upgrades/class-charitable-upgrade.php:224
 msgid "Click <a href=\"%s\">here</a> to start the upgrade."
 msgstr ""
 
-#: includes/admin/upgrades/class-charitable-upgrade.php:284
-#: includes/admin/upgrades/class-charitable-upgrade.php:319
+#: includes/admin/upgrades/class-charitable-upgrade.php:288
+#: includes/admin/upgrades/class-charitable-upgrade.php:323
 msgid "You do not have permission to do Charitable upgrades"
 msgstr ""
 
-#: includes/admin/upgrades/class-charitable-upgrade.php:284
-#: includes/admin/upgrades/class-charitable-upgrade.php:319
+#: includes/admin/upgrades/class-charitable-upgrade.php:288
+#: includes/admin/upgrades/class-charitable-upgrade.php:323
 #: includes/licensing/class-charitable-plugin-updater.php:292
 msgid "Error"
 msgstr ""
@@ -7267,7 +7267,7 @@ msgctxt "charitable"
 msgid "via %s"
 msgstr ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:433
+#: includes/admin/donations/class-charitable-donation-post-type.php:434
 msgctxt "set donation status to x"
 msgid "Set to %s"
 msgstr ""

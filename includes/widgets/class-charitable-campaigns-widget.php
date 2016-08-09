@@ -46,8 +46,10 @@ if ( ! class_exists( 'Charitable_Campaigns_Widget' ) ) :
 		 * @since 	1.0.0
 		 */
 		public function widget( $args, $instance ) {
-			$view_args = array_merge( $args, $instance );
+
+			$view_args              = array_merge( $args, $instance );
 	        $view_args['campaigns'] = $this->get_widget_campaigns( $instance );
+
 	        charitable_template( 'widgets/campaigns.php', $view_args );
 		}
 
@@ -61,9 +63,9 @@ if ( ! class_exists( 'Charitable_Campaigns_Widget' ) ) :
 		 */
 		public function form( $instance ) {
 			$defaults = array(
-	            'title'         => '',
-	            'number'        => 10,
-	            'order'         => 'recent',
+	            'title'          => '',
+	            'number'         => 10,
+	            'order'          => 'recent',
 	            'show_thumbnail' => false,
 	        );
 
@@ -101,11 +103,12 @@ if ( ! class_exists( 'Charitable_Campaigns_Widget' ) ) :
 		 * @since 	1.0.0
 		 */
 		public function update( $new_instance, $old_instance ) {
-			$instance = array();
-			$instance['title']  = isset( $new_instance['title'] ) ? $new_instance['title'] : $old_instance['title'];
-			$instance['number'] = isset( $new_instance['number'] ) ? $new_instance['number'] : $old_instance['number'];
-			$instance['show_thumbnail']  = isset( $new_instance['show_thumbnail'] ) && $new_instance['show_thumbnail'];
-			$instance['order']  = isset( $new_instance['order'] ) ? $new_instance['order'] : $old_instance['order'];
+
+			$instance                   = array();
+			$instance['title']          = isset( $new_instance['title'] ) ? $new_instance['title'] : $old_instance['title'];
+			$instance['number']         = isset( $new_instance['number'] ) ? $new_instance['number'] : $old_instance['number'];
+			$instance['show_thumbnail'] = isset( $new_instance['show_thumbnail'] ) && $new_instance['show_thumbnail'];
+			$instance['order']          = isset( $new_instance['order'] ) ? $new_instance['order'] : $old_instance['order'];
 			return $instance;
 		}
 
@@ -118,15 +121,15 @@ if ( ! class_exists( 'Charitable_Campaigns_Widget' ) ) :
 		 * @since   1.0.0
 		 */
 		protected function get_widget_campaigns( $instance ) {
-			$number = isset( $instance['number'] ) ? absint( $instance['number'] ) : 5;
 
-			$args = array(
+			$number = isset( $instance['number'] ) ? absint( $instance['number'] ) : 5;
+			$args   = array(
 				'posts_per_page' => $number,
 			);
 
 			if ( isset( $instance['order'] ) && 'recent' == $instance['order'] ) {
 				$args['orderby'] = 'date';
-				$args['order'] = 'DESC';
+				$args['order']   = 'DESC';
 				return Charitable_Campaigns::query( $args );
 			}
 

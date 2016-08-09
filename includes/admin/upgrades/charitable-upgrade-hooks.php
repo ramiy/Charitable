@@ -42,14 +42,14 @@ add_action( 'admin_menu', array( Charitable_Upgrade_Page::get_instance(), 'regis
 add_action( 'admin_head', array( Charitable_Upgrade_Page::get_instance(), 'remove_page_from_menu' ) );
 
 /**
- * Update the upgrade system. 
+ * Update the upgrade system.
  *
  * @see     Charitable_Upgrade::update_upgrade_system()
  */
 add_action( 'charitable_update_upgrade_system', array( Charitable_Upgrade::get_instance(), 'update_upgrade_system' ) );
 
 /**
- * Run the upgrade for 1.3.0. 
+ * Run the upgrade for 1.3.0.
  *
  * @see     Charitable_Upgrade::upgrade_1_3_0_fix_gmt_dates()
  */

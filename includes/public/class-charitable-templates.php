@@ -244,7 +244,7 @@ if ( ! class_exists( 'Charitable_Templates' ) ) :
 
 			new Charitable_Ghost_Page( 'forgot-password-page', array(
 				'title'   => __( 'Forgot Password', 'charitable' ),
-				'content' => '',
+				'content' => '<!-- Silence is golden -->',
 			) );
 
 			$new_template = apply_filters( 'charitable_forgot_password_page_template', array(

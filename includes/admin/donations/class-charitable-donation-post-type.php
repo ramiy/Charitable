@@ -266,18 +266,18 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 
 				case 'campaigns' :
 
-	                $campaigns = array();
+					$campaigns = array();
 
-	                foreach ( $donation->get_campaign_donations() as $cd ) {
+					foreach ( $donation->get_campaign_donations() as $cd ) {
 
-	                    $campaigns[] = sprintf( '<a href="edit.php?post_type=%s&campaign_id=%s">%s</a>',
-	                        Charitable::DONATION_POST_TYPE,
-	                        $cd->campaign_id,
-	                        $cd->campaign_name
-	                    );
-	                }
+						$campaigns[] = sprintf( '<a href="edit.php?post_type=%s&campaign_id=%s">%s</a>',
+							Charitable::DONATION_POST_TYPE,
+							$cd->campaign_id,
+							$cd->campaign_name
+						);
+					}
 
-	                $display = implode( ', ', $campaigns );
+					$display = implode( ', ', $campaigns );
 
 					break;
 
@@ -317,7 +317,7 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 			return wp_parse_args( $sortable_columns, $columns );
 		}
 
-	    /**
+		/**
 		 * Set list table primary column for donations.
 		 *
 		 * Support for WordPress 4.3.
@@ -421,21 +421,21 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 		}
 
 		/**
-	     * Retrieve the bulk actions
-	     *
-	     * @return 	array $actions Array of the bulk actions
-	     * @access 	public
-	     * @since 	1.0.0
-	     */
-	    public function get_bulk_actions() {
-	    	$actions = array();
+		 * Retrieve the bulk actions
+		 *
+		 * @return 	array $actions Array of the bulk actions
+		 * @access 	public
+		 * @since 	1.0.0
+		 */
+		public function get_bulk_actions() {
+			$actions = array();
 
-	        foreach ( charitable_get_valid_donation_statuses() as $status_key => $label ) {
-	            $actions[ 'set-' . $status_key ] = sprintf( _x( 'Set to %s', 'set donation status to x', 'charitable' ), $label );
-	        }
+			foreach ( charitable_get_valid_donation_statuses() as $status_key => $label ) {
+				$actions[ 'set-' . $status_key ] = sprintf( _x( 'Set to %s', 'set donation status to x', 'charitable' ), $label );
+			}
 
-	        return apply_filters( 'charitable_donations_table_bulk_actions', $actions );
-	    }
+			return apply_filters( 'charitable_donations_table_bulk_actions', $actions );
+		}
 
 		/**
 		 * Add extra bulk action options to mark orders as complete or processing.
@@ -571,7 +571,7 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 			$bulk_messages[ Charitable::DONATION_POST_TYPE ] = array(
 				'updated'   => _n( "%d donation updated.", "%d donations updated.", $bulk_counts['updated'], 'charitable' ),
 				'locked'    => ( 1 == $bulk_counts['locked'] ) ? __( "1 donation not updated, somebody is editing it." ) :
-				                   _n( "%s donation not updated, somebody is editing it.", "%s donations not updated, somebody is editing them.", $bulk_counts['locked'], 'charitable' ),
+								   _n( "%s donation not updated, somebody is editing it.", "%s donations not updated, somebody is editing them.", $bulk_counts['locked'], 'charitable' ),
 				'deleted'   => _n( "%s donation permanently deleted.", "%s donations permanently deleted.", $bulk_counts['deleted'], 'charitable' ),
 				'trashed'   => _n( "%s donation moved to the Trash.", "%s donations moved to the Trash.", $bulk_counts['trashed'], 'charitable' ),
 				'untrashed' => _n( "%s donation restored from the Trash.", "%s donations restored from the Trash.", $bulk_counts['untrashed'], 'charitable' ),
@@ -667,8 +667,8 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 		public function load_scripts( $hook ) {
 
 			if ( 'edit.php' != $hook ) {
-		        return;
-		    }
+				return;
+			}
 
 			if ( ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ) {
 				$suffix  = '';
@@ -757,13 +757,13 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 			}
 
 			/* Filter by campaign. */
-            if ( isset( $_GET[ 'campaign_id' ] ) && 'all' != $_GET['campaign_id'] ) {
-               
-                $donations = charitable_get_table( 'campaign_donations' )->get_donation_ids_for_campaign( $_GET[ 'campaign_id' ] );
+			if ( isset( $_GET['campaign_id'] ) && 'all' != $_GET['campaign_id'] ) {
 
-                $vars[ 'post__in' ] = $donations;
+				$donations = charitable_get_table( 'campaign_donations' )->get_donation_ids_for_campaign( $_GET['campaign_id'] );
 
-            }
+				$vars['post__in'] = $donations;
+
+			}
 
 			return $vars;
 		}
@@ -783,14 +783,14 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 				return $clauses;
 			}
 
-			if ( ! isset( $vars['orderby'] ) ) {
+			if ( ! isset( $_GET['orderby'] ) ) {
 				return $clauses;
 			}
 
 			/* Sorting */
 			$order = isset( $_GET['order'] ) && strtoupper( $_GET['order'] ) == 'ASC' ? 'ASC' : 'DESC';
 
-			switch ( $vars['orderby'] ) {
+			switch ( $_GET['orderby'] ) {
 
 				case 'amount' :
 					$clauses['join'] = "JOIN {$wpdb->prefix}charitable_campaign_donations cd ON cd.donation_id = $wpdb->posts.ID ";
