@@ -587,7 +587,7 @@ add_filter( 'charitable_is_page_forgot_password_page', 'charitable_is_forgot_pas
  * take into account any filtering by plugins/themes.
  *
  * @see     charitable_is_page
- * 
+ *
  * @global  WP_Query       $wp_query
  * @param 	boolean|string $ret The value to be filtered and returned.
  * @return  boolean

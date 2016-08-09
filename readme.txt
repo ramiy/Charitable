@@ -24,7 +24,8 @@ PayPal and offline donations are supported out of the box. When you're ready to 
 
 * **[Stripe](https://www.wpcharitable.com/extensions/charitable-stripe?utm_source=readme&utm_medium=description-tab&utm_content=extensions&utm_campaign=plugin-page-referrals)**
 * **[Authorize.Net](https://www.wpcharitable.com/extensions/charitable-authorize-net?utm_source=readme&utm_medium=description-tab&utm_content=extensions&utm_campaign=plugin-page-referrals)**
-* **[PayUMoney](https://www.wpcharitable.com/extensions/charitable-payu-money/?utm_source=readme&utm_medium=description-tab&utm_content=extensions&utm_campaign=plugin-page-referrals)**
+* **[PayUMoney](https://www.wpcharitable.com/extensions/charitable-payu-money/?utm_source=readme&utm_medium=description-tab&utm_content=extensions&utm_campaign=plugin-page-referrals)** -- Indian payment gateway
+* **[PayFast](https://www.wpcharitable.com/extensions/charitable-payfast/?utm_source=readme&utm_medium=description-tab&utm_content=extensions&utm_campaign=plugin-page-referrals)** -- South African payment gateway
 
 Need a payment gateway that wasn't listed? [Let us know](https://www.wpcharitable.com/support?utm_source=readme&utm_medium=description-tab&utm_content=credit-card-donations&utm_campaign=plugin-page-referrals).
 
@@ -62,6 +63,7 @@ Accept donations with Easy Digital Downloads. Compatible with any EDD payment ga
 * **[Stripe](https://www.wpcharitable.com/extensions/charitable-stripe?utm_source=readme&utm_medium=description-tab&utm_content=extensions&utm_campaign=plugin-page-referrals)** - Accept credit card donations on your website.
 * **[Authorize.Net](https://www.wpcharitable.com/extensions/charitable-authorize-net?utm_source=readme&utm_medium=description-tab&utm_content=extensions&utm_campaign=plugin-page-referrals)** - Accept credit card donations with Authorize.Net.
 * **[PayUMoney](https://www.wpcharitable.com/extensions/charitable-payu-money/?utm_source=readme&utm_medium=description-tab&utm_content=extensions&utm_campaign=plugin-page-referrals)** - Take donations with PayUMoney, a payment gateway for Indian non-profits and organizations.
+* **[PayFast](https://www.wpcharitable.com/extensions/charitable-payfast/?utm_source=readme&utm_medium=description-tab&utm_content=extensions&utm_campaign=plugin-page-referrals)** - The most popular payment gateway for South African organizations.
 * **[Anonymous Donations](https://www.wpcharitable.com/extensions/charitable-anonymous-donations?utm_source=readme&utm_medium=description-tab&utm_content=extensions&utm_campaign=plugin-page-referrals)** - Allow people to make donations anonymously.
 * **[User Avatars](https://www.wpcharitable.com/extensions/charitable-user-avatar?utm_source=readme&utm_medium=description-tab&utm_content=extensions&utm_campaign=plugin-page-referrals)** - Let your donors upload their own profile photo to your site, instead of using their Gravatar profile.
 * **[Simple Updates](https://www.wpcharitable.com/extensions/charitable-simple-updates?utm_source=readme&utm_medium=description-tab&utm_content=extensions&utm_campaign=plugin-page-referrals)** - Add updates about your fundraising campaigns.
@@ -117,19 +119,27 @@ You can post in the [support forum](https://wordpress.org/support/plugin/charita
 = 1.4.0 - Unreleased =
 * Added the `[charitable_my_donations]` shortcode. Use this shortcode to allow logged in users to view a history of their donations, including links to the donation receipts. [#14](https://github.com/Charitable/Charitable/issues/14)
 * Scale the campaign grid gracefully when viewing on smaller screens. The `[campaigns]` shortcode now supports a `responsive` paramater, which is enabled by default. You can set it to a specific px/em amount to change the breakpoint, or set it to `0` to disable responsive styling. [#88](https://github.com/Charitable/Charitable/issues/88)
+* Also provided appropriately responsive styling for suggested donation amounts on small screens. [#159](https://github.com/Charitable/Charitable/issues/159)
+* Added client-side validation for the donation form. This checks whether donors have filled out all the required fields, whether they're donating more than $0 (because seriously, a $0 donation won't go far :)) and whether they have used a valid credit card (if you're using our Stripe or Authorize.Net extensions). [#176](https://github.com/Charitable/Charitable/issues/176) and [#63](https://github.com/Charitable/Charitable/issues/63)
 * Include an `order` paramater for the `[campaigns]` shortcode, to reverse the direction in which campaigns are displayed. [#64](https://github.com/Charitable/Charitable/issues/64)
+* Allow campaigns in the `[campaigns]` shortcode to be ordered by any of the orderby options for [`WP_Query`](https://codex.wordpress.org/Class_Reference/WP_Query#Order_.26_Orderby_Parameters).
 * Added drag and drop support for the Picture form field, which is used in the User Avatar and Ambassadors extensions. [#111](https://github.com/Charitable/Charitable/issues/111)
+* Improved how the plugin checks for updates to Charitable extensions, to keep the WordPress dashboard running smoothly. [#133](https://github.com/Charitable/Charitable/issues/133)
 * Added a `charitable_create_donation()` function for developers who want to create donations programatically. [#109](https://github.com/Charitable/Charitable/issues/109)
 * Added a new `Charitable_Donations_Query` class, which can be used by developers to retrieve donations from the database. [#155](https://github.com/Charitable/Charitable/issues/155)
 * Added a new `Charitable_Deprecated` class, which is used to record any incorrect usage of Charitable functions or methods.
-* Include the donor's phone number and the payment method in the donations export CSV. [#154](https://github.com/Charitable/Charitable/issues/154)
+* Switched to using the built-in edit.php admin page for listing Charitable donations, instead of relying on a custom admin page with a custom posts table. While there, we also simplified the interface and added colour-coding to the donation statuses. [#110](https://github.com/Charitable/Charitable/issues/110)
+* Include the donor's phone number, address and the payment method in the donations export CSV. [#154](https://github.com/Charitable/Charitable/issues/154)
 * When multiple gateways are enabled, the default one is listed first in the donation form. [#139](https://github.com/Charitable/Charitable/issues/139)
 * Automatically cancel a donation when the donor returns from the gateway before completing it. This works with PayPal, PayUMoney and PayFast. [#90](https://github.com/Charitable/Charitable/issues/90) and [#117](https://github.com/Charitable/Charitable/issues/117)
 * Added a `Charitable_Donor::__toString()` method, so that echoing the object simply prints out the donor name.
 * Added `charitable_sanitize_amount()` function to convert any amount of type string into a float.
 * Trim the currency symbol from monetary amounts to prevent the symbol being treated as part of the amount. [#145](https://github.com/Charitable/Charitable/pull/145)
 * Trim the currency symbol from the suggested donation amounts when saving a campaign. [#147](https://github.com/Charitable/Charitable/issues/147)
-* When a donation fails and the user is redirected back to the donation form, they can re-attempt the same donation. Previously, a new donation would have been created, leaving a phantom pending donation behind. [#106](https://github.com/Charitable/Charitable/issues/106)
+* When a donation fails and the user is redirected back to the donation form, they can re-attempt the same donation. Previously, a new donation would have been created, leaving a phantom pending donation behind. [#106]
+(https://github.com/Charitable/Charitable/issues/106)
+* Prevent duplicate donations caused by clicking the donate button repeatedly. [#164]
+(https://github.com/Charitable/Charitable/issues/164)
 
 = 1.3.7 = 
 * Makes `Charitable_Currency::get_currency_symbol()` a publicly accessible method.

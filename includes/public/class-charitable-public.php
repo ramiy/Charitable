@@ -102,7 +102,7 @@ if ( ! class_exists( 'Charitable_Public' ) ) :
 				$version = charitable()->get_version();
 			}
 
-			$assets_dir = charitable()->get_path( 'assets', false );			
+			$assets_dir = charitable()->get_path( 'assets', false );
 
 			/* Main Charitable script. */
 			$vars = apply_filters( 'charitable_javascript_vars', array(
