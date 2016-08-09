@@ -432,10 +432,6 @@ if ( ! class_exists( 'Charitable_Campaign' ) ) :
 
 			switch ( $key ) {
 
-				case 'inactive' :
-					$tag = '';
-					break;
-
 				case 'ended' :
 					$tag = __( 'Ended', 'charitable' );
 					break;
@@ -455,6 +451,9 @@ if ( ! class_exists( 'Charitable_Campaign' ) ) :
 				case 'active' :
 					$tag = $show_active_tag ? __( 'Active', 'charitable' ) : '';
 					break;
+
+				default :
+					$tag = '';
 
 			}
 

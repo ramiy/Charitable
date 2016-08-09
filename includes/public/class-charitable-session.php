@@ -247,7 +247,7 @@ if ( ! class_exists( 'Charitable_Session' ) ) :
 		/**
 		 * Return any notices set in the session.
 		 *
-		 * @return 	mixed Session variable
+		 * @return 	array Session variable
 		 * @access  public
 		 * @since 	1.4.0
 		 */
