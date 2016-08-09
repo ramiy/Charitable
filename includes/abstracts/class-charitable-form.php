@@ -218,7 +218,7 @@ if ( ! class_exists( 'Charitable_Form' ) ) :
 				return false;
 			}
 
-			$input_name = is_null( $namespace ) ? $key : $namespace . '[' . $key . ']';
+			$input_name   = is_null( $namespace ) ? $key : $namespace . '[' . $key . ']';
 			$field['key'] = apply_filters( 'charitable_form_field_key', $input_name, $key, $namespace, $form, $index );
 
 			/* Set default attributes array. */
@@ -413,7 +413,7 @@ if ( ! class_exists( 'Charitable_Form' ) ) :
 
 				/* Verify that a value was provided. */
 				if ( $exists ) {
-					$value = $submitted[ $key ];
+					$value  = $submitted[ $key ];
 					$exists = ! empty( $value ) || ( is_string( $value ) && strlen( $value ) );
 				}
 
@@ -520,11 +520,12 @@ if ( ! class_exists( 'Charitable_Form' ) ) :
 		 * @since   1.0.0
 		 */
 		public function upload_post_attachment( $file_key, $post_id, $post_data = array(), $overrides = array() ) {
+
 			require_once( ABSPATH . 'wp-admin/includes/image.php' );
 			require_once( ABSPATH . 'wp-admin/includes/file.php' );
 			require_once( ABSPATH . 'wp-admin/includes/media.php' );
 
-			$overrides 	= $this->get_file_overrides( $file_key, $overrides );
+			$overrides = $this->get_file_overrides( $file_key, $overrides );
 
 			return media_handle_upload( $file_key, $post_id, $post_data, $overrides );
 		}
@@ -533,17 +534,19 @@ if ( ! class_exists( 'Charitable_Form' ) ) :
 		 * Upload a file.
 		 *
 		 * @param 	string $file_key
-		 * @param 	array $overrides
-		 * @return  array|WP_Error  On success, returns an associative array of file attributes. On failure, returns
-		 *                          $overrides['upload_error_handler'](&$file, $message ) or array( 'error'=>$message ).
+		 * @param 	array  $overrides
+		 * @return  array|WP_Error On success, returns an associative array of file attributes. 
+		 *                         On failure, returns $overrides['upload_error_handler'](&$file, $message ) 
+		 *                         or array( 'error'=>$message ).
 		 * @access  public
 		 * @since   1.0.0
 		 */
 		public function upload_file( $file_key, $overrides = array() ) {
+
 			require_once( ABSPATH . 'wp-admin/includes/file.php' );
 
-			$overrides  = $this->get_file_overrides( $file_key, $overrides );
-			$file       = wp_handle_upload( $_FILES[ $file_key ], $overrides );
+			$overrides = $this->get_file_overrides( $file_key, $overrides );
+			$file      = wp_handle_upload( $_FILES[ $file_key ], $overrides );
 
 			if ( isset( $file['error'] ) ) {
 				return new WP_Error( 'upload_error', $file['error'] );

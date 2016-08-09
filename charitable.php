@@ -93,9 +93,9 @@ if ( ! class_exists( 'Charitable' ) ) :
 		 * @since   1.0.0
 		 */
 		public function __construct() {
-			$this->directory_path   = plugin_dir_path( __FILE__ );
-			$this->directory_url    = plugin_dir_url( __FILE__ );
-			$this->includes_path    = $this->directory_path . 'includes/';
+			$this->directory_path = plugin_dir_path( __FILE__ );
+			$this->directory_url  = plugin_dir_url( __FILE__ );
+			$this->includes_path  = $this->directory_path . 'includes/';
 
 			$this->load_dependencies();
 
@@ -545,7 +545,8 @@ if ( ! class_exists( 'Charitable' ) ) :
 			$version = self::VERSION;
 
 			if ( false !== strpos( $version, '-' ) ) {
-				list( $version, $build ) = explode( '-', $version );
+				$parts   = explode( '-', $version );
+				$version = $parts[0];
 			}
 
 			return $version;

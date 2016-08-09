@@ -141,6 +141,7 @@ You can post in the [support forum](https://wordpress.org/support/plugin/charita
 (https://github.com/Charitable/Charitable/issues/106)
 * Prevent duplicate donations caused by clicking the donate button repeatedly. [#164]
 (https://github.com/Charitable/Charitable/issues/164)
+* Fixed a bug related to empty content in the Layers theme. [#9](https://github.com/Charitable/Charitable/issues/9)
 
 = 1.3.7 = 
 * Makes `Charitable_Currency::get_currency_symbol()` a publicly accessible method.

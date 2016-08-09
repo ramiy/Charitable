@@ -123,7 +123,7 @@ if ( ! function_exists( 'charitable_template_campaign_content' ) ) :
 	 *
 	 * This is used on the_content filter.
 	 *
-	 * @param   string  $content
+	 * @param   string $content
 	 * @return  string
 	 * @since   1.0.0
 	 */
@@ -135,9 +135,15 @@ if ( ! function_exists( 'charitable_template_campaign_content' ) ) :
 		/**
 		 * If this is the donation form, and it's showing on a separate page, return the content. 
 		 */
-		if ( charitable_is_page( 'campaign_donation_page' )
-			&& 'separate_page' == charitable_get_option( 'donation_form_display', 'separate_page' ) ) {
-			return $content;
+		if ( charitable_is_page( 'campaign_donation_page' ) ) {
+
+			if ( 'separate_page' == charitable_get_option( 'donation_form_display', 'separate_page' ) ) {
+				return $content;
+			}
+
+			if ( false !== get_query_var( 'donate', false ) ) {
+				return $content;
+			}
 		}
 
 		/**
@@ -709,9 +715,10 @@ if ( ! function_exists( 'charitable_template_donation_form_content' ) ) :
 
 		if ( ! charitable_is_page( 'campaign_donation_page' ) ) {
 			return $content;
-		}
+		}	
 
-		if ( 'separate_page' != charitable_get_option( 'donation_form_display', 'separate_page' ) ) {
+		if ( 'separate_page' != charitable_get_option( 'donation_form_display', 'separate_page' ) 
+		 	&& false === get_query_var( 'donate', false ) ) {
 			return $content;
 		}
 
