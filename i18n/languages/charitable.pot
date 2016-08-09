@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Charitable 1.4.0\n"
 "Report-Msgid-Bugs-To: https://www.wpcharitable.com/\n"
-"POT-Creation-Date: 2016-08-09 10:03:43+00:00\n"
+"POT-Creation-Date: 2016-08-09 14:30:39+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -24,7 +24,7 @@ msgstr ""
 "X-Poedit-Bookmarks: \n"
 "X-Textdomain-Support: yes\n"
 
-#: charitable.php:692 charitable.php:703
+#: charitable.php:693 charitable.php:704
 msgid "Cheatin&#8217; huh?"
 msgstr ""
 
@@ -7169,7 +7169,7 @@ msgid ""
 "this is your first time, proceed to the donation form."
 msgstr ""
 
-#: templates/donation-form/gateway-fields.php:34
+#: templates/donation-form/gateway-fields.php:35
 msgid "Choose Your Payment Method"
 msgstr ""
 
