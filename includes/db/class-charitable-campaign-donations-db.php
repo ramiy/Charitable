@@ -367,19 +367,7 @@ if ( ! class_exists( 'Charitable_Campaign_Donations_DB' ) ) :
 		public function get_donations_on_campaign( $campaign_id ) {
 			return $this->get_campaign_donations_by( 'campaign_id', $campaign_id );
 		}
-
-		/**
-		 * Get an array of all donation ids for a campaign.
-		 *
-		 * @uses 	Charitable_Campaign_Donations_DB::get_campaign_donation_ids_by()
-		 * @param   int $campaign_id
-		 * @return  object
-		 * @since   1.0.0
-		 */
-		public function get_donation_ids_for_campaign( $campaign_id ) {
-			return $this->get_campaign_donation_ids_by( 'campaign_id', $campaign_id );
-		}
-
+		
 		/**
 		 * Get total amount donated to a campaign.
 		 *
@@ -437,7 +425,7 @@ if ( ! class_exists( 'Charitable_Campaign_Donations_DB' ) ) :
 		 * @since   1.0.0
 		 */
 		public function get_campaign_donors( $campaign_id ) {
-			return $this->get_campaign_donation_ids_by( 'donor_id', $campaign_id, 'campaign_id' );
+			return $this->get_distinct_ids( 'donor_id', $campaign_id, 'campaign_id' );
 		}
 
 		 /**
