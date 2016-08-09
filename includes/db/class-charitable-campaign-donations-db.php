@@ -237,27 +237,7 @@ if ( ! class_exists( 'Charitable_Campaign_Donations_DB' ) ) :
 		public function get_campaign_donations_by( $field, $id ) {
 			global $wpdb;
 
-			switch ( $field ) {
-
-				case 'campaign' :
-				case 'campaign_id' : 
-					$column = 'campaign_id';
-					break;
-
-				case 'donation' : 
-				case 'donation_id' : 
-					$column = 'donation_id';
-					break;
-
-				default : 
-					charitable_get_deprecated()->doing_it_wrong(
-						__METHOD__,
-						__( 'First argument expected to be \`campaign`, `campaign_id`, `donation` or `donation_id`.', 'charitable' ),
-						'1.4.0'
-					);
-					return;
-
-			}
+			$column = $this->get_sanitized_column( $field );
 
 			list( $in, $parameters ) = $this->get_in_clause_params( $id );
 
@@ -272,6 +252,31 @@ if ( ! class_exists( 'Charitable_Campaign_Donations_DB' ) ) :
 			}
 
 			return $records;
+		}
+
+		/**
+		 * Return a list of all distinct IDs based on a particular field.
+		 * 
+		 * @global 	WPDB      $wpdb 
+		 * @param 	string    $field The distinct field we are retrieving.
+		 * @param 	int|int[] $donation_id A single donation ID or an array of IDs.
+		 * @return  Object
+		 * @access  public
+		 * @since   1.4.0
+		 */
+		public function get_distinct_ids( $field, $id, $where_field = 'campaign_id' ) {
+			global $wpdb;
+
+			$select_column = $this->get_sanitized_column( $field );
+			$where_column  = $this->get_sanitized_column( $where_field ); 
+
+			list( $in, $parameters ) = $this->get_in_clause_params( $id );
+
+			$sql = "SELECT DISTINCT $select_column 
+                    FROM $this->table_name 
+                    WHERE $where_column IN ( $in );";
+
+			return $wpdb->get_col( $wpdb->prepare( $sql, $parameters ), OBJECT_K );
 		}
 
 		/**
@@ -301,11 +306,11 @@ if ( ! class_exists( 'Charitable_Campaign_Donations_DB' ) ) :
 			global $wpdb;
 
 			$where_clause = 'donation_id = %d';
-			$parameters = array( intval( $donation_id ) );
+			$parameters   = array( intval( $donation_id ) );
 
 			if ( ! empty( $campaign_id ) ) {
 				$where_clause .= ' AND campaign_id = %d';
-				$parameters[] = intval( $campaign_id );
+				$parameters[]  = intval( $campaign_id );
 			}
 
 			$sql = "SELECT SUM(amount) 
@@ -360,27 +365,19 @@ if ( ! class_exists( 'Charitable_Campaign_Donations_DB' ) ) :
 		 * @since   1.0.0
 		 */
 		public function get_donations_on_campaign( $campaign_id ) {
-			return $this->get_campaign_donations_by( 'campaign_id', $campaign_id );			
+			return $this->get_campaign_donations_by( 'campaign_id', $campaign_id );
 		}
 
 		/**
 		 * Get an array of all donation ids for a campaign.
 		 *
-		 * @global  wpdb    $wpdb
-		 * @param   int     $campaign_id
+		 * @uses 	Charitable_Campaign_Donations_DB::get_campaign_donation_ids_by()
+		 * @param   int $campaign_id
 		 * @return  object
 		 * @since   1.0.0
 		 */
 		public function get_donation_ids_for_campaign( $campaign_id ) {
-			global $wpdb;
-
-			list( $in, $parameters ) = $this->get_in_clause_params( $campaign_id );
-
-			$sql = "SELECT DISTINCT donation_id 
-                    FROM $this->table_name 
-                    WHERE campaign_id IN ( $in );";
-
-			return $wpdb->get_col( $wpdb->prepare( $sql, $parameters ) );
+			return $this->get_campaign_donation_ids_by( 'campaign_id', $campaign_id );
 		}
 
 		/**
@@ -420,23 +417,27 @@ if ( ! class_exists( 'Charitable_Campaign_Donations_DB' ) ) :
 		}
 
 		/**
+		 * Get an array of all donation ids for a campaign.
+		 *
+		 * @uses 	Charitable_Campaign_Donations_DB::get_distinct_ids()
+		 * @param   int $campaign_id
+		 * @return  object
+		 * @since   1.0.0
+		 */
+		public function get_donation_ids_for_campaign( $campaign_id ) {
+			return $this->get_distinct_ids( 'donation_id', $campaign_id, 'campaign_id' );
+		}
+
+		/**
 		 * The donor IDs of all who have donated to the given campaign.
 		 *
-		 * @global  wpdb    $wpdb
+		 * @uses 	Charitable_Campaign_Donations_DB::get_distinct_ids()
 		 * @param   int     $campaign_id
 		 * @return  object
 		 * @since   1.0.0
 		 */
 		public function get_campaign_donors( $campaign_id ) {
-			global $wpdb;
-
-			list( $campaigns_in, $campaigns_parameters ) = $this->get_in_clause_params( $campaign_id );
-
-			$sql = "SELECT DISTINCT donor_id
-                    FROM $this->table_name
-                    WHERE campaign_id IN ( $campaigns_in );";
-
-			return $wpdb->get_col( $wpdb->prepare( $sql, $campaigns_parameters ) );
+			return $this->get_campaign_donation_ids_by( 'donor_id', $campaign_id, 'campaign_id' );
 		}
 
 		 /**
@@ -576,36 +577,43 @@ if ( ! class_exists( 'Charitable_Campaign_Donations_DB' ) ) :
 		public function get_donations_report( $args ) {
 			global $wpdb;
 
-			$parameters = array();
-			$sql_order = $this->get_orderby_clause( $args, 'ORDER BY p.post_date ASC' );
-			$sql_where = '';
+			$parameters        = array();
+			$sql_order         = $this->get_orderby_clause( $args, 'ORDER BY p.post_date ASC' );
+			$sql_where         = '';
 			$sql_where_clauses = array();
 
 			if ( isset( $args['campaign_id'] ) ) {
+				
 				list( $campaigns_in, $campaigns_parameters ) = $this->get_in_clause_params( $args['campaign_id'] );
+
 				$sql_where_clauses[] = "cd.campaign_id IN ( $campaigns_in )";
-				$parameters = array_merge( $parameters, $campaigns_parameters );
+				$parameters          = array_merge( $parameters, $campaigns_parameters );
+
 			}
 
 			if ( isset( $args['status'] ) ) { 
+
 				$sql_where_clauses[] = 'p.post_status = %s';
-				$parameters[] = $args['status'];
+				$parameters[]        = $args['status'];
+
 			} else { 
 				// if ALL: select all valid statuses
-				$statuses = array_keys( charitable_get_valid_donation_statuses() );
-				$in = $this->get_in_clause( $statuses, '%s' );
+				$statuses            = array_keys( charitable_get_valid_donation_statuses() );
+				$in                  = $this->get_in_clause( $statuses, '%s' );
 				$sql_where_clauses[] = "p.post_status IN ( $in )";
-				$parameters = array_merge( $parameters, $statuses ); 
+				$parameters          = array_merge( $parameters, $statuses ); 
 			}
 
 			if ( isset( $args['start_date'] ) ) {
+
 				$sql_where_clauses[] = 'p.post_date >= %s';
-				$parameters[] = $args['start_date'];
+				$parameters[]        = $args['start_date'];
+
 			}
 
 			if ( isset( $args['end_date'] ) ) {
 				$sql_where_clauses[] = 'p.post_date <= %s';
-				$parameters[] = $args['end_date'];
+				$parameters[]        = $args['end_date'];
 			}
 
 			if ( ! empty( $sql_where_clauses ) ) {
@@ -688,7 +696,7 @@ if ( ! class_exists( 'Charitable_Campaign_Donations_DB' ) ) :
 			}
 
 			$orderby = isset( $args['orderby'] ) ? $args['orderby'] : 'ID';
-			$order = isset( $args['order'] ) && in_array( $args['order'], array( 'ASC', 'DESC' ) ) ? $args['order'] : 'ASC';
+			$order   = isset( $args['order'] ) && in_array( $args['order'], array( 'ASC', 'DESC' ) ) ? $args['order'] : 'ASC';
 
 			switch ( $orderby ) {
 				case 'date' :
@@ -733,7 +741,7 @@ if ( ! class_exists( 'Charitable_Campaign_Donations_DB' ) ) :
 		/**
 		 * Returns the donation status clause.
 		 *
-		 * @param   boolean $include_all If true, will return a blank string.
+		 * @param   string[] $statuses
 		 * @return  string
 		 * @access  private
 		 * @since   1.0.0
@@ -815,6 +823,46 @@ if ( ! class_exists( 'Charitable_Campaign_Donations_DB' ) ) :
 		private function sanitize_amounts( $campaign_donation ) {
 			$campaign_donation->amount = Charitable_Currency::get_instance()->sanitize_database_amount( $campaign_donation->amount );
 			return $campaign_donation;
+		}
+
+		/**
+		 * Return a sanitized column name.
+		 *
+		 * @param 	string $field
+		 * @return  string
+		 * @access  private
+		 * @since   1.4.0
+		 */
+		private function get_sanitized_column( $field ) {
+
+			switch ( $field ) {
+
+				case 'campaign' :
+				case 'campaign_id' : 
+					$column = 'campaign_id';
+					break;
+
+				case 'donation' : 
+				case 'donation_id' : 
+					$column = 'donation_id';
+					break;
+
+				case 'donor' : 
+				case 'donor_id' : 
+					$column = 'donor_id';
+					break;
+
+				default : 
+					charitable_get_deprecated()->doing_it_wrong(
+						__METHOD__,
+						__( 'Field expected to be `campaign`, `campaign_id`, `donation`, `donation_id`, `donor` or `donor_id`.', 'charitable' ),
+						'1.4.0'
+					);
+
+					$column = false;
+			}
+
+			return $column;
 		}
 
 		/**
