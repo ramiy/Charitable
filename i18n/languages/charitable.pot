@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Charitable 1.4.0\n"
 "Report-Msgid-Bugs-To: https://www.wpcharitable.com/\n"
-"POT-Creation-Date: 2016-08-09 14:30:39+00:00\n"
+"POT-Creation-Date: 2016-08-10 02:54:14+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -5683,25 +5683,25 @@ msgstr ""
 msgid "This campaign failed to reach its funding goal %s ago"
 msgstr ""
 
+#: includes/campaigns/class-charitable-campaign.php:436
 #: includes/campaigns/class-charitable-campaign.php:440
 #: includes/campaigns/class-charitable-campaign.php:444
-#: includes/campaigns/class-charitable-campaign.php:448
 msgid "Ended"
 msgstr ""
 
-#: includes/campaigns/class-charitable-campaign.php:444
+#: includes/campaigns/class-charitable-campaign.php:440
 msgid "Successful"
 msgstr ""
 
-#: includes/campaigns/class-charitable-campaign.php:448
+#: includes/campaigns/class-charitable-campaign.php:444
 msgid "Unsuccessful"
 msgstr ""
 
-#: includes/campaigns/class-charitable-campaign.php:452
+#: includes/campaigns/class-charitable-campaign.php:448
 msgid "Ending Soon"
 msgstr ""
 
-#: includes/campaigns/class-charitable-campaign.php:456
+#: includes/campaigns/class-charitable-campaign.php:452
 msgid "Active"
 msgstr ""
 
@@ -6090,6 +6090,12 @@ msgstr ""
 
 #: includes/currency/class-charitable-currency.php:289
 msgid "South African Rand (%s)"
+msgstr ""
+
+#: includes/db/class-charitable-campaign-donations-db.php:846
+msgid ""
+"Field expected to be `campaign`, `campaign_id`, `donation`, `donation_id`, "
+"`donor` or `donor_id`."
 msgstr ""
 
 #: includes/deprecated/class-charitable-deprecated.php:80
@@ -7287,12 +7293,12 @@ msgctxt "You have activated x and y. Change email settings."
 msgid "You have turned on the %s. <a href=\"%s\">Change settings</a>"
 msgstr ""
 
-#: includes/campaigns/class-charitable-campaign.php:514
+#: includes/campaigns/class-charitable-campaign.php:513
 msgctxt "amount donated of goal"
 msgid "%s donated of %s goal"
 msgstr ""
 
-#: includes/campaigns/class-charitable-campaign.php:519
+#: includes/campaigns/class-charitable-campaign.php:518
 msgctxt "amount donated"
 msgid "%s donated"
 msgstr ""

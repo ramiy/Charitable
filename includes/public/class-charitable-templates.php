@@ -273,7 +273,7 @@ if ( ! class_exists( 'Charitable_Templates' ) ) :
 
 			new Charitable_Ghost_Page( 'reset-password-page', array(
 				'title'   => __( 'Reset Password', 'charitable' ),
-				'content' => '',
+				'content' => '<!-- Silence is golden -->',
 			) );
 
 			$new_template = apply_filters( 'charitable_reset_password_page_template', array(

@@ -9,12 +9,14 @@
             display: none;
         }
 
-        .charitable-donations-filter, .charitable-donations-export {
-            &:before{
+        .charitable-donations-filter, 
+        .charitable-donations-export {
+            &:before {
                 vertical-align: middle;
-                font-size: 16px;
+                margin-top: -2px;
                 width: 16px;
                 height: 16px;
+                font-size: 16px;
             }
         }
 
@@ -165,7 +167,7 @@
     }
 
     h3 {
-        margin: 0.5em 0;
+        margin: 0 0 0.5em;
         font-size: 23px; 
         line-height: 29px;
         font-weight: 400;
@@ -173,8 +175,7 @@
     }
 
     .charitable-donations-modal-form {
-        width: 80%;
-        padding: 22px 10%;
+        padding: 22px;
         font-size: 14px;
         background-color: #fff;   
 

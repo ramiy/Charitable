@@ -11,6 +11,7 @@ CHARITABLE = window.CHARITABLE || {};
     var Donation_Form = function( form ) {
         this.errors = [];
         this.form = form;
+        this.pause_processing = false;
 
         var self = this;
         var $body = $( 'body' );
@@ -119,9 +120,31 @@ CHARITABLE = window.CHARITABLE || {};
 
             }
 
-            var data = $helper.get_data();            
-            var $spinner = $form.find( '.charitable-form-processing' );
-            var $donate_btn = $form.find( 'button[name="donate"]' );
+            /* If processing hasn't been paused, trigger the processing. */
+            if ( false === $helper.pause_processing ) {
+                
+                $body.trigger( 'charitable:form:process', $helper );
+            
+            }
+
+            return false;
+        };
+
+        /**
+         * Process the donation. 
+         *
+         * This is a callback for the 'charitable:form:process' event. It's called
+         * after validation has taken place. 
+         *
+         * @param   object Event
+         * @param   object Donation_Form
+         */
+        var process_donation = function( event, helper ) {
+
+            var data = helper.get_data(); 
+            var form = helper.form;           
+            var $spinner = helper.form.find( '.charitable-form-processing' );
+            var $donate_btn = helper.form.find( 'button[name="donate"]' );
 
             $donate_btn.hide();
             $spinner.show();
@@ -148,9 +171,9 @@ CHARITABLE = window.CHARITABLE || {};
                         $donate_btn.show();
                         $spinner.hide();
 
-                        $helper.print_errors( response.errors );
+                        helper.print_errors( response.errors );
 
-                        $helper.scroll_to_top();
+                        helper.scroll_to_top();
                     }
                 }
 
@@ -163,9 +186,9 @@ CHARITABLE = window.CHARITABLE || {};
                 $donate_btn.show();
                 $spinner.hide();
 
-                $helper.print_errors( [ CHARITABLE_VARS.error_unknown ] );
+                helper.print_errors( [ CHARITABLE_VARS.error_unknown ] );
 
-                $helper.scroll_to_top();
+                helper.scroll_to_top();
 
             }).always(function (response) {
 
@@ -174,8 +197,8 @@ CHARITABLE = window.CHARITABLE || {};
             });
 
             return false;
-        
-        };
+
+        }
 
         /**
          * Initialization that should happen for every new form object.
@@ -216,6 +239,8 @@ CHARITABLE = window.CHARITABLE || {};
                 $body.on( 'submit', '#charitable-donation-form', on_submit );
             }
 
+            $body.on( 'charitable:form:process', process_donation );
+
             $body.trigger( 'charitable:form:initialize', self );
 
             CHARITABLE.forms_initialized = true;
@@ -229,6 +254,16 @@ CHARITABLE = window.CHARITABLE || {};
         } 
 
     };
+
+    /**
+     * Return a particular input field.
+     *
+     * @param   string The field name to retrieve.
+     * @return  object
+     */
+    Donation_Form.prototype.get_input = function( field ) {
+        return this.form.find( '[name=' + field + ']' );
+    }
 
     /**
      * Return the submitted email address.
