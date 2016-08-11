@@ -434,13 +434,23 @@ if ( ! class_exists( 'Charitable_Licenses' ) ) :
 
 			if ( false === $versions ) {
 
+				$licenses = array();
+
+				foreach ( $this->get_licenses() as $license ) {
+
+					if ( isset( $license['license'] ) ) {
+						$licenses[] = $license['license'];
+					}					
+
+				}
+
 				$response = wp_remote_post(
 					Charitable_Licenses::UPDATE_URL . '/edd-api/versions/',
 					array(
 						'sslverify' => false,
 						'timeout' => 15,
 						'body' => array(
-							'licenses' => array_values( wp_list_pluck( $this->get_licenses(), 'license' ) ),
+							'licenses' => $licenses,
 							'url'      => home_url(),
 						),
 					)

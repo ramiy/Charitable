@@ -134,6 +134,10 @@ if ( ! class_exists( 'Charitable_Upgrade' ) ) :
 						'prompt' => false,
 						'callback' => 'flush_rewrite_rules',
 					),
+					'show_release_140_upgrade_notice' => array(
+						'version' => '1.4.0',
+						'notice' => 'release-140'
+					),
 				);
 
 			}
@@ -209,6 +213,14 @@ if ( ! class_exists( 'Charitable_Upgrade' ) ) :
 					 * If we've already done this upgrade, continue.
 					 */
 					if ( $this->upgrade_has_been_completed( $action ) ) {
+						continue;
+					}
+
+					/**
+					 * Check if we're just setting a transient to display a notice.
+					 */
+					if ( isset( $upgrade['notice'] ) ) {
+						$this->set_update_notice_transient( $upgrade, $action );						
 						continue;
 					}
 
@@ -460,6 +472,21 @@ if ( ! class_exists( 'Charitable_Upgrade' ) ) :
 
 				update_option( $this->upgrade_log_key, $new_log );
 			}
+		}
+
+		/**
+		 * Set a transient to display an update notice.
+		 *
+		 * @param 	array  $upgrade
+		 * @param 	string $action
+		 * @return  void
+		 * @access  public
+		 * @since   1.4.0
+		 */
+		public function set_update_notice_transient( $upgrade, $action ) {
+			set_transient( 'charitable_' . $upgrade['notice'] . '_notice', 1 );
+
+			$this->update_upgrade_log( $action );
 		}
 
 		/**

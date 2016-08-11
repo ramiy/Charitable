@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Charitable 1.4.0\n"
 "Report-Msgid-Bugs-To: https://www.wpcharitable.com/\n"
-"POT-Creation-Date: 2016-08-10 23:43:20+00:00\n"
+"POT-Creation-Date: 2016-08-11 08:44:56+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -4809,11 +4809,17 @@ msgstr ""
 
 #: includes/admin/class-charitable-admin-pages.php:147
 #: includes/admin/class-charitable-admin-pages.php:148
-#: includes/admin/class-charitable-admin.php:182
+#: includes/admin/class-charitable-admin.php:235
 msgid "Settings"
 msgstr ""
 
-#: includes/admin/class-charitable-admin.php:208
+#: includes/admin/class-charitable-admin.php:169
+msgid ""
+"Thanks for upgrading to Charitable 1.4. <a href='%s'>Find out what's new in "
+"this release</a>."
+msgstr ""
+
+#: includes/admin/class-charitable-admin.php:261
 #: includes/admin/settings/class-charitable-settings.php:106
 msgid "Extensions"
 msgstr ""
@@ -4914,69 +4920,69 @@ msgstr ""
 msgid "View Donation Details"
 msgstr ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:357
+#: includes/admin/donations/class-charitable-donation-post-type.php:356
 msgid "View Details"
 msgstr ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:358
+#: includes/admin/donations/class-charitable-donation-post-type.php:357
 msgid "View"
 msgstr ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:399
+#: includes/admin/donations/class-charitable-donation-post-type.php:398
 #: includes/admin/views/donations-page/export-form.php:35
 #: includes/admin/views/donations-page/filter-form.php:35
 msgid "All"
 msgstr ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:557
+#: includes/admin/donations/class-charitable-donation-post-type.php:556
 msgid "Donation status changed."
 msgid_plural "%s donation statuses changed."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:572
+#: includes/admin/donations/class-charitable-donation-post-type.php:571
 msgid "%d donation updated."
 msgid_plural "%d donations updated."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:573
+#: includes/admin/donations/class-charitable-donation-post-type.php:572
 msgid "1 donation not updated, somebody is editing it."
 msgstr ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:574
+#: includes/admin/donations/class-charitable-donation-post-type.php:573
 msgid "%s donation not updated, somebody is editing it."
 msgid_plural "%s donations not updated, somebody is editing them."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:575
+#: includes/admin/donations/class-charitable-donation-post-type.php:574
 msgid "%s donation permanently deleted."
 msgid_plural "%s donations permanently deleted."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:576
+#: includes/admin/donations/class-charitable-donation-post-type.php:575
 msgid "%s donation moved to the Trash."
 msgid_plural "%s donations moved to the Trash."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:577
+#: includes/admin/donations/class-charitable-donation-post-type.php:576
 msgid "%s donation restored from the Trash."
 msgid_plural "%s donations restored from the Trash."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:878
+#: includes/admin/donations/class-charitable-donation-post-type.php:873
 msgid "Handled automatically when $donation->update_status() is called."
 msgstr ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:888
+#: includes/admin/donations/class-charitable-donation-post-type.php:883
 msgid "Donation status set to %s."
 msgstr ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:892
+#: includes/admin/donations/class-charitable-donation-post-type.php:887
 #: includes/donations/abstract-charitable-donation.php:564
 msgid "Donation status updated from %s to %s."
 msgstr ""
@@ -5226,27 +5232,27 @@ msgstr ""
 msgid "Charitable needs to fix incorrect donation dates."
 msgstr ""
 
-#: includes/admin/upgrades/class-charitable-upgrade.php:160
+#: includes/admin/upgrades/class-charitable-upgrade.php:164
 msgid "Charitable was installed."
 msgstr ""
 
-#: includes/admin/upgrades/class-charitable-upgrade.php:201
+#: includes/admin/upgrades/class-charitable-upgrade.php:205
 msgid ""
 "Charitable needs to complete an upgrade that was started earlier. Click <a "
 "href=\"%s\">here</a> to continue the upgrade."
 msgstr ""
 
-#: includes/admin/upgrades/class-charitable-upgrade.php:224
+#: includes/admin/upgrades/class-charitable-upgrade.php:236
 msgid "Click <a href=\"%s\">here</a> to start the upgrade."
 msgstr ""
 
-#: includes/admin/upgrades/class-charitable-upgrade.php:288
-#: includes/admin/upgrades/class-charitable-upgrade.php:323
+#: includes/admin/upgrades/class-charitable-upgrade.php:300
+#: includes/admin/upgrades/class-charitable-upgrade.php:335
 msgid "You do not have permission to do Charitable upgrades"
 msgstr ""
 
-#: includes/admin/upgrades/class-charitable-upgrade.php:288
-#: includes/admin/upgrades/class-charitable-upgrade.php:323
+#: includes/admin/upgrades/class-charitable-upgrade.php:300
+#: includes/admin/upgrades/class-charitable-upgrade.php:335
 #: includes/licensing/class-charitable-plugin-updater.php:292
 msgid "Error"
 msgstr ""
@@ -5546,21 +5552,61 @@ msgstr ""
 msgid "Step %d of approximately %d running"
 msgstr ""
 
+#: includes/admin/views/welcome-page/page.php:27
+#: includes/admin/views/welcome-page/page.php:34
+#: includes/admin/views/welcome-page/page.php:41
+#: includes/admin/views/welcome-page/page.php:48
+msgid "Peer to peer fundraising or crowdfunding"
+msgstr ""
+
+#: includes/admin/views/welcome-page/page.php:28
+msgid "Accept donations in South African Rand"
+msgstr ""
+
+#: includes/admin/views/welcome-page/page.php:29
+#: includes/admin/views/welcome-page/page.php:36
+#: includes/admin/views/welcome-page/page.php:43
+#: includes/admin/views/welcome-page/page.php:51
+msgid "Let donors give anonymously"
+msgstr ""
+
 #: includes/admin/views/welcome-page/page.php:30
+#: includes/admin/views/welcome-page/page.php:37
+#: includes/admin/views/welcome-page/page.php:44
+msgid "Let your donors upload their own profile photo"
+msgstr ""
+
+#: includes/admin/views/welcome-page/page.php:35
+msgid "Accept donations in Indian Rupees"
+msgstr ""
+
+#: includes/admin/views/welcome-page/page.php:42
+msgid "Collect donations with Easy Digital Downloads"
+msgstr ""
+
+#: includes/admin/views/welcome-page/page.php:49
+msgid "Accept credit card donations with Stripe"
+msgstr ""
+
+#: includes/admin/views/welcome-page/page.php:50
+msgid "Collect donations with Authorize.Net"
+msgstr ""
+
+#: includes/admin/views/welcome-page/page.php:67
 msgid "Thank you for installing Charitable!"
 msgstr ""
 
-#: includes/admin/views/welcome-page/page.php:33
+#: includes/admin/views/welcome-page/page.php:70
 msgid ""
 "Enjoying Charitable? Why not <a href=\"%s\" target=\"_blank\">leave a %s "
 "review</a> on WordPress.org? We'd really appreciate it."
 msgstr ""
 
-#: includes/admin/views/welcome-page/page.php:43
+#: includes/admin/views/welcome-page/page.php:80
 msgid "The WordPress Fundraising Toolkit"
 msgstr ""
 
-#: includes/admin/views/welcome-page/page.php:44
+#: includes/admin/views/welcome-page/page.php:81
 msgid ""
 "Charitable is everything you need to start accepting donations today. "
 "PayPal and offline donations work right out of the box, and when your "
@@ -5568,59 +5614,75 @@ msgid ""
 "to move forward."
 msgstr ""
 
-#: includes/admin/views/welcome-page/page.php:46
+#: includes/admin/views/welcome-page/page.php:83
 msgid "Getting Started"
 msgstr ""
 
-#: includes/admin/views/welcome-page/page.php:57
+#: includes/admin/views/welcome-page/page.php:94
 msgid "You need to enable a payment gateway"
 msgstr ""
 
-#: includes/admin/views/welcome-page/page.php:62
+#: includes/admin/views/welcome-page/page.php:99
 msgid "You have created your first campaign. <a href=\"%s\">Create another one.</a>"
 msgstr ""
 
-#: includes/admin/views/welcome-page/page.php:67
+#: includes/admin/views/welcome-page/page.php:104
 msgid "Create your first campaign"
 msgstr ""
 
-#: includes/admin/views/welcome-page/page.php:78
+#: includes/admin/views/welcome-page/page.php:115
 msgid "Turn on email notifications"
 msgstr ""
 
-#: includes/admin/views/welcome-page/page.php:83
+#: includes/admin/views/welcome-page/page.php:120
 msgid ""
 "Need a hand with anything? You might find the answer in <a href=\"%s\">our "
 "documentation</a>, or you can always get in touch with us via <a "
 "href=\"%s\">our support page</a>."
 msgstr ""
 
-#: includes/admin/views/welcome-page/page.php:90
+#: includes/admin/views/welcome-page/page.php:127
+msgid "Popular Upgrades"
+msgstr ""
+
+#: includes/admin/views/welcome-page/page.php:136
 msgid "Upgrade for a price you can afford"
 msgstr ""
 
-#: includes/admin/views/welcome-page/page.php:91
+#: includes/admin/views/welcome-page/page.php:137
 msgid ""
-"With Charitable, <strong>you choose how much you pay</strong> to upgrade. "
-"Why? Because we think that every great organization deserves awesome "
-"fundraising software, regardless of the size of its budget."
+"With our Pay What You Want packages, <strong>you choose how much you "
+"pay</strong> to upgrade. Why? Because we think that every great "
+"organization deserves awesome fundraising software, regardless of the size "
+"of its budget."
 msgstr ""
 
-#: includes/admin/views/welcome-page/page.php:97
+#: includes/admin/views/welcome-page/page.php:138
+msgid "Unlock more features"
+msgstr ""
+
+#: includes/admin/views/welcome-page/page.php:145
+msgid ""
+"You can help us translate Charitable into %s by <a "
+"href=\"https://translate.wordpress.org/projects/wp-plugins/charitable\">"
+"contributing to the translation project</a>."
+msgstr ""
+
+#: includes/admin/views/welcome-page/page.php:150
 msgid ""
 "Screenshot of Reach, a WordPress fundraising theme designed to complement "
 "Charitable"
 msgstr ""
 
-#: includes/admin/views/welcome-page/page.php:97
+#: includes/admin/views/welcome-page/page.php:150
 msgid "Reach is a WordPress fundraising theme designed to complement Charitable"
 msgstr ""
 
-#: includes/admin/views/welcome-page/page.php:98
+#: includes/admin/views/welcome-page/page.php:151
 msgid "Try Reach, a free theme designed for fundraising"
 msgstr ""
 
-#: includes/admin/views/welcome-page/page.php:99
+#: includes/admin/views/welcome-page/page.php:152
 msgid ""
 "We built Reach to help non-profits &amp; social entrepreneurs run beautiful "
 "online fundraising campaigns. Whether you’re creating a website for your "
@@ -5628,24 +5690,22 @@ msgid ""
 "crowdfunding platform, Reach is the perfect starting point."
 msgstr ""
 
-#: includes/admin/views/welcome-page/page.php:100
+#: includes/admin/views/welcome-page/page.php:153
 msgid "Download it free"
 msgstr ""
 
-#: includes/admin/views/welcome-page/page.php:100
+#: includes/admin/views/welcome-page/page.php:153
 msgid "View demo"
 msgstr ""
 
-#: includes/admin/views/welcome-page/page.php:102
-msgid "Contribute to Charitable"
+#: includes/admin/views/welcome-page/page.php:155
+msgid "Developer? Contribute to Charitable"
 msgstr ""
 
-#: includes/admin/views/welcome-page/page.php:104
+#: includes/admin/views/welcome-page/page.php:157
 msgid ""
 "Found a bug? Want to contribute a patch or create a new feature? <a "
-"href=\"%s\">GitHub is the place to go!</a> Or would you like to translate "
-"Charitable into your language? <a href=\"%s\">Get involved on "
-"WordPress.org</a>."
+"href=\"%s\">GitHub is the place to go!</a>"
 msgstr ""
 
 #: includes/campaigns/class-charitable-campaign.php:222
@@ -7273,7 +7333,7 @@ msgctxt "charitable"
 msgid "via %s"
 msgstr ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:434
+#: includes/admin/donations/class-charitable-donation-post-type.php:433
 msgctxt "set donation status to x"
 msgid "Set to %s"
 msgstr ""
@@ -7283,14 +7343,24 @@ msgctxt "joined on date"
 msgid "Joined on"
 msgstr ""
 
-#: includes/admin/views/welcome-page/page.php:51
+#: includes/admin/views/welcome-page/page.php:88
 msgctxt "You have activated x and y. Change gateway settings."
 msgid "You have activated %s. <a href=\"%s\">Change settings</a>"
 msgstr ""
 
-#: includes/admin/views/welcome-page/page.php:72
+#: includes/admin/views/welcome-page/page.php:109
 msgctxt "You have activated x and y. Change email settings."
 msgid "You have turned on the %s. <a href=\"%s\">Change settings</a>"
+msgstr ""
+
+#: includes/admin/views/welcome-page/page.php:131
+msgctxt "extension banner"
+msgid "%s banner"
+msgstr ""
+
+#: includes/admin/views/welcome-page/page.php:144
+msgctxt "translate Charitable into language"
+msgid "Translate Charitable into %s"
 msgstr ""
 
 #: includes/campaigns/class-charitable-campaign.php:513
