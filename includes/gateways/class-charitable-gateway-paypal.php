@@ -478,9 +478,8 @@ if ( ! class_exists( 'Charitable_Gateway_Paypal' ) ) :
 					$note = __( 'PayPal account is not verified. Verify account in order to accept this payment', 'charitable' );
 					break;
 
-				case 'other' :
-					$note = __( 'Payment is pending for unknown reasons. Contact PayPal support for assistance', 'charitable' );
-					break;
+				default :
+					$note = sprintf( __( 'Payment is pending for unknown reasons. Contact PayPal support for assistance. Reason code: %s', 'charitable' ), $reason_code );
 			}
 
 			return apply_filters( 'charitable_paypal_gateway_pending_reason_note', $note, $reason_code );

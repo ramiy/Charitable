@@ -311,7 +311,6 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 				'id'            => 'ID',
 				'amount'        => 'amount',
 				'donation_date' => 'date',
-				'post_status'   => 'post_status',
 			);
 
 			return wp_parse_args( $sortable_columns, $columns );
@@ -795,10 +794,6 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 				case 'amount' :
 					$clauses['join'] = "JOIN {$wpdb->prefix}charitable_campaign_donations cd ON cd.donation_id = $wpdb->posts.ID ";
 					$clauses['orderby'] = 'cd.amount ' . $order;
-					break;
-
-				case 'status' :
-					$clauses['orderby'] = $wpdb->posts . '.post_status ' . $order;
 					break;
 
 			}

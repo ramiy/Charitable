@@ -102,7 +102,8 @@ if ( ! class_exists( 'Charitable_Export_Donations' ) ) :
 					break;
 
 				case 'donation_gateway' :
-					$value = charitable_get_donation( $data['donation_id'] )->get_gateway_object()->get_name();
+					$gateway = charitable_get_donation( $data['donation_id'] )->get_gateway_object();
+					$value   = is_a( $gateway, 'Charitable_Gateway' ) ? $gateway->get_name() : '';
 					break;
 			}
 
