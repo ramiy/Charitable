@@ -116,7 +116,7 @@ You can post in the [support forum](https://wordpress.org/support/plugin/charita
 == Changelog ==
 
 =======
-= 1.4.0 - Unreleased =
+= 1.4.0 =
 * Added the `[charitable_my_donations]` shortcode. Use this shortcode to allow logged in users to view a history of their donations, including links to the donation receipts. [#14](https://github.com/Charitable/Charitable/issues/14)
 * Scale the campaign grid gracefully when viewing on smaller screens. The `[campaigns]` shortcode now supports a `responsive` paramater, which is enabled by default. You can set it to a specific px/em amount to change the breakpoint, or set it to `0` to disable responsive styling. [#88](https://github.com/Charitable/Charitable/issues/88)
 * Also provided appropriately responsive styling for suggested donation amounts on small screens. [#159](https://github.com/Charitable/Charitable/issues/159)

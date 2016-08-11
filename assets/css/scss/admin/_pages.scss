@@ -104,4 +104,33 @@
         border-top: 3px solid #f99d33;
         background: #fef4e8;
     }
+
+    .extensions {
+        float: left;
+        width: 100%;
+        clear: both;
+        list-style: none;
+        padding-bottom: 21px;
+
+        li {
+            width: 48%;
+            float: left;
+            margin-bottom: 21px;
+            text-align: center;
+
+            &:nth-child(2n+1) {
+                margin-right: 4%;
+                clear: left;
+            }
+        }
+
+        a {
+            text-decoration: none;
+            color: #444;
+        }
+
+        img {
+            margin-bottom: 10px;
+        }
+    }
 }
