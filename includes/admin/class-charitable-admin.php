@@ -9,7 +9,7 @@
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License   
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 if ( ! class_exists( 'Charitable_Admin' ) ) : 
 
@@ -42,6 +42,8 @@ final class Charitable_Admin {
      */
     protected function __construct() {
         $this->load_dependencies();
+
+        do_action( 'charitable_admin_loaded' );
     }
 
     /**
@@ -147,6 +149,78 @@ final class Charitable_Admin {
 
             wp_localize_script( 'charitable-admin', 'CHARITABLE', $localized_vars );            
         }
+
+        wp_register_script( 'charitable-admin-notice', charitable()->get_path( 'assets', false ) . 'js/charitable-admin-notice' . $suffix . '.js', array( 'jquery-core' ), charitable()->get_version(), false );
+    }
+
+    /**
+     * Add notices to the dashboard.
+     *
+     * @return  void
+     * @access  public
+     * @since   1.4.0
+     */
+    public function add_notices() {
+        if ( ! current_user_can( 'manage_options' ) ) {
+            return;
+        }
+
+        $notices = array(
+            'release-140' => sprintf( __( "Thanks for upgrading to Charitable 1.4. <a href='%s'>Find out what's new in this release</a>.", 'charitable' ), 
+                'https://www.wpcharitable.com/charitable-1-4-features-responsive-campaign-grids-a-new-shortcode?utm_source=notice&utm_medium=wordpress-dashboard&utm_campaign=release-notes' ), 
+        );
+
+        foreach ( $notices as $notice => $message ) {
+
+            if ( ! get_transient( 'charitable_' . $notice . '_notice' ) ) {
+                continue;
+            }
+
+            if ( ! wp_script_is( 'charitable-admin-notice' ) ) {
+                wp_enqueue_script( 'charitable-admin-notice' );
+            }
+
+            echo '<div class="updated notice charitable-notice" data-notice="' . esc_attr( $notice ) . '" style="border-left-color: #f89d35; background-color: #fef4e8;"><p>' . $message . '</p></div>';
+            
+        }
+    }
+
+    /**
+     * Dismiss a notice.
+     *
+     * @return  void
+     * @access  public
+     * @since   1.4.0
+     */
+    public function dismiss_notice() {
+        if ( ! isset( $_POST['notice'] ) ) {
+            wp_send_json_error();
+        }
+
+        $ret = delete_transient( 'charitable_' . $_POST['notice'] . '_notice', true );
+
+        if ( ! $ret ) {
+            wp_send_json_error( $ret );    
+        }
+
+        wp_send_json_success();
+    }
+
+    /**
+     * Adds one or more classes to the body tag in the dashboard.
+     *
+     * @param   string $classes Current body classes.
+     * @return  string          Altered body classes.
+     * @since   1.0.0
+     */
+    public function add_admin_body_class( $classes ) {
+        $screen = get_current_screen();
+
+        if ( Charitable::DONATION_POST_TYPE == $screen->post_type ) {
+            $classes .= ' post-type-charitable';
+        } 
+
+        return $classes;
     }
 
     /**
@@ -246,8 +320,8 @@ final class Charitable_Admin {
             'campaign', 
             'donation', 
             'charitable_page_charitable-settings',
-            'charitable_page_charitable-donations-table', 
-            'dashboard'
+            'edit-donation',
+            'dashboard',
         ) );
     }   
 }

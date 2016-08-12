@@ -28,5 +28,5 @@ $max_date		= isset( $field[ 'max_date' ] ) ? esc_attr( $field[ 'max_date' ] ) : 
 			<?php endif ?>
 		</label>
 	<?php endif ?>
-	<input type="text" class="datepicker" name="<?php echo $field[ 'key' ] ?>" value="<?php echo $value ?>" />
+	<input type="text" class="datepicker" name="<?php echo $field[ 'key' ] ?>" value="<?php echo $value ?>" <?php echo charitable_get_arbitrary_attributes( $field ) ?>/>
 </div>

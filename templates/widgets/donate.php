@@ -8,7 +8,7 @@
  * @since   1.0.0
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 if ( ! charitable_is_campaign_page() && 'current' == $view_args[ 'campaign_id' ] ) {
     return;
@@ -23,7 +23,6 @@ if ( $campaign->has_ended() ) {
 }
 
 $suggested_donations = $campaign->get_suggested_donations();
-$currency_helper    = charitable()->get_currency_helper();
 
 if ( empty( $suggested_donations ) && ! $campaign->get( 'allow_custom_donations' ) ) {
     return;

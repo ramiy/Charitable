@@ -184,6 +184,11 @@
         vertical-align: middle; }
     #charitable-donation-form .donation-amounts .donation-amount.selected {
       color: #fff; }
+    @media screen and (max-width: 37.5em) {
+      #charitable-donation-form .donation-amounts .donation-amount {
+        float: none;
+        width: 100%;
+        margin-right: 0; } }
 
 .widget_charitable_donate_widget #charitable-donation-form {
   padding-top: 0; }
@@ -361,11 +366,11 @@
   padding: 1em;
   margin-bottom: 1em;
   border: 1px solid; }
-  .charitable-notice .errors {
+  .charitable-notice > ul {
     padding: 0;
     margin: 0;
     list-style: none; }
-    .charitable-notice .errors li {
+    .charitable-notice > ul li {
       list-style: none; }
 
 /*# sourceMappingURL=charitable.css.map */

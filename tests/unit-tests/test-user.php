@@ -1,6 +1,6 @@
 <?php
 
-class Test_Charitable_User extends WP_UnitTestCase {
+class Test_Charitable_User extends Charitable_UnitTestCase {
 
 	/**
 	 * We have three different users to test several different 
@@ -20,11 +20,11 @@ class Test_Charitable_User extends WP_UnitTestCase {
 		add_filter( 'charitable_auto_login_after_registration', '__return_false' );
 
 		/* James Gordon makes a donation and becomes a donor/user in the process. */
-		$this->james_gordon = new Charitable_User();
-		$this->james_gordon->update_profile( array(
+		$this->james_gordon = Charitable_User::create_profile( array(
 			'user_email'		=> 'james@gotham.com',
 			'first_name'		=> 'James',
 			'last_name'			=> 'Gordon', 
+			'user_pass' 		=> 'password', // Required for the user to be created at the moment.
 			'address' 			=> '22 Batman Avenue',
 			'address_2' 		=> '',
 			'city' 				=> 'Gotham',
@@ -48,6 +48,13 @@ class Test_Charitable_User extends WP_UnitTestCase {
 		) );
 	}	
 
+	public function test_get_user_id() {
+		$this->assertGreaterThan( 0, $this->james_gordon->ID );
+	}
+
+	/**
+	 * @depends test_get_user_id
+	 */
 	public function test_get_donor() {
 		$this->assertInternalType( 'object', $this->james_gordon->get_donor() );
 	}

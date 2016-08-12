@@ -8,7 +8,7 @@
  * @author      Eric Daams
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 if ( ! class_exists( 'Charitable_Profile_Shortcode' ) ) : 
 
@@ -24,7 +24,7 @@ class Charitable_Profile_Shortcode {
      *
      * This receives the user-defined attributes and passes the logic off to the class. 
      *
-     * @param   array   $atts   User-defined shortcode attributes.
+     * @param   array $atts User-defined shortcode attributes.
      * @return  string
      * @access  public
      * @static
@@ -35,7 +35,7 @@ class Charitable_Profile_Shortcode {
             return Charitable_Login_Shortcode::display( $atts );
         }
 
-        $args = shortcode_atts( array(), $atts, 'charitable_profile' );     
+        $args = shortcode_atts( array(), $atts, 'charitable_profile' );
 
         ob_start();
 

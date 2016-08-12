@@ -1,6 +1,6 @@
-<?php 
+<?php
 /**
- * Displays the donate button to be displayed on campaign pages. 
+ * Displays the donate button to be displayed on campaign pages.
  *
  * Override this template by copying it to yourtheme/charitable/campaign/donate-button.php
  *
@@ -8,7 +8,7 @@
  * @since 	1.3.0
  */
 
-$campaign = $view_args[ 'campaign' ];
+$campaign = $view_args['campaign'];
 
 ?>
 <form class="campaign-donation" method="post">

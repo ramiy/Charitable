@@ -168,6 +168,14 @@
         .donation-amount.selected {
             color: #fff;
         }
+
+        @media screen and (max-width: 37.5em) {
+            .donation-amount {
+                float: none;
+                width: 100%;
+                margin-right: 0;
+            }
+        }
     }
 }
 

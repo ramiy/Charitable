@@ -118,7 +118,7 @@ abstract class Charitable_Benefactor {
 			$amount = apply_filters( 'charitable_benefactor_contribution_amount_percentage', $this->benefactor->contribution_amount . '%', $this->benefactor->contribution_amount, $this );
 		}
 		else {
-			$amount = apply_filters( 'charitable_benefactor_contribution_amount_fixed', charitable()->get_currency_helper()->get_monetary_amount( $this->benefactor->contribution_amount ), $this->benefactor->contribution_amount, $this );
+			$amount = apply_filters( 'charitable_benefactor_contribution_amount_fixed', charitable_format_money( $this->benefactor->contribution_amount ), $this->benefactor->contribution_amount, $this );
 		}
 
 		return $amount;

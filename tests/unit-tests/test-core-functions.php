@@ -1,6 +1,6 @@
 <?php
 
-class Test_Charitable_Core_Functions extends WP_UnitTestCase {
+class Test_Charitable_Core_Functions extends Charitable_UnitTestCase {
 
 	function setUp() {
 		parent::setUp();
@@ -29,4 +29,8 @@ class Test_Charitable_Core_Functions extends WP_UnitTestCase {
 	function test_charitable_get_session() {
 		$this->assertInstanceOf( 'Charitable_Session', charitable_get_session() );
 	}	
+
+	function test_charitable_get_deprecated() {
+		$this->assertInstanceOf( 'Charitable_Deprecated', charitable_get_deprecated() );
+	}
 }

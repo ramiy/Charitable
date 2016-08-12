@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * Displays the campaign donation stats.
  *
@@ -7,11 +7,14 @@
  * @version 1.0.0
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
-$campaign = $view_args[ 'campaign' ];
+/**
+ * @var 	Charitable_Campaign
+ */
+$campaign = $view_args['campaign'];
 
 ?>
 <div class="campaign-donation-stats">  
-    <?php echo $campaign->get_donation_summary() ?>
+	<?php echo $campaign->get_donation_summary() ?>
 </div>

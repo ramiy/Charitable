@@ -12,7 +12,7 @@
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License   
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 /**
  * Load a view from the admin/views folder. 
@@ -53,7 +53,7 @@ function charitable_get_admin_settings() {
 /**
  * Returns whether we are currently viewing the Charitable settings area. 
  *
- * @param   string $tab     Optional. If passed, the function will also check that we are on the given tab.
+ * @param   string $tab Optional. If passed, the function will also check that we are on the given tab.
  * @return  boolean
  * @since   1.2.0
  */

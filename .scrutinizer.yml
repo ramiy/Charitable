@@ -37,3 +37,5 @@ coding_style:
                 negation: true
 tools:
     sensiolabs_security_checker: true
+    php_code_sniffer:
+        config: { standard: WordPress-Core }

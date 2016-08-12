@@ -16,7 +16,17 @@ $field          = $view_args[ 'field' ];
 $classes        = esc_attr( $view_args[ 'classes' ] );
 $is_required    = isset( $field[ 'required' ] ) ? $field[ 'required' ] : false;
 $value          = isset( $field[ 'value' ] ) ? $field[ 'value' ] : '';
-$placeholder    = isset( $field[ 'placeholder' ] ) ? esc_attr( $field[ 'placeholder' ] ) : '';
+
+/* Set the default pattern */
+if ( ! isset( $field[ 'attrs' ][ 'pattern' ] ) ) {
+    $field[ 'attrs' ][ 'pattern' ] = 'https?://.+';
+}
+
+/* Set the default onblur attribute */
+if ( ! isset( $field[ 'attrs' ][ 'onblur' ] ) ) {
+    $field[ 'attrs' ][ 'onblur' ] = 'CHARITABLE.SanitizeURL(this)';
+}
+
 ?>
 <div id="charitable_field_<?php echo $field['key'] ?>" class="<?php echo $classes ?>">
     <?php if ( isset( $field['label'] ) ) : ?>
@@ -27,5 +37,5 @@ $placeholder    = isset( $field[ 'placeholder' ] ) ? esc_attr( $field[ 'placehol
             <?php endif ?>
         </label>
     <?php endif ?>
-    <input type="url" name="<?php echo $field[ 'key' ] ?>" value="<?php echo esc_attr( stripslashes( $value ) ) ?>" placeholder="<?php echo $placeholder ?>" pattern="https?://.+" onblur="CHARITABLE.SanitizeURL(this)" />
+    <input type="url" name="<?php echo $field[ 'key' ] ?>" value="<?php echo esc_attr( stripslashes( $value ) ) ?>" <?php echo charitable_get_arbitrary_attributes( $field ) ?>/>
 </div>

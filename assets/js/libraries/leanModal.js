@@ -28,14 +28,14 @@
                 offset = parseInt( o.verticalOffset );
 
                 $(this).on( 'click', function(e) {
-              
+
                     var modal_id = methods.get_target( $(this) ), 
                         $modal = $( modal_id ), 
                         resize = function() {
                             methods.resize( $modal );
                         },
                         modal_height, 
-                        modal_width;
+                        modal_width;                    
 
                     $( "#lean_overlay" ).on( 'click', function() { 
                         methods.close( $modal );                    
@@ -65,6 +65,9 @@
 
                     $modal.fadeTo(200,1);
 
+                    /* Provide an event hook for other scripts to use. */
+                    $( 'body' ).trigger( 'charitable:modal:open' );
+
                     e.preventDefault();
                         
                 });
@@ -92,6 +95,9 @@
             $( "#lean_overlay" ).fadeOut(200);
             $modal.css({ 'display' : 'none' });
             methods.reset( $modal );
+
+            /* Provide an event hook for other scripts to use. */
+            $( 'body' ).trigger( 'charitable:modal:close' );
         }, 
 
         /**
@@ -138,9 +144,15 @@
             }                   
 
             $modal.css( modal_css );
+
+            /* Provide an event hook for other scripts to use. */
+            $( 'body' ).trigger( 'charitable:modal:resize' );
         }        
     };   
  
+    /** 
+     * Register this as a jQuery function.
+     */
     $.fn.extend({ 
         leanModal : function( method_or_options ) {
             if ( methods[ method_or_options ] ) {
@@ -152,6 +164,15 @@
                 $.error( 'Method ' +   method_or_options  + ' does not exist on jQuery.leanModal' );
             }    
         }
-    });        
+    });
+
+    /**
+     * Init function.
+     */
+    $( document ).ready( function() {
+        $( '[data-trigger-modal]' ).leanModal({
+            closeButton : ".modal-close"
+        });
+    }); 
      
 })(jQuery);

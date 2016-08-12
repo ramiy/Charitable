@@ -9,7 +9,7 @@
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License  
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 /**
  * Enqueue Charitable's admin-area scripts & styles. 
@@ -17,6 +17,27 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  * @see     Charitable_Admin::admin_enqueue_scripts()
  */
 add_action( 'admin_enqueue_scripts', array( Charitable_Admin::get_instance(), 'admin_enqueue_scripts' ) );
+
+/**
+ * Check if there are any notices to be displayed in the admin.
+ *
+ * @see     Charitable_Admin::add_notices()
+ */
+add_action( 'admin_notices', array( Charitable_Admin::get_instance(), 'add_notices' ) );
+
+/**
+ * Dismiss a notice.
+ *
+ * @see     Charitable_Admin::dismiss_notice()
+ */
+add_action( 'wp_ajax_charitable_dismiss_notice', array( Charitable_Admin::get_instance(), 'dismiss_notice' ) );
+
+/**
+ * Add a generic body class to donations page
+ *
+ * @see     Charitable_Admin::add_admin_body_class()
+ */
+add_filter( 'admin_body_class', array( Charitable_Admin::get_instance(), 'add_admin_body_class' ) );
 
 /**
  * Remove jQuery UI styles added by Ninja Forms.

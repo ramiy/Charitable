@@ -16,10 +16,7 @@ $field 			= $view_args[ 'field' ];
 $classes 		= $view_args[ 'classes' ];
 $is_required    = isset( $field[ 'required' ] ) ? $field[ 'required' ] : false;
 $value			= isset( $field[ 'value' ] ) ? esc_attr( $field[ 'value' ] ) : '';
-$placeholder 	= isset( $field[ 'placeholder' ] ) ? esc_attr( $field[ 'placeholder' ] ) : '';
-$min 			= isset( $field['min'] ) ? 'min="' . esc_attr( $field['min'] ) . '"' : ' ';
-$max 			= isset( $field['max'] ) ? 'max="' . esc_attr( $field['max'] ) . '"' : ' ';
-$step 			= isset( $field['step'] ) ? 'step="' . esc_attr( $field['step'] ) . '"' : ' ';
+
 ?>
 <div id="charitable_field_<?php echo $field[ 'key' ] ?>" class="<?php echo $classes ?>">	
 	<?php if ( isset( $field[ 'label' ] ) ) : ?>
@@ -30,5 +27,5 @@ $step 			= isset( $field['step'] ) ? 'step="' . esc_attr( $field['step'] ) . '"'
             <?php endif ?>
 		</label>
 	<?php endif ?>
-	<input type="number" name="<?php echo $field[ 'key' ] ?>" value="<?php echo $value ?>" <?php printf( "%s %s %s", $min, $max, $step ) ?> />	
+	<input type="number" name="<?php echo $field[ 'key' ] ?>" value="<?php echo $value ?>" <?php echo charitable_get_arbitrary_attributes( $field ) ?>/>
 </div>
