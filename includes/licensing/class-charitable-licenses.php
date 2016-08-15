@@ -440,8 +440,7 @@ if ( ! class_exists( 'Charitable_Licenses' ) ) :
 
 					if ( isset( $license['license'] ) ) {
 						$licenses[] = $license['license'];
-					}					
-
+					}
 				}
 
 				$response = wp_remote_post(
