@@ -167,6 +167,12 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 					'priority'      => 'high',
 					'view'          => 'metaboxes/donation/donation-overview',
 				),
+				'donation-actions'     => array(
+					'title'         => __( 'Donation Actions', 'charitable' ),
+					'context'       => 'side',
+					'priority'      => 'high',
+					'view'          => 'metaboxes/donation/donation-actions',
+				),
 				'donation-details'     => array(
 					'title'         => __( 'Donation Details', 'charitable' ),
 					'context'       => 'side',
