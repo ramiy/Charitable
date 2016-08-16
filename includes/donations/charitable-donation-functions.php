@@ -138,6 +138,12 @@ function charitable_is_after_donation() {
 
 	do_action( 'charitable_after_donation', $processor );
 
+	foreach ( $processor->get_campaign_donations_data() as $campaign_donation ) {
+
+		charitable_get_session()->remove_donation( $campaign_donation['campaign_id'] );
+
+	}
+
 	delete_transient( 'charitable_donation_' . charitable_get_session()->get_session_id() );
 }
 

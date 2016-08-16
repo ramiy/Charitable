@@ -231,6 +231,7 @@ if ( ! class_exists( 'Charitable_Donation_Processor' ) ) :
 				 * @hook charitable_process_donation_$gateway
 				 */
 				return apply_filters( 'charitable_process_donation_' . $gateway, true, $this->donation_id, $processor );
+
 			} else {
 				/**
 				 * A fallback for payment gateways that have not been updated.
@@ -408,7 +409,7 @@ if ( ! class_exists( 'Charitable_Donation_Processor' ) ) :
 			 * Update the user session if we're on the public site or in an AJAX request.
 			 *
 			 * 1. Write the donation key to the session.
-			 * 2. Write the campaign donation amounts to the session. This is required in 
+			 * 2. Write the campaign donation amounts to the session. This is required in
 			 * case the donor gets sent back to the donation form (cancellation, failure).
 			 */
 			if ( ! is_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
@@ -423,7 +424,7 @@ if ( ! class_exists( 'Charitable_Donation_Processor' ) ) :
 					$session->add_donation( $campaign['campaign_id'], $campaign['amount'] );
 				}
 			}
-		
+
 			/**
 			 * @hook charitable_after_save_donation
 			 */

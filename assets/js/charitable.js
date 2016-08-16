@@ -107,8 +107,13 @@ CHARITABLE = window.CHARITABLE || {};
             var $form = $( this );
             var $helper = new CHARITABLE.Donation_Form( $form );            
 
+            /* Display the processing spinner and hide the button */
+            $helper.show_processing();
+            
             /* Validate the form submission before going further. */
             if ( false === $helper.validate() ) {
+
+                $helper.hide_processing();
 
                 $helper.print_errors();
 
@@ -142,12 +147,7 @@ CHARITABLE = window.CHARITABLE || {};
         var process_donation = function( event, helper ) {
 
             var data = helper.get_data(); 
-            var form = helper.form;           
-            var $spinner = helper.form.find( '.charitable-form-processing' );
-            var $donate_btn = helper.form.find( 'button[name="donate"]' );
-
-            $donate_btn.hide();
-            $spinner.show();
+            var form = helper.form;
 
             /* Cancel the default Charitable action, but pass it along as the form_action variable */       
             data.action = 'make_donation';
@@ -168,8 +168,7 @@ CHARITABLE = window.CHARITABLE || {};
                         window.location.href = response.redirect_to;
                     }
                     else {
-                        $donate_btn.show();
-                        $spinner.hide();
+                        helper.hide_processing();
 
                         helper.print_errors( response.errors );
 
@@ -183,8 +182,7 @@ CHARITABLE = window.CHARITABLE || {};
                     console.log( response );
                 }
 
-                $donate_btn.show();
-                $spinner.hide();
+                helper.hide_processing();
 
                 helper.print_errors( [ CHARITABLE_VARS.error_unknown ] );
 
@@ -488,6 +486,22 @@ CHARITABLE = window.CHARITABLE || {};
             this.form.find( '.charitable-form-errors' ).remove();
         }
 
+    }
+
+    /**
+     * Show that the donation form is processing.
+     */
+    Donation_Form.prototype.show_processing = function() {
+        this.form.find( '.charitable-form-processing' ).show();
+        this.form.find( 'button[name="donate"]' ).hide();
+    }
+
+    /**
+     * Hide the processing spinner and show the donate button.
+     */
+    Donation_Form.prototype.hide_processing = function() {
+        this.form.find( '.charitable-form-processing' ).hide();
+        this.form.find( 'button[name="donate"]' ).show();
     }
 
     /**
