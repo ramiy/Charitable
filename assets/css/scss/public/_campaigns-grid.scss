@@ -2,8 +2,9 @@
 .campaign-loop.campaign-grid {
     margin: 0 0 1em 0;
     padding: 0;
-    list-style: none;        
+    list-style: none;
 
+    li.campaign,
     .campaign.hentry {     
         position: relative;   
         padding: 0;
@@ -44,6 +45,7 @@
 }
 
 .campaign-loop.campaign-list {
+    li.campaign,
     .campaign.hentry {
         padding: 0 0 1em 0;
         margin: 0 0 1em 0;
@@ -61,6 +63,7 @@
         width: 100%;
     }
 
+    li.campaign,
     .campaign.hentry {
         list-style: none;
         float: left;
@@ -75,9 +78,12 @@
 }
 
 .campaign-grid-2 {
+    li.campaign,
     .campaign.hentry {
         width: 49%;
     }
+
+    li.campaign:nth-child(2n+2),
     .campaign.hentry:nth-child(2n+2) {
         margin-right: 0;
     }
