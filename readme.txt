@@ -115,7 +115,13 @@ You can post in the [support forum](https://wordpress.org/support/plugin/charita
 
 == Changelog ==
 
-=======
+= 1.4.1 = 
+* The donor address is split over multiple columns in the donation export. [#194]((https://github.com/Charitable/Charitable/issues/194)
+* In certain cases, credit card validation was getting triggered for non-credit card donations (i.e. PayPal or Offline). This bug has been fixed. [#189]((https://github.com/Charitable/Charitable/issues/189)
+* After a donor makes a successful donation is made, their session is cleared as expected. [#181]((https://github.com/Charitable/Charitable/issues/181)
+* Pending and draft campaigns are now included in the filtering options on the Donations page. [#187]((https://github.com/Charitable/Charitable/issues/187)
+* The Bolivian Boliviano currency (BOB) has been added. [#193]((https://github.com/Charitable/Charitable/issues/193)
+
 = 1.4.0 =
 * Added the `[charitable_my_donations]` shortcode. Use this shortcode to allow logged in users to view a history of their donations, including links to the donation receipts. [#14](https://github.com/Charitable/Charitable/issues/14)
 * Scale the campaign grid gracefully when viewing on smaller screens. The `[campaigns]` shortcode now supports a `responsive` paramater, which is enabled by default. You can set it to a specific px/em amount to change the breakpoint, or set it to `0` to disable responsive styling. [#88](https://github.com/Charitable/Charitable/issues/88)
