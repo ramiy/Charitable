@@ -140,7 +140,7 @@ if ( ! class_exists( 'Charitable_Public' ) ) :
 				'charitable-script',
 				'CHARITABLE_VARS',
 				$vars
-			);			
+			);
 
 			/* Credit card validation */
 			wp_register_script(

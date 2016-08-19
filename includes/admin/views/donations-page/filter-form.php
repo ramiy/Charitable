@@ -11,8 +11,9 @@ $modal_class  = apply_filters( 'charitable_modal_window_class', 'charitable-moda
 
 $campaign_id = isset( $_GET['campaign_id'] ) ? intval( $_GET['campaign_id'] )   : '';
 $campaigns   = get_posts( array(
-	'post_type' => Charitable::CAMPAIGN_POST_TYPE,
-	'nopaging'  => true,
+	'post_type'   => Charitable::CAMPAIGN_POST_TYPE,
+	'nopaging'    => true,
+	'post_status' => 'any',
 ));
 
 $start_date   = isset( $_GET['start_date'] )  ? sanitize_text_field( $_GET['start_date'] ) : null;

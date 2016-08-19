@@ -98,7 +98,13 @@ CHARITABLE = window.CHARITABLE || {};
      * @return  boolean
      */
     CHARITABLE.Donation_Form.prototype.validate_card_number = function() {
-        
+    
+        var require_cc = $( '#charitable-gateway-fields-' + this.get_payment_method() + ' #charitable_field_cc_name' );
+
+        if ( 0 === require_cc.length ) {
+            return true;
+        }
+
         if ( false === this.is_valid_card_number() ) {
             this.add_error( CHARITABLE_VARS.error_invalid_cc_number );
             return false;

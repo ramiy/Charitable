@@ -240,7 +240,9 @@
   margin: 0 0 1em 0;
   padding: 0;
   list-style: none; }
+  .campaign-loop.campaign-list li.campaign,
   .campaign-loop.campaign-list .campaign.hentry,
+  .campaign-loop.campaign-grid li.campaign,
   .campaign-loop.campaign-grid .campaign.hentry {
     position: relative;
     padding: 0;
@@ -248,7 +250,9 @@
     list-style: none;
     box-shadow: none;
     box-sizing: border-box; }
+    .campaign-loop.campaign-list li.campaign h3,
     .campaign-loop.campaign-list .campaign.hentry h3,
+    .campaign-loop.campaign-grid li.campaign h3,
     .campaign-loop.campaign-grid .campaign.hentry h3 {
       margin-top: 0;
       text-decoration: none; }
@@ -271,6 +275,7 @@
   margin-bottom: 0.5em;
   overflow: hidden; }
 
+.campaign-loop.campaign-list li.campaign,
 .campaign-loop.campaign-list .campaign.hentry {
   padding: 0 0 1em 0;
   margin: 0 0 1em 0;
@@ -288,6 +293,7 @@
   .campaign-loop.campaign-grid .wp-post-image {
     max-width: 100%;
     width: 100%; }
+  .campaign-loop.campaign-grid li.campaign,
   .campaign-loop.campaign-grid .campaign.hentry {
     list-style: none;
     float: left;
@@ -297,8 +303,10 @@
   .campaign-loop.campaign-grid .campaign-donation {
     text-align: center; }
 
+.campaign-grid-2 li.campaign,
 .campaign-grid-2 .campaign.hentry {
   width: 49%; }
+.campaign-grid-2 li.campaign:nth-child(2n+2),
 .campaign-grid-2 .campaign.hentry:nth-child(2n+2) {
   margin-right: 0; }
 
