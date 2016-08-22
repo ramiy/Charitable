@@ -21,7 +21,7 @@ if ( ! class_exists( 'Charitable_Donors_Widget' ) ) :
 
 		/**
 		 * Instantiate the widget and set up basic configuration.
-		 * 
+		 *
 		 * @access  public
 		 * @since   1.0.0
 		 */
@@ -32,7 +32,7 @@ if ( ! class_exists( 'Charitable_Donors_Widget' ) ) :
 				array(
 					'description' => __( 'Display a list of donors.', 'charitable' ),
 					'customize_selective_refresh' => true,
-				),
+				)
 			);
 		}
 
@@ -82,33 +82,33 @@ if ( ! class_exists( 'Charitable_Donors_Widget' ) ) :
 			<p>
 				<label for="<?php echo esc_attr( $this->get_field_id( 'campaign_id' ) ) ?>"><?php _e( 'Show donors by campaign', 'charitable' ) ?>:</label>
 				<select name="<?php echo esc_attr( $this->get_field_name( 'campaign_id' ) ) ?>">
-					<option value="all" <?php selected( 'all', $args[ 'campaign_id' ] ) ?>><?php _e( 'Include all campaigns' ) ?></option>
-					<option value="current" <?php selected( 'current', $args[ 'campaign_id' ] ) ?>><?php _e( 'Campaign currently viewed', 'charitable' ) ?></option>
+					<option value="all" <?php selected( 'all', $args['campaign_id'] ) ?>><?php _e( 'Include all campaigns' ) ?></option>
+					<option value="current" <?php selected( 'current', $args['campaign_id'] ) ?>><?php _e( 'Campaign currently viewed', 'charitable' ) ?></option>
 					<optgroup label="<?php _e( 'Specific campaign', 'charitable' ) ?>">
 						<?php foreach ( Charitable_Campaigns::query()->posts as $campaign ) : ?>
-							<option value="<?php echo intval( $campaign->ID ) ?>" <?php selected( $campaign->ID, $args[ 'campaign_id' ] ) ?>><?php echo $campaign->post_title ?></option>
+							<option value="<?php echo intval( $campaign->ID ) ?>" <?php selected( $campaign->ID, $args['campaign_id'] ) ?>><?php echo $campaign->post_title ?></option>
 						<?php endforeach ?>
 					</optgroup>
 				</select>                
 			</p>
 			<p>
-				<input id="<?php echo esc_attr( $this->get_field_id( 'show_distinct' ) ) ?>" type="checkbox" name="<?php echo esc_attr( $this->get_field_name( 'show_distinct' ) ); ?>" <?php checked( $args[ 'show_distinct' ] ) ?>>
+				<input id="<?php echo esc_attr( $this->get_field_id( 'show_distinct' ) ) ?>" type="checkbox" name="<?php echo esc_attr( $this->get_field_name( 'show_distinct' ) ); ?>" <?php checked( $args['show_distinct'] ) ?>>
 				<label for="<?php echo esc_attr( $this->get_field_id( 'show_distinct' ) ) ?>"><?php _e( 'Group donations by the same person', 'charitable' ) ?></label>        
 			</p>
 			<p>
-				<input id="<?php echo esc_attr( $this->get_field_id( 'show_name' ) ) ?>" type="checkbox" name="<?php echo esc_attr( $this->get_field_name( 'show_name' ) ); ?>" <?php checked( $args[ 'show_name' ] ) ?>>
+				<input id="<?php echo esc_attr( $this->get_field_id( 'show_name' ) ) ?>" type="checkbox" name="<?php echo esc_attr( $this->get_field_name( 'show_name' ) ); ?>" <?php checked( $args['show_name'] ) ?>>
 				<label for="<?php echo esc_attr( $this->get_field_id( 'show_name' ) ) ?>"><?php _e( 'Show donor\'s name', 'charitable' ) ?></label>            
 			</p>
 			<p>
-				<input id="<?php echo esc_attr( $this->get_field_id( 'show_amount' ) ) ?>" type="checkbox" name="<?php echo esc_attr( $this->get_field_name( 'show_amount' ) ); ?>" <?php checked( $args[ 'show_amount' ] ) ?>>
+				<input id="<?php echo esc_attr( $this->get_field_id( 'show_amount' ) ) ?>" type="checkbox" name="<?php echo esc_attr( $this->get_field_name( 'show_amount' ) ); ?>" <?php checked( $args['show_amount'] ) ?>>
 				<label for="<?php echo esc_attr( $this->get_field_id( 'show_amount' ) ) ?>"><?php _e( 'Show donor\'s donation amount', 'charitable' ) ?></label>            
 			</p>
 			<p>            
-				<input id="<?php echo esc_attr( $this->get_field_id( 'show_location' ) ) ?>" type="checkbox" name="<?php echo esc_attr( $this->get_field_name( 'show_location' ) ); ?>" <?php checked( $args[ 'show_location' ] ) ?>>
+				<input id="<?php echo esc_attr( $this->get_field_id( 'show_location' ) ) ?>" type="checkbox" name="<?php echo esc_attr( $this->get_field_name( 'show_location' ) ); ?>" <?php checked( $args['show_location'] ) ?>>
 				<label for="<?php echo esc_attr( $this->get_field_id( 'show_location' ) ) ?>"><?php _e( 'Show donor\'s location', 'charitable' ) ?></label>
 			</p>
 			<p>            
-				<input id="<?php echo esc_attr( $this->get_field_id( 'hide_if_no_donors' ) ) ?>" type="checkbox" name="<?php echo esc_attr( $this->get_field_name( 'hide_if_no_donors' ) ); ?>" <?php checked( $args[ 'hide_if_no_donors' ] ) ?>>
+				<input id="<?php echo esc_attr( $this->get_field_id( 'hide_if_no_donors' ) ) ?>" type="checkbox" name="<?php echo esc_attr( $this->get_field_name( 'hide_if_no_donors' ) ); ?>" <?php checked( $args['hide_if_no_donors'] ) ?>>
 				<label for="<?php echo esc_attr( $this->get_field_id( 'hide_if_no_donors' ) ) ?>"><?php _e( 'Hide if there are no donors', 'charitable' ) ?></label>
 			</p>
 			<?php
@@ -117,30 +117,30 @@ if ( ! class_exists( 'Charitable_Donors_Widget' ) ) :
 		}
 
 		/**
-		 * Update the widget settings in the admin. 
+		 * Update the widget settings in the admin.
 		 *
-		 * @param   array $new_instance         The updated settings. 
-		 * @param   array $new_instance         The old settings. 
+		 * @param   array $new_instance         The updated settings.
+		 * @param   array $new_instance         The old settings.
 		 * @return  void
 		 * @access  public
 		 * @since   1.0.0
 		 */
 		public function update( $new_instance, $old_instance ) {
 			$instance = array();
-			$instance[ 'title' ]                = isset( $new_instance[ 'title' ] )             ? $new_instance[ 'title' ]              : $old_instance[ 'title' ];
-			$instance[ 'number' ]               = isset( $new_instance[ 'number' ] )            ? intval( $new_instance[ 'number' ] )   : $old_instance[ 'number' ];
-			$instance[ 'order' ]                = isset( $new_instance[ 'order' ] )             ? $new_instance[ 'order' ]              : $old_instance[ 'order' ];
-			$instance[ 'campaign_id' ]          = isset( $new_instance[ 'campaign_id' ] ) ? $new_instance[ 'campaign_id' ]           : $old_instance[ 'campaign_id' ];
-			$instance[ 'show_distinct' ]        = isset( $new_instance[ 'show_distinct' ] ) && 'on' == $new_instance[ 'show_distinct' ];
-			$instance[ 'show_location' ]        = isset( $new_instance[ 'show_location' ] ) && 'on' == $new_instance[ 'show_location' ];
-			$instance[ 'show_amount' ]          = isset( $new_instance[ 'show_amount' ] ) && 'on' == $new_instance[ 'show_amount' ];
-			$instance[ 'show_name' ]            = isset( $new_instance[ 'show_name' ] ) && 'on' == $new_instance[ 'show_name' ];
-			$instance[ 'hide_if_no_donors' ]    = isset( $new_instance[ 'hide_if_no_donors' ] ) && 'on' == $new_instance[ 'hide_if_no_donors' ];        
+			$instance['title']             = isset( $new_instance['title'] ) ? $new_instance['title'] : $old_instance['title'];
+			$instance['number']            = isset( $new_instance['number'] ) ? intval( $new_instance['number'] ) : $old_instance['number'];
+			$instance['order']             = isset( $new_instance['order'] ) ? $new_instance['order'] : $old_instance['order'];
+			$instance['campaign_id']       = isset( $new_instance['campaign_id'] ) ? $new_instance['campaign_id'] : $old_instance['campaign_id'];
+			$instance['show_distinct']     = isset( $new_instance['show_distinct'] ) && 'on' == $new_instance['show_distinct'];
+			$instance['show_location']     = isset( $new_instance['show_location'] ) && 'on' == $new_instance['show_location'];
+			$instance['show_amount']       = isset( $new_instance['show_amount'] ) && 'on' == $new_instance['show_amount'];
+			$instance['show_name']         = isset( $new_instance['show_name'] ) && 'on' == $new_instance['show_name'];
+			$instance['hide_if_no_donors'] = isset( $new_instance['hide_if_no_donors'] ) && 'on' == $new_instance['hide_if_no_donors'];
 			return apply_filters( 'charitable_donors_widget_update_instance', $instance, $new_instance, $old_instance );
-		}   
+		}
 
 		/**
-		 * Return parsed array of arguments. 
+		 * Return parsed array of arguments.
 		 *
 		 * @param   mixed[] $instance
 		 * @return  mixed[]
@@ -149,22 +149,22 @@ if ( ! class_exists( 'Charitable_Donors_Widget' ) ) :
 		 */
 		protected function get_parsed_args( $instance ) {
 			$defaults = apply_filters( 'charitable_donors_widget_default_args', array(
-				'title'         => '',
-				'number'        => 10, 
-				'order'         => 'recent',
-				'campaign_id'   => 'all',
-				'show_distinct' => true,
-				'show_location' => false,
-				'show_amount'   => false,
-				'show_name'     => false, 
-				'hide_if_no_donors' => false
+				'title'         	=> '',
+				'number'        	=> 10,
+				'order'         	=> 'recent',
+				'campaign_id'   	=> 'all',
+				'show_distinct' 	=> true,
+				'show_location' 	=> false,
+				'show_amount'   	=> false,
+				'show_name'     	=> false,
+				'hide_if_no_donors' => false,
 			), $instance );
 
 			return wp_parse_args( $instance, $defaults );
 		}
 
 		/**
-		 * Return the donors to display in the widget. 
+		 * Return the donors to display in the widget.
 		 *
 		 * @param   mixed[] $instance
 		 * @return  array
@@ -172,23 +172,22 @@ if ( ! class_exists( 'Charitable_Donors_Widget' ) ) :
 		 * @since   1.0.0
 		 */
 		protected function get_widget_donors( $instance ) {
-			$query_args = array( 
-				'number' => $instance[ 'number' ], 
-				'output' => 'donors'
+			$query_args = array(
+				'number' => $instance['number'],
+				'output' => 'donors',
 			);
 
-			if ( 'amount' == $instance[ 'order' ] ) {
-				$query_args[ 'orderby' ] = 'amount';
+			if ( 'amount' == $instance['order'] ) {
+				$query_args['orderby'] = 'amount';
 			}
 
-			if ( 'current' == $instance[ 'campaign_id' ] ) {
-				$query_args[ 'campaign' ] = charitable_get_current_campaign_id();
-			}
-			elseif ( 'all' != $instance[ 'campaign_id' ] ) {
-				$query_args[ 'campaign' ] = intval( $instance[ 'campaign_id' ] );
+			if ( 'current' == $instance['campaign_id'] ) {
+				$query_args['campaign'] = charitable_get_current_campaign_id();
+			} elseif ( 'all' != $instance['campaign_id'] ) {
+				$query_args['campaign'] = intval( $instance['campaign_id'] );
 			}
 
-			$query_args[ 'distinct_donors' ] = $instance[ 'show_distinct' ];
+			$query_args['distinct_donors'] = $instance['show_distinct'];
 
 			$query_args = apply_filters( 'charitable_donors_widget_donor_query_args', $query_args, $instance );
 
