@@ -87,7 +87,7 @@ if ( ! class_exists( 'Charitable_Campaign_Post_Type' ) ) :
         public function dashboard_columns( $column_names ) {
 
             // the creator as an array for subsequent array manip
-            $creator = array( 'author' => __( 'Campaign Creator', 'charitable' ) );
+            $creator = array( 'author' => __( 'Creator', 'charitable' ) );
 
             // insert after title column
             if( isset( $column_names['title'] ) ){
