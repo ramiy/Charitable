@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * Displays the campaign progress bar.
  *
@@ -14,10 +14,10 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 /**
  * @var Charitable_Campaign
  */
-$campaign = $view_args[ 'campaign' ];
+$campaign = $view_args['campaign'];
 
 if ( ! $campaign->has_goal() ) :
-    return;
+	return;
 endif;
 
 ?>

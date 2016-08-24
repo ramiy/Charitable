@@ -115,8 +115,11 @@ You can post in the [support forum](https://wordpress.org/support/plugin/charita
 
 == Changelog ==
 
+= 1.4.2 = 
+* Fixed a bug that prevented the campaign end date from saving when using Charitable in a non-English installation. [#201](https://github.com/Charitable/Charitable/issues/201)
+
 = 1.4.1 = 
-* The donor address is split over multiple columns in the donation export. [#194]((https://github.com/Charitable/Charitable/issues/194)
+* The donor address is split over multiple columns in the donation export. [#194](https://github.com/Charitable/Charitable/issues/194)
 * In certain cases, credit card validation was getting triggered for non-credit card donations (i.e. PayPal or Offline). This bug has been fixed. [#189]((https://github.com/Charitable/Charitable/issues/189)
 * After a donor makes a successful donation is made, their session is cleared as expected. [#181]((https://github.com/Charitable/Charitable/issues/181)
 * Pending and draft campaigns are now included in the filtering options on the Donations page. [#187]((https://github.com/Charitable/Charitable/issues/187)

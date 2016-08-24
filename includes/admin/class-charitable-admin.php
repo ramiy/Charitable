@@ -143,8 +143,8 @@ final class Charitable_Admin {
             wp_enqueue_script( 'charitable-admin' );
 
             $localized_vars = apply_filters( 'charitable_localized_javascript_vars', array(
-                'suggested_amount_placeholder'              => __( 'Amount', 'charitable' ),
-                'suggested_amount_description_placeholder'  => __( 'Optional Description', 'charitable' )
+                'suggested_amount_description_placeholder' => __( 'Optional Description', 'charitable' ),
+                'suggested_amount_placeholder'             => __( 'Amount', 'charitable' ),
             ) );
 
             wp_localize_script( 'charitable-admin', 'CHARITABLE', $localized_vars );            

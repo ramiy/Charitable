@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Charitable 1.4.1\n"
 "Report-Msgid-Bugs-To: https://www.wpcharitable.com/\n"
-"POT-Creation-Date: 2016-08-16 12:27:03+00:00\n"
+"POT-Creation-Date: 2016-08-24 09:09:17+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -4731,7 +4731,7 @@ msgstr ""
 
 #: includes/admin/campaigns/class-charitable-campaign-post-type.php:251
 #: includes/admin/campaigns/class-charitable-campaign-post-type.php:252
-#: includes/admin/class-charitable-admin.php:146
+#: includes/admin/class-charitable-admin.php:147
 #: templates/shortcodes/my-donations.php:33
 msgid "Amount"
 msgstr ""
@@ -4741,7 +4741,7 @@ msgid "Description (optional)"
 msgstr ""
 
 #: includes/admin/campaigns/class-charitable-campaign-post-type.php:256
-#: includes/admin/class-charitable-admin.php:147
+#: includes/admin/class-charitable-admin.php:146
 msgid "Optional Description"
 msgstr ""
 
@@ -4809,17 +4809,65 @@ msgstr ""
 
 #: includes/admin/class-charitable-admin-pages.php:147
 #: includes/admin/class-charitable-admin-pages.php:148
-#: includes/admin/class-charitable-admin.php:235
+#: includes/admin/class-charitable-admin.php:251
 msgid "Settings"
 msgstr ""
 
-#: includes/admin/class-charitable-admin.php:169
+#: includes/admin/class-charitable-admin.php:151
+msgid "January"
+msgstr ""
+
+#: includes/admin/class-charitable-admin.php:152
+msgid "February"
+msgstr ""
+
+#: includes/admin/class-charitable-admin.php:153
+msgid "March"
+msgstr ""
+
+#: includes/admin/class-charitable-admin.php:154
+msgid "April"
+msgstr ""
+
+#: includes/admin/class-charitable-admin.php:155
+msgid "May"
+msgstr ""
+
+#: includes/admin/class-charitable-admin.php:156
+msgid "June"
+msgstr ""
+
+#: includes/admin/class-charitable-admin.php:157
+msgid "July"
+msgstr ""
+
+#: includes/admin/class-charitable-admin.php:158
+msgid "August"
+msgstr ""
+
+#: includes/admin/class-charitable-admin.php:159
+msgid "September"
+msgstr ""
+
+#: includes/admin/class-charitable-admin.php:160
+msgid "October"
+msgstr ""
+
+#: includes/admin/class-charitable-admin.php:161
+msgid "November"
+msgstr ""
+
+#: includes/admin/class-charitable-admin.php:162
+msgid "December"
+msgstr ""
+
+#: includes/admin/class-charitable-admin.php:185
 msgid ""
 "Thanks for upgrading to Charitable 1.4. <a href='%s'>Find out what's new in "
 "this release</a>."
 msgstr ""
 
-#: includes/admin/class-charitable-admin.php:261
+#: includes/admin/class-charitable-admin.php:277
 #: includes/admin/settings/class-charitable-settings.php:106
 msgid "Extensions"
 msgstr ""
