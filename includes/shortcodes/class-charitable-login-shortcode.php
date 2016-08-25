@@ -35,7 +35,8 @@ if ( ! class_exists( 'Charitable_Login_Shortcode' ) ) :
 
             $defaults = array(
                 'logged_in_message' => __( 'You are already logged in!', 'charitable' ),
-                'redirect'          => esc_url_raw( charitable_get_login_redirect_url() ),
+                'redirect'          => esc_url( charitable_get_login_redirect_url() ),
+                'registration_link' => true,
             );
 
             $args = shortcode_atts( $defaults, $atts, 'charitable_login' );    
@@ -50,6 +51,28 @@ if ( ! class_exists( 'Charitable_Login_Shortcode' ) ) :
                 
                 return ob_get_clean();
             }                    
+
+            if ( $args['registration_link'] ) {
+
+                $registration_link = charitable_get_permalink( 'registration_page' );
+
+                if ( $registration_link === charitable_get_permalink( 'login_page' ) ) {
+
+                    $args['registration_link'] = false;
+
+                } else {
+
+                    if ( isset( $_GET['redirect_to'] ) ) {
+
+                        $registration_link = add_query_arg( 'redirect_to', $_GET['redirect_to'], $registration_link );
+
+                    }
+
+                    $args['registration_link'] = $registration_link;
+
+                }
+
+            }
 
             ob_start();
 

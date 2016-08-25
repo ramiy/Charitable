@@ -148,7 +148,7 @@ if ( ! class_exists( 'Charitable_Registration_Form' ) ) :
 			}
 
 			?>
-			<input type="hidden" name="redirect_to" value="<?php echo esc_url( $redirect ) ?>" />	
+			<input type="hidden" name="redirect_to" value="<?php echo esc_url( $redirect ) ?>" />
 			<?php
 		}
 

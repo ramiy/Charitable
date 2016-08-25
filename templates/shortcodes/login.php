@@ -1,11 +1,14 @@
 <?php
 /**
- * The template used to display the login form. Provided here primarily as a way to make it easier to override using theme templates.
+ * The template used to display the login form. Provided here primarily as a way to make 
+ * it easier to override using theme templates.
  *
- * @author  Studio 164a
+ * Override this template by copying it to yourtheme/charitable/shortcodes/login.php
+ *
+ * @author  Eric Daams
  * @package Charitable/Templates/Account
  * @since   1.0.0
- * @version 1.0.0
+ * @version 1.4.2
  */
 
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
@@ -23,7 +26,10 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 	?>
 	<p>
-		<a href="<?php echo charitable_get_permalink( 'forgot_password_page' ) ?>"><?php _e( 'Forgot Password', 'charitable' ) ?></a>
+		<?php if ( $view_args['registration_link'] ) : ?>
+			<a href="<?php echo esc_url( $view_args['registration_link'] ) ?>"><?php _e( 'Register', 'charitable' ) ?></a>&nbsp;|&nbsp;
+		<?php endif ?>
+		<a href="<?php echo esc_url( charitable_get_permalink( 'forgot_password_page' ) ) ?>"><?php _e( 'Forgot Password', 'charitable' ) ?></a>
 	</p>
 	<?php
 
