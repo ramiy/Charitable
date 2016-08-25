@@ -32,7 +32,8 @@ class Charitable_Registration_Shortcode {
      */
     public static function display( $atts = array() ) {
         $defaults = array(
-            'logged_in_message' => __( 'You are already logged in!', 'charitable' )
+            'logged_in_message' => __( 'You are already logged in!', 'charitable' ),
+            'redirect'          => false,
         );
 
         $args = shortcode_atts( $defaults, $atts, 'charitable_registration' );

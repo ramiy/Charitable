@@ -117,6 +117,42 @@ if ( ! class_exists( 'Charitable_Registration_Form' ) ) :
 		}
 
 		/**
+		 * Adds hidden fields to the start of the registration
+		 *
+		 * @param 	Charitable_Form 	$form
+		 * @return 	void
+		 * @access  public
+		 * @since 	1.0.0
+		 */
+		public function add_hidden_fields( $form ) {
+			$ret = parent::add_hidden_fields( $form );
+
+			if ( false === $ret ) {
+				return;
+			}
+
+			$redirect = false;
+
+			if ( isset( $_GET['redirect_to'] ) && strlen( $_GET['redirect_to'] ) ) {
+
+				$redirect = $_GET['redirect_to'];
+
+			} elseif ( isset( $this->shortcode_args['redirect'] ) && strlen( $this->shortcode_args['redirect'] ) ) {
+
+				$redirect = $this->shortcode_args['redirect'];
+
+			}
+
+			if ( ! $redirect ) {
+				return;
+			}
+
+			?>
+			<input type="hidden" name="redirect_to" value="<?php echo esc_url( $redirect ) ?>" />	
+			<?php
+		}
+
+		/**
 		 * Update registration after form submission.
 		 *
 		 * @return  void
