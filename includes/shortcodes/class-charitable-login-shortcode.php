@@ -31,7 +31,6 @@ if ( ! class_exists( 'Charitable_Login_Shortcode' ) ) :
          * @since   1.0.0
          */
         public static function display( $atts = array() ) {
-            global $wp;        
 
             $defaults = array(
                 'logged_in_message' => __( 'You are already logged in!', 'charitable' ),
@@ -79,6 +78,7 @@ if ( ! class_exists( 'Charitable_Login_Shortcode' ) ) :
             charitable_template( 'shortcodes/login.php', $args );
 
             return apply_filters( 'charitable_login_shortcode', ob_get_clean() );        
+
         }
 
         /**

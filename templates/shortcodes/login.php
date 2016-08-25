@@ -27,7 +27,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 	?>
 	<p>
 		<?php if ( $view_args['registration_link'] ) : ?>
-			<a href="<?php echo esc_url( $view_args['registration_link'] ) ?>"><?php _e( 'Register', 'charitable' ) ?></a>&nbsp;|&nbsp;
+			<a href="<?php echo esc_url( $view_args['registration_link'] ) ?>"><?php echo $view_args['registration_link_text'] ?></a>&nbsp;|&nbsp;
 		<?php endif ?>
 		<a href="<?php echo esc_url( charitable_get_permalink( 'forgot_password_page' ) ) ?>"><?php _e( 'Forgot Password', 'charitable' ) ?></a>
 	</p>

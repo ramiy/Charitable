@@ -189,6 +189,36 @@ if ( ! class_exists( 'Charitable_Registration_Form' ) ) :
 				exit();
 			}
 		}
+
+		/**
+		 * Return the link to the login page, or false if we are not going to display it.
+		 *
+		 * @return  false|string
+		 * @access  public
+		 * @since   1.4.2
+		 */
+		public function get_login_link() {
+
+			if ( false === $this->shortcode_args['login_link_text'] ) {
+				return false;
+			}
+
+            $login_link = charitable_get_permalink( 'login_page' );
+
+            if ( $login_link === charitable_get_permalink( 'registration_page' ) ) {
+                return false;
+            }
+
+            if ( isset( $_GET['redirect_to'] ) ) {
+                $login_link = add_query_arg( 'redirect_to', $_GET['redirect_to'], $login_link );
+            }
+
+            return sprintf( '<a href="%1$s" title="%2$s">%3$s</a>',
+            	esc_url( $login_link ),
+            	esc_attr( $this->shortcode_args['login_link_text'] ),
+            	$this->shortcode_args['login_link_text']
+            );
+        }
 	}
 
 endif; // End class_exists check

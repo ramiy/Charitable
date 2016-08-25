@@ -15,7 +15,7 @@ $form = $view_args['form'];
 /**
  * @hook    charitable_user_registration_before
  */
-do_action( 'charitable_user_registration_before' );
+do_action( 'charitable_user_registration_before', $form );
 
 ?>
 <form method="post" id="charitable-registration-form" class="charitable-form">
@@ -59,4 +59,4 @@ do_action( 'charitable_user_registration_before' );
 /**
  * @hook    charitable_user_registration_after
  */
-do_action( 'charitable_user_registration_after' );
+do_action( 'charitable_user_registration_after', $form );

@@ -847,7 +847,7 @@ if ( ! function_exists( 'charitable_template_donation_processing_content' ) ) :
 endif;
 
 /**********************************************/
-/* ACCOUNT PAGE
+/* ACCOUNT PAGES
 /**********************************************/
 
 if ( ! function_exists( 'charitable_template_forgot_password_content' ) ) :
@@ -912,6 +912,27 @@ if ( ! function_exists( 'charitable_template_reset_password_content' ) ) :
 	}
 
 endif;
+
+if ( ! function_exists( 'charitable_template_form_login_link' ) ) :
+
+	/**
+	 * Display a link to the login form.
+	 *
+	 * @param 	Charitable_Registration_Form $form
+	 * @return 	void
+	 * @since 	1.4.2
+	 */
+	function charitable_template_form_login_link( Charitable_Registration_Form $form ) {
+
+		if ( ! $form->get_login_link() ) {
+			return;
+		}
+
+		printf( '<p>%s</p>', $form->get_login_link() );
+
+	}
+
+endif ;
 
 /**********************************************/
 /* NOTICES
