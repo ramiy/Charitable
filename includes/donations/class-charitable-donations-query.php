@@ -30,14 +30,14 @@ if ( ! class_exists( 'Charitable_Donations_Query' ) ) :
 		public function __construct( $args = array() ) {
 
 			$defaults = array(
-				'output'          => 'donations', // Use 'posts' to get standard post objects.
-				'status'          => false, // Set to an array with statuses to only show certain statuses.
-				'orderby'         => 'date', // Currently only supports 'date'.
-				'order'           => 'DESC',
-				'number'          => 20,
-				'paged'           => 1,
-				'campaign'        => 0,
-				'donor_id'        => 0,
+				'output'   => 'donations', // Use 'posts' to get standard post objects.
+				'status'   => false, // Set to an array with statuses to only show certain statuses.
+				'orderby'  => 'date', // Currently only supports 'date'.
+				'order'    => 'DESC',
+				'number'   => 20,
+				'paged'    => 1,
+				'campaign' => 0,
+				'donor_id' => 0,
 			);
 
 			$this->args = wp_parse_args( $args, $defaults );
@@ -57,21 +57,34 @@ if ( ! class_exists( 'Charitable_Donations_Query' ) ) :
 		 */
 		public function get_donations() {
 
-			$records = $this->query();
+			$records = $this->query();			
 
-			if ( 'donations' != $this->get( 'output' ) ) {
-				return $records;
-			}
+			/**
+			 * Return Donations objects.
+			 */
+			if ( 'donations' == $this->get( 'output' ) ) {
 
-			$objects = array();
-
-			foreach ( $records as $row ) {
-
-				$objects[] = charitable_get_donation( $row->ID );
+				return array_map( 'charitable_get_donation', $records );
 
 			}
 
-			return $objects;
+			$currency_helper = charitable_get_currency_helper();
+
+			/** 
+			 * When the currency uses commas for decimals and periods for thousands, 
+			 * the amount returned from the database needs to be sanitized. 
+			 */
+			if ( $currency_helper->is_comma_decimal() ) {
+
+				foreach ( $records as $i => $row ) {
+
+					$records[ $i ]->amount = $currency_helper->sanitize_database_amount( $row->amount );
+
+				}
+
+			}
+
+			return $records;
 
 		}
 
