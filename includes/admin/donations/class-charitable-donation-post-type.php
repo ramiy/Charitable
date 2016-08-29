@@ -225,8 +225,8 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 
 				case 'id' :
 
-					$title 	 = esc_attr__( 'View Donation Details', 'charitable' );
-					$name 	 = $donation->get_donor()->get_name();
+					$title = esc_attr__( 'View Donation Details', 'charitable' );
+					$name  = $donation->get_donor()->get_name();
 
 					if ( $name ) {
 						$text = sprintf( _x( '#%d by %s', 'number symbol', 'charitable' ),
@@ -239,7 +239,7 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 						);
 					}
 
-					$url 	 = esc_url( add_query_arg( array(
+					$url = esc_url( add_query_arg( array(
 						'post'   => $donation->get_donation_id(),
 						'action' => 'edit',
 					), admin_url( 'post.php' ) ) );

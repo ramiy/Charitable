@@ -9,8 +9,8 @@
 
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
-if ( ! isset( $view_args[ 'email' ] ) ) {
+if ( ! isset( $view_args['email'] ) ) {
     return;
 }
 
-echo $view_args[ 'email' ]->get_body();
+echo $view_args['email']->get_body();

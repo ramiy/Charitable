@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the Charitable package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Charitable 1.4.1\n"
+"Project-Id-Version: Charitable 1.4.1.1\n"
 "Report-Msgid-Bugs-To: https://www.wpcharitable.com/\n"
-"POT-Creation-Date: 2016-08-24 09:09:17+00:00\n"
+"POT-Creation-Date: 2016-08-26 11:08:24+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -4693,95 +4693,99 @@ msgstr ""
 msgid "No benefactor ID provided."
 msgstr ""
 
-#: includes/admin/campaigns/class-charitable-campaign-post-type.php:87
+#: includes/admin/campaigns/class-charitable-campaign-post-type.php:90
+msgid "Creator"
+msgstr ""
+
+#: includes/admin/campaigns/class-charitable-campaign-post-type.php:123
 msgid "Campaign Description"
 msgstr ""
 
-#: includes/admin/campaigns/class-charitable-campaign-post-type.php:94
+#: includes/admin/campaigns/class-charitable-campaign-post-type.php:130
 msgid "Fundraising Goal ($)"
 msgstr ""
 
-#: includes/admin/campaigns/class-charitable-campaign-post-type.php:98
+#: includes/admin/campaigns/class-charitable-campaign-post-type.php:134
 msgid "Leave empty for campaigns without a fundraising goal."
 msgstr ""
 
-#: includes/admin/campaigns/class-charitable-campaign-post-type.php:102
+#: includes/admin/campaigns/class-charitable-campaign-post-type.php:138
 msgid "End Date"
 msgstr ""
 
-#: includes/admin/campaigns/class-charitable-campaign-post-type.php:106
+#: includes/admin/campaigns/class-charitable-campaign-post-type.php:142
 msgid "Leave empty for ongoing campaigns."
 msgstr ""
 
-#: includes/admin/campaigns/class-charitable-campaign-post-type.php:110
+#: includes/admin/campaigns/class-charitable-campaign-post-type.php:146
 msgid "Donation Options"
 msgstr ""
 
-#: includes/admin/campaigns/class-charitable-campaign-post-type.php:117
+#: includes/admin/campaigns/class-charitable-campaign-post-type.php:153
 msgid "Extended Description"
 msgstr ""
 
-#: includes/admin/campaigns/class-charitable-campaign-post-type.php:124
+#: includes/admin/campaigns/class-charitable-campaign-post-type.php:160
 msgid "Campaign Creator"
 msgstr ""
 
-#: includes/admin/campaigns/class-charitable-campaign-post-type.php:248
+#: includes/admin/campaigns/class-charitable-campaign-post-type.php:284
 msgid "Suggested Donation Amounts"
 msgstr ""
 
-#: includes/admin/campaigns/class-charitable-campaign-post-type.php:251
-#: includes/admin/campaigns/class-charitable-campaign-post-type.php:252
+#: includes/admin/campaigns/class-charitable-campaign-post-type.php:287
+#: includes/admin/campaigns/class-charitable-campaign-post-type.php:288
 #: includes/admin/class-charitable-admin.php:147
 #: templates/shortcodes/my-donations.php:33
 msgid "Amount"
 msgstr ""
 
-#: includes/admin/campaigns/class-charitable-campaign-post-type.php:255
+#: includes/admin/campaigns/class-charitable-campaign-post-type.php:291
 msgid "Description (optional)"
 msgstr ""
 
-#: includes/admin/campaigns/class-charitable-campaign-post-type.php:256
+#: includes/admin/campaigns/class-charitable-campaign-post-type.php:292
 #: includes/admin/class-charitable-admin.php:146
 msgid "Optional Description"
 msgstr ""
 
-#: includes/admin/campaigns/class-charitable-campaign-post-type.php:263
+#: includes/admin/campaigns/class-charitable-campaign-post-type.php:299
 msgid "Allow Custom Donations"
 msgstr ""
 
-#: includes/admin/campaigns/class-charitable-campaign-post-type.php:340
+#: includes/admin/campaigns/class-charitable-campaign-post-type.php:376
 msgid "Enter campaign title"
 msgstr ""
 
-#: includes/admin/campaigns/class-charitable-campaign-post-type.php:352
+#: includes/admin/campaigns/class-charitable-campaign-post-type.php:388
 msgid "%d campaign updated."
 msgid_plural "%d campaigns updated."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/campaigns/class-charitable-campaign-post-type.php:353
+#: includes/admin/campaigns/class-charitable-campaign-post-type.php:389
 msgid "1 campaign not updated, somebody is editing it."
 msgstr ""
 
-#: includes/admin/campaigns/class-charitable-campaign-post-type.php:354
+#: includes/admin/campaigns/class-charitable-campaign-post-type.php:390
 msgid "%s campaign not updated, somebody is editing it."
 msgid_plural "%s campaigns not updated, somebody is editing them."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/campaigns/class-charitable-campaign-post-type.php:355
+#: includes/admin/campaigns/class-charitable-campaign-post-type.php:391
 msgid "%s campaign permanently deleted."
 msgid_plural "%s campaigns permanently deleted."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/campaigns/class-charitable-campaign-post-type.php:356
+#: includes/admin/campaigns/class-charitable-campaign-post-type.php:392
 msgid "%s campaign moved to the Trash."
 msgid_plural "%s campaigns moved to the Trash."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/campaigns/class-charitable-campaign-post-type.php:357
+#: includes/admin/campaigns/class-charitable-campaign-post-type.php:393
 msgid "%s campaign restored from the Trash."
 msgid_plural "%s campaigns restored from the Trash."
 msgstr[0] ""
@@ -4809,65 +4813,17 @@ msgstr ""
 
 #: includes/admin/class-charitable-admin-pages.php:147
 #: includes/admin/class-charitable-admin-pages.php:148
-#: includes/admin/class-charitable-admin.php:251
+#: includes/admin/class-charitable-admin.php:235
 msgid "Settings"
 msgstr ""
 
-#: includes/admin/class-charitable-admin.php:151
-msgid "January"
-msgstr ""
-
-#: includes/admin/class-charitable-admin.php:152
-msgid "February"
-msgstr ""
-
-#: includes/admin/class-charitable-admin.php:153
-msgid "March"
-msgstr ""
-
-#: includes/admin/class-charitable-admin.php:154
-msgid "April"
-msgstr ""
-
-#: includes/admin/class-charitable-admin.php:155
-msgid "May"
-msgstr ""
-
-#: includes/admin/class-charitable-admin.php:156
-msgid "June"
-msgstr ""
-
-#: includes/admin/class-charitable-admin.php:157
-msgid "July"
-msgstr ""
-
-#: includes/admin/class-charitable-admin.php:158
-msgid "August"
-msgstr ""
-
-#: includes/admin/class-charitable-admin.php:159
-msgid "September"
-msgstr ""
-
-#: includes/admin/class-charitable-admin.php:160
-msgid "October"
-msgstr ""
-
-#: includes/admin/class-charitable-admin.php:161
-msgid "November"
-msgstr ""
-
-#: includes/admin/class-charitable-admin.php:162
-msgid "December"
-msgstr ""
-
-#: includes/admin/class-charitable-admin.php:185
+#: includes/admin/class-charitable-admin.php:169
 msgid ""
 "Thanks for upgrading to Charitable 1.4. <a href='%s'>Find out what's new in "
 "this release</a>."
 msgstr ""
 
-#: includes/admin/class-charitable-admin.php:277
+#: includes/admin/class-charitable-admin.php:261
 #: includes/admin/settings/class-charitable-settings.php:106
 msgid "Extensions"
 msgstr ""
@@ -6930,7 +6886,7 @@ msgid ""
 msgstr ""
 
 #: includes/public/class-charitable-templates.php:246
-#: templates/shortcodes/login.php:26
+#: templates/shortcodes/login.php:32
 msgid "Forgot Password"
 msgstr ""
 
@@ -6946,10 +6902,19 @@ msgstr ""
 msgid "User Dashboard"
 msgstr ""
 
-#: includes/shortcodes/class-charitable-login-shortcode.php:37
+#: includes/shortcodes/class-charitable-login-shortcode.php:36
 #: includes/shortcodes/class-charitable-registration-shortcode.php:35
 #: templates/shortcodes/logged-in.php:17
 msgid "You are already logged in!"
+msgstr ""
+
+#: includes/shortcodes/class-charitable-login-shortcode.php:38
+#: templates/shortcodes/registration.php:54
+msgid "Register"
+msgstr ""
+
+#: includes/shortcodes/class-charitable-registration-shortcode.php:37
+msgid "Signed up already? Login instead."
 msgstr ""
 
 #: includes/user-management/class-charitable-forgot-password-form.php:68
@@ -7348,10 +7313,6 @@ msgstr ""
 
 #: templates/shortcodes/profile.php:55
 msgid "Update"
-msgstr ""
-
-#: templates/shortcodes/registration.php:54
-msgid "Register"
 msgstr ""
 
 #: templates/widgets/donation-stats.php:27

@@ -158,7 +158,7 @@ if ( ! class_exists( 'Charitable_Templates' ) ) :
 		 * @since   1.0.0
 		 */
 		protected function get_donate_template( $template ) {
-			
+
 			/* If a donation ID is included, make sure it belongs to the current user. */
 			$donation_id = get_query_var( 'donation_id', false );
 

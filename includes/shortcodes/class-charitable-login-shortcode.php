@@ -33,9 +33,9 @@ if ( ! class_exists( 'Charitable_Login_Shortcode' ) ) :
         public static function display( $atts = array() ) {
 
             $defaults = array(
-                'logged_in_message' => __( 'You are already logged in!', 'charitable' ),
-                'redirect'          => esc_url( charitable_get_login_redirect_url() ),
-                'registration_link' => true,
+                'logged_in_message'      => __( 'You are already logged in!', 'charitable' ),
+                'redirect'               => esc_url( charitable_get_login_redirect_url() ),
+                'registration_link_text' => __( 'Register', 'charitable' ),
             );
 
             $args = shortcode_atts( $defaults, $atts, 'charitable_login' );    
@@ -51,7 +51,11 @@ if ( ! class_exists( 'Charitable_Login_Shortcode' ) ) :
                 return ob_get_clean();
             }                    
 
-            if ( $args['registration_link'] ) {
+            if ( false == $args['registration_link_text'] ) {
+
+                $args['registration_link'] = false;
+
+            } else {
 
                 $registration_link = charitable_get_permalink( 'registration_page' );
 
