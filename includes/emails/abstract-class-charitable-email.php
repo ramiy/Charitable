@@ -429,6 +429,11 @@ if ( ! class_exists( 'Charitable_Email' ) ) :
 				'callback'      => array( $this, 'get_donation_summary' ),
 			);
 
+			$fields['donation_amount'] = array(
+				'description'   => __( 'The total amount donated', 'charitable' ),
+				'callback' 		=> array( $this, 'get_donation_total' ),
+			);
+
 			$fields['donation_date'] = array(
 				'description'   => __( 'The date the donation was made', 'charitable' ),
 				'callback'      => array( $this, 'get_donation_date' ),
@@ -437,6 +442,16 @@ if ( ! class_exists( 'Charitable_Email' ) ) :
 			$fields['donation_status'] = array(
 				'description'   => __( 'The status of the donation (pending, paid, etc.)', 'charitable' ),
 				'callback'      => array( $this, 'get_donation_status' ),
+			);
+
+			$fields['campaigns'] = array(
+				'description'   => __( 'The campaigns that were donated to', 'charitable' ),
+				'callback'      => array( $this, 'get_campaigns_for_donation' ),
+			);
+
+			$fields['campaign_categories'] = array(
+				'description'   => __( 'The categories of the campaigns that were donated to', 'charitable' ),
+				'callback'      => array( $this, 'get_campaign_categories_for_donation' ),
 			);
 
 			return $fields;
@@ -565,6 +580,21 @@ if ( ! class_exists( 'Charitable_Email' ) ) :
 		}
 
 		/**
+		 * Return the total amount donated.
+		 *
+		 * @return  string
+		 * @access  public
+		 * @since   1.4.2
+		 */
+		public function get_donation_total( $value ) {
+			if ( ! $this->has_valid_donation() ) {
+				return $value;
+			}
+
+			return charitable_format_money( $this->donation->get_total_donation_amount() );
+		}
+
+		/**
 		 * Returns the date the donation was made.
 		 *
 		 * @param   string $value
@@ -599,6 +629,40 @@ if ( ! class_exists( 'Charitable_Email' ) ) :
 		}
 
 		/**
+		 * Return the campaigns donated to.
+		 *
+		 * @return  string
+		 * @access  public
+		 * @since   1.4.2
+		 */
+		public function get_campaigns_for_donation( $value ) {
+			if ( ! $this->has_valid_donation() ) {
+				return $value;
+			}
+
+			return $this->donation->get_campaigns_donated_to();
+		}
+
+		/**
+		 * Return the categories of the campaigns that were donated to.
+		 *
+		 * @return  string
+		 * @access  public
+		 * @since   1.4.2
+		 */
+		public function get_campaign_categories_for_donation( $value ) {
+			if ( ! $this->has_valid_donation() ) {
+				return $value;
+			}
+
+			$categories = $this->donation->get_campaign_categories_donated_to( 'cammpaign_category', array(
+				'fields' => 'names'
+			) );
+
+			return implode( ', ', $categories );
+		}
+
+		/**
 		 * Add donation content fields' fake data for previews.
 		 *
 		 * @param   array $fields
@@ -617,10 +681,10 @@ if ( ! class_exists( 'Charitable_Email' ) ) :
 				return $fields;
 			}
 
-			$fields['donor']            = 'John Deere';
-			$fields['donor_first_name'] = 'John';
-			$fields['donor_email']      = 'john@example.com';
-			$fields['donor_address']    = charitable_get_location_helper()->get_formatted_address( array(
+			$fields['donor']               = 'John Deere';
+			$fields['donor_first_name']    = 'John';
+			$fields['donor_email']         = 'john@example.com';
+			$fields['donor_address']       = charitable_get_location_helper()->get_formatted_address( array(
 				'first_name' => 'John',
 				'last_name'  => 'Deere',
 				'company'    => 'Deere & Company',
@@ -631,11 +695,14 @@ if ( ! class_exists( 'Charitable_Email' ) ) :
 				'country'    => 'US',
 			) );
 			// Yes, this is in fact the address of John Deere headquarters :)
-			$fields['donor_phone']      = '1300 000 000';
-			$fields['donation_id']      = 164;
-			$fields['donation_summary'] = __( 'Fake Campaign: $50.00', 'charitable' ) . PHP_EOL;
-			$fields['donation_date']    = date_i18n( get_option( 'date_format' ) );
-			$fields['donation_status']  = __( 'Paid', 'charitable' );
+			$fields['donor_phone']         = '1300 000 000';
+			$fields['donation_id']         = 164;
+			$fields['donation_summary']    = __( 'Fake Campaign: $50.00', 'charitable' ) . PHP_EOL;
+			$fields['donation_amount']     = '$50.00';
+			$fields['donation_date']       = date_i18n( get_option( 'date_format' ) );
+			$fields['donation_status']     = __( 'Paid', 'charitable' );
+			$fields['campaigns'] 		   = 'Fake Campaign';
+			$fields['campaign_categories'] = 'Fake Category';
 			return $fields;
 		}
 
