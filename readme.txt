@@ -120,8 +120,10 @@ You can post in the [support forum](https://wordpress.org/support/plugin/charita
 * Included two new parameters in the `[charitable_registration]` shortcode: `redirect` sets the default page that people should be redirect to after registering, and `login_link_text` sets the text of the login link (see above). [#208](https://github.com/Charitable/Charitable/issues/208) and [#205](https://github.com/Charitable/Charitable/issues/205)
 * Also included a new parameter in the `[charitable_login]` shortcode: `registration_link_text` sets the text of the login link (see above). [#204](https://github.com/Charitable/Charitable/issues/204)
 * Added a column for the campaign creator to the campaigns page in the WordPress dashboard. [#166](https://github.com/Charitable/Charitable/issues/166)
+* Added three new fields that can be displayed in donation-related emails, like the donation receipt or admin notification: the total amount donated, the campaign(s) that received the donation and the categories of the campaign(s) that received the donation. [#202](https://github.com/Charitable/Charitable/issues/202) and [#203](https://github.com/Charitable/Charitable/issues/203)
 * Made sure that setting the `order` parameter in the `[campaigns]` shortcode works with lowercase and uppercase. `ASC`, `DESC`, `asc` and `desc` are all valid options now. [#206](https://github.com/Charitable/Charitable/issues/206)
 * Fixed a bug that prevented the campaign end date from saving when using Charitable in a non-English installation. [#201](https://github.com/Charitable/Charitable/issues/201)
+* Fixed a bug that prevented the comments section from appearing on campaigns when modal donations were enabled. [#210](https://github.com/Charitable/Charitable/issues/210)
 
 = 1.4.1 = 
 * The donor address is split over multiple columns in the donation export. [#194](https://github.com/Charitable/Charitable/issues/194)
