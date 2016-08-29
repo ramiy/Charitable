@@ -655,7 +655,7 @@ if ( ! class_exists( 'Charitable_Email' ) ) :
 				return $value;
 			}
 
-			$categories = $this->donation->get_campaign_categories_donated_to( 'cammpaign_category', array(
+			$categories = $this->donation->get_campaign_categories_donated_to( 'campaign_category', array(
 				'fields' => 'names'
 			) );
 
