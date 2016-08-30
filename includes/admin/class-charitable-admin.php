@@ -167,7 +167,9 @@ final class Charitable_Admin {
 
         $notices = array(
             'release-140' => sprintf( __( "Thanks for upgrading to Charitable 1.4. <a href='%s'>Find out what's new in this release</a>.", 'charitable' ), 
-                'https://www.wpcharitable.com/charitable-1-4-features-responsive-campaign-grids-a-new-shortcode?utm_source=notice&utm_medium=wordpress-dashboard&utm_campaign=release-notes' ), 
+                'https://www.wpcharitable.com/charitable-1-4-features-responsive-campaign-grids-a-new-shortcode?utm_source=notice&utm_medium=wordpress-dashboard&utm_campaign=release-notes&utm_content=release-140' ),
+            'release-142' => sprintf( __( "In Charitable 1.4.2, we have improved the login and registration forms. <a href='%s'>Find out how</a>.", 'charitable' ),
+                'https://www.wpcharitable.com/how-we-improved-logins-and-registrations-in-charitable/?utm_source=notice&utm_medium=wordpress-dashboard&utm_campaign=release-notes&utm_content=release-142' ),
         );
 
         foreach ( $notices as $notice => $message ) {

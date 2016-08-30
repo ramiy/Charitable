@@ -136,7 +136,11 @@ if ( ! class_exists( 'Charitable_Upgrade' ) ) :
 					),
 					'show_release_140_upgrade_notice' => array(
 						'version' => '1.4.0',
-						'notice' => 'release-140'
+						'notice' => 'release-140',
+					),
+					'show_release_142_upgrade_notice' => array(
+						'version' => '1.4.2',
+						'notice' => 'release-142',
 					),
 				);
 

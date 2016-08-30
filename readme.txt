@@ -124,6 +124,7 @@ You can post in the [support forum](https://wordpress.org/support/plugin/charita
 * Made sure that setting the `order` parameter in the `[campaigns]` shortcode works with lowercase and uppercase. `ASC`, `DESC`, `asc` and `desc` are all valid options now. [#206](https://github.com/Charitable/Charitable/issues/206)
 * Fixed a bug that prevented the campaign end date from saving when using Charitable in a non-English installation. [#201](https://github.com/Charitable/Charitable/issues/201)
 * Fixed a bug that prevented the comments section from appearing on campaigns when modal donations were enabled. [#210](https://github.com/Charitable/Charitable/issues/210)
+* Fixed a bug that caused a PHP warning when trying to use the `site_url` email shortcode parameter in emails.
 
 = 1.4.1 = 
 * The donor address is split over multiple columns in the donation export. [#194](https://github.com/Charitable/Charitable/issues/194)

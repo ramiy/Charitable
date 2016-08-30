@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Charitable 1.4.2\n"
 "Report-Msgid-Bugs-To: https://www.wpcharitable.com/\n"
-"POT-Creation-Date: 2016-08-30 00:36:56+00:00\n"
+"POT-Creation-Date: 2016-08-30 06:30:35+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -4813,7 +4813,7 @@ msgstr ""
 
 #: includes/admin/class-charitable-admin-pages.php:147
 #: includes/admin/class-charitable-admin-pages.php:148
-#: includes/admin/class-charitable-admin.php:235
+#: includes/admin/class-charitable-admin.php:237
 msgid "Settings"
 msgstr ""
 
@@ -4823,7 +4823,13 @@ msgid ""
 "this release</a>."
 msgstr ""
 
-#: includes/admin/class-charitable-admin.php:261
+#: includes/admin/class-charitable-admin.php:171
+msgid ""
+"In Charitable 1.4.2, we have improved the login and registration forms. <a "
+"href='%s'>Find out how</a>."
+msgstr ""
+
+#: includes/admin/class-charitable-admin.php:263
 #: includes/admin/settings/class-charitable-settings.php:106
 msgid "Extensions"
 msgstr ""
@@ -5290,27 +5296,27 @@ msgstr ""
 msgid "Charitable needs to fix incorrect donation dates."
 msgstr ""
 
-#: includes/admin/upgrades/class-charitable-upgrade.php:164
+#: includes/admin/upgrades/class-charitable-upgrade.php:168
 msgid "Charitable was installed."
 msgstr ""
 
-#: includes/admin/upgrades/class-charitable-upgrade.php:205
+#: includes/admin/upgrades/class-charitable-upgrade.php:209
 msgid ""
 "Charitable needs to complete an upgrade that was started earlier. Click <a "
 "href=\"%s\">here</a> to continue the upgrade."
 msgstr ""
 
-#: includes/admin/upgrades/class-charitable-upgrade.php:236
+#: includes/admin/upgrades/class-charitable-upgrade.php:240
 msgid "Click <a href=\"%s\">here</a> to start the upgrade."
 msgstr ""
 
-#: includes/admin/upgrades/class-charitable-upgrade.php:300
-#: includes/admin/upgrades/class-charitable-upgrade.php:335
+#: includes/admin/upgrades/class-charitable-upgrade.php:304
+#: includes/admin/upgrades/class-charitable-upgrade.php:339
 msgid "You do not have permission to do Charitable upgrades"
 msgstr ""
 
-#: includes/admin/upgrades/class-charitable-upgrade.php:300
-#: includes/admin/upgrades/class-charitable-upgrade.php:335
+#: includes/admin/upgrades/class-charitable-upgrade.php:304
+#: includes/admin/upgrades/class-charitable-upgrade.php:339
 #: includes/licensing/class-charitable-plugin-updater.php:292
 msgid "Error"
 msgstr ""
