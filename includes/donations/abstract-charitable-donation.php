@@ -377,6 +377,17 @@ if ( ! class_exists( 'Charitable_Abstract_Donation' ) ) :
 		}
 
 		/**
+		 * Returns the donation type.
+		 *
+		 * @return  int
+		 * @access  public
+		 * @since   1.5.0
+		 */
+		public function get_donation_type() {
+			return $this->donation_type;
+		}
+
+		/**
 		 * Returns the customer note attached to the donation.
 		 *
 		 * @return  string
