@@ -275,7 +275,7 @@ if ( ! class_exists( 'Charitable_Email' ) ) :
 				),
 				'site_url'  => array(
 					'description'   => __( 'Your website URL', 'charitable' ),
-					'callback'      => home_url(),
+					'callback'      => 'home_url',
 				),
 			), $this );
 		}
