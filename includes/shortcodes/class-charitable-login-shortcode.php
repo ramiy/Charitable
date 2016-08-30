@@ -51,7 +51,7 @@ if ( ! class_exists( 'Charitable_Login_Shortcode' ) ) :
                 return ob_get_clean();
             }                    
 
-            if ( false == $args['registration_link_text'] ) {
+            if ( false == $args['registration_link_text'] || 'false' == $args['registration_link_text'] ) {
 
                 $args['registration_link'] = false;
 

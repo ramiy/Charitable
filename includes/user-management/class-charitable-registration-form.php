@@ -199,7 +199,7 @@ if ( ! class_exists( 'Charitable_Registration_Form' ) ) :
 		 */
 		public function get_login_link() {
 
-			if ( false === $this->shortcode_args['login_link_text'] ) {
+			if ( false == $this->shortcode_args['login_link_text'] || 'false' == $this->shortcode_args['login_link_text'] ) {
 				return false;
 			}
 
