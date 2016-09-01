@@ -84,11 +84,11 @@ if ( ! class_exists( 'Charitable_Notices' ) ) :
 		 * @access  public
 		 * @since 	1.0.0
 		 */
-		public function add_notice( $message, $type, $key = false ) {
+		public function add_notice( $message, $type, $key = false, $dismissible = false  ) {
 			if ( false === $key ) {
-				$this->notices[ $type ][] = $message;
+				$this->notices[ $type ][] = array( 'message' => $message, 'dismissible' => $dismissible );
 			} else {
-				$this->notices[ $type ][ $key ] = $message;
+				$this->notices[ $type ][ $key ] = array( 'message' => $message, 'dismissible' => $dismissible );
 			}
 		}
 
@@ -118,8 +118,8 @@ if ( ! class_exists( 'Charitable_Notices' ) ) :
 		 * @access  public
 		 * @since 	1.0.0
 		 */
-		public function add_error( $message, $key = false ) {
-			$this->add_notice( $message, 'error', $key );
+		public function add_error( $message, $key = false, $dismissible = false ) {
+			$this->add_notice( $message, 'error', $key, $dismissible );
 		}
 
 		/**
@@ -131,8 +131,8 @@ if ( ! class_exists( 'Charitable_Notices' ) ) :
 		 * @access  public
 		 * @since 	1.0.0
 		 */
-		public function add_warning( $message, $key = false ) {
-			$this->add_notice( $message, 'warning', $key );
+		public function add_warning( $message, $key = false, $dismissible = false ) {
+			$this->add_notice( $message, 'warning', $key, $dismissible );
 		}
 
 		/**
@@ -144,8 +144,8 @@ if ( ! class_exists( 'Charitable_Notices' ) ) :
 		 * @access  public
 		 * @since 	1.0.0
 		 */
-		public function add_success( $message, $key = false ) {
-			$this->add_notice( $message, 'success', $key );
+		public function add_success( $message, $key = false, $dismissible = false ) {
+			$this->add_notice( $message, 'success', $key, $dismissible );
 		}
 
 		/**
@@ -157,8 +157,8 @@ if ( ! class_exists( 'Charitable_Notices' ) ) :
 		 * @access  public
 		 * @since 	1.0.0
 		 */
-		public function add_info( $message, $key = false ) {
-			$this->add_notice( $message, 'info', $key );
+		public function add_info( $message, $key = false, $dismissible = false ) {
+			$this->add_notice( $message, 'info', $key, $dismissible );
 		}
 
 		/**

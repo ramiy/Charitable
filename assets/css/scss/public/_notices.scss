@@ -12,4 +12,22 @@
             list-style: none;
         }        
     }
+
+    &.notice-error {
+
+    }
+
+    &.notice-warning {
+
+    }
+
+    &.notice-info {
+        border-left-color: #f89d35; 
+        background-color: #fef4e8;
+    }
+
+    &.updated {
+
+    }
+
 }

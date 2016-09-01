@@ -165,24 +165,61 @@ final class Charitable_Admin {
             return;
         }
 
-        $notices = array(
-            'release-140' => sprintf( __( "Thanks for upgrading to Charitable 1.4. <a href='%s'>Find out what's new in this release</a>.", 'charitable' ), 
-                'https://www.wpcharitable.com/charitable-1-4-features-responsive-campaign-grids-a-new-shortcode?utm_source=notice&utm_medium=wordpress-dashboard&utm_campaign=release-notes' ), 
-        );
+        $notice_helper = charitable_get_notices();
 
-        foreach ( $notices as $notice => $message ) {
+        $notice_helper->add_info( sprintf( __( "Thanks for upgrading to Charitable 1.4. <a href='%s'>Find out what's new in this release</a>.", 'charitable' ), 
+                'https://www.wpcharitable.com/charitable-1-4-features-responsive-campaign-grids-a-new-shortcode?utm_source=notice&utm_medium=wordpress-dashboard&utm_campaign=release-notes' ), 'release-140', true );
 
-            if ( ! get_transient( 'charitable_' . $notice . '_notice' ) ) {
+        $notices = $notice_helper->get_notices();
+
+        if ( ! wp_script_is( 'charitable-admin-notice' ) ) {
+                wp_enqueue_script( 'charitable-admin-notice' );
+        }
+
+        // errors
+        foreach ( $notice_helper->get_errors() as $index => $notice ) {
+
+            if ( $notice['dismissible'] && ! get_transient( 'charitable_' . $index . '_notice' ) ) {
                 continue;
             }
 
-            if ( ! wp_script_is( 'charitable-admin-notice' ) ) {
-                wp_enqueue_script( 'charitable-admin-notice' );
-            }
-
-            echo '<div class="updated notice charitable-notice" data-notice="' . esc_attr( $notice ) . '" style="border-left-color: #f89d35; background-color: #fef4e8;"><p>' . $message . '</p></div>';
+            printf( '<div class="notice-error notice charitable-notice %s" data-notice="' . esc_attr( $index ) . '"><p>' . $notice['message'] . '</p></div>', $notice['dismissible'] ? 'is-dismissible' : '' );
             
         }
+
+        // warnings
+        foreach ( $notice_helper->get_warnings() as $index => $notice ) {
+
+            if ( $notice['dismissible'] && ! get_transient( 'charitable_' . $index . '_notice' ) ) {
+                continue;
+            }
+
+            printf( '<div class="notice-warning notice charitable-notice %s" data-notice="' . esc_attr( $index ) . '"><p>' . $notice['message'] . '</p></div>', $notice['dismissible'] ? 'is-dismissible' : '' );
+            
+        }
+
+        // info
+        foreach ( $notice_helper->get_info_notices() as $index => $notice ) {
+
+            if ( $notice['dismissible'] && ! get_transient( 'charitable_' . $index . '_notice' ) ) {
+                continue;
+            }
+
+            printf( '<div class="notice-info notice charitable-notice %s" data-notice="' . esc_attr( $index ) . '"><p>' . $notice['message'] . '</p></div>', $notice['dismissible'] ? 'is-dismissible' : '' );
+            
+        }
+
+        // success
+        foreach ( $notice_helper->get_success_notices() as $index => $notice ) {
+
+            if ( $notice['dismissible'] && ! get_transient( 'charitable_' . $index . '_notice' ) ) {
+                continue;
+            }
+
+            printf( '<div class="updated notice charitable-notice %s" data-notice="' . esc_attr( $index ) . '"><p>' . $notice['message'] . '</p></div>', $notice['dismissible'] ? 'is-dismissible' : '' );
+            
+        }
+
     }
 
     /**
