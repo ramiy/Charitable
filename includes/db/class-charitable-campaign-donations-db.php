@@ -571,7 +571,7 @@ if ( ! class_exists( 'Charitable_Campaign_Donations_DB' ) ) :
 			$sql_where_clauses = array();
 
 			if ( isset( $args['campaign_id'] ) ) {
-				
+
 				list( $campaigns_in, $campaigns_parameters ) = $this->get_in_clause_params( $args['campaign_id'] );
 
 				$sql_where_clauses[] = "cd.campaign_id IN ( $campaigns_in )";
@@ -579,17 +579,17 @@ if ( ! class_exists( 'Charitable_Campaign_Donations_DB' ) ) :
 
 			}
 
-			if ( isset( $args['status'] ) ) { 
+			if ( isset( $args['status'] ) ) {
 
 				$sql_where_clauses[] = 'p.post_status = %s';
 				$parameters[]        = $args['status'];
 
-			} else { 
+			} else {
 				// if ALL: select all valid statuses
 				$statuses            = array_keys( charitable_get_valid_donation_statuses() );
 				$in                  = $this->get_in_clause( $statuses, '%s' );
 				$sql_where_clauses[] = "p.post_status IN ( $in )";
-				$parameters          = array_merge( $parameters, $statuses ); 
+				$parameters          = array_merge( $parameters, $statuses );
 			}
 
 			if ( isset( $args['start_date'] ) ) {

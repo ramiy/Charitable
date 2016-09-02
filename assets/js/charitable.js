@@ -233,11 +233,11 @@ CHARITABLE = window.CHARITABLE || {};
             $body.on( 'blur', '.custom-donation-input', on_change_custom_donation_amount );            
 
             // Handle donation form submission            
-            if ( 1 === self.form.data( 'use-ajax' ) ) {
-                $body.on( 'submit', '#charitable-donation-form', on_submit );
-            }
+            $body.on( 'submit', '#charitable-donation-form', on_submit );
 
-            $body.on( 'charitable:form:process', process_donation );
+            if ( 1 === self.form.data( 'use-ajax' ) ) {
+                $body.on( 'charitable:form:process', process_donation );
+            }
 
             $body.trigger( 'charitable:form:initialize', self );
 

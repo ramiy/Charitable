@@ -1,18 +1,18 @@
-<?php 
+<?php
 /**
- * Charitable Admin Hooks. 
- * 
+ * Charitable Admin Hooks.
+ *
  * @package     Charitable/Functions/Admin
  * @version     1.3.0
  * @author      Eric Daams
  * @copyright   Copyright (c) 2015, Studio 164a
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License  
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 /**
- * Enqueue Charitable's admin-area scripts & styles. 
+ * Enqueue Charitable's admin-area scripts & styles.
  *
  * @see     Charitable_Admin::admin_enqueue_scripts()
  */
@@ -54,20 +54,20 @@ add_filter( 'media_buttons_context', array( Charitable_Admin::get_instance(), 'r
 add_filter( 'plugin_action_links_' . plugin_basename( charitable()->get_path() ), array( Charitable_Admin::get_instance(), 'add_plugin_action_links' ) );
 
 /**
- * Add a link to the settings page from the Charitable plugin block. 
+ * Add a link to the settings page from the Charitable plugin block.
  *
  * @see     Charitable_Admin::add_plugin_row_meta()
  */
 add_filter( 'plugin_row_meta', array( Charitable_Admin::get_instance(), 'add_plugin_row_meta' ), 10, 2 );
 
 /**
- * Export donations. 
+ * Export donations.
  *
  * @see     Charitable_Admin::export_donations()
  */
 add_action( 'charitable_export_donations', array( Charitable_Admin::get_instance(), 'export_donations' ) );
 
-/** 
+/**
  * Add Charitable menu.
  *
  * @see     Charitable_Admin_Pages::add_menu()

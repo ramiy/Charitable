@@ -57,7 +57,7 @@ if ( ! class_exists( 'Charitable_Donations_Query' ) ) :
 		 */
 		public function get_donations() {
 
-			$records = $this->query();			
+			$records = $this->query();
 
 			/**
 			 * Return Donations objects.
@@ -70,9 +70,9 @@ if ( ! class_exists( 'Charitable_Donations_Query' ) ) :
 
 			$currency_helper = charitable_get_currency_helper();
 
-			/** 
-			 * When the currency uses commas for decimals and periods for thousands, 
-			 * the amount returned from the database needs to be sanitized. 
+			/**
+			 * When the currency uses commas for decimals and periods for thousands,
+			 * the amount returned from the database needs to be sanitized.
 			 */
 			if ( $currency_helper->is_comma_decimal() ) {
 
@@ -81,7 +81,6 @@ if ( ! class_exists( 'Charitable_Donations_Query' ) ) :
 					$records[ $i ]->amount = $currency_helper->sanitize_database_amount( $row->amount );
 
 				}
-
 			}
 
 			return $records;
@@ -115,7 +114,7 @@ if ( ! class_exists( 'Charitable_Donations_Query' ) ) :
 		 * @since   1.4.0
 		 */
 		public function setup_orderby() {
-			
+
 			$orderby = $this->get( 'orderby', false );
 
 			if ( ! $orderby ) {

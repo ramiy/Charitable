@@ -102,7 +102,7 @@ if ( ! class_exists( 'Charitable_Export' ) ) :
 		/**
 		 * Receives a row of data and maps it to the keys defined in the columns.
 		 *
-		 * @param   object|array    $data
+		 * @param   object|array $data
 		 * @return  mixed
 		 * @access  protected
 		 * @since   1.0.0
