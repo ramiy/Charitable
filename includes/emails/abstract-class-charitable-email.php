@@ -939,7 +939,7 @@ if ( ! class_exists( 'Charitable_Email' ) ) :
 		/**
 		 * Add campaign content fields' fake data for previews.
 		 *
-		 * @param   array $fields
+		 * @param   array            $fields
 		 * @param   Charitable_Email $email
 		 * @return  array
 		 * @access  public

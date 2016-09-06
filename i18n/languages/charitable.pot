@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the Charitable package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Charitable 1.4.2\n"
+"Project-Id-Version: Charitable 1.4.2.1\n"
 "Report-Msgid-Bugs-To: https://www.wpcharitable.com/\n"
-"POT-Creation-Date: 2016-08-30 06:30:35+00:00\n"
+"POT-Creation-Date: 2016-09-02 04:11:48+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -4735,7 +4735,7 @@ msgstr ""
 
 #: includes/admin/campaigns/class-charitable-campaign-post-type.php:287
 #: includes/admin/campaigns/class-charitable-campaign-post-type.php:288
-#: includes/admin/class-charitable-admin.php:147
+#: includes/admin/class-charitable-admin.php:179
 #: templates/shortcodes/my-donations.php:33
 msgid "Amount"
 msgstr ""
@@ -4745,7 +4745,7 @@ msgid "Description (optional)"
 msgstr ""
 
 #: includes/admin/campaigns/class-charitable-campaign-post-type.php:292
-#: includes/admin/class-charitable-admin.php:146
+#: includes/admin/class-charitable-admin.php:178
 msgid "Optional Description"
 msgstr ""
 
@@ -4813,23 +4813,23 @@ msgstr ""
 
 #: includes/admin/class-charitable-admin-pages.php:147
 #: includes/admin/class-charitable-admin-pages.php:148
-#: includes/admin/class-charitable-admin.php:237
+#: includes/admin/class-charitable-admin.php:275
 msgid "Settings"
 msgstr ""
 
-#: includes/admin/class-charitable-admin.php:169
+#: includes/admin/class-charitable-admin.php:207
 msgid ""
 "Thanks for upgrading to Charitable 1.4. <a href='%s'>Find out what's new in "
 "this release</a>."
 msgstr ""
 
-#: includes/admin/class-charitable-admin.php:171
+#: includes/admin/class-charitable-admin.php:209
 msgid ""
 "In Charitable 1.4.2, we have improved the login and registration forms. <a "
 "href='%s'>Find out how</a>."
 msgstr ""
 
-#: includes/admin/class-charitable-admin.php:263
+#: includes/admin/class-charitable-admin.php:301
 #: includes/admin/settings/class-charitable-settings.php:106
 msgid "Extensions"
 msgstr ""
@@ -4984,15 +4984,15 @@ msgid_plural "%s donations restored from the Trash."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:873
+#: includes/admin/donations/class-charitable-donation-post-type.php:874
 msgid "Handled automatically when $donation->update_status() is called."
 msgstr ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:883
+#: includes/admin/donations/class-charitable-donation-post-type.php:884
 msgid "Donation status set to %s."
 msgstr ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:887
+#: includes/admin/donations/class-charitable-donation-post-type.php:888
 #: includes/donations/abstract-charitable-donation.php:583
 msgid "Donation status updated from %s to %s."
 msgstr ""

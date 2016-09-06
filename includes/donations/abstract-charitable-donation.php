@@ -246,7 +246,7 @@ if ( ! class_exists( 'Charitable_Abstract_Donation' ) ) :
 		 */
 		public function get_campaign_categories_donated_to( $taxonomy = 'campaign_category', $args = array() ) {
 			$campaigns = wp_list_pluck( $this->get_campaign_donations(), 'campaign_id' );
-			
+
 			return wp_get_object_terms( $campaigns, $taxonomy, $args );
 		}
 

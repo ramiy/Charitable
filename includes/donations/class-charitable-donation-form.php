@@ -614,9 +614,10 @@ if ( ! class_exists( 'Charitable_Donation_Form' ) ) :
 						}
 					} elseif ( isset( $field['type'] ) ) {
 
-						$data_type = $field['data_type'];
-						$field_type = $field['type'];
-						$default = 'checkbox' == $field_type ? false : '';
+						$data_type                    = $field['data_type'];
+						$field_type                   = $field['type'];
+						$default                      = 'checkbox' == $field_type ? false : '';						
+
 						$values[ $data_type ][ $key ] = isset( $submitted[ $key ] ) ? $submitted[ $key ] : $default;
 
 					}
