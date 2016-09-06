@@ -20,10 +20,14 @@
                         withCredentials: true
                     },
                     success: function ( response ) {
-                        console.log( response );
+                        if ( window.console && window.console.log ) {
+                            console.log( response );
+                        }
                     },
                     error: function( error ) {
-                        console.log( error );
+                        if ( window.console && window.console.log ) {
+                            console.log( error );
+                        }
                     }
                 }).fail(function ( response ) {
                     if ( window.console && window.console.log ) {
