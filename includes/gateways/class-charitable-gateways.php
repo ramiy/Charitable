@@ -84,8 +84,8 @@ if ( ! class_exists( 'Charitable_Gateways' ) ) :
 		 */
 		public function register_gateways() {
 			$this->gateways = apply_filters( 'charitable_payment_gateways', array(
-				'offline' 	=> 'Charitable_Gateway_Offline',
-				'paypal'	=> 'Charitable_Gateway_Paypal',
+				'offline' => 'Charitable_Gateway_Offline',
+				'paypal'  => 'Charitable_Gateway_Paypal',
 			) );
 		}
 
@@ -234,6 +234,18 @@ if ( ! class_exists( 'Charitable_Gateways' ) ) :
 		 */
 		public function is_active_gateway( $gateway_id ) {
 			return array_key_exists( $gateway_id, $this->get_active_gateways() );
+		}
+
+		/**
+		 * Checks whether the submitted gateway is valid.
+		 *
+		 * @param 	string $gateway
+		 * @return  boolean
+		 * @access  public
+		 * @since   1.4.3
+		 */
+		public function is_valid_gateway( $gateway ) {
+			return apply_filters( 'charitable_is_valid_gateway', array_key_exists( $gateway, $this->gateways ), $gateway );
 		}
 
 		/**

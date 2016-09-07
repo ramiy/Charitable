@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * Renders the end date field for the Campaign post type.
  *

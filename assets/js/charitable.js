@@ -12,8 +12,7 @@ CHARITABLE = window.CHARITABLE || {};
         this.errors = [];
         this.form = form;
         this.pause_processing = false;
-        this.get_amount_callback = false;
-
+        
         var self = this;
         var $body = $( 'body' );
 
@@ -250,7 +249,7 @@ CHARITABLE = window.CHARITABLE || {};
 
         if ( false === CHARITABLE.forms_initialized ) {
             init();
-        } 
+        }
 
     };
 
@@ -279,10 +278,6 @@ CHARITABLE = window.CHARITABLE || {};
      * @return  string
      */
     Donation_Form.prototype.get_amount = function() {
-        if ( 'function' === typeof ( this.get_amount_callback ) ) {
-            return this.get_amount_callback();
-        }
-
         var amount = suggested = parseFloat( this.form.find( '[name=donation_amount]:checked' ).val() );
 
         if ( isNaN( suggested ) ) {

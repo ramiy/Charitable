@@ -163,8 +163,11 @@ if ( ! class_exists( 'Charitable_Registration_Form' ) ) :
 		public static function save_registration() {
 			$form = new Charitable_Registration_Form();
 
-			if ( ! $form->validate_nonce() ) {
+			if ( ! $form->validate_nonce() || ! $form->validate_honeypot() ) {
+
+				charitable_get_notices()->add_error( __( 'There was an error with processing your form submission. Please reload the page and try again.', 'charitable' ) );
 				return;
+
 			}
 
 			$fields = $form->get_fields();
@@ -175,7 +178,7 @@ if ( ! class_exists( 'Charitable_Registration_Form' ) ) :
 			}
 
 			$submitted = apply_filters( 'charitable_registration_values', $_POST, $fields, $form );
-			
+
 			$user      = new Charitable_User();
 			$user_id   = $user->update_profile( $submitted, array_keys( $fields ) );
 

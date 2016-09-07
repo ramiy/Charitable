@@ -725,7 +725,7 @@ if ( ! class_exists( 'Charitable_Campaign' ) ) :
 			list( $month, $day, $year ) = explode( ' ', $value );
 
 			$day   = trim( $day, ',' );
-			
+
 			$month = 1 + array_search( $month, array_values( $wp_locale->month ) );
 
 			return date( 'Y-m-d 00:00:00', mktime( 0, 0, 0, $month, $day, $year ) );

@@ -542,8 +542,11 @@ if ( ! class_exists( 'Charitable_Donation_Form' ) ) :
 		 * @since   1.0.0
 		 */
 		public function validate_submission() {
-			if ( ! $this->validate_nonce() ) {
+			if ( ! $this->validate_nonce() || ! $this->validate_honeypot() ) {
+
+				charitable_get_notices()->add_error( __( 'There was an error with processing your form submission. Please reload the page and try again.', 'charitable' ) );
 				return false;
+
 			}
 
 			$has_required_fields = $this->check_required_fields( $this->get_merged_fields() );
@@ -552,9 +555,24 @@ if ( ! class_exists( 'Charitable_Donation_Form' ) ) :
 				return false;
 			}
 
+			/* Ensure that a valid amount has been submitted. */
 			if ( self::get_donation_amount() <= 0 && ! apply_filters( 'charitable_permit_0_donation', false ) ) {
-				charitable_get_notices()->add_error( sprintf( __( 'You must donate more than %s.', 'charitable' ), charitable_format_money( '0' ) ) );
+
+				charitable_get_notices()->add_error( sprintf(
+					__( 'You must donate more than %s.', 'charitable' ),
+					charitable_format_money( '0' )
+				) );
+
 				return false;
+
+			}
+
+			/* Validate the gateway. */
+			if ( ! Charitable_Gateways::get_instance()->is_valid_gateway( $_POST['gateway'] ) ) {
+
+				charitable_get_notices()->add_error( __( 'The gateway submitted is not valid.', 'charitable' ) );
+				return false;
+
 			}
 
 			return apply_filters( 'charitable_validate_donation_form_submission', true, $this );
@@ -575,8 +593,8 @@ if ( ! class_exists( 'Charitable_Donation_Form' ) ) :
 				'gateway'   => $submitted['gateway'],
 				'campaigns' => array(
 					array(
-						'campaign_id'   => $submitted['campaign_id'],
-						'amount'        => self::get_donation_amount(),
+						'campaign_id' => $submitted['campaign_id'],
+						'amount'      => self::get_donation_amount(),
 					),
 				),
 			);
@@ -614,9 +632,9 @@ if ( ! class_exists( 'Charitable_Donation_Form' ) ) :
 						}
 					} elseif ( isset( $field['type'] ) ) {
 
-						$data_type                    = $field['data_type'];
-						$field_type                   = $field['type'];
-						$default                      = 'checkbox' == $field_type ? false : '';						
+						$data_type  = $field['data_type'];
+						$field_type = $field['type'];
+						$default    = 'checkbox' == $field_type ? false : '';
 
 						$values[ $data_type ][ $key ] = isset( $submitted[ $key ] ) ? $submitted[ $key ] : $default;
 
