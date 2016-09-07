@@ -281,7 +281,7 @@ CHARITABLE = window.CHARITABLE || {};
         var amount = suggested = parseFloat( this.form.find( '[name=donation_amount]:checked' ).val() );
 
         if ( isNaN( suggested ) ) {
-            amount = parseFloat( this.form.find( '[name=custom_donation_amount]' ).val() );
+            amount = parseFloat( this.form.find( '.custom-donation-input' ).val() );
         }
 
         if ( isNaN( amount ) || amount <= 0 ) {
