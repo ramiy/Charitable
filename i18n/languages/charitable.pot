@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the Charitable package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Charitable 1.4.2\n"
+"Project-Id-Version: Charitable 1.4.3\n"
 "Report-Msgid-Bugs-To: https://www.wpcharitable.com/\n"
-"POT-Creation-Date: 2016-09-06 03:50:24+00:00\n"
+"POT-Creation-Date: 2016-09-07 04:09:24+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -4675,11 +4675,11 @@ msgstr ""
 msgid "Western Cape"
 msgstr ""
 
-#: includes/abstracts/class-charitable-form.php:357
+#: includes/abstracts/class-charitable-form.php:359
 msgid "Unable to submit form. Please try again."
 msgstr ""
 
-#: includes/abstracts/class-charitable-form.php:443
+#: includes/abstracts/class-charitable-form.php:464
 msgid ""
 "There were problems with your form submission. The following required "
 "fields were not filled out:"
@@ -6370,20 +6370,34 @@ msgstr ""
 msgid "Payment"
 msgstr ""
 
-#: includes/donations/class-charitable-donation-form.php:556
+#: includes/donations/class-charitable-donation-form.php:547
+#: includes/user-management/class-charitable-forgot-password-form.php:93
+#: includes/user-management/class-charitable-profile-form.php:383
+#: includes/user-management/class-charitable-registration-form.php:168
+#: includes/user-management/class-charitable-reset-password-form.php:146
+msgid ""
+"There was an error with processing your form submission. Please reload the "
+"page and try again."
+msgstr ""
+
+#: includes/donations/class-charitable-donation-form.php:562
 #: includes/public/class-charitable-public.php:115
 msgid "You must donate more than %s."
 msgstr ""
 
-#: includes/donations/class-charitable-donation-form.php:752
+#: includes/donations/class-charitable-donation-form.php:573
+msgid "The gateway submitted is not valid."
+msgstr ""
+
+#: includes/donations/class-charitable-donation-form.php:770
 msgid "There are no active payment gateways."
 msgstr ""
 
-#: includes/donations/class-charitable-donation-form.php:758
+#: includes/donations/class-charitable-donation-form.php:776
 msgid "Enable one now"
 msgstr ""
 
-#: includes/donations/class-charitable-donation-form.php:824
+#: includes/donations/class-charitable-donation-form.php:842
 msgid "Your donation could not be processed. No payment gateway was selected."
 msgstr ""
 
@@ -6939,19 +6953,19 @@ msgstr ""
 msgid "Email Address"
 msgstr ""
 
-#: includes/user-management/class-charitable-forgot-password-form.php:97
+#: includes/user-management/class-charitable-forgot-password-form.php:99
 msgid "<strong>ERROR</strong>: Enter a username or email address."
 msgstr ""
 
-#: includes/user-management/class-charitable-forgot-password-form.php:116
+#: includes/user-management/class-charitable-forgot-password-form.php:118
 msgid "<strong>ERROR</strong>: Invalid username or email."
 msgstr ""
 
-#: includes/user-management/class-charitable-forgot-password-form.php:137
+#: includes/user-management/class-charitable-forgot-password-form.php:139
 msgid "We were unable to send your password reset email."
 msgstr ""
 
-#: includes/user-management/class-charitable-forgot-password-form.php:142
+#: includes/user-management/class-charitable-forgot-password-form.php:144
 msgid ""
 "Your password reset request has been received. Please check your email for "
 "a link to reset your password."
@@ -7028,17 +7042,17 @@ msgstr ""
 msgid "New Password (again)"
 msgstr ""
 
-#: includes/user-management/class-charitable-profile-form.php:484
+#: includes/user-management/class-charitable-profile-form.php:485
 msgid ""
 "charitable_user_profile_after_fields hook has been removed. Use "
 "charitable_form_after_fields instead."
 msgstr ""
 
-#: includes/user-management/class-charitable-reset-password-form.php:108
+#: includes/user-management/class-charitable-reset-password-form.php:107
 msgid "New Password"
 msgstr ""
 
-#: includes/user-management/class-charitable-reset-password-form.php:118
+#: includes/user-management/class-charitable-reset-password-form.php:117
 msgid "Repeat New Password"
 msgstr ""
 
