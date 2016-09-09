@@ -95,3 +95,17 @@ add_filter( 'charitable_settings_tab_fields_advanced', array( Charitable_Advance
  */
 add_filter( 'charitable_settings_tab_fields', array( Charitable_Gateway_Settings::get_instance(), 'add_individual_gateway_fields' ), 5 );
 add_filter( 'charitable_settings_tab_fields', array( Charitable_Email_Settings::get_instance(), 'add_individual_email_fields' ), 5 );
+
+/**
+ * Add the PayPal sandbox testing tool to the gateway settings page.
+ *
+ * @see     Charitable_Gateway_Settings::render_paypal_sandbox_test()
+ */
+add_action( 'charitable_after_admin_settings', array( Charitable_Gateway_Settings::get_instance(), 'render_paypal_sandbox_test' ) );
+
+/**
+ * Redirect to the PayPal gateway settings after being returned from PayPal.
+ *
+ * @see     Charitable_Gateway_Settings::redirect_paypal_sandbox_test_return()
+ */
+add_action( 'charitable_paypal_sandbox_test_return', array( Charitable_Gateway_Settings::get_instance(), 'redirect_paypal_sandbox_test_return' ) );

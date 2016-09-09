@@ -142,6 +142,10 @@ if ( ! class_exists( 'Charitable_Upgrade' ) ) :
 						'version' => '1.4.2',
 						'notice' => 'release-142',
 					),
+					'show_release_143_paypal_notice' => array(
+						'version' => '1.4.3',
+						'notice' => 'release-143-paypal',
+					),
 				);
 
 			}

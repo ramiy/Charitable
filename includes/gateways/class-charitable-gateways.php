@@ -227,7 +227,7 @@ if ( ! class_exists( 'Charitable_Gateways' ) ) :
 		/**
 		 * Returns whether the passed gateway is active.
 		 *
-		 * @param 	string 		$gateway_id
+		 * @param 	string $gateway_id
 		 * @return 	boolean
 		 * @access  public
 		 * @since 	1.0.0

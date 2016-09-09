@@ -676,6 +676,8 @@ if ( ! class_exists( 'Charitable' ) ) :
 
 				$action = $_REQUEST['charitable_action'];
 
+				error_log( 'charitable_' . $action );
+
 				do_action( 'charitable_' . $action, 20 );
 			}
 		}

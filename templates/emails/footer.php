@@ -9,10 +9,6 @@
 
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
-if ( ! isset( $view_args[ 'email' ] ) ) {
-    return;
-}
-
 // For gmail compatibility, including CSS styles in head/body are stripped out therefore styles need to be inline. These variables contain rules which are added to the template inline.
 $template_footer = "
     border-top:0;

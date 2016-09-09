@@ -9,11 +9,17 @@
 
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
-if ( ! isset( $view_args[ 'email' ] ) ) {
-    return;
-}
+$email = $view_args['email'];
 
-$email = $view_args[ 'email' ];
+if ( is_object( $email ) && is_a( $email, 'Charitable_Email' ) ) {
+
+    $headline = $email->get_headline();
+
+} elseif ( array_key_exists( 'headline', $view_args ) ) {
+
+    $headline = $view_args['headline'];
+
+}
 
 // For gmail compatibility, including CSS styles in head/body are stripped out therefore styles need to be inline. These variables contain rules which are added to the template inline. !important; is a gmail hack to prevent styles being stripped if it doesn't like something.
 $body = "
@@ -90,7 +96,7 @@ $header_img = false;
                                 <table border="0" cellpadding="0" cellspacing="0" width="520" id="template_header" style="<?php echo $template_header; ?>" bgcolor="#ffffff">
                                     <tr>
                                         <td>
-                                            <h1 style="<?php echo $header_content_h1; ?>"><?php echo $email->get_headline() ?></h1>
+                                            <h1 style="<?php echo $header_content_h1; ?>"><?php echo $headline ?></h1>
                                         </td>
                                     </tr>
                                 </table>

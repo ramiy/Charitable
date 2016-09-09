@@ -31,6 +31,7 @@ if ( ! class_exists( 'Charitable_Registration_Shortcode' ) ) :
 		 * @since   1.0.0
 		 */
 		public static function display( $atts = array() ) {
+
 			$defaults = array(
 				'logged_in_message' => __( 'You are already logged in!', 'charitable' ),
 				'redirect'          => false,
@@ -39,9 +40,9 @@ if ( ! class_exists( 'Charitable_Registration_Shortcode' ) ) :
 
 			$args = shortcode_atts( $defaults, $atts, 'charitable_registration' );
 
-			ob_start();
-
 			if ( is_user_logged_in() ) {
+
+				ob_start();
 
 				charitable_template( 'shortcodes/logged-in.php', $args );
 
@@ -54,6 +55,7 @@ if ( ! class_exists( 'Charitable_Registration_Shortcode' ) ) :
 			) );
 
 			return apply_filters( 'charitable_registration_shortcode', ob_get_clean() );
+
 		}
 	}
 

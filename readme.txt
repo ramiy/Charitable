@@ -3,8 +3,8 @@ Contributors: WPCharitable, ericdaams
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paypal%40164a%2ecom
 Tags: donations, donate, donation plugin, fundraising, fundraising plugin, non-profit, non-profits, charity, churches, commerce, crowdfunding, crowd funding, paypal donations, paypal, stripe, stripe donations, campaigns, gifts, giving, wordpress fundraising, wordpress donations, wordpress donation plugin, peer to peer fundraising, peer to peer fundraiser, peer fundraising, social fundraising
 Requires at least: 4.1
-Tested up to: 4.6
-Stable tag: 1.4.2
+Tested up to: 4.6.1
+Stable tag: 1.4.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -116,6 +116,8 @@ You can post in the [support forum](https://wordpress.org/support/plugin/charita
 == Changelog ==
 
 = 1.4.3 = 
+* Added honeypot form validation for the donation form and registration, password reset, forgot password and profile forms. This is an anti-spam measure designed to prevent fake donations from being created by bots.
+* Prevent donations from being created if an invalid email address or payment gateway is used. 
 * Ensure that client-side validation is always performed for donations, even when the gateway integration has not been updated for compatibility with the AJAX-driven donations introduced in version 1.3. The only gateway that we know of that falls into this category is Pronamic iDEAL, so this is a nice update if you are using Pronamic iDEAL.
 
 = 1.4.2 =

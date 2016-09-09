@@ -106,3 +106,10 @@ add_action( 'charitable_paypal_web_accept', array( 'Charitable_Gateway_Paypal', 
  * @see     charitable_load_donation_form_script()
  */
 add_action( 'charitable_donation_form_before', 'charitable_load_donation_form_script' );
+
+/**
+ * Add a special listener for the PayPal sandbox test.
+ *
+ * @see     Charitable_Gateway_Settings::process_paypal_sandbox_test()
+ */
+add_action( 'charitable_process_ipn_paypal_sandbox_test', array( 'Charitable_Gateway_Paypal', 'process_sandbox_test_ipn' ) );

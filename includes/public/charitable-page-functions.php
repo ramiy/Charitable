@@ -427,7 +427,7 @@ function charitable_is_campaign_page() {
  * take into account permalinks that have been filtered by plugins/themes.
  *
  * @see     charitable_get_permalink
- * 
+ *
  * @global  WP_Rewrite  $wp_rewrite
  * @param   string      $url
  * @param   array       $args
@@ -624,7 +624,7 @@ add_filter( 'charitable_is_page_reset_password_page', 'charitable_is_reset_passw
  */
 function charitable_get_registration_page_permalink( $url, $args = array() ) {
 	$page = charitable_get_option( 'registration_page', 'wp' );
-	$url = 'wp' == $page ? wp_registration_url() : get_permalink( $page );
+	$url  = 'wp' == $page ? wp_registration_url() : get_permalink( $page );
 	return $url;
 }
 

@@ -18,6 +18,7 @@ ob_start();
             <a href="<?php echo esc_url( add_query_arg( array( 'tab' => $tab ), admin_url( 'admin.php?page=charitable-settings' ) ) ) ?>" class="nav-tab <?php echo $active_tab == $tab ? 'nav-tab-active' : '' ?>"><?php echo $name ?></a>
         <?php endforeach ?>
     </h2>
+    <?php do_action( 'charitable_before_admin_settings', $group ) ?>
     <form method="post" action="options.php">
         <table class="form-table">
         <?php
@@ -29,6 +30,7 @@ ob_start();
             submit_button();
         ?>
     </form>
+    <?php do_action( 'charitable_after_admin_settings', $group ) ?>
 </div>
 <?php
 echo ob_get_clean();

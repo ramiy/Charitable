@@ -179,8 +179,18 @@ if ( ! class_exists( 'Charitable_Registration_Form' ) ) :
 
 			$submitted = apply_filters( 'charitable_registration_values', $_POST, $fields, $form );
 
-			$user      = new Charitable_User();
-			$user_id   = $user->update_profile( $submitted, array_keys( $fields ) );
+			if ( ! isset( $submitted['user_email'] ) || ! is_email( $submitted['user_email'] ) ) {
+
+				charitable_get_notices()->add_error( sprintf(
+					__( '%s is not a valid email address.', 'charitable' ),
+					$submitted['user_email']
+				) );
+
+				return false;
+			}
+
+			$user    = new Charitable_User();
+			$user_id = $user->update_profile( $submitted, array_keys( $fields ) );
 
 			/**
 			 * If the user was successfully created, redirect to the login redirect URL.
@@ -206,22 +216,22 @@ if ( ! class_exists( 'Charitable_Registration_Form' ) ) :
 				return false;
 			}
 
-            $login_link = charitable_get_permalink( 'login_page' );
+			$login_link = charitable_get_permalink( 'login_page' );
 
-            if ( $login_link === charitable_get_permalink( 'registration_page' ) ) {
-                return false;
-            }
+			if ( charitable_get_permalink( 'registration_page' ) === $login_link ) {
+				return false;
+			}
 
-            if ( isset( $_GET['redirect_to'] ) ) {
-                $login_link = add_query_arg( 'redirect_to', $_GET['redirect_to'], $login_link );
-            }
+			if ( isset( $_GET['redirect_to'] ) ) {
+				$login_link = add_query_arg( 'redirect_to', $_GET['redirect_to'], $login_link );
+			}
 
-            return sprintf( '<a href="%1$s" title="%2$s">%3$s</a>',
-            	esc_url( $login_link ),
-            	esc_attr( $this->shortcode_args['login_link_text'] ),
-            	$this->shortcode_args['login_link_text']
-            );
-        }
+			return sprintf( '<a href="%1$s" title="%2$s">%3$s</a>',
+				esc_url( $login_link ),
+				esc_attr( $this->shortcode_args['login_link_text'] ),
+				$this->shortcode_args['login_link_text']
+			);
+		}
 	}
 
 endif; // End class_exists check

@@ -210,6 +210,22 @@ if ( ! class_exists( 'Charitable_Admin' ) ) :
 				'https://www.wpcharitable.com/how-we-improved-logins-and-registrations-in-charitable/?utm_source=notice&utm_medium=wordpress-dashboard&utm_campaign=release-notes&utm_content=release-142' ),
 			);
 
+			if ( Charitable_Gateways::get_instance()->is_active_gateway( 'paypal' ) ) {
+
+				$notices['release-143-paypal'] = sprintf( __( "PayPal is upgrading its SSL certificates. <a href='%s'>Test your integration now to avoid disruption.</a>", 'charitable' ),
+					esc_url( add_query_arg( array(
+		                'page'         => 'charitable-settings',
+		                'tab'          => 'gateways',
+		                'group'        => 'gateways_paypal',
+		            ), admin_url( 'admin.php#paypal-sandbox-test' ) ) )
+		        );
+
+			} else {
+
+				delete_transient( 'charitable_release-143-paypal_notice' );
+
+			}
+
 			foreach ( $notices as $notice => $message ) {
 
 				if ( ! get_transient( 'charitable_' . $notice . '_notice' ) ) {

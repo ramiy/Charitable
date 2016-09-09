@@ -76,6 +76,14 @@ if ( ! class_exists( 'Charitable_Gateway_Paypal' ) ) :
 				),
 			);
 
+			$settings['disable_ipn_verification'] = array(
+				'type' 	   => 'checkbox',
+				'title'	   => __( 'Disable IPN Verification', 'charitable' ),
+				'priority' => 10,
+				'default'  => 0,
+				'help' 	   => __( 'If you are having problems with donations not getting marked as Paid, you can enable this option. Your website will use a slightly less secure method for verifying donations.', 'charitable' ),
+			);
+
 			return $settings;
 		}
 
@@ -175,7 +183,7 @@ if ( ! class_exists( 'Charitable_Gateway_Paypal' ) ) :
 		 * @static
 		 * @since   1.0.0
 		 */
-		public static function process_ipn() {
+		public static function process_ipn() {			
 
 			/* We only accept POST requests */
 			if ( isset( $_SERVER['REQUEST_METHOD'] ) && 'POST' != $_SERVER['REQUEST_METHOD'] ) {
@@ -183,24 +191,22 @@ if ( ! class_exists( 'Charitable_Gateway_Paypal' ) ) :
 			}
 
 			$gateway = new Charitable_Gateway_Paypal();
-
-			$data = $gateway->get_encoded_ipn_data();
+			$data    = $gateway->get_encoded_ipn_data();
 
 			if ( empty( $data ) ) {
 				return false;
 			}
 
-			if ( ! $gateway->paypal_ipn_verification( $data ) ) {
+			if ( ! $this->get_value( 'disable_ipn_verification' ) && ! $gateway->paypal_ipn_verification( $data ) ) {				
 				return false;
 			}
 
 			$defaults = array(
-				'txn_type' => '',
+				'txn_type'       => '',
 				'payment_status' => '',
 			);
 
-			$data = wp_parse_args( $data, $defaults );
-
+			$data        = wp_parse_args( $data, $defaults );
 			$donation_id = isset( $data['custom'] ) ? absint( $data['custom'] ) : 0;
 
 			if ( ! $donation_id ) {
@@ -410,6 +416,7 @@ if ( ! class_exists( 'Charitable_Gateway_Paypal' ) ) :
 		 * @since   1.0.0
 		 */
 		public function paypal_ipn_verification( $data ) {
+			
 			$remote_post_vars = array(
 				'method'           => 'POST',
 				'timeout'          => 45,
@@ -520,6 +527,77 @@ if ( ! class_exists( 'Charitable_Gateway_Paypal' ) ) :
 		public static function get_gateway_id() {
 			return self::ID;
 		}
+
+		/**
+         * Receives the IPN from PayPal after the sandbox test and attempts to verify the result.
+         *
+         * @return  void
+         * @access  public
+         * @static
+         * @since   1.4.3
+         */
+        public static function process_sandbox_test_ipn() {
+
+            $gateway   = new Charitable_Gateway_Paypal();
+            $data      = $gateway->get_encoded_ipn_data();
+
+            // if ( empty( $data ) ) {
+            // 	return;
+            // }
+
+            $succeeded = ! empty( $data ) && $gateway->paypal_ipn_verification( $data );
+
+            if ( $succeeded ) {
+
+                $result  = 'succeeded';
+                $subject = __( 'Your PayPal integration is working', 'charitable' );
+                $message = __( '<p>Good news! We successfuly received the Instant Payment Notification from PayPal and were able to verify it with them.</p>', 'charitable' );
+                $message .= __( '<p>This means that your website is all set to continue receiving donations through PayPal. You should not experience any issues when PayPal upgrades its SSL certificates.</p>', 'charitable' );
+                $message .= __( '<p>Cheers<br />Eric & Wes', 'charitable' );
+
+            } else {
+
+                $result  = 'failed';
+                $subject = __( 'Your PayPal test failed', 'charitable' );
+                $message = __( '<p>We received the Instant Payment Notification from PayPal but were not able to verify its authenticity.</p>', 'charitable' );
+                $message .= __( '<p>Unfortunately, this means that you are likely to face problems with your PayPal donations from October 2016 onwards. Your donors will still be able to proceed to PayPal and make their donation, but their donations will not be automatically marked as Paid in your WordPress dashboard.</p>', 'charitable' );
+                $message .= __( '<h4>Two ways you can fix this</h4>', 'charitable' );
+                $message .= __( '<p>As a short-term fix, <strong>you can disable IPN verification</strong>. This makes your donation verification process less secure, but should allow your donations to continue getting marked as Paid. To set this up, log into your WordPress dashboard and go to <em>Charitable</em> > <em>Settings</em> > <em>Payment Gateways</em>, select your PayPal settings and enable the "Disable IPN Verification" setting.', 'charitable' );
+                $message .= __( '<p>For a long term solution, <strong>we recommend contacting your host</strong>. Please refer them to <a href="https://www.paypal-knowledge.com/infocenter/index?page=content&widgetview=true&id=FAQ1766&viewlocale=en_US">the upgrade information provided by PayPal</a>.</p>', 'charitable' );
+                $message .= __( '<p>Cheers<br />Eric & Wes', 'charitable' );
+
+            }
+
+            /* Store the result. */
+            update_option( 'charitable_paypal_sandbox_test', $result );
+
+            /* Set a transient for the admin notice. */
+            set_transient( 'charitable_paypal-sandbox-test_notice', 1 );
+
+            /* Send an email to the site admin. */
+            ob_start();
+
+            charitable_template( 'emails/header.php', array( 'email' => null, 'headline' => $subject ) );
+
+            echo $message;
+
+            charitable_template( 'emails/footer.php' );
+
+            $message = ob_get_clean();
+
+            $headers  = "From: Charitable <support@wpcharitable.com>\r\n";
+            $headers .= "Reply-To: support@wpcharitable.com\r\n";
+            $headers .= "Content-Type: text/html; charset=utf-8\r\n";
+
+            /* Send an email to the site administrator letting them know. */
+            $sent = wp_mail(
+                get_option( 'admin_email' ),
+                $subject,
+                $message,
+                $headers
+            );
+
+        }
 	}
 
 endif; // End class_exists check

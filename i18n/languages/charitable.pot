@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Charitable 1.4.3\n"
 "Report-Msgid-Bugs-To: https://www.wpcharitable.com/\n"
-"POT-Creation-Date: 2016-09-09 04:25:47+00:00\n"
+"POT-Creation-Date: 2016-09-09 15:50:12+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -24,7 +24,7 @@ msgstr ""
 "X-Poedit-Bookmarks: \n"
 "X-Textdomain-Support: yes\n"
 
-#: charitable.php:693 charitable.php:704
+#: charitable.php:695 charitable.php:706
 msgid "Cheatin&#8217; huh?"
 msgstr ""
 
@@ -4813,7 +4813,7 @@ msgstr ""
 
 #: includes/admin/class-charitable-admin-pages.php:147
 #: includes/admin/class-charitable-admin-pages.php:148
-#: includes/admin/class-charitable-admin.php:275
+#: includes/admin/class-charitable-admin.php:291
 msgid "Settings"
 msgstr ""
 
@@ -4829,7 +4829,13 @@ msgid ""
 "href='%s'>Find out how</a>."
 msgstr ""
 
-#: includes/admin/class-charitable-admin.php:301
+#: includes/admin/class-charitable-admin.php:215
+msgid ""
+"PayPal is upgrading its SSL certificates. <a href='%s'>Test your "
+"integration now to avoid disruption.</a>"
+msgstr ""
+
+#: includes/admin/class-charitable-admin.php:317
 #: includes/admin/settings/class-charitable-settings.php:106
 msgid "Extensions"
 msgstr ""
@@ -5296,27 +5302,27 @@ msgstr ""
 msgid "Charitable needs to fix incorrect donation dates."
 msgstr ""
 
-#: includes/admin/upgrades/class-charitable-upgrade.php:168
+#: includes/admin/upgrades/class-charitable-upgrade.php:172
 msgid "Charitable was installed."
 msgstr ""
 
-#: includes/admin/upgrades/class-charitable-upgrade.php:209
+#: includes/admin/upgrades/class-charitable-upgrade.php:213
 msgid ""
 "Charitable needs to complete an upgrade that was started earlier. Click <a "
 "href=\"%s\">here</a> to continue the upgrade."
 msgstr ""
 
-#: includes/admin/upgrades/class-charitable-upgrade.php:240
+#: includes/admin/upgrades/class-charitable-upgrade.php:244
 msgid "Click <a href=\"%s\">here</a> to start the upgrade."
 msgstr ""
 
-#: includes/admin/upgrades/class-charitable-upgrade.php:304
-#: includes/admin/upgrades/class-charitable-upgrade.php:339
+#: includes/admin/upgrades/class-charitable-upgrade.php:308
+#: includes/admin/upgrades/class-charitable-upgrade.php:343
 msgid "You do not have permission to do Charitable upgrades"
 msgstr ""
 
-#: includes/admin/upgrades/class-charitable-upgrade.php:304
-#: includes/admin/upgrades/class-charitable-upgrade.php:339
+#: includes/admin/upgrades/class-charitable-upgrade.php:308
+#: includes/admin/upgrades/class-charitable-upgrade.php:343
 #: includes/licensing/class-charitable-plugin-updater.php:292
 msgid "Error"
 msgstr ""
@@ -5600,6 +5606,61 @@ msgstr ""
 
 #: includes/admin/views/settings/licenses.php:42
 msgid "We could not validate this license"
+msgstr ""
+
+#: includes/admin/views/settings/paypal-sandbox-test.php:25
+msgid ""
+"We haven't received a notification from PayPal yet. Refresh this page in a "
+"few minutes. We will also send you an email to notify you when we receive "
+"the notification from PayPal."
+msgstr ""
+
+#: includes/admin/views/settings/paypal-sandbox-test.php:36
+msgid ""
+"<strong>Success!</strong> We received a notification from PayPal and were "
+"able to perform the security check. Looks like you're all set for now."
+msgstr ""
+
+#: includes/admin/views/settings/paypal-sandbox-test.php:41
+msgid ""
+"<strong>Failed</strong> We received a notification from PayPal but were not "
+"able to perform the security check."
+msgstr ""
+
+#: includes/admin/views/settings/paypal-sandbox-test.php:49
+msgid "Sandbox Test Donation"
+msgstr ""
+
+#: includes/admin/views/settings/paypal-sandbox-test.php:65
+msgid "Run a Test Donation"
+msgstr ""
+
+#: includes/admin/views/settings/paypal-sandbox-test.php:70
+msgid ""
+"<strong>Important:</strong> After September 30, 2016, PayPal is upgrading "
+"the SSL certificates used to secure its web sites and API endpoints."
+msgstr ""
+
+#: includes/admin/views/settings/paypal-sandbox-test.php:71
+msgid ""
+"This upgrade should not have an impact on your donors, but if your "
+"website's server is using out-of-date technology it may prevent donations "
+"from being automatically marked as Paid by Charitable."
+msgstr ""
+
+#: includes/admin/views/settings/paypal-sandbox-test.php:73
+msgid ""
+"To prepare for this update, we strongly recommend creating a <a "
+"href=\"%s\">PayPal sandbox account</a> and testing a donation in the "
+"sandbox using the form below."
+msgstr ""
+
+#: includes/admin/views/settings/paypal-sandbox-test.php:79
+msgid "Sandbox Seller Email Address"
+msgstr ""
+
+#: includes/admin/views/settings/paypal-sandbox-test.php:84
+msgid "Make a Test Donation"
 msgstr ""
 
 #: includes/admin/views/upgrades-page/page.php:32
@@ -6381,6 +6442,7 @@ msgid ""
 msgstr ""
 
 #: includes/donations/class-charitable-donation-form.php:562
+#: includes/user-management/class-charitable-registration-form.php:185
 msgid "%s is not a valid email address."
 msgstr ""
 
@@ -6746,94 +6808,168 @@ msgstr ""
 msgid "Find out more."
 msgstr ""
 
-#: includes/gateways/class-charitable-gateway-paypal.php:104
+#: includes/gateways/class-charitable-gateway-paypal.php:81
+msgid "Disable IPN Verification"
+msgstr ""
+
+#: includes/gateways/class-charitable-gateway-paypal.php:84
+msgid ""
+"If you are having problems with donations not getting marked as Paid, you "
+"can enable this option. Your website will use a slightly less secure method "
+"for verifying donations."
+msgstr ""
+
+#: includes/gateways/class-charitable-gateway-paypal.php:112
 msgid "Missing PayPal email address. Unable to proceed with payment."
 msgstr ""
 
-#: includes/gateways/class-charitable-gateway-paypal.php:261
+#: includes/gateways/class-charitable-gateway-paypal.php:267
 msgid "Invalid Business email in the IPN response. IPN data:"
 msgstr ""
 
-#: includes/gateways/class-charitable-gateway-paypal.php:271
+#: includes/gateways/class-charitable-gateway-paypal.php:277
 msgid "The currency in the IPN response does not match the site currency. IPN data:"
 msgstr ""
 
-#: includes/gateways/class-charitable-gateway-paypal.php:284
+#: includes/gateways/class-charitable-gateway-paypal.php:290
 msgid "Partial PayPal refund processed"
 msgstr ""
 
-#: includes/gateways/class-charitable-gateway-paypal.php:289
+#: includes/gateways/class-charitable-gateway-paypal.php:295
 msgid "PayPal Payment"
 msgstr ""
 
-#: includes/gateways/class-charitable-gateway-paypal.php:291
+#: includes/gateways/class-charitable-gateway-paypal.php:297
 msgid "refunded with reason"
 msgstr ""
 
-#: includes/gateways/class-charitable-gateway-paypal.php:304
+#: includes/gateways/class-charitable-gateway-paypal.php:310
 msgid "The donation has failed with the following status"
 msgstr ""
 
-#: includes/gateways/class-charitable-gateway-paypal.php:319
+#: includes/gateways/class-charitable-gateway-paypal.php:325
 msgid "Donation key in the IPN response does not match the donation. IPN data:"
 msgstr ""
 
-#: includes/gateways/class-charitable-gateway-paypal.php:329
+#: includes/gateways/class-charitable-gateway-paypal.php:335
 msgid ""
 "The amount in the IPN response does not match the expected donation amount. "
 "IPN data:"
 msgstr ""
 
-#: includes/gateways/class-charitable-gateway-paypal.php:339
+#: includes/gateways/class-charitable-gateway-paypal.php:345
 msgid "PayPal Transaction ID"
 msgstr ""
 
-#: includes/gateways/class-charitable-gateway-paypal.php:449
+#: includes/gateways/class-charitable-gateway-paypal.php:456
 msgid "Payment made via eCheck and will clear automatically in 5-8 days"
 msgstr ""
 
-#: includes/gateways/class-charitable-gateway-paypal.php:453
+#: includes/gateways/class-charitable-gateway-paypal.php:460
 msgid ""
 "Payment requires a confirmed customer address and must be accepted manually "
 "through PayPal"
 msgstr ""
 
-#: includes/gateways/class-charitable-gateway-paypal.php:457
+#: includes/gateways/class-charitable-gateway-paypal.php:464
 msgid ""
 "Payment must be accepted manually through PayPal due to international "
 "account regulations"
 msgstr ""
 
-#: includes/gateways/class-charitable-gateway-paypal.php:461
+#: includes/gateways/class-charitable-gateway-paypal.php:468
 msgid ""
 "Payment received in non-shop currency and must be accepted manually through "
 "PayPal"
 msgstr ""
 
-#: includes/gateways/class-charitable-gateway-paypal.php:466
+#: includes/gateways/class-charitable-gateway-paypal.php:473
 msgid ""
 "Payment is being reviewed by PayPal staff as high-risk or in possible "
 "violation of government regulations"
 msgstr ""
 
-#: includes/gateways/class-charitable-gateway-paypal.php:470
+#: includes/gateways/class-charitable-gateway-paypal.php:477
 msgid "Payment was sent to non-confirmed or non-registered email address."
 msgstr ""
 
-#: includes/gateways/class-charitable-gateway-paypal.php:474
+#: includes/gateways/class-charitable-gateway-paypal.php:481
 msgid "PayPal account must be upgraded before this payment can be accepted"
 msgstr ""
 
-#: includes/gateways/class-charitable-gateway-paypal.php:478
+#: includes/gateways/class-charitable-gateway-paypal.php:485
 msgid ""
 "PayPal account is not verified. Verify account in order to accept this "
 "payment"
 msgstr ""
 
-#: includes/gateways/class-charitable-gateway-paypal.php:482
+#: includes/gateways/class-charitable-gateway-paypal.php:489
 msgid ""
 "Payment is pending for unknown reasons. Contact PayPal support for "
 "assistance. Reason code: %s"
+msgstr ""
+
+#: includes/gateways/class-charitable-gateway-paypal.php:553
+msgid "Your PayPal integration is working"
+msgstr ""
+
+#: includes/gateways/class-charitable-gateway-paypal.php:554
+msgid ""
+"<p>Good news! We successfuly received the Instant Payment Notification from "
+"PayPal and were able to verify it with them.</p>"
+msgstr ""
+
+#: includes/gateways/class-charitable-gateway-paypal.php:555
+msgid ""
+"<p>This means that your website is all set to continue receiving donations "
+"through PayPal. You should not experience any issues when PayPal upgrades "
+"its SSL certificates.</p>"
+msgstr ""
+
+#: includes/gateways/class-charitable-gateway-paypal.php:556
+#: includes/gateways/class-charitable-gateway-paypal.php:567
+msgid "<p>Cheers<br />Eric & Wes"
+msgstr ""
+
+#: includes/gateways/class-charitable-gateway-paypal.php:561
+msgid "Your PayPal test failed"
+msgstr ""
+
+#: includes/gateways/class-charitable-gateway-paypal.php:562
+msgid ""
+"<p>We received the Instant Payment Notification from PayPal but were not "
+"able to verify its authenticity.</p>"
+msgstr ""
+
+#: includes/gateways/class-charitable-gateway-paypal.php:563
+msgid ""
+"<p>Unfortunately, this means that you are likely to face problems with your "
+"PayPal donations from October 2016 onwards. Your donors will still be able "
+"to proceed to PayPal and make their donation, but their donations will not "
+"be automatically marked as Paid in your WordPress dashboard.</p>"
+msgstr ""
+
+#: includes/gateways/class-charitable-gateway-paypal.php:564
+msgid "<h4>Two ways you can fix this</h4>"
+msgstr ""
+
+#: includes/gateways/class-charitable-gateway-paypal.php:565
+msgid ""
+"<p>As a short-term fix, <strong>you can disable IPN verification</strong>. "
+"This makes your donation verification process less secure, but should allow "
+"your donations to continue getting marked as Paid. To set this up, log into "
+"your WordPress dashboard and go to <em>Charitable</em> > <em>Settings</em> "
+"> <em>Payment Gateways</em>, select your PayPal settings and enable the "
+"\"Disable IPN Verification\" setting."
+msgstr ""
+
+#: includes/gateways/class-charitable-gateway-paypal.php:566
+msgid ""
+"<p>For a long term solution, <strong>we recommend contacting your "
+"host</strong>. Please refer them to <a "
+"href=\"https://www.paypal-knowledge.com/infocenter/index?page=content&"
+"widgetview=true&id=FAQ1766&viewlocale=en_US\">the upgrade information "
+"provided by PayPal</a>.</p>"
 msgstr ""
 
 #: includes/gateways/class-charitable-gateways.php:109
@@ -6939,7 +7075,7 @@ msgid "User Dashboard"
 msgstr ""
 
 #: includes/shortcodes/class-charitable-login-shortcode.php:36
-#: includes/shortcodes/class-charitable-registration-shortcode.php:35
+#: includes/shortcodes/class-charitable-registration-shortcode.php:36
 #: templates/shortcodes/logged-in.php:17
 msgid "You are already logged in!"
 msgstr ""
@@ -6949,7 +7085,7 @@ msgstr ""
 msgid "Register"
 msgstr ""
 
-#: includes/shortcodes/class-charitable-registration-shortcode.php:37
+#: includes/shortcodes/class-charitable-registration-shortcode.php:38
 msgid "Signed up already? Login instead."
 msgstr ""
 
