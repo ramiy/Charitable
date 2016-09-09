@@ -85,12 +85,12 @@ if ( ! class_exists( 'Charitable_Donors_DB' ) ) :
 		 */
 		public function get_columns() {
 			return array(
-			'donor_id'      => '%d',
-			'user_id'       => '%d',
-			'email'         => '%s',
-			'first_name'    => '%s',
-			'last_name'     => '%s',
-			'date_joined'   => '%s',
+				'donor_id'      => '%d',
+				'user_id'       => '%d',
+				'email'         => '%s',
+				'first_name'    => '%s',
+				'last_name'     => '%s',
+				'date_joined'   => '%s',
 			);
 		}
 
@@ -103,12 +103,12 @@ if ( ! class_exists( 'Charitable_Donors_DB' ) ) :
 		 */
 		public function get_column_defaults() {
 			return array(
-			'donor_id'      => '',
-			'user_id'       => 0,
-			'email'         => '',
-			'first_name'    => '',
-			'last_name'     => '',
-			'date_joined'   => date( 'Y-m-d H:i:s' ),
+				'donor_id'      => '',
+				'user_id'       => 0,
+				'email'         => '',
+				'first_name'    => '',
+				'last_name'     => '',
+				'date_joined'   => date( 'Y-m-d H:i:s' ),
 			);
 		}
 

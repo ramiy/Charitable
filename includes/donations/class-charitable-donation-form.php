@@ -555,6 +555,17 @@ if ( ! class_exists( 'Charitable_Donation_Form' ) ) :
 				return false;
 			}
 
+			/* Don't process donations with dummy emails. */
+			if ( array_key_exists( 'email', $_POST ) && ! is_email( $_POST['email'] ) ) {
+
+				charitable_get_notices()->add_error( sprintf(
+					__( '%s is not a valid email address.', 'charitable' ),
+					$_POST['email']
+				) );
+
+				return false;
+			}
+
 			/* Ensure that a valid amount has been submitted. */
 			if ( self::get_donation_amount() <= 0 && ! apply_filters( 'charitable_permit_0_donation', false ) ) {
 

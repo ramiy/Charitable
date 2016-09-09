@@ -224,7 +224,7 @@ if ( ! class_exists( 'Charitable_Upgrade' ) ) :
 					 * Check if we're just setting a transient to display a notice.
 					 */
 					if ( isset( $upgrade['notice'] ) ) {
-						$this->set_update_notice_transient( $upgrade, $action );						
+						$this->set_update_notice_transient( $upgrade, $action );
 						continue;
 					}
 
@@ -257,7 +257,7 @@ if ( ! class_exists( 'Charitable_Upgrade' ) ) :
 		 * @since 	1.0.0
 		 */
 		public static function requires_upgrade( $version_a, $version_b ) {
-			return $version_a === false || version_compare( $version_a, $version_b, '<' );
+			return false === $version_a || version_compare( $version_a, $version_b, '<' );
 		}
 
 		/**
@@ -345,10 +345,10 @@ if ( ! class_exists( 'Charitable_Upgrade' ) ) :
 				@set_time_limit( 0 );
 			}
 
-			$step = isset( $_GET['step'] ) ? absint( $_GET['step'] ) : 1;
+			$step   = isset( $_GET['step'] ) ? absint( $_GET['step'] ) : 1;
 			$number = 20;
 
-			$total = Charitable_Donations::count_all();
+			$total  = Charitable_Donations::count_all();
 
 			/**
 			 * If there are no donations to update, go ahead and wrap it up right now.

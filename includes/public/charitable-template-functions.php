@@ -918,11 +918,19 @@ if ( ! function_exists( 'charitable_template_form_login_link' ) ) :
 	/**
 	 * Display a link to the login form.
 	 *
-	 * @param 	Charitable_Registration_Form $form
+	 * @param 	Charitable_Registration_Form|null $form
 	 * @return 	void
 	 * @since 	1.4.2
 	 */
-	function charitable_template_form_login_link( Charitable_Registration_Form $form ) {
+	function charitable_template_form_login_link( $form = null ) {
+
+		/**
+		 * For backwards compatibility, since previously the
+		 * Form object was not passed to the hook.
+		 */
+		if ( is_null( $form ) ) {
+			return;
+		}
 
 		if ( ! $form->get_login_link() ) {
 			return;
@@ -953,7 +961,7 @@ if ( ! function_exists( 'charitable_template_notices' ) ) :
 		}
 
 		charitable_template( 'form-fields/notices.php', array(
-			'notices' => $notices
+			'notices' => $notices,
 		) );
 
 	}
