@@ -1,24 +1,24 @@
-<?php 
+<?php
 /**
- * Charitable Settings Hooks. 
+ * Charitable Settings Hooks.
  *
- * Action/filter hooks used for Charitable Settings API. 
- * 
+ * Action/filter hooks used for Charitable Settings API.
+ *
  * @package     Charitable/Functions/Admin
  * @version     1.2.0
  * @author      Eric Daams
- * @copyright   Copyright (c) 2015, Studio 164a
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License  
+ * @copyright   Copyright (c) 2016, Studio 164a
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
-/** 
+/**
  * Register Charitable settings.
  *
  * @see     Charitable_Settings::register_settings()
  */
-add_action( 'admin_init', array( Charitable_Settings::get_instance(), 'register_settings' ) );        
+add_action( 'admin_init', array( Charitable_Settings::get_instance(), 'register_settings' ) );
 
 /**
  * Maybe add "Extensions" settings tab.
@@ -27,7 +27,7 @@ add_action( 'admin_init', array( Charitable_Settings::get_instance(), 'register_
  */
 add_action( 'charitable_settings_tabs', array( Charitable_Settings::get_instance(), 'maybe_add_extensions_tab' ) );
 
-/** 
+/**
  * Sanitize checkbox values when settings are submitted.
  *
  * @see     Charitable_Settings::sanitize_checkbox_value()
@@ -42,7 +42,7 @@ add_filter( 'charitable_sanitize_value', array( Charitable_Settings::get_instanc
 add_filter( 'charitable_save_settings', array( Charitable_Licenses_Settings::get_instance(), 'save_license' ), 10, 2 );
 
 /**
- * Add dynamic settings groups. 
+ * Add dynamic settings groups.
  *
  * @see     Charitable_Gateway_Settings::add_gateway_settings_dynamic_groups()
  * @see     Charitable_Email_Settings::add_email_settings_dynamic_groups()
@@ -102,6 +102,13 @@ add_filter( 'charitable_settings_tab_fields', array( Charitable_Email_Settings::
  * @see     Charitable_Gateway_Settings::render_paypal_sandbox_test()
  */
 add_action( 'charitable_after_admin_settings', array( Charitable_Gateway_Settings::get_instance(), 'render_paypal_sandbox_test' ) );
+
+/**
+ * Redirect the user to PayPal for the sandbox test.
+ *
+ * @see     Charitable_Gateway_Settings::redirect_paypal_sandbox_test()
+ */
+add_action( 'charitable_do_paypal_sandbox_test', array( Charitable_Gateway_Settings::get_instance(), 'redirect_paypal_sandbox_test' ) );
 
 /**
  * Redirect to the PayPal gateway settings after being returned from PayPal.

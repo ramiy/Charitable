@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Charitable 1.4.3\n"
 "Report-Msgid-Bugs-To: https://www.wpcharitable.com/\n"
-"POT-Creation-Date: 2016-09-09 15:50:12+00:00\n"
+"POT-Creation-Date: 2016-09-12 11:11:37+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -5608,58 +5608,54 @@ msgstr ""
 msgid "We could not validate this license"
 msgstr ""
 
-#: includes/admin/views/settings/paypal-sandbox-test.php:25
+#: includes/admin/views/settings/paypal-sandbox-test.php:27
 msgid ""
 "We haven't received a notification from PayPal yet. Refresh this page in a "
 "few minutes. We will also send you an email to notify you when we receive "
 "the notification from PayPal."
 msgstr ""
 
-#: includes/admin/views/settings/paypal-sandbox-test.php:36
+#: includes/admin/views/settings/paypal-sandbox-test.php:38
 msgid ""
 "<strong>Success!</strong> We received a notification from PayPal and were "
-"able to perform the security check. Looks like you're all set for now."
+"able to perform the security check. Looks like you're all set!"
 msgstr ""
 
-#: includes/admin/views/settings/paypal-sandbox-test.php:41
+#: includes/admin/views/settings/paypal-sandbox-test.php:44
 msgid ""
 "<strong>Failed</strong> We received a notification from PayPal but were not "
 "able to perform the security check."
 msgstr ""
 
-#: includes/admin/views/settings/paypal-sandbox-test.php:49
+#: includes/admin/views/settings/paypal-sandbox-test.php:52
 msgid "Sandbox Test Donation"
 msgstr ""
 
-#: includes/admin/views/settings/paypal-sandbox-test.php:65
+#: includes/admin/views/settings/paypal-sandbox-test.php:68
 msgid "Run a Test Donation"
-msgstr ""
-
-#: includes/admin/views/settings/paypal-sandbox-test.php:70
-msgid ""
-"<strong>Important:</strong> After September 30, 2016, PayPal is upgrading "
-"the SSL certificates used to secure its web sites and API endpoints."
-msgstr ""
-
-#: includes/admin/views/settings/paypal-sandbox-test.php:71
-msgid ""
-"This upgrade should not have an impact on your donors, but if your "
-"website's server is using out-of-date technology it may prevent donations "
-"from being automatically marked as Paid by Charitable."
 msgstr ""
 
 #: includes/admin/views/settings/paypal-sandbox-test.php:73
 msgid ""
-"To prepare for this update, we strongly recommend creating a <a "
-"href=\"%s\">PayPal sandbox account</a> and testing a donation in the "
-"sandbox using the form below."
+"In October 2016, PayPal is upgrading the SSL certificates used to secure "
+"its web sites and API endpoints. <a href='%s' title='How PayPal\\'s SSL "
+"Certificate Upgrade Will Affect You — And How You Can Prepare for It'>Read "
+"about how these changes will impact you.</a>"
 msgstr ""
 
-#: includes/admin/views/settings/paypal-sandbox-test.php:79
-msgid "Sandbox Seller Email Address"
+#: includes/admin/views/settings/paypal-sandbox-test.php:77
+msgid ""
+"To prepare for this update, you can\n"
+"\t\t\t\t\t\t\t\twe strongly recommend creating a <a href=\"%s\">PayPal "
+"sandbox account</a> and testing a donation in the sandbox using the form "
+"below."
 msgstr ""
 
 #: includes/admin/views/settings/paypal-sandbox-test.php:84
+msgid "Sandbox Seller Email Address"
+msgstr ""
+
+#: includes/admin/views/settings/paypal-sandbox-test.php:89
 msgid "Make a Test Donation"
 msgstr ""
 
@@ -6814,9 +6810,10 @@ msgstr ""
 
 #: includes/gateways/class-charitable-gateway-paypal.php:84
 msgid ""
-"If you are having problems with donations not getting marked as Paid, you "
-"can enable this option. Your website will use a slightly less secure method "
-"for verifying donations."
+"If you are having problems with donations not getting marked as Paid, "
+"disabling IPN verification might fix the problem. However, it is important "
+"to be aware that this is a <strong>less secure</strong> method for "
+"verifying donations."
 msgstr ""
 
 #: includes/gateways/class-charitable-gateway-paypal.php:112
@@ -6909,39 +6906,43 @@ msgid ""
 "assistance. Reason code: %s"
 msgstr ""
 
-#: includes/gateways/class-charitable-gateway-paypal.php:553
+#: includes/gateways/class-charitable-gateway-paypal.php:582
 msgid "Your PayPal integration is working"
 msgstr ""
 
-#: includes/gateways/class-charitable-gateway-paypal.php:554
+#: includes/gateways/class-charitable-gateway-paypal.php:583
 msgid ""
 "<p>Good news! We successfuly received the Instant Payment Notification from "
 "PayPal and were able to verify it with them.</p>"
 msgstr ""
 
-#: includes/gateways/class-charitable-gateway-paypal.php:555
+#: includes/gateways/class-charitable-gateway-paypal.php:584
 msgid ""
 "<p>This means that your website is all set to continue receiving donations "
 "through PayPal. You should not experience any issues when PayPal upgrades "
 "its SSL certificates.</p>"
 msgstr ""
 
-#: includes/gateways/class-charitable-gateway-paypal.php:556
-#: includes/gateways/class-charitable-gateway-paypal.php:567
+#: includes/gateways/class-charitable-gateway-paypal.php:585
+#: includes/gateways/class-charitable-gateway-paypal.php:606
 msgid "<p>Cheers<br />Eric & Wes"
 msgstr ""
 
-#: includes/gateways/class-charitable-gateway-paypal.php:561
+#: includes/gateways/class-charitable-gateway-paypal.php:590
 msgid "Your PayPal test failed"
 msgstr ""
 
-#: includes/gateways/class-charitable-gateway-paypal.php:562
+#: includes/gateways/class-charitable-gateway-paypal.php:591
 msgid ""
 "<p>We received the Instant Payment Notification from PayPal but were not "
-"able to verify its authenticity.</p>"
+"able to verify its authenticity."
 msgstr ""
 
-#: includes/gateways/class-charitable-gateway-paypal.php:563
+#: includes/gateways/class-charitable-gateway-paypal.php:592
+msgid "<p>Our communicaton with PayPal failed with the following errors:</p>"
+msgstr ""
+
+#: includes/gateways/class-charitable-gateway-paypal.php:600
 msgid ""
 "<p>Unfortunately, this means that you are likely to face problems with your "
 "PayPal donations from October 2016 onwards. Your donors will still be able "
@@ -6949,27 +6950,39 @@ msgid ""
 "be automatically marked as Paid in your WordPress dashboard.</p>"
 msgstr ""
 
-#: includes/gateways/class-charitable-gateway-paypal.php:564
-msgid "<h4>Two ways you can fix this</h4>"
+#: includes/gateways/class-charitable-gateway-paypal.php:601
+msgid "<h3>Short-term fix</h3>"
 msgstr ""
 
-#: includes/gateways/class-charitable-gateway-paypal.php:565
+#: includes/gateways/class-charitable-gateway-paypal.php:602
 msgid ""
-"<p>As a short-term fix, <strong>you can disable IPN verification</strong>. "
-"This makes your donation verification process less secure, but should allow "
-"your donations to continue getting marked as Paid. To set this up, log into "
-"your WordPress dashboard and go to <em>Charitable</em> > <em>Settings</em> "
-"> <em>Payment Gateways</em>, select your PayPal settings and enable the "
-"\"Disable IPN Verification\" setting."
+"<p><strong>Disable IPN verification</strong>. This makes your donation "
+"verification process less secure, but it will allow your donations to "
+"continue getting marked as Paid. To set this up, log into your WordPress "
+"dashboard and go to <em>Charitable</em> > <em>Settings</em> > <em>Payment "
+"Gateways</em>, select your PayPal settings and enable the \"Disable IPN "
+"Verification\" setting."
 msgstr ""
 
-#: includes/gateways/class-charitable-gateway-paypal.php:566
+#: includes/gateways/class-charitable-gateway-paypal.php:603
+msgid "<h3>Long-term solution</h3>"
+msgstr ""
+
+#: includes/gateways/class-charitable-gateway-paypal.php:604
 msgid ""
-"<p>For a long term solution, <strong>we recommend contacting your "
-"host</strong>. Please refer them to <a "
+"<p><strong>Get in touch with your web host</strong>. Please refer them to "
+"<a "
 "href=\"https://www.paypal-knowledge.com/infocenter/index?page=content&"
 "widgetview=true&id=FAQ1766&viewlocale=en_US\">the upgrade information "
-"provided by PayPal</a>.</p>"
+"provided by PayPal</a>. You should also provide them with the error message "
+"you received from PayPal above.</p>"
+msgstr ""
+
+#: includes/gateways/class-charitable-gateway-paypal.php:605
+msgid ""
+"<p>If your web host is unable to upgrade the software on your server, we "
+"strongly recommend switching to a hosting platform that provides a more "
+"modern, and secure service.</p>"
 msgstr ""
 
 #: includes/gateways/class-charitable-gateways.php:109
@@ -7058,7 +7071,7 @@ msgid ""
 msgstr ""
 
 #: includes/public/class-charitable-templates.php:246
-#: templates/shortcodes/login.php:32
+#: templates/shortcodes/login.php:34
 msgid "Forgot Password"
 msgstr ""
 
