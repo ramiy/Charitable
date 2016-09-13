@@ -313,7 +313,7 @@ if ( ! class_exists( 'Charitable_Donation_Processor' ) ) :
 		 */
 		public static function make_donation_streamlined() {
 			$processor = self::get_instance();
-			$campaign = $processor->get_campaign();
+			$campaign  = $processor->get_campaign();
 
 			if ( ! $campaign ) {
 				return;

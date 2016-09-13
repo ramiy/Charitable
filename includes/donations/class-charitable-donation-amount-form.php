@@ -58,8 +58,6 @@ if ( ! class_exists( 'Charitable_Donation_Amount_Form' ) ) :
 		protected function attach_hooks_and_filters() {
 			parent::attach_hooks_and_filters();
 
-			// add_action( 'charitable_donation_amount_form_submit', array( $this, 'redirect_after_submission' ) );
-
 			remove_filter( 'charitable_donation_form_gateway_fields', array( $this, 'add_credit_card_fields' ), 10, 2 );
 			remove_action( 'charitable_donation_form_after_user_fields', array( $this, 'add_password_field' ) );
 
@@ -78,6 +76,42 @@ if ( ! class_exists( 'Charitable_Donation_Amount_Form' ) ) :
 		}
 
 		/**
+		 * Validate the form submission.
+		 *
+		 * @return  boolean
+		 * @access  public
+		 * @since   1.4.4
+		 */
+		public function validate_submission() {
+			if ( ! $this->validate_nonce() || ! $this->validate_honeypot() ) {
+
+				charitable_get_notices()->add_error( __( 'There was an error with processing your form submission. Please reload the page and try again.', 'charitable' ) );
+				return false;
+
+			}
+
+			$has_required_fields = $this->check_required_fields( $this->get_merged_fields() );
+
+			if ( ! $has_required_fields ) {
+				return false;
+			}
+
+			/* Ensure that a valid amount has been submitted. */
+			if ( self::get_donation_amount() <= 0 && ! apply_filters( 'charitable_permit_0_donation', false ) ) {
+
+				charitable_get_notices()->add_error( sprintf(
+					__( 'You must donate more than %s.', 'charitable' ),
+					charitable_format_money( '0' )
+				) );
+
+				return false;
+
+			}
+
+			return apply_filters( 'charitable_validate_donation_amount_form_submission', true, $this );
+		}
+
+		/**
 		 * Return the donation values.
 		 *
 		 * @return  array
@@ -88,46 +122,11 @@ if ( ! class_exists( 'Charitable_Donation_Amount_Form' ) ) :
 			$submitted = $this->get_submitted_values();
 
 			$values = array(
-				'campaign_id'   => $submitted['campaign_id'],
-				'amount'        => self::get_donation_amount( $submitted ),
+				'campaign_id' => $submitted['campaign_id'],
+				'amount'      => self::get_donation_amount( $submitted ),
 			);
 
 			return apply_filters( 'charitable_donation_amount_form_submission_values', $values, $submitted, $this );
-		}
-
-		/**
-		 * Save the submitted donation.
-		 *
-		 * @return  int|false   If successful, this returns the donation ID. If unsuccessful, returns false.
-		 * @access  public
-		 * @since   1.0.0
-		 */
-		public function save_donation() {
-			$campaign_id = charitable_get_current_campaign_id();
-
-			if ( ! $campaign_id ) {
-				return 0;
-			}
-
-			if ( ! $this->validate_nonce() ) {
-				return 0;
-			}
-
-			/* Set the donation amount */
-			$campaign_id = $this->get_campaign()->ID;
-			$amount = parent::get_donation_amount();
-
-			if ( 0 == $amount && ! apply_filters( 'charitable_permit_empty_donations', false ) ) {
-				charitable_get_notices()->add_error( __( 'No donation amount was set.', 'charitable' ) );
-				return false;
-			}
-
-			/* Create or update the donation object in the session, with the current campaign ID. */
-			charitable_get_session()->add_donation( $campaign_id, $amount );
-
-			do_action( 'charitable_donation_amount_form_submit', $campaign_id, $amount );
-
-			return true;
 		}
 
 		/**

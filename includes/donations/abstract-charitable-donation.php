@@ -383,7 +383,7 @@ if ( ! class_exists( 'Charitable_Abstract_Donation' ) ) :
 		/**
 		 * Returns the donor ID of the donor.
 		 *
-		 * @return  int
+		 * @return  int|false
 		 * @access  public
 		 * @since   1.0.0
 		 */

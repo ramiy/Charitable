@@ -47,21 +47,32 @@ if ( ! class_exists( 'Charitable_My_Donations_Shortcode' ) ) :
 				return;
 	        }
 
-	        $user = charitable_get_user( get_current_user_id() );
+	        $donor_id = charitable_get_user( get_current_user_id() )->get_donor_id();
 
-	        $view_args = array(
-				'donations' => new Charitable_Donations_Query( array(
+	        /* Only fetch donations if the donor ID exists. */
+	        if ( $donor_id ) {
+
+	        	$donations = new Charitable_Donations_Query( array(
 					'output'   => 'posts',
-					'donor_id' => $user->get_donor_id(),
+					'donor_id' => $donor_id,
 					'orderby'  => 'date',
 					'order'    => 'DESC',
 					'number'   => -1,
-				) )
+				) );
+
+	        } else {
+
+	        	$donations = array();
+
+	        }
+
+	        $view_args = array(
+				'donations' => $donations,
 			);
 
 			charitable_template( 'shortcodes/my-donations.php', $view_args );
 
-			return apply_filters( 'charitable_my_donations_shortcode', ob_get_clean(), $args );
+			return apply_filters( 'charitable_my_donations_shortcode', ob_get_clean(), $view_args, $args );
 		}
 	}
 

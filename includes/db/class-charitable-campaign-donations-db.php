@@ -93,12 +93,12 @@ if ( ! class_exists( 'Charitable_Campaign_Donations_DB' ) ) :
 		 */
 		public function get_columns() {
 			return array(
-				'campaign_donation_id'  => '%d',
-				'donation_id'           => '%d',
-				'donor_id'              => '%d',
-				'campaign_id'           => '%d',
-				'campaign_name'         => '%s',
-				'amount'                => '%f',
+				'campaign_donation_id' => '%d',
+				'donation_id'          => '%d',
+				'donor_id'             => '%d',
+				'campaign_id'          => '%d',
+				'campaign_name'        => '%s',
+				'amount'               => '%f',
 			);
 		}
 
@@ -111,12 +111,12 @@ if ( ! class_exists( 'Charitable_Campaign_Donations_DB' ) ) :
 		 */
 		public function get_column_defaults() {
 			return array(
-				'campaign_donation_id'  => '',
-				'donation_id'           => '',
-				'donor_id'              => '',
-				'campaign_id'           => '',
-				'campaign_name'         => '',
-				'amount'                => '',
+				'campaign_donation_id' => '',
+				'donation_id'          => '',
+				'donor_id'             => '',
+				'campaign_id'          => '',
+				'campaign_name'        => '',
+				'amount'               => '',
 			);
 		}
 
@@ -226,8 +226,8 @@ if ( ! class_exists( 'Charitable_Campaign_Donations_DB' ) ) :
 		/**
 		 * Return an object containing all campaign donations associated with a particular
 		 * campaign ID or a particular donation ID.
-		 * 
-		 * @global 	WPDB      $wpdb 
+		 *
+		 * @global 	WPDB      $wpdb
 		 * @param 	string    $field The field we are retrieving donations by. Either 'campaign' or 'donation'.
 		 * @param 	int|int[] $donation_id A single donation ID or an array of IDs.
 		 * @return  Object

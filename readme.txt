@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paypa
 Tags: donations, donate, donation plugin, fundraising, fundraising plugin, non-profit, non-profits, charity, churches, commerce, crowdfunding, crowd funding, paypal donations, paypal, stripe, stripe donations, campaigns, gifts, giving, wordpress fundraising, wordpress donations, wordpress donation plugin, peer to peer fundraising, peer to peer fundraiser, peer fundraising, social fundraising
 Requires at least: 4.1
 Tested up to: 4.6.1
-Stable tag: 1.4.3
+Stable tag: 1.4.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -114,6 +114,10 @@ You can post in the [support forum](https://wordpress.org/support/plugin/charita
 6. Setting up Charitable: The Email settings area. 
 
 == Changelog ==
+
+= 1.4.4 =
+* Resolves a new issue related to the donation form validation introduced in version 1.4.3, which prevented the donation widget form from being submitted. [#221](https://github.com/Charitable/Charitable/issues/204) and [#205](https://github.com/Charitable/Charitable/issues/221)
+* Fixes a bug that resulted in logged in users who had never made a donation being able to see a list of all donations with the `[charitable_my_donations]` shortcode. No personal donor data was displayed, and the donation receipts remained inaccessible to the users. All they could see was the date of the donation, the campaign donated to and the amount of the donation. [#220](https://github.com/Charitable/Charitable/issues/204) and [#205](https://github.com/Charitable/Charitable/issues/220)
 
 = 1.4.3 = 
 * Added a new sandbox testing tool to allow you to test your PayPal donation flow. If you're using PayPal, you should test this as soon as you can to avoid disruption, as PayPal is making some security upgrades to its platform which may cause problems for certain sites. [Read more about how PayPal's upgrades will affect you](https://www.wpcharitable.com/how-paypals-ssl-certificate-upgrade-will-affect-you-and-how-you-can-prepare-for-it/?utm_source=notice&utm_medium=wordpress-dashboard&utm_campaign=paypal-ssl-upgrade&utm_content=blog-post)
