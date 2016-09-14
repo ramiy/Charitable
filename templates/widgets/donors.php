@@ -11,83 +11,83 @@
 
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
-if ( ! charitable_is_campaign_page() && 'current' == $view_args[ 'campaign_id' ] ) {
-    return;
+if ( ! charitable_is_campaign_page() && 'current' == $view_args['campaign_id'] ) {
+	return;
 }
 
-$widget_title   = apply_filters( 'widget_title', $view_args['title'] );
-$donors         = $view_args[ 'donors' ];
+$widget_title = apply_filters( 'widget_title', $view_args['title'] );
+$donors       = $view_args['donors'];
 
-$campaign_id = $view_args[ 'campaign_id' ];
+$campaign_id = $view_args['campaign_id'];
 
-if ( 'all' == $view_args[ 'campaign_id' ] ) {
-    $campaign_id = false;
+if ( 'all' == $view_args['campaign_id'] ) {
+	$campaign_id = false;
 }
 
-if ( 'current' == $view_args[ 'campaign_id' ] ) {
-    $campaign_id = get_the_ID();
+if ( 'current' == $view_args['campaign_id'] ) {
+	$campaign_id = get_the_ID();
 }
 
 /* If there are no donors and the widget is configured to hide when empty, return now. */
-if ( ! $donors->count() && $view_args[ 'hide_if_no_donors' ] ) {
-    return;
+if ( ! $donors->count() && $view_args['hide_if_no_donors'] ) {
+	return;
 }
 
 echo $view_args['before_widget'];
 
 if ( ! empty( $widget_title ) ) :
-    echo $view_args['before_title'] . $widget_title . $view_args['after_title'];
+	echo $view_args['before_title'] . $widget_title . $view_args['after_title'];
 endif;
 
 if ( $donors->count() ) :
-    ?>
-    
-    <ol class="donors-list">
+	?>
+	
+	<ol class="donors-list">
 
-        <?php foreach ( $donors as $donor ) : ?>
+		<?php foreach ( $donors as $donor ) : ?>
 
-            <li class="donor">  
+			<li class="donor">  
 
-                <?php 
+				<?php
 
-                echo $donor->get_avatar();
-                
-                if ( $view_args[ 'show_name'] ) : ?>
+				echo $donor->get_avatar();
 
-                    <p class="donor-name"><?php echo $donor->get_name() ?></p>
+				if ( $view_args['show_name'] ) : ?>
 
-                <?php 
+					<p class="donor-name"><?php echo $donor->get_name() ?></p>
 
-                endif;
+				<?php
 
-                if ( $view_args[ 'show_location' ] && strlen( $donor->get_location() ) ) : ?>
+				endif;
 
-                    <div class="donor-location"><?php echo $donor->get_location() ?></div>
+				if ( $view_args['show_location'] && strlen( $donor->get_location() ) ) : ?>
 
-                <?php 
+					<div class="donor-location"><?php echo $donor->get_location() ?></div>
 
-                endif;
+				<?php
 
-                if ( $view_args[ 'show_amount' ] ) : ?>
+				endif;
 
-                    <div class="donor-donation-amount"><?php echo charitable_format_money( $donor->get_amount( $campaign_id ) ) ?></div>
+				if ( $view_args['show_amount'] ) : ?>
 
-                <?php endif ?>
+					<div class="donor-donation-amount"><?php echo charitable_format_money( $donor->get_amount( $campaign_id ) ) ?></div>
 
-            </li>
+				<?php endif ?>
 
-        <?php endforeach ?>
+			</li>
 
-    </ol>
+		<?php endforeach ?>
+
+	</ol>
 
 <?php
-else : 
+else :
 
-    ?>
+	?>
 
-    <p><?php _e( 'No donors yet. Be the first!', 'charitable' ) ?></p>
+	<p><?php _e( 'No donors yet. Be the first!', 'charitable' ) ?></p>
 
-    <?php
+	<?php
 
 endif;
 

@@ -121,7 +121,7 @@ if ( ! class_exists( 'Charitable_Gateway' ) ) :
 		/**
 		 * Return the value for a particular gateway setting.
 		 *
-		 * @param   string  $setting
+		 * @param   string $setting
 		 * @return  mixed
 		 * @access  public
 		 * @since   1.0.0

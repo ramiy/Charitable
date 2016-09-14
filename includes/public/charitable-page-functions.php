@@ -262,9 +262,9 @@ add_filter( 'charitable_permalink_donation_cancel_page', 'charitable_get_donatio
  * In general, you should use charitable_is_page() instead since it will
  * take into account any filtering by plugins/themes.
  *
- * By default, this will return true when viewing a campaign with the `donate` 
- * query var set, or when the donation form is shown on the campaign page or 
- * in a modal. 
+ * By default, this will return true when viewing a campaign with the `donate`
+ * query var set, or when the donation form is shown on the campaign page or
+ * in a modal.
  *
  * Pass `'strict' => true` in `$args` to only return true when the `donate`
  * query var is set.
@@ -284,7 +284,7 @@ function charitable_is_campaign_donation_page( $ret, $args = array() ) {
 
 	if ( isset( $wp_query->query_vars['donate'] ) ) {
 		return true;
-	}	
+	}
 
 	/* If 'strict' is set to `true`, this will only return true if this has the /donate/ endpoint. */
 	if ( isset( $args['strict'] ) && $args['strict'] ) {
@@ -427,7 +427,7 @@ function charitable_is_campaign_page() {
  * take into account permalinks that have been filtered by plugins/themes.
  *
  * @see     charitable_get_permalink
- * 
+ *
  * @global  WP_Rewrite  $wp_rewrite
  * @param   string      $url
  * @param   array       $args
@@ -624,7 +624,7 @@ add_filter( 'charitable_is_page_reset_password_page', 'charitable_is_reset_passw
  */
 function charitable_get_registration_page_permalink( $url, $args = array() ) {
 	$page = charitable_get_option( 'registration_page', 'wp' );
-	$url = 'wp' == $page ? wp_registration_url() : get_permalink( $page );
+	$url  = 'wp' == $page ? wp_registration_url() : get_permalink( $page );
 	return $url;
 }
 

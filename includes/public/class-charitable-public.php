@@ -262,7 +262,7 @@ if ( ! class_exists( 'Charitable_Public' ) ) :
 		 * Disable comments on application pages like the donation page.
 		 *
 		 * @param   boolean $open
-		 * @param   int $post_id
+		 * @param   int     $post_id
 		 * @return  boolean
 		 * @access  public
 		 * @since   1.3.0
@@ -274,7 +274,7 @@ if ( ! class_exists( 'Charitable_Public' ) ) :
 				return $open;
 			}
 
-			if ( charitable_is_page( 'campaign_donation_page' )
+			if ( charitable_is_page( 'campaign_donation_page', array( 'strict' => true ) )
 			|| charitable_is_page( 'campaign_widget_page' )
 			|| charitable_is_page( 'donation_receipt_page' )
 			|| charitable_is_page( 'donation_processing_page' ) ) {

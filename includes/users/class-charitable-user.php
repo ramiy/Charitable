@@ -139,7 +139,7 @@ if ( ! class_exists( 'Charitable_User' ) ) :
 		/**
 		 * Return the donor ID of this user.
 		 *
-		 * @return  int $donor_id
+		 * @return  int|false $donor_id
 		 * @access  public
 		 * @since   1.0.0
 		 */
@@ -148,7 +148,7 @@ if ( ! class_exists( 'Charitable_User' ) ) :
 				return $this->donor_id;
 			}
 
-			return 0;
+			return false;
 		}
 
 		/**

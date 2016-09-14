@@ -232,6 +232,25 @@ if ( ! class_exists( 'Charitable_Abstract_Donation' ) ) :
 		}
 
 		/**
+		 * Return a comma separated list of the categories of the campaigns that were donated to.
+		 *
+		 * @uses    wp_get_object_terms
+		 * @uses 	wp_list_pluck
+		 * @uses 	Charitable_Donation::get_campaign_donations
+		 *
+		 * @param 	string $taxonomy The taxonomy. Defaults to 'campaign_category'.
+		 * @param 	array  $args Optional arguments to pass to `wp_get_object_terms`
+		 * @return  string
+		 * @access  public
+		 * @since   1.4.2
+		 */
+		public function get_campaign_categories_donated_to( $taxonomy = 'campaign_category', $args = array() ) {
+			$campaigns = wp_list_pluck( $this->get_campaign_donations(), 'campaign_id' );
+
+			return wp_get_object_terms( $campaigns, $taxonomy, $args );
+		}
+
+		/**
 		 * Return the date of the donation.
 		 *
 		 * @param   string $format
@@ -364,7 +383,7 @@ if ( ! class_exists( 'Charitable_Abstract_Donation' ) ) :
 		/**
 		 * Returns the donor ID of the donor.
 		 *
-		 * @return  int
+		 * @return  int|false
 		 * @access  public
 		 * @since   1.0.0
 		 */

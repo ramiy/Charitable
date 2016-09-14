@@ -847,7 +847,7 @@ if ( ! function_exists( 'charitable_template_donation_processing_content' ) ) :
 endif;
 
 /**********************************************/
-/* ACCOUNT PAGE
+/* ACCOUNT PAGES
 /**********************************************/
 
 if ( ! function_exists( 'charitable_template_forgot_password_content' ) ) :
@@ -913,6 +913,35 @@ if ( ! function_exists( 'charitable_template_reset_password_content' ) ) :
 
 endif;
 
+if ( ! function_exists( 'charitable_template_form_login_link' ) ) :
+
+	/**
+	 * Display a link to the login form.
+	 *
+	 * @param 	Charitable_Registration_Form|null $form
+	 * @return 	void
+	 * @since 	1.4.2
+	 */
+	function charitable_template_form_login_link( $form = null ) {
+
+		/**
+		 * For backwards compatibility, since previously the
+		 * Form object was not passed to the hook.
+		 */
+		if ( is_null( $form ) ) {
+			return;
+		}
+
+		if ( ! $form->get_login_link() ) {
+			return;
+		}
+
+		printf( '<p>%s</p>', $form->get_login_link() );
+
+	}
+
+endif ;
+
 /**********************************************/
 /* NOTICES
 /**********************************************/
@@ -932,7 +961,7 @@ if ( ! function_exists( 'charitable_template_notices' ) ) :
 		}
 
 		charitable_template( 'form-fields/notices.php', array(
-			'notices' => $notices
+			'notices' => $notices,
 		) );
 
 	}

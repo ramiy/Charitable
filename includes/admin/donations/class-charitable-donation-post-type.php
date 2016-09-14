@@ -225,8 +225,8 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 
 				case 'id' :
 
-					$title 	 = esc_attr__( 'View Donation Details', 'charitable' );
-					$name 	 = $donation->get_donor()->get_name();
+					$title = esc_attr__( 'View Donation Details', 'charitable' );
+					$name  = $donation->get_donor()->get_name();
 
 					if ( $name ) {
 						$text = sprintf( _x( '#%d by %s', 'number symbol', 'charitable' ),
@@ -239,7 +239,7 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 						);
 					}
 
-					$url 	 = esc_url( add_query_arg( array(
+					$url = esc_url( add_query_arg( array(
 						'post'   => $donation->get_donation_id(),
 						'action' => 'edit',
 					), admin_url( 'post.php' ) ) );
@@ -650,9 +650,7 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 				charitable_admin_view( 'donations-page/filter-form' );
 			}
 
-
 		}
-		
 
 		/**
 		 * Admin scripts and styles.
@@ -679,21 +677,24 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 
 			$assets_path = charitable()->get_path( 'assets', false );
 
-			// register the appropriate scripts
-			wp_register_script( 'lean-modal',
+			/* Register the appropriate scripts. */
+			wp_register_script(
+				'lean-modal',
 				$assets_path . 'js/libraries/leanModal' . $suffix . '.js',
 				array( 'jquery-core' ),
 				$version,
 				true
 			);
 
-			wp_register_style( 'lean-modal-css',
+			wp_register_style(
+				'lean-modal-css',
 				$assets_path . 'css/modal' . $suffix . '.css',
 				array(),
 				$version
 			);
 
-			wp_register_script( 'charitable-admin-donations',
+			wp_register_script(
+				'charitable-admin-donations',
 				$assets_path . 'js/charitable-admin-donations' . $suffix . '.js',
 				array( 'jquery-core', 'lean-modal' ),
 				$version,

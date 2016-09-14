@@ -117,6 +117,42 @@ if ( ! class_exists( 'Charitable_Registration_Form' ) ) :
 		}
 
 		/**
+		 * Adds hidden fields to the start of the registration
+		 *
+		 * @param 	Charitable_Form 	$form
+		 * @return 	void
+		 * @access  public
+		 * @since 	1.0.0
+		 */
+		public function add_hidden_fields( $form ) {
+			$ret = parent::add_hidden_fields( $form );
+
+			if ( false === $ret ) {
+				return;
+			}
+
+			$redirect = false;
+
+			if ( isset( $_GET['redirect_to'] ) && strlen( $_GET['redirect_to'] ) ) {
+
+				$redirect = $_GET['redirect_to'];
+
+			} elseif ( isset( $this->shortcode_args['redirect'] ) && strlen( $this->shortcode_args['redirect'] ) ) {
+
+				$redirect = $this->shortcode_args['redirect'];
+
+			}
+
+			if ( ! $redirect ) {
+				return;
+			}
+
+			?>
+			<input type="hidden" name="redirect_to" value="<?php echo esc_url( $redirect ) ?>" />
+			<?php
+		}
+
+		/**
 		 * Update registration after form submission.
 		 *
 		 * @return  void
@@ -127,8 +163,11 @@ if ( ! class_exists( 'Charitable_Registration_Form' ) ) :
 		public static function save_registration() {
 			$form = new Charitable_Registration_Form();
 
-			if ( ! $form->validate_nonce() ) {
+			if ( ! $form->validate_nonce() || ! $form->validate_honeypot() ) {
+
+				charitable_get_notices()->add_error( __( 'There was an error with processing your form submission. Please reload the page and try again.', 'charitable' ) );
 				return;
+
 			}
 
 			$fields = $form->get_fields();
@@ -139,9 +178,19 @@ if ( ! class_exists( 'Charitable_Registration_Form' ) ) :
 			}
 
 			$submitted = apply_filters( 'charitable_registration_values', $_POST, $fields, $form );
-			
-			$user      = new Charitable_User();
-			$user_id   = $user->update_profile( $submitted, array_keys( $fields ) );
+
+			if ( ! isset( $submitted['user_email'] ) || ! is_email( $submitted['user_email'] ) ) {
+
+				charitable_get_notices()->add_error( sprintf(
+					__( '%s is not a valid email address.', 'charitable' ),
+					$submitted['user_email']
+				) );
+
+				return false;
+			}
+
+			$user    = new Charitable_User();
+			$user_id = $user->update_profile( $submitted, array_keys( $fields ) );
 
 			/**
 			 * If the user was successfully created, redirect to the login redirect URL.
@@ -152,6 +201,36 @@ if ( ! class_exists( 'Charitable_Registration_Form' ) ) :
 				wp_safe_redirect( charitable_get_login_redirect_url() );
 				exit();
 			}
+		}
+
+		/**
+		 * Return the link to the login page, or false if we are not going to display it.
+		 *
+		 * @return  false|string
+		 * @access  public
+		 * @since   1.4.2
+		 */
+		public function get_login_link() {
+
+			if ( false == $this->shortcode_args['login_link_text'] || 'false' == $this->shortcode_args['login_link_text'] ) {
+				return false;
+			}
+
+			$login_link = charitable_get_permalink( 'login_page' );
+
+			if ( charitable_get_permalink( 'registration_page' ) === $login_link ) {
+				return false;
+			}
+
+			if ( isset( $_GET['redirect_to'] ) ) {
+				$login_link = add_query_arg( 'redirect_to', $_GET['redirect_to'], $login_link );
+			}
+
+			return sprintf( '<a href="%1$s" title="%2$s">%3$s</a>',
+				esc_url( $login_link ),
+				esc_attr( $this->shortcode_args['login_link_text'] ),
+				$this->shortcode_args['login_link_text']
+			);
 		}
 	}
 

@@ -45,6 +45,9 @@ if ( ! class_exists( 'Charitable_Campaign_Post_Type' ) ) :
         private function __construct() {    
             $this->meta_box_helper = new Charitable_Meta_Box_Helper( 'charitable-campaign' );
 
+            // Campaign columns
+            add_filter( 'manage_edit-campaign_columns',                 array( $this, 'dashboard_columns' ), 11, 1 );
+
             add_action( 'add_meta_boxes',                               array( $this, 'add_meta_boxes' ), 10);
             add_action( 'add_meta_boxes_campaign',                      array( $this, 'wrap_editor' ) );
             add_action( 'edit_form_after_title',                        array( $this, 'campaign_form_top' ) );
@@ -70,6 +73,39 @@ if ( ! class_exists( 'Charitable_Campaign_Post_Type' ) ) :
 
             return self::$instance;
         }    
+
+
+        /**
+         * Customize campaigns columns.
+         *
+         * @see     get_column_headers
+         *
+         * @return  array
+         * @access  public
+         * @since   1.0.0
+         */
+        public function dashboard_columns( $column_names ) {
+
+            // the creator as an array for subsequent array manip
+            $creator = array( 'author' => __( 'Creator', 'charitable' ) );
+
+            // insert after title column
+            if( isset( $column_names['title'] ) ){
+                
+                // find the "title" column
+                $index =  array_search( "title", array_keys( $column_names) );
+
+                // reform the array
+                $column_names = array_merge( array_slice( $column_names, 0, $index + 1, true ), $creator, array_slice( $column_names, $index, count( $column_names ) - $index, true ) );
+            
+            // or add to end
+            } else {
+                $column_names = array_merge( $column_names, $creator );
+            }
+
+            return $column_names;
+        }
+
 
         /**
          * Add meta boxes.

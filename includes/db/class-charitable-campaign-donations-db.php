@@ -93,12 +93,12 @@ if ( ! class_exists( 'Charitable_Campaign_Donations_DB' ) ) :
 		 */
 		public function get_columns() {
 			return array(
-				'campaign_donation_id'  => '%d',
-				'donation_id'           => '%d',
-				'donor_id'              => '%d',
-				'campaign_id'           => '%d',
-				'campaign_name'         => '%s',
-				'amount'                => '%f',
+				'campaign_donation_id' => '%d',
+				'donation_id'          => '%d',
+				'donor_id'             => '%d',
+				'campaign_id'          => '%d',
+				'campaign_name'        => '%s',
+				'amount'               => '%f',
 			);
 		}
 
@@ -111,12 +111,12 @@ if ( ! class_exists( 'Charitable_Campaign_Donations_DB' ) ) :
 		 */
 		public function get_column_defaults() {
 			return array(
-				'campaign_donation_id'  => '',
-				'donation_id'           => '',
-				'donor_id'              => '',
-				'campaign_id'           => '',
-				'campaign_name'         => '',
-				'amount'                => '',
+				'campaign_donation_id' => '',
+				'donation_id'          => '',
+				'donor_id'             => '',
+				'campaign_id'          => '',
+				'campaign_name'        => '',
+				'amount'               => '',
 			);
 		}
 
@@ -226,8 +226,8 @@ if ( ! class_exists( 'Charitable_Campaign_Donations_DB' ) ) :
 		/**
 		 * Return an object containing all campaign donations associated with a particular
 		 * campaign ID or a particular donation ID.
-		 * 
-		 * @global 	WPDB      $wpdb 
+		 *
+		 * @global 	WPDB      $wpdb
 		 * @param 	string    $field The field we are retrieving donations by. Either 'campaign' or 'donation'.
 		 * @param 	int|int[] $donation_id A single donation ID or an array of IDs.
 		 * @return  Object
@@ -571,7 +571,7 @@ if ( ! class_exists( 'Charitable_Campaign_Donations_DB' ) ) :
 			$sql_where_clauses = array();
 
 			if ( isset( $args['campaign_id'] ) ) {
-				
+
 				list( $campaigns_in, $campaigns_parameters ) = $this->get_in_clause_params( $args['campaign_id'] );
 
 				$sql_where_clauses[] = "cd.campaign_id IN ( $campaigns_in )";
@@ -579,17 +579,17 @@ if ( ! class_exists( 'Charitable_Campaign_Donations_DB' ) ) :
 
 			}
 
-			if ( isset( $args['status'] ) ) { 
+			if ( isset( $args['status'] ) ) {
 
 				$sql_where_clauses[] = 'p.post_status = %s';
 				$parameters[]        = $args['status'];
 
-			} else { 
+			} else {
 				// if ALL: select all valid statuses
 				$statuses            = array_keys( charitable_get_valid_donation_statuses() );
 				$in                  = $this->get_in_clause( $statuses, '%s' );
 				$sql_where_clauses[] = "p.post_status IN ( $in )";
-				$parameters          = array_merge( $parameters, $statuses ); 
+				$parameters          = array_merge( $parameters, $statuses );
 			}
 
 			if ( isset( $args['start_date'] ) ) {

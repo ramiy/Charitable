@@ -82,14 +82,13 @@ if ( ! class_exists( 'Charitable_Reset_Password_Form' ) ) :
 		 * @since 	1.0.0
 		 */
 		public function add_hidden_fields( $form ) {
-			if ( ! $form->is_current_form( $this->id ) ) {
-				return false;
+			$ret = parent::add_hidden_fields( $form );
+
+			if ( ! $ret ) {
+				return;
 			}
 
-			$this->nonce_field();
-
 			?>
-			<input type="hidden" name="charitable_action" value="<?php echo esc_attr( $this->form_action ) ?>" />
 			<input type="hidden" name="login" value="<?php echo esc_attr( $this->login ) ?>" autocomplete="off" />
 			<input type="hidden" name="key" value="<?php echo esc_attr( $this->key ) ?>" />
 			<?php
@@ -143,7 +142,8 @@ if ( ! class_exists( 'Charitable_Reset_Password_Form' ) ) :
 
 			$form = new Charitable_Reset_Password_Form();
 
-			if ( ! $form->validate_nonce() ) {
+			if ( ! $form->validate_nonce() || ! $form->validate_honeypot() ) {
+				charitable_get_notices()->add_error( __( 'There was an error with processing your form submission. Please reload the page and try again.', 'charitable' ) );
 				return;
 			}
 

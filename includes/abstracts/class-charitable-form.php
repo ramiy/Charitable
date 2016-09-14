@@ -159,7 +159,7 @@ if ( ! class_exists( 'Charitable_Form' ) ) :
 		/**
 		 * Adds hidden fields to the start of the donation form.
 		 *
-		 * @param 	Charitable_Form 	$form
+		 * @param 	Charitable_Form $form
 		 * @return 	void
 		 * @access  public
 		 * @since 	1.0.0
@@ -171,8 +171,10 @@ if ( ! class_exists( 'Charitable_Form' ) ) :
 
 			$this->nonce_field();
 
-			?>
-			<input type="hidden" name="charitable_action" value="<?php echo esc_attr( $this->form_action ) ?>" />	
+			?>			
+			<input type="hidden" name="charitable_action" value="<?php echo esc_attr( $this->form_action ) ?>" />
+			<input type="hidden" name="charitable_form_id" value="<?php echo esc_attr( $this->id ) ?>" autocomplete="off" />
+			<input type="text" name="<?php echo esc_attr( $this->id ) ?>" class="charitable-hidden" value="" autocomplete="off" />			
 			<?php
 		}
 
@@ -358,6 +360,25 @@ if ( ! class_exists( 'Charitable_Form' ) ) :
 			}
 
 			return $validated;
+		}
+
+		/**
+		 * Make sure that the honeypot field is empty.
+		 *
+		 * @return 	boolean
+		 * @access 	public
+		 * @since 	1.4.3
+		 */
+		public function validate_honeypot() {
+			$submitted = $this->get_submitted_values();
+
+			if ( ! isset( $submitted['charitable_form_id'] ) ) {
+				return true;
+			}
+
+			$form_id = $submitted['charitable_form_id'];
+
+			return array_key_exists( $form_id, $submitted ) && 0 === strlen( $submitted[ $form_id ] );
 		}
 
 		/**

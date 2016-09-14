@@ -1,4 +1,6 @@
-( function( $ ){
+CHARITABLE = window.CHARITABLE || {};
+
+( function( $, exports ){
 
     /**
      * Main Uploader object.
@@ -218,6 +220,8 @@
         });
     }
 
+    exports.Uploader = Uploader;
+
     /**
      * Load the Uploaders
      */
@@ -228,4 +232,4 @@
         });
     });    
 
-})( jQuery );
+})( jQuery, CHARITABLE );

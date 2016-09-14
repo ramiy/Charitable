@@ -594,7 +594,7 @@ if ( ! class_exists( 'Charitable_Campaign' ) ) :
 		 */
 		public function get_donation_amount_in_session() {
 			$donation = charitable_get_session()->get_donation_by_campaign( $this->ID );
-			$amount = is_array( $donation ) ? $donation['amount'] : 0;
+			$amount   = is_array( $donation ) ? $donation['amount'] : 0;
 			return apply_filters( 'charitable_session_donation_amount', $amount, $this );
 		}
 
@@ -706,18 +706,29 @@ if ( ! class_exists( 'Charitable_Campaign' ) ) :
 		/**
 		 * Sanitize the campaign end date.
 		 *
-		 * @param   string  $value
+		 * We use WP_Locale to parse the month that the user has set.
+		 *
+		 * @global 	WP_Locale $wp_locale
+		 * @param   string    $value
 		 * @return  string|int
 		 * @access  public
 		 * @static
 		 * @since   1.0.0
 		 */
 		public static function sanitize_campaign_end_date( $value ) {
+			global $wp_locale;
+
 			if ( empty( $value ) || ! $value ) {
 				return 0;
 			}
 
-			return date( 'Y-m-d 00:00:00', strtotime( $value ) );
+			list( $month, $day, $year ) = explode( ' ', $value );
+
+			$day   = trim( $day, ',' );
+
+			$month = 1 + array_search( $month, array_values( $wp_locale->month ) );
+
+			return date( 'Y-m-d 00:00:00', mktime( 0, 0, 0, $month, $day, $year ) );
 		}
 
 		/**

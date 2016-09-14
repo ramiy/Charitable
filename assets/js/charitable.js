@@ -12,7 +12,7 @@ CHARITABLE = window.CHARITABLE || {};
         this.errors = [];
         this.form = form;
         this.pause_processing = false;
-
+        
         var self = this;
         var $body = $( 'body' );
 
@@ -233,11 +233,11 @@ CHARITABLE = window.CHARITABLE || {};
             $body.on( 'blur', '.custom-donation-input', on_change_custom_donation_amount );            
 
             // Handle donation form submission            
-            if ( 1 === self.form.data( 'use-ajax' ) ) {
-                $body.on( 'submit', '#charitable-donation-form', on_submit );
-            }
+            $body.on( 'submit', '#charitable-donation-form', on_submit );
 
-            $body.on( 'charitable:form:process', process_donation );
+            if ( 1 === self.form.data( 'use-ajax' ) ) {
+                $body.on( 'charitable:form:process', process_donation );
+            }
 
             $body.trigger( 'charitable:form:initialize', self );
 
@@ -249,7 +249,7 @@ CHARITABLE = window.CHARITABLE || {};
 
         if ( false === CHARITABLE.forms_initialized ) {
             init();
-        } 
+        }
 
     };
 
@@ -281,7 +281,7 @@ CHARITABLE = window.CHARITABLE || {};
         var amount = suggested = parseFloat( this.form.find( '[name=donation_amount]:checked' ).val() );
 
         if ( isNaN( suggested ) ) {
-            amount = parseFloat( this.form.find( '[name=custom_donation_amount]' ).val() );
+            amount = parseFloat( this.form.find( '.custom-donation-input' ).val() );
         }
 
         if ( isNaN( amount ) || amount <= 0 ) {
