@@ -188,7 +188,7 @@ if ( ! class_exists( 'Charitable_Customizer' ) ) :
 			}
 
 			$wp_customize->add_panel( $panel_id, array(
-				'title' => $panel['title'],
+				'title'    => $panel['title'],
 				'priority' => $panel['priority'],
 			) );
 
@@ -272,7 +272,6 @@ if ( ! class_exists( 'Charitable_Customizer' ) ) :
 
 				$setting_control = $setting['control'];
 				$setting_control['section'] = $section_id;
-				// $setting_control[ 'type' ] = $setting[ 'control' ][ 'type' ];
 
 				if ( isset( $setting_control['control_type'] ) ) {
 
@@ -299,8 +298,17 @@ if ( ! class_exists( 'Charitable_Customizer' ) ) :
 		 */
 		public function load_customizer_script() {
 			$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
-			wp_register_script( 'charitable-customizer', charitable()->get_path( 'assets', false ) . 'js/charitable-customizer' . $suffix . '.js', array( 'jquery-core', 'customize-preview' ), '1.2.0-beta5', true );
+
+			wp_register_script(
+				'charitable-customizer',
+				charitable()->get_path( 'assets', false ) . 'js/charitable-customizer' . $suffix . '.js',
+				array( 'jquery-core', 'customize-preview' ),
+				'1.2.0-beta5',
+				true
+			);
+
 			wp_enqueue_script( 'charitable-customizer' );
+
 		}
 	}
 

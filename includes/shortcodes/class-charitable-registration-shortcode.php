@@ -40,9 +40,9 @@ if ( ! class_exists( 'Charitable_Registration_Shortcode' ) ) :
 
 			$args = shortcode_atts( $defaults, $atts, 'charitable_registration' );
 
-			if ( is_user_logged_in() ) {
+			ob_start();
 
-				ob_start();
+			if ( is_user_logged_in() ) {
 
 				charitable_template( 'shortcodes/logged-in.php', $args );
 

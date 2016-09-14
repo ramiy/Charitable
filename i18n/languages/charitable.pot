@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the Charitable package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Charitable 1.4.4\n"
+"Project-Id-Version: Charitable 1.4.4.1\n"
 "Report-Msgid-Bugs-To: https://www.wpcharitable.com/\n"
-"POT-Creation-Date: 2016-09-13 02:02:27+00:00\n"
+"POT-Creation-Date: 2016-09-14 01:01:18+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -24,7 +24,7 @@ msgstr ""
 "X-Poedit-Bookmarks: \n"
 "X-Textdomain-Support: yes\n"
 
-#: charitable.php:695 charitable.php:706
+#: charitable.php:693 charitable.php:704
 msgid "Cheatin&#8217; huh?"
 msgstr ""
 
@@ -6461,27 +6461,27 @@ msgstr ""
 msgid "Your donation could not be processed. No payment gateway was selected."
 msgstr ""
 
-#: includes/donations/class-charitable-donation-processor.php:276
+#: includes/donations/class-charitable-donation-processor.php:277
 msgid "Campaign ID was not found. Unable to create donation."
 msgstr ""
 
-#: includes/donations/class-charitable-donation-processor.php:292
+#: includes/donations/class-charitable-donation-processor.php:293
 msgid "Unable to process donation."
 msgstr ""
 
-#: includes/donations/class-charitable-donation-processor.php:394
+#: includes/donations/class-charitable-donation-processor.php:395
 msgid "We were unable to save the donation. Please try again."
 msgstr ""
 
-#: includes/donations/class-charitable-donation-processor.php:403
+#: includes/donations/class-charitable-donation-processor.php:404
 msgid "Payment attempted."
 msgstr ""
 
-#: includes/donations/class-charitable-donation-processor.php:405
+#: includes/donations/class-charitable-donation-processor.php:406
 msgid "Donation created."
 msgstr ""
 
-#: includes/donations/class-charitable-donation-processor.php:656
+#: includes/donations/class-charitable-donation-processor.php:657
 msgid "Payment failed with errors: %s"
 msgstr ""
 

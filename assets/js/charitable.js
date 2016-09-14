@@ -125,14 +125,21 @@ CHARITABLE = window.CHARITABLE || {};
 
             }
 
-            /* If processing hasn't been paused, trigger the processing. */
-            if ( false === $helper.pause_processing ) {
-                
-                $body.trigger( 'charitable:form:process', $helper );
-            
+            /* If processing has been paused, return false now. */
+            if ( false !== $helper.pause_processing ) {
+                return false;
             }
 
+            /* If we're not using AJAX to process the donation further, return now. */
+            if ( 1 !== $form.data( 'use-ajax' ) ) {
+                return true;
+            }
+
+            /* If we're still here, trigger the processing event. */
+            $body.trigger( 'charitable:form:process', $helper );
+
             return false;
+        
         };
 
         /**
