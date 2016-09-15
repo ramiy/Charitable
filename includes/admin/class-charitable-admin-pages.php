@@ -203,7 +203,7 @@ if ( ! class_exists( 'Charitable_Admin_Pages' ) ) :
 		 * @deprecated 1.4.0
 		 */
 		public function render_donations_page() {
-			charitable_get_notices()->deprecated_function(
+			charitable_get_deprecated()->deprecated_function(
                 __METHOD__,
                 '1.4.0',
                 __( 'Donations page now rendered by WordPress default manage_edit-donation_columns', 'charitable' )
