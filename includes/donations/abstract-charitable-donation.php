@@ -683,18 +683,20 @@ if ( ! class_exists( 'Charitable_Abstract_Donation' ) ) :
 
 	    /**
 	     * Return the parent donation, if exists
-	     * @todo: stash this in object
 	     *
 	     * @return  false|Charitable_Donation
 	     * @access  public
 	     * @since   1.5.0
 	     */
 	    public function get_donation_plan() {
-	        if ( $this->donation_data->post_parent > 0 ) {
-	            return $this->parent_donation = charitable_get_donation( $this->donation_data->post_parent );
-	        } else {
-	            return $this->parent_donation = false;
-	        }
+	    	if( ! isset( $this->parent_donation ) ){
+	    		if ( $this->donation_data->post_parent > 0 ) {
+		            $this->parent_donation = charitable_get_donation( $this->donation_data->post_parent );
+		        } else {
+		            $this->parent_donation = false;
+		        }
+	    	}
+	        return $this->parent_donation
 	    }
 
 		/**
