@@ -685,7 +685,7 @@ if ( ! class_exists( 'Charitable_Abstract_Donation' ) ) :
 	     * Return the parent donation, if exists
 	     * @todo: stash this in object
 	     *
-	     * @return  int
+	     * @return  false|Charitable_Donation
 	     * @access  public
 	     * @since   1.5.0
 	     */
