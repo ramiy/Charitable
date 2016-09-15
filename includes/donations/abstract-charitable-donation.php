@@ -381,7 +381,7 @@ if ( ! class_exists( 'Charitable_Abstract_Donation' ) ) :
 		 *
 		 * @return  int
 		 * @access  public
-		 * @since   1.5.0
+		 * @since   1.4.7
 		 */
 		public function get_donation_type() {
 			return $this->donation_type;
@@ -674,7 +674,7 @@ if ( ! class_exists( 'Charitable_Abstract_Donation' ) ) :
 	     *
 	     * @return  int
 	     * @access  public
-	     * @since   1.5.0
+	     * @since   1.4.7
 	     */
 	    public function get_donation_plan_id() {
 	        return $this->donation_data->post_parent;
@@ -686,7 +686,7 @@ if ( ! class_exists( 'Charitable_Abstract_Donation' ) ) :
 	     *
 	     * @return  false|Charitable_Donation
 	     * @access  public
-	     * @since   1.5.0
+	     * @since   1.4.7
 	     */
 	    public function get_donation_plan() {
 	    	if( ! isset( $this->parent_donation ) ){
