@@ -79,49 +79,51 @@ if ( 'en_ZA' == $locale || 'ZAR' == $currency ) {
         <div class="column-inside">
             <h2><?php _e( 'The WordPress Fundraising Toolkit', 'charitable' ) ?></h2>
             <p><?php _e( 'Charitable is everything you need to start accepting donations today. PayPal and offline donations work right out of the box, and when your organization is ready to grow, our extensions give you the tools you need to move forward.', 'charitable' ) ?></p>
-            <hr />
-            <h2><?php _e( 'Getting Started', 'charitable' ) ?></h2>
-            <ul class="checklist">
-                <?php if ( count( $gateways ) > 0 ) : ?>
-                    <li class="done"><?php
-                        printf(
-                            _x( 'You have activated %s. <a href="%s">Change settings</a>', 'You have activated x and y. Change gateway settings.', 'charitable' ),
-                            charitable_list_to_sentence_part( $gateways ),
-                            admin_url( 'admin.php?page=charitable-settings&tab=gateways' )
-                        ) ?>
-                    </li>
-                <?php else : ?>
-                    <li class="not-done"><a href="<?php echo admin_url( 'admin.php?page=charitable-settings&tab=gateways' ) ?>"><?php _e( 'You need to enable a payment gateway', 'charitable' ) ?></a></li>
-                <?php endif ?>
-                <?php if ( $campaigns_count > 0 ) : ?>
-                    <li class="done"><?php
-                        printf(
-                            __( 'You have created your first campaign. <a href="%s">Create another one.</a>', 'charitable' ),
-                            admin_url( 'post-new.php?post_type=campaign' )
-                        ) ?>
-                    </li>
-                <?php else : ?>
-                    <li class="not-done"><a href="<?php echo admin_url( 'post-new.php?post_type=campaign' ) ?>"><?php _e( 'Create your first campaign', 'charitable' ) ?></a></li>
-                <?php endif ?>
-                <?php if ( count( $emails ) > 0 ) : ?>
-                    <li class="done"><?php
-                        printf(
-                            _x( 'You have turned on the %s. <a href="%s">Change settings</a>', 'You have activated x and y. Change email settings.', 'charitable' ),
-                            charitable_list_to_sentence_part( $emails ),
-                            admin_url( 'admin.php?page=charitable-settings&tab=emails' )
-                        ) ?>
-                    </li>
-                <?php else : ?>
-                    <li class="not-done"><a href="<?php echo admin_url( 'admin.php?page=charitable-settings&tab=emails' ) ?>"><?php _e( 'Turn on email notifications', 'charitable' ) ?></a></li>
-                <?php endif ?>
-            </ul>
-            <p style="margin-bottom: 0;"><?php
-                printf(
-                    __( 'Need a hand with anything? You might find the answer in <a href="%s">our documentation</a>, or you can always get in touch with us via <a href="%s">our support page</a>.', 'charitable' ),
-                    'https://www.wpcharitable.com/documentation/?utm_source=welcome-page&utm_medium=wordpress-dashboard&utm_campaign=documentation',
-                    'https://www.wpcharitable.com/support/?utm_source=welcome-page&utm_medium=wordpress-dashboard&utm_campaign=support'
-                ) ?>
-            </p>
+            <?php if ( current_user_can( 'manage_charitable_settings' ) ) : ?>
+                <hr />
+                <h2><?php _e( 'Getting Started', 'charitable' ) ?></h2>
+                <ul class="checklist">
+                    <?php if ( count( $gateways ) > 0 ) : ?>
+                        <li class="done"><?php
+                            printf(
+                                _x( 'You have activated %s. <a href="%s">Change settings</a>', 'You have activated x and y. Change gateway settings.', 'charitable' ),
+                                charitable_list_to_sentence_part( $gateways ),
+                                admin_url( 'admin.php?page=charitable-settings&tab=gateways' )
+                            ) ?>
+                        </li>
+                    <?php else : ?>
+                        <li class="not-done"><a href="<?php echo admin_url( 'admin.php?page=charitable-settings&tab=gateways' ) ?>"><?php _e( 'You need to enable a payment gateway', 'charitable' ) ?></a></li>
+                    <?php endif ?>
+                    <?php if ( $campaigns_count > 0 ) : ?>
+                        <li class="done"><?php
+                            printf(
+                                __( 'You have created your first campaign. <a href="%s">Create another one.</a>', 'charitable' ),
+                                admin_url( 'post-new.php?post_type=campaign' )
+                            ) ?>
+                        </li>
+                    <?php else : ?>
+                        <li class="not-done"><a href="<?php echo admin_url( 'post-new.php?post_type=campaign' ) ?>"><?php _e( 'Create your first campaign', 'charitable' ) ?></a></li>
+                    <?php endif ?>
+                    <?php if ( count( $emails ) > 0 ) : ?>
+                        <li class="done"><?php
+                            printf(
+                                _x( 'You have turned on the %s. <a href="%s">Change settings</a>', 'You have activated x and y. Change email settings.', 'charitable' ),
+                                charitable_list_to_sentence_part( $emails ),
+                                admin_url( 'admin.php?page=charitable-settings&tab=emails' )
+                            ) ?>
+                        </li>
+                    <?php else : ?>
+                        <li class="not-done"><a href="<?php echo admin_url( 'admin.php?page=charitable-settings&tab=emails' ) ?>"><?php _e( 'Turn on email notifications', 'charitable' ) ?></a></li>
+                    <?php endif ?>
+                </ul>
+                <p style="margin-bottom: 0;"><?php
+                    printf(
+                        __( 'Need a hand with anything? You might find the answer in <a href="%s">our documentation</a>, or you can always get in touch with us via <a href="%s">our support page</a>.', 'charitable' ),
+                        'https://www.wpcharitable.com/documentation/?utm_source=welcome-page&utm_medium=wordpress-dashboard&utm_campaign=documentation',
+                        'https://www.wpcharitable.com/support/?utm_source=welcome-page&utm_medium=wordpress-dashboard&utm_campaign=support'
+                    ) ?>
+                </p>
+            <?php endif ?>
         </div>
         <div class="upgrade">
             <h2><?php _e( 'Popular Upgrades', 'charitable' ) ?></h2>

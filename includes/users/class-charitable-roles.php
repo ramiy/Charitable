@@ -85,7 +85,6 @@ if ( ! class_exists( 'Charitable_Roles' ) ) :
 
 				$wp_roles->add_cap( 'campaign_manager', 'view_charitable_sensitive_data' );
 				$wp_roles->add_cap( 'campaign_manager', 'export_charitable_reports' );
-				$wp_roles->add_cap( 'campaign_manager', 'manage_charitable_settings' );
 
 				$wp_roles->add_cap( 'administrator', 'view_charitable_sensitive_data' );
 				$wp_roles->add_cap( 'administrator', 'export_charitable_reports' );
@@ -120,7 +119,6 @@ if ( ! class_exists( 'Charitable_Roles' ) ) :
 
 				$wp_roles->remove_cap( 'campaign_manager', 'view_charitable_sensitive_data' );
 				$wp_roles->remove_cap( 'campaign_manager', 'export_charitable_reports' );
-				$wp_roles->remove_cap( 'campaign_manager', 'manage_charitable_settings' );
 
 				$wp_roles->remove_cap( 'administrator', 'view_charitable_sensitive_data' );
 				$wp_roles->remove_cap( 'administrator', 'export_charitable_reports' );

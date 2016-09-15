@@ -68,8 +68,7 @@ class Test_Charitable_Roles extends Charitable_UnitTestCase {
 		$this->assertArrayHasKey( 'unfiltered_html', (array) $wp_roles->roles['campaign_manager']['capabilities'] );
 
 		$this->assertArrayHasKey( 'view_charitable_sensitive_data', (array) $wp_roles->roles['campaign_manager']['capabilities'] );
-		$this->assertArrayHasKey( 'export_charitable_reports', (array) $wp_roles->roles['campaign_manager']['capabilities'] );
-		$this->assertArrayHasKey( 'manage_charitable_settings', (array) $wp_roles->roles['campaign_manager']['capabilities'] );
+		$this->assertArrayHasKey( 'export_charitable_reports', (array) $wp_roles->roles['campaign_manager']['capabilities'] );		
 
 		$this->assertArrayHasKey( 'edit_campaign', (array) $wp_roles->roles['campaign_manager']['capabilities'] );
 		$this->assertArrayHasKey( 'read_campaign', (array) $wp_roles->roles['campaign_manager']['capabilities'] );
