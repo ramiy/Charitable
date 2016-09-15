@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the Charitable package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Charitable 1.4.4.1\n"
+"Project-Id-Version: Charitable 1.4.4\n"
 "Report-Msgid-Bugs-To: https://www.wpcharitable.com/\n"
-"POT-Creation-Date: 2016-09-14 01:01:18+00:00\n"
+"POT-Creation-Date: 2016-09-15 06:23:59+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -4932,73 +4932,73 @@ msgstr ""
 msgid "Status"
 msgstr ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:228
+#: includes/admin/donations/class-charitable-donation-post-type.php:227
 msgid "View Donation Details"
 msgstr ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:356
+#: includes/admin/donations/class-charitable-donation-post-type.php:355
 msgid "View Details"
 msgstr ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:357
+#: includes/admin/donations/class-charitable-donation-post-type.php:356
 msgid "View"
 msgstr ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:398
+#: includes/admin/donations/class-charitable-donation-post-type.php:397
 #: includes/admin/views/donations-page/export-form.php:35
 #: includes/admin/views/donations-page/filter-form.php:36
 msgid "All"
 msgstr ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:556
+#: includes/admin/donations/class-charitable-donation-post-type.php:555
 msgid "Donation status changed."
 msgid_plural "%s donation statuses changed."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:571
+#: includes/admin/donations/class-charitable-donation-post-type.php:570
 msgid "%d donation updated."
 msgid_plural "%d donations updated."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:572
+#: includes/admin/donations/class-charitable-donation-post-type.php:571
 msgid "1 donation not updated, somebody is editing it."
 msgstr ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:573
+#: includes/admin/donations/class-charitable-donation-post-type.php:572
 msgid "%s donation not updated, somebody is editing it."
 msgid_plural "%s donations not updated, somebody is editing them."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:574
+#: includes/admin/donations/class-charitable-donation-post-type.php:573
 msgid "%s donation permanently deleted."
 msgid_plural "%s donations permanently deleted."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:575
+#: includes/admin/donations/class-charitable-donation-post-type.php:574
 msgid "%s donation moved to the Trash."
 msgid_plural "%s donations moved to the Trash."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:576
+#: includes/admin/donations/class-charitable-donation-post-type.php:575
 msgid "%s donation restored from the Trash."
 msgid_plural "%s donations restored from the Trash."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:874
+#: includes/admin/donations/class-charitable-donation-post-type.php:873
 msgid "Handled automatically when $donation->update_status() is called."
 msgstr ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:884
+#: includes/admin/donations/class-charitable-donation-post-type.php:883
 msgid "Donation status set to %s."
 msgstr ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:888
+#: includes/admin/donations/class-charitable-donation-post-type.php:887
 #: includes/donations/abstract-charitable-donation.php:583
 msgid "Donation status updated from %s to %s."
 msgstr ""
@@ -7517,22 +7517,22 @@ msgctxt "US state of Georgia"
 msgid "Georgia"
 msgstr ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:232
+#: includes/admin/donations/class-charitable-donation-post-type.php:231
 msgctxt "number symbol"
 msgid "#%d by %s"
 msgstr ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:237
+#: includes/admin/donations/class-charitable-donation-post-type.php:236
 msgctxt "number symbol"
 msgid "#%d"
 msgstr ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:263
+#: includes/admin/donations/class-charitable-donation-post-type.php:262
 msgctxt "charitable"
 msgid "via %s"
 msgstr ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:433
+#: includes/admin/donations/class-charitable-donation-post-type.php:432
 msgctxt "set donation status to x"
 msgid "Set to %s"
 msgstr ""

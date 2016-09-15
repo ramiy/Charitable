@@ -115,6 +115,11 @@ You can post in the [support forum](https://wordpress.org/support/plugin/charita
 
 == Changelog ==
 
+= 1.4.5 = 
+* Fixes the way donations are processed in Javascript to avoid issues when the donation is *not* processed with AJAX (currently, this is only the case if you're using the Easy Digital Downloads extension, Pronamic iDEAL or an old version of one of our premium payment gateway extensions). [#223](https://github.com/Charitable/Charitable/issues/223)
+* Fixes the registration form shortcode, which was being printed out too early on the page. [#224](https://github.com/Charitable/Charitable/issues/224)
+* Adds a new filter for the list of active payment gateways: `charitable_active_gateways`. See `Charitable_Gateways::get_active_gateways()`.
+
 = 1.4.4 =
 * Resolves a new issue related to the donation form validation introduced in version 1.4.3, which prevented the donation widget form from being submitted. [#221](https://github.com/Charitable/Charitable/issues/204) and [#205](https://github.com/Charitable/Charitable/issues/221)
 * Fixes a bug that resulted in logged in users who had never made a donation being able to see a list of all donations with the `[charitable_my_donations]` shortcode. No personal donor data was displayed, and the donation receipts remained inaccessible to the users. All they could see was the date of the donation, the campaign donated to and the amount of the donation. [#220](https://github.com/Charitable/Charitable/issues/204) and [#205](https://github.com/Charitable/Charitable/issues/220)

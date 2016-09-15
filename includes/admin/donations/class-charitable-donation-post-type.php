@@ -224,23 +224,22 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 			switch ( $column_name ) {
 
 				case 'id' :
-
 					$title = esc_attr__( 'View Donation Details', 'charitable' );
 					$name  = $donation->get_donor()->get_name();
 
 					if ( $name ) {
 						$text = sprintf( _x( '#%d by %s', 'number symbol', 'charitable' ),
-							$donation->get_donation_id(),
+							$post_id,
 							$name
 						);
 					} else {
 						$text = sprintf( _x( '#%d', 'number symbol', 'charitable' ),
-							$donation->get_donation_id()
+							$post_id
 						);
 					}
 
 					$url = esc_url( add_query_arg( array(
-						'post'   => $donation->get_donation_id(),
+						'post'   => $post_id,
 						'action' => 'edit',
 					), admin_url( 'post.php' ) ) );
 
