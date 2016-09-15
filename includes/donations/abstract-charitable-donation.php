@@ -37,6 +37,13 @@ if ( ! class_exists( 'Charitable_Abstract_Donation' ) ) :
 		protected $donation_type;
 
 		/**
+	     *  Charitable_Donation donation data for the donation plan this donation is part of
+	     * 
+	     * @var     $donation_plan @access  protected
+	     */
+	    protected $donation_plan = false;
+
+		/**
 		 * The database record for this donation from the Posts table.
 		 *
 		 * @var     Object
@@ -370,6 +377,17 @@ if ( ! class_exists( 'Charitable_Abstract_Donation' ) ) :
 		}
 
 		/**
+		 * Returns the donation type.
+		 *
+		 * @return  int
+		 * @access  public
+		 * @since   1.4.7
+		 */
+		public function get_donation_type() {
+			return $this->donation_type;
+		}
+
+		/**
 		 * Returns the customer note attached to the donation.
 		 *
 		 * @return  string
@@ -650,6 +668,36 @@ if ( ! class_exists( 'Charitable_Abstract_Donation' ) ) :
 			charitable_get_deprecated()->deprecated_function( __METHOD__, '1.4.0', 'charitable_is_approved_status' );
 			return charitable_is_approved_status( $status );
 		}
+
+	    /**
+	     * Return the parent donation, if exists
+	     *
+	     * @return  int
+	     * @access  public
+	     * @since   1.4.7
+	     */
+	    public function get_donation_plan_id() {
+	        return $this->donation_data->post_parent;
+	    }
+
+
+	    /**
+	     * Return the parent donation, if exists
+	     *
+	     * @return  false|Charitable_Donation
+	     * @access  public
+	     * @since   1.4.7
+	     */
+	    public function get_donation_plan() {
+	    	if( ! isset( $this->parent_donation ) ){
+	    		if ( $this->donation_data->post_parent > 0 ) {
+		            $this->parent_donation = charitable_get_donation( $this->donation_data->post_parent );
+		        } else {
+		            $this->parent_donation = false;
+		        }
+	    	}
+	        return $this->parent_donation
+	    }
 
 		/**
 		 * Sanitize meta values before they are persisted to the database.
