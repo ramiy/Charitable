@@ -234,12 +234,12 @@ if ( ! class_exists( 'Charitable_Campaign_Donations_DB' ) ) :
 		 * @access  public
 		 * @since   1.4.0
 		 */
-		public function get_campaign_donations_by( $field, $id ) {
+		public function get_campaign_donations_by( $field, $donation_id ) {
 			global $wpdb;
 
 			$column = $this->get_sanitized_column( $field );
 
-			list( $in, $parameters ) = $this->get_in_clause_params( $id );
+			list( $in, $parameters ) = $this->get_in_clause_params( $donation_id );
 
 			$sql = "SELECT * 
                     FROM $this->table_name 
