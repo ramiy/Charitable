@@ -43,7 +43,7 @@ $wrapper_id  = 'charitable-' . $id . '-wrap';
 
 			<?php foreach ( $option['options'] as $k => $opt ) : ?>
 
-				<option value="<?php echo esc_attr( $k ) ?>" <?php selected( $k, $value ) ?>><?php echo $opt ?></option>
+				<option value="<?php echo esc_attr( $k ) ?>" <?php selected( $k, $checked ) ?>><?php echo $opt ?></option>
 
 			<?php endforeach ?>
 
@@ -51,7 +51,7 @@ $wrapper_id  = 'charitable-' . $id . '-wrap';
 
 		<?php else : ?>
 			
-			<option value="<?php echo esc_attr( $key ) ?>" <?php selected( $key, $value ) ?>><?php echo $option ?></option>
+			<option value="<?php echo esc_attr( $key ) ?>" <?php selected( $key, $checked ) ?>><?php echo $option ?></option>
 
 		<?php
 
