@@ -39,4 +39,6 @@ $highlight_colour = charitable_get_option( 'highlight_colour', apply_filters( 'c
 .supports-drag-drop .charitable-drag-drop-dropzone.drag-over {
     border-color: <?php echo $highlight_colour ?>;
 }
+
+<?php do_action( 'charitable_custom_styles', $highlight_colour ) ?>
 </style>

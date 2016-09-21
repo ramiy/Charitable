@@ -125,7 +125,7 @@ if ( ! class_exists( 'Charitable_Donation_Form' ) ) :
 		 * Returns the set value for a particular user field.
 		 *
 		 * @param   string $key
-		 * @param   string $default     Optional. The value that will be used if none is set.
+		 * @param   string $default Optional. The value that will be used if none is set.
 		 * @return  mixed
 		 * @access  public
 		 * @since   1.0.0

@@ -114,14 +114,12 @@ if ( ! class_exists( 'Charitable_Admin' ) ) :
 		/**
 		 * Loads admin-only scripts and stylesheets.
 		 *
-		 * @global  WP_Scripts $wp_scripts
 		 * @return  void
 		 * @access  public
 		 * @since   1.0.0
 		 */
 		public function admin_enqueue_scripts() {
-			global $wp_scripts;
-
+			
 			if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
 				$suffix  = '';
 				$version = time();
@@ -365,13 +363,12 @@ if ( ! class_exists( 'Charitable_Admin' ) ) :
 		/**
 		 * Returns an array of screen IDs where the Charitable scripts should be loaded.
 		 *
-		 * @uses charitable_admin_screens
-		 *
+		 * @uses    charitable_admin_screens
 		 * @return  array
-		 * @access  private
+		 * @access  public
 		 * @since   1.0.0
 		 */
-		private function get_charitable_screens() {
+		public function get_charitable_screens() {
 			return apply_filters( 'charitable_admin_screens', array(
 				'campaign',
 				'donation',
