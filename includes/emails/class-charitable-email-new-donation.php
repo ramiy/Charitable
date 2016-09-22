@@ -82,8 +82,14 @@ class Charitable_Email_New_Donation extends Charitable_Email {
             return false;
         }
 
+        $donation = charitable_get_donation( $donation_id );
+            
+        if ( ! is_object( $donation ) || empty( $donation->get_campaign_donations() ) || ! apply_filters( 'charitable_send_' . self::get_email_id(), true, $donation ) ){
+            return false;
+        }
+
         $email = new Charitable_Email_New_Donation( array( 
-            'donation' => charitable_get_donation( $donation_id ) 
+            'donation' => $donation
         ) );
 
         /**
