@@ -106,6 +106,8 @@
 .charitable-metabox textarea {
   padding: 14px 10px;
   width: 100%; }
+.charitable-metabox select {
+  width: 100%; }
 .charitable-metabox input[type=checkbox],
 .charitable-metabox input[type=radio],
 .charitable-metabox input[type=button],
@@ -218,6 +220,11 @@ body.post-type-campaign .postbox-container .empty-container {
 #campaign-description input,
 #campaign-description textarea {
   padding: 14px 10px;
+  width: 100%; }
+#campaign-title select,
+#campaign-goal select,
+#campaign-end-date select,
+#campaign-description select {
   width: 100%; }
 #campaign-title input[type=checkbox],
 #campaign-title input[type=radio],
