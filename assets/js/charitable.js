@@ -62,7 +62,7 @@ CHARITABLE = window.CHARITABLE || {};
                 return;
             }
 
-            $li.parents( '#charitable-donation-form' ).find( '.donation-amount.selected' ).removeClass( 'selected' );
+            $li.parents( '.charitable-donation-form' ).find( '.donation-amount.selected' ).removeClass( 'selected' );
             
             $li.addClass( 'selected' );
 
