@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Charitable 1.4.5\n"
 "Report-Msgid-Bugs-To: https://www.wpcharitable.com/\n"
-"POT-Creation-Date: 2016-09-15 11:47:03+00:00\n"
+"POT-Creation-Date: 2016-09-22 06:44:11+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -4729,63 +4729,63 @@ msgstr ""
 msgid "Campaign Creator"
 msgstr ""
 
-#: includes/admin/campaigns/class-charitable-campaign-post-type.php:284
+#: includes/admin/campaigns/class-charitable-campaign-post-type.php:282
 msgid "Suggested Donation Amounts"
 msgstr ""
 
-#: includes/admin/campaigns/class-charitable-campaign-post-type.php:287
-#: includes/admin/campaigns/class-charitable-campaign-post-type.php:288
-#: includes/admin/class-charitable-admin.php:179
+#: includes/admin/campaigns/class-charitable-campaign-post-type.php:285
+#: includes/admin/campaigns/class-charitable-campaign-post-type.php:286
+#: includes/admin/class-charitable-admin.php:177
 #: templates/shortcodes/my-donations.php:33
 msgid "Amount"
 msgstr ""
 
-#: includes/admin/campaigns/class-charitable-campaign-post-type.php:291
+#: includes/admin/campaigns/class-charitable-campaign-post-type.php:289
 msgid "Description (optional)"
 msgstr ""
 
-#: includes/admin/campaigns/class-charitable-campaign-post-type.php:292
-#: includes/admin/class-charitable-admin.php:178
+#: includes/admin/campaigns/class-charitable-campaign-post-type.php:290
+#: includes/admin/class-charitable-admin.php:176
 msgid "Optional Description"
 msgstr ""
 
-#: includes/admin/campaigns/class-charitable-campaign-post-type.php:299
+#: includes/admin/campaigns/class-charitable-campaign-post-type.php:297
 msgid "Allow Custom Donations"
 msgstr ""
 
-#: includes/admin/campaigns/class-charitable-campaign-post-type.php:376
+#: includes/admin/campaigns/class-charitable-campaign-post-type.php:374
 msgid "Enter campaign title"
 msgstr ""
 
-#: includes/admin/campaigns/class-charitable-campaign-post-type.php:388
+#: includes/admin/campaigns/class-charitable-campaign-post-type.php:386
 msgid "%d campaign updated."
 msgid_plural "%d campaigns updated."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/campaigns/class-charitable-campaign-post-type.php:389
+#: includes/admin/campaigns/class-charitable-campaign-post-type.php:387
 msgid "1 campaign not updated, somebody is editing it."
 msgstr ""
 
-#: includes/admin/campaigns/class-charitable-campaign-post-type.php:390
+#: includes/admin/campaigns/class-charitable-campaign-post-type.php:388
 msgid "%s campaign not updated, somebody is editing it."
 msgid_plural "%s campaigns not updated, somebody is editing them."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/campaigns/class-charitable-campaign-post-type.php:391
+#: includes/admin/campaigns/class-charitable-campaign-post-type.php:389
 msgid "%s campaign permanently deleted."
 msgid_plural "%s campaigns permanently deleted."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/campaigns/class-charitable-campaign-post-type.php:392
+#: includes/admin/campaigns/class-charitable-campaign-post-type.php:390
 msgid "%s campaign moved to the Trash."
 msgid_plural "%s campaigns moved to the Trash."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/campaigns/class-charitable-campaign-post-type.php:393
+#: includes/admin/campaigns/class-charitable-campaign-post-type.php:391
 msgid "%s campaign restored from the Trash."
 msgid_plural "%s campaigns restored from the Trash."
 msgstr[0] ""
@@ -4813,7 +4813,7 @@ msgstr ""
 
 #: includes/admin/class-charitable-admin-pages.php:153
 #: includes/admin/class-charitable-admin-pages.php:154
-#: includes/admin/class-charitable-admin.php:291
+#: includes/admin/class-charitable-admin.php:289
 msgid "Settings"
 msgstr ""
 
@@ -4823,25 +4823,25 @@ msgid ""
 "manage_edit-donation_columns"
 msgstr ""
 
-#: includes/admin/class-charitable-admin.php:207
+#: includes/admin/class-charitable-admin.php:205
 msgid ""
 "Thanks for upgrading to Charitable 1.4. <a href='%s'>Find out what's new in "
 "this release</a>."
 msgstr ""
 
-#: includes/admin/class-charitable-admin.php:209
+#: includes/admin/class-charitable-admin.php:207
 msgid ""
 "In Charitable 1.4.2, we have improved the login and registration forms. <a "
 "href='%s'>Find out how</a>."
 msgstr ""
 
-#: includes/admin/class-charitable-admin.php:215
+#: includes/admin/class-charitable-admin.php:213
 msgid ""
 "PayPal is upgrading its SSL certificates. <a href='%s'>Test your "
 "integration now to avoid disruption.</a>"
 msgstr ""
 
-#: includes/admin/class-charitable-admin.php:317
+#: includes/admin/class-charitable-admin.php:315
 #: includes/admin/settings/class-charitable-settings.php:106
 msgid "Extensions"
 msgstr ""

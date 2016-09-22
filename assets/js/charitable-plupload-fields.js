@@ -60,7 +60,7 @@ CHARITABLE = window.CHARITABLE || {};
 
         // Set up image remove handler
         this.$dragdrop.on( 'click', '.remove-image', function() {
-            self.remove_image( $(this) );
+            return self.remove_image( $(this) );
         });
     };
 
