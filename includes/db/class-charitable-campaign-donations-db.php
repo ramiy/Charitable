@@ -367,7 +367,7 @@ if ( ! class_exists( 'Charitable_Campaign_Donations_DB' ) ) :
 		public function get_donations_on_campaign( $campaign_id ) {
 			return $this->get_campaign_donations_by( 'campaign_id', $campaign_id );
 		}
-		
+
 		/**
 		 * Get total amount donated to a campaign.
 		 *
