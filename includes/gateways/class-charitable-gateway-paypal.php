@@ -187,18 +187,18 @@ if ( ! class_exists( 'Charitable_Gateway_Paypal' ) ) :
 
 			/* We only accept POST requests */
 			if ( isset( $_SERVER['REQUEST_METHOD'] ) && 'POST' != $_SERVER['REQUEST_METHOD'] ) {
-				return false;
+				die("not a POST request");
 			}
 
 			$gateway = new Charitable_Gateway_Paypal();
 			$data    = $gateway->get_encoded_ipn_data();
 
 			if ( empty( $data ) ) {
-				return false;
+				die("empty data");
 			}
 
 			if ( ! $gateway->get_value( 'disable_ipn_verification' ) && ! $gateway->paypal_ipn_verification( $data ) ) {
-				return false;
+				die("failed ipn verification");
 			}
 
 			$defaults = array(
@@ -214,7 +214,7 @@ if ( ! class_exists( 'Charitable_Gateway_Paypal' ) ) :
 				: absint( $custom );
 
 			if ( ! $donation_id ) {
-				return false;
+				die("no donation id");
 			}
 
 			/**
@@ -249,14 +249,14 @@ if ( ! class_exists( 'Charitable_Gateway_Paypal' ) ) :
 		 */
 		public static function process_web_accept( $data, $donation_id ) {
 			if ( ! isset( $data['invoice'] ) ) {
-				return;
+				die("no invoice");
 			}
 
 			$gateway        = new Charitable_Gateway_Paypal();
 			$donation       = charitable_get_donation( $donation_id );
 
 			if ( 'paypal' != $donation->get_gateway() ) {
-				return;
+				die("incorrect gateway");
 			}
 
 			$donation_key   = $data['invoice'];
@@ -271,7 +271,7 @@ if ( ! class_exists( 'Charitable_Gateway_Paypal' ) ) :
 				$message = sprintf( '%s %s', __( 'Invalid Business email in the IPN response. IPN data:', 'charitable' ), json_encode( $data ) );
 				$donation->update_donation_log( $message );
 				$donation->update_status( 'charitable-failed' );
-				return;
+				die("business email mismatch");
 
 			}
 
@@ -281,7 +281,7 @@ if ( ! class_exists( 'Charitable_Gateway_Paypal' ) ) :
 				$message = sprintf( '%s %s', __( 'The currency in the IPN response does not match the site currency. IPN data:', 'charitable' ), json_encode( $data ) );
 				$donation->update_donation_log( $message );
 				$donation->update_status( 'charitable-failed' );
-				return;
+				die("currency code mismatch");
 
 			}
 
@@ -304,7 +304,7 @@ if ( ! class_exists( 'Charitable_Gateway_Paypal' ) ) :
 				}
 
 				$donation->process_refund( $amount, $message );
-				return;
+				die("refund processed");
 
 			}
 
@@ -314,13 +314,13 @@ if ( ! class_exists( 'Charitable_Gateway_Paypal' ) ) :
 				$message = sprintf( '%s: %s', __( 'The donation has failed with the following status', 'charitable' ), $payment_status );
 				$donation->update_donation_log( $message );
 				$donation->update_status( 'charitable-failed' );
-				return;
+				die("payment status failed");
 
 			}
 
 			/* If we have already processed this donation, stop here. */
 			if ( 'charitable-completed' == get_post_status( $donation_id ) ) {
-				return;
+				die("donation already completed");
 			}
 
 			/* Verify that the donation key matches the one stored for the donation. */
@@ -329,7 +329,7 @@ if ( ! class_exists( 'Charitable_Gateway_Paypal' ) ) :
 				$message = sprintf( '%s %s', __( 'Donation key in the IPN response does not match the donation. IPN data:', 'charitable' ), json_encode( $data ) );
 				$donation->update_donation_log( $message );
 				$donation->update_status( 'charitable-failed' );
-				return;
+				die("invalid donation key");
 
 			}
 
@@ -339,7 +339,7 @@ if ( ! class_exists( 'Charitable_Gateway_Paypal' ) ) :
 				$message = sprintf( '%s %s', __( 'The amount in the IPN response does not match the expected donation amount. IPN data:', 'charitable' ), json_encode( $data ) );
 				$donation->update_donation_log( $message );
 				$donation->update_status( 'charitable-failed' );
-				return;
+				die("inconsistent donation amounts");
 
 			}
 
@@ -349,7 +349,7 @@ if ( ! class_exists( 'Charitable_Gateway_Paypal' ) ) :
 				$message = sprintf( '%s: %s', __( 'PayPal Transaction ID', 'charitable' ), $data['txn_id'] );
 				$donation->update_donation_log( $message );
 				$donation->update_status( 'charitable-completed' );
-				return;
+				die("donation completed");
 
 			}
 
@@ -364,6 +364,7 @@ if ( ! class_exists( 'Charitable_Gateway_Paypal' ) ) :
 				}
 
 				$donation->update_status( 'charitable-pending' );
+				die("donation pending");
 
 			}
 		}
@@ -547,14 +548,14 @@ if ( ! class_exists( 'Charitable_Gateway_Paypal' ) ) :
 
 			/* If any of these checks fail, we conclude that this is not a proper IPN from PayPal. */
 			if ( empty( $data ) || ! is_array( $data ) ) {
-				return;
+				die("empty data");
 			}
 
 			/* Compare the token with the one we generated. */
 			$token = get_option( 'charitable_paypal_sandbox_test_token' );
 
 			if ( ! array_key_exists( 'custom', $data ) || $token !== $data['custom'] ) {
-				return;
+				die("missing or mismatched custom data");
 			}
 
 			$remote_post_vars = array(
