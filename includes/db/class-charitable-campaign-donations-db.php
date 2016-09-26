@@ -256,8 +256,8 @@ if ( ! class_exists( 'Charitable_Campaign_Donations_DB' ) ) :
 
 		/**
 		 * Return a list of all distinct IDs based on a particular field.
-		 * 
-		 * @global 	WPDB      $wpdb 
+		 *
+		 * @global 	WPDB      $wpdb
 		 * @param 	string    $field The distinct field we are retrieving.
 		 * @param 	int|int[] $donation_id A single donation ID or an array of IDs.
 		 * @return  Object
@@ -268,7 +268,7 @@ if ( ! class_exists( 'Charitable_Campaign_Donations_DB' ) ) :
 			global $wpdb;
 
 			$select_column = $this->get_sanitized_column( $field );
-			$where_column  = $this->get_sanitized_column( $where_field ); 
+			$where_column  = $this->get_sanitized_column( $where_field );
 
 			list( $in, $parameters ) = $this->get_in_clause_params( $id );
 

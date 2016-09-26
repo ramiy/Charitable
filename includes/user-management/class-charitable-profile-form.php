@@ -247,21 +247,21 @@ if ( ! class_exists( 'Charitable_Profile_Form' ) ) :
 					'type'      => 'url',
 					'priority'  => 42,
 					'required'  => false,
-					'value'     => $this->get_user()->user_url,
+					'value'     => $this->get_user_value( 'user_url' ),
 				),
 				'twitter' => array(
 					'label'     => __( 'Twitter', 'charitable' ),
 					'type'      => 'text',
 					'priority'  => 44,
 					'required'  => false,
-					'value'     => $this->get_user()->twitter,
+					'value'     => $this->get_user_value( 'twitter' ),
 				),
 				'facebook' => array(
 					'label'     => __( 'Facebook', 'charitable' ),
 					'type'      => 'text',
 					'priority'  => 46,
 					'required'  => false,
-					'value'     => $this->get_user()->facebook,
+					'value'     => $this->get_user_value( 'facebook' ),
 				),
 			), $this );
 

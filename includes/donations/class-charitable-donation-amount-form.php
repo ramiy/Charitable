@@ -83,32 +83,22 @@ if ( ! class_exists( 'Charitable_Donation_Amount_Form' ) ) :
 		 * @since   1.4.4
 		 */
 		public function validate_submission() {
-			if ( ! $this->validate_nonce() || ! $this->validate_honeypot() ) {
 
-				charitable_get_notices()->add_error( __( 'There was an error with processing your form submission. Please reload the page and try again.', 'charitable' ) );
-				return false;
-
+			/* If we have already validated the submission, return the value. */
+			if ( $this->validated ) {
+				return $this->valid;
 			}
 
-			$has_required_fields = $this->check_required_fields( $this->get_merged_fields() );
+			$this->validated = true;
 
-			if ( ! $has_required_fields ) {
-				return false;
-			}
+			$this->valid = $this->validate_security_check()
+				&& $this->check_required_fields( $this->get_merged_fields() )
+				&& $this->validate_amount();
 
-			/* Ensure that a valid amount has been submitted. */
-			if ( self::get_donation_amount() <= 0 && ! apply_filters( 'charitable_permit_0_donation', false ) ) {
+			$this->valid = apply_filters( 'charitable_validate_donation_amount_form_submission', $this->valid, $this );
 
-				charitable_get_notices()->add_error( sprintf(
-					__( 'You must donate more than %s.', 'charitable' ),
-					charitable_format_money( '0' )
-				) );
+			return $this->valid;
 
-				return false;
-
-			}
-
-			return apply_filters( 'charitable_validate_donation_amount_form_submission', true, $this );
 		}
 
 		/**
@@ -159,6 +149,12 @@ if ( ! class_exists( 'Charitable_Donation_Amount_Form' ) ) :
 		 * @since   1.0.0
 		 */
 		public function render() {
+
+			/* Load the script if it hasn't been loaded yet. */
+			if ( ! wp_script_is( 'charitable-script', 'enqueued' ) ) {
+				Charitable_Public::get_instance()->enqueue_donation_form_scripts();
+			}
+
 			charitable_template( 'donation-form/form-donation.php', array(
 				'campaign' => $this->get_campaign(),
 				'form'     => $this,
