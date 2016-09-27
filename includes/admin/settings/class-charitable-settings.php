@@ -186,8 +186,6 @@ if ( ! class_exists( 'Charitable_Settings' ) ) :
 
 			$values = wp_parse_args( $new_values, $old_values );
 
-			charitable_get_admin_notices()->add_success( __( 'Settings updated', 'charitable' ) );
-
 			return apply_filters( 'charitable_save_settings', $values, $new_values, $old_values );
 		}
 
