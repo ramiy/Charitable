@@ -37,8 +37,8 @@ if ( ! class_exists( 'Charitable_Abstract_Donation' ) ) :
 		protected $donation_type;
 
 		/**
-	     *  Charitable_Donation donation data for the donation plan this donation is part of
-	     * 
+	     * Charitable_Donation donation data for the donation plan this donation is part of
+	     *
 	     * @var     $donation_plan @access  protected
 	     */
 	    protected $donation_plan = false;

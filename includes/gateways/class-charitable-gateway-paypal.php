@@ -362,7 +362,7 @@ if ( ! class_exists( 'Charitable_Gateway_Paypal' ) ) :
 			/* If the donation is set to pending but has a pending_reason provided, save that to the log. */
 			if ( 'pending' == $payment_status ) {
 
-				if ( isset( $data['pending_reason'] ) ) {
+				if ( array_key_exists( 'pending_reason', $data ) ) {
 
 					$message = $gateway->get_pending_reason_note( strtolower( $data['pending_reason'] ) );
 					$donation->update_donation_log( $message );
