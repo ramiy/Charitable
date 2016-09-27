@@ -377,17 +377,19 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 		 */
 		public function set_status_views( $views ) {
 
-			$counts = $this->get_status_counts();
-			
-			$current = isset( $_GET["post_status"] ) ? $_GET["post_status"] : "";
+			$counts  = $this->get_status_counts();
+			$current = array_key_exists( 'post_status', $_GET ) ? $_GET['post_status'] : '';
 
 			foreach ( charitable_get_valid_donation_statuses() as $key => $label ) {
 
-				$views[ $key ] = sprintf( '<a href="%s"%s>%s <span class="count">(%d)</span></a>', 
-					add_query_arg( array( 'post_status' => $key, 'paged' => FALSE ) ),
-					$current === $key ? ' class="current"' : '', 
+				$views[ $key ] = sprintf( '<a href="%s"%s>%s <span class="count">(%d)</span></a>',
+					add_query_arg( array(
+						'post_status' => $key,
+						'paged'       => false,
+					) ),
+					$current === $key ? ' class="current"' : '',
 					$label,
-					isset( $counts[ $key ] ) ? $counts[ $key ] : '0'
+					array_key_exists( $key, $counts ) ? $counts[ $key ] : '0'
 				);
 
 			}
@@ -395,8 +397,8 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 			$views['all'] = sprintf( '<a href="%s"%s>%s <span class="count">(%d)</span></a>',
 				remove_query_arg( array( 'post_status', 'paged' ) ),
 				'all' === $current || '' === $current ? ' class="current"' : '',
-				__( 'All', 'charitable' ), 
-				array_sum( $counts ) 
+				__( 'All', 'charitable' ),
+				array_sum( $counts )
 			);
 
 			unset( $views['mine'] );
@@ -853,10 +855,13 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 
 				$status_counts = Charitable_Donations::count_by_status( $args );
 
-				foreach ( $status_counts as $status => $data ) {
-					$this->status_counts[ $status ] = $data->num_donations;
-				}
+				foreach ( charitable_get_valid_donation_statuses() as $key => $label ) {
 
+					$count = array_key_exists( $key, $status_counts ) ? $status_counts[ $key ]->num_donations : 0;
+
+					$this->status_counts[ $key ] = $count;
+
+				}
 			}
 
 			return $this->status_counts;
