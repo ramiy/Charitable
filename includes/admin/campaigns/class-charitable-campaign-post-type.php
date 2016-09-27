@@ -56,6 +56,7 @@ if ( ! class_exists( 'Charitable_Campaign_Post_Type' ) ) :
 			add_action( 'charitable_campaign_donation_options_metabox', array( $this, 'campaign_donation_options_metabox' ) );
 			add_filter( 'enter_title_here',                             array( $this, 'campaign_enter_title' ), 10, 2 );
 			add_filter( 'get_user_option_meta-box-order_campaign',      '__return_false' );
+			add_filter( 'post_updated_messages', 						array( $this, 'post_messages' ) );
 			add_filter( 'bulk_post_updated_messages',                   array( $this, 'bulk_messages' ), 10, 2 );
 		}
 
@@ -375,6 +376,32 @@ if ( ! class_exists( 'Charitable_Campaign_Post_Type' ) ) :
 			}
 
 			return $placeholder;
+		}
+
+
+	/**
+	 * Change messages when a post type is updated.
+	 * @param  array $messages
+	 * @return array
+	 */
+	public function post_messages( $messages ) {
+		global $post, $post_ID;
+		$messages[ Charitable::CAMPAIGN_POST_TYPE ] = array(
+			0 => '', // Unused. Messages start at index 1.
+			1 => sprintf( __( 'Campaign updated. <a href="%s">View Campaign</a>', 'charitable' ), esc_url( get_permalink( $post_ID ) ) ),
+			2 => __( 'Custom field updated.', 'charitable' ),
+			3 => __( 'Custom field deleted.', 'charitable' ),
+			4 => __( 'Campaign updated.', 'charitable' ),
+			5 => isset( $_GET['revision'] ) ? sprintf( __( 'Campaign restored to revision from %s', 'charitable' ), wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
+			6 => sprintf( __( 'Campaign published. <a href="%s">View Campaign</a>', 'charitable' ), esc_url( get_permalink( $post_ID ) ) ),
+			7 => __( 'Campaign saved.', 'charitable' ),
+			8 => sprintf( __( 'Campaign submitted. <a target="_blank" href="%s">Preview Campaign</a>', 'charitable' ), esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ) ),
+			9 => sprintf( __( 'Campaign scheduled for: <strong>%1$s</strong>. <a target="_blank" href="%2$s">Preview Campaign</a>', 'charitable' ),
+			  date_i18n( __( 'M j, Y @ G:i', 'charitable' ), strtotime( $post->post_date ) ), esc_url( get_permalink( $post_ID ) ) ),
+			10 => sprintf( __( 'Campaign draft updated. <a target="_blank" href="%s">Preview Campaign</a>', 'charitable' ), esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ) )
+			);
+
+			return $messages;
 		}
 
 		/**

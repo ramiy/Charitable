@@ -75,6 +75,7 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 			add_action( 'admin_footer', array( $this, 'bulk_admin_footer' ), 10 );
 			add_action( 'load-edit.php', array( $this, 'process_bulk_action' ) );
 			add_action( 'admin_notices', array( $this, 'bulk_admin_notices' ) );
+			add_filter( 'post_updated_messages', array( $this, 'post_messages' ) );
 			add_filter( 'bulk_post_updated_messages', array( $this, 'bulk_messages' ), 10, 2 );
 
 			// Customization filters
@@ -560,6 +561,31 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 			}
 		}
 
+
+	/**
+	 * Change messages when a post type is updated.
+	 * @param  array $messages
+	 * @return array
+	 */
+	public function post_messages( $messages ) {
+		global $post, $post_ID;
+		$messages[ Charitable::DONATION_POST_TYPE ] = array(
+			0 => '', // Unused. Messages start at index 1.
+			1 => sprintf( __( 'Donation updated. <a href="%s">View Donation</a>', 'charitable' ), esc_url( get_permalink( $post_ID ) ) ),
+			2 => __( 'Custom field updated.', 'charitable' ),
+			3 => __( 'Custom field deleted.', 'charitable' ),
+			4 => __( 'Donation updated.', 'charitable' ),
+			5 => isset( $_GET['revision'] ) ? sprintf( __( 'Donation restored to revision from %s', 'charitable' ), wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
+			6 => sprintf( __( 'Donation published. <a href="%s">View Donation</a>', 'charitable' ), esc_url( get_permalink( $post_ID ) ) ),
+			7 => __( 'Donation saved.', 'charitable' ),
+			8 => sprintf( __( 'Donation submitted. <a target="_blank" href="%s">Preview Donation</a>', 'charitable' ), esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ) ),
+			9 => sprintf( __( 'Donation scheduled for: <strong>%1$s</strong>. <a target="_blank" href="%2$s">Preview Donation</a>', 'charitable' ),
+			  date_i18n( __( 'M j, Y @ G:i', 'charitable' ), strtotime( $post->post_date ) ), esc_url( get_permalink( $post_ID ) ) ),
+			10 => sprintf( __( 'Donation draft updated. <a target="_blank" href="%s">Preview Donation</a>', 'charitable' ), esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ) )
+			);
+
+			return $messages;
+		}
 
 		/**
 		 * Modify bulk messages

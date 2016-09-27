@@ -217,15 +217,11 @@ if ( ! class_exists( 'Charitable_Email_Password_Reset' ) ) :
 		protected function get_default_body() {
 			ob_start();
 ?>
-Someone requested that the password be reset for the following account:
-
-Username: [charitable_email show=user_login]
-
-If this was a mistake, just ignore this email and nothing will happen.
-
-To reset your password, visit the following address:
-
-<a href="[charitable_email show=reset_link]">[charitable_email show=reset_link]</a>
+<p><?php _e( 'Someone requested that the password be reset for the following account:', 'charitable' ) ?></p>
+<p><?php _e( 'Username: [charitable_email show=user_login]', 'charitable' ) ?></p>
+<p><?php _e( 'If this was a mistake, just ignore this email and nothing will happen.', 'charitable' ) ?></p>
+<p><?php _e( 'To reset your password, visit the following address:', 'charitable' ) ?></p>
+<p><a href="[charitable_email show=reset_link]">[charitable_email show=reset_link]</a></p>
 <?php
 		$body = ob_get_clean();
 

@@ -75,8 +75,18 @@ if ( ! class_exists( 'Charitable_Email_Donation_Receipt' ) ) :
 				return false;
 			}
 
+			$donation = charitable_get_donation( $donation_id );
+
+			if ( ! is_object( $donation ) || 0 == count( $donation->get_campaign_donations() ) ) {
+				return false;
+			}
+
+			if ( ! apply_filters( 'charitable_send_' . self::get_email_id(), true, $donation ) ) {
+				return false;
+			}
+
 			$email = new Charitable_Email_Donation_Receipt( array(
-				'donation' => charitable_get_donation( $donation_id ),
+				'donation' => $donation,
 			) );
 
 			/**
@@ -144,16 +154,13 @@ if ( ! class_exists( 'Charitable_Email_Donation_Receipt' ) ) :
 		 */
 		protected function get_default_body() {
 			ob_start();
-	?>
-	Dear [charitable_email show=donor_first_name],
-
-	Thank you so much for your generous donation.
-
-	<strong>Your Receipt</strong>
-	[charitable_email show=donation_summary]
-
-	With thanks, [charitable_email show=site_name]
-	<?php
+?>
+<p><?php _e( 'Dear [charitable_email show=donor_first_name],', 'charitable' ) ?></p>
+<p><?php _e( 'Thank you so much for your generous donation.', 'charitable' ) ?></p>
+<p><strong><?php _e( 'Your Receipt', 'charitable' ) ?></strong><br />
+[charitable_email show=donation_summary]</p>
+<p><?php _e( 'With thanks, [charitable_email show=site_name]', 'charitable' ) ?></p>
+<?php
 			$body = ob_get_clean();
 
 			return apply_filters( 'charitable_email_donation_receipt_default_body', $body, $this );
