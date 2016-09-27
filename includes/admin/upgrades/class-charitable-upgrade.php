@@ -152,6 +152,10 @@ if ( ! class_exists( 'Charitable_Upgrade' ) ) :
 						'prompt'   => false,
 						'callback' => array( $this, 'remove_campaign_manager_cap' ),
 					),
+					'show_release_146' => array(
+						'version' => '1.4.6',
+						'notice' => 'release-146',
+					),
 
 				);
 
@@ -234,7 +238,7 @@ if ( ! class_exists( 'Charitable_Upgrade' ) ) :
 					/**
 					 * Check if we're just setting a transient to display a notice.
 					 */
-					if ( isset( $upgrade['notice'] ) ) {
+					if ( array_key_exists( 'notice', $upgrade ) ) {
 						$this->set_update_notice_transient( $upgrade, $action );
 						continue;
 					}

@@ -74,6 +74,7 @@ if ( ! class_exists( 'Charitable_Admin' ) ) :
 			require_once( $admin_dir . 'charitable-core-admin-functions.php' );
 			require_once( $admin_dir . 'class-charitable-meta-box-helper.php' );
 			require_once( $admin_dir . 'class-charitable-admin-pages.php' );
+			require_once( $admin_dir . 'class-charitable-admin-notices.php' );
 
 			/* Campaigns */
 			require_once( $admin_dir . 'campaigns/class-charitable-campaign-post-type.php' );
@@ -119,7 +120,7 @@ if ( ! class_exists( 'Charitable_Admin' ) ) :
 		 * @since   1.0.0
 		 */
 		public function admin_enqueue_scripts() {
-			
+
 			if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
 				$suffix  = '';
 				$version = time();
@@ -197,15 +198,136 @@ if ( ! class_exists( 'Charitable_Admin' ) ) :
 		 * @since   1.4.0
 		 */
 		public function add_notices() {
+
+			/* Get any version update notices first. */
+			$this->add_version_update_notices();
+
+			// echo '<pre>'; var_dump( charitable_get_admin_notices()->get_notices() ); echo '</pre>';
+
+			foreach ( charitable_get_admin_notices()->get_notices() as $type => $notices ) {
+
+				$class = 'notice charitable-notice';
+
+				switch ( $type ) {
+					case 'error' :
+						$class .= ' notice-error';
+						break;
+
+					case 'warning' :
+						$class .= ' notice-warning';
+						break;
+
+					case 'success' :
+						$class .= ' updated';
+						break;
+
+					case 'info' :
+						$class .= ' notice-info';
+						break;
+
+					case 'version' : 
+						$class .= ' charitable-upgrade-notice';
+						break;
+				}
+
+				foreach ( $notices as $key => $notice ) {
+
+					if ( ! wp_script_is( 'charitable-admin-notice' ) ) {
+		                wp_enqueue_script( 'charitable-admin-notice' );
+		            }
+
+		            $notice_classes = $notice['dismissible'] ? $class . ' is-dismissible' : $class;
+
+		            printf( '<div class="%s" data-notice="%s"><p>%s</p></div>',
+						esc_attr( $notice_classes ),
+						esc_attr( $key ),
+						$notice['message']
+					);
+
+				}
+			}
+        }
+
+   //      // errors
+   //      foreach ( $notice_helper->get_errors() as $index => $notice ) {
+
+   //          if ( $notice['dismissible'] && ! get_transient( 'charitable_' . $index . '_notice' ) ) {
+   //              continue;
+   //          }
+
+   //          printf( '<div class="notice-error notice charitable-notice %s" data-notice="' . esc_attr( $index ) . '"><p>' . $notice['message'] . '</p></div>', $notice['dismissible'] ? 'is-dismissible' : '' );
+            
+   //      }
+
+   //      // warnings
+   //      foreach ( $notice_helper->get_warnings() as $index => $notice ) {
+
+   //          if ( $notice['dismissible'] && ! get_transient( 'charitable_' . $index . '_notice' ) ) {
+   //              continue;
+   //          }
+
+   //          printf( '<div class="notice-warning notice charitable-notice %s" data-notice="' . esc_attr( $index ) . '"><p>' . $notice['message'] . '</p></div>', $notice['dismissible'] ? 'is-dismissible' : '' );
+            
+   //      }
+
+   //      // info
+   //      foreach ( $notice_helper->get_info_notices() as $index => $notice ) {
+
+   //          if ( $notice['dismissible'] && ! get_transient( 'charitable_' . $index . '_notice' ) ) {
+   //              continue;
+   //          }
+
+   //          printf( '<div class="notice-info notice charitable-notice %s" data-notice="' . esc_attr( $index ) . '"><p>' . $notice['message'] . '</p></div>', $notice['dismissible'] ? 'is-dismissible' : '' );
+            
+   //      }
+
+   //      // success
+   //      foreach ( $notice_helper->get_success_notices() as $index => $notice ) {
+
+   //          if ( $notice['dismissible'] && ! get_transient( 'charitable_' . $index . '_notice' ) ) {
+   //              continue;
+   //          }
+
+   //          printf( '<div class="updated notice charitable-notice %s" data-notice="' . esc_attr( $index ) . '"><p>' . $notice['message'] . '</p></div>', $notice['dismissible'] ? 'is-dismissible' : '' );
+            
+   //      }
+
+
+			// foreach ( $notices as $notice => $message ) {
+
+			// 	if ( ! get_transient( 'charitable_' . $notice . '_notice' ) ) {
+			// 		continue;
+			// 	}
+
+			// 	if ( ! wp_script_is( 'charitable-admin-notice' ) ) {
+			// 		wp_enqueue_script( 'charitable-admin-notice' );
+			// 	}
+
+			// 	echo '<div class="updated notice charitable-notice" data-notice="' . esc_attr( $notice ) . '" style="border-left-color: #f89d35; background-color: #fef4e8;"><p>' . $message . '</p></div>';
+
+			// }
+		// }
+
+		/**
+		 * Add version update notices to the dashboard.
+		 *
+		 * @return  void
+		 * @access  public
+		 * @since   1.4.6
+		 */
+		public function add_version_update_notices() {
 			if ( ! current_user_can( 'manage_options' ) ) {
 				return;
 			}
 
-			$notices = array(
-				'release-140' => sprintf( __( "Thanks for upgrading to Charitable 1.4. <a href='%s'>Find out what's new in this release</a>.", 'charitable' ),
-				'https://www.wpcharitable.com/charitable-1-4-features-responsive-campaign-grids-a-new-shortcode?utm_source=notice&utm_medium=wordpress-dashboard&utm_campaign=release-notes&utm_content=release-140' ),
-				'release-142' => sprintf( __( "In Charitable 1.4.2, we have improved the login and registration forms. <a href='%s'>Find out how</a>.", 'charitable' ),
-				'https://www.wpcharitable.com/how-we-improved-logins-and-registrations-in-charitable/?utm_source=notice&utm_medium=wordpress-dashboard&utm_campaign=release-notes&utm_content=release-142' ),
+			$notices = array();
+
+			$notices['release-140'] = sprintf( __( "Thanks for upgrading to Charitable 1.4. <a href='%s'>Find out what's new in this release</a>.", 'charitable' ),
+				'https://www.wpcharitable.com/charitable-1-4-features-responsive-campaign-grids-a-new-shortcode?utm_source=notice&utm_medium=wordpress-dashboard&utm_campaign=release-notes&utm_content=release-140'
+			);
+
+			$notices['release-142'] = sprintf( __( "In Charitable 1.4.2, we have improved the login and registration forms. <a href='%s'>Find out how</a>.", 'charitable' ),
+				'https://www.wpcharitable.com/how-we-improved-logins-and-registrations-in-charitable/?utm_source=notice&utm_medium=wordpress-dashboard&utm_campaign=release-notes&utm_content=release-142'
 			);
 
 			if ( Charitable_Gateways::get_instance()->is_active_gateway( 'paypal' ) ) {
@@ -224,17 +346,17 @@ if ( ! class_exists( 'Charitable_Admin' ) ) :
 
 			}
 
+			$notices['release-146'] = __( 'This is just a test.', 'charitable' );
+
+			$helper = charitable_get_admin_notices();
+
 			foreach ( $notices as $notice => $message ) {
 
 				if ( ! get_transient( 'charitable_' . $notice . '_notice' ) ) {
 					continue;
 				}
 
-				if ( ! wp_script_is( 'charitable-admin-notice' ) ) {
-					wp_enqueue_script( 'charitable-admin-notice' );
-				}
-
-				echo '<div class="updated notice charitable-notice" data-notice="' . esc_attr( $notice ) . '" style="border-left-color: #f89d35; background-color: #fef4e8;"><p>' . $message . '</p></div>';
+				$helper->add_version_update( $message, $notice );
 
 			}
 		}

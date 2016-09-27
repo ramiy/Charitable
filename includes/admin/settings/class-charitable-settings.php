@@ -166,7 +166,7 @@ if ( ! class_exists( 'Charitable_Settings' ) ) :
 		/**
 		 * Sanitize submitted settings before saving to the database.
 		 *
-		 * @param   array   $values
+		 * @param   array $values
 		 * @return  string
 		 * @access  public
 		 * @since   1.0.0
@@ -185,6 +185,8 @@ if ( ! class_exists( 'Charitable_Settings' ) ) :
 			}
 
 			$values = wp_parse_args( $new_values, $old_values );
+
+			charitable_get_admin_notices()->add_success( __( 'Settings updated', 'charitable' ) );
 
 			return apply_filters( 'charitable_save_settings', $values, $new_values, $old_values );
 		}
@@ -276,11 +278,10 @@ if ( ! class_exists( 'Charitable_Settings' ) ) :
 				array_shift( $keys );
 			}
 
-			$field['key'] = $keys;
+			$field['key']     = $keys;
 			$field['classes'] = $this->get_field_classes( $field );
-
-			$callback = isset( $field['callback'] ) ? $field['callback'] : array( $this, 'render_field' );
-			$label = $this->get_field_label( $field, end( $keys ) );
+			$callback         = isset( $field['callback'] ) ? $field['callback'] : array( $this, 'render_field' );
+			$label            = $this->get_field_label( $field, end( $keys ) );
 
 			add_settings_field(
 				sprintf( 'charitable_settings_%s', implode( '_', $keys ) ),
