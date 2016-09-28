@@ -276,7 +276,7 @@ if ( ! class_exists( 'Charitable_Campaign_Donations_DB' ) ) :
                     FROM $this->table_name 
                     WHERE $where_column IN ( $in );";
 
-			return $wpdb->get_col( $wpdb->prepare( $sql, $parameters ), OBJECT_K );
+			return $wpdb->get_col( $wpdb->prepare( $sql, $parameters ) );
 		}
 
 		/**
