@@ -152,11 +152,6 @@ if ( ! class_exists( 'Charitable_Upgrade' ) ) :
 						'prompt'   => false,
 						'callback' => array( $this, 'remove_campaign_manager_cap' ),
 					),
-					'show_release_146' => array(
-						'version' => '1.4.6',
-						'notice' => 'release-146',
-					),
-
 				);
 
 			}

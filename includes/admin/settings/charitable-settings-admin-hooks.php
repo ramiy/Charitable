@@ -21,6 +21,13 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 add_action( 'admin_init', array( Charitable_Settings::get_instance(), 'register_settings' ) );
 
 /**
+ * Add notices to the top of the settings page.
+ *
+ * @see     Charitable_Settings::add_notices()
+ */
+add_action( 'admin_init', array( Charitable_Settings::get_instance(), 'add_notices' ) );
+
+/**
  * Maybe add "Extensions" settings tab.
  *
  * @see     Charitable_Settings::maybe_add_extensions_tab()

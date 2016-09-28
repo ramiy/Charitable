@@ -284,8 +284,6 @@ if ( ! class_exists( 'Charitable_Admin' ) ) :
 
 			}
 
-			$notices['release-146'] = __( 'This is just a test.', 'charitable' );
-
 			$helper = charitable_get_admin_notices();
 
 			foreach ( $notices as $notice => $message ) {

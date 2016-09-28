@@ -132,7 +132,18 @@ abstract class Charitable_Benefactor {
      * @since   1.2.0
      */
     public function is_active() {
-        return is_null( $this->benefactor->date_deactivated ) || strtotime( $this->benefactor->date_deactivated ) > time();
+        return ! $this->is_expired;
+    }
+
+    /**
+     * Returns whether the benefit rule is active. 
+     *
+     * @return  boolean
+     * @access  public
+     * @since   1.4.6
+     */
+    public function is_expired() {
+        return '0000-00-00 00:00:00' != $this->benefactor->date_deactivated && strtotime( $this->benefactor->date_deactivated ) < time();
     }
 
     /**
