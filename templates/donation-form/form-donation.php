@@ -53,9 +53,9 @@ if ( ! $form ) {
 
 	?>
 	<div class="charitable-form-field charitable-submit-field">
-		<button class="button button-primary" type="submit" name="donate"><?php esc_attr_e( 'Donate', 'charitable' ) ?></button>
+		<button class="button button-primary" type="submit" name="donate"><?php _e( 'Donate', 'charitable' ) ?></button>
 		<div class="charitable-form-processing" style="display: none;">
-			<img src="<?php echo charitable()->get_path( 'assets', false ) ?>/images/charitable-loading.gif" width="60" height="60" alt="<?php esc_attr_e( 'Loading&hellip;', 'charitable' ) ?>" />
+			<img src="<?php echo esc_url( charitable()->get_path( 'assets', false ) ) ?>/images/charitable-loading.gif" width="60" height="60" alt="<?php esc_attr_e( 'Loading&hellip;', 'charitable' ) ?>" />
 		</div>
 	</div>
 </form>

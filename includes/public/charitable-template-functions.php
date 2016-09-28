@@ -133,7 +133,7 @@ if ( ! function_exists( 'charitable_template_campaign_content' ) ) :
 		}
 
 		/**
-		 * If this is the donation form, and it's showing on a separate page, return the content. 
+		 * If this is the donation form, and it's showing on a separate page, return the content.
 		 */
 		if ( charitable_is_page( 'campaign_donation_page' ) ) {
 

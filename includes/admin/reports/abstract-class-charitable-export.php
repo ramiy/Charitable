@@ -138,9 +138,17 @@ if ( ! class_exists( 'Charitable_Export' ) ) :
 				set_time_limit( 0 );
 			}
 
+			/* Check for PHP 5.3+ */
+			if ( function_exists( 'get_called_class' ) ) {
+				$class  = get_called_class();
+				$export = $class::EXPORT_TYPE;
+			} else {
+				$export = '';
+			}
+
 			nocache_headers();
 			header( 'Content-Type: text/csv; charset=utf-8' );
-			header( 'Content-Disposition: attachment; filename=charitable-export-' . self::EXPORT_TYPE . '-' . date( 'm-d-Y' ) . '.csv' );
+			header( 'Content-Disposition: attachment; filename=charitable-export-' . $export . '-' . date( 'm-d-Y' ) . '.csv' );
 			header( 'Expires: 0' );
 		}
 

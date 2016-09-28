@@ -158,7 +158,7 @@ if ( ! class_exists( 'Charitable_Gateways' ) ) :
 
 			uksort( $active_gateways, array( $this, 'sort_by_default' ) );
 
-			return $active_gateways;
+			return apply_filters( 'charitable_active_gateways', $active_gateways );
 		}
 
 		/**

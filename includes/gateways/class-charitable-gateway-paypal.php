@@ -204,10 +204,14 @@ if ( ! class_exists( 'Charitable_Gateway_Paypal' ) ) :
 			$defaults = array(
 				'txn_type'       => '',
 				'payment_status' => '',
+				'custom' => 0
 			);
 
 			$data        = wp_parse_args( $data, $defaults );
-			$donation_id = isset( $data['custom'] ) ? absint( $data['custom'] ) : 0;
+			$custom      = json_decode( $data['custom'], true );
+			$donation_id = is_array( $custom ) && array_key_exists( 'donation_id', $custom ) 
+				? absint( $custom['donation_id' ] ) 
+				: absint( $custom );
 
 			if ( ! $donation_id ) {
 				return false;

@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paypa
 Tags: donations, donate, donation plugin, fundraising, fundraising plugin, non-profit, non-profits, charity, churches, commerce, crowdfunding, crowd funding, paypal donations, paypal, stripe, stripe donations, campaigns, gifts, giving, wordpress fundraising, wordpress donations, wordpress donation plugin, peer to peer fundraising, peer to peer fundraiser, peer fundraising, social fundraising
 Requires at least: 4.1
 Tested up to: 4.6.1
-Stable tag: 1.4.4
+Stable tag: 1.4.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -114,6 +114,15 @@ You can post in the [support forum](https://wordpress.org/support/plugin/charita
 6. Setting up Charitable: The Email settings area. 
 
 == Changelog ==
+
+= 1.4.5 =
+* The permissions for accessing Donations and Campaigns in the WordPress dashboard has changed. Users who are set up as Campaign Managers can access both Donations and Campaigns, but cannot access Charitable settings. This permission is reserved for admin users. In addition, the `manage_charitable_settings` permission has been removed from Campaign Managers. [#209](https://github.com/Charitable/Charitable/issues/209)
+* Fixes the way donations are processed in Javascript to avoid issues when the donation is *not* processed with AJAX (currently, this is only the case if you're using the Easy Digital Downloads extension, Pronamic iDEAL or an old version of one of our premium payment gateway extensions). [#223](https://github.com/Charitable/Charitable/issues/223)
+* Fixes the registration form shortcode, which was being printed out too early on the page. [#224](https://github.com/Charitable/Charitable/issues/224)
+* Adds a new filter for the list of active payment gateways: `charitable_active_gateways`. See `Charitable_Gateways::get_active_gateways()`.
+* Three new methods have been added to the `Charitable_Donation` abstract class: `get_donation_type()` retrieves the type of donation; `get_donation_plan_id()` returns the ID of the recurring donation plan (to be used by the Recurring Donations extension); `get_donation_plan()` returns the recurring donation object. [PR #215](https://github.com/Charitable/Charitable/pull/215)
+* Export files now include the type of export (note: this does not work if you are on PHP 5.2). [#200](https://github.com/Charitable/Charitable/issues/200)
+* The `custom` parameter for PayPal donations now accepts a JSON string. [PR #198](https://github.com/Charitable/Charitable/pull/198)
 
 = 1.4.4 =
 * Resolves a new issue related to the donation form validation introduced in version 1.4.3, which prevented the donation widget form from being submitted. [#221](https://github.com/Charitable/Charitable/issues/204) and [#205](https://github.com/Charitable/Charitable/issues/221)

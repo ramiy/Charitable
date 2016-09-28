@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the Charitable package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Charitable 1.4.4\n"
+"Project-Id-Version: Charitable 1.4.5\n"
 "Report-Msgid-Bugs-To: https://www.wpcharitable.com/\n"
-"POT-Creation-Date: 2016-09-13 02:02:27+00:00\n"
+"POT-Creation-Date: 2016-09-15 11:47:03+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -24,7 +24,7 @@ msgstr ""
 "X-Poedit-Bookmarks: \n"
 "X-Textdomain-Support: yes\n"
 
-#: charitable.php:695 charitable.php:706
+#: charitable.php:693 charitable.php:704
 msgid "Cheatin&#8217; huh?"
 msgstr ""
 
@@ -4791,30 +4791,36 @@ msgid_plural "%s campaigns restored from the Trash."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/class-charitable-admin-pages.php:137
+#: includes/admin/class-charitable-admin-pages.php:143
 msgid "Campaign Categories"
 msgstr ""
 
-#: includes/admin/class-charitable-admin-pages.php:138
+#: includes/admin/class-charitable-admin-pages.php:144
 #: includes/class-charitable-post-types.php:240
 #: includes/widgets/class-charitable-campaign-terms-widget.php:73
 msgid "Categories"
 msgstr ""
 
-#: includes/admin/class-charitable-admin-pages.php:142
+#: includes/admin/class-charitable-admin-pages.php:148
 msgid "Campaign Tags"
 msgstr ""
 
-#: includes/admin/class-charitable-admin-pages.php:143
+#: includes/admin/class-charitable-admin-pages.php:149
 #: includes/class-charitable-post-types.php:272
 #: includes/widgets/class-charitable-campaign-terms-widget.php:74
 msgid "Tags"
 msgstr ""
 
-#: includes/admin/class-charitable-admin-pages.php:147
-#: includes/admin/class-charitable-admin-pages.php:148
+#: includes/admin/class-charitable-admin-pages.php:153
+#: includes/admin/class-charitable-admin-pages.php:154
 #: includes/admin/class-charitable-admin.php:291
 msgid "Settings"
+msgstr ""
+
+#: includes/admin/class-charitable-admin-pages.php:209
+msgid ""
+"Donations page now rendered by WordPress default "
+"manage_edit-donation_columns"
 msgstr ""
 
 #: includes/admin/class-charitable-admin.php:207
@@ -4932,74 +4938,74 @@ msgstr ""
 msgid "Status"
 msgstr ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:228
+#: includes/admin/donations/class-charitable-donation-post-type.php:227
 msgid "View Donation Details"
 msgstr ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:356
+#: includes/admin/donations/class-charitable-donation-post-type.php:355
 msgid "View Details"
 msgstr ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:357
+#: includes/admin/donations/class-charitable-donation-post-type.php:356
 msgid "View"
 msgstr ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:398
+#: includes/admin/donations/class-charitable-donation-post-type.php:397
 #: includes/admin/views/donations-page/export-form.php:35
 #: includes/admin/views/donations-page/filter-form.php:36
 msgid "All"
 msgstr ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:556
+#: includes/admin/donations/class-charitable-donation-post-type.php:555
 msgid "Donation status changed."
 msgid_plural "%s donation statuses changed."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:571
+#: includes/admin/donations/class-charitable-donation-post-type.php:570
 msgid "%d donation updated."
 msgid_plural "%d donations updated."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:572
+#: includes/admin/donations/class-charitable-donation-post-type.php:571
 msgid "1 donation not updated, somebody is editing it."
 msgstr ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:573
+#: includes/admin/donations/class-charitable-donation-post-type.php:572
 msgid "%s donation not updated, somebody is editing it."
 msgid_plural "%s donations not updated, somebody is editing them."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:574
+#: includes/admin/donations/class-charitable-donation-post-type.php:573
 msgid "%s donation permanently deleted."
 msgid_plural "%s donations permanently deleted."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:575
+#: includes/admin/donations/class-charitable-donation-post-type.php:574
 msgid "%s donation moved to the Trash."
 msgid_plural "%s donations moved to the Trash."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:576
+#: includes/admin/donations/class-charitable-donation-post-type.php:575
 msgid "%s donation restored from the Trash."
 msgid_plural "%s donations restored from the Trash."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:874
+#: includes/admin/donations/class-charitable-donation-post-type.php:873
 msgid "Handled automatically when $donation->update_status() is called."
 msgstr ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:884
+#: includes/admin/donations/class-charitable-donation-post-type.php:883
 msgid "Donation status set to %s."
 msgstr ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:888
-#: includes/donations/abstract-charitable-donation.php:583
+#: includes/admin/donations/class-charitable-donation-post-type.php:887
+#: includes/donations/abstract-charitable-donation.php:601
 msgid "Donation status updated from %s to %s."
 msgstr ""
 
@@ -5024,7 +5030,7 @@ msgid "Donor Last Name"
 msgstr ""
 
 #: includes/admin/reports/class-charitable-export-donations.php:153
-#: includes/donations/abstract-charitable-donation.php:443
+#: includes/donations/abstract-charitable-donation.php:461
 #: includes/donations/class-charitable-donation-form.php:182
 #: includes/user-management/class-charitable-password-form.php:143
 #: includes/user-management/class-charitable-profile-form.php:143
@@ -5036,7 +5042,7 @@ msgid "Email"
 msgstr ""
 
 #: includes/admin/reports/class-charitable-export-donations.php:154
-#: includes/donations/abstract-charitable-donation.php:447
+#: includes/donations/abstract-charitable-donation.php:465
 #: includes/donations/class-charitable-donation-form.php:191
 #: includes/user-management/class-charitable-password-form.php:185
 #: includes/user-management/class-charitable-profile-form.php:180
@@ -5081,7 +5087,7 @@ msgid "Country"
 msgstr ""
 
 #: includes/admin/reports/class-charitable-export-donations.php:160
-#: includes/donations/abstract-charitable-donation.php:451
+#: includes/donations/abstract-charitable-donation.php:469
 msgid "Phone Number"
 msgstr ""
 
@@ -5302,27 +5308,27 @@ msgstr ""
 msgid "Charitable needs to fix incorrect donation dates."
 msgstr ""
 
-#: includes/admin/upgrades/class-charitable-upgrade.php:172
+#: includes/admin/upgrades/class-charitable-upgrade.php:179
 msgid "Charitable was installed."
 msgstr ""
 
-#: includes/admin/upgrades/class-charitable-upgrade.php:213
+#: includes/admin/upgrades/class-charitable-upgrade.php:220
 msgid ""
 "Charitable needs to complete an upgrade that was started earlier. Click <a "
 "href=\"%s\">here</a> to continue the upgrade."
 msgstr ""
 
-#: includes/admin/upgrades/class-charitable-upgrade.php:244
+#: includes/admin/upgrades/class-charitable-upgrade.php:251
 msgid "Click <a href=\"%s\">here</a> to start the upgrade."
 msgstr ""
 
-#: includes/admin/upgrades/class-charitable-upgrade.php:308
-#: includes/admin/upgrades/class-charitable-upgrade.php:343
+#: includes/admin/upgrades/class-charitable-upgrade.php:319
+#: includes/admin/upgrades/class-charitable-upgrade.php:354
 msgid "You do not have permission to do Charitable upgrades"
 msgstr ""
 
-#: includes/admin/upgrades/class-charitable-upgrade.php:308
-#: includes/admin/upgrades/class-charitable-upgrade.php:343
+#: includes/admin/upgrades/class-charitable-upgrade.php:319
+#: includes/admin/upgrades/class-charitable-upgrade.php:354
 #: includes/licensing/class-charitable-plugin-updater.php:292
 msgid "Error"
 msgstr ""
@@ -5512,7 +5518,7 @@ msgid "Enter campaign title here"
 msgstr ""
 
 #: includes/admin/views/metaboxes/donation/donation-log.php:20
-#: includes/donations/abstract-charitable-donation.php:435
+#: includes/donations/abstract-charitable-donation.php:453
 msgid "Date &amp; Time"
 msgstr ""
 
@@ -5536,7 +5542,7 @@ msgid "Total"
 msgstr ""
 
 #: includes/admin/views/metaboxes/donation/donation-overview.php:60
-#: includes/donations/abstract-charitable-donation.php:455
+#: includes/donations/abstract-charitable-donation.php:473
 msgid "Payment Method"
 msgstr ""
 
@@ -5735,42 +5741,42 @@ msgid ""
 "to move forward."
 msgstr ""
 
-#: includes/admin/views/welcome-page/page.php:83
+#: includes/admin/views/welcome-page/page.php:84
 msgid "Getting Started"
 msgstr ""
 
-#: includes/admin/views/welcome-page/page.php:94
+#: includes/admin/views/welcome-page/page.php:95
 msgid "You need to enable a payment gateway"
 msgstr ""
 
-#: includes/admin/views/welcome-page/page.php:99
+#: includes/admin/views/welcome-page/page.php:100
 msgid "You have created your first campaign. <a href=\"%s\">Create another one.</a>"
 msgstr ""
 
-#: includes/admin/views/welcome-page/page.php:104
+#: includes/admin/views/welcome-page/page.php:105
 msgid "Create your first campaign"
 msgstr ""
 
-#: includes/admin/views/welcome-page/page.php:115
+#: includes/admin/views/welcome-page/page.php:116
 msgid "Turn on email notifications"
 msgstr ""
 
-#: includes/admin/views/welcome-page/page.php:120
+#: includes/admin/views/welcome-page/page.php:121
 msgid ""
 "Need a hand with anything? You might find the answer in <a href=\"%s\">our "
 "documentation</a>, or you can always get in touch with us via <a "
 "href=\"%s\">our support page</a>."
 msgstr ""
 
-#: includes/admin/views/welcome-page/page.php:127
+#: includes/admin/views/welcome-page/page.php:129
 msgid "Popular Upgrades"
 msgstr ""
 
-#: includes/admin/views/welcome-page/page.php:136
+#: includes/admin/views/welcome-page/page.php:138
 msgid "Upgrade for a price you can afford"
 msgstr ""
 
-#: includes/admin/views/welcome-page/page.php:137
+#: includes/admin/views/welcome-page/page.php:139
 msgid ""
 "With our Pay What You Want packages, <strong>you choose how much you "
 "pay</strong> to upgrade. Why? Because we think that every great "
@@ -5778,32 +5784,32 @@ msgid ""
 "of its budget."
 msgstr ""
 
-#: includes/admin/views/welcome-page/page.php:138
+#: includes/admin/views/welcome-page/page.php:140
 msgid "Unlock more features"
 msgstr ""
 
-#: includes/admin/views/welcome-page/page.php:145
+#: includes/admin/views/welcome-page/page.php:147
 msgid ""
 "You can help us translate Charitable into %s by <a "
 "href=\"https://translate.wordpress.org/projects/wp-plugins/charitable\">"
 "contributing to the translation project</a>."
 msgstr ""
 
-#: includes/admin/views/welcome-page/page.php:150
+#: includes/admin/views/welcome-page/page.php:152
 msgid ""
 "Screenshot of Reach, a WordPress fundraising theme designed to complement "
 "Charitable"
 msgstr ""
 
-#: includes/admin/views/welcome-page/page.php:150
+#: includes/admin/views/welcome-page/page.php:152
 msgid "Reach is a WordPress fundraising theme designed to complement Charitable"
 msgstr ""
 
-#: includes/admin/views/welcome-page/page.php:151
+#: includes/admin/views/welcome-page/page.php:153
 msgid "Try Reach, a free theme designed for fundraising"
 msgstr ""
 
-#: includes/admin/views/welcome-page/page.php:152
+#: includes/admin/views/welcome-page/page.php:154
 msgid ""
 "We built Reach to help non-profits &amp; social entrepreneurs run beautiful "
 "online fundraising campaigns. Whether you’re creating a website for your "
@@ -5811,19 +5817,19 @@ msgid ""
 "crowdfunding platform, Reach is the perfect starting point."
 msgstr ""
 
-#: includes/admin/views/welcome-page/page.php:153
+#: includes/admin/views/welcome-page/page.php:155
 msgid "Download it free"
 msgstr ""
 
-#: includes/admin/views/welcome-page/page.php:153
+#: includes/admin/views/welcome-page/page.php:155
 msgid "View demo"
 msgstr ""
 
-#: includes/admin/views/welcome-page/page.php:155
+#: includes/admin/views/welcome-page/page.php:157
 msgid "Developer? Contribute to Charitable"
 msgstr ""
 
-#: includes/admin/views/welcome-page/page.php:157
+#: includes/admin/views/welcome-page/page.php:159
 msgid ""
 "Found a bug? Want to contribute a patch or create a new feature? <a "
 "href=\"%s\">GitHub is the place to go!</a>"
@@ -6315,26 +6321,26 @@ msgstr ""
 msgid "%1$s was called <strong>incorrectly</strong>. %2$s %3$s"
 msgstr ""
 
-#: includes/donations/abstract-charitable-donation.php:439
+#: includes/donations/abstract-charitable-donation.php:457
 #: includes/users/class-charitable-roles.php:61
 msgid "Donor"
 msgstr ""
 
-#: includes/donations/abstract-charitable-donation.php:459
+#: includes/donations/abstract-charitable-donation.php:477
 msgid "Donation Key"
 msgstr ""
 
-#: includes/donations/abstract-charitable-donation.php:463
+#: includes/donations/abstract-charitable-donation.php:481
 msgid "Donation made in test mode?"
 msgstr ""
 
-#: includes/donations/abstract-charitable-donation.php:513
+#: includes/donations/abstract-charitable-donation.php:531
 msgid ""
 "$donation_id is no longer required as update_donation_log() is used in "
 "object context. Use $donation->update_donation_log($message)"
 msgstr ""
 
-#: includes/donations/abstract-charitable-donation.php:538
+#: includes/donations/abstract-charitable-donation.php:556
 msgid ""
 "$donation_id is no longer required as get_donation_log() is used in object "
 "context. Use $donation->get_donation_log() instead."
@@ -6461,27 +6467,27 @@ msgstr ""
 msgid "Your donation could not be processed. No payment gateway was selected."
 msgstr ""
 
-#: includes/donations/class-charitable-donation-processor.php:276
+#: includes/donations/class-charitable-donation-processor.php:277
 msgid "Campaign ID was not found. Unable to create donation."
 msgstr ""
 
-#: includes/donations/class-charitable-donation-processor.php:292
+#: includes/donations/class-charitable-donation-processor.php:293
 msgid "Unable to process donation."
 msgstr ""
 
-#: includes/donations/class-charitable-donation-processor.php:394
+#: includes/donations/class-charitable-donation-processor.php:395
 msgid "We were unable to save the donation. Please try again."
 msgstr ""
 
-#: includes/donations/class-charitable-donation-processor.php:403
+#: includes/donations/class-charitable-donation-processor.php:404
 msgid "Payment attempted."
 msgstr ""
 
-#: includes/donations/class-charitable-donation-processor.php:405
+#: includes/donations/class-charitable-donation-processor.php:406
 msgid "Donation created."
 msgstr ""
 
-#: includes/donations/class-charitable-donation-processor.php:656
+#: includes/donations/class-charitable-donation-processor.php:657
 msgid "Payment failed with errors: %s"
 msgstr ""
 
@@ -6818,129 +6824,129 @@ msgstr ""
 msgid "Missing PayPal email address. Unable to proceed with payment."
 msgstr ""
 
-#: includes/gateways/class-charitable-gateway-paypal.php:267
+#: includes/gateways/class-charitable-gateway-paypal.php:271
 msgid "Invalid Business email in the IPN response. IPN data:"
 msgstr ""
 
-#: includes/gateways/class-charitable-gateway-paypal.php:277
+#: includes/gateways/class-charitable-gateway-paypal.php:281
 msgid "The currency in the IPN response does not match the site currency. IPN data:"
 msgstr ""
 
-#: includes/gateways/class-charitable-gateway-paypal.php:290
+#: includes/gateways/class-charitable-gateway-paypal.php:294
 msgid "Partial PayPal refund processed"
 msgstr ""
 
-#: includes/gateways/class-charitable-gateway-paypal.php:295
+#: includes/gateways/class-charitable-gateway-paypal.php:299
 msgid "PayPal Payment"
 msgstr ""
 
-#: includes/gateways/class-charitable-gateway-paypal.php:297
+#: includes/gateways/class-charitable-gateway-paypal.php:301
 msgid "refunded with reason"
 msgstr ""
 
-#: includes/gateways/class-charitable-gateway-paypal.php:310
+#: includes/gateways/class-charitable-gateway-paypal.php:314
 msgid "The donation has failed with the following status"
 msgstr ""
 
-#: includes/gateways/class-charitable-gateway-paypal.php:325
+#: includes/gateways/class-charitable-gateway-paypal.php:329
 msgid "Donation key in the IPN response does not match the donation. IPN data:"
 msgstr ""
 
-#: includes/gateways/class-charitable-gateway-paypal.php:335
+#: includes/gateways/class-charitable-gateway-paypal.php:339
 msgid ""
 "The amount in the IPN response does not match the expected donation amount. "
 "IPN data:"
 msgstr ""
 
-#: includes/gateways/class-charitable-gateway-paypal.php:345
+#: includes/gateways/class-charitable-gateway-paypal.php:349
 msgid "PayPal Transaction ID"
 msgstr ""
 
-#: includes/gateways/class-charitable-gateway-paypal.php:456
+#: includes/gateways/class-charitable-gateway-paypal.php:460
 msgid "Payment made via eCheck and will clear automatically in 5-8 days"
 msgstr ""
 
-#: includes/gateways/class-charitable-gateway-paypal.php:460
+#: includes/gateways/class-charitable-gateway-paypal.php:464
 msgid ""
 "Payment requires a confirmed customer address and must be accepted manually "
 "through PayPal"
 msgstr ""
 
-#: includes/gateways/class-charitable-gateway-paypal.php:464
+#: includes/gateways/class-charitable-gateway-paypal.php:468
 msgid ""
 "Payment must be accepted manually through PayPal due to international "
 "account regulations"
 msgstr ""
 
-#: includes/gateways/class-charitable-gateway-paypal.php:468
+#: includes/gateways/class-charitable-gateway-paypal.php:472
 msgid ""
 "Payment received in non-shop currency and must be accepted manually through "
 "PayPal"
 msgstr ""
 
-#: includes/gateways/class-charitable-gateway-paypal.php:473
+#: includes/gateways/class-charitable-gateway-paypal.php:477
 msgid ""
 "Payment is being reviewed by PayPal staff as high-risk or in possible "
 "violation of government regulations"
 msgstr ""
 
-#: includes/gateways/class-charitable-gateway-paypal.php:477
+#: includes/gateways/class-charitable-gateway-paypal.php:481
 msgid "Payment was sent to non-confirmed or non-registered email address."
 msgstr ""
 
-#: includes/gateways/class-charitable-gateway-paypal.php:481
+#: includes/gateways/class-charitable-gateway-paypal.php:485
 msgid "PayPal account must be upgraded before this payment can be accepted"
 msgstr ""
 
-#: includes/gateways/class-charitable-gateway-paypal.php:485
+#: includes/gateways/class-charitable-gateway-paypal.php:489
 msgid ""
 "PayPal account is not verified. Verify account in order to accept this "
 "payment"
 msgstr ""
 
-#: includes/gateways/class-charitable-gateway-paypal.php:489
+#: includes/gateways/class-charitable-gateway-paypal.php:493
 msgid ""
 "Payment is pending for unknown reasons. Contact PayPal support for "
 "assistance. Reason code: %s"
 msgstr ""
 
-#: includes/gateways/class-charitable-gateway-paypal.php:582
+#: includes/gateways/class-charitable-gateway-paypal.php:586
 msgid "Your PayPal integration is working"
 msgstr ""
 
-#: includes/gateways/class-charitable-gateway-paypal.php:583
+#: includes/gateways/class-charitable-gateway-paypal.php:587
 msgid ""
 "<p>Good news! We successfuly received the Instant Payment Notification from "
 "PayPal and were able to verify it with them.</p>"
 msgstr ""
 
-#: includes/gateways/class-charitable-gateway-paypal.php:584
+#: includes/gateways/class-charitable-gateway-paypal.php:588
 msgid ""
 "<p>This means that your website is all set to continue receiving donations "
 "through PayPal. You should not experience any issues when PayPal upgrades "
 "its SSL certificates.</p>"
 msgstr ""
 
-#: includes/gateways/class-charitable-gateway-paypal.php:585
-#: includes/gateways/class-charitable-gateway-paypal.php:606
+#: includes/gateways/class-charitable-gateway-paypal.php:589
+#: includes/gateways/class-charitable-gateway-paypal.php:610
 msgid "<p>Cheers<br />Eric & Wes"
 msgstr ""
 
-#: includes/gateways/class-charitable-gateway-paypal.php:590
+#: includes/gateways/class-charitable-gateway-paypal.php:594
 msgid "Your PayPal test failed"
 msgstr ""
 
-#: includes/gateways/class-charitable-gateway-paypal.php:591
+#: includes/gateways/class-charitable-gateway-paypal.php:595
 msgid ""
 "<p>We received the Instant Payment Notification from PayPal but were not "
 "able to verify its authenticity."
 msgstr ""
 
-#: includes/gateways/class-charitable-gateway-paypal.php:592
+#: includes/gateways/class-charitable-gateway-paypal.php:596
 msgid "<p>Our communicaton with PayPal failed with the following errors:</p>"
 msgstr ""
 
-#: includes/gateways/class-charitable-gateway-paypal.php:600
+#: includes/gateways/class-charitable-gateway-paypal.php:604
 msgid ""
 "<p>Unfortunately, this means that you are likely to face problems with your "
 "PayPal donations from October 2016 onwards. Your donors will still be able "
@@ -6948,11 +6954,11 @@ msgid ""
 "be automatically marked as Paid in your WordPress dashboard.</p>"
 msgstr ""
 
-#: includes/gateways/class-charitable-gateway-paypal.php:601
+#: includes/gateways/class-charitable-gateway-paypal.php:605
 msgid "<h3>Short-term fix</h3>"
 msgstr ""
 
-#: includes/gateways/class-charitable-gateway-paypal.php:602
+#: includes/gateways/class-charitable-gateway-paypal.php:606
 msgid ""
 "<p><strong>Disable IPN verification</strong>. This makes your donation "
 "verification process less secure, but it will allow your donations to "
@@ -6962,11 +6968,11 @@ msgid ""
 "Verification\" setting."
 msgstr ""
 
-#: includes/gateways/class-charitable-gateway-paypal.php:603
+#: includes/gateways/class-charitable-gateway-paypal.php:607
 msgid "<h3>Long-term solution</h3>"
 msgstr ""
 
-#: includes/gateways/class-charitable-gateway-paypal.php:604
+#: includes/gateways/class-charitable-gateway-paypal.php:608
 msgid ""
 "<p><strong>Get in touch with your web host</strong>. Please refer them to "
 "<a "
@@ -6976,7 +6982,7 @@ msgid ""
 "you received from PayPal above.</p>"
 msgstr ""
 
-#: includes/gateways/class-charitable-gateway-paypal.php:605
+#: includes/gateways/class-charitable-gateway-paypal.php:609
 msgid ""
 "<p>If your web host is unable to upgrade the software on your server, we "
 "strongly recommend switching to a hosting platform that provides a more "
@@ -7517,22 +7523,22 @@ msgctxt "US state of Georgia"
 msgid "Georgia"
 msgstr ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:232
+#: includes/admin/donations/class-charitable-donation-post-type.php:231
 msgctxt "number symbol"
 msgid "#%d by %s"
 msgstr ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:237
+#: includes/admin/donations/class-charitable-donation-post-type.php:236
 msgctxt "number symbol"
 msgid "#%d"
 msgstr ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:263
+#: includes/admin/donations/class-charitable-donation-post-type.php:262
 msgctxt "charitable"
 msgid "via %s"
 msgstr ""
 
-#: includes/admin/donations/class-charitable-donation-post-type.php:433
+#: includes/admin/donations/class-charitable-donation-post-type.php:432
 msgctxt "set donation status to x"
 msgid "Set to %s"
 msgstr ""
@@ -7542,22 +7548,22 @@ msgctxt "joined on date"
 msgid "Joined on"
 msgstr ""
 
-#: includes/admin/views/welcome-page/page.php:88
+#: includes/admin/views/welcome-page/page.php:89
 msgctxt "You have activated x and y. Change gateway settings."
 msgid "You have activated %s. <a href=\"%s\">Change settings</a>"
 msgstr ""
 
-#: includes/admin/views/welcome-page/page.php:109
+#: includes/admin/views/welcome-page/page.php:110
 msgctxt "You have activated x and y. Change email settings."
 msgid "You have turned on the %s. <a href=\"%s\">Change settings</a>"
 msgstr ""
 
-#: includes/admin/views/welcome-page/page.php:131
+#: includes/admin/views/welcome-page/page.php:133
 msgctxt "extension banner"
 msgid "%s banner"
 msgstr ""
 
-#: includes/admin/views/welcome-page/page.php:144
+#: includes/admin/views/welcome-page/page.php:146
 msgctxt "translate Charitable into language"
 msgid "Translate Charitable into %s"
 msgstr ""
@@ -7638,7 +7644,7 @@ msgctxt "Taxonomy Singular Name"
 msgid "Campaign Tag"
 msgstr ""
 
-#: includes/donations/abstract-charitable-donation.php:224
+#: includes/donations/abstract-charitable-donation.php:231
 msgctxt "go to campaign"
 msgid "Go to"
 msgstr ""

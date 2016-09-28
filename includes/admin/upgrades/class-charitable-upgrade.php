@@ -132,7 +132,7 @@ if ( ! class_exists( 'Charitable_Upgrade' ) ) :
 						'version' => '1.4.0',
 						'message' => '',
 						'prompt' => false,
-						'callback' => 'flush_rewrite_rules',
+						'callback' => array( $this, 'flush_permalinks' ),
 					),
 					'show_release_140_upgrade_notice' => array(
 						'version' => '1.4.0',
@@ -146,6 +146,13 @@ if ( ! class_exists( 'Charitable_Upgrade' ) ) :
 						'version' => '1.4.3',
 						'notice' => 'release-143-paypal',
 					),
+					'remove_campaign_manager_cap' => array(
+						'version'  => '1.4.5',
+						'message'  => '',
+						'prompt'   => false,
+						'callback' => array( $this, 'remove_campaign_manager_cap' ),
+					),
+
 				);
 
 			}
@@ -275,6 +282,10 @@ if ( ! class_exists( 'Charitable_Upgrade' ) ) :
 		 */
 		public function flush_permalinks() {
 			add_action( 'init', 'flush_rewrite_rules' );
+
+			if ( version_compare( $this->edge_version, '1.4.0', '>=' ) ) {
+				$this->update_upgrade_log( 'flush_permalinks_140' );
+			}
 		}
 
 		/**
@@ -471,15 +482,39 @@ if ( ! class_exists( 'Charitable_Upgrade' ) ) :
 			 */
 			if ( is_array( $log ) ) {
 				$new_log = array(
-				'legacy_logs' => array(
-					'time' => time(),
-					'version' => charitable()->get_version(),
-					'logs' => $log,
-				),
+					'legacy_logs' => array(
+						'time'    => time(),
+						'version' => charitable()->get_version(),
+						'logs'    => $log,
+					),
 				);
 
 				update_option( $this->upgrade_log_key, $new_log );
 			}
+		}
+
+		/**
+		 * Remove the 'manage_charitable_settings' cap from the Campaign Manager role.
+		 *
+		 * @global 	WP_Roles
+		 * @return  void
+		 * @access  public
+		 * @since   1.4.5
+		 */
+		public function remove_campaign_manager_cap() {
+			global $wp_roles;
+
+			if ( class_exists( 'WP_Roles' ) ) {
+				if ( ! isset( $wp_roles ) ) {
+					$wp_roles = new WP_Roles();
+				}
+			}
+
+			if ( is_object( $wp_roles ) ) {
+				$wp_roles->remove_cap( 'campaign_manager', 'manage_charitable_settings' );
+			}
+
+			$this->update_upgrade_log( 'remove_campaign_manager_cap' );
 		}
 
 		/**

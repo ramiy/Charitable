@@ -3,7 +3,7 @@
  * Plugin Name:         Charitable
  * Plugin URI:          https://www.wpcharitable.com
  * Description:         The WordPress fundraising alternative for non-profits, created to help non-profits raise money on their own website.
- * Version:             1.4.4
+ * Version:             1.4.5
  * Author:              WP Charitable
  * Author URI:          https://wpcharitable.com
  * Requires at least:   4.1
@@ -33,7 +33,7 @@ if ( ! class_exists( 'Charitable' ) ) :
 		/**
 		 * @var     string
 		 */
-		const VERSION = '1.4.4';
+		const VERSION = '1.4.5';
 
 		/**
 		 * @var     string A date in the format: YYYYMMDD
@@ -675,8 +675,6 @@ if ( ! class_exists( 'Charitable' ) ) :
 			if ( isset( $_REQUEST['charitable_action'] ) ) {
 
 				$action = $_REQUEST['charitable_action'];
-
-				error_log( 'charitable_' . $action );
 
 				do_action( 'charitable_' . $action, 20 );
 			}

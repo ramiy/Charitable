@@ -30,7 +30,7 @@ add_action( 'charitable_reset_password', array( 'Charitable_Reset_Password_Form'
  *
  * @see     Charitable_Profile_Form::update_profile()
  */
-add_action( 'charitable_update_profile', array( 'Charitable_Profile_Form', 'update_profile' ) );     
+add_action( 'charitable_update_profile', array( 'Charitable_Profile_Form', 'update_profile' ) );
 
 /**
  * Save a user after registration. 

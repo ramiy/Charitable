@@ -256,11 +256,12 @@ if ( ! class_exists( 'Charitable_Donation_Processor' ) ) :
 		 * @since   1.0.0
 		 */
 		public static function process_donation_form_submission() {
-			$processor = self::get_instance();
 
-			$result = $processor->process_donation();
+			$processor = self::get_instance();
+			$result    = $processor->process_donation();
 
 			$processor->redirect_after_gateway_processing( $result );
+
 		}
 
 		/**
@@ -282,7 +283,7 @@ if ( ! class_exists( 'Charitable_Donation_Processor' ) ) :
 
 			if ( $result ) {
 				$response = array(
-					'success' => true,
+					'success'     => true,
 					'redirect_to' => $processor->get_redirection_after_gateway_processing( $result ),
 				);
 			} else {
@@ -294,7 +295,7 @@ if ( ! class_exists( 'Charitable_Donation_Processor' ) ) :
 
 				$response = array(
 					'success' => false,
-					'errors' => $errors,
+					'errors'  => $errors,
 				);
 			}
 
