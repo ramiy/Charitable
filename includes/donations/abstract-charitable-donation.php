@@ -418,7 +418,7 @@ if ( ! class_exists( 'Charitable_Abstract_Donation' ) ) :
 		 */
 		public function get_donor() {
 			if ( ! isset( $this->donor ) ) {
-				$this->donor = new Charitable_Donor( $this->get_donor_id(), $this->ID );
+				$this->donor = new Charitable_Donor( $this->get_donor_id(), $this->donation_id );
 			}
 
 			return $this->donor;
