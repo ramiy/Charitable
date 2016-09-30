@@ -755,7 +755,7 @@ if ( ! class_exists( 'Charitable_Abstract_Donation' ) ) :
 		 * @since   1.4.6
 		 */
 		public function get_gateway_transaction_id() {
-			if ( ! isset( $this->gateway_transaction_id ) {
+			if ( ! isset( $this->gateway_transaction_id ) ){
 				$this->gateway_transaction_id = get_post_meta( $this->donation_id, '_gateway_transaction_id' , true );
 			}
 			return $this->gateway_transaction_id;
