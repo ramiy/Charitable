@@ -739,7 +739,7 @@ if ( ! class_exists( 'Charitable_Abstract_Donation' ) ) :
 		 * @param   string   $value
 		 * @return  bool
 		 * @access  public
-		 * @since   1.4.7
+		 * @since   1.4.6
 		 */
 		public function set_gateway_transaction_id( $value ) {
 			$key = '_gateway_transaction_id';
@@ -752,7 +752,7 @@ if ( ! class_exists( 'Charitable_Abstract_Donation' ) ) :
 		 *
 		 * @return  string
 		 * @access  public
-		 * @since   1.4.7
+		 * @since   1.4.6
 		 */
 		public function get_gateway_transaction_id() {
 			if ( ! isset( $this->gateway_transaction_id ) {
