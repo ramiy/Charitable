@@ -100,7 +100,7 @@ CHARITABLE = window.CHARITABLE || {};
 
                 uploader.removeFile( file );
                 
-                self.add_image_error( file, CHARITABLE_UPLOAD_VARS.max_file_size.replace('%1$s', file.name).replace('%2$s', bytes_to_mb( self.max_file_size ) ) );
+                self.add_image_error( file, CHARITABLE_UPLOAD_VARS.max_file_size.replace('%1$s', file.name).replace('%2$s', self.bytes_to_mb( self.max_file_size ) ) );
             }
         });
 
@@ -213,10 +213,12 @@ CHARITABLE = window.CHARITABLE || {};
      * @return  void
      */
     Uploader.prototype.add_image_error = function( file, msg ) {
-        this.$dropzone.fadeIn( 300 );
+        var self = this;
 
-        this.$loader.find( '[data-file-id=' + file.id + ']' ).addClass( 'error' ).text( msg ).delay( 5000 ).fadeOut( 300, function(){
-            this.hide_image_loader( file );            
+        self.$dropzone.fadeIn( 300 );
+
+        self.$loader.find( '[data-file-id=' + file.id + ']' ).addClass( 'error' ).text( msg ).delay( 5000 ).fadeOut( 300, function(){
+            self.hide_image_loader( file );            
         });
     }
 
