@@ -732,6 +732,36 @@ if ( ! class_exists( 'Charitable_Abstract_Donation' ) ) :
 			charitable_get_deprecated()->deprecated_function( __METHOD__, '1.4.0', 'charitable_sanitize_donation_meta()' );
 			return charitable_flush_campaigns_donation_cache( $donation_id );
 		}
+
+		/**
+		 * Save the gateway's transaction ID
+		 *
+		 * @param   string   $value
+		 * @return  bool
+		 * @access  public
+		 * @since   1.4.6
+		 */
+		public function set_gateway_transaction_id( $value ) {
+			$key = '_gateway_transaction_id';
+			$value = charitable_sanitize_donation_meta( $value, $key );
+			return update_post_meta( $this->donation_id, $key , $value );
+		}
+
+		/**
+		 * Get the gateway's transaction ID
+		 *
+		 * @return  string
+		 * @access  public
+		 * @since   1.4.6
+		 */
+		public function get_gateway_transaction_id() {
+			if ( ! isset( $this->gateway_transaction_id ) ){
+				$this->gateway_transaction_id = get_post_meta( $this->donation_id, '_gateway_transaction_id' , true );
+			}
+			return $this->gateway_transaction_id;
+		}
+
+		
 	}
 
 endif; // End class_exists check
