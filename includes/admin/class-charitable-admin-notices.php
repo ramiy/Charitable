@@ -31,6 +31,14 @@ if ( ! class_exists( 'Charitable_Admin_Notices' ) ) :
 		private static $instance = null;
 
 		/**
+		 * Whether the script has been enqueued.
+		 *
+		 * @var 	boolean
+		 * @access 	private
+		 */
+		private $script_enqueued;
+
+		/**
 		 * Returns and/or create the single instance of this class.
 		 *
 		 * @return  Charitable_Admin_Notices
@@ -148,6 +156,81 @@ if ( ! class_exists( 'Charitable_Admin_Notices' ) ) :
 		 */
 		public function add_version_update( $message, $key = false, $dismissible = true ) {
 			$this->add_notice( $message, 'version', $key, $dismissible );
+		}
+
+		/**
+		 * Render notices.
+		 *
+		 * @return  void
+		 * @access  public
+		 * @since   1.4.6
+		 */
+		public function render() {
+
+			foreach ( charitable_get_admin_notices()->get_notices() as $type => $notices ) {
+
+				foreach ( $notices as $key => $notice ) {
+					$this->render_notice( $notice['message'], $type, $notice['dismissible'], $key );
+				}
+			}
+		}
+
+		/**
+		 * Render a notice.
+		 *
+		 * @param 	string 	$notice
+		 * @param 	string  $type
+		 * @param 	boolean $dismissible
+		 * @param 	string  $notice_key
+		 * @return  void
+		 * @access  public
+		 * @since   1.4.6
+		 */
+		public function render_notice( $notice, $type, $dismissible = false, $notice_key = '' ) {
+
+			if ( ! isset( $this->script_enqueued ) ) {
+
+				if ( ! wp_script_is( 'charitable-admin-notice' ) ) {
+					wp_enqueue_script( 'charitable-admin-notice' );
+				}
+
+				$this->script_enqueued = true;
+			}
+
+			$class = 'notice charitable-notice';
+
+			switch ( $type ) {
+				case 'error' :
+					$class .= ' notice-error';
+					break;
+
+				case 'warning' :
+					$class .= ' notice-warning';
+					break;
+
+				case 'success' :
+					$class .= ' updated';
+					break;
+
+				case 'info' :
+					$class .= ' notice-info';
+					break;
+
+				case 'version' :
+					$class .= ' charitable-upgrade-notice';
+					break;
+			}
+
+			if ( $dismissible ) {
+				$class .= ' is-dismissible';
+			}
+
+			printf( '<div class="%s" %s><p>%s</p></div>',
+				esc_attr( $class ),
+				strlen( $key ) ? 'data-notice="' . esc_attr( $key ) . '"' : '',
+				$notice
+			);
+
 		}
 
 		/**

@@ -272,6 +272,8 @@ if ( ! class_exists( 'Charitable_Emails' ) ) :
 
 			update_option( 'charitable_settings', $settings );
 
+			Charitable_Settings::get_instance()->add_update_message( __( 'Email Enabled', 'charitable' ), 'success' );
+
 			do_action( 'charitable_email_enable', $email );
 		}
 
@@ -292,6 +294,8 @@ if ( ! class_exists( 'Charitable_Emails' ) ) :
 			unset( $settings['enabled_emails'][ $email ] );
 
 			update_option( 'charitable_settings', $settings );
+
+			Charitable_Settings::get_instance()->add_update_message( __( 'Email Disabled', 'charitable' ), 'success' );
 
 			do_action( 'charitable_email_disable', $email );
 		}

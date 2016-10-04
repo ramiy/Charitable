@@ -25,7 +25,7 @@ add_action( 'admin_init', array( Charitable_Settings::get_instance(), 'register_
  *
  * @see     Charitable_Settings::add_notices()
  */
-add_action( 'admin_init', array( Charitable_Settings::get_instance(), 'add_notices' ) );
+add_action( 'charitable_before_admin_settings', array( Charitable_Settings::get_instance(), 'add_notices' ) );
 
 /**
  * Maybe add "Extensions" settings tab.

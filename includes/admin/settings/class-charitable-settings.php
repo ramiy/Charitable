@@ -114,6 +114,25 @@ if ( ! class_exists( 'Charitable_Settings' ) ) :
 		}
 
 		/**
+		 * Display notices.
+		 *
+		 * @return  void
+		 * @access  public
+		 * @since   1.4.6
+		 */
+		public function add_notices() {
+
+			$helper = charitable_get_admin_notices();
+
+			foreach ( $this->get_update_messages() as $notice ) {
+
+				$helper->render_notice( $notice['message'], $notice['type'], $notice['dismissible'] );
+
+			}
+
+		}
+
+		/**
 		 * Register setting.
 		 *
 		 * @return  void
@@ -164,27 +183,6 @@ if ( ! class_exists( 'Charitable_Settings' ) ) :
 		}
 
 		/**
-		 * Add notices to the top of the settings page.
-		 *
-		 * @return  void
-		 * @access  public
-		 * @since   1.4.6
-		 */
-		public function add_notices() {
-			$notices = get_transient( 'charitable_settings_update_messages' );
-
-			if ( ! is_array( $notices ) ) {
-				return;
-			}
-
-			foreach ( $notices as $notice ) {
-				charitable_get_admin_notices()->add_notice( $notice['message'], $notice['type'] );
-			}
-
-			delete_transient( 'charitable_settings_update_messages' );
-		}
-
-		/**
 		 * Sanitize submitted settings before saving to the database.
 		 *
 		 * @param   array $values
@@ -207,9 +205,6 @@ if ( ! class_exists( 'Charitable_Settings' ) ) :
 
 			$values = wp_parse_args( $new_values, $old_values );
 			$values = apply_filters( 'charitable_save_settings', $values, $new_values, $old_values );
-
-			/* Set transient with any update messages. */
-			set_transient( 'charitable_settings_update_messages', $this->get_update_messages(), 30 );
 
 			return $values;
 		}
@@ -276,6 +271,43 @@ if ( ! class_exists( 'Charitable_Settings' ) ) :
 			}
 
 			return $pages;
+		}
+
+		/**
+		 * Return the update messages.
+		 *
+		 * @return  string[]
+		 * @access  public
+		 * @since   1.4.6
+		 */
+		public function get_update_messages() {
+			if ( empty( $this->messages ) ) {
+				$this->add_update_message( __( 'Settings Saved', 'charitable' ), 'success' );
+			}
+
+			return $this->messages;
+		}
+
+		/**
+		 * Add an update message.
+		 *
+		 * @param 	string  $message
+		 * @param 	string  $type
+		 * @param 	boolean $dismissible
+		 * @return  string[]
+		 * @access  public
+		 * @since   1.4.6
+		 */
+		public function add_update_message( $message, $type = 'error', $dismissible = true ) {
+			if ( ! in_array( $type, array( 'error', 'success', 'warning', 'info' ) ) ) {
+				$type = 'error';
+			}
+
+			$this->messages[] = array(
+				'message'     => $message,
+				'type'        => $type,
+				'dismissible' => $dismissible,
+			);
 		}
 
 		/**
@@ -498,41 +530,6 @@ if ( ! class_exists( 'Charitable_Settings' ) ) :
 		 */
 		private function is_dynamic_group( $composite_key ) {
 			return array_key_exists( $composite_key, $this->get_dynamic_groups() );
-		}
-
-		/**
-		 * Return the update messages.
-		 *
-		 * @return  string[]
-		 * @access  private
-		 * @since   1.4.6
-		 */
-		private function get_update_messages() {
-			if ( empty( $this->messages ) ) {
-				$this->add_update_message( __( 'Settings Saved', 'charitable' ) );				
-			}
-
-			return $this->messages;
-		}
-
-		/**
-		 * Add an update message.
-		 *
-		 * @param 	string $message
-		 * @param 	string $type
-		 * @return  string[]
-		 * @access  public
-		 * @since   1.4.6
-		 */
-		public function add_update_message( $message, $type = 'error' ) {
-			if ( ! in_array( $type, array( 'error', 'success', 'warning', 'info' ) ) ) {
-				$type = 'error';
-			}
-
-			$this->messages[] = array(
-				'message' => $message,
-				'type'    => $type,
-			);
 		}		
 	}
 

@@ -202,48 +202,12 @@ if ( ! class_exists( 'Charitable_Admin' ) ) :
 			/* Get any version update notices first. */
 			$this->add_version_update_notices();
 
-			foreach ( charitable_get_admin_notices()->get_notices() as $type => $notices ) {
+			/* Also pick up any settings notices. */
+			// $this->add_settings_update_notices();
 
-				$class = 'notice charitable-notice';
+			/* Render notices. */
+			charitable_get_admin_notices()->render();
 
-				switch ( $type ) {
-					case 'error' :
-						$class .= ' notice-error';
-						break;
-
-					case 'warning' :
-						$class .= ' notice-warning';
-						break;
-
-					case 'success' :
-						$class .= ' updated';
-						break;
-
-					case 'info' :
-						$class .= ' notice-info';
-						break;
-
-					case 'version' :
-						$class .= ' charitable-upgrade-notice';
-						break;
-				}
-
-				foreach ( $notices as $key => $notice ) {
-
-					if ( ! wp_script_is( 'charitable-admin-notice' ) ) {
-		                wp_enqueue_script( 'charitable-admin-notice' );
-		            }
-
-		            $notice_classes = $notice['dismissible'] ? $class . ' is-dismissible' : $class;
-
-		            printf( '<div class="%s" data-notice="%s"><p>%s</p></div>',
-						esc_attr( $notice_classes ),
-						esc_attr( $key ),
-						$notice['message']
-					);
-
-				}
-			}
 		}
 
 		/**
@@ -254,6 +218,7 @@ if ( ! class_exists( 'Charitable_Admin' ) ) :
 		 * @since   1.4.6
 		 */
 		public function add_version_update_notices() {
+
 			if ( ! current_user_can( 'manage_options' ) ) {
 				return;
 			}
