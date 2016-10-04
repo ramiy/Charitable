@@ -121,15 +121,19 @@ if ( ! class_exists( 'Charitable_Settings' ) ) :
 		 * @since   1.4.6
 		 */
 		public function add_notices() {
+			$messages = get_transient( 'charitable_settings_updated' );
+
+			if ( ! $messages ) {
+				return;
+			}
 
 			$helper = charitable_get_admin_notices();
 
-			foreach ( $this->get_update_messages() as $notice ) {
-
+			foreach ( $messages as $notice ) {
 				$helper->render_notice( $notice['message'], $notice['type'], $notice['dismissible'] );
-
 			}
 
+			delete_transient( 'charitable_settings_updated' );
 		}
 
 		/**
@@ -205,6 +209,9 @@ if ( ! class_exists( 'Charitable_Settings' ) ) :
 
 			$values = wp_parse_args( $new_values, $old_values );
 			$values = apply_filters( 'charitable_save_settings', $values, $new_values, $old_values );
+
+			/* Save the update messages to a transient. */
+			set_transient( 'charitable_settings_updated', $this->get_update_messages(), 30 );
 
 			return $values;
 		}
@@ -282,7 +289,7 @@ if ( ! class_exists( 'Charitable_Settings' ) ) :
 		 */
 		public function get_update_messages() {
 			if ( empty( $this->messages ) ) {
-				$this->add_update_message( __( 'Settings Saved', 'charitable' ), 'success' );
+				$this->add_update_message( __( 'Settings saved', 'charitable' ), 'success' );
 			}
 
 			return $this->messages;

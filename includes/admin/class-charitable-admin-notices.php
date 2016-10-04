@@ -227,7 +227,7 @@ if ( ! class_exists( 'Charitable_Admin_Notices' ) ) :
 
 			printf( '<div class="%s" %s><p>%s</p></div>',
 				esc_attr( $class ),
-				strlen( $key ) ? 'data-notice="' . esc_attr( $key ) . '"' : '',
+				strlen( $notice_key ) ? 'data-notice="' . esc_attr( $notice_key ) . '"' : '',
 				$notice
 			);
 
