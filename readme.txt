@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paypa
 Tags: donations, donate, donation plugin, fundraising, fundraising plugin, non-profit, non-profits, charity, churches, commerce, crowdfunding, crowd funding, paypal donations, paypal, stripe, stripe donations, campaigns, gifts, giving, wordpress fundraising, wordpress donations, wordpress donation plugin, peer to peer fundraising, peer to peer fundraiser, peer fundraising, social fundraising
 Requires at least: 4.1
 Tested up to: 4.6.1
-Stable tag: 1.4.5
+Stable tag: 1.4.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -114,6 +114,17 @@ You can post in the [support forum](https://wordpress.org/support/plugin/charita
 6. Setting up Charitable: The Email settings area. 
 
 == Changelog ==
+
+= 1.4.6 =
+* Properly activate Charitable on all sites when it is network activated. Also makes sure that Charitable is correctly installed when a new site is added to a network that has Charitable network-activated. [#225](https://github.com/Charitable/Charitable/issues/225)
+* Display success messages to the user after settings are updated in the admin. [#54](https://github.com/Charitable/Charitable/issues/54)
+* Fixes a bug that prevented donations from being displayed in the admin when filtering by campaign. [#242](https://github.com/Charitable/Charitable/issues/242)
+* Removes PHP warnings that were displayed on the Charitable donations page in the dashboard when there are no donations. [#232](https://github.com/Charitable/Charitable/issues/232)
+* Changed the hook that the Donation Receipt and Donation Notification emails are sent on from `save_post` to `charitable-completed_donation`. [#217](https://github.com/Charitable/Charitable/issues/217)
+* Added a `CHARITABLE_DEBUG` constant for error logging. Currently, enabling this only logs the IPN responses that are received from PayPal after donations are made. [#229](https://github.com/Charitable/Charitable/issues/229)
+* Ensure that the donation form script is always loaded for the campaign donation widget. [#239](https://github.com/Charitable/Charitable/issues/239)
+* Fixes a bug that prevented the password reset from working correctly. [#238](https://github.com/Charitable/Charitable/issues/238)
+* Refer to campaigns as campaigns instead of posts in admin update messages. [#234](https://github.com/Charitable/Charitable/issues/234)
 
 = 1.4.5 =
 * The permissions for accessing Donations and Campaigns in the WordPress dashboard has changed. Users who are set up as Campaign Managers can access both Donations and Campaigns, but cannot access Charitable settings. This permission is reserved for admin users. In addition, the `manage_charitable_settings` permission has been removed from Campaign Managers. [#209](https://github.com/Charitable/Charitable/issues/209)
