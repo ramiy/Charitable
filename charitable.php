@@ -297,6 +297,7 @@ if ( ! class_exists( 'Charitable' ) ) :
 		 * @since   1.0.0
 		 */
 		private function attach_hooks_and_filters() {
+			add_action( 'wpmu_new_blog', array( $this, 'maybe_activate_charitable_on_new_site' ) );
 			add_action( 'plugins_loaded', array( $this, 'charitable_install' ), 100 );
 			add_action( 'plugins_loaded', array( $this, 'charitable_start' ), 100 );
 			add_action( 'setup_theme', array( 'Charitable_Customizer', 'start' ) );
@@ -637,17 +638,57 @@ if ( ! class_exists( 'Charitable' ) ) :
 		}
 
 		/**
+		 * Maybe activate Charitable when a new site is added in a multisite network.
+		 *
+		 * @param 	int $blog_id
+		 * @return  boolean
+		 * @access  public
+		 * @since   1.4.6
+		 */
+		public function maybe_activate_charitable_on_new_site( $blog_id ) {
+
+			if ( is_plugin_active_for_network( basename( $this->directory_path ) . '/charitable.php' ) ) {
+
+				switch_to_blog( $blog_id );
+
+				$this->activate( false );
+
+				restore_current_blog();
+			}
+		}
+
+		/**
 		 * Runs on plugin activation.
 		 *
-		 * @see register_activation_hook
+		 * @see 	register_activation_hook
 		 *
+		 * @param 	boolean $network_wide Whether to enable the plugin for all sites in the network
+		 *                           	  or just the current site. Multisite only. Default is false.
 		 * @return  void
 		 * @access  public
 		 * @since   1.0.0
 		 */
-		public function activate() {
+		public function activate( $network_wide = false ) {
+
 			require_once( $this->get_path( 'includes' ) . 'class-charitable-install.php' );
-			new Charitable_Install();
+
+			if ( is_multisite() && $network_wide ) {
+
+				global $wpdb;
+
+		        foreach ( $wpdb->get_col( "SELECT blog_id FROM $wpdb->blogs" ) as $blog_id ) {
+
+		            switch_to_blog( $blog_id );
+
+		            new Charitable_Install();
+
+		            restore_current_blog();
+		        }
+			} else {
+
+				new Charitable_Install();
+
+			}
 		}
 
 		/**
