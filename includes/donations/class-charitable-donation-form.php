@@ -890,7 +890,7 @@ if ( ! class_exists( 'Charitable_Donation_Form' ) ) :
 		 * @since   1.4.6
 		 */
 		protected function check_test_mode() {
-			$in_test_mode = charitable_get_helper( 'gateways' )->in_test_mode();
+			$in_test_mode = charitable_get_option( 'test_mode', 0 );
 
 			/* If test mode is enabled display an alert on the form. */
 			if ( $in_test_mode ) {
