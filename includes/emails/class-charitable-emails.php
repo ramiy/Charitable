@@ -167,8 +167,8 @@ if ( ! class_exists( 'Charitable_Emails' ) ) :
 			$emails = array();
 
 			foreach ( $this->get_enabled_emails() as $class ) {
-
-				if ( ! class_exists( $class ) ) {
+				
+				if ( ! class_exists( $class ) || $class === 'Charitable_Email_Password_Reset' ) {
 					continue;
 				}
 
