@@ -892,8 +892,8 @@ if ( ! class_exists( 'Charitable_Donation_Form' ) ) :
 		protected function check_test_mode() {
 			$in_test_mode = charitable_get_option( 'test_mode', 0 );
 
-			/* If test mode is enabled display an alert on the form. */
-			if ( $in_test_mode ) {
+			/* If test mode is enabled, and current user is an admin, display an alert on the form. */
+			if ( $in_test_mode && current_user_can( 'manage_charitable_settings' ) ) {
 				charitable_get_notices()->add_error( $this->get_test_mode_active_notice() );
 			}
 
