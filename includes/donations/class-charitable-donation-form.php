@@ -887,7 +887,7 @@ if ( ! class_exists( 'Charitable_Donation_Form' ) ) :
 		 *
 		 * @return  void
 		 * @access  protected
-		 * @since   1.4.6
+		 * @since   1.4.7
 		 */
 		protected function check_test_mode() {
 			$in_test_mode = charitable_get_option( 'test_mode', 0 );
@@ -904,7 +904,7 @@ if ( ! class_exists( 'Charitable_Donation_Form' ) ) :
 		 *
 		 * @return  string
 		 * @access  protected
-		 * @since   1.4.6
+		 * @since   1.4.7
 		 */
 		protected function get_test_mode_active_notice() {
 			$message = __( 'Test mode is active.', 'charitable' );
