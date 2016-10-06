@@ -108,6 +108,7 @@ if ( ! class_exists( 'Charitable_Donation_Form' ) ) :
 			add_action( 'charitable_donation_form_after_user_fields', array( $this, 'add_password_field' ) );
 
 			$this->setup_payment_fields();
+			$this->check_test_mode();
 		}
 
 		/**
@@ -881,6 +882,43 @@ if ( ! class_exists( 'Charitable_Donation_Form' ) ) :
 			return apply_filters( 'charitable_no_active_gateways_notice', $message, current_user_can( 'manage_charitable_settings' ) );
 		}
 
+		/**
+		 * Determine the status of Test Mode and display an alert if it is active
+		 *
+		 * @return  void
+		 * @access  protected
+		 * @since   1.4.6
+		 */
+		protected function check_test_mode() {
+			$in_test_mode = charitable_get_option( 'test_mode', 0 );
+
+			/* If test mode is enabled, and current user is an admin, display an alert on the form. */
+			if ( $in_test_mode && current_user_can( 'manage_charitable_settings' ) ) {
+				charitable_get_notices()->add_error( $this->get_test_mode_active_notice() );
+			}
+
+		}
+
+		/**
+		 * A formatted notice to advise that Test Mode is active.
+		 *
+		 * @return  string
+		 * @access  protected
+		 * @since   1.4.6
+		 */
+		protected function get_test_mode_active_notice() {
+			$message = __( 'Test mode is active.', 'charitable' );
+
+			if ( current_user_can( 'manage_charitable_settings' ) ) {
+				$message = sprintf( '%s <a href="%s">%s</a>.',
+					$message,
+					admin_url( 'admin.php?page=charitable-settings&tab=gateways' ),
+					__( 'Disable Test Mode', 'charitable' )
+				);
+			}
+
+			return apply_filters( 'charitable_test_mode_active_notice', $message, current_user_can( 'manage_charitable_settings' ) );
+		}
 
 		/**
 		 * Return the donor value fields.
