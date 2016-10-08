@@ -46,7 +46,12 @@ class Charitable_Donation_Factory {
 		}
 
 		$donation_id  = absint( $donation->ID );
+		
 		$post_type = $donation->post_type;
+
+		if( ! in_array( $post_type, apply_filters( 'charitable_valid_donation_types', array( Charitable::DONATION_POST_TYPE ) ) ) ){
+			return false;
+		}
 
 		$classname = $this->get_donation_class( $donation );
 
