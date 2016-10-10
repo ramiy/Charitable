@@ -22,7 +22,7 @@ add_action( 'init', array( Charitable_Emails::get_instance(), 'register_emails' 
 
 /**
  * Send the Donation Receipt and Donation Notification emails.
- * 
+ *
  * Both of these emails are sent immediately a donation has been completed.
  *
  * @see     Charitable_Email_Donation_Receipt::send_with_donation_id()
@@ -32,10 +32,8 @@ add_action( 'charitable_after_save_donation', array( 'Charitable_Email_Donation_
 add_action( 'charitable_after_save_donation', array( 'Charitable_Email_New_Donation', 'send_with_donation_id' ) );
 
 foreach ( charitable_get_approval_statuses() as $status ) {
-
-    add_action( $status . '_' . Charitable::DONATION_POST_TYPE, array( 'Charitable_Email_Donation_Receipt', 'send_with_donation_id' ) );
-    add_action( $status . '_' . Charitable::DONATION_POST_TYPE, array( 'Charitable_Email_New_Donation', 'send_with_donation_id' ) );
-
+	add_action( $status . '_' . Charitable::DONATION_POST_TYPE, array( 'Charitable_Email_Donation_Receipt', 'send_with_donation_id' ) );
+	add_action( $status . '_' . Charitable::DONATION_POST_TYPE, array( 'Charitable_Email_New_Donation', 'send_with_donation_id' ) );
 }
 
 /**

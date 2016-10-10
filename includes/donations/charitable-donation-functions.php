@@ -8,7 +8,7 @@
  * @package     Charitable/Functions/Donation
  * @version     1.0.0
  * @author      Eric Daams
- * @copyright   Copyright (c) 2015, Studio 164a
+ * @copyright   Copyright (c) 2016, Studio 164a
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
@@ -27,7 +27,11 @@ if ( ! defined( 'ABSPATH' ) ) { exit; // Exit if accessed directly
 function charitable_get_donation( $donation_id, $force = false ) {
 	if ( ! did_action( 'charitable_start' ) && false === ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
 
-		charitable_get_deprecated()->doing_it_wrong( __FUNCTION__, __( 'charitable_get_donation should not be called before the charitable_start action.', 'charitable' ), '1.0.0' );
+		charitable_get_deprecated()->doing_it_wrong(
+			__FUNCTION__,
+			__( 'charitable_get_donation should not be called before the charitable_start action.', 'charitable' ),
+			'1.0.0'
+		);
 
 		return false;
 

@@ -82,7 +82,7 @@ if ( ! class_exists( 'Charitable_Email_New_Donation' ) ) :
 				return false;
 			}
 
-			$donation = charitable_get_donation( $donation_id );
+			$donation = new Charitable_Donation( $donation_id );
 
 			if ( ! is_object( $donation ) || 0 == count( $donation->get_campaign_donations() ) ) {
 				return false;
