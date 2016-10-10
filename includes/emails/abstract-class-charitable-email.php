@@ -625,10 +625,6 @@ if ( ! class_exists( 'Charitable_Email' ) ) :
 				return '';
 			}
 
-			// return get_post_status( $this->donation->get_donation_id() );
-
-			// $status = $this->donation->get_status( true );
-
 			return $this->donation->get_status( true );
 		}
 

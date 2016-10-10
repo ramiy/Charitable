@@ -6,357 +6,358 @@
  * @version     1.0.0
  * @author      Eric Daams
  * @copyright   Copyright (c) 2015, Studio 164a
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License  
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
 // Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-if ( ! class_exists( 'Charitable_Profile_Form' ) ) : 
+if ( ! class_exists( 'Charitable_Profile_Form' ) ) :
 
-    /**
-     * Charitable_Profile_Form
-     *
-     * @since       1.0.0
-     */
-    class Charitable_Profile_Form extends Charitable_Form {
+	/**
+	 * Charitable_Profile_Form
+	 *
+	 * @since       1.0.0
+	 */
+	class Charitable_Profile_Form extends Charitable_Form {
 
-        /**
-         * Shortcode parameters. 
-         *
-         * @var     array
-         * @access  protected
-         */
-        protected $shortcode_args;
+		/**
+		 * Shortcode parameters.
+		 *
+		 * @var     array
+		 * @access  protected
+		 */
+		protected $shortcode_args;
 
-        /**
-         * @var     string
-         */
-        protected $nonce_action = 'charitable_user_profile';
+		/**
+		 * @var     string
+		 */
+		protected $nonce_action = 'charitable_user_profile';
 
-        /**
-         * @var     string
-         */
-        protected $nonce_name = '_charitable_user_profile_nonce';
+		/**
+		 * @var     string
+		 */
+		protected $nonce_name = '_charitable_user_profile_nonce';
 
-        /**
-         * Action to be executed upon form submission. 
-         *
-         * @var     string
-         * @access  protected
-         */
-        protected $form_action = 'update_profile';
+		/**
+		 * Action to be executed upon form submission.
+		 *
+		 * @var     string
+		 * @access  protected
+		 */
+		protected $form_action = 'update_profile';
 
-        /**
-         * The current user. 
-         *
-         * @var     Charitable_User
-         * @access  protected
-         */
-        protected $user;
+		/**
+		 * The current user.
+		 *
+		 * @var     Charitable_User
+		 * @access  protected
+		 */
+		protected $user;
 
-        /**
-         * Create class object.
-         * 
-         * @param   array       $args       User-defined shortcode attributes.
-         * @access  public
-         * @since   1.0.0
-         */
-        public function __construct( $args = array() ) {    
-            $this->id = uniqid();   
-            $this->shortcode_args = $args;      
-            $this->attach_hooks_and_filters();  
-        }
+		/**
+		 * Create class object.
+		 *
+		 * @param   array       $args       User-defined shortcode attributes.
+		 * @access  public
+		 * @since   1.0.0
+		 */
+		public function __construct( $args = array() ) {
+			$this->id 			  = uniqid();
+			$this->shortcode_args = $args;
 
-        /**
-         * Return the current user's Charitable_User object.  
-         *
-         * @return  Charitable_User
-         * @access  public
-         * @since   1.0.0
-         */
-        public function get_user() {
-            if ( ! isset( $this->user ) ) {
-                $this->user = new Charitable_User( wp_get_current_user() );
-            }
+			$this->attach_hooks_and_filters();
+		}
 
-            return $this->user;
-        }
+		/**
+		 * Return the current user's Charitable_User object.
+		 *
+		 * @return  Charitable_User
+		 * @access  public
+		 * @since   1.0.0
+		 */
+		public function get_user() {
+			if ( ! isset( $this->user ) ) {
+				$this->user = new Charitable_User( wp_get_current_user() );
+			}
 
-        /**
-         * Returns the value of a particular key.   
-         *
-         * @param   string $key
-         * @param   string $default     Optional. The value that will be used if none is set.
-         * @return  mixed
-         * @access  public
-         * @since   1.0.0
-         */
-        public function get_user_value( $key, $default = "" ) {
-            if ( isset( $_POST[ $key ] ) ) {
-                return $_POST[ $key ];
-            }
+			return $this->user;
+		}
 
-            $user = $this->get_user();
-            $value = $default;
+		/**
+		 * Returns the value of a particular key.
+		 *
+		 * @param   string $key
+		 * @param   string $default     Optional. The value that will be used if none is set.
+		 * @return  mixed
+		 * @access  public
+		 * @since   1.0.0
+		 */
+		public function get_user_value( $key, $default = '' ) {
+			if ( array_key_exists( $key, $_POST ) ) {
+				return $_POST[ $key ];
+			}
 
-            if ( $user ) {      
-                switch ( $key ) {
-                    case 'user_description' : 
-                        $value = $user->description;
-                        break;
-                    
-                    default : 
-                        if ( $user->has_prop( $key ) ) {
-                            $value = $user->get( $key );
-                        }                    
-                }
-            }
-            
-            return apply_filters( 'charitable_campaign_submission_user_value', $value, $key, $user );
-        }    
+			$user  = $this->get_user();
+			$value = $default;
 
-        /**
-         * Return the core user fields.     
-         *
-         * @return  array
-         * @access  public
-         * @since   1.0.0
-         */
-        public function get_user_fields() {
-            $user_fields = apply_filters( 'charitable_user_fields', array(          
-                'first_name' => array( 
-                    'label'     => __( 'First name', 'charitable' ), 
-                    'type'      => 'text', 
-                    'priority'  => 4, 
-                    'required'  => true, 
-                    'value'     => $this->get_user_value( 'first_name' )
-                ),
-                'last_name' => array( 
-                    'label'     => __( 'Last name', 'charitable' ),                 
-                    'type'      => 'text', 
-                    'priority'  => 6, 
-                    'required'  => true, 
-                    'value'     => $this->get_user_value( 'last_name' )
-                ),            
-                'user_email' => array(
-                    'label'     => __( 'Email', 'charitable' ), 
-                    'type'      => 'email',
-                    'required'  => true, 
-                    'priority'  => 8, 
-                    'value'     => $this->get_user_value( 'user_email' )
-                ),
-                'organisation' => array(
-                    'label'     => __( 'Organization', 'charitable' ),              
-                    'type'      => 'text', 
-                    'priority'  => 10, 
-                    'required'  => false, 
-                    'value'     => $this->get_user_value( 'organisation' )
-                ),
-                'description' => array(
-                    'label'     => __( 'Bio', 'charitable' ), 
-                    'type'      => 'textarea', 
-                    'required'  => false,
-                    'priority'  => 12, 
-                    'value'     => $this->get_user_value( 'description' )
-                )
-            ), $this );
+			if ( $user ) {
+				switch ( $key ) {
+					case 'user_description' :
+						$value = $user->description;
+						break;
 
-            uasort( $user_fields, 'charitable_priority_sort' );
+					default :
+						if ( $user->has_prop( $key ) ) {
+							$value = $user->get( $key );
+						}
+				}
+			}
 
-            return $user_fields;
-        }
+			return apply_filters( 'charitable_campaign_submission_user_value', $value, $key, $user );
+		}
 
-        /**
-         * Return the user's address fields. 
-         *
-         * @return  array
-         * @access  public
-         * @since   1.0.0
-         */
-        public function get_address_fields() {
-            $address_fields = apply_filters( 'charitable_user_address_fields', array(
-                'address' => array( 
-                    'label'     => __( 'Address', 'charitable' ),               
-                    'type'      => 'text', 
-                    'priority'  => 22, 
-                    'required'  => false, 
-                    'value'     => $this->get_user_value( 'donor_address' )
-                ),
-                'address_2' => array( 
-                    'label'     => __( 'Address 2', 'charitable' ), 
-                    'type'      => 'text', 
-                    'priority'  => 24, 
-                    'required'  => false,           
-                    'value'     => $this->get_user_value( 'donor_address_2' )
-                ),
-                'city' => array( 
-                    'label'     => __( 'City', 'charitable' ),          
-                    'type'      => 'text', 
-                    'priority'  => 26, 
-                    'required'  => false, 
-                    'value'     => $this->get_user_value( 'donor_city' )
-                ),
-                'state' => array( 
-                    'label'     => __( 'State', 'charitable' ),                 
-                    'type'      => 'text', 
-                    'priority'  => 28, 
-                    'required'  => false, 
-                    'value'     => $this->get_user_value( 'donor_state' )
-                ),
-                'postcode' => array( 
-                    'label'     => __( 'Postcode / ZIP code', 'charitable' ),               
-                    'type'      => 'text', 
-                    'priority'  => 30, 
-                    'required'  => false, 
-                    'value'     => $this->get_user_value( 'donor_postcode' )
-                ),
-                'country' => array( 
-                    'label'     => __( 'Country', 'charitable' ),               
-                    'type'      => 'select', 
-                    'options'   => charitable_get_location_helper()->get_countries(), 
-                    'priority'  => 32, 
-                    'required'  => false, 
-                    'value'     => $this->get_user_value( 'donor_country', charitable_get_option( 'country' ) )
-                ),
-                'phone' => array( 
-                    'label'     => __( 'Phone', 'charitable' ),                 
-                    'type'      => 'text', 
-                    'priority'  => 34, 
-                    'required'  => false, 
-                    'value'     => $this->get_user_value( 'donor_phone' )
-                )
-            ), $this );
+		/**
+		 * Return the core user fields.
+		 *
+		 * @return  array
+		 * @access  public
+		 * @since   1.0.0
+		 */
+		public function get_user_fields() {
+			$user_fields = apply_filters( 'charitable_user_fields', array(
+				'first_name' => array(
+					'label'     => __( 'First name', 'charitable' ),
+					'type'      => 'text',
+					'priority'  => 4,
+					'required'  => true,
+					'value'     => $this->get_user_value( 'first_name' ),
+				),
+				'last_name' => array(
+					'label'     => __( 'Last name', 'charitable' ),
+					'type'      => 'text',
+					'priority'  => 6,
+					'required'  => true,
+					'value'     => $this->get_user_value( 'last_name' ),
+				),
+				'user_email' => array(
+					'label'     => __( 'Email', 'charitable' ),
+					'type'      => 'email',
+					'required'  => true,
+					'priority'  => 8,
+					'value'     => $this->get_user_value( 'user_email' ),
+				),
+				'organisation' => array(
+					'label'     => __( 'Organization', 'charitable' ),
+					'type'      => 'text',
+					'priority'  => 10,
+					'required'  => false,
+					'value'     => $this->get_user_value( 'organisation' ),
+				),
+				'description' => array(
+					'label'     => __( 'Bio', 'charitable' ),
+					'type'      => 'textarea',
+					'required'  => false,
+					'priority'  => 12,
+					'value'     => $this->get_user_value( 'description' ),
+				),
+			), $this );
 
-            uasort( $address_fields, 'charitable_priority_sort' );
+			uasort( $user_fields, 'charitable_priority_sort' );
 
-            return $address_fields;
-        }
+			return $user_fields;
+		}
 
-        /**
-         * Return the social fields. 
-         *
-         * @return  array
-         * @access  public
-         * @since   1.0.0
-         */
-        public function get_social_fields() {
-            $social_fields = apply_filters( 'charitable_user_social_fields', array(
-                'user_url' => array(
-                    'label'     => __( 'Your Website', 'charitable' ), 
-                    'type'      => 'url', 
-                    'priority'  => 42, 
-                    'required'  => false, 
-                    'value'     => $this->get_user()->user_url
-                ),
-                'twitter' => array( 
-                    'label'     => __( 'Twitter', 'charitable' ),               
-                    'type'      => 'text', 
-                    'priority'  => 44, 
-                    'required'  => false, 
-                    'value'     => $this->get_user()->twitter
-                ),
-                'facebook' => array( 
-                    'label'     => __( 'Facebook', 'charitable' ),              
-                    'type'      => 'text', 
-                    'priority'  => 46, 
-                    'required'  => false, 
-                    'value'     => $this->get_user()->facebook
-                )
-            ), $this );
+		/**
+		 * Return the user's address fields.
+		 *
+		 * @return  array
+		 * @access  public
+		 * @since   1.0.0
+		 */
+		public function get_address_fields() {
+			$address_fields = apply_filters( 'charitable_user_address_fields', array(
+				'address' => array(
+					'label'     => __( 'Address', 'charitable' ),
+					'type'      => 'text',
+					'priority'  => 22,
+					'required'  => false,
+					'value'     => $this->get_user_value( 'donor_address' ),
+				),
+				'address_2' => array(
+					'label'     => __( 'Address 2', 'charitable' ),
+					'type'      => 'text',
+					'priority'  => 24,
+					'required'  => false,
+					'value'     => $this->get_user_value( 'donor_address_2' ),
+				),
+				'city' => array(
+					'label'     => __( 'City', 'charitable' ),
+					'type'      => 'text',
+					'priority'  => 26,
+					'required'  => false,
+					'value'     => $this->get_user_value( 'donor_city' ),
+				),
+				'state' => array(
+					'label'     => __( 'State', 'charitable' ),
+					'type'      => 'text',
+					'priority'  => 28,
+					'required'  => false,
+					'value'     => $this->get_user_value( 'donor_state' ),
+				),
+				'postcode' => array(
+					'label'     => __( 'Postcode / ZIP code', 'charitable' ),
+					'type'      => 'text',
+					'priority'  => 30,
+					'required'  => false,
+					'value'     => $this->get_user_value( 'donor_postcode' ),
+				),
+				'country' => array(
+					'label'     => __( 'Country', 'charitable' ),
+					'type'      => 'select',
+					'options'   => charitable_get_location_helper()->get_countries(),
+					'priority'  => 32,
+					'required'  => false,
+					'value'     => $this->get_user_value( 'donor_country', charitable_get_option( 'country' ) ),
+				),
+				'phone' => array(
+					'label'     => __( 'Phone', 'charitable' ),
+					'type'      => 'text',
+					'priority'  => 34,
+					'required'  => false,
+					'value'     => $this->get_user_value( 'donor_phone' ),
+				),
+			), $this );
 
-            uasort( $social_fields, 'charitable_priority_sort' );
+			uasort( $address_fields, 'charitable_priority_sort' );
 
-            return $social_fields;
-        }
+			return $address_fields;
+		}
 
-        /**
-         * Profile fields to be displayed.      
-         *
-         * @return  array[]
-         * @access  public
-         * @since   1.0.0
-         */
-        public function get_fields() {          
-            $fields = apply_filters( 'charitable_user_profile_fields', array(
-                'user_fields' => array(
-                    'legend'    => __( 'Your Details', 'charitable' ),
-                    'type'      => 'fieldset',
-                    'fields'    => $this->get_user_fields(), 
-                    'priority'  => 0
-                ), 
-                'address_fields' => array(
-                    'legend'    => __( 'Your Address', 'charitable' ),
-                    'type'      => 'fieldset',
-                    'fields'    => $this->get_address_fields(), 
-                    'priority'  => 20
-                ),
-                'social_fields' => array(
-                    'legend'    => __( 'Your Social Profiles', 'charitable' ),
-                    'type'      => 'fieldset',
-                    'fields'    => $this->get_social_fields(),
-                    'priority'  => 40
-                )
-            ), $this );     
+		/**
+		 * Return the social fields.
+		 *
+		 * @return  array
+		 * @access  public
+		 * @since   1.0.0
+		 */
+		public function get_social_fields() {
+			$social_fields = apply_filters( 'charitable_user_social_fields', array(
+				'user_url' => array(
+					'label'     => __( 'Your Website', 'charitable' ),
+					'type'      => 'url',
+					'priority'  => 42,
+					'required'  => false,
+					'value'     => $this->get_user()->user_url,
+				),
+				'twitter' => array(
+					'label'     => __( 'Twitter', 'charitable' ),
+					'type'      => 'text',
+					'priority'  => 44,
+					'required'  => false,
+					'value'     => $this->get_user()->twitter,
+				),
+				'facebook' => array(
+					'label'     => __( 'Facebook', 'charitable' ),
+					'type'      => 'text',
+					'priority'  => 46,
+					'required'  => false,
+					'value'     => $this->get_user()->facebook,
+				),
+			), $this );
 
-            uasort( $fields, 'charitable_priority_sort' );
+			uasort( $social_fields, 'charitable_priority_sort' );
 
-            return $fields;
-        }
+			return $social_fields;
+		}
 
-        /**
-         * Returns all fields as a merged array. 
-         *
-         * @return  array[]
-         * @access  public
-         * @since   1.0.0
-         */
-        public function get_merged_fields() {
-            $fields = array();
+		/**
+		 * Profile fields to be displayed.
+		 *
+		 * @return  array[]
+		 * @access  public
+		 * @since   1.0.0
+		 */
+		public function get_fields() {
+			$fields = apply_filters( 'charitable_user_profile_fields', array(
+				'user_fields' => array(
+					'legend'    => __( 'Your Details', 'charitable' ),
+					'type'      => 'fieldset',
+					'fields'    => $this->get_user_fields(),
+					'priority'  => 0,
+				),
+				'address_fields' => array(
+					'legend'    => __( 'Your Address', 'charitable' ),
+					'type'      => 'fieldset',
+					'fields'    => $this->get_address_fields(),
+					'priority'  => 20,
+				),
+				'social_fields' => array(
+					'legend'    => __( 'Your Social Profiles', 'charitable' ),
+					'type'      => 'fieldset',
+					'fields'    => $this->get_social_fields(),
+					'priority'  => 40,
+				),
+			), $this );
 
-            foreach ( $this->get_fields() as $fieldset ) {
-                $fields = array_merge( $fields, $fieldset[ 'fields' ] );
-            }
+			uasort( $fields, 'charitable_priority_sort' );
 
-            return $fields;
-        }
+			return $fields;
+		}
 
-        /**
-         * Update profile after form submission. 
-         *
-         * @return  void
-         * @access  public
-         * @static
-         * @since   1.0.0
-         */
-        public static function update_profile() {
-            $form = new Charitable_Profile_Form();
+		/**
+		 * Returns all fields as a merged array.
+		 *
+		 * @return  array[]
+		 * @access  public
+		 * @since   1.0.0
+		 */
+		public function get_merged_fields() {
+			$fields = array();
 
-            if ( ! $form->validate_nonce() ) {
-                return;
-            }
+			foreach ( $this->get_fields() as $fieldset ) {
+				$fields = array_merge( $fields, $fieldset['fields'] );
+			}
 
-            $user = $form->get_user();
+			return $fields;
+		}
 
-            /* Verify that the user is logged in. */
-            if ( 0 == $user->ID ) {
-                return;
-            }
+		/**
+		 * Update profile after form submission.
+		 *
+		 * @return  void
+		 * @access  public
+		 * @static
+		 * @since   1.0.0
+		 */
+		public static function update_profile() {
+			$form = new Charitable_Profile_Form();
 
-            $fields = $form->get_merged_fields();
+			if ( ! $form->validate_nonce() ) {
+				return;
+			}
 
-            $submitted = apply_filters( 'charitable_profile_update_values', $_POST, $fields, $form );
+			$user = $form->get_user();
 
-            $valid = $form->check_required_fields( $fields );
+			/* Verify that the user is logged in. */
+			if ( 0 == $user->ID ) {
+				return;
+			}
 
-            if ( $valid ) {
-                
-                $user->update_profile( $submitted, array_keys( $fields ) );
+			$fields = $form->get_merged_fields();
 
-                do_action( 'charitable_profile_updated', $submitted, $fields, $form );
+			$submitted = apply_filters( 'charitable_profile_update_values', $_POST, $fields, $form );
 
-            }
-        }
-    }
+			$valid = $form->check_required_fields( $fields );
+
+			if ( $valid ) {
+
+				$user->update_profile( $submitted, array_keys( $fields ) );
+
+				do_action( 'charitable_profile_updated', $submitted, $fields, $form );
+
+			}
+		}
+	}
 
 endif; // End class_exists check
