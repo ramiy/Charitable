@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * Displays the donation receipt.
  *
@@ -12,8 +12,8 @@
 
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
-$content = $view_args[ 'content' ];
-$donation = $view_args[ 'donation' ];
+$content  = $view_args['content'];
+$donation = $view_args['donation'];
 
 /**
  * @hook    charitable_donation_receipt_before
