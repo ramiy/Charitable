@@ -564,7 +564,7 @@ if ( ! class_exists( 'Charitable_Campaign' ) ) :
 		 * @since   1.0.0
 		 */
 		public function get_donor_count() {
-			return charitable_get_table( 'campaign_donations' )->count_campaign_donors( $this->ID );
+			return apply_filters( 'charitable_campaign_donor_count', charitable_get_table( 'campaign_donations' )->count_campaign_donors( $this->ID ), $this );
 		}
 
 		/**

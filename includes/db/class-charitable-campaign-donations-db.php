@@ -432,20 +432,19 @@ if ( ! class_exists( 'Charitable_Campaign_Donations_DB' ) ) :
 		 /**
 		  * Return the number of users who have donated to the given campaign.
 		  *
-		  * @global wpdb    $wpdb
-		  * @param  int     $campaign_id
-		  * @param  boolean $include_all    If false, only
+		  * @global wpdb      $wpdb
+		  * @param  int|int[] $campaign
+		  * @param  boolean   $include_all If false, only include approved donations.
 		  * @return int
 		  * @since  1.0.0
 		  */
-		public function count_campaign_donors( $campaign_id, $include_all = false ) {
+		public function count_campaign_donors( $campaign, $include_all = false ) {
 			global $wpdb;
 
 			$statuses = $include_all ? array() : charitable_get_approval_statuses();
 
-			list( $status_clause, $status_parameters ) = $this->get_donation_status_clause( $statuses );
-
-			list( $campaigns_in, $campaigns_parameters ) = $this->get_in_clause_params( $campaign_id );
+			list( $status_clause, $status_parameters )   = $this->get_donation_status_clause( $statuses );
+			list( $campaigns_in, $campaigns_parameters ) = $this->get_in_clause_params( $campaign );
 
 			$parameters = array_merge( $campaigns_parameters, $status_parameters );
 
