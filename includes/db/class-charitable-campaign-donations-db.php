@@ -297,21 +297,25 @@ if ( ! class_exists( 'Charitable_Campaign_Donations_DB' ) ) :
 		 *
 		 * @global  $wpdb
 		 * @param 	int|int[] $donation_id A single donation ID or an array of IDs.
-		 * @param   int $campaign_id Optional. If set, this will only return the total donated to that campaign.
+		 * @param   int|int[] $campaign Optional. If set, this will only return the total donated to that campaign, or array of campaigns.
 		 * @return  decimal
 		 * @access  public
 		 * @since   1.3.0
 		 */
-		public function get_donation_amount( $donation_id, $campaign_id = '' ) {
+		public function get_donation_amount( $donation_id, $campaign = '' ) {
 			global $wpdb;
 
 			list( $in, $parameters ) = $this->get_in_clause_params( $donation_id );
 
 			$where_clause = "donation_id IN ( $in )";
 
-			if ( ! empty( $campaign_id ) ) {
-				$where_clause .= ' AND campaign_id = %d';
-				$parameters[]  = intval( $campaign_id );
+			if ( ! empty( $campaign ) ) {
+
+				list( $campaigns_in, $campaigns_parameters ) = $this->get_in_clause_params( $campaign );
+
+				$where_clause .= " AND campaign_id IN ( $campaigns_in )";
+				$parameters    = array_merge( $parameters, $campaigns_parameters );
+
 			}
 
 			$sql = "SELECT SUM(amount) 

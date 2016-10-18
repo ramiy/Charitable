@@ -337,7 +337,7 @@ if ( ! class_exists( 'Charitable_Donor' ) ) :
 		 * @since   1.2.0
 		 */
 		public function get_donation_amount( $campaign_id = '' ) {
-			return charitable_get_table( 'campaign_donations' )->get_donation_amount( $this->donation_id, $campaign_id );
+			return apply_filters( 'charitable_donor_donation_amount', charitable_get_table( 'campaign_donations' )->get_donation_amount( $this->donation_id, $campaign_id ), $this, $campaign_id );
 		}
 
 		/**
