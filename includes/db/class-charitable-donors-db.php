@@ -189,7 +189,7 @@ if ( ! class_exists( 'Charitable_Donors_DB' ) ) :
 				$status_clause = "AND p.post_status IN ( $in )";
 			}
 
-			$sql = "SELECT COUNT( * )
+			$sql = "SELECT COUNT( DISTINCT(d.donor_id) )
                 FROM {$wpdb->prefix}charitable_donors d
                 INNER JOIN {$wpdb->prefix}charitable_campaign_donations cd ON cd.donor_id = d.donor_id
                 INNER JOIN $wpdb->posts p ON cd.donation_id = p.ID
