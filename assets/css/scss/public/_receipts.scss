@@ -1,0 +1,23 @@
+.donation-summary {
+	dt {
+		float: left;
+		margin-right: .5em;
+		font-weight: bold;
+	}
+
+	dd {
+		display: block;
+	}
+
+	dd::after {
+		content: " ";
+		display: block;
+		clear: left;
+	}
+}
+
+.charitable-table {
+    tr, td {
+        padding-right: 1.5em;
+    }
+}
