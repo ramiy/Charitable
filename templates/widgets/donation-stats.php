@@ -8,9 +8,9 @@
  * @since   1.0.0
  */
 
-$widget_title = apply_filters( 'widget_title', $view_args[ 'title' ] );
+$widget_title    = apply_filters( 'widget_title', $view_args[ 'title' ] );
 $campaigns_count = Charitable_Campaigns::query( array( 'posts_per_page' => -1, 'fields' => 'ids' ) )->found_posts;
-$campaigns_text = $campaigns_count == 1 ? __( 'Campaign', 'charitable' ) : __( 'Campaigns', 'charitable' );
+$campaigns_text  = $campaigns_count == 1 ? __( 'Campaign', 'charitable' ) : __( 'Campaigns', 'charitable' );
 
 echo $view_args[ 'before_widget' ];
 

@@ -17,7 +17,7 @@ $campaign = $view_args[ 'campaign' ];
 
 $notice = $campaign->get_finished_notice();
 
-if ( empty( $notice ) ) : 
+if ( empty( $notice ) ) :
     return;
 endif;
 

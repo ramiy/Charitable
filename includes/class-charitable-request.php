@@ -200,7 +200,7 @@ if ( ! class_exists( 'Charitable_Request' ) ) :
 		public function get_current_donation() {
 			if ( ! isset( $this->donation ) ) {
 
-				$donation_id = $this->get_current_donation_id();
+				$donation_id    = $this->get_current_donation_id();
 				$this->donation = $donation_id ? charitable_get_donation( $donation_id ) : false;
 
 			}

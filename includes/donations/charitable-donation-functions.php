@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; // Exit if accessed directly
  *
  * @param   int     $donation_id
  * @param   boolean $force
- * @return  Charitable_Donation
+ * @return  Charitable_Donation|false
  * @since   1.0.0
  */
 function charitable_get_donation( $donation_id, $force = false ) {
