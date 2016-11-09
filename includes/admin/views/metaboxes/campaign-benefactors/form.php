@@ -13,22 +13,22 @@ $is_active_benefactor = is_null( $benefactor ) || $benefactor->is_active();
 
 if ( is_null( $benefactor ) ) {
     $default_args = array(
-        'index'                             => '_0',        
-        'contribution_amount'               => '',
-        'contribution_amount_is_per_item'   => 0, 
-        'date_created'                      => date( 'F d, Y' ), 
-        'date_deactivated'                  => 0
+        'index'                           => '_0',        
+        'contribution_amount'             => '',
+        'contribution_amount_is_per_item' => 0, 
+        'date_created'                    => date( 'F d, Y' ), 
+        'date_deactivated'                => 0
     );
 
     $args = array_merge( $default_args, $view_args );
 }
 else {
     $args = array(
-        'index'                             => $benefactor->campaign_benefactor_id,
-        'contribution_amount'               => $benefactor->get_contribution_amount(), 
-        'contribution_amount_is_per_item'   => $benefactor->contribution_amount_is_per_item, 
-        'date_created'                      => date( 'F d, Y', strtotime( $benefactor->date_created ) ), 
-        'date_deactivated'                  => date( 'F d, Y', strtotime( $benefactor->date_deactivated ) )     
+        'index'                           => $benefactor->campaign_benefactor_id,
+        'contribution_amount'             => $benefactor->get_contribution_amount(), 
+        'contribution_amount_is_per_item' => $benefactor->contribution_amount_is_per_item, 
+        'date_created'                    => date( 'F d, Y', strtotime( $benefactor->date_created ) ), 
+        'date_deactivated'                => date( 'F d, Y', strtotime( $benefactor->date_deactivated ) )     
     );  
 }
 
@@ -57,19 +57,18 @@ $name_base = '_campaign_benefactor[' . $args[ 'index' ] . ']';
                 id="<?php echo $id_base ?>_date_created" 
                 name="<?php echo $name_base ?>[date_created]" 
                 tabindex="3" class="charitable-datepicker" 
-                data-date="<?php echo $args['date_created'] ?>" 
-                <?php if ( $is_active_benefactor ) : ?>data-min-date="+0"<?php endif ?>
+                data-date="<?php echo $args['date_created'] ?>"
             />
         </label>
         <label for="<?php echo $id_base ?>_date_deactivated"><?php _e( 'Ending:', 'charitable' ) ?>
             <input type="text" 
-            id="<?php echo $id_base ?>_date_deactivated" 
-            name="<?php echo $name_base ?>[date_deactivated]"  
-            placeholder="&#8734;" 
-            tabindex="3" 
-            class="charitable-datepicker" 
-            data-date="<?php echo $args['date_deactivated'] ?>" 
-            <?php if ( $is_active_benefactor ) : ?>data-min-date="+1"<?php endif ?> />
+                id="<?php echo $id_base ?>_date_deactivated" 
+                name="<?php echo $name_base ?>[date_deactivated]"  
+                placeholder="&#8734;" 
+                tabindex="3" 
+                class="charitable-datepicker" 
+                data-date="<?php echo $args['date_deactivated'] ?>" 
+            />
         </label>
     </div>
 </div>
