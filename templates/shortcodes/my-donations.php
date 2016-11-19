@@ -40,7 +40,7 @@ if ( empty( $donations ) ) : ?>
 				<td><?php echo mysql2date( 'F j, Y', get_post_field( 'post_date', $donation->ID ) )?></td>
 				<td><?php echo $donation->campaigns ?></td>
 				<td><?php echo charitable_format_money( $donation->amount ) ?></td>
-				<td><a href="<?php echo esc_attr( charitable_get_permalink( 'donation_receipt_page', array( 'donation_id' => $donation->ID ) ) ) ?>"><?php _e( 'View Receipt', 'charitable' ) ?></a></td>
+				<td><a href="<?php echo esc_url( charitable_get_permalink( 'donation_receipt_page', array( 'donation_id' => $donation->ID ) ) ) ?>"><?php _e( 'View Receipt', 'charitable' ) ?></a></td>
 			</tr>
 			<?php endforeach ?>
 		</tbody>
