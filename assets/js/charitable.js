@@ -221,6 +221,8 @@ CHARITABLE = window.CHARITABLE || {};
                 self.form.on( 'change', '#charitable-gateway-selector input[name=gateway]', on_change_payment_gateway );
             }
 
+            $body.trigger( 'charitable:form:loaded', self );
+
         }
 
         /**
