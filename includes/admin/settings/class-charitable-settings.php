@@ -537,7 +537,7 @@ if ( ! class_exists( 'Charitable_Settings' ) ) :
 		 */
 		private function is_dynamic_group( $composite_key ) {
 			return array_key_exists( $composite_key, $this->get_dynamic_groups() );
-		}		
+		}
 	}
 
 endif; // End class_exists check

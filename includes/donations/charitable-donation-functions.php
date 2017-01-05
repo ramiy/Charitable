@@ -91,6 +91,24 @@ function charitable_get_donation_by_key( $donation_key ) {
 }
 
 /**
+ * Find and return a donation using a gateway transaction ID.
+ *
+ * @param   string $transaction_id
+ * @return  int|null
+ * @since   1.4.7
+ */
+function charitable_get_donation_by_transaction_id( $transaction_id ) {
+	global $wpdb;
+
+	$sql = "SELECT post_id 
+			FROM $wpdb->postmeta 
+			WHERE meta_key = '_gateway_transaction_id' 
+			AND meta_value = %s";
+
+	return $wpdb->get_var( $wpdb->prepare( $sql, $transaction_id ) );
+}
+
+/**
  * Return the IPN url for this gateway.
  *
  * IPNs in Charitable are structured in this way: charitable-listener=gateway

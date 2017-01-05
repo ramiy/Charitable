@@ -138,6 +138,9 @@ if ( ! class_exists( 'Charitable_Campaigns_Shortcode' ) ) :
 				$query_args['post__not_in'] = explode( ',', $args['exclude'] );
 			}
 
+			// echo '<pre>'; var_dump( $query_args ); echo '</pre>';
+			// die;
+
 			if ( ! empty( $args['order'] ) && in_array( strtoupper( $args['order'] ), array( 'DESC', 'ASC' ), true ) ) {
 				$query_args['order'] = $args['order'];
 			}

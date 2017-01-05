@@ -702,7 +702,7 @@ if ( ! class_exists( 'Charitable_Abstract_Donation' ) ) :
 		public function is_approved_status( $status ) {
 			charitable_get_deprecated()->deprecated_function( __METHOD__, '1.4.0', 'charitable_is_approved_status' );
 			return charitable_is_approved_status( $status );
-		}	    
+		}
 
 		/**
 		 * Sanitize meta values before they are persisted to the database.
