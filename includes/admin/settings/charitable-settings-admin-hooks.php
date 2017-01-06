@@ -28,11 +28,18 @@ add_action( 'admin_init', array( Charitable_Settings::get_instance(), 'register_
 add_action( 'charitable_before_admin_settings', array( Charitable_Settings::get_instance(), 'add_notices' ) );
 
 /**
+ * Maybe add "Licenses" settings tab.
+ *
+ * @see     Charitable_Settings::maybe_add_extensions_tab()
+ */
+add_action( 'charitable_settings_tabs', array( Charitable_Licenses_Settings::get_instance(), 'maybe_add_licenses_tab' ), 1 );
+
+/**
  * Maybe add "Extensions" settings tab.
  *
  * @see     Charitable_Settings::maybe_add_extensions_tab()
  */
-add_action( 'charitable_settings_tabs', array( Charitable_Settings::get_instance(), 'maybe_add_extensions_tab' ) );
+add_action( 'charitable_settings_tabs', array( Charitable_Settings::get_instance(), 'maybe_add_extensions_tab' ), 2 );
 
 /**
  * Sanitize checkbox values when settings are submitted.

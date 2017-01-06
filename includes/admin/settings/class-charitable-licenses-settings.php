@@ -55,6 +55,33 @@ final class Charitable_Licenses_Settings {
     }
 
     /**
+	 * Optionally add the licenses tab.
+	 *
+	 * @param   string[] $tabs
+	 * @return  string[]
+	 * @access  public
+	 * @since   1.4.7
+	 */
+	public function maybe_add_licenses_tab( $tabs ) {
+    
+        if ( empty( charitable_get_helper( 'licenses' )->get_products() ) ) {
+            return $tabs;
+        }
+
+		$tabs = charitable_add_settings_tab(
+			$tabs,
+			'licenses',
+			__( 'Licenses', 'charitable' ),
+			array(
+				'index' => 4,
+			)
+		);
+
+		return $tabs;
+
+	}
+
+    /**
      * Add the licenses tab settings fields. 
      *
      * @return  array

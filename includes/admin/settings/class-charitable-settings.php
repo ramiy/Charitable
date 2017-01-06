@@ -71,13 +71,14 @@ if ( ! class_exists( 'Charitable_Settings' ) ) :
 		 * @since   1.0.0
 		 */
 		public function get_sections() {
+
 			return apply_filters( 'charitable_settings_tabs', array(
 				'general'  => __( 'General', 'charitable' ),
 				'gateways' => __( 'Payment Gateways', 'charitable' ),
 				'emails'   => __( 'Emails', 'charitable' ),
-				'licenses' => __( 'Licenses', 'charitable' ),
 				'advanced' => __( 'Advanced', 'charitable' ),
 			) );
+
 		}
 
 		/**
