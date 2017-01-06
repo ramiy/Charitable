@@ -443,12 +443,12 @@ if ( ! class_exists( 'Charitable_Abstract_Donation' ) ) :
 		 * @since   1.2.0
 		 */
 		public function get_donation_meta() {
-			$donor = $this->get_donor_data();
-			$date_format = get_option( 'date_format' );
-			$time_format = get_option( 'time_format' );
+			$donor            = $this->get_donor_data();
+			$date_format      = get_option( 'date_format' );
+			$time_format      = get_option( 'time_format' );
 			$date_time_format = "$date_format - $time_format";
-
-			$meta = array(
+			$address          = $this->get_donor_address();
+			$meta             = array(
 				'date_time' => array(
 					'label' => __( 'Date &amp; Time', 'charitable' ),
 					'value' => date_i18n( $date_time_format, strtotime( $this->__get( 'post_date' ) ) ),
@@ -463,7 +463,7 @@ if ( ! class_exists( 'Charitable_Abstract_Donation' ) ) :
 				),
 				'donor_address' => array(
 					'label' => __( 'Address', 'charitable' ),
-					'value' => $this->get_donor_address(),
+					'value' => strlen( $address ) ? $address : '-',
 				),
 				'donor_phone' => array(
 					'label' => __( 'Phone Number', 'charitable' ),
