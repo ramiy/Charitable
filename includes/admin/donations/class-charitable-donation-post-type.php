@@ -55,6 +55,8 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 		 * @since   1.0.0
 		 */
 		private function __construct() {
+			global $wp_version;
+
 			$this->meta_box_helper = new Charitable_Meta_Box_Helper( 'charitable-donation' );
 
 			add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
@@ -71,7 +73,14 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 			add_filter( 'views_edit-donation', array( $this, 'set_status_views' ) );
 
 			// Bulk actions
-			add_filter( 'bulk_actions-edit-donation', array( $this, 'remove_bulk_actions' ) );
+			if ( version_compare( $wp_version, '4.7', '>=' ) ) {
+				add_filter( 'bulk_actions-edit-donation', array( $this, 'custom_bulk_actions' ) );
+				add_filter( 'handle_bulk_actions-edit-donation', array( $this, 'bulk_action_handler' ), 10, 3 );
+			} else {
+				add_filter( 'bulk_actions-edit-donation', array( $this, 'remove_bulk_actions' ) );
+			}
+			
+
 			add_action( 'admin_footer', array( $this, 'bulk_admin_footer' ), 10 );
 			add_action( 'load-edit.php', array( $this, 'process_bulk_action' ) );
 			add_action( 'admin_notices', array( $this, 'bulk_admin_notices' ) );
@@ -407,6 +416,60 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 		}
 
 		/**
+		 * Add Custom bulk actions
+		 *
+		 * @param  	array $actions
+		 * @return 	array
+		 * @since  	1.5.0
+		 */
+		public function custom_bulk_actions( $actions ) {
+			if ( isset( $actions['edit'] ) ) {
+				unset( $actions['edit'] );
+			}
+
+			return array_merge( $actions, $this->get_bulk_actions() );
+		}
+
+		/**
+		 * Process bulk actions
+		 *
+		 * @param  	array $actions
+		 * @return 	array
+		 * @since  	1.5.0
+		 */
+		public function bulk_action_handler( $redirect_to, $action, $post_ids ) {
+
+			// Bail out if this is not a status-changing action
+			if ( strpos( $action, 'set-' ) === false ) {
+				$sendback = remove_query_arg( array( 'trashed', 'untrashed', 'deleted', 'locked', 'ids' ), wp_get_referer() );
+				wp_redirect( esc_url_raw( $sendback ) );
+			}
+
+			$donation_statuses = charitable_get_valid_donation_statuses();
+
+			$new_status    = str_replace( 'set-', '', $action ); // get the status name from action
+
+			$report_action = 'bulk_' . Charitable::DONATION_POST_TYPE . '_status_update';
+
+			// Sanity check: bail out if this is actually not a status, or is
+			// not a registered status
+			if ( ! isset( $donation_statuses[ $new_status ] ) ) {
+				return $redirect_to;
+			}
+
+			foreach ( $post_ids as $post_id ) {
+				$donation = charitable_get_donation( $post_id );
+				$donation->update_status( $new_status );
+				do_action( 'charitable_donations_table_do_bulk_action', $post_id, $new_status );
+			}
+
+			$redirect_to = add_query_arg( $report_action, count( $post_ids ), $redirect_to );
+
+			return $redirect_to;
+		}
+
+
+		/**
 		 * Remove edit from the bulk actions.
 		 *
 		 * @param  	array $actions
@@ -504,7 +567,7 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 
 			$new_status    = str_replace( 'set-', '', $action ); // get the status name from action
 
-			$report_action = 'marked_' . $new_status;
+			$report_action = 'bulk_' . Charitable::DONATION_POST_TYPE . '_status_update';
 
 			// Sanity check: bail out if this is actually not a status, or is
 			// not a registered status
@@ -512,24 +575,15 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 				return;
 			}
 
-			$changed = 0;
-
 			$post_ids = array_map( 'absint', (array) $_REQUEST['post'] );
 
 			foreach ( $post_ids as $post_id ) {
-
 				$donation = charitable_get_donation( $post_id );
 				$donation->update_status( $new_status );
 				do_action( 'charitable_donations_table_do_bulk_action', $post_id, $new_status );
-				$changed++;
-
 			}
 
-			$sendback = add_query_arg( array( 'post_type' => Charitable::DONATION_POST_TYPE, $report_action => true, 'changed' => $changed, 'ids' => join( ',', $post_ids ) ), '' );
-
-			if ( isset( $_GET['post_status'] ) ) {
-				$sendback = add_query_arg( 'post_status', sanitize_text_field( $_GET['post_status'] ), $sendback );
-			}
+			$sendback = add_query_arg( array( 'post_type' => Charitable::DONATION_POST_TYPE, $report_action => count( $post_ids ) ), admin_url( 'edit.php' ) );
 
 			wp_redirect( esc_url_raw( $sendback ) );
 			exit();
@@ -550,16 +604,11 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 			$donation_statuses = charitable_get_valid_donation_statuses();
 
 			// Check if any status changes happened
-			foreach ( $donation_statuses as $slug => $name ) {
-
-				if ( isset( $_REQUEST[ 'marked_' . $slug ] ) ) {
-
-					$number = isset( $_REQUEST['changed'] ) ? absint( $_REQUEST['changed'] ) : 0;
-					$message = sprintf( _n( 'Donation status changed.', '%s donation statuses changed.', $number, 'charitable' ), number_format_i18n( $number ) );
-					echo '<div class="updated"><p>' . $message . '</p></div>';
-
-					break;
-				}
+			$report_action = 'bulk_' . Charitable::DONATION_POST_TYPE . '_status_update';
+			if ( ! empty( $_REQUEST[ $report_action ] ) ) {
+				$number = absint( $_REQUEST[ $report_action ] );
+				$message = sprintf( _n( 'Donation status changed.', '%s donation statuses changed.', $number, 'charitable' ), number_format_i18n( $number ) );
+				echo '<div class="updated"><p>' . $message . '</p></div>';
 			}
 		}
 
