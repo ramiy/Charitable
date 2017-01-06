@@ -222,6 +222,8 @@ module.exports = function(grunt) {
     grunt.registerTask( 'default', 'watch' );
     
     // Build task(s).
+    grunt.registerTask( 'build-scripts', [ 'uglify' ] );
+    grunt.registerTask( 'build-styles', [ 'cssmin' ] );
     grunt.registerTask( 'build', [ 'uglify', 'cssmin', 'makepot', 'clean', 'copy', 'compress' ] );
 
     // grunt.registerTask('default', ['watch']);

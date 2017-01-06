@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * Displays the campaign loop.
  *
@@ -12,18 +12,18 @@
 
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
-$campaigns = $view_args[ 'campaigns' ];
-$columns = $view_args[ 'columns' ];
-$args = charitable_campaign_loop_args( $view_args );
+$campaigns = $view_args['campaigns'];
+$columns   = $view_args['columns'];
+$args      = charitable_campaign_loop_args( $view_args );
 
 if ( ! $campaigns->have_posts() ) :
-    return;
+	return;
 endif;
 
 if ( $columns > 1 ) :
-    $loop_class = sprintf( 'campaign-loop campaign-grid campaign-grid-%d', $columns );
-else : 
-    $loop_class = 'campaign-loop campaign-list';
+	$loop_class = sprintf( 'campaign-loop campaign-grid campaign-grid-%d', $columns );
+else :
+	$loop_class = 'campaign-loop campaign-list';
 endif;
 
 /**
@@ -34,12 +34,12 @@ do_action( 'charitable_campaign_loop_before', $campaigns, $args );
 ?>
 <ol class="<?php echo $loop_class ?>">
 
-<?php 
-while( $campaigns->have_posts() ) : 
+<?php
+while ( $campaigns->have_posts() ) :
 
-    $campaigns->the_post();
+	$campaigns->the_post();
 
-    charitable_template( 'campaign-loop/campaign.php', $args );
+	charitable_template( 'campaign-loop/campaign.php', $args );
 
 endwhile;
 

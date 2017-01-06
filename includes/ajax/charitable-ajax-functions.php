@@ -53,7 +53,7 @@ if ( ! function_exists( 'charitable_plupload_image_upload' ) ) :
 	 * @return
 	 */
 	function charitable_plupload_image_upload() {
-		$post_id = (int) filter_input( INPUT_POST, 'post_id', FILTER_SANITIZE_NUMBER_INT );
+		$post_id  = (int) filter_input( INPUT_POST, 'post_id', FILTER_SANITIZE_NUMBER_INT );
 		$field_id = (string) filter_input( INPUT_POST, 'field_id' );
 
 		check_ajax_referer( 'charitable-upload-images-' . $field_id );

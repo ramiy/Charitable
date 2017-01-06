@@ -124,7 +124,8 @@
     margin-bottom: 1em;
 }
 
-#charitable-donation-form {
+#charitable-donation-form, 
+#charitable-donation-amount-form {
     padding-top: 1em;
 
     .donation-amounts {
@@ -180,7 +181,7 @@
 }
 
 .widget_charitable_donate_widget {
-    #charitable-donation-form {
+    #charitable-donation-amount-form {
         padding-top: 0;
         .donation-amounts {
             .donation-amount {

@@ -408,13 +408,14 @@ if ( ! class_exists( 'Charitable_Form' ) ) :
 		/**
 		 * Check the passed fields to ensure that all required fields have been submitted.
 		 *
-		 * @param 	array 	$fields
-		 * @param 	array 	$submitted
+		 * @param 	array $fields
+		 * @param 	array $submitted
 		 * @return 	boolean
 		 * @access  public
 		 * @since 	1.0.0
 		 */
 		public function check_required_fields( $fields, $submitted = array() ) {
+
 			if ( empty( $submitted ) ) {
 				$submitted = $this->get_submitted_values();
 			}

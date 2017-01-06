@@ -71,13 +71,14 @@ if ( ! class_exists( 'Charitable_Settings' ) ) :
 		 * @since   1.0.0
 		 */
 		public function get_sections() {
+
 			return apply_filters( 'charitable_settings_tabs', array(
 				'general'  => __( 'General', 'charitable' ),
 				'gateways' => __( 'Payment Gateways', 'charitable' ),
 				'emails'   => __( 'Emails', 'charitable' ),
-				'licenses' => __( 'Licenses', 'charitable' ),
 				'advanced' => __( 'Advanced', 'charitable' ),
 			) );
+
 		}
 
 		/**
@@ -111,6 +112,29 @@ if ( ! class_exists( 'Charitable_Settings' ) ) :
 			}
 
 			return $tabs;
+		}
+
+		/**
+		 * Display notices.
+		 *
+		 * @return  void
+		 * @access  public
+		 * @since   1.4.6
+		 */
+		public function add_notices() {
+			$messages = get_transient( 'charitable_settings_updated' );
+
+			if ( ! $messages ) {
+				return;
+			}
+
+			$helper = charitable_get_admin_notices();
+
+			foreach ( $messages as $notice ) {
+				$helper->render_notice( $notice['message'], $notice['type'], $notice['dismissible'] );
+			}
+
+			delete_transient( 'charitable_settings_updated' );
 		}
 
 		/**
@@ -166,7 +190,7 @@ if ( ! class_exists( 'Charitable_Settings' ) ) :
 		/**
 		 * Sanitize submitted settings before saving to the database.
 		 *
-		 * @param   array   $values
+		 * @param   array $values
 		 * @return  string
 		 * @access  public
 		 * @since   1.0.0
@@ -185,8 +209,12 @@ if ( ! class_exists( 'Charitable_Settings' ) ) :
 			}
 
 			$values = wp_parse_args( $new_values, $old_values );
+			$values = apply_filters( 'charitable_save_settings', $values, $new_values, $old_values );
 
-			return apply_filters( 'charitable_save_settings', $values, $new_values, $old_values );
+			/* Save the update messages to a transient. */
+			set_transient( 'charitable_settings_updated', $this->get_update_messages(), 30 );
+
+			return $values;
 		}
 
 		/**
@@ -254,6 +282,43 @@ if ( ! class_exists( 'Charitable_Settings' ) ) :
 		}
 
 		/**
+		 * Return the update messages.
+		 *
+		 * @return  string[]
+		 * @access  public
+		 * @since   1.4.6
+		 */
+		public function get_update_messages() {
+			if ( empty( $this->messages ) ) {
+				$this->add_update_message( __( 'Settings saved', 'charitable' ), 'success' );
+			}
+
+			return $this->messages;
+		}
+
+		/**
+		 * Add an update message.
+		 *
+		 * @param 	string  $message
+		 * @param 	string  $type
+		 * @param 	boolean $dismissible
+		 * @return  string[]
+		 * @access  public
+		 * @since   1.4.6
+		 */
+		public function add_update_message( $message, $type = 'error', $dismissible = true ) {
+			if ( ! in_array( $type, array( 'error', 'success', 'warning', 'info' ) ) ) {
+				$type = 'error';
+			}
+
+			$this->messages[] = array(
+				'message'     => $message,
+				'type'        => $type,
+				'dismissible' => $dismissible,
+			);
+		}
+
+		/**
 		 * Recursively add settings fields, given an array.
 		 *
 		 * @param   array   $fields
@@ -276,11 +341,10 @@ if ( ! class_exists( 'Charitable_Settings' ) ) :
 				array_shift( $keys );
 			}
 
-			$field['key'] = $keys;
+			$field['key']     = $keys;
 			$field['classes'] = $this->get_field_classes( $field );
-
-			$callback = isset( $field['callback'] ) ? $field['callback'] : array( $this, 'render_field' );
-			$label = $this->get_field_label( $field, end( $keys ) );
+			$callback         = isset( $field['callback'] ) ? $field['callback'] : array( $this, 'render_field' );
+			$label            = $this->get_field_label( $field, end( $keys ) );
 
 			add_settings_field(
 				sprintf( 'charitable_settings_%s', implode( '_', $keys ) ),

@@ -63,6 +63,22 @@ if ( ! class_exists( 'Charitable_Donation_Form' ) ) :
 		protected $user_has_required_fields;
 
 		/**
+		 * Flag thrown when the form submission has been validated.
+		 *
+		 * @var     bool
+		 * @access  protected
+		 */
+		protected $validated = false;
+
+		/**
+		 * Whether the form submission is valid.
+		 *
+		 * @var     bool
+		 * @access  protected
+		 */
+		protected $valid;
+
+		/**
 		 * Create a donation form object.
 		 *
 		 * @param   Charitable_Campaign $campaign
@@ -92,6 +108,7 @@ if ( ! class_exists( 'Charitable_Donation_Form' ) ) :
 			add_action( 'charitable_donation_form_after_user_fields', array( $this, 'add_password_field' ) );
 
 			$this->setup_payment_fields();
+			$this->check_test_mode();
 		}
 
 		/**
@@ -125,7 +142,7 @@ if ( ! class_exists( 'Charitable_Donation_Form' ) ) :
 		 * Returns the set value for a particular user field.
 		 *
 		 * @param   string $key
-		 * @param   string $default     Optional. The value that will be used if none is set.
+		 * @param   string $default Optional. The value that will be used if none is set.
 		 * @return  mixed
 		 * @access  public
 		 * @since   1.0.0
@@ -542,18 +559,59 @@ if ( ! class_exists( 'Charitable_Donation_Form' ) ) :
 		 * @since   1.0.0
 		 */
 		public function validate_submission() {
+
+			/* If we have already validated the submission, return the value. */
+			if ( $this->validated ) {
+				return $this->valid;
+			}
+
+			$this->validated = true;
+
+			$this->valid = $this->validate_security_check()
+				&& $this->check_required_fields( $this->get_merged_fields() )
+				&& $this->validate_email()
+				&& $this->validate_amount()
+				&& $this->validate_gateway();
+
+			$this->valid = apply_filters( 'charitable_validate_donation_form_submission', $this->valid, $this );
+
+			return $this->valid;
+
+		}
+
+		/**
+		 * Checks whether the security checks (nonce and honeypot) pass.
+		 *
+		 * @return  boolean
+		 * @access  public
+		 * @since   1.4.6
+		 */
+		public function validate_security_check() {
+
+			$ret = true;
+
 			if ( ! $this->validate_nonce() || ! $this->validate_honeypot() ) {
 
 				charitable_get_notices()->add_error( __( 'There was an error with processing your form submission. Please reload the page and try again.', 'charitable' ) );
-				return false;
+
+				$ret = false;
 
 			}
 
-			$has_required_fields = $this->check_required_fields( $this->get_merged_fields() );
+			return apply_filters( 'charitable_validate_donation_form_submission_security_check', $ret, $this );
 
-			if ( ! $has_required_fields ) {
-				return false;
-			}
+		}
+
+		/**
+		 * Checks whether the submitted email is valid.
+		 *
+		 * @return  boolean
+		 * @access  public
+		 * @since   1.4.6
+		 */
+		public function validate_email() {
+
+			$ret = true;
 
 			/* Don't process donations with dummy emails. */
 			if ( array_key_exists( 'email', $_POST ) && ! is_email( $_POST['email'] ) ) {
@@ -563,8 +621,48 @@ if ( ! class_exists( 'Charitable_Donation_Form' ) ) :
 					$_POST['email']
 				) );
 
-				return false;
+				$ret = false;
+
 			}
+
+			return apply_filters( 'charitable_validate_donation_form_submission_email_check', $ret, $this );
+
+		}
+
+		/**
+		 * Checks whether the submitted gateway is valid.
+		 *
+		 * @return  boolean
+		 * @access  public
+		 * @since   1.4.6
+		 */
+		public function validate_gateway() {
+
+			$ret = true;
+
+			/* Validate the gateway. */
+			if ( ! Charitable_Gateways::get_instance()->is_valid_gateway( $_POST['gateway'] ) ) {
+
+				charitable_get_notices()->add_error( __( 'The gateway submitted is not valid.', 'charitable' ) );
+
+				$ret = false;
+
+			}
+
+			return apply_filters( 'charitable_validate_donation_form_submission_gateway_check', $ret, $this );
+
+		}
+
+		/**
+		 * Checks whether the set amount is valid.
+		 *
+		 * @return  boolean
+		 * @access  public
+		 * @since   1.4.6
+		 */
+		public function validate_amount() {
+
+			$ret = true;
 
 			/* Ensure that a valid amount has been submitted. */
 			if ( self::get_donation_amount() <= 0 && ! apply_filters( 'charitable_permit_0_donation', false ) ) {
@@ -574,19 +672,12 @@ if ( ! class_exists( 'Charitable_Donation_Form' ) ) :
 					charitable_format_money( '0' )
 				) );
 
-				return false;
+				$ret = false;
 
 			}
 
-			/* Validate the gateway. */
-			if ( ! Charitable_Gateways::get_instance()->is_valid_gateway( $_POST['gateway'] ) ) {
+			return apply_filters( 'charitable_validate_donation_form_submission_amount_check', $ret, $this );
 
-				charitable_get_notices()->add_error( __( 'The gateway submitted is not valid.', 'charitable' ) );
-				return false;
-
-			}
-
-			return apply_filters( 'charitable_validate_donation_form_submission', true, $this );
 		}
 
 		/**
@@ -791,6 +882,43 @@ if ( ! class_exists( 'Charitable_Donation_Form' ) ) :
 			return apply_filters( 'charitable_no_active_gateways_notice', $message, current_user_can( 'manage_charitable_settings' ) );
 		}
 
+		/**
+		 * Determine the status of Test Mode and display an alert if it is active
+		 *
+		 * @return  void
+		 * @access  protected
+		 * @since   1.4.7
+		 */
+		protected function check_test_mode() {
+			$in_test_mode = charitable_get_option( 'test_mode', 0 );
+
+			/* If test mode is enabled, and current user is an admin, display an alert on the form. */
+			if ( $in_test_mode && current_user_can( 'manage_charitable_settings' ) ) {
+				charitable_get_notices()->add_error( $this->get_test_mode_active_notice() );
+			}
+
+		}
+
+		/**
+		 * A formatted notice to advise that Test Mode is active.
+		 *
+		 * @return  string
+		 * @access  protected
+		 * @since   1.4.7
+		 */
+		protected function get_test_mode_active_notice() {
+			$message = __( 'Test mode is active.', 'charitable' );
+
+			if ( current_user_can( 'manage_charitable_settings' ) ) {
+				$message = sprintf( '%s <a href="%s">%s</a>.',
+					$message,
+					admin_url( 'admin.php?page=charitable-settings&tab=gateways' ),
+					__( 'Disable Test Mode', 'charitable' )
+				);
+			}
+
+			return apply_filters( 'charitable_test_mode_active_notice', $message, current_user_can( 'manage_charitable_settings' ) );
+		}
 
 		/**
 		 * Return the donor value fields.

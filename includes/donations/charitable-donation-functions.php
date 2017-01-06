@@ -8,7 +8,7 @@
  * @package     Charitable/Functions/Donation
  * @version     1.0.0
  * @author      Eric Daams
- * @copyright   Copyright (c) 2015, Studio 164a
+ * @copyright   Copyright (c) 2016, Studio 164a
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
@@ -21,13 +21,17 @@ if ( ! defined( 'ABSPATH' ) ) { exit; // Exit if accessed directly
  *
  * @param   int     $donation_id
  * @param   boolean $force
- * @return  Charitable_Donation
+ * @return  Charitable_Donation|false
  * @since   1.0.0
  */
 function charitable_get_donation( $donation_id, $force = false ) {
 	if ( ! did_action( 'charitable_start' ) && false === ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
 
-		charitable_get_deprecated()->doing_it_wrong( __FUNCTION__, __( 'charitable_get_donation should not be called before the charitable_start action.', 'charitable' ), '1.0.0' );
+		charitable_get_deprecated()->doing_it_wrong(
+			__FUNCTION__,
+			__( 'charitable_get_donation should not be called before the charitable_start action.', 'charitable' ),
+			'1.0.0'
+		);
 
 		return false;
 
@@ -84,6 +88,24 @@ function charitable_get_donation_by_key( $donation_key ) {
 			AND meta_value = %s";
 
 	return $wpdb->get_var( $wpdb->prepare( $sql, $donation_key ) );
+}
+
+/**
+ * Find and return a donation using a gateway transaction ID.
+ *
+ * @param   string $transaction_id
+ * @return  int|null
+ * @since   1.4.7
+ */
+function charitable_get_donation_by_transaction_id( $transaction_id ) {
+	global $wpdb;
+
+	$sql = "SELECT post_id 
+			FROM $wpdb->postmeta 
+			WHERE meta_key = '_gateway_transaction_id' 
+			AND meta_value = %s";
+
+	return $wpdb->get_var( $wpdb->prepare( $sql, $transaction_id ) );
 }
 
 /**

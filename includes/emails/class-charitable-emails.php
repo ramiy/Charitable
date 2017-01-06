@@ -167,8 +167,8 @@ if ( ! class_exists( 'Charitable_Emails' ) ) :
 			$emails = array();
 
 			foreach ( $this->get_enabled_emails() as $class ) {
-
-				if ( ! class_exists( $class ) ) {
+				
+				if ( ! class_exists( $class ) || $class === 'Charitable_Email_Password_Reset' ) {
 					continue;
 				}
 
@@ -272,6 +272,8 @@ if ( ! class_exists( 'Charitable_Emails' ) ) :
 
 			update_option( 'charitable_settings', $settings );
 
+			Charitable_Settings::get_instance()->add_update_message( __( 'Email enabled', 'charitable' ), 'success' );
+
 			do_action( 'charitable_email_enable', $email );
 		}
 
@@ -292,6 +294,8 @@ if ( ! class_exists( 'Charitable_Emails' ) ) :
 			unset( $settings['enabled_emails'][ $email ] );
 
 			update_option( 'charitable_settings', $settings );
+
+			Charitable_Settings::get_instance()->add_update_message( __( 'Email disabled', 'charitable' ), 'success' );
 
 			do_action( 'charitable_email_disable', $email );
 		}

@@ -17,8 +17,7 @@ if ( ! charitable_is_campaign_page() && 'current' == $view_args['campaign_id'] )
 
 $widget_title = apply_filters( 'widget_title', $view_args['title'] );
 $donors       = $view_args['donors'];
-
-$campaign_id = $view_args['campaign_id'];
+$campaign_id  = $view_args['campaign_id'];
 
 if ( 'all' == $view_args['campaign_id'] ) {
 	$campaign_id = false;

@@ -62,7 +62,7 @@ CHARITABLE = window.CHARITABLE || {};
                 return;
             }
 
-            $li.parents( '#charitable-donation-form' ).find( '.donation-amount.selected' ).removeClass( 'selected' );
+            $li.parents( '.charitable-donation-form' ).find( '.donation-amount.selected' ).removeClass( 'selected' );
             
             $li.addClass( 'selected' );
 
@@ -221,6 +221,8 @@ CHARITABLE = window.CHARITABLE || {};
                 self.form.on( 'change', '#charitable-gateway-selector input[name=gateway]', on_change_payment_gateway );
             }
 
+            $body.trigger( 'charitable:form:loaded', self );
+
         }
 
         /**
@@ -240,11 +242,10 @@ CHARITABLE = window.CHARITABLE || {};
             $body.on( 'blur', '.custom-donation-input', on_change_custom_donation_amount );            
 
             // Handle donation form submission            
-            $body.on( 'submit', '#charitable-donation-form', on_submit );
+            $body.on( 'submit', '.charitable-donation-form', on_submit );
 
-            if ( 1 === self.form.data( 'use-ajax' ) ) {
-                $body.on( 'charitable:form:process', process_donation );
-            }
+            // Process the donation on the 'charitable:form:process' event
+            $body.on( 'charitable:form:process', process_donation );
 
             $body.trigger( 'charitable:form:initialize', self );
 
@@ -548,11 +549,17 @@ CHARITABLE = window.CHARITABLE || {};
      */
     Donation_Form.prototype.get_required_fields = function() {
         
-        var fields = this.form.find( '.charitable-fieldset .required-field' ).not( '#charitable-gateway-fields .required-field' );
-        var gateway_fields = this.form.find( '[data-gateway=' + this.get_payment_method() + '] .required-field' );
+        var fields = this.form.find( '.charitable-fieldset .required-field' ).not( '#charitable-gateway-fields .required-field' ),
+            method = this.get_payment_method();
 
-        if ( gateway_fields.length ) {
-            fields = $.merge( fields, gateway_fields );
+        if ( '' !== method ) {
+
+            var gateway_fields = this.form.find( '[data-gateway=' + method + '] .required-field' );
+
+            if ( gateway_fields.length ) {
+                fields = $.merge( fields, gateway_fields );
+            }
+
         }
 
         return fields;
@@ -725,7 +732,7 @@ CHARITABLE.SanitizeURL = function( input ) {
 
     $( document ).ready( function() {
 
-        var $form = $( '#charitable-donation-form' );
+        var $form = $( '.charitable-donation-form' );
 
         if ( $form.length ) {
             new CHARITABLE.Donation_Form( $form );

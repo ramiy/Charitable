@@ -2,22 +2,11 @@
 
     $( document ).ready( function() {
 
-        $( '.charitable-notice' ).each( function(){
-            var $el = $( this ),
-                $button = $( '<button type="button" class="notice-dismiss"><span class="screen-reader-text"></span></button>' ),
-                btnText = commonL10n.dismiss || '';
+        $( '.charitable-notice.is-dismissible' ).each( function(){
+            var $el = $( this ), $button = $el.find( '.notice-dismiss' );
 
-            // Ensure plain text
-            $button.find( '.screen-reader-text' ).text( btnText );
-            
-            $button.on( 'click.charitable-dismiss-notice', function( event ) {
-                event.preventDefault();
-                
-                $el.fadeTo( 100, 0, function() {
-                    $el.slideUp( 100, function() {
-                        $el.remove();
-                    });
-                });            
+            $button.on( 'click', function( event ) {
+                event.preventDefault();           
 
                 $.ajax({
                     type: "POST",
@@ -31,10 +20,14 @@
                         withCredentials: true
                     },
                     success: function ( response ) {
-                        console.log( response );
+                        if ( window.console && window.console.log ) {
+                            console.log( response );
+                        }
                     },
                     error: function( error ) {
-                        console.log( error );
+                        if ( window.console && window.console.log ) {
+                            console.log( error );
+                        }
                     }
                 }).fail(function ( response ) {
                     if ( window.console && window.console.log ) {
@@ -43,7 +36,7 @@
                 });
             });
 
-            $el.css( 'position', 'relative' ).append( $button );
+            $el.css( 'position', 'relative' );
         });
     });
 

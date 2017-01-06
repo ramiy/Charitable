@@ -37,8 +37,8 @@ if ( ! class_exists( 'Charitable_Abstract_Donation' ) ) :
 		protected $donation_type;
 
 		/**
-	     *  Charitable_Donation donation data for the donation plan this donation is part of
-	     * 
+	     * Charitable_Donation donation data for the donation plan this donation is part of
+	     *
 	     * @var     $donation_plan @access  protected
 	     */
 	    protected $donation_plan = false;
@@ -418,7 +418,7 @@ if ( ! class_exists( 'Charitable_Abstract_Donation' ) ) :
 		 */
 		public function get_donor() {
 			if ( ! isset( $this->donor ) ) {
-				$this->donor = new Charitable_Donor( $this->get_donor_id(), $this->ID );
+				$this->donor = new Charitable_Donor( $this->get_donor_id(), $this->donation_id );
 			}
 
 			return $this->donor;
@@ -443,12 +443,12 @@ if ( ! class_exists( 'Charitable_Abstract_Donation' ) ) :
 		 * @since   1.2.0
 		 */
 		public function get_donation_meta() {
-			$donor = $this->get_donor_data();
-			$date_format = get_option( 'date_format' );
-			$time_format = get_option( 'time_format' );
+			$donor            = $this->get_donor_data();
+			$date_format      = get_option( 'date_format' );
+			$time_format      = get_option( 'time_format' );
 			$date_time_format = "$date_format - $time_format";
-
-			$meta = array(
+			$address          = $this->get_donor_address();
+			$meta             = array(
 				'date_time' => array(
 					'label' => __( 'Date &amp; Time', 'charitable' ),
 					'value' => date_i18n( $date_time_format, strtotime( $this->__get( 'post_date' ) ) ),
@@ -463,7 +463,7 @@ if ( ! class_exists( 'Charitable_Abstract_Donation' ) ) :
 				),
 				'donor_address' => array(
 					'label' => __( 'Address', 'charitable' ),
-					'value' => $this->get_donor_address(),
+					'value' => strlen( $address ) ? $address : '-',
 				),
 				'donor_phone' => array(
 					'label' => __( 'Phone Number', 'charitable' ),
@@ -702,7 +702,7 @@ if ( ! class_exists( 'Charitable_Abstract_Donation' ) ) :
 		public function is_approved_status( $status ) {
 			charitable_get_deprecated()->deprecated_function( __METHOD__, '1.4.0', 'charitable_is_approved_status' );
 			return charitable_is_approved_status( $status );
-		}	    
+		}
 
 		/**
 		 * Sanitize meta values before they are persisted to the database.
@@ -732,6 +732,36 @@ if ( ! class_exists( 'Charitable_Abstract_Donation' ) ) :
 			charitable_get_deprecated()->deprecated_function( __METHOD__, '1.4.0', 'charitable_sanitize_donation_meta()' );
 			return charitable_flush_campaigns_donation_cache( $donation_id );
 		}
+
+		/**
+		 * Save the gateway's transaction ID
+		 *
+		 * @param   string   $value
+		 * @return  bool
+		 * @access  public
+		 * @since   1.4.6
+		 */
+		public function set_gateway_transaction_id( $value ) {
+			$key = '_gateway_transaction_id';
+			$value = charitable_sanitize_donation_meta( $value, $key );
+			return update_post_meta( $this->donation_id, $key , $value );
+		}
+
+		/**
+		 * Get the gateway's transaction ID
+		 *
+		 * @return  string
+		 * @access  public
+		 * @since   1.4.6
+		 */
+		public function get_gateway_transaction_id() {
+			if ( ! isset( $this->gateway_transaction_id ) ){
+				$this->gateway_transaction_id = get_post_meta( $this->donation_id, '_gateway_transaction_id' , true );
+			}
+			return $this->gateway_transaction_id;
+		}
+
+		
 	}
 
 endif; // End class_exists check

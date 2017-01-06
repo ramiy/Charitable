@@ -74,6 +74,7 @@ if ( ! class_exists( 'Charitable_Admin' ) ) :
 			require_once( $admin_dir . 'charitable-core-admin-functions.php' );
 			require_once( $admin_dir . 'class-charitable-meta-box-helper.php' );
 			require_once( $admin_dir . 'class-charitable-admin-pages.php' );
+			require_once( $admin_dir . 'class-charitable-admin-notices.php' );
 
 			/* Campaigns */
 			require_once( $admin_dir . 'campaigns/class-charitable-campaign-post-type.php' );
@@ -114,13 +115,11 @@ if ( ! class_exists( 'Charitable_Admin' ) ) :
 		/**
 		 * Loads admin-only scripts and stylesheets.
 		 *
-		 * @global  WP_Scripts $wp_scripts
 		 * @return  void
 		 * @access  public
 		 * @since   1.0.0
 		 */
 		public function admin_enqueue_scripts() {
-			global $wp_scripts;
 
 			if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
 				$suffix  = '';
@@ -199,15 +198,39 @@ if ( ! class_exists( 'Charitable_Admin' ) ) :
 		 * @since   1.4.0
 		 */
 		public function add_notices() {
+
+			/* Get any version update notices first. */
+			$this->add_version_update_notices();
+
+			/* Also pick up any settings notices. */
+			// $this->add_settings_update_notices();
+
+			/* Render notices. */
+			charitable_get_admin_notices()->render();
+
+		}
+
+		/**
+		 * Add version update notices to the dashboard.
+		 *
+		 * @return  void
+		 * @access  public
+		 * @since   1.4.6
+		 */
+		public function add_version_update_notices() {
+
 			if ( ! current_user_can( 'manage_options' ) ) {
 				return;
 			}
 
-			$notices = array(
-				'release-140' => sprintf( __( "Thanks for upgrading to Charitable 1.4. <a href='%s'>Find out what's new in this release</a>.", 'charitable' ),
-				'https://www.wpcharitable.com/charitable-1-4-features-responsive-campaign-grids-a-new-shortcode?utm_source=notice&utm_medium=wordpress-dashboard&utm_campaign=release-notes&utm_content=release-140' ),
-				'release-142' => sprintf( __( "In Charitable 1.4.2, we have improved the login and registration forms. <a href='%s'>Find out how</a>.", 'charitable' ),
-				'https://www.wpcharitable.com/how-we-improved-logins-and-registrations-in-charitable/?utm_source=notice&utm_medium=wordpress-dashboard&utm_campaign=release-notes&utm_content=release-142' ),
+			$notices = array();
+
+			$notices['release-140'] = sprintf( __( "Thanks for upgrading to Charitable 1.4. <a href='%s'>Find out what's new in this release</a>.", 'charitable' ),
+				'https://www.wpcharitable.com/charitable-1-4-features-responsive-campaign-grids-a-new-shortcode?utm_source=notice&utm_medium=wordpress-dashboard&utm_campaign=release-notes&utm_content=release-140'
+			);
+
+			$notices['release-142'] = sprintf( __( "In Charitable 1.4.2, we have improved the login and registration forms. <a href='%s'>Find out how</a>.", 'charitable' ),
+				'https://www.wpcharitable.com/how-we-improved-logins-and-registrations-in-charitable/?utm_source=notice&utm_medium=wordpress-dashboard&utm_campaign=release-notes&utm_content=release-142'
 			);
 
 			if ( Charitable_Gateways::get_instance()->is_active_gateway( 'paypal' ) ) {
@@ -226,17 +249,15 @@ if ( ! class_exists( 'Charitable_Admin' ) ) :
 
 			}
 
+			$helper = charitable_get_admin_notices();
+
 			foreach ( $notices as $notice => $message ) {
 
 				if ( ! get_transient( 'charitable_' . $notice . '_notice' ) ) {
 					continue;
 				}
 
-				if ( ! wp_script_is( 'charitable-admin-notice' ) ) {
-					wp_enqueue_script( 'charitable-admin-notice' );
-				}
-
-				echo '<div class="updated notice charitable-notice" data-notice="' . esc_attr( $notice ) . '" style="border-left-color: #f89d35; background-color: #fef4e8;"><p>' . $message . '</p></div>';
+				$helper->add_version_update( $message, $notice );
 
 			}
 		}
@@ -365,13 +386,12 @@ if ( ! class_exists( 'Charitable_Admin' ) ) :
 		/**
 		 * Returns an array of screen IDs where the Charitable scripts should be loaded.
 		 *
-		 * @uses charitable_admin_screens
-		 *
+		 * @uses    charitable_admin_screens
 		 * @return  array
-		 * @access  private
+		 * @access  public
 		 * @since   1.0.0
 		 */
-		private function get_charitable_screens() {
+		public function get_charitable_screens() {
 			return apply_filters( 'charitable_admin_screens', array(
 				'campaign',
 				'donation',

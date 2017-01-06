@@ -32,20 +32,20 @@ if ( ! class_exists( 'Charitable_Campaigns_Shortcode' ) ) :
 		 */
 		public static function display( $atts ) {
 			$default = array(
-				'id' => '',
-				'orderby' => 'post_date',
-				'order' => '',
-				'number' => get_option( 'posts_per_page' ),
-				'category' => '',
-				'creator' => '',
-				'exclude' => '',
+				'id' 		   	   => '',
+				'orderby' 		   => 'post_date',
+				'order' 		   => '',
+				'number' 		   => get_option( 'posts_per_page' ),
+				'category' 		   => '',
+				'creator'          => '',
+				'exclude'          => '',
 				'include_inactive' => false,
-				'columns' => 2,
-				'button' => 'donate',
-				'responsive' => 1,
+				'columns' 		   => 2,
+				'button' 		   => 'donate',
+				'responsive' 	   => 1,
 			);
 
-			$args = shortcode_atts( $default, $atts, 'campaigns' );
+			$args              = shortcode_atts( $default, $atts, 'campaigns' );
 			$args['campaigns'] = self::get_campaigns( $args );
 
 			/* Allows extensions/themes to plug in their own template objects here. */
@@ -61,9 +61,9 @@ if ( ! class_exists( 'Charitable_Campaigns_Shortcode' ) ) :
 			}
 
 			$view_args = apply_filters( 'charitable_campaigns_shortcode_view_args', array(
-				'campaigns' => $args['campaigns'],
-				'columns' => $args['columns'],
-				'button' => $args['button'],
+				'campaigns'  => $args['campaigns'],
+				'columns'    => $args['columns'],
+				'button'     => $args['button'],
 				'responsive' => $args['responsive'],
 			), $args );
 
@@ -137,6 +137,9 @@ if ( ! class_exists( 'Charitable_Campaigns_Shortcode' ) ) :
 			if ( ! empty( $args['exclude'] ) ) {
 				$query_args['post__not_in'] = explode( ',', $args['exclude'] );
 			}
+
+			// echo '<pre>'; var_dump( $query_args ); echo '</pre>';
+			// die;
 
 			if ( ! empty( $args['order'] ) && in_array( strtoupper( $args['order'] ), array( 'DESC', 'ASC' ), true ) ) {
 				$query_args['order'] = $args['order'];

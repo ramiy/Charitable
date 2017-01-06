@@ -96,7 +96,7 @@ if ( ! class_exists( 'Charitable_Public' ) ) :
 
 			if ( ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ) {
 				$suffix  = '';
-				$version = time();
+				$version = '';
 			} else {
 				$suffix  = '.min';
 				$version = charitable()->get_version();
@@ -221,7 +221,7 @@ if ( ! class_exists( 'Charitable_Public' ) ) :
 		 * @since   1.4.0
 		 */
 		public function maybe_enqueue_donation_form_scripts() {
-		
+
 			$load = charitable_is_page( 'campaign_donation_page' );
 
 			if ( ! $load ) {
@@ -229,14 +229,25 @@ if ( ! class_exists( 'Charitable_Public' ) ) :
 			}
 
 			if ( $load ) {
-				wp_enqueue_script( 'charitable-script' );
-
-				if ( Charitable_Gateways::get_instance()->any_gateway_supports( 'credit-card' ) ) {
-					wp_enqueue_script( 'charitable-credit-card' );
-				}
+				$this->enqueue_donation_form_scripts();
 			}
 
 			return $load;
+		}
+
+		/**
+		 * Enqueues the donation form scripts.
+		 *
+		 * @return  void
+		 * @access  public
+		 * @since   1.4.6
+		 */
+		public function enqueue_donation_form_scripts() {
+			wp_enqueue_script( 'charitable-script' );
+
+			if ( Charitable_Gateways::get_instance()->any_gateway_supports( 'credit-card' ) ) {
+				wp_enqueue_script( 'charitable-credit-card' );
+			}
 		}
 
 		/**

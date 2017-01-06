@@ -234,12 +234,12 @@ if ( ! class_exists( 'Charitable_Campaign_Donations_DB' ) ) :
 		 * @access  public
 		 * @since   1.4.0
 		 */
-		public function get_campaign_donations_by( $field, $id ) {
+		public function get_campaign_donations_by( $field, $donation_id ) {
 			global $wpdb;
 
 			$column = $this->get_sanitized_column( $field );
 
-			list( $in, $parameters ) = $this->get_in_clause_params( $id );
+			list( $in, $parameters ) = $this->get_in_clause_params( $donation_id );
 
 			$sql = "SELECT * 
                     FROM $this->table_name 
@@ -256,8 +256,8 @@ if ( ! class_exists( 'Charitable_Campaign_Donations_DB' ) ) :
 
 		/**
 		 * Return a list of all distinct IDs based on a particular field.
-		 * 
-		 * @global 	WPDB      $wpdb 
+		 *
+		 * @global 	WPDB      $wpdb
 		 * @param 	string    $field The distinct field we are retrieving.
 		 * @param 	int|int[] $donation_id A single donation ID or an array of IDs.
 		 * @return  Object
@@ -268,7 +268,7 @@ if ( ! class_exists( 'Charitable_Campaign_Donations_DB' ) ) :
 			global $wpdb;
 
 			$select_column = $this->get_sanitized_column( $field );
-			$where_column  = $this->get_sanitized_column( $where_field ); 
+			$where_column  = $this->get_sanitized_column( $where_field );
 
 			list( $in, $parameters ) = $this->get_in_clause_params( $id );
 
@@ -276,7 +276,7 @@ if ( ! class_exists( 'Charitable_Campaign_Donations_DB' ) ) :
                     FROM $this->table_name 
                     WHERE $where_column IN ( $in );";
 
-			return $wpdb->get_col( $wpdb->prepare( $sql, $parameters ), OBJECT_K );
+			return $wpdb->get_col( $wpdb->prepare( $sql, $parameters ) );
 		}
 
 		/**
@@ -296,21 +296,26 @@ if ( ! class_exists( 'Charitable_Campaign_Donations_DB' ) ) :
 		 * Get the amount donated in a single donation.
 		 *
 		 * @global  $wpdb
-		 * @param   int $donation_id
-		 * @param   int $campaign_id Optional. If set, this will only return the total donated to that campaign.
+		 * @param 	int|int[] $donation_id A single donation ID or an array of IDs.
+		 * @param   int|int[] $campaign Optional. If set, this will only return the total donated to that campaign, or array of campaigns.
 		 * @return  decimal
 		 * @access  public
 		 * @since   1.3.0
 		 */
-		public function get_donation_amount( $donation_id, $campaign_id = '' ) {
+		public function get_donation_amount( $donation_id, $campaign = '' ) {
 			global $wpdb;
 
-			$where_clause = 'donation_id = %d';
-			$parameters   = array( intval( $donation_id ) );
+			list( $in, $parameters ) = $this->get_in_clause_params( $donation_id );
 
-			if ( ! empty( $campaign_id ) ) {
-				$where_clause .= ' AND campaign_id = %d';
-				$parameters[]  = intval( $campaign_id );
+			$where_clause = "donation_id IN ( $in )";
+
+			if ( ! empty( $campaign ) ) {
+
+				list( $campaigns_in, $campaigns_parameters ) = $this->get_in_clause_params( $campaign );
+
+				$where_clause .= " AND campaign_id IN ( $campaigns_in )";
+				$parameters    = array_merge( $parameters, $campaigns_parameters );
+
 			}
 
 			$sql = "SELECT SUM(amount) 
@@ -367,7 +372,7 @@ if ( ! class_exists( 'Charitable_Campaign_Donations_DB' ) ) :
 		public function get_donations_on_campaign( $campaign_id ) {
 			return $this->get_campaign_donations_by( 'campaign_id', $campaign_id );
 		}
-		
+
 		/**
 		 * Get total amount donated to a campaign.
 		 *
@@ -431,20 +436,19 @@ if ( ! class_exists( 'Charitable_Campaign_Donations_DB' ) ) :
 		 /**
 		  * Return the number of users who have donated to the given campaign.
 		  *
-		  * @global wpdb    $wpdb
-		  * @param  int     $campaign_id
-		  * @param  boolean $include_all    If false, only
+		  * @global wpdb      $wpdb
+		  * @param  int|int[] $campaign
+		  * @param  boolean   $include_all If false, only include approved donations.
 		  * @return int
 		  * @since  1.0.0
 		  */
-		public function count_campaign_donors( $campaign_id, $include_all = false ) {
+		public function count_campaign_donors( $campaign, $include_all = false ) {
 			global $wpdb;
 
 			$statuses = $include_all ? array() : charitable_get_approval_statuses();
 
-			list( $status_clause, $status_parameters ) = $this->get_donation_status_clause( $statuses );
-
-			list( $campaigns_in, $campaigns_parameters ) = $this->get_in_clause_params( $campaign_id );
+			list( $status_clause, $status_parameters )   = $this->get_donation_status_clause( $statuses );
+			list( $campaigns_in, $campaigns_parameters ) = $this->get_in_clause_params( $campaign );
 
 			$parameters = array_merge( $campaigns_parameters, $status_parameters );
 

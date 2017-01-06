@@ -37,7 +37,14 @@ $ended = charitable_get_campaign( $post->ID )->has_ended();
         foreach ( $benefactors as $benefactor ) :
 
             $benefactor_object = Charitable_Benefactor::get_object( $benefactor, $extension );
-            $active_class = $benefactor_object->is_active() ? 'charitable-benefactor-active' : 'charitable-benefactor-expired';
+
+            if ( $benefactor_object->is_active() ) {
+                $active_class = 'charitable-benefactor-active'; 
+            } elseif ( $benefactor_object->is_expired() ) {
+                $active_class = 'charitable-benefactor-expired';
+            } else {
+                $active_class = 'charitable-benefactor-inactive';
+            }
 
             ?>
             <div class="charitable-metabox-block charitable-benefactor <?php echo $active_class ?>">

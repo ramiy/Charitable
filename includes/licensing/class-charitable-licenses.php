@@ -411,7 +411,7 @@ if ( ! class_exists( 'Charitable_Licenses' ) ) :
 		}
 
 		/**
-		 * Return a key for the item, based on the item name. 
+		 * Return a key for the item, based on the item name.
 		 *
 		 * @param   string $item_name
 		 * @return  string

@@ -359,6 +359,8 @@ if ( ! class_exists( 'Charitable_Gateways' ) ) :
 
 			update_option( 'charitable_settings', $settings );
 
+			charitable_get_admin_notices()->add_success( __( 'Default Gateway Updated', 'charitable' ) );
+
 			do_action( 'charitable_set_gateway_gateway', $gateway );
 		}
 
@@ -383,6 +385,8 @@ if ( ! class_exists( 'Charitable_Gateways' ) ) :
 			}
 
 			update_option( 'charitable_settings', $settings );
+
+			Charitable_Settings::get_instance()->add_update_message( __( 'Gateway enabled', 'charitable' ), 'success' );
 
 			do_action( 'charitable_gateway_enable', $gateway );
 		}
@@ -412,6 +416,8 @@ if ( ! class_exists( 'Charitable_Gateways' ) ) :
 			}
 
 			update_option( 'charitable_settings', $settings );
+
+			Charitable_Settings::get_instance()->add_update_message( __( 'Gateway disabled', 'charitable' ), 'success' );
 
 			do_action( 'charitable_gateway_disable', $gateway );
 		}
