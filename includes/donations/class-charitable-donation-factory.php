@@ -48,7 +48,7 @@ if ( ! class_exists( 'Charitable_Donation_Factory' ) ) :
 
 			$valid_post_types = apply_filters( 'charitable_valid_donation_types', array( Charitable::DONATION_POST_TYPE ) );
 
-			if ( ! in_array( $donation->post_type, $valid_post_types ) {
+			if ( ! in_array( $donation->post_type, $valid_post_types ) ) {
 				return false;
 			}
 
