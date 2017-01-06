@@ -752,10 +752,13 @@ select.charitable-settings-field {
 
 .edit-php.post-type-charitable .tablenav .actions {
   padding-right: 0; }
-.edit-php.post-type-charitable .tablenav #start_date, .edit-php.post-type-charitable .tablenav #end_date {
+.edit-php.post-type-charitable .tablenav #start_date,
+.edit-php.post-type-charitable .tablenav #end_date {
   width: 10.5em; }
 .edit-php.post-type-charitable .tablenav #post-query-submit {
   display: none; }
+.edit-php.post-type-charitable .tablenav #delete_all {
+  margin-top: 3px; }
 .edit-php.post-type-charitable .tablenav .charitable-donations-filter:before,
 .edit-php.post-type-charitable .tablenav .charitable-donations-export:before {
   vertical-align: middle;
@@ -763,6 +766,8 @@ select.charitable-settings-field {
   width: 16px;
   height: 16px;
   font-size: 16px; }
+.edit-php.post-type-charitable .tablenav a.button {
+  display: inline-block; }
 .edit-php.post-type-charitable .tablenav.top {
   margin: 0 0 12px 0; }
   .edit-php.post-type-charitable .tablenav.top select.campaign_id {

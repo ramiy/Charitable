@@ -1,12 +1,20 @@
 .edit-php.post-type-charitable  {
+   .tablenav {
+        .actions { 
+            padding-right: 0; 
+        }
 
-   .tablenav{
+        #start_date,
+        #end_date { 
+            width: 10.5em;
+        }
 
-        .actions{ padding-right: 0; }
-        #start_date, #end_date{ width: 10.5em; }
-
-        #post-query-submit{
+        #post-query-submit {
             display: none;
+        }
+
+        #delete_all {
+            margin-top: 3px;
         }
 
         .charitable-donations-filter, 
@@ -20,6 +28,10 @@
             }
         }
 
+        a.button {
+            display: inline-block;
+        }
+
         &.top {
             margin: 0 0 12px 0;
 
@@ -29,14 +41,10 @@
             }
 
             .actions {
-
                 overflow: visible;
                 
-
                 .has-popup {
-
                     $popup-color: #999;
-
                     position: relative;
                     display: inline-block;
                     cursor: pointer;
@@ -86,18 +94,14 @@
                             -webkit-animation: fadeIn 1s;
                             animation: fadeIn 1s;
                         }
-                    }
-                
+                    }                
                 }
-
             }
             
             .charitable-export-actions {
                 margin-left: 8px;
             }
-
-        }  
-
+        }
     }
 
     .wp-list-table {
