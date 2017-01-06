@@ -129,11 +129,12 @@ if ( ! class_exists( 'Charitable_Gateway_Paypal' ) ) :
 		 * @since   1.0.0
 		 */
 		public static function process_donation( $return, $donation_id, $processor ) {
-			$gateway = new Charitable_Gateway_Paypal();
 
-			$user_data = $processor->get_donation_data_value( 'user' );
-			$donation = charitable_get_donation( $donation_id );
+			$gateway          = new Charitable_Gateway_Paypal();
+			$user_data 		  = $processor->get_donation_data_value( 'user' );
+			$donation 		  = charitable_get_donation( $donation_id );
 			$transaction_mode = $gateway->get_value( 'transaction_mode' );
+			$donation_key 	  = $processor->get_donation_data_value( 'donation_key' );
 
 			$paypal_args = apply_filters( 'charitable_paypal_redirect_args', array(
 				'business'      => $gateway->get_value( 'paypal_email' ),
@@ -145,7 +146,7 @@ if ( ! class_exists( 'Charitable_Gateway_Paypal' ) ) :
 				'city'          => isset( $user_data['city'] ) ? $user_data['city'] : '',
 				'country'       => isset( $user_data['country'] ) ? $user_data['country'] : '',
 				'zip'           => isset( $user_data['postcode'] ) ? $user_data['postcode'] : '',
-				'invoice'       => $processor->get_donation_data_value( 'donation_key' ),
+				'invoice'       => $donation_key,
 				'amount'        => $donation->get_total_donation_amount( true ),
 				'item_name'     => html_entity_decode( $donation->get_campaigns_donated_to(), ENT_COMPAT, 'UTF-8' ),
 				'no_shipping'   => '1',
@@ -153,6 +154,7 @@ if ( ! class_exists( 'Charitable_Gateway_Paypal' ) ) :
 				'no_note'       => '1',
 				'currency_code' => charitable_get_currency(),
 				'charset'       => get_bloginfo( 'charset' ),
+				// 'custom'        => json_encode( array( 'donation_id' => $donation_id, 'donation_key' => $donation_key ) ),
 				'custom'        => $donation_id,
 				'rm'            => '2',
 				'return'        => charitable_get_permalink( 'donation_receipt_page', array( 'donation_id' => $donation_id ) ),
@@ -173,6 +175,7 @@ if ( ! class_exists( 'Charitable_Gateway_Paypal' ) ) :
 				'redirect' => $paypal_redirect,
 				'safe' => false,
 			);
+
 		}
 
 		/**
@@ -220,7 +223,7 @@ if ( ! class_exists( 'Charitable_Gateway_Paypal' ) ) :
 			if ( ! $donation_id ) {
 				die( __( 'Missing Donation ID', 'charitable' ) );
 			}
-
+			
 			/**
 			 * By default, all transactions are handled by the web_accept handler.
 			 * To handle other transaction types in a different way, use the
@@ -252,9 +255,6 @@ if ( ! class_exists( 'Charitable_Gateway_Paypal' ) ) :
 		 * @since   1.0.0
 		 */
 		public static function process_web_accept( $data, $donation_id ) {
-			if ( ! array_key_exists( 'invoice', $data ) ) {
-				die( __( 'Missing Invoice', 'charitable' ) );
-			}
 
 			$gateway        = new Charitable_Gateway_Paypal();
 			$donation       = charitable_get_donation( $donation_id );
@@ -262,8 +262,17 @@ if ( ! class_exists( 'Charitable_Gateway_Paypal' ) ) :
 			if ( 'paypal' != $donation->get_gateway() ) {
 				die( __( 'Incorrect Gateway', 'charitable' ) );
 			}
+			
+			$custom         = json_decode( $data['custom'], true );
+			
+			if ( array_key_exists( 'invoice', $data ) ) {
+				$donation_key = $data['invoice'];
+			} elseif( is_array( $custom ) && array_key_exists( 'donation_key', $custom ) ) {
+				$donation_key = $custom['donation_key'];
+			} else {
+				die( __( 'Missing Donation Key', 'charitable' ) );
+			}
 
-			$donation_key   = $data['invoice'];
 			$amount         = $data['mc_gross'];
 			$payment_status = strtolower( $data['payment_status'] );
 			$currency_code  = strtoupper( $data['mc_currency'] );
