@@ -31,6 +31,7 @@ if ( ! class_exists( 'Charitable_Donation_Factory' ) ) :
 		 * @since 	1.4.0
 		 */
 		public function get_donation( $donation = false ) {
+
 			global $post;
 
 			if ( false === $donation ) {
@@ -45,8 +46,11 @@ if ( ! class_exists( 'Charitable_Donation_Factory' ) ) :
 				return false;
 			}
 
-			$donation_id = absint( $donation->ID );
-			$post_type = $donation->post_type;
+			$valid_post_types = apply_filters( 'charitable_valid_donation_types', array( Charitable::DONATION_POST_TYPE ) ) );
+
+			if ( ! in_array( $donation->post_type, $valid_post_types ) {
+				return false;
+			}
 
 			$classname = $this->get_donation_class( $donation );
 
@@ -55,6 +59,7 @@ if ( ! class_exists( 'Charitable_Donation_Factory' ) ) :
 			}
 
 			return new $classname( $donation );
+
 		}
 
 		/**
