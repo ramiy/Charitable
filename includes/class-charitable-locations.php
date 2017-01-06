@@ -6,12 +6,12 @@
  * @package		Charitable/Classes/Charitable_Locations
  * @author 		Eric Daams
  * @copyright 	Copyright (c) 2015, Studio 164a
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License  
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
-if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly. 
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
-if ( ! class_exists( 'Charitable_Locations' ) ) : 
+if ( ! class_exists( 'Charitable_Locations' ) ) :
 
 /**
  * Charitable_Locations
@@ -21,7 +21,7 @@ if ( ! class_exists( 'Charitable_Locations' ) ) :
 class Charitable_Locations {
 
 	/**
-	 * The single instance of this class.  
+	 * The single instance of this class.
 	 *
 	 * @var 	Charitable_Locations|null
 	 * @access  private
@@ -36,16 +36,16 @@ class Charitable_Locations {
 	 * @access 	private
 	 * @since 	1.0.0
 	 */
-	private $countries = array(); 
+	private $countries = array();
 
 	/**
-	 * List of states as a multidimensional array, grouped by country. 
+	 * List of states as a multidimensional array, grouped by country.
 	 *
 	 * @var 	array[] 	$states
 	 * @access 	private
 	 * @since 	1.0.0
 	 */
-	private $states = array(); 
+	private $states = array();
 
 	/**
 	 * List of different countries' address formats.
@@ -53,10 +53,10 @@ class Charitable_Locations {
 	 * @var 	string[]
 	 * @access  private
 	 */
-	private $address_formats;	      
+	private $address_formats;
 
     /**
-     * Returns and/or create the single instance of this class.  
+     * Returns and/or create the single instance of this class.
      *
      * @return  Charitable_Locations
      * @access  public
@@ -68,33 +68,33 @@ class Charitable_Locations {
         }
 
         return self::$instance;
-    } 
+    }
 
     /**
-     * Set up the class. 
+     * Set up the class.
      *
      * @access  private
      * @since   1.2.0
      */
     private function __construct() {}
 
-	/** 
-	 * Return an array with all the countries supported by Charitable. 
+	/**
+	 * Return an array with all the countries supported by Charitable.
 	 *
 	 * @return 	string[]
-	 * @access 	public 
+	 * @access 	public
 	 * @since 	1.0.0
 	 */
 	public function get_countries() {
 		if ( empty( $this->countries ) ) {
-			$this->countries = apply_filters( 'charitable_countries', include( charitable()->get_path('directory') . 'i18n/countries.php' ) );	
-		}	
+			$this->countries = apply_filters( 'charitable_countries', include( charitable()->get_path('directory') . 'i18n/countries.php' ) );
+		}
 
 		return $this->countries;
 	}
 
 	/**
-	 * Return the country codes of countries with states.  
+	 * Return the country codes of countries with states.
 	 *
 	 * @return 	string[]
 	 * @access  public
@@ -102,63 +102,63 @@ class Charitable_Locations {
 	 */
 	public function get_countries_with_states() {
 		return array(
-			'AU', 
-			'BD', 
-			'BG', 
-			'BR', 
-			'CA', 
-			'CN', 
-			'ES', 
-			'GR', 
-			'HK', 
-			'HU', 
+			'AU',
+			'BD',
+			'BG',
+			'BR',
+			'CA',
+			'CN',
+			'ES',
+			'GR',
+			'HK',
+			'HU',
 			'ID',
-			'IN', 
-			'IR', 
-			'IT', 
-			'JP', 
-			'MX', 
-			'MY', 
-			'NP', 
-			'NZ', 
-			'PE', 
-			'TH', 
-			'TR', 
-			'US', 
+			'IN',
+			'IR',
+			'IT',
+			'JP',
+			'MX',
+			'MY',
+			'NP',
+			'NZ',
+			'PE',
+			'TH',
+			'TR',
+			'US',
 			'ZA'
 		);
 	}
 
-	/** 
-	 * Return an array with all the states supported by Charitable. 
+	/**
+	 * Return an array with all the states supported by Charitable.
 	 *
 	 * @return 	string[]
-	 * @access 	public 
+	 * @access 	public
 	 * @since 	1.0.0
 	 */
 	public function get_all_states() {
 		foreach ( $this->get_countries_with_states() as $country_code ) {
 			$this->get_states_for_country( $country_code );
 		}
-		
+
 		return $this->states;
 	}
 
 	/**
-	 * Return the states in this country. 
+	 * Return the states in this country.
 	 *
 	 * @param 	string 		$country_code
 	 * @return 	string[]
 	 * @access  public
 	 * @since 	1.0.0
 	 */
-	public function get_states_for_country( $country_code ) {		
-		if ( ! in_array( $country_code, $this->get_countries_with_states() ) ) {			
+	public function get_states_for_country( $country_code ) {
+		if ( ! in_array( $country_code, $this->get_countries_with_states() ) ) {
 			return array();
 		}
 
-		if ( ! isset( $this->states[$country_code] ) ) {				
-			$this->states[$country_code] = apply_filters( 'charitable_country_states', include( charitable()->get_path('directory') . '/i18n/states/' . $country_code . '.php' ), $country_code );					
+		if ( ! isset( $this->states[$country_code] ) ) {
+			$this->states[$country_code] = apply_filters( 'charitable_country_states', include( charitable()->get_path('directory') . '/i18n/states/' . $country_code . '.php' ), $country_code );
 		}
 
 		return $this->states[$country_code];
@@ -166,7 +166,7 @@ class Charitable_Locations {
 
 	/**
 	 * Get the base country for the website.
-	 *	 
+	 *
 	 * @return 	string
 	 * @access 	public
 	 * @since 	1.0.0
@@ -224,14 +224,14 @@ class Charitable_Locations {
 				'US' => "{name}\n{company}\n{address_1}\n{address_2}\n{city}, {state_code} {postcode}\n{country}",
 				'VN' => "{name}\n{company}\n{address_1}\n{city}\n{country}",
 			));
-		
+
 		}
 
 		return $this->address_formats;
 	}
 
 	/**
-	 * Return the address format to use for the given address.  
+	 * Return the address format to use for the given address.
 	 *
 	 * @param 	array 		$address_fields
 	 * @return 	string
@@ -246,9 +246,9 @@ class Charitable_Locations {
 		 * If the country is set and it has its own specific format, use that. Otherwise, use default format.
 		 */
 		$format = isset( $formats[ $country ] ) ? $formats[ $country ] : $formats['default'];
-		
+
 		/**
-		 * For local addresses, leave the country field blank (unless explicitly forced). 
+		 * For local addresses, leave the country field blank (unless explicitly forced).
 		 *
 		 * @hook 	charitable_formatted_address_force_country_display
 		 */
@@ -257,7 +257,7 @@ class Charitable_Locations {
 		}
 
 		return $format;
-	}	
+	}
 
 	/**
 	 * Process an array of address fields, trimming whitespace and adding full country and full state names.
@@ -268,40 +268,37 @@ class Charitable_Locations {
 	 * @since 	1.0.0
 	 */
 	private function sanitize_address_fields( $address_fields ) {
-		
+
 		if ( ! is_array( $address_fields ) ) {
 			return $address_fields;
 		}
-		
-		$address_fields = array_map( 'trim', $address_fields );	
+
+		$address_fields = array_map( 'trim', $address_fields );
 
 		/**
-		 * Set up empty default fields and merge with address fields. 
+		 * Set up empty default fields and merge with address fields.
 		 */
 		$defaults = array(
-			'first_name'	=> '', 
-			'last_name'		=> '', 
-			'company'		=> '', 
-			'address'		=> '', 
-			'address_2' 	=> '', 
+			'address'		=> '',
+			'address_2' 	=> '',
 			'city' 			=> '',
 			'state'			=> '',
 			'full_state' 	=> '',
-			'postcode'		=> '', 
+			'postcode'		=> '',
 			'country'		=> '',
 			'full_country'	=> ''
 		);
-		$address_fields = array_merge( $defaults, $address_fields ); 
+		$address_fields = array_merge( $defaults, $address_fields );
 
 		$country = $address_fields['country'];
 		$state = $address_fields['state'];
 
 		/**
-		 * If country is empty, return address fields as they are. 
+		 * If country is empty, return address fields as they are.
 		 */
 		if ( empty( $country ) ) {
 			return $address_fields;
-		} 
+		}
 
 		$countries = $this->get_countries();
 
@@ -335,58 +332,62 @@ class Charitable_Locations {
 	* @param 	string[]	$address_fields
 	* @return 	string
 	* @access 	public
-	* @since 	1.0.0	
+	* @since 	1.0.0
 	*/
 	public function get_formatted_address( $address_fields = array() ) {
 
 		$address_fields = $this->sanitize_address_fields( $address_fields );
+		$formatted_address = '';
 
-		// Substitute address parts into the string
-		$replace = array_map( 'esc_html', apply_filters( 'charitable_formatted_address_replacements', array(
-			'{first_name}'       => $address_fields['first_name'],
-			'{last_name}'        => $address_fields['last_name'],
-			'{name}'             => $address_fields['first_name'] . ' ' . $address_fields['last_name'],
-			'{company}'          => $address_fields['company'],
-			'{address_1}'        => $address_fields['address'],
-			'{address_2}'        => $address_fields['address_2'],
-			'{city}'             => $address_fields['city'],
-			'{state}'            => $address_fields['full_state'],
-			'{postcode}'         => $address_fields['postcode'],
-			'{country}'          => $address_fields['full_country'],
-			'{first_name_upper}' => strtoupper( $address_fields['first_name'] ),
-			'{last_name_upper}'  => strtoupper( $address_fields['last_name'] ),
-			'{name_upper}'       => strtoupper( $address_fields['first_name'] . ' ' . $address_fields['last_name'] ),
-			'{company_upper}'    => strtoupper( $address_fields['company'] ),
-			'{address_1_upper}'  => strtoupper( $address_fields['address'] ),
-			'{address_2_upper}'  => strtoupper( $address_fields['address_2'] ),
-			'{city_upper}'       => strtoupper( $address_fields['city'] ),
-			'{state_upper}'      => strtoupper( $address_fields['full_state'] ),
-			'{state_code}'       => strtoupper( $address_fields['state'] ),
-			'{postcode_upper}'   => strtoupper( $address_fields['postcode'] ),
-			'{country_upper}'    => strtoupper( $address_fields['full_country'] ),
-		), $address_fields ) );
+		// If main address field is empty, then do not format.
+		if(!empty($address_fields['address'])) {
+			// Substitute address parts into the string
+			$replace = array_map( 'esc_html', apply_filters( 'charitable_formatted_address_replacements', array(
+				'{first_name}'       => $address_fields['first_name'],
+				'{last_name}'        => $address_fields['last_name'],
+				'{name}'             => $address_fields['first_name'] . ' ' . $address_fields['last_name'],
+				'{company}'          => $address_fields['company'],
+				'{address_1}'        => $address_fields['address'],
+				'{address_2}'        => $address_fields['address_2'],
+				'{city}'             => $address_fields['city'],
+				'{state}'            => $address_fields['full_state'],
+				'{postcode}'         => $address_fields['postcode'],
+				'{country}'          => $address_fields['full_country'],
+				'{first_name_upper}' => strtoupper( $address_fields['first_name'] ),
+				'{last_name_upper}'  => strtoupper( $address_fields['last_name'] ),
+				'{name_upper}'       => strtoupper( $address_fields['first_name'] . ' ' . $address_fields['last_name'] ),
+				'{company_upper}'    => strtoupper( $address_fields['company'] ),
+				'{address_1_upper}'  => strtoupper( $address_fields['address'] ),
+				'{address_2_upper}'  => strtoupper( $address_fields['address_2'] ),
+				'{city_upper}'       => strtoupper( $address_fields['city'] ),
+				'{state_upper}'      => strtoupper( $address_fields['full_state'] ),
+				'{state_code}'       => strtoupper( $address_fields['state'] ),
+				'{postcode_upper}'   => strtoupper( $address_fields['postcode'] ),
+				'{country_upper}'    => strtoupper( $address_fields['full_country'] ),
+			), $address_fields ) );
 
-		$format = $this->get_address_format( $address_fields );
-		$formatted_address = str_replace( array_keys( $replace ), $replace, $format );
+			$format = $this->get_address_format( $address_fields );
+			$formatted_address = str_replace( array_keys( $replace ), $replace, $format );
 
-		// Clean up white space
-		$formatted_address = preg_replace( '/  +/', ' ', trim( $formatted_address ) );
-		$formatted_address = preg_replace( '/\n\n+/', "\n", $formatted_address );
-		
-		// Break newlines apart and remove empty lines/trim commas and white space
-		$formatted_address = explode( "\n", $formatted_address );
-		$formatted_address = array_map( array( $this, 'trim_formatted_address_line' ), $formatted_address );
-		$formatted_address = array_filter( $formatted_address );
+			// Clean up white space
+			$formatted_address = preg_replace( '/  +/', ' ', trim( $formatted_address ) );
+			$formatted_address = preg_replace( '/\n\n+/', "\n", $formatted_address );
 
-		// Add html breaks
-		$formatted_address = implode( '<br/>', $formatted_address );
+			// Break newlines apart and remove empty lines/trim commas and white space
+			$formatted_address = explode( "\n", $formatted_address );
+			$formatted_address = array_map( array( $this, 'trim_formatted_address_line' ), $formatted_address );
+			$formatted_address = array_filter( $formatted_address );
+
+			// Add html breaks
+			$formatted_address = implode( '<br/>', $formatted_address );
+		}
 
 		// We're done!
 		return $formatted_address;
 	}
 
 	/**
-	 * trim white space and commas off a line. 
+	 * trim white space and commas off a line.
 	 *
 	 * @param  	string 		$line
 	 * @return 	string
