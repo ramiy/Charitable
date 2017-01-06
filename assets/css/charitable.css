@@ -246,6 +246,22 @@
     margin-bottom: 0;
     padding-bottom: 0; }
 
+/* Receipts */
+.donation-summary dt {
+  float: left;
+  margin-right: .5em;
+  font-weight: bold; }
+.donation-summary dd {
+  display: block;
+  margin-bottom: 0; }
+.donation-summary dd::after {
+  content: " ";
+  display: block;
+  clear: left; }
+
+.charitable-table tr, .charitable-table td {
+  padding-right: 1.5em; }
+
 /* Campaigns grid */
 .campaign-loop.campaign-list,
 .campaign-loop.campaign-grid {
