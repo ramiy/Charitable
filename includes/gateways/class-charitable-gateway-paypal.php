@@ -352,6 +352,9 @@ if ( ! class_exists( 'Charitable_Gateway_Paypal' ) ) :
 
 			}
 
+			/* Save the transation ID */
+			$donation->set_gateway_transaction_id( $data['txn_id'] );
+
 			/* Process a completed donation. */
 			if ( 'completed' == $payment_status ) {
 
