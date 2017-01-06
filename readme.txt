@@ -3,8 +3,8 @@ Contributors: WPCharitable, ericdaams
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paypal%40164a%2ecom
 Tags: donations, donate, donation plugin, fundraising, fundraising plugin, non-profit, non-profits, charity, churches, commerce, crowdfunding, crowd funding, paypal donations, paypal, stripe, stripe donations, campaigns, gifts, giving, wordpress fundraising, wordpress donations, wordpress donation plugin, peer to peer fundraising, peer to peer fundraiser, peer fundraising, social fundraising
 Requires at least: 4.1
-Tested up to: 4.6.1
-Stable tag: 1.4.6
+Tested up to: 4.7
+Stable tag: 1.4.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -114,6 +114,20 @@ You can post in the [support forum](https://wordpress.org/support/plugin/charita
 6. Setting up Charitable: The Email settings area. 
 
 == Changelog ==
+
+= 1.4.7 =
+* Avoid issues with PayPal IPNs missing the 'invoice' parameter in certain cases — likely a bug on the PayPal end. This resulted in donations remaining stuck as Pending. We have reworked how IPNs are processed to avoid reliance on this and avoid further issues. [#289](https://github.com/Charitable/Charitable/issues/289)
+* Store the PayPal transaction ID for donations after an IPN has been received. [#270](https://github.com/Charitable/Charitable/issues/270)
+* Add a notice to the donation form when viewed by site admin to remind them that Test Mode is enabled. [#233](https://
+github.com/Charitable/Charitable/issues/233)
+* Improve styling for the donation receipt summary. [#214](https://github.com/Charitable/Charitable/issues/214)
+* Make sure that donor count and donors widget both include donations to child campaigns. [#263](https://github.com/Charitable/Charitable/issues/263) and [#264](https://github.com/Charitable/Charitable/issues/264)
+* Correctly show the donor count in the Donation Stats widget, not the number of donations. [#268](https://github.com/Charitable/Charitable/issues/268)
+* Show a blank field for formatted addresses in the donation export or admin donation pages when no address details were provided. Previously, the donor's name was shown. [#255](https://github.com/Charitable/Charitable/issues/255) and [#256](https://github.com/Charitable/Charitable/issues/256)
+* Fix client-side credit card validation. [#280](https://github.com/Charitable/Charitable/issues/280)
+* Fix issue causing incorrect donation status to be displayed in admin notification email and donation receipt. [#261](https://github.com/Charitable/Charitable/issues/261)
+* Remove the Licenses tab from the Settings area when you don't have any extensions installed. [#249](https://github.com/Charitable/Charitable/issues/249)
+* Miscellaneous other minor, under-the-hood improvements and tweaks.
 
 = 1.4.6 =
 * Properly activate Charitable on all sites when it is network activated. Also makes sure that Charitable is correctly installed when a new site is added to a network that has Charitable network-activated. [#225](https://github.com/Charitable/Charitable/issues/225)
