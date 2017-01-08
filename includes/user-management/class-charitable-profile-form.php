@@ -355,8 +355,6 @@ if ( ! class_exists( 'Charitable_Profile_Form' ) ) :
 		public function get_merged_fields() {
 			$fields = array();
 
-			echo '<pre>'; var_dump( $this->get_fields() ); echo '</pre>';
-
 			foreach ( $this->get_fields() as $key => $section ) {
 
 				if ( isset( $section['fields'] ) ) {
