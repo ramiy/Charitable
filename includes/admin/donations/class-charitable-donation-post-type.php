@@ -252,7 +252,7 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 						'action' => 'edit',
 					), admin_url( 'post.php' ) ) );
 
-					$display = sprintf( '<a href="%s" title="%s">%s</a>', $url, $title, $text );
+					$display = sprintf( '<a href="%s" aria-label="%s">%s</a>', $url, $title, $text );
 
 					break;
 
@@ -368,7 +368,7 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 					'action' => 'edit',
 				), admin_url( 'post.php' ) ) );
 
-				$actions['edit'] = sprintf( '<a href="%s" title="%s">%s</a>', $url, $title, $text );
+				$actions['edit'] = sprintf( '<a href="%s" aria-label="%s">%s</a>', $url, $title, $text );
 
 			}
 
