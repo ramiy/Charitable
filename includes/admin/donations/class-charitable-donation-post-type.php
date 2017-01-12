@@ -55,7 +55,7 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 		 * @since   1.0.0
 		 */
 		private function __construct() {
-			global $wp_version;
+			$wp_version = get_bloginfo( 'version' );
 
 			$this->meta_box_helper = new Charitable_Meta_Box_Helper( 'charitable-donation' );
 
