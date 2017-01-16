@@ -226,7 +226,7 @@ if ( ! class_exists( 'Charitable_Abstract_Donation' ) ) :
 
 				if ( ! isset( $links[ $campaign->campaign_id ] ) ) {
 
-					$links[ $campaign->campaign_id ] = sprintf( '<a href="%s" title="%s">%s</a>',
+					$links[ $campaign->campaign_id ] = sprintf( '<a href="%s" aria-label="%s">%s</a>',
 						get_permalink( $campaign->campaign_id ),
 						sprintf( '%s %s', _x( 'Go to', 'go to campaign', 'charitable' ), get_the_title( $campaign->campaign_id ) ),
 						get_the_title( $campaign->campaign_id )

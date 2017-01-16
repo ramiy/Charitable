@@ -70,7 +70,7 @@ endif ?>
 				</tr>
 				<tr>
 					<td colspan="2" style="padding: 0 0 15px 0;">
-						<p><?php printf( __( "In October 2016, PayPal is upgrading the SSL certificates used to secure its web sites and API endpoints. <a href='%s' title='How PayPal\'s SSL Certificate Upgrade Will Affect You — And How You Can Prepare for It'>Read about how these changes will impact you.</a>", 'charitable' ),
+						<p><?php printf( __( "In October 2016, PayPal is upgrading the SSL certificates used to secure its web sites and API endpoints. <a href='%s'>Read about how these changes will impact you.</a>", 'charitable' ),
 							'https://www.wpcharitable.com/how-paypals-ssl-certificate-upgrade-will-affect-you-and-how-you-can-prepare-for-it/?utm_source=notice&utm_medium=wordpress-dashboard&utm_campaign=paypal-ssl-upgrade&utm_content=blog-post'
 						) ?></p>						
 						<p><?php printf(

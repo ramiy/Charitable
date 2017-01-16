@@ -17,7 +17,7 @@ $campaign = $view_args['campaign'];
 		data-campaign-id="<?php echo $campaign->ID ?>"
 		class="donate-button button" 
 		href="<?php echo esc_url( charitable_get_permalink( 'campaign_donation_page', array( 'campaign_id' => $campaign->ID ) ) ) ?>" 
-		title="<?php esc_attr_e( sprintf( _x( 'Make a donation to %s', 'make a donation to campaign', 'charitable' ), get_the_title( $campaign->ID ) ) ) ?>">
+		aria-label="<?php esc_attr_e( sprintf( _x( 'Make a donation to %s', 'make a donation to campaign', 'charitable' ), get_the_title( $campaign->ID ) ) ) ?>">
 		<?php _e( 'Donate', 'charitable' ) ?>
 	</a>
 </div>
