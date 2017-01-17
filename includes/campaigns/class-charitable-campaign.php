@@ -351,7 +351,7 @@ if ( ! class_exists( 'Charitable_Campaign' ) ) :
 		 * @since   1.0.0
 		 */
 		public function has_achieved_goal() {
-			return $this->get_donated_amount() >= $this->get_goal();
+			return $this->get_donated_amount( true ) >= $this->get_goal();
 		}
 
 		/**
@@ -425,10 +425,10 @@ if ( ! class_exists( 'Charitable_Campaign' ) ) :
 		 * @since   1.0.0
 		 */
 		public function get_status_tag() {
-			$key = $this->get_status_key();
 
+			$key              = $this->get_status_key();
 			$show_achievement = apply_filters( 'charitable_campaign_show_achievement_status_tag', true );
-			$show_active_tag = apply_filters( 'charitable_campaign_show_active_status_tag', false );
+			$show_active_tag  = apply_filters( 'charitable_campaign_show_active_status_tag', false );
 
 			switch ( $key ) {
 
@@ -483,11 +483,12 @@ if ( ! class_exists( 'Charitable_Campaign' ) ) :
 		/**
 		 * Return the current amount of donations.
 		 *
+		 * @param 	boolean $sanitize Whether to sanitize the amount. False by default.
 		 * @return  string
 		 * @access  public
 		 * @since   1.0.0
 		 */
-		public function get_donated_amount() {
+		public function get_donated_amount( $sanitize = false ) {
 			$this->donated_amount = get_transient( self::get_donation_amount_cache_key( $this->ID ) );
 
 			if ( false === $this->donated_amount ) {
@@ -496,7 +497,9 @@ if ( ! class_exists( 'Charitable_Campaign' ) ) :
 				set_transient( self::get_donation_amount_cache_key( $this->ID ), $this->donated_amount, 0 );
 			}
 
-			return apply_filters( 'charitable_campaign_donated_amount', $this->donated_amount, $this );
+			$amount = $sanitize ? charitable_sanitize_amount( $this->donated_amount ) : $this->donated_amount;
+
+			return apply_filters( 'charitable_campaign_donated_amount', $amount, $this, $sanitize );
 		}
 
 		/**
@@ -554,7 +557,7 @@ if ( ! class_exists( 'Charitable_Campaign' ) ) :
 				return false;
 			}
 
-			return ( $this->get_donated_amount() / $this->get_goal() ) * 100;
+			return ( $this->get_donated_amount( true ) / $this->get_goal() ) * 100;
 		}
 
 		/**

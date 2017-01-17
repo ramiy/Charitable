@@ -226,9 +226,8 @@ if ( ! class_exists( 'Charitable_Registration_Form' ) ) :
 				$login_link = add_query_arg( 'redirect_to', $_GET['redirect_to'], $login_link );
 			}
 
-			return sprintf( '<a href="%1$s" title="%2$s">%3$s</a>',
+			return sprintf( '<a href="%1$s">%2$s</a>',
 				esc_url( $login_link ),
-				esc_attr( $this->shortcode_args['login_link_text'] ),
 				$this->shortcode_args['login_link_text']
 			);
 		}
