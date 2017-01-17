@@ -129,7 +129,7 @@ if ( ! class_exists( 'Charitable_Gateway' ) ) :
 		public function get_value( $setting ) {
 			$default = isset( $this->defaults[ $setting ] ) ? $this->defaults[ $setting ] : '';
 			return charitable_get_option( $setting, $default, $this->get_settings() );
-		}		
+		}
 
 		/**
 		 * Check if a gateway supports a given feature.
