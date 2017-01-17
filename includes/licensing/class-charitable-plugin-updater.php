@@ -226,7 +226,7 @@ class Charitable_Plugin_Updater {
      */
     private function api_request( $action, $data ) {
 
-        global $wp_version;
+        $wp_version = get_bloginfo( 'version' );
 
         $data = array_merge( $this->api_data, $data );
 

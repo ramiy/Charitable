@@ -22,12 +22,12 @@ class Test_Charitable_Post_Types extends Charitable_UnitTestCase {
 	}
 
 	public function test_is_campaign_post_type_registered() {
-		global $wp_post_types;
+		$wp_post_types = get_post_types();
 		$this->assertArrayHasKey( 'campaign', $wp_post_types );
 	}
 
 	public function test_campaign_post_type_labels() {
-		global $wp_post_types;
+		$wp_post_types = get_post_types();
 		$this->assertEquals( 'Campaigns', $wp_post_types['campaign']->labels->name );
 		$this->assertEquals( 'Campaign', $wp_post_types['campaign']->labels->singular_name );
 		$this->assertEquals( 'Campaigns', $wp_post_types['campaign']->labels->menu_name );
@@ -45,12 +45,12 @@ class Test_Charitable_Post_Types extends Charitable_UnitTestCase {
 	}
 
 	public function test_is_donation_post_type_registered() {
-		global $wp_post_types;
+		$wp_post_types = get_post_types();
 		$this->assertArrayHasKey( 'donation', $wp_post_types );
 	}
 
 	public function test_donation_post_type_labels() {
-		global $wp_post_types;
+		$wp_post_types = get_post_types();
 		$this->assertEquals( 'Donations', $wp_post_types['donation']->labels->name );
 		$this->assertEquals( 'Donation', $wp_post_types['donation']->labels->singular_name );
 		$this->assertEquals( 'Donations', $wp_post_types['donation']->labels->menu_name );

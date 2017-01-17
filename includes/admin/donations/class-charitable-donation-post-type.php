@@ -55,7 +55,7 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 		 * @since   1.0.0
 		 */
 		private function __construct() {
-			global $wp_version;
+			$wp_version = get_bloginfo( 'version' );
 
 			$this->meta_box_helper = new Charitable_Meta_Box_Helper( 'charitable-donation' );
 
@@ -252,7 +252,7 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 						'action' => 'edit',
 					), admin_url( 'post.php' ) ) );
 
-					$display = sprintf( '<a href="%s" title="%s">%s</a>', $url, $title, $text );
+					$display = sprintf( '<a href="%s" aria-label="%s">%s</a>', $url, $title, $text );
 
 					break;
 
@@ -368,7 +368,7 @@ if ( ! class_exists( 'Charitable_Donation_Post_Type' ) ) :
 					'action' => 'edit',
 				), admin_url( 'post.php' ) ) );
 
-				$actions['edit'] = sprintf( '<a href="%s" title="%s">%s</a>', $url, $title, $text );
+				$actions['edit'] = sprintf( '<a href="%s" aria-label="%s">%s</a>', $url, $title, $text );
 
 			}
 

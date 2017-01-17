@@ -335,14 +335,13 @@ if ( ! class_exists( 'Charitable_Email' ) ) :
 				'preview' => array(
 					'type'      => 'content',
 					'title'     => __( 'Preview', 'charitable' ),
-					'content'   => sprintf( '<a href="%s" title="%s" target="_blank" class="button">%s</a>',
+					'content'   => sprintf( '<a href="%s" target="_blank" class="button">%s</a>',
 						esc_url(
 							add_query_arg( array(
 								'charitable_action' => 'preview_email',
 								'email_id' => $this->get_email_id(),
 							), home_url() )
 						),
-						__( 'Preview email in your browser', 'charitable' ),
 						__( 'Preview email', 'charitable' )
 					),
 					'priority'  => 18,
