@@ -21,14 +21,14 @@ if ( ! class_exists( 'Charitable_Currency' ) ) :
 	 */
 	final class Charitable_Currency {
 
-	    /**
-	     * The single instance of this class.
-	     *
-	     * @var     Charitable_Currency|null
-	     * @access  private
-	     * @static
-	     */
-	    private static $instance = null;
+		/**
+		 * The single instance of this class.
+		 *
+		 * @var     Charitable_Currency|null
+		 * @access  private
+		 * @static
+		 */
+		private static $instance = null;
 
 		/**
 		 * @var 	string 		$currency_format 	The format that the current currency will take.
@@ -46,28 +46,28 @@ if ( ! class_exists( 'Charitable_Currency' ) ) :
 		private $currency;
 
 		/**
-	     * Create class object. A private constructor, so this is used in a singleton context.
-	     *
-	     * @access  private
-	     * @since   1.2.3
-	     */
-	    private function __construct() {
-	    }
+		 * Create class object. A private constructor, so this is used in a singleton context.
+		 *
+		 * @access  private
+		 * @since   1.2.3
+		 */
+		private function __construct() {
+		}
 
-	    /**
-	     * Returns and/or create the single instance of this class.
-	     *
-	     * @return  Charitable_Currency
-	     * @access  public
-	     * @since   1.2.3
-	     */
-	    public static function get_instance() {
-	        if ( is_null( self::$instance ) ) {
-	            self::$instance = new Charitable_Currency();
-	        }
+		/**
+		 * Returns and/or create the single instance of this class.
+		 *
+		 * @return  Charitable_Currency
+		 * @access  public
+		 * @since   1.2.3
+		 */
+		public static function get_instance() {
+			if ( is_null( self::$instance ) ) {
+				self::$instance = new Charitable_Currency();
+			}
 
-	        return self::$instance;
-	    }
+			return self::$instance;
+		}
 
 		/**
 		 * Return an amount as a monetary string.
@@ -76,10 +76,10 @@ if ( ! class_exists( 'Charitable_Currency' ) ) :
 		 *
 		 * @param 	string    $amount
 		 * @param 	int|false $decimal_count Optional. If not set, default decimal count will be used.
-	 	 * @return 	string|WP_Error
-	 	 * @access 	public
-	 	 * @since 	1.0.0
-	 	 */
+		 * @return 	string|WP_Error
+		 * @access 	public
+		 * @since 	1.0.0
+		 */
 		public function get_monetary_amount( $amount, $decimal_count = false ) {
 			if ( false === $decimal_count ) {
 				$decimal_count = charitable_get_option( 'decimal_count', 2 );
@@ -205,36 +205,36 @@ if ( ! class_exists( 'Charitable_Currency' ) ) :
 			return $format;
 		}
 
-	    /**
-	     * Get the currency format for accounting.js
-	     *
-	     * @return  void
-	     * @access  public
-	     * @since   1.3.0
-	     */
-	    public function get_accounting_js_format() {
+		/**
+		 * Get the currency format for accounting.js
+		 *
+		 * @return  void
+		 * @access  public
+		 * @since   1.3.0
+		 */
+		public function get_accounting_js_format() {
 
-	        $option = charitable_get_option( 'currency_format', 'left' );
+			$option = charitable_get_option( 'currency_format', 'left' );
 
-	        switch ( $option ) {
-	            case 'right':
-	                $format = '%v%s';
-	            break;
-	            case 'left-with-space':
-	                $format = '%s %v';
-	            break;
-	            case 'right-with-space':
-	                $format = '%v %s';
-	            break;
-	            default:
-	                $format = '%s%v';
-	            break;
-	        }
-	        $format = '%s%v';
+			switch ( $option ) {
+				case 'right':
+					$format = '%v%s';
+				break;
+				case 'left-with-space':
+					$format = '%s %v';
+				break;
+				case 'right-with-space':
+					$format = '%v %s';
+				break;
+				default:
+					$format = '%s%v';
+				break;
+			}
+			$format = '%s%v';
 
-	        return $format;
+			return $format;
 
-	    }
+		}
 
 		/**
 		 * Return every currency symbol used with the
@@ -260,8 +260,10 @@ if ( ! class_exists( 'Charitable_Currency' ) ) :
 					'CNY'	=> sprintf( __( 'Chinese Yuan Renminbi (%s)', 'charitable' ), $this->get_currency_symbol( 'CNY' ) ),
 					'CZK'	=> sprintf( __( 'Czech Koruna (%s)', 'charitable' ), $this->get_currency_symbol( 'CZK' ) ),
 					'DKK'	=> sprintf( __( 'Danish Krone (%s)', 'charitable' ), $this->get_currency_symbol( 'DKK' ) ),
+					'EGP'   => sprintf( __( 'Egyptian Pound (%s)', 'charitable' ), $this->get_currency_symbol( 'EGP' ) ),
 					'EUR'	=> sprintf( __( 'Euro (%s)', 'charitable' ), $this->get_currency_symbol( 'EUR' ) ),
 					'GBP'	=> sprintf( __( 'British Pound (%s)', 'charitable' ), $this->get_currency_symbol( 'GBP' ) ),
+					'GHS' 	=> sprintf( __( 'Ghanaian Cedi (%s)', 'charitable' ), $this->get_currency_symbol( 'GHS' ) ),
 					'HKD'	=> sprintf( __( 'Hong Kong Dollar (%s)', 'charitable' ), $this->get_currency_symbol( 'HKD' ) ),
 					'HRK'	=> sprintf( __( 'Croatian Kuna (%s)', 'charitable' ), $this->get_currency_symbol( 'HRK' ) ),
 					'HUF'	=> sprintf( __( 'Hungarian Forint (%s)', 'charitable' ), $this->get_currency_symbol( 'HUF' ) ),
@@ -339,8 +341,14 @@ if ( ! class_exists( 'Charitable_Currency' ) ) :
 				case 'USD' :
 					$currency_symbol = '&#36;';
 					break;
+				case 'EGP' :
+					$currency_symbol = 'E&pound;';
+					break;
 				case 'EUR' :
 					$currency_symbol = '&euro;';
+					break;
+				case 'GHS' :
+					$currency_symbol = 'GH&#8373;';
 					break;
 				case 'CNY' :
 				case 'RMB' :
