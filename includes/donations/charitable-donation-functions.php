@@ -260,12 +260,12 @@ function charitable_cancel_donation() {
 
 /**
  * Load the donation form script.
- * 
+ *
  * @return  void
  * @since   1.4.0
  */
 function charitable_load_donation_form_script() {
-    wp_enqueue_script( 'charitable-donation-form' );
+	wp_enqueue_script( 'charitable-donation-form' );
 }
 
 /**
