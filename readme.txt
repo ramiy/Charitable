@@ -3,8 +3,8 @@ Contributors: WPCharitable, ericdaams
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paypal%40164a%2ecom
 Tags: donations, donate, donation plugin, fundraising, fundraising plugin, non-profit, non-profits, charity, churches, commerce, crowdfunding, crowd funding, paypal donations, paypal, stripe, stripe donations, campaigns, gifts, giving, wordpress fundraising, wordpress donations, wordpress donation plugin, peer to peer fundraising, peer to peer fundraiser, peer fundraising, social fundraising
 Requires at least: 4.1
-Tested up to: 4.7
-Stable tag: 1.4.8
+Tested up to: 4.7.1
+Stable tag: 1.4.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -114,6 +114,11 @@ You can post in the [support forum](https://wordpress.org/support/plugin/charita
 6. Setting up Charitable: The Email settings area. 
 
 == Changelog ==
+
+= 1.4.9 = 
+* Added Ghanaian Cedi and Egyptian Pound to currencies. [#288](https://github.com/Charitable/Charitable/issues/288) and [#282](https://github.com/Charitable/Charitable/issues/282)
+* Remove `$wp_version` global. [#294](https://github.com/Charitable/Charitable/pull/294)
+* Miscellaneous accessibility improvements. [#291](https://github.com/Charitable/Charitable/pull/291), [#292](https://github.com/Charitable/Charitable/pull/292) and [#293](https://github.com/Charitable/Charitable/pull/293)
 
 = 1.4.8 = 
 * Removed some code left over from plugin testing.

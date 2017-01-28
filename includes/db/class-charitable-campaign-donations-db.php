@@ -723,7 +723,7 @@ if ( ! class_exists( 'Charitable_Campaign_Donations_DB' ) ) :
 
 			$sql = "SELECT COUNT( * )
                     FROM {$wpdb->prefix}charitable_campaign_donations cd
-                    INNER JOIN $wpdb->posts po ON po.ID = cd.donation_id
+                    INNER JOIN $wpdb->posts p ON p.ID = cd.donation_id
                     WHERE 1 = 1
                     $status_clause;";
 

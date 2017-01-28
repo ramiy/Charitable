@@ -715,9 +715,9 @@ if ( ! function_exists( 'charitable_template_donation_form_content' ) ) :
 
 		if ( ! charitable_is_page( 'campaign_donation_page' ) ) {
 			return $content;
-		}	
+		}
 
-		if ( 'separate_page' != charitable_get_option( 'donation_form_display', 'separate_page' ) 
+		if ( 'separate_page' != charitable_get_option( 'donation_form_display', 'separate_page' )
 		 	&& false === get_query_var( 'donate', false ) ) {
 			return $content;
 		}

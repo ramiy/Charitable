@@ -150,7 +150,7 @@ if ( ! class_exists( 'Charitable_Admin_Pages' ) ) :
 					'menu_slug'     => 'edit-tags.php?taxonomy=campaign_tag&post_type=campaign',
 				),
 				array(
-					'page_title'    => __( 'Settings', 'charitable' ),
+					'page_title'    => __( 'Charitable Settings', 'charitable' ),
 					'menu_title'    => __( 'Settings', 'charitable' ),
 					'menu_slug'     => 'charitable-settings',
 					'function'      => array( $this, 'render_settings_page' ),
